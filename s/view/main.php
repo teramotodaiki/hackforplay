@@ -195,7 +195,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					        	$(".h4p_publish-complete").show();
 					        	$(".h4p_publish-return").show();
 					            if(data !== "") console.log(data);
-					            /*optional stuff to do after success */
+					            if(textStatus !== "") console.log(textStatus);
 					        });
 						};
 					});
