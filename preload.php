@@ -1,0 +1,19 @@
+<?php
+// Require before processing
+
+// 1.Generate PDO object (connecting mysql)
+$pdo = null;
+try {
+	if($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == 'hackforplay.xyz'){
+		$pdo = new PDO('mysql:dbname=hackforplay;host=localhost;charset=utf8;', 'hackforplay', 'RtPF7JRSZ5XzFasc');
+	}else{
+		$pdo = new PDO('mysql:dbname=hackforplay;host=ja-cdbr-azure-west-a.cloudapp.net;charset=utf8;', 'ba714e6056fb6c', 'd66371c3');
+	}
+    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+}
+catch ( PDOException $e ) {
+    print( "Error connecting to SQL Server." );
+    die(print_r($e));
+}
+
+?>

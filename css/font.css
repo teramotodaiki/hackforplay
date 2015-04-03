@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+/* 使用するフォントや、文字の大きさなどを定義しています。 */
+
+/* フォント */
+body {
+	font-family: 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, Osaka, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
+}
+
+/* 文字の色 */
+.h4p_header {
+	color: rgb(  0,  0,  0);
+}
+
+.h4p_box-header {
+	color: rgb( 48,128,240);
+}
+
+.h4p_landing-header {
+	/*color: rgb( 48,128,240);*/
+	color: rgb(255,255,255);
+}
+
+.h4p_landing-main * {
+	color: rgb(255,255,255);
+}
+
+.h4p_item-title * {
+	color: rgb(  0,  0,  0);
+}
+
+.h4p_item-footer,
+.h4p_item-footer * {
+	font-size: 95%;
+	color: rgb(200,200,200);
+}
