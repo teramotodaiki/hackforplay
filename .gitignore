@@ -4,8 +4,11 @@
 c/
 codemirror/
 m/
+challenge-challenged.png
+checkergame.js
 
-s/thumbs/
+s/thumbs/*.png
+s/typewriter/
 s/demo1/
 s/demo2/
 s/stage1/
