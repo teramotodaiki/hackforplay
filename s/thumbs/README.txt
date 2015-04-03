@@ -1,0 +1,1 @@
+This directory is uploaded thumbnails by hackforplay-ers.
