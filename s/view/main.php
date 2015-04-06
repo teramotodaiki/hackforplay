@@ -223,9 +223,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 		.CodeMirror {
 		  top: 0px;
 		  left: 0px;
-		  height: 100%;
-		  width: 100%;
-		  background-color: rgb(35,35,35);
+		  background-color: rgb(245,245,245);
 		}
 	</style>
 </head>
