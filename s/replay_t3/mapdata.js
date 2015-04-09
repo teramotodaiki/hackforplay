@@ -5,11 +5,11 @@
 function loadMap(){
 
     game.addEventListener('load', function(){
-        maps['replay_t1'].image = game.assets['img/map1.gif'];
+        maps['replay'].image = game.assets['img/map1.gif'];
     });
 
-    maps['replay_t1'] = new RelationalMap(32, 32);
-    maps['replay_t1'].bmap.loadData([
+    maps['replay'] = new RelationalMap(32, 32);
+    maps['replay'].bmap.loadData([
         [322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],  
         [322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],  
         [322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],  
@@ -21,7 +21,7 @@ function loadMap(){
         [322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],  
         [322,322,322,322,322,322,322,322,322,322,322,322,322,322,322] 
     ]);
-	maps['replay_t1'].cmap = [
+	maps['replay'].cmap = [
         [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
         [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
         [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],

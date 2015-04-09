@@ -5,19 +5,11 @@ window.addEventListener('load', function() {
     var blueSlime, hint;
     game.addEventListener('load', function(){
 
-        var map = maps['replay_t1'];
+        var map = maps['replay'];
         map.load();                 // Load map
 
         env.enchantbook = new EnchantBook();
         game.rootScene.addChild(env.enchantbook);
-
-        // blueSlime = new BlueSlime('blueSlime'); // make blue slime
-        // map.scene.addChild(blueSlime);
-        // blueSlime.locate(9, 5);
-
-        // var stair = new Stair('stair');
-        // map.scene.addChild(stair);
-        // stair.locate(12, 5);
 
         var player = new Knight('player'); // make player
         map.scene.addChild(player); // add player to scene

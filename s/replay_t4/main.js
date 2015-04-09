@@ -5,7 +5,7 @@ window.addEventListener('load', function() {
     var blueSlime, hint;
     game.addEventListener('load', function(){
 
-        var map = maps['replay_t1'];
+        var map = maps['replay'];
         map.load();                 // Load map
 
         env.enchantbook = new EnchantBook();
