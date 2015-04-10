@@ -16,7 +16,7 @@ window.addEventListener('load', function() {
         player.locate(1, 5); // move position
 
         hint = 
-            "\n"+
+            "// ゲーム画面の外にある「改造する」ボタンを押すのだ...!\n"+
             "";
 
         // ここはコピペ
