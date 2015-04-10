@@ -11,14 +11,6 @@ window.addEventListener('load', function() {
         env.enchantbook = new EnchantBook();
         game.rootScene.addChild(env.enchantbook);
 
-        blueSlime = new BlueSlime('blueSlime'); // make blue slime
-        map.scene.addChild(blueSlime);
-        blueSlime.locate(9, 5);
-
-        var stair = new Stair('stair');
-        map.scene.addChild(stair);
-        stair.locate(13, 5);
-
         var player = new Knight('player'); // make player
         map.scene.addChild(player); // add player to scene
         player.locate(1, 5); // move position
