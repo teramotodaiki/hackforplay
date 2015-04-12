@@ -209,6 +209,15 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					break;
 			}
 		})();
+
+		// tutorial中は改造するボタンを非表示にする
+		(function(){
+			var id = <?php echo $id; ?>;
+			if(101 <= id && id <= 106){
+				// Tutorial Stage
+				$(".h4p_info-restaging>button").hide();
+			}
+		})();
 	});
 	function screenShot () {
 		document.getElementsByTagName('iframe')[0].contentWindow.postMessage('screenShot()', '/');
