@@ -60,7 +60,7 @@ window.addEventListener('load', function() {
 
         map.callback = function(){
             hint =
-            "// 奴がこの迷宮の主、獄炎のドラゴンだ！\n"+
+            "// 奴がこの迷宮の主、獄炎のドラゴン(dragon)だ！\n"+
             "// 奴の炎を受ければ、\n"+
             "// 君の体力はたちまち減っていくだろう\n\n"+
 
