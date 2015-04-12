@@ -27,7 +27,7 @@
 
 		// background-image
 		jQuery.each([
-			['.l-1', 'img/'+mainSize+'/topback.png'],
+			['.l-1', 'img/'+mainSize+'/topback.jpg'],
 			['.l-2', 'img/lp-back-2.png'],
 			['.l-1 .h4p_landing-header', 'img/'+mainSize+'/logoh4p.png'],
 			['.l-3', 'img/'+mainSize+'/topreback.png'],
