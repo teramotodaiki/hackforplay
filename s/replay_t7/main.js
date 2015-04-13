@@ -23,7 +23,7 @@ window.addEventListener('load', function() {
         map.scene.addChild(player); // add player to scene
         player.locate(1, 5); // move position
 
-        hint = 
+        hint =
             "\n"+
             "";
 
@@ -93,8 +93,14 @@ window.addEventListener('load', function() {
         }
     });
 
+    // 元々あったコメント行を除いた全てのコードを抜き出す
+    var extend_code = __H4PENV__EXTENDCODE.replace(/^\/\/.*/g, '');
+    // 連続した空行を改行+空行にする
+    extend_code = extend_code.replace(/\n\n+/mg, '\n\n');
+
     __H4PENV__DEFAULTCODE =
-    "// ExtendCode\n\n"+
+
+    extend_code+
 
     "// 本当におめでとう！！オリジナルステージの改造はこれですべてだ！\n\n"+
     "// ステージが完成し、「ステージ改造コードを実行」ボタンを押せば、次はこのゲームの投稿だ\n\n"+
