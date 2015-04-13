@@ -223,7 +223,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 				$(".h4p_info-restaging>button").hide();
 			}
 			// ステージ改造のチュートリアル
-			if(201 <= stage_id && stage_id <= 209){
+			if(201 <= stage_id && stage_id <= 206){
 				// この改造ステージを投稿する->次のステージへ
 				$(".h4p_publish-text").text('次のステージへ');
 				$(".h4p_publish>button").attr({
