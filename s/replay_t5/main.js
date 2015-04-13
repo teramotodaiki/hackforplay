@@ -96,6 +96,7 @@ window.addEventListener('load', function() {
     // bmapの ]) まで（セミコロンが登場するまで）を抜き出す
     var extend_bmap  =  __H4PENV__EXTENDCODE.match(/maps\[\'replay\'\]\.bmap\.loadData\(\[[\s\[\]0-9,\)\-\+]+/);
     if(extend_bmap !== null){
+        extend_bmap = extend_bmap[0];
         extend_bmap += ";\n\n"; // セミコロンを抜き出していないため、付与する
     }else{
         extend_bmap = "// エラー：マップ情報が取得できませんでした。この部分にbmapについて書き直して下さい\n\n";
@@ -104,7 +105,8 @@ window.addEventListener('load', function() {
     // cmapの ] まで（セミコロンが登場するまで）を抜き出す
     var extend_cmap  =  __H4PENV__EXTENDCODE.match(/maps\[\'replay\'\]\.cmap(\s)*\=(\s)*\[[\s\[\]0-9,\-\+]+/);
     if(extend_cmap !== null){
-        extend_cmap = extend_cmap[0] + ";\n\n"; // セミコロンを抜き出していないため、付与する
+        extend_cmap = extend_cmap[0];
+        extend_cmap += ";\n\n"; // セミコロンを抜き出していないため、付与する
     }else{
         extend_cmap = "// エラー：マップ情報が取得できませんでした。この部分にcmapについて書き直して下さい\n\n";
     }
