@@ -99,7 +99,7 @@ window.addEventListener('load', function() {
     });
 
     // 元々あったコメント行を除いた全てのコードを抜き出す
-    var extend_code = __H4PENV__EXTENDCODE.replace(/\/\/.*\n/mg, '');
+    var extend_code = __H4PENV__EXTENDCODE.replace(/^\/\/.*/g, '');
     // 連続した空行を改行+空行にする
     extend_code = extend_code.replace(/\n\n+/mg, '\n\n');
 
