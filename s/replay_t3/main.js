@@ -15,7 +15,7 @@ window.addEventListener('load', function() {
         map.scene.addChild(player); // add player to scene
         player.locate(1, 5); // move position
 
-        hint = 
+        hint =
             "// ゲーム画面の外にある「改造する」ボタンを押すのだ...!\n"+
             "";
 
@@ -85,12 +85,18 @@ window.addEventListener('load', function() {
         }
     });
 
+    // マップ定義の ] まで（`)`が登場するまで）を抜き出す
+    var extend_map  =  __H4PENV__EXTENDCODE.match(/maps\[\'replay\'\]\.bmap\.loadData\(\[[\s\[\]0-9,]+/);
+    if(extend_map === null){
+        extend_map = "// エラー：マップ情報が取得できませんでした。この部分にマップについて書き直して下さい\n\n";
+    }
+
     __H4PENV__DEFAULTCODE =
     "// 面白い...!マップにオリジナルな要素が出てきたな\n"+
     "// 次はマップをより面白い見た目にする方法を伝授する!\n\n"+
 
-    "// ExtendCode\n\n"+
-    "],[\n"+
+    extend_map +
+    ",[\n"+
     "\t[ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], \n"+
     "\t[ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], \n"+
     "\t[ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], \n"+
@@ -102,7 +108,7 @@ window.addEventListener('load', function() {
     "\t[ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], \n"+
     "\t[ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]  \n"+
     "]);\n\n"+
-    
+
     "// マップの見た目を表すコード、前とくらべて増えたことに気づいただろうか\n"+
     "// ほとんどが -1と書かれているコードのことだ。今回はこの２つ目のコード書き換えていこう\n\n"+
 
