@@ -207,6 +207,13 @@ $retry 	= filter_input(INPUT_GET, "retry");
 						beginRestaging();
 					});
 					break;
+				case "extend":
+					// extend mode (extends restaging-code in tutorial)
+					var extend_code = sessionStorage.getItem('extend_code');
+					$("#begin_restaging").on('click', function() {
+						beginRestaging();
+					});
+					break;
 			}
 		})();
 		(function(){
@@ -224,7 +231,11 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					'data-toggle': '',
 					'data-target': ''
 				}).on('click', function() {
-					location.href = "/s?id="+next;
+					// sessionStorageに保管→EXTENDCODEに送られるように
+					jsEditor.save();
+					var code = jsEditor.getTextArea().value;
+					sessionStorage.setItem('extend_code', code);
+					location.href = "/s?id="+next+"&mode=extend";
 				});
 			}
 		})();
