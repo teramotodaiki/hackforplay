@@ -102,6 +102,8 @@ window.addEventListener('load', function() {
     var extend_code = __H4PENV__EXTENDCODE.replace(/(^\/\/.*)|(\n\/\/.*)/g, '');
     // 連続した空行を改行+空行にする
     extend_code = extend_code.replace(/\n\n+/mg, '\n\n');
+    // 行頭の改行を削除する
+    extend_code = extend_code.replace(/^\n+/g, '');
 
     __H4PENV__DEFAULTCODE =
     "// すばらしい出来だ！\n"+
