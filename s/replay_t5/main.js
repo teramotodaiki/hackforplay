@@ -23,7 +23,7 @@ window.addEventListener('load', function() {
         map.scene.addChild(player); // add player to scene
         player.locate(1, 5); // move position
 
-        hint = 
+        hint =
             "\n"+
             "";
 
@@ -93,11 +93,29 @@ window.addEventListener('load', function() {
         }
     });
 
+    // bmapの ]) まで（セミコロンが登場するまで）を抜き出す
+    var extend_bmap  =  __H4PENV__EXTENDCODE.match(/maps\[\'replay\'\]\.bmap\.loadData\(\[[\s\[\]0-9,\)\-\+]+/);
+    if(extend_bmap !== null){
+        extend_bmap += ";\n\n"; // セミコロンを抜き出していないため、付与する
+    }else{
+        extend_bmap = "// エラー：マップ情報が取得できませんでした。この部分にbmapについて書き直して下さい\n\n";
+    }
+
+    // cmapの ] まで（セミコロンが登場するまで）を抜き出す
+    var extend_cmap  =  __H4PENV__EXTENDCODE.match(/maps\[\'replay\'\]\.cmap(\s)*\=(\s)*\[[\s\[\]0-9,\-\+]+/);
+    if(extend_cmap !== null){
+        extend_cmap = extend_cmap[0] + ";\n\n"; // セミコロンを抜き出していないため、付与する
+    }else{
+        extend_cmap = "// エラー：マップ情報が取得できませんでした。この部分にcmapについて書き直して下さい\n\n";
+    }
+
     __H4PENV__DEFAULTCODE =
     "// おめでとう！マップの完成だ！\n"+
     "// 次はゲームの主役であるキャラクターやクリアのための階段についてのコードを書き換えてみよう\n\n"+
 
-    "// ExtendCode\n\n"+
+    extend_bmap+
+
+    extend_cmap+
 
     "player.locate(1, 5);\n"+
     "player.hp = 999;\n"+
