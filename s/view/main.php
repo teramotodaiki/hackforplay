@@ -209,6 +209,25 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					break;
 			}
 		})();
+		(function(){
+			// チュートリアル
+			var stage_id = <?php echo $id; ?>;
+			if(101 <= stage_id && stage_id <= 106){
+				// 改造ボタン非表示
+				$(".h4p_info-restaging>button").hide();
+			}
+			// ステージ改造のチュートリアル
+			if(201 <= stage_id && stage_id <= 209){
+				// この改造ステージを投稿する->次のステージに進む
+				$(".h4p_publish-text").text('次のステージに進む');
+				$(".h4p_publish>button").attr({
+					'data-toggle': '',
+					'data-target': ''
+				}).on('click', function() {
+					location.href = "/s?id="+next;
+				});
+			}
+		})();
 	});
 	function screenShot () {
 		document.getElementsByTagName('iframe')[0].contentWindow.postMessage('screenShot()', '/');
