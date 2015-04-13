@@ -15,7 +15,7 @@ window.addEventListener('load', function() {
         map.scene.addChild(player); // add player to scene
         player.locate(1, 5); // move position
 
-        hint = 
+        hint =
             "// ー魔導書にうっすらと文字が浮かび上がっている...\n"+
             "// ゲーム画面の外にある「改造する」ボタンを押すのだ...!\n"+
             "";
@@ -86,6 +86,14 @@ window.addEventListener('load', function() {
         }
     });
 
+    // マップ定義の ]) まで（セミコロンが登場するまで）を抜き出す
+    var extend_map  =  __H4PENV__EXTENDCODE.match(/maps\[\'replay\'\]\.bmap\.loadData\(\[[\s\[\]0-9,\)]+/);
+    if(extend_map !== null){
+        extend_map += ";\n\n"; // セミコロンを抜き出していないため、付与する
+    }else{
+        extend_map = "// エラー：マップ情報が取得できませんでした。この部分にマップについて書き直して下さい\n\n";
+    }
+
     __H4PENV__DEFAULTCODE =
     "// おめでとう！君は改造ステージ作りの第一歩を踏み出した！\n"+
     "// このHackforPlay -RePlay- では、ここからさらにステージを改造してゆく...\n\n"+
@@ -96,7 +104,7 @@ window.addEventListener('load', function() {
 
     "// それでは、そのためにもう少しオリジナリティーを出していこう\n\n"+
 
-    "// ExtendCode\n\n"+
+    extend_map+
 
     "// これが今のマップの見た目についてのコードだ\n"+
     "// いまはほとんどが322(草原)になっていると思うが、これをより書き換えていこう\n\n"+
