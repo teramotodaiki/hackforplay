@@ -1,6 +1,6 @@
 <?php
 // part of sign in and sign up
-
+/*
 // 2.Do you have a key in the cookie?
 $key = filter_input(INPUT_COOKIE, 'key', FILTER_VALIDATE_REGEXP,
 	array("options"=>array("regexp"=>"/[0-9a-f]+/")));	// $key made from ONLY HEX.
@@ -45,5 +45,5 @@ if(isset($key)){
 		$user 	= null;
 	}
 }
-
+*/
 ?>
