@@ -27,7 +27,7 @@ window.addEventListener('load', function() {
             "// ここは深遠なる迷宮...\n"+
             "// はたして無事に階段までたどり着けるかな...\n\n"+
 
-            "blueSlime.hp = 99\n\n"+
+            "blueSlime.hp = 99;\n\n"+
 
             "// 最強のスライムの前にひれ伏すがいい...!\n"+
             "";

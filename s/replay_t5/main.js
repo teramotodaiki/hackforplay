@@ -125,7 +125,7 @@ window.addEventListener('load', function() {
 
     "blueSlime.locate(9, 5);\n"+
     "blueSlime.hp = 3;\n"+
-    "blueSlime.sprite.scale(1, 1)\n\n"+
+    "blueSlime.sprite.scale(1, 1);\n\n"+
 
     "stair.locate(13, 5);\n\n"+
 
