@@ -15,7 +15,7 @@ window.addEventListener('load', function() {
         map.scene.addChild(player); // add player to scene
         player.locate(1, 5); // move position
 
-        hint = 
+        hint =
             "// ゲーム画面の外にある「改造する」ボタンを押すのだ...!\n"+
             "";
 
@@ -85,12 +85,20 @@ window.addEventListener('load', function() {
         }
     });
 
+    // マップ定義の ]) まで（セミコロンが登場するまで）を抜き出す
+    var extend_map  =  __H4PENV__EXTENDCODE.match(/maps\[\'replay\'\]\.bmap\.loadData\(\[[\s\[\]0-9,\)\-]+/);
+    if(extend_map !== null){
+        extend_map += ";\n\n"; // セミコロンを抜き出していないため、付与する
+    }else{
+        extend_map = "// エラー：マップ情報が取得できませんでした。この部分にマップについて書き直して下さい\n\n";
+    }
+
     __H4PENV__DEFAULTCODE =
     "// よくやった...!ユニークなマップになっている...!\n\n"+
 
     "// 次はマップの当たり判定のコードを書き換えていこう\n\n"+
 
-    "// ExtendCode\n"+
+    extend_map+
     "maps['replay_t1'].cmap = [\n"+
     "\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
     "\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
