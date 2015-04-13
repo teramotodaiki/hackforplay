@@ -23,7 +23,7 @@ window.addEventListener('load', function() {
         map.scene.addChild(player); // add player to scene
         player.locate(1, 5); // move position
 
-        hint = 
+        hint =
             "// ここは深遠なる迷宮...\n"+
             "// はたして無事に階段までたどり着けるかな...\n\n"+
 
@@ -98,11 +98,16 @@ window.addEventListener('load', function() {
         }
     });
 
+    // 元々あったコメント行を除いた全てのコードを抜き出す
+    var extend_code = __H4PENV__EXTENDCODE.replace(/\/\/.*\n/mg, '');
+    // 連続した空行を改行+空行にする
+    extend_code = extend_code.replace(/\n\n+/mg, '\n\n');
+
     __H4PENV__DEFAULTCODE =
     "// すばらしい出来だ！\n"+
     "// 最後は魔導書の中身を書き換えよう！\n\n"+
 
-    "// ExtendCode\n\n"+
+    extend_code+
 
     "hint = \n"+
     "\t\"// ここは深遠なる迷宮...\\n\"+\n"+
