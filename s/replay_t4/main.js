@@ -86,7 +86,7 @@ window.addEventListener('load', function() {
     });
 
     // マップ定義の ]) まで（セミコロンが登場するまで）を抜き出す
-    var extend_map  =  __H4PENV__EXTENDCODE.match(/maps\[\'replay\'\]\.bmap\.loadData\(\[[\s\[\]0-9,\)\-]+/);
+    var extend_map  =  __H4PENV__EXTENDCODE.match(/maps\[\'replay\'\]\.bmap\.loadData\(\[[\s\[\]0-9,\)\-\+]+/);
     if(extend_map !== null){
         extend_map += ";\n\n"; // セミコロンを抜き出していないため、付与する
     }else{

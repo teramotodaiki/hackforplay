@@ -86,7 +86,7 @@ window.addEventListener('load', function() {
     });
 
     // マップ定義の ] まで（`)`が登場するまで）を抜き出す
-    var extend_map  =  __H4PENV__EXTENDCODE.match(/maps\[\'replay\'\]\.bmap\.loadData\(\[[\s\[\]0-9,]+/);
+    var extend_map  =  __H4PENV__EXTENDCODE.match(/maps\[\'replay\'\]\.bmap\.loadData\(\[[\s\[\]0-9,\-\+]+/);
     if(extend_map === null){
         extend_map = "// エラー：マップ情報が取得できませんでした。この部分にマップについて書き直して下さい\n\n";
     }
