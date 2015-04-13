@@ -39,9 +39,13 @@
 	// Set extend code
 	if(__H4PENV__MODE === "extend"){
 		var _extend_code = storage.getItem('extend_code');
-		console.log(_extend_code);
 		window.__defineGetter__('__H4PENV__EXTENDCODE', function(){
 			return _extend_code;
+		});
+	}else{
+		window.__defineGetter__('__H4PENV__EXTENDCODE', function(){
+			// restagingモードで再読み込みされたとき、プロパティが存在しないエラーが発生しないように空文字を返しておく
+			return "";
 		});
 	}
 })();
