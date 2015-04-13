@@ -28,7 +28,7 @@ if(!isset($key)){ // have not set
 }
 
 // 3.Sign in (update 'last' time of sign in)
-/*
+
 $user = null;
 if(isset($key)){
 	// 3-1.Check the presence of you
@@ -46,6 +46,6 @@ if(isset($key)){
 		$user 	= null;
 	}
 }
-*/
+
 
 ?>
