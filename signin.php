@@ -1,6 +1,6 @@
 <?php
 // part of sign in and sign up
-/*
+
 // 2.Do you have a key in the cookie?
 $key = filter_input(INPUT_COOKIE, 'key', FILTER_VALIDATE_REGEXP,
 	array("options"=>array("regexp"=>"/[0-9a-f]+/")));	// $key made from ONLY HEX.
@@ -28,6 +28,7 @@ if(!isset($key)){ // have not set
 }
 
 // 3.Sign in (update 'last' time of sign in)
+/*
 $user = null;
 if(isset($key)){
 	// 3-1.Check the presence of you
@@ -46,4 +47,5 @@ if(isset($key)){
 	}
 }
 */
+
 ?>
