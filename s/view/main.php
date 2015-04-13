@@ -225,8 +225,8 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			}
 			// ステージ改造のチュートリアル
 			if(201 <= stage_id && stage_id <= 209){
-				// この改造ステージを投稿する->次のステージに進む
-				$(".h4p_publish-text").text('次のステージに進む');
+				// この改造ステージを投稿する->次のステージへ
+				$(".h4p_publish-text").text('次のステージへ');
 				$(".h4p_publish>button").attr({
 					'data-toggle': '',
 					'data-target': ''
