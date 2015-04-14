@@ -16,7 +16,7 @@ try {
 $res =  $pdo->query("SELECT * FROM challenge_reason");
 
 //$res = $pdo->query("CREATE TABLE challenge_reason (id int(11) NOT NULL,user_id int(11) DEFAULT NULL,text varchar(255) NOT NULL,enabled tinyint(1) NOT NULL,time datetime NOT NULL);");
-var_dump($res);
+var_dump($res->fetchAll());
 echo "<br><br>";
 /*
 $res = $pdo->query("CREATE TABLE `challenge_vote` (
