@@ -6,14 +6,14 @@ $is_beta = 1; // This is a BETA VERSION. Turn into 0 to be the official ver!
 require_once 'preload.php';
 
 // 2.Sign in or sign up
-//require_once 'signin.php';
+require_once 'signin.php';
 
 // 3.Enumrate cleared stage
-//require_once 'cleared.php';
+require_once 'cleared.php';
 
 // 4.Get playable stages
-//$stage_limit = 6;
-//require_once 'getstages.php';
+$stage_limit = 6;
+require_once 'getstages.php';
 
 //
 // require_once 'c/challengetoday.php';
