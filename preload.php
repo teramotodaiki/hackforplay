@@ -18,4 +18,6 @@ catch ( PDOException $e ) {
     die(print_r($e));
 }
 
+var_dump($pdo);
+
 ?>
