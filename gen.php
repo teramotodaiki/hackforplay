@@ -13,11 +13,11 @@ require_once 'preload.php';
 <?php
 try {
 $res = $pdo->query("CREATE TABLE `challenge_reason` (
-`id` int(11) NOT NULL COMMENT 'relation challenge_vote.reason_id',
-  `user_id` int(11) DEFAULT NULL COMMENT 'writer''s ID',
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `text` varchar(255) NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `time` datetime NOT NULL COMMENT 'written time'
+  `enabled` tinyint(1) NOT NULL,
+  `time` datetime NOT NULL COMMENT
 );");
 var_dump($res);
 echo "<br><br>";
