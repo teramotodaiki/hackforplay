@@ -12,8 +12,9 @@ require_once 'preload.php';
 <body>
 <?php
 try {
-	$res = $pdo->query("SHOW TABLES;");
-	var_dump($res);
+	var_dump($pdo);
+	$res = $pdo->query("SHOW TABLES");
+	var_dump($res->fetchAll());
 /*
 $res = $pdo->query("CREATE TABLE `challenge_reason` (`id` int(11) NOT NULL,`user_id` int(11) DEFAULT NULL,`text` varchar(255) NOT NULL,`enabled` tinyint(1) NOT NULL,`time` datetime NOT NULL COMMENT);");
 var_dump($res);
@@ -128,12 +129,12 @@ $res = $pdo->query("ALTER TABLE `user`
  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `key` (`key`);");
 var_dump($res);
 echo "<br><br>";
-
+*/
 }catch ( PDOException $e ) {
     print( "Error connecting to SQL Server." );
     die(print_r($e));
 }
-*/
+
  ?>
 </body>
 </html>
