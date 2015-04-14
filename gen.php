@@ -11,7 +11,7 @@ require_once 'preload.php';
 </head>
 <body>
 <?php
-
+try {
 $res = $pdo->query("CREATE TABLE `challenge_reason` (
 `id` int(11) NOT NULL COMMENT 'relation challenge_vote.reason_id',
   `user_id` int(11) DEFAULT NULL COMMENT 'writer''s ID',
@@ -131,6 +131,11 @@ $res = $pdo->query("ALTER TABLE `user`
  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `key` (`key`);");
 var_dump($res);
 echo "<br><br>";
+
+}catch ( PDOException $e ) {
+    print( "Error connecting to SQL Server." );
+    die(print_r($e));
+}
 
  ?>
 </body>
