@@ -21,7 +21,8 @@ $stmt 	= $pdo->prepare("SELECT `id`,`stage_id`,`user_id` FROM `play` WHERE `toke
 $stmt->bindValue(":token", $token, PDO::PARAM_STR);
 $stmt->execute();
 $play	= $stmt->fetch(PDO::FETCH_ASSOC);
-if(!isset($play['id'])) exit('missing play log');
+// if(!isset($play['id'])) exit('missing play log');
+
 
 if($origin_id != NULL){
 	$stmt 	= $pdo->prepare("SELECT `stage_id` FROM `restaging` WHERE `id`=:id;");
@@ -46,10 +47,15 @@ $stmt	= $pdo->prepare("INSERT INTO `restaging` (`id`, `play_id`, `stage_id`, `us
 	"VALUES(NULL, :play_id, :stage_id, :user_id, :code, :time, :origin_id, :author, :stage_name, :thumbnail);");
 //$stmt	= $pdo->prepare("INSERT INTO `code` (`id`, `play_id`, `stage_id`, `user_id`, `code`, `time`) ".
 //	"VALUES(NULL, :play_id, :stage_id, :user_id, :code, :time, :error);");
-$stmt->bindValue(":play_id", $play['id'], PDO::PARAM_INT);
 if($origin_id == NULL){	$stmt->bindValue(":stage_id", $play['stage_id'], PDO::PARAM_INT); } // Restage on Official
 else { 					$stmt->bindValue(":stage_id", $restaging['stage_id'], PDO::PARAM_INT); } // Restage on Replay
-$stmt->bindValue(":user_id", $play['user_id'], PDO::PARAM_INT);
+if(isset($play) && $play){
+	$stmt->bindValue(":play_id", $play['id'], PDO::PARAM_INT);
+	$stmt->bindValue(":user_id", $play['user_id'], PDO::PARAM_INT);
+}else{
+	$stmt->bindValue(":play_id", 1, PDO::PARAM_INT);
+	$stmt->bindValue(":user_id", 1, PDO::PARAM_INT);
+}
 $stmt->bindValue(":code", $code, PDO::PARAM_STR);
 $stmt->bindValue(":origin_id", $origin_id, PDO::PARAM_INT);
 $stmt->bindValue(":author", $author, PDO::PARAM_STR);
