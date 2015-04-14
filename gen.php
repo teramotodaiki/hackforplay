@@ -12,14 +12,11 @@ require_once 'preload.php';
 <body>
 <?php
 try {
-	var_dump($pdo);
-	$res = $pdo->query("SELECT * FROM challenge_reason;");
-	var_dump($res->fetchAll());
-/*
-$res = $pdo->query("CREATE TABLE `challenge_reason` (`id` int(11) NOT NULL,`user_id` int(11) DEFAULT NULL,`text` varchar(255) NOT NULL,`enabled` tinyint(1) NOT NULL,`time` datetime NOT NULL COMMENT);");
+
+$res = $pdo->query("CREATE TABLE challenge_reason (id int(11) NOT NULL,user_id int(11) DEFAULT NULL,text varchar(255) NOT NULL,enabled tinyint(1) NOT NULL,time datetime NOT NULL COMMENT);");
 var_dump($res);
 echo "<br><br>";
-
+/*
 $res = $pdo->query("CREATE TABLE `challenge_vote` (
 `id` int(11) NOT NULL,
   `code_id` int(11) NOT NULL,
