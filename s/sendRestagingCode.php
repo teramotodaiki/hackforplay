@@ -17,7 +17,6 @@ if($origin_id == "" || $origin_id == FALSE){ $origin_id = NULL; }
 $thumb	= filter_input(INPUT_POST, 'thumb');
 
 // 2-2.Get user ID play ID and stage ID
-echo $token."\n";
 $stmt 	= $pdo->prepare("SELECT `id`,`stage_id`,`user_id` FROM `play` WHERE `token`=:token;");
 $stmt->bindValue(":token", $token, PDO::PARAM_STR);
 $stmt->execute();
