@@ -18,7 +18,7 @@ $res = $pdo->query("CREATE TABLE `challenge_reason` (
   `text` varchar(255) NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `time` datetime NOT NULL COMMENT 'written time'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;");
+);");
 var_dump($res);
 echo "<br><br>";
 
@@ -29,7 +29,7 @@ $res = $pdo->query("CREATE TABLE `challenge_vote` (
   `user_id` int(11) NOT NULL,
   `reason_id` int(11) NOT NULL,
   `time` datetime NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Vote to the reason or write new. Text of reasons are in the `challenge_reason`.' AUTO_INCREMENT=0;");
+);");
 var_dump($res);
 echo "<br><br>";
 
@@ -43,7 +43,7 @@ $res = $pdo->query("CREATE TABLE `code` (
   `error` tinyint(1) NOT NULL,
   `voted` int(11) NOT NULL DEFAULT '0',
   `displayed` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;");
+);");
 var_dump($res);
 echo "<br><br>";
 
@@ -55,7 +55,7 @@ $res = $pdo->query("CREATE TABLE `play` (
   `clear` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'have cleared',
   `begin` datetime NOT NULL COMMENT 'when you begin playing',
   `finish` datetime DEFAULT NULL COMMENT 'when WILL you clear, be NULL before'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Add a row by a playing' AUTO_INCREMENT=0;");
+);");
 var_dump($res);
 echo "<br><br>";
 
@@ -70,7 +70,7 @@ $res = $pdo->query("CREATE TABLE `restaging` (
   `author` text NOT NULL,
   `stage_name` text NOT NULL,
   `thumbnail` text
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='restaging codes' AUTO_INCREMENT=0;");
+);");
 var_dump($res);
 echo "<br><br>";
 
@@ -83,7 +83,7 @@ $res = $pdo->query("CREATE TABLE `stage` (
   `playable` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Can user play this',
   `type` enum('official','replay') NOT NULL DEFAULT 'official' COMMENT '0:official, 1:replay',
   `restaging_id` int(11) DEFAULT NULL COMMENT 'restaging.id'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='information of each stages' AUTO_INCREMENT=0;");
+);");
 var_dump($res);
 echo "<br><br>";
 
@@ -93,7 +93,7 @@ $res = $pdo->query("CREATE TABLE `user` (
   `beta` tinyint(1) NOT NULL COMMENT 'Are you a beta-user?',
   `begin` datetime NOT NULL,
   `last` datetime DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='(beta)User information identify in the key generated on server.' AUTO_INCREMENT=0;");
+);");
 var_dump($res);
 echo "<br><br>";
 
