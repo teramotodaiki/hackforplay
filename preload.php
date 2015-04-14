@@ -3,7 +3,7 @@
 
 // 1.Generate PDO object (connecting mysql)
 $pdo = null;
-$useLocalDB = false;
+$useLocalDB = true;
 try {
 	if(($useLocalDB && $_SERVER['SERVER_NAME'] == 'localhost')){
 		$pdo = new PDO('mysql:dbname=hackforplay;host=localhost;charset=utf8;', 'hackforplay', 'RtPF7JRSZ5XzFasc');
