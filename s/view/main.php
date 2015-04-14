@@ -150,7 +150,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			switch(mode){
 				case "official":
 					// official mode (load default code from main.js)
-					$("#begin_restaging").on('click', function() {
+					$(".begin_restaging").on('click', function() {
 						beginRestaging();
 					});
 					break;
@@ -203,10 +203,39 @@ $retry 	= filter_input(INPUT_GET, "retry");
 				case "replay":
 					// replay mode (load javascript-code and run it)
 					sessionStorage.setItem('restaging_code', replay_code);
-					$("#begin_restaging").on('click', function() {
+					$(".begin_restaging").on('click', function() {
 						beginRestaging();
 					});
 					break;
+				case "extend":
+					// extend mode (extends restaging-code in tutorial)
+					$(".begin_restaging").on('click', function() {
+						beginRestaging();
+					});
+					break;
+			}
+		})();
+		(function(){
+			// チュートリアル
+			var stage_id = <?php echo $id; ?>;
+			if(101 <= stage_id && stage_id <= 106){
+				// 改造ボタン非表示
+				$(".h4p_info-restaging>button").hide();
+			}
+			// ステージ改造のチュートリアル
+			if(201 <= stage_id && stage_id <= 206){
+				// この改造ステージを投稿する->次のステージへ
+				$(".h4p_publish-text").text('次のステージへ');
+				$(".h4p_publish>button").attr({
+					'data-toggle': '',
+					'data-target': ''
+				}).on('click', function() {
+					// sessionStorageに保管→EXTENDCODEに送られるように
+					jsEditor.save();
+					var code = jsEditor.getTextArea().value;
+					sessionStorage.setItem('extend_code', code);
+					location.href = "/s?id="+next+"&mode=extend";
+				});
 			}
 		})();
 
@@ -254,7 +283,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			    </div>
 	    		<div class="modal-footer">
 	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-	       			<button type="button" class="btn btn-danger" data-dismiss="modal" id="begin_restaging" >改造を始める</button>
+	       			<button type="button" class="btn btn-danger begin_restaging" data-dismiss="modal">改造を始める</button>
 	    		</div>
 			</div>
 		</div>
@@ -348,7 +377,8 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					</div>
 					<div class="col-md-12 h4p_clear-next">
 					<?php if($mode == "replay") : ?>
-						<button type="button" class="btn btn-success btn-lg btn-block" title="改造する" data-toggle="modal" data-target="#restageModal">このステージを改造する</button>
+						<!-- <button type="button" class="btn btn-success btn-lg btn-block" title="改造する" data-toggle="modal" data-target="#restageModal">このステージを改造する</button> -->
+						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">このステージを改造する</button>
 						<a href="/r" class="btn btn-success btn-lg btn-block" title="改造ステージ一覧へ">
 							改造ステージ一覧へ
 						</a>
@@ -380,7 +410,8 @@ $retry 	= filter_input(INPUT_GET, "retry");
 						<span class="h4p_info-footer">プレイ回数：<b><?php echo $count."回"; ?></b></span>
 					</div>
 					<div class="col-md-3 h4p_info-restaging">
-						<button type="button" class="btn btn-success btn-lg btn-block" title="改造する" data-toggle="modal" data-target="#restageModal">改造する</button>
+						<!-- <button type="button" class="btn btn-success btn-lg btn-block" title="改造する" data-toggle="modal" data-target="#restageModal">改造する</button> -->
+						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">改造する</button>
 					</div>
 					<div class="col-md-3 h4p_info-retry">
 						<a class="btn btn-primary btn-lg btn-block" role="button" href="/s?id=<?php echo $id; ?>" title="はじめから">はじめから</a>
