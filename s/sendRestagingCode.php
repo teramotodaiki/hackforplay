@@ -49,7 +49,7 @@ $thumb_url = "/s/".$thumb_url;
 
 // 3.Insert information
 try{
-	$stmt	= $pdo->prepare('INSERT INTO "restaging" ("id", "play_id", "stage_id", "user_id", "code", "time", "origin_id", "author", "stage_name", "thumbnail") VALUES(NULL, :play_id, :stage_id, :user_id, :code, :time, :origin_id, :author, :stage_name, :thumbnail)');
+	$stmt	= $pdo->prepare('INSERT INTO "restaging" ("play_id", "stage_id", "user_id", "code", "time", "origin_id", "author", "stage_name", "thumbnail") VALUES(:play_id, :stage_id, :user_id, :code, :time, :origin_id, :author, :stage_name, :thumbnail)');
 	if($origin_id == NULL){	$stmt->bindValue(":stage_id", $play['stage_id'], PDO::PARAM_INT); } // Restage on Official
 	else { 					$stmt->bindValue(":stage_id", $restaging['stage_id'], PDO::PARAM_INT); } // Restage on Replay
 	if(isset($play) && $play){
