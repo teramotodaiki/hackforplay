@@ -49,7 +49,18 @@ if(isset($key)){
 			$stmt->bindValue(":id", $user['id'], PDO::PARAM_INT);
 			$flag	= $stmt->execute();
 		} else {
-			$user 	= null;
+			// Missing user data, add new row
+			$stmt = $pdo->prepare("INSERT INTO [user] ([key],[beta],[begin],[last]) VALUES (:key, :beta, :begin, NULL);");
+			$stmt->bindValue(":key", $key, PDO::PARAM_STR);
+			$stmt->bindValue(":beta", true, PDO::PARAM_BOOL);
+			$stmt->bindValue(":begin", date("Y-m-d H:i:s"), PDO::PARAM_STR);
+			$flag = $stmt->execute();
+			if(!$flag) {
+				// ERROR:Failed to sign up.
+				setcookie('key', $key, time() - 1); // delete cookie
+				$key = null;
+				$user = null;
+			}
 		}
 	}catch( PDOException $e ) {
 	    print( "Error on line 41-53." );
