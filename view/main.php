@@ -105,6 +105,7 @@
 			</div>
 		</div>
 	</div>
+	<?php var_dump($pdo); ?>
 	<div class="landingpage">
 		<div class="h4p_landing l-1">
 			<div class="h4p_landing-main">
