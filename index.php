@@ -6,7 +6,7 @@
 require_once 'preload.php';
 
 // 2.Sign in or sign up
-// require_once 'signin.php';
+require_once 'signin.php';
 
 // 3.Enumrate cleared stage
 // require_once 'cleared.php';
