@@ -13,7 +13,7 @@ if($user){
 		if(!$cleared) $cleared = array();
 	}catch ( PDOException $e ) {
 		$cleared = array();
-	    die(print_r($e));
+	    // die(print_r($e));
 	}
 }
 

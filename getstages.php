@@ -20,7 +20,8 @@ try{
 		$allstages[$item['id']] = $item;
 	}
 }catch ( PDOException $e ) {
-    die(print_r($e));
+    die('PDO Error in getstages');
+    // die(print_r($e));
 }
 
  ?>

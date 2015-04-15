@@ -13,7 +13,8 @@ try{
 		}
 	}
 }catch ( PDOException $e ) {
-    die(print_r($e));
+	die('PDO Error in getrestagingcodes');
+    // die(print_r($e));
 }
 
 ?>
