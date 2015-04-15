@@ -15,7 +15,9 @@
 	            'stage_name':$div.children('.stage_name').text(),
 	            'restaging_id':$div.children('.rid').text()
 	        }, function(data, textStatus, xhr) {
-	        	location.href = "/a";
+	        	if(data !== "") console.log(data);
+	        	if(textStatus !== "success") console.log(textStatus);
+	        	else location.href = "/a";
 	        });
 		});
 		$("button.code-button").on('click', function() {
@@ -85,7 +87,7 @@
 						<div class="row">
 							<!-- stages list with PHP -->
 							<?php foreach ($allstages as $key => $item) :
-							if($item['type'] == "replay") :
+							if($item['type'] == "1") : // replay stage
 							$id		= $item['id'];
 							$title 	= $item['title'];
 							$count	= $item['playcount'];

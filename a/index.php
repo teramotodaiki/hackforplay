@@ -1,6 +1,6 @@
 <?php
 // more view
-$is_beta = 1; // This is a BETA VERSION. Turn into 0 to be the official ver!
+//$is_beta = 1; // This is a BETA VERSION. Turn into 0 to be the official ver!
 
 // 1.Preparation
 require_once '../preload.php';
