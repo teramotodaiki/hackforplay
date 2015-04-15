@@ -16,16 +16,14 @@ var gameover; // gameoverメソッドも
 
         // クリア状態を送信
         $.post('clear.php', {'token':token}, function(data, textStatus, xhr) {
-            // data = clear.phpの出力
-            // textStatus = sucessなど
-            // xhr = レスポンスに関するオブジェクト
+            if(data !== "") console.log(data);
+            if(textStatus !== "") console.log(textStatus);
         });
 
         // 演出
         var game = enchant.Game.instance;
 
         if(__H4PENV__MODE === "restaging"){
-            var game = enchant.Game.instance;
             var gameclearray = new Overlay(game.assets['img/clear.png']);
             gameclearray.width = 267;
             gameclearray.height = 48;
