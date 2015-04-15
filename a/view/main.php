@@ -15,7 +15,9 @@
 	            'stage_name':$div.children('.stage_name').text(),
 	            'restaging_id':$div.children('.rid').text()
 	        }, function(data, textStatus, xhr) {
-	        	location.href = "/a";
+	        	if(data !== "") console.log(data);
+	        	if(textStatus !== "success") console.log(textStatus);
+	        	else location.href = "/a";
 	        });
 		});
 		$("button.code-button").on('click', function() {
