@@ -41,7 +41,7 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
             'error':error
         }, function(data, textStatus, xhr) {
             if(data !== "") console.log(data);
-            /*optional stuff to do after success */
+            if(textStatus !== "") console.log(textStatus);
         });
     };
 })();
