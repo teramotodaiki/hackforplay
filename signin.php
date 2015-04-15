@@ -24,8 +24,9 @@ if(!isset($key)){ // have not set
 			$key = null;
 		}
 	}catch( PDOException $e ) {
-	    print( "Error on line 16-25." );
-	    die(print_r($e));
+		$user = null;
+	    print( "Signup error." );
+	    // die(print_r($e));
 	}
 } else if(!$key){ // failed to filter ...Does it attack!?
 	setcookie('key', $key, time() - 1); // delete cookie
@@ -68,8 +69,9 @@ if(isset($key)){
 			}
 		}
 	}catch( PDOException $e ) {
-	    print( "Error on line 41-53." );
-	    die(print_r($e));
+		$user = null;
+	    print( "Signin error." );
+	    // die(print_r($e));
 	}
 }
 
