@@ -38,7 +38,7 @@ $user = null;
 if(isset($key)){
 	// 3-1.Check the presence of you
 	try{
-		$stmt 	= $pdo->prepare("SELECT * FROM `user` WHERE `key`=:key;");
+		$stmt 	= $pdo->prepare("SELECT * FROM [user] WHERE [key]=:key;");
 		$stmt->bindValue(":key", $key, PDO::PARAM_STR);
 		$flag	= $stmt->execute();
 		$user	= $stmt->fetch(PDO::FETCH_ASSOC);
