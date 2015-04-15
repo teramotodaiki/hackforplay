@@ -11,7 +11,7 @@ if(!isset($id) || !$id){
 
 // 3.Get stage information
 try{
-	$stmt	= $pdo->prepare("SELECT * FROM `stage` WHERE `id`=:id;");
+	$stmt	= $pdo->prepare('SELECT * FROM "stage" WHERE "id"=:id');
 	$stmt->bindValue(":id", $id, PDO::PARAM_INT);
 	$stmt->execute();
 	$stage	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -27,7 +27,7 @@ try{
 if(isset($stage['restaging_id'])){
 	// 3-2.Get restaging information
 	try{
-		$stmt	= $pdo->prepare("SELECT * FROM `restaging` WHERE `id`=:id");
+		$stmt	= $pdo->prepare('SELECT * FROM "restaging" WHERE "id"=:id');
 		$stmt->bindValue(":id", $stage['restaging_id'], PDO::PARAM_INT);
 		$stmt->execute();
 		$restaging = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -44,7 +44,7 @@ $token	= bin2hex($bytes); // binaly to hex
 if(isset($key)){
 	// 5-1.Get user id
 	try{
-		$stmt = $pdo->prepare("SELECT `id` FROM `user` WHERE `key`=:key");
+		$stmt = $pdo->prepare('SELECT "id" FROM "user" WHERE "key"=:key');
 		$stmt->bindValue(":key", $key, PDO::PARAM_STR);
 		$stmt->execute();
 		$user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -56,7 +56,7 @@ if(isset($key)){
 	} else {
 		// 5-2.Record token-user_id pair
 		try{
-			$stmt = $pdo->prepare("INSERT INTO `play` (`id`,`token`,`user_id`,`stage_id`,`begin`) VALUES(NULL, :token, :user_id, :stage_id, :begin)");
+			$stmt = $pdo->prepare('INSERT INTO "play" ("token","user_id","stage_id","begin") VALUES(:token, :user_id, :stage_id, :begin)');
 			$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 			$stmt->bindValue(":user_id", $user['id'], PDO::PARAM_INT);
 			$stmt->bindValue(":stage_id", $stage['id'], PDO::PARAM_INT);
@@ -71,7 +71,7 @@ if(isset($key)){
 		}else{
 			// increase playcount
 			try{
-				$stmt = $pdo->prepare("UPDATE `stage` SET `playcount`=`playcount`+1 WHERE `id`=:id");
+				$stmt = $pdo->prepare('UPDATE "stage" SET "playcount"="playcount"+1 WHERE "id"=:id');
 				$stmt->bindValue(":id", $id, PDO::PARAM_INT);
 				$stmt->execute();
 			}catch(PDOException $e){
