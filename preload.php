@@ -17,5 +17,6 @@ catch ( PDOException $e ) {
     print( "Error connecting to SQL Server." );
     die(print_r($e));
 }
+$pdo->exec("SET sql_mode='ANSI_QUOTES'");
 
 ?>
