@@ -55,7 +55,12 @@ if(isset($key)){
 			$stmt->bindValue(":beta", true, PDO::PARAM_BOOL);
 			$stmt->bindValue(":begin", date("Y-m-d H:i:s"), PDO::PARAM_STR);
 			$flag = $stmt->execute();
-			if(!$flag) {
+			if($flag){
+				$stmt 	= $pdo->prepare("SELECT * FROM [user] WHERE [key]=:key;");
+				$stmt->bindValue(":key", $key, PDO::PARAM_STR);
+				$stmt->execute();
+				$user	= $stmt->fetch(PDO::FETCH_ASSOC);
+			}else {
 				// ERROR:Failed to sign up.
 				setcookie('key', $key, time() - 1); // delete cookie
 				$key = null;
