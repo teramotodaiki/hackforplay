@@ -12,7 +12,7 @@ try{
 	$rstg	= $pdo->prepare('SELECT * FROM "restaging" WHERE "id"=:id');
 	foreach ($value as $key => $item) {
 		// add restaging information
-		if($item['type'] == "replay"){
+		if($item['type'] == "1"){
 			$rstg->bindValue(":id", $item['restaging_id'], PDO::PARAM_INT);
 			$rstg->execute();
 			$item['restaging'] = $rstg->fetch(PDO::FETCH_ASSOC);

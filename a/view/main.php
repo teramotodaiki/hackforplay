@@ -87,7 +87,7 @@
 						<div class="row">
 							<!-- stages list with PHP -->
 							<?php foreach ($allstages as $key => $item) :
-							if($item['type'] == "replay") :
+							if($item['type'] == "1") : // replay stage
 							$id		= $item['id'];
 							$title 	= $item['title'];
 							$count	= $item['playcount'];
