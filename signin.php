@@ -13,7 +13,7 @@ if(!isset($key)){ // have not set
 	setcookie('key', $key, time() + (365*24*60*60)); // save for a year
 	// 2a-3.Sign up
 	try{
-		$stmt = $pdo->prepare("INSERT INTO [user] ([id],[key],[beta],[begin],[last]) VALUES (NULL, :key, :beta, :begin, NULL);");
+		$stmt = $pdo->prepare("INSERT INTO [user] ([key],[beta],[begin],[last]) VALUES (:key, :beta, :begin, NULL);");
 		$stmt->bindValue(":key", $key, PDO::PARAM_STR);
 		$stmt->bindValue(":beta", true, PDO::PARAM_BOOL);
 		$stmt->bindValue(":begin", date("Y-m-d H:i:s"), PDO::PARAM_STR);
