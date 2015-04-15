@@ -21,7 +21,8 @@ try{
 		exit();
 	}
 }catch(PDOException $e){
-	die(print_r($e));
+	print("PDO Error A");
+	exit();
 }
 
 if(isset($stage['restaging_id'])){
@@ -32,7 +33,8 @@ if(isset($stage['restaging_id'])){
 		$stmt->execute();
 		$restaging = $stmt->fetch(PDO::FETCH_ASSOC);
 	}catch(PDOException $e){
-		die(print_r($e));
+		print("PDO Error B");
+		exit();
 	}
 }
 
@@ -41,43 +43,29 @@ $bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
 $token	= bin2hex($bytes); // binaly to hex
 
 // 5.Record this playing
-if(isset($key)){
-	// 5-1.Get user id
-	try{
-		$stmt = $pdo->prepare('SELECT "id" FROM "user" WHERE "key"=:key');
-		$stmt->bindValue(":key", $key, PDO::PARAM_STR);
-		$stmt->execute();
-		$user = $stmt->fetch(PDO::FETCH_ASSOC);
-	}catch(PDOException $e){
-		die(print_r($e));
-	}
+try{
 	if(!isset($user['id'])){
 		// Missing user
 	} else {
 		// 5-2.Record token-user_id pair
-		try{
-			$stmt = $pdo->prepare('INSERT INTO "play" ("token","user_id","stage_id","begin") VALUES(:token, :user_id, :stage_id, :begin)');
-			$stmt->bindValue(":token", $token, PDO::PARAM_STR);
-			$stmt->bindValue(":user_id", $user['id'], PDO::PARAM_INT);
-			$stmt->bindValue(":stage_id", $stage['id'], PDO::PARAM_INT);
-			$stmt->bindValue(":begin", date("Y-m-d H:i:s"), PDO::PARAM_STR);
-			$flag = $stmt->execute();
-		}catch(PDOException $e){
-			die(print_r($e));
-		}
+		$stmt = $pdo->prepare('INSERT INTO "play" ("token","user_id","stage_id","begin") VALUES(:token, :user_id, :stage_id, :begin)');
+		$stmt->bindValue(":token", $token, PDO::PARAM_STR);
+		$stmt->bindValue(":user_id", $user['id'], PDO::PARAM_INT);
+		$stmt->bindValue(":stage_id", $stage['id'], PDO::PARAM_INT);
+		$stmt->bindValue(":begin", date("Y-m-d H:i:s"), PDO::PARAM_STR);
+		$flag = $stmt->execute();
 		if(!$flag){
 			// Failed to record
 			$token = "";
 		}else{
 			// increase playcount
-			try{
-				$stmt = $pdo->prepare('UPDATE "stage" SET "playcount"="playcount"+1 WHERE "id"=:id');
-				$stmt->bindValue(":id", $id, PDO::PARAM_INT);
-				$stmt->execute();
-			}catch(PDOException $e){
-				die(print_r($e));
-			}
+			$stmt = $pdo->prepare('UPDATE "stage" SET "playcount"="playcount"+1 WHERE "id"=:id');
+			$stmt->bindValue(":id", $id, PDO::PARAM_INT);
+			$stmt->execute();
 		}
 	}
+}catch(PDOException $e){
+	// Failed to record playing log
+	$token = "";
 }
 ?>
