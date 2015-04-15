@@ -105,7 +105,6 @@
 			</div>
 		</div>
 	</div>
-	<?php echo date("Y-m-d H:i:s"); ?>
 	<div class="landingpage">
 		<div class="h4p_landing l-1">
 			<div class="h4p_landing-main">
