@@ -41,6 +41,39 @@
 			<div class="col-md-12">
 				<div class="row h4p_box">
 					<div class="col-md-12 h4p_box-header">
+						<h3>オリジナルステージを作る</h3>
+					</div>
+					<div class="col-md-12 h4p_box-main">
+						<div class="row">
+							<?php
+							$item = $allstages[201];
+							$size = 4;
+							include 'item.php';
+							 ?>
+							<div class="col-md-8 col-xs-12 h4p_item">
+								<div class="h4p_item-title">
+									<h4>ここからが、真のハックフォープレイだ！</h4>
+								</div>
+								<div>
+									チュートリアルクリアおめでとう<br>
+									きみはプログラミングの世界に足を踏み出した。素晴らしい第一歩だ<br>
+									このまま勉強を続ければ...自分でゲームを作ることだって、夢ではない!!<br>
+									しかし!! プログラミングの道は長く険しい。誰でもできるわけではないのだ<br>
+									それを知ってなお、自分でも何かを作りたいと思うのなら...ついてくるがいい!!<br>
+									<a href="/s?id=201" class="btn btn-success btn-block btn-lg" title="今すぐ始める" style="margin-top: 10px; margin-bottom: 10px;">今すぐ始める</a>
+								</div>
+								<div class="h4p_item-footer">
+									対象年齢の目安：<b>10才以上</b><br>
+									キーボードの全角/半角と、簡単な英単語の知識が必要です。
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+	  		</div>
+			<div class="col-md-12">
+				<div class="row h4p_box">
+					<div class="col-md-12 h4p_box-header">
 						<h3>投稿されたステージ一覧</h3>
 					</div>
 					<div class="col-md-12 h4p_box-main">
