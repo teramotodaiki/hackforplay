@@ -107,6 +107,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 		jsEditor.setSize($div.width(), $div.height());
 		if(mode !== "restaging"){
 			$(".h4p_restaging").hide();
+			$(".h4p_mapTip").hide();
 		}
 		(function(){
 			var beginRestaging = function(){
@@ -146,6 +147,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					sessionStorage.setItem('restaging_code', code);
 					location.href = "/s?id="+<?php echo $id; ?>+"&mode=restaging";
 				});
+				$(".h4p_mapTip").show();
 			};
 			switch(mode){
 				case "official":
@@ -418,6 +420,9 @@ $retry 	= filter_input(INPUT_GET, "retry");
 						<button style="display: none;" class="btn btn-primary btn-lg btn-block h4p_info-retry-button" role="button" title="もう一度実行">もう一度実行</button>
 					</div>
 				</div>
+			</div>
+			<div class="col-md-12 h4p_mapTip">
+				<img src="img/mapTipIndex.jpg" alt="">
 			</div>
 		</div>
 	</div>

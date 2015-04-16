@@ -71,7 +71,8 @@ header.navbar {
 
 .h4p_box,
 .h4p_info,
-.h4p_restaging {
+.h4p_restaging,
+.h4p_mapTip {
 	border: 1px solid rgb(204, 204, 204);
 }
 

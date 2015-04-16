@@ -50,6 +50,10 @@
 	width: 60%;
 }
 
+.h4p_mapTip img {
+	width: 100%;
+}
+
 /* 間隔属性 */
 
 header.navbar {
@@ -138,6 +142,11 @@ header.navbar {
 
 .h4p_publish-text {
 	height: 27px;
+}
+
+.h4p_mapTip {
+	margin-top: 10px;
+	padding: 0;
 }
 
 input[name="challenge"] {
