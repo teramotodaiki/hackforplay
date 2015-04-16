@@ -328,6 +328,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			        </form>
 			    </div>
 	    		<div class="modal-footer">
+	        		<p class="alert alert-warning">特定の個人を指すキーワードや暴言などを記入すると、削除されることがあります。</p>
 	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
 	       			<button type="button" class="btn btn-primary" id="publish-button" >投稿する</button>
 	    		</div>
