@@ -403,7 +403,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					<h3 class="h4p_publish-text">この改造ステージを投稿する</h3>
 					<h5 class="h4p_publish-complete text-center" style="display:none"><br>ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。</h5>
 				</button>
-				<a href="../" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
+				<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
 			</div>
 			<div class="col-md-12 h4p_info">
 				<div class="row">
