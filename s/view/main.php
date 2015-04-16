@@ -109,8 +109,18 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			$(".h4p_restaging").hide();
 			$(".h4p_mapTip").hide();
 		}
+		// ステージ改造中、画面遷移するとき注意をうながす
+		var alert_on_unload = false;
+		$(window).on('beforeunload', function(event) {
+			if(alert_on_unload){
+				return "制作中のステージは保存されていません。ページを移動しますか？";
+			}else{
+				event.preventDefault();
+			}
+		});
 		(function(){
 			var beginRestaging = function(){
+				alert_on_unload = true;
 				$(".h4p_restaging").fadeIn("fast", function() {
 					if (!retry) {
 						var code = sessionStorage.getItem('restaging_code'); // default code (set somedir/main.js)
@@ -137,7 +147,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
 					sessionStorage.setItem('retry_code', code);
-					var a = sessionStorage.getItem('retry_code');
+					alert_on_unload = false;
 					location.href = '/s?id='+<?php echo $id; ?>+'&mode=restaging&retry=true';
 				});
 				$(".h4p_restaging_button").on('click', function() {
@@ -145,6 +155,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
 					sessionStorage.setItem('restaging_code', code);
+					alert_on_unload = false;
 					location.href = "/s?id="+<?php echo $id; ?>+"&mode=restaging";
 				});
 				$(".h4p_mapTip").show();
@@ -196,6 +207,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					        	$message.text('Thank you for your ReStaging!!');
 					        	$(".h4p_publish-complete").show();
 					        	$(".h4p_publish-return").show();
+					        	alert_on_unload = false; // 遷移時の警告を非表示
 					            if(data !== "") console.log(data);
 					            if(textStatus !== "") console.log(textStatus);
 					        });
@@ -236,6 +248,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
 					sessionStorage.setItem('extend_code', code);
+					alert_on_unload = false;
 					location.href = "/s?id="+next+"&mode=extend";
 				});
 			}
