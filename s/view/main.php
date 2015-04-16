@@ -388,10 +388,11 @@ $retry 	= filter_input(INPUT_GET, "retry");
 						<a href="/s?id=<?php echo $next; ?>" style="display: block;" title="つぎのステージへ">
 							<img src="img/button_next.png" height="48" width="266" alt="">
 						</a>
-					<?php else : // last stage ?>
+					<?php elseif($id == 106) : // last stage of tutirial ?>
 						<h3>クリアおめでとうございます！</h3>
-						<h4>このあとは、みんなが作ったステージであそびましょう！</h4>
-						<button  data-toggle="modal" data-target="#moreModal" role="button" class="btn btn-success btn-lg" title="もっとあそぶ"><h2>もっとあそぶ</h2></button>
+						<p>こんどは、あなたもステージを作ってみましょう</p>
+						<!-- <button  data-toggle="modal" data-target="#moreModal" role="button" class="btn btn-success btn-lg" title="もっとあそぶ"><h2>もっとあそぶ</h2></button> -->
+						<a href="/s?id=201" class="btn btn-success btn-lg" title="今すぐ作る"><h3>今すぐ作る</h3></a>
 					<?php endif; ?>
 					</div>
 				</div>
