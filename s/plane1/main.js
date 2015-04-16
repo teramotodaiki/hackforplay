@@ -205,5 +205,17 @@ window.addEventListener('load', function() {
     "\n"+
     "slime2.locate(11, 5); // スライムの位置をかえる\n"+
     "\n"+
+    "\n"+
+    "// -- 魔導書の章 --\n"+
+    "\n"+
+    "env.enchantbook = new EnchantBook();\n"+
+    "game.rootScene.addChild(env.enchantbook);\n"+
+    "hint =\n"+
+    "\t\"// ここに魔導書の文章を書くのだ...\\n\"+\n"+
+    "\t\"// \\n\"+\n"+
+    "\t\"player.hp = 100;\\n\"+\n"+
+    "\t\"player.atk = 1;\\n\"+\n"+
+    "\t\"// かきかえたら、RUN することをわすれずに。\\n\";\n"+
+    "sendToEditor('setHint()');"+
     "\n";
 });
