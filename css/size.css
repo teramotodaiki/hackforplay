@@ -8,15 +8,25 @@
 		/* 全体の幅 */
 		width: 630px;
 	}
+	.h4p_item {
+		/* ステージ一覧のアイテムの高さ */
+		height: 324px;
+	}
 }
 @media (min-width: 992px) {
 	.container {
 		width: 810px;
 	}
+	.h4p_item {
+		height: 303px;
+	}
 }
 @media (min-width: 1200px) {
 	.container {
 		width: 810px;
+	}
+	.h4p_item {
+		height: 303px;
 	}
 }
 
@@ -95,10 +105,6 @@ header.navbar {
 .h4p_item {
 	padding-top: 15px;
 	padding-bottom: 15px;
-}
-
-.h4p_item {
-	height: 303px;
 }
 
 .h4p_item-challenged img {
