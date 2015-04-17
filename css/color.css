@@ -71,11 +71,13 @@ header.navbar {
 
 .h4p_box,
 .h4p_info,
-.h4p_restaging {
+.h4p_restaging,
+.h4p_mapTip {
 	border: 1px solid rgb(204, 204, 204);
 }
 
-.h4p_item {
+.h4p_item,
+.h4p_topicitem {
 	/*border-right: 1px solid rgb(224, 224, 224);*/
 	border-top: 1px solid rgb(224, 224, 224);
 }

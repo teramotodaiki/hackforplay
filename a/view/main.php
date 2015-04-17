@@ -97,7 +97,7 @@
 								$thumb = "/s/".$item['path']."thumb.png";
 							}
 							?>
-							<a href="/s?id=<?php echo $id ?>" title="<?php echo $title; ?>">
+							<a href="/s?id=<?php echo $id ?>" title="<?php echo $title; ?>" target="_blank">
 								<div class="col-md-4 h4p_item <?php echo $attr ?>">
 									<div class="h4p_item-thumbnail">
 										<span class="h4p_item-src"><?php echo $thumb; ?></span>
