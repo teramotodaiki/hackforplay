@@ -45,19 +45,28 @@
 					</div>
 					<div class="col-md-12 h4p_box-main">
 						<div class="row">
-							<?php
-							$item = $allstages[201];
-							$size = 4;
-							include 'item.php';
-							 ?>
-							<div class="col-md-8 col-xs-12 h4p_item">
+							<?php $item = $allstages[201]; ?>
+							<a href="/s?id=201" title="<?php echo $item['title']; ?>" target="_blank">
+								<div class="col-md-4 col-xs-4 h4p_topicitem ?>">
+									<div class="h4p_item-thumbnail">
+										<span class="h4p_item-src">/s/<?php echo $item['path']; ?>thumb.png</span>
+									</div>
+									<div class="h4p_item-title">
+										<h4><?php echo $item['title']; ?></h4>
+									</div>
+									<div class="h4p_item-footer">
+										プレイ回数：<b><?php echo $item['playcount']."回"; ?></b>
+									</div>
+								</div>
+							</a>
+							<div class="col-md-8 col-xs-8 h4p_topicitem">
 								<div class="h4p_item-title">
 									<h4>ここからが、真のハックフォープレイだ！</h4>
 								</div>
 								<div>
 									おめでとう！君はプログラミングの世界に足を踏み出した！<br>
 									このまま勉強を続ければ...自分でゲームを作ることだって、夢ではない!!<br>
-									<a href="/s?id=201" class="btn btn-success btn-block btn-lg" title="今すぐ始める" style="margin-top: 10px; margin-bottom: 10px;">今すぐ始める</a>
+									<a href="/s?id=201" class="btn btn-success btn-block btn-lg" title="今すぐ始める" style="margin-top: 10px; margin-bottom: 10px;"><h3>今すぐ始める</h3></a>
 								</div>
 								<div class="h4p_item-footer">
 									対象年齢の目安：<b>10才以上</b><br>
