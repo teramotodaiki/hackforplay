@@ -26,19 +26,19 @@ function style ($) {
 	})($(".h4p_header:first").css('height'));
 	// h4p_item-thumbnailの指定
 	(function(){
-		$("div.col-md-6>div.h4p_item-thumbnail").each(function() {
+		$("div.col-md-6 div.h4p_item-thumbnail").each(function() {
 			$(this).css({
 				'background-image':'url('+$(this).children('.h4p_item-src').text()+')',
 				'height':$(this).width() / 1.2
 			});
 		});
-		$("div.col-md-4>div.h4p_item-thumbnail").each(function() {
+		$("div.col-md-4 div.h4p_item-thumbnail").each(function() {
 			$(this).css({
 				'background-image':'url('+$(this).children('.h4p_item-src').text()+')',
 				'height':$(this).width() / 1.5
 			});
 		});
-		$("div.col-md-3>div.h4p_item-thumbnail").each(function() {
+		$("div.col-md-3 div.h4p_item-thumbnail").each(function() {
 			$(this).css({
 				'background-image':'url('+$(this).children('.h4p_item-src').text()+')',
 				'height':$(this).width() / 1.55
