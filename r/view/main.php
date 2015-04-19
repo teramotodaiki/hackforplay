@@ -98,7 +98,7 @@
 							$author = $item['restaging']['author'];
 							$link_attr = ' href="/s?id='.$id.'" title="'.$title.' by '.$author.'" target="_blank" ';
 							?>
-							<div class="col-md-4 col-xs-6 h4p_item <?php echo $attr ?>">
+							<div class="col-md-4 col-sm-6 col-xs-12 h4p_item <?php echo $attr ?>">
 								<a <?php echo $link_attr; ?> >
 									<div class="h4p_item-thumbnail">
 										<span class="h4p_item-src"><?php echo $thumb; ?></span>
