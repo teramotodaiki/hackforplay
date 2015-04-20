@@ -15,7 +15,7 @@
 	<meta property="og:site_name" content="あそべるプログラミング HackforPlay"/>
 	<script type="text/javascript" charset="utf-8">
 	$(function(){
-		$(".h4p_item-title>h4").each(function(){
+		$(".h4p_item-title h4").each(function(){
 			var size = 37;
 			var txt = $(this).text();
 			var suffix = '…';
@@ -96,21 +96,28 @@
 								$thumb = "/s/".$item['path']."thumb.png";
 							}
 							$author = $item['restaging']['author'];
+							$link_attr = ' href="/s?id='.$id.'" title="'.$title.' by '.$author.'" target="_blank" ';
 							?>
-							<a href="/s?id=<?php echo $id ?>" title="<?php echo $title; ?> by <?php echo $author; ?>" target="_blank">
-								<div class="col-md-4 col-xs-6 h4p_item <?php echo $attr ?>">
+							<div class="col-md-4 col-sm-6 col-xs-12 h4p_item <?php echo $attr ?>">
+								<a <?php echo $link_attr; ?> >
 									<div class="h4p_item-thumbnail">
 										<span class="h4p_item-src"><?php echo $thumb; ?></span>
 									</div>
-									<div class="h4p_item-title">
-										<h4><?php echo $title; ?></h4>
-									</div>
+								</a>
+								<div class="h4p_item-title">
+									<a <?php echo $link_attr; ?> ><h4><?php echo $title; ?></h4></a>
+								</div>
 									<div class="h4p_item-footer">
 										<p>作成者：<b><?php echo $author; ?></b></p>
 										<p>プレイ回数：<b><?php echo $count."回"; ?></b></p>
+										<?php if (isset($item['origin_stage'])):
+										$id = $item['origin_stage']['id'];
+										$title = $item['origin_stage']['title'];
+										?>
+										<p>改造元：<b><a href="/s?id=<?php echo $id; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a></b></p>
+										<?php endif; ?>
 									</div>
 								</div>
-							</a>
 							<?php endif; endforeach; ?>
 						</div>
 					</div>

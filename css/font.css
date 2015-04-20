@@ -34,3 +34,9 @@ body {
 	font-size: 95%;
 	color: rgb(200,200,200);
 }
+
+/* リンクのデコレーション */
+.h4p_item-footer a {
+	text-decoration: none;
+}
+
