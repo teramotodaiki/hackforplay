@@ -10,7 +10,7 @@ try{
 	$value	= $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 	$rstg	= $pdo->prepare('SELECT * FROM "restaging" WHERE "id"=:id');
-	$origin_stage = $pdo->prepare('SELECT "id","title" FROM "stage" WHERE "restaging_id"=:rid AND "playable"=TRUE');
+	$origin_stage = $pdo->prepare('SELECT "id","title" FROM "stage" WHERE "restaging_id"=:rid AND "playable"=1');
 	foreach ($value as $key => $item) {
 		// add restaging information
 		if($item['type'] == "1"){
