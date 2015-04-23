@@ -17,7 +17,7 @@ if($email == FALSE){
 }
 
 try {
-	$stmt 	= $pdo->prepare('SELECT "Type" FROM "Account" WHERE "Email"=:Email AND "State"=:connected');
+	$stmt 	= $dbh->prepare('SELECT "Type" FROM "Account" WHERE "Email"=:Email AND "State"=:connected');
 	$stmt->bindValue(":Email", $email, PDO::PARAM_STR);
 	$stmt->bindValue(":connected", "connected", PDO::PARAM_STR);
 	$stmt->execute();

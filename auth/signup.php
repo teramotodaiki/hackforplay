@@ -14,7 +14,7 @@ if($email == FALSE){
 
 // 同じメールアドレスでアカウントが作られていないか
 try {
-	$stmt 	= $pdo->prepare('SELECT "Type" FROM "Account" WHERE "Type"=:Type AND "Email"=:Email AND "State"=:connected');
+	$stmt 	= $dbh->prepare('SELECT "Type" FROM "Account" WHERE "Type"=:Type AND "Email"=:Email AND "State"=:connected');
 	$stmt->bindValue(":Type", "email", PDO::PARAM_STR);
 	$stmt->bindValue(":Email", $email, PDO::PARAM_STR);
 	$stmt->bindValue(":connected", "connected", PDO::PARAM_STR);
@@ -51,12 +51,10 @@ if(!$result){
 
 // ユーザーを追加
 try {
-	$stmt 	= $pdo->prepare('INSERT INTO "user" ("beta","begin") VALUES(:zero,:gmt)');
-	$stmt->bindValue(":zero", 0, PDO::PARAM_INT);
-	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s").date("P"));
+	$stmt 	= $dbh->prepare('INSERT INTO "User" () VALUES()');
 	$stmt->execute();
 
-	$userid = $pdo->lastInsertId('ID');
+	$userid = $dbh->lastInsertId('ID');
 } catch (PDOException $e) {
 	print_r($e);
 	die();
@@ -64,7 +62,7 @@ try {
 
 // アカウントと関連づけ
 try {
-	$stmt 	= $pdo->prepare('INSERT INTO "Account" ("UserID","Type","State","Email","Hashed","Registered") VALUES(:userid,:hackforplay,:unconfirmed,:email,:hashed,:gmt)');
+	$stmt 	= $dbh->prepare('INSERT INTO "Account" ("UserID","Type","State","Email","Hashed","Registered") VALUES(:userid,:hackforplay,:unconfirmed,:email,:hashed,:gmt)');
 	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
 	$stmt->bindValue(":hackforplay", "hackforplay");
 	$stmt->bindValue(":unconfirmed", "unconfirmed");
