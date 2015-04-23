@@ -14,10 +14,10 @@ if($email == FALSE){
 
 // 同じメールアドレスでアカウントが作られていないか
 try {
-	$stmt 	= $dbh->prepare('SELECT "Type" FROM "Account" WHERE "Type"=:Type AND "Email"=:Email AND "State"=:connected');
-	$stmt->bindValue(":Type", "email", PDO::PARAM_STR);
-	$stmt->bindValue(":Email", $email, PDO::PARAM_STR);
-	$stmt->bindValue(":connected", "connected", PDO::PARAM_STR);
+	$stmt 	= $dbh->prepare('SELECT "Type" FROM "Account" WHERE "Type"=:hackforplay AND "Email"=:email AND "State"=:connected');
+	$stmt->bindValue(":hackforplay", "hackforplay");
+	$stmt->bindValue(":email", $email);
+	$stmt->bindValue(":connected", "connected");
 	$stmt->execute();
 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	if($result != NULL){
@@ -36,7 +36,8 @@ $hashed = password_hash($tmpkey, PASSWORD_DEFAULT);
 // メール送信
 require_once 'sendmail.php';
 
-// ユーザーを追加
+// ユーザーを追加（このとき、ひとつのユーザーに複数の有効なHackforPlayアカウントが紐付かないように気をつける）
+// セッション情報があれば、今後それを使って同じユーザーIDを使ってもよい
 try {
 	$stmt 	= $dbh->prepare('INSERT INTO "User" () VALUES()');
 	$stmt->execute();
@@ -62,6 +63,6 @@ try {
 	die();
 }
 
-echo "success";
+exit("success");
 
  ?>
