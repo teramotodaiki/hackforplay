@@ -47,7 +47,7 @@ $(function() {
 		$(this).attr('disabled', 'disabled');
 
 		var value = $("input[name=email]").val();
-		$.post('/auth/signup.php', {
+		$.post('/auth/signupwithemail.php', {
 			'email': value
 		}, function(data, textStatus, xhr) {
 			if(data === "success"){
