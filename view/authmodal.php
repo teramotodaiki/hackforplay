@@ -6,13 +6,13 @@ $(function() {
 		// 状況に応じてページを表示
 		var unconfirmed_email = localStorage.getItem('unconfirmed_email');
 		if(unconfirmed_email === null){
-			// メールアドレスの入力
+			// メールアドレスの入力・サインイン
 			$(".auth-page-1").show();
 		}else{
 			// 仮パスワードの入力
 			$(".auth-page-2").show();
 			// メールアドレスの自動入力
-			$("input[name=email]").val(unconfirmed_email);
+			$("#signupEmail").val(unconfirmed_email);
 		}
 	});
 
@@ -25,8 +25,7 @@ $(function() {
 	});
 
 	// メールアドレスの入力
-	$(".auth-submit").hide();
-	$(".auth-page-1 input").on('change', function() {
+	$("#signupEmail").on('change', function() {
 		var value = $(this).val();
 		// @が入っているかどうかのみ調べる
 		if(value.indexOf("@") !== -1){
@@ -34,25 +33,25 @@ $(function() {
 				'email': value
 			}, function(data, textStatus, xhr) {
 				if(data === "available"){
-					$(".auth-page-1 .auth-submit").fadeIn('fast');
+					// velify
 				}else if(data === "invalid"){
-					$(".auth-page-1 .auth-submit").fadeOut('fast');
 					// メールアドレスが無効です　のアラート表示
 				}else{
 					var result = jQuery.parseJSON(data);
 					console.log(result);
+					// サインインのサジェスト
 				}
 			});
 		}else{
-			$(".auth-page-1 .auth-submit").fadeOut('fast');
+			//
 		}
 	});
 
 	// メール送信・仮登録
-	$(".auth-page-1 .auth-submit").on('click', function() {
+	$(".signup-submit").on('click', function() {
 		$(this).attr('disabled', 'disabled');
 
-		var value = $("input[name=email]").val();
+		var value = $("#signupEmail").val();
 		$.post('/auth/signupwithemail.php', {
 			'email': value
 		}, function(data, textStatus, xhr) {
@@ -71,22 +70,12 @@ $(function() {
 		});
 	});
 
-	// 仮パスワード入力
-	$(".auth-page-2 input").on('change', function() {
-		var value = $(this).val();
-		if(value !== ""){
-			$(".auth-page-2 .auth-submit").fadeIn('fast');
-		}else{
-			$(".auth-page-2 .auth-submit").fadeOut('fast');
-		}
-	});
-
 	// パスワード確認・本登録
-	$(".auth-page-2 .auth-submit").on('click', function() {
+	$(".tmp-submit").on('click', function() {
 		$(this).attr('disabled', 'disabled');
 
-		var password = $("input[name=tmp-password]").val();
-		var email = $("input[name=email]").val();
+		var password = $("#tmpPassword").val();
+		var email = $("#signupEmail").val();
 		$.post('/auth/confirmpassword.php', {
 			'password' : password,
 			'email' : email
@@ -123,7 +112,6 @@ $(function() {
 	$(".auth-modal-back").on('click', function() {
 		$("#authModal .modal-body").hide();
 		$(".auth-page-1").fadeIn('fast');
-		$(".auth-page-1 .auth-submit").fadeIn('fast');
 	});
 });
 </script>
@@ -131,30 +119,81 @@ $(function() {
 	<div class="modal-dialog">
 		<div class="modal-content">
     		<div class="modal-header">
-    			サインインまたはサインアップしてください
+    			サインアップまたはサインインしてください
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	    	</div>
 		    <div class="modal-body auth-page-1" style="display: none">
-				<label for="email" class="control-label">メールアドレス:</label>
-				<input type="email" class="form-control" name="email" placeholder="yours@example.com">
-				<button type="button" class="btn btn-block btn-primary auth-submit">メールを送信</button>
+		    	<form id="signup" class="form-horizontal">
+					<h4>サインアップ</h4>
+					<div class="form-group">
+				    	<label for="signupEmail" class="col-sm-3 control-label">メールアドレス</label>
+				    	<div class="col-sm-8">
+					    	<input type="email" class="form-control" id="signupEmail">
+					    </div>
+					</div>
+				  	<div class="text-right">
+						<button type="submit" class="btn btn-default signup-submit">メールを送信</button>
+					</div>
+				</form>
+				<hr>
+				<form id="signin" class="form-horizontal">
+					<h4>サインイン</h4>
+				  	<div class="form-group">
+				    	<label for="signinEmail" class="col-sm-3 control-label">メールアドレス</label>
+				    	<div class="col-sm-8">
+				    		<input type="email" class="form-control" id="signinEmail">
+				    	</div>
+				  	</div>
+				  	<div class="form-group">
+				    	<label for="signinPassword" class="col-sm-3 control-label">パスワード</label>
+				    	<div class="col-sm-8">
+					    	<input type="password" class="form-control" id="signinPassword">
+					    </div>
+				  	</div>
+				  	<div class="text-right">
+					  	<button type="submit" class="btn btn-default signin-submit">サインイン</button>
+				  	</div>
+				</form>
 		    </div>
 		    <div class="modal-body auth-page-2" style="display: none">
-		    	<p>メールが送信されました</p>
-		    	<p>本文に書かれた「仮パスワード」を入力してください</p>
-				<input type="password" class="form-control" name="tmp-password">
-				<button type="button" class="btn btn-block btn-primary auth-submit">確認</button>
-				<p class="gray">メールアドレスの入力に<button type="button" class="btn btn-link auth-modal-back">
+		    	<h4>メールが送信されました</h4>
+		    	<h5>本文に書かれた「仮パスワード」を入力してください</h5>
+		    	<form id="tmp" class="form-horizontal">
+					<div class="form-group">
+				    	<label for="tmpPassword" class="col-sm-3 control-label">仮パスワード</label>
+				    	<div class="col-sm-8">
+					    	<input type="password" class="form-control" id="tmpPassword">
+					    </div>
+					</div>
+				  	<div class="text-right">
+						<button type="submit" class="btn btn-primary tmp-submit">確認</button>
+					</div>
+				</form>
+				<p>メールアドレスの入力に<button type="button" class="btn btn-link auth-modal-back">
 					もどる</button></p>
-				<p class="gray">または、<button type="button" class="btn btn-link" data-dismiss="modal">スキップ</button>する</p>
+				<p>または、<button type="button" class="btn btn-link" data-dismiss="modal">スキップ</button>する</p>
 		    </div>
 		    <div class="modal-body auth-page-3" style="display: none">
-		    	<p>登録が完了しました</p>
-		    	<p>新しくパスワードを設定する場合は、こちらに入力してください</p>
-				<input type="password" class="form-control" name="new-password">
-				<input type="password" class="form-control" name="confirm-password">
-				<button type="button" class="btn btn-block btn-primary auth-submit">設定</button>
-				<p class="gray">または、<button type="button" class="btn btn-link" data-dismiss="modal">スキップ</button>する</p>
+		    	<h4>登録が完了しました</h4>
+		    	<h5>新しくパスワードを設定する場合は、こちらに入力してください</h5>
+		    	<form id="reset" class="form-horizontal">
+				  	<div class="form-group">
+				    	<label for="resetPassword" class="col-sm-3 control-label">パスワード</label>
+				    	<div class="col-sm-8">
+				    		<input type="password" class="form-control" id="resetPassword">
+				    	</div>
+				  	</div>
+				  	<div class="form-group">
+				    	<label for="resetConfirmed" class="col-sm-3 control-label">もう一度入力</label>
+				    	<div class="col-sm-8">
+					    	<input type="password" class="form-control" id="resetConfirmed">
+					    </div>
+				  	</div>
+				  	<div class="text-right">
+					  	<button type="submit" class="btn btn-default reset-submit">再設定</button>
+				  	</div>
+					<p>または、<button type="button" class="btn btn-link" data-dismiss="modal">スキップ</button>する</p>
+				</form>
 		    </div>
     		<div class="modal-footer">
         		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
