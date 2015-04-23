@@ -16,7 +16,13 @@ $(function() {
 		}
 	});
 
-	$("#authModal").modal("show");
+	$.get('/auth/signinwithsession.php', function(data) {
+		if(data === "success"){
+			console.log("login");
+		}else if(data === "no-session"){
+			$("#authModal").modal("show");
+		}
+	});
 
 	// メールアドレスの入力
 	$(".auth-submit").hide();
