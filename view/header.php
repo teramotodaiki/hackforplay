@@ -15,27 +15,6 @@ if(preg_match("/^.*\/s/", $_SERVER["PHP_SELF"])){
 	$header_pattern = "replay";
 }
 ?>
-<script type="text/javascript" charset="utf-8">
-$(function(){
-	// サインイン/サインアウトしたとき、ヘッダのボタンを切り替える
-	$(".h4p_signin,.h4p_signout").hide();
-
-	function authtext(result){
-		console.log(result);
-		if(result === "success"){
-			$(".h4p_signin").hide();
-			$(".h4p_signout").show();
-		}else{
-			$(".h4p_signin").show();
-			$(".h4p_signout").hide();
-		}
-	}
-	checkSigninSession(authtext);
-	$("#authModal").on('hidden.bs.modal', function(){
-		checkSigninSession(authtext);
-	});
-});
-</script>
 <header class="navbar navbar-static-top" <?php if($header_pattern == "topPage"): ?>style="margin-bottom:0px;"<?php endif; ?>>
 	<div class="container">
 		<div class="navbar-header h4p_header">
@@ -59,12 +38,6 @@ $(function(){
 						<li><a class="h4p_header" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
 						<?php endif; ?>
 						<li><a class="h4p_header" href="../" title="トップに戻る">トップに戻る</a></li>
-						<?php
-						break;
-					case 'replay':
-						?>
-							<li class="h4p_signin"><button type="button" class="btn btn-link h4p_header" data-toggle="modal" data-target="#authModal">サインインまたはサインアップ</button></li>
-							<li class="h4p_signout"><button type="button" class="btn btn-link h4p_header" onclick="signout();">サインアウト</button></li>
 						<?php
 						break;
 					default: ?>
