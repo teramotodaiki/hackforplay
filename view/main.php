@@ -83,7 +83,6 @@
 	<?php require_once 'fb-root.php'; ?>
 	<?php // require_once 'header.php'; ?>
 	<!-- Modal -->
-	<?php require_once 'view/authmodal.php'; ?>
 	<div class="modal fade" id="moreModal" tabindex="-1" role="dialog" aria-labelledby="moreModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">

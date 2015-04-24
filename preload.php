@@ -22,4 +22,13 @@ catch ( PDOException $e ) {
     die(print_r($e));
 }
 
+// セッション ユーザーID取得
+session_start();
+if(isset($_SESSION['UserID'])){
+	$session_userid = $_SESSION['UserID'];
+}else{
+	$session_userid = NULL;
+}
+session_commit();
+
 ?>

@@ -16,14 +16,6 @@ $(function() {
 		}
 	});
 
-	$.get('/auth/signinwithsession.php', function(data) {
-		if(data === "success"){
-			console.log("login");
-		}else if(data === "no-session"){
-			$("#authModal").modal("show");
-		}
-	});
-
 	// サインイン
 	$('#signin').submit(function(event) {
 		event.preventDefault();
@@ -37,7 +29,14 @@ $(function() {
 		} , function(data, textStatus, xhr) {
 			switch(data){
 				case "success":
-					$("#authModal").modal('hide');
+					// サインイン完了画面へ
+					$(".auth-page-1").hide('fast', function () {
+						$(".auth-page-fin").fadeIn();
+					});
+					break;
+					// invalid-email , unregistered , incorrect-password , success
+				case "invalid-email":
+
 					break;
 				default:
 					// 個々の対応
@@ -217,6 +216,9 @@ $(function() {
 				  	</div>
 					<p>または、<button type="button" class="btn btn-link" data-dismiss="modal">スキップ</button>する</p>
 				</form>
+		    </div>
+		    <div class="modal-body auth-page-fin text-center" style="display: none">
+		    	<h4>サインインしました</h4>
 		    </div>
     		<div class="modal-footer">
         		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
