@@ -27,7 +27,7 @@ try {
 	die();
 }
 
-// いずれかに整合するなら、AccountIDを保存する
+// いずれかに整合するなら、Accountを保存する
 $confirmed = NULL;
 foreach ($result as $key => $value) {
 	if(password_verify($password, $value['Hashed'])){

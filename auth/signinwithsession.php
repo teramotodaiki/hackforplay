@@ -9,7 +9,7 @@ session_cache_limiter('private');
 session_cache_expire(30);
 
 session_start();
-if (isset($_SESSION['ID'])) {
+if (isset($_SESSION['UserID'])) {
 	exit("success");
 }else{
 	exit("no-session");

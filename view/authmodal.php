@@ -24,7 +24,30 @@ $(function() {
 		}
 	});
 
-	// メールアドレスの入力
+	// サインイン
+	$('#signin').submit(function(event) {
+		event.preventDefault();
+
+		var email = $("#signinEmail").val();
+		var password = $("#signinPassword").val();
+
+		$.post('/auth/signinwithemail.php',{
+			'email': email,
+			'password': password
+		} , function(data, textStatus, xhr) {
+			switch(data){
+				case "success":
+					$("#authModal").modal('hide');
+					break;
+				default:
+					// 個々の対応
+					console.log(data);
+					break;
+			}
+		});
+	});
+
+	// サインアップ メールアドレスの入力
 	$("#signupEmail").on('change', function() {
 		var value = $(this).val();
 		// @が入っているかどうかのみ調べる
@@ -48,8 +71,8 @@ $(function() {
 	});
 
 	// メール送信・仮登録
-	$(".signup-submit").on('click', function() {
-		$(this).attr('disabled', 'disabled');
+	$('#signup').submit(function(event) {
+		event.preventDefault();
 
 		var value = $("#signupEmail").val();
 		$.post('/auth/signupwithemail.php', {
@@ -71,8 +94,8 @@ $(function() {
 	});
 
 	// パスワード確認・本登録
-	$(".tmp-submit").on('click', function() {
-		$(this).attr('disabled', 'disabled');
+	$("#tmp").submit(function(event) {
+		event.preventDefault();
 
 		var password = $("#tmpPassword").val();
 		var email = $("#signupEmail").val();
@@ -132,7 +155,7 @@ $(function() {
 					    </div>
 					</div>
 				  	<div class="text-right">
-						<button type="submit" class="btn btn-default signup-submit">メールを送信</button>
+						<button type="submit" class="btn btn-default">メールを送信</button>
 					</div>
 				</form>
 				<hr>
@@ -151,7 +174,7 @@ $(function() {
 					    </div>
 				  	</div>
 				  	<div class="text-right">
-					  	<button type="submit" class="btn btn-default signin-submit">サインイン</button>
+					  	<button type="submit" class="btn btn-default">サインイン</button>
 				  	</div>
 				</form>
 		    </div>
@@ -166,7 +189,7 @@ $(function() {
 					    </div>
 					</div>
 				  	<div class="text-right">
-						<button type="submit" class="btn btn-primary tmp-submit">確認</button>
+						<button type="submit" class="btn btn-primary">確認</button>
 					</div>
 				</form>
 				<p>メールアドレスの入力に<button type="button" class="btn btn-link auth-modal-back">
@@ -190,7 +213,7 @@ $(function() {
 					    </div>
 				  	</div>
 				  	<div class="text-right">
-					  	<button type="submit" class="btn btn-default reset-submit">再設定</button>
+					  	<button type="submit" class="btn btn-default">再設定</button>
 				  	</div>
 					<p>または、<button type="button" class="btn btn-link" data-dismiss="modal">スキップ</button>する</p>
 				</form>
