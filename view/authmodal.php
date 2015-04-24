@@ -22,6 +22,7 @@ $(function() {
 
 		var email = $("#signinEmail").val();
 		var password = $("#signinPassword").val();
+		$("#signin .alert").addClass('hide');
 
 		$.post('/auth/signinwithemail.php',{
 			'email': email,
@@ -34,12 +35,16 @@ $(function() {
 						$(".auth-page-fin").fadeIn();
 					});
 					break;
-					// invalid-email , unregistered , incorrect-password , success
 				case "invalid-email":
-
+					$('#signin .alert').text('無効なメールアドレスです').removeClass('hide');
+					break;
+				case "unregistered":
+					$('#signin .alert').text('登録されていないメールアドレスです').removeClass('hide');
+					break;
+				case "incorrect-password":
+					$('#signin .alert').text('パスワードが間違っています').removeClass('hide');
 					break;
 				default:
-					// 個々の対応
 					console.log(data);
 					break;
 			}
@@ -47,47 +52,52 @@ $(function() {
 	});
 
 	// サインアップ メールアドレスの入力
-	$("#signupEmail").on('change', function() {
-		var value = $(this).val();
-		// @が入っているかどうかのみ調べる
-		if(value.indexOf("@") !== -1){
-			$.post('/auth/checkemail.php', {
-				'email': value
-			}, function(data, textStatus, xhr) {
-				if(data === "available"){
-					// velify
-				}else if(data === "invalid"){
-					// メールアドレスが無効です　のアラート表示
-				}else{
-					var result = jQuery.parseJSON(data);
-					console.log(result);
-					// サインインのサジェスト
-				}
-			});
-		}else{
-			//
-		}
-	});
+	// $("#signupEmail").on('change', function() {
+	// 	var value = $(this).val();
+	// 	$.post('/auth/checkemail.php', {
+	// 		'email': value
+	// 	}, function(data, textStatus, xhr) {
+	// 		if(data === "available"){
+	// 			// velify
+	// 		}else if(data === "invalid"){
+	// 			// メールアドレスが無効です　のアラート表示
+	// 		}else{
+	// 			var result = jQuery.parseJSON(data);
+	// 			console.log(result);
+	// 			// サインインのサジェスト
+	// 		}
+	// 	});
+	// });
 
 	// メール送信・仮登録
 	$('#signup').submit(function(event) {
 		event.preventDefault();
 
 		var value = $("#signupEmail").val();
+		$('#signup .alert').addClass('hide');
+
 		$.post('/auth/signupwithemail.php', {
 			'email': value
 		}, function(data, textStatus, xhr) {
-			if(data === "success"){
-				// メールアドレスをローカルストレージに記憶
-				localStorage.setItem('unconfirmed_email', value);
+			switch(data){
+				case "success":
+					// メールアドレスをローカルストレージに記憶
+					localStorage.setItem('unconfirmed_email', value);
 
-				// 仮パスワード入力画面へ
-				$(".auth-page-1").hide('fast', function () {
-					$(".auth-page-2").fadeIn();
-				});
-			}else{
-				// セッションが作られているか、確認する必要
-				console.log(data);
+					// 仮パスワード入力画面へ
+					$(".auth-page-1").hide('fast', function () {
+						$(".auth-page-2").fadeIn();
+					});
+					break;
+				case "invalid":
+					$('#signup .alert').text('無効なメールアドレスです').removeClass('hide');
+					break;
+				case "reserved":
+					$('#signup .alert').text('すでに登録されているメールアドレスです').removeClass('hide');
+					break;
+				case "sendmail-error":
+					$('#signup .alert').text('メールの送信に失敗しました').removeClass('hide');
+					break;
 			}
 		});
 	});
@@ -98,20 +108,31 @@ $(function() {
 
 		var password = $("#tmpPassword").val();
 		var email = $("#signupEmail").val();
+		$('#tmp .alert').addClass('hide');
+
 		$.post('/auth/confirmpassword.php', {
 			'password' : password,
 			'email' : email
 		}, function(data, textStatus, xhr) {
-			if (data === "success") {
-				// 仮登録状態を解除
-				localStorage.removeItem('unconfirmed_email');
+			switch(data){
+				case "success":
+					// 仮登録状態を解除
+					localStorage.removeItem('unconfirmed_email');
 
-				// パスワード設定画面へ
-				$(".auth-page-2").hide('fast', function () {
-					$(".auth-page-3").fadeIn();
-				});
-			}else{
-				console.log(data);
+					// パスワード設定画面へ
+					$(".auth-page-2").hide('fast', function () {
+						$(".auth-page-fin").fadeIn();
+					});
+					break;
+				case "invalid-email":
+					$('#tmp .alert').text('無効なメールアドレスです ' + email).removeClass('hide');
+					break;
+				case "invalid-password":
+					$('#tmp .alert').text('パスワードが間違っています').removeClass('hide');
+					break;
+				case "valid-but-failed":
+					$('#tmp .alert').text('エラーにより認証ができませんでした').removeClass('hide');
+					break;
 			}
 		});
 	});
@@ -147,6 +168,7 @@ $(function() {
 		    <div class="modal-body auth-page-1" style="display: none">
 		    	<form id="signup" class="form-horizontal">
 					<h4>サインアップ</h4>
+					<p class="alert alert-danger hide" role="alert"></p>
 					<div class="form-group">
 				    	<label for="signupEmail" class="col-sm-3 control-label">メールアドレス</label>
 				    	<div class="col-sm-8">
@@ -160,6 +182,7 @@ $(function() {
 				<hr>
 				<form id="signin" class="form-horizontal">
 					<h4>サインイン</h4>
+					<p class="alert alert-danger hide" role="alert"></p>
 				  	<div class="form-group">
 				    	<label for="signinEmail" class="col-sm-3 control-label">メールアドレス</label>
 				    	<div class="col-sm-8">
@@ -178,9 +201,10 @@ $(function() {
 				</form>
 		    </div>
 		    <div class="modal-body auth-page-2" style="display: none">
-		    	<h4>メールが送信されました</h4>
-		    	<h5>本文に書かれた「仮パスワード」を入力してください</h5>
 		    	<form id="tmp" class="form-horizontal">
+			    	<h4>メールが送信されました</h4>
+			    	<h5>本文に書かれた「仮パスワード」を入力してください</h5>
+					<p class="alert alert-danger hide" role="alert"></p>
 					<div class="form-group">
 				    	<label for="tmpPassword" class="col-sm-3 control-label">仮パスワード</label>
 				    	<div class="col-sm-8">

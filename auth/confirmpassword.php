@@ -2,7 +2,7 @@
 /*
 HackforPlayアカウント情報が正しいかどうかを判別し、あっていればStateをconnectedにする
 Input:	mail , Hash前のパスワード
-Output:	invalid-mail , invalid-password , valid-but-failed , success
+Output:	invalid-email , invalid-password , valid-but-failed , success
 */
 
 require_once '../preload.php';
@@ -10,7 +10,7 @@ require_once '../preload.php';
 $password = filter_input(INPUT_POST, "password");
 $email 	= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 if($email == FALSE){
-	exit('invalid-mail');
+	exit('invalid-email');
 }
 
 // unconfirmed なアカウント情報をすべて取得
@@ -36,7 +36,7 @@ foreach ($result as $key => $value) {
 	}
 }
 if($confirmed == NULL){
-	exit("invalid-passoword");
+	exit("invalid-password");
 }
 
 
