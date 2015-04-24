@@ -1,15 +1,33 @@
 <?php
-$to      = $email;
-$subject = 'メールアドレスの登録 - HackforPlay';
-$message =
-	// 'こんにちは。ハックフォープレイ開発者の寺本大輝です！' .
-	// 'このメールは、 https://hackforplay.xyz にご入力いただいたメールアドレスに対して送信されています。' .
-	// 'このまま登録する場合は、次の仮パスワードをハックフォープレイで入力するか、リンクにアクセスしてください。' .
-	'仮パスワード：' . $tmpkey;
-$headers = 'From: noreply@hackforplay.xyz \r\n' . 'X-Mailer: PHP/' . phpversion();
 
-$result = mail($to, $subject, $message, $headers);
-if(!$result){
-	die("sendmail-error");
+function mailWithSendGrid($address, $tmpkey)
+{
+	require_once("../sendgrid-php/sendgrid-php.php");
+
+	$sendgrid = new SendGrid('azure_6e7a2cecf7a9b88492fedbe609465546@azure.com', '8kPZ01rAB5ZkAsu');
+	$email = new SendGrid\Email();
+	$email
+	    ->addTo($address)
+	    ->setFrom('noreply@hackforplay.xyz')
+	    ->setSubject('メールアドレスの登録 - HackforPlay')
+	    ->setText('仮パスワード：' . $tmpkey)
+	    ->setHtml('仮パスワード： <strong>' . $tmpkey . '</strong>');
+
+	$sendgrid->send($email);
+
+	// Or catch the error
+
+	try {
+	    $sendgrid->send($email);
+	} catch(\SendGrid\Exception $e) {
+	    echo $e->getCode();
+	    foreach($e->getErrors() as $er) {
+	        echo $er;
+	    }
+	    // リリース時はこちらにする
+	    // die('sendmail-error');
+	}
+
 }
+
 ?>

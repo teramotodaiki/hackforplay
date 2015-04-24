@@ -98,6 +98,9 @@ $(function() {
 				case "sendmail-error":
 					$('#signup .alert').text('メールの送信に失敗しました').removeClass('hide');
 					break;
+				default:
+					console.log(data);
+					break;
 			}
 		});
 	});
