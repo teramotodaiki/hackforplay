@@ -79,6 +79,7 @@ $(function() {
 		$.post('/auth/signupwithemail.php', {
 			'email': value
 		}, function(data, textStatus, xhr) {
+			console.log(data);
 			switch(data){
 				case "success":
 					// メールアドレスをローカルストレージに記憶
@@ -165,42 +166,21 @@ $(function() {
 	<div class="modal-dialog">
 		<div class="modal-content">
     		<div class="modal-header">
-    			サインアップまたはサインインしてください
+    			会員登録
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	    	</div>
 		    <div class="modal-body auth-page-1" style="display: none">
 		    	<form id="signup" class="form-horizontal">
-					<h4>サインアップ</h4>
+					<h4>メールアドレスを入力してください</h4>
 					<p class="alert alert-danger hide" role="alert"></p>
 					<div class="form-group">
-				    	<label for="signupEmail" class="col-sm-3 control-label">メールアドレス</label>
-				    	<div class="col-sm-8">
-					    	<input type="email" class="form-control" id="signupEmail">
+				    	<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+					    	<input type="email" class="form-control" id="signupEmail" placeholder="your@email.com">
 					    </div>
 					</div>
 				  	<div class="text-right">
-						<button type="submit" class="btn btn-default">メールを送信</button>
+						<button type="submit" class="btn btn-primary">メールを送信</button>
 					</div>
-				</form>
-				<hr>
-				<form id="signin" class="form-horizontal">
-					<h4>サインイン</h4>
-					<p class="alert alert-danger hide" role="alert"></p>
-				  	<div class="form-group">
-				    	<label for="signinEmail" class="col-sm-3 control-label">メールアドレス</label>
-				    	<div class="col-sm-8">
-				    		<input type="email" class="form-control" id="signinEmail">
-				    	</div>
-				  	</div>
-				  	<div class="form-group">
-				    	<label for="signinPassword" class="col-sm-3 control-label">パスワード</label>
-				    	<div class="col-sm-8">
-					    	<input type="password" class="form-control" id="signinPassword">
-					    </div>
-				  	</div>
-				  	<div class="text-right">
-					  	<button type="submit" class="btn btn-default">サインイン</button>
-				  	</div>
 				</form>
 		    </div>
 		    <div class="modal-body auth-page-2" style="display: none">
@@ -209,8 +189,7 @@ $(function() {
 			    	<h5>本文に書かれた「仮パスワード」を入力してください</h5>
 					<p class="alert alert-danger hide" role="alert"></p>
 					<div class="form-group">
-				    	<label for="tmpPassword" class="col-sm-3 control-label">仮パスワード</label>
-				    	<div class="col-sm-8">
+				    	<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
 					    	<input type="password" class="form-control" id="tmpPassword">
 					    </div>
 					</div>
@@ -220,7 +199,6 @@ $(function() {
 				</form>
 				<p>メールアドレスの入力に<button type="button" class="btn btn-link auth-modal-back">
 					もどる</button></p>
-				<p>または、<button type="button" class="btn btn-link" data-dismiss="modal">スキップ</button>する</p>
 		    </div>
 		    <div class="modal-body auth-page-3" style="display: none">
 		    	<h4>登録が完了しました</h4>
@@ -245,7 +223,7 @@ $(function() {
 				</form>
 		    </div>
 		    <div class="modal-body auth-page-fin text-center" style="display: none">
-		    	<h4>サインインしました</h4>
+		    	<h4>ログインしました</h4>
 		    </div>
     		<div class="modal-footer">
         		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
