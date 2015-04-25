@@ -30,9 +30,10 @@ $(function(){
 			$(".h4p_signout").hide();
 		}
 	}
-	checkSigninSession(authtext);
+	checkSigninSession(function(result){ authtext(result); });
 	$("#authModal").on('hidden.bs.modal', function(){
-		checkSigninSession(authtext);
+		// 別タブでGET送信認証していてもlocalStorage経由で結果を得る
+		checkSigninSession(function(result){ authtext(result); }, true);
 	});
 });
 </script>

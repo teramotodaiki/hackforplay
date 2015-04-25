@@ -35,7 +35,7 @@ $hashed = password_hash($tmpkey, PASSWORD_DEFAULT);
 
 // メール送信
 require_once 'sendmail.php';
-mailWithSendGrid($email, $tmpkey);
+mailWithSendGrid($email, $tmpkey, $encription_key);
 
 // ユーザーを追加（このとき、ひとつのユーザーに複数の有効なHackforPlayアカウントが紐付かないように気をつける）
 // セッション情報があれば、今後それを使って同じユーザーIDを使ってもよい

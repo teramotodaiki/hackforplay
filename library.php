@@ -30,7 +30,17 @@ call_user_func(function($useCDN, $path){
 <script src="/bs-stylist.js" type="text/javascript" charset="utf-8"></script>
 <!-- Signin session -->
 <script type="text/javascript" charset="utf-8">
-function checkSigninSession (callback) {
+function checkSigninSession (callback, useStorage) {
+	if(useStorage === undefined) useStorage = false;
+	else if(useStorage){
+		var state = localStorage.getItem('confirm-account-state');
+		console.log(state);
+		if(state !== null){
+			callback(state);
+			localStorage.removeItem('confirm-account-state');
+			return;
+		}
+	}
 	$.get('/auth/signinwithsession.php', callback);
 }
 function signout (){
