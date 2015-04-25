@@ -31,13 +31,30 @@ $(function(){
 		}
 	}
 	checkSigninSession(function(result){ authtext(result); });
-	$("#authModal").on('hidden.bs.modal', function(){
+	$("#authModal,#signinModal").on('hidden.bs.modal', function(){
 		// 別タブでGET送信認証していてもlocalStorage経由で結果を得る
 		checkSigninSession(function(result){ authtext(result); }, true);
 	});
 });
 </script>
-<header class="navbar navbar-static-top" <?php if($header_pattern == "topPage"): ?>style="margin-bottom:0px;"<?php endif; ?>>
+<header class="navbar navbar-static-top">
+	<div class="container">
+		<div class="navbar-header">
+	     	<a class="navbar-brand" title="ハックフォープレイ" href="/">
+	        	<img alt="hackforplay" src="/logo.png">
+	     	</a>
+	    </div>
+	    <nav class="collapse navbar-collapse">
+	    	<ul class="nav navbar-nav navbar-right">
+	    		<li class="h4p_signin"><button type="button" class="btn btn-link navbar-btn" data-toggle="modal" data-target="#signinModal">ログイン</button></li>
+				<li class="h4p_signin"><button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#authModal">会員登録</button></li>
+				<li class="h4p_signout"><button type="button" class="btn btn-link navbar-btn" onclick="signout();">サインアウト</button></li>
+	    	</ul>
+	    </nav>
+	</div>
+</header>
+<!-- /header -->
+<!-- <header class="navbar navbar-static-top" <?php if($header_pattern == "topPage"): ?>style="margin-bottom:0px;"<?php endif; ?>>
 	<div class="container">
 		<div class="navbar-header h4p_header">
 			<a class="" title="ハックフォープレイ" href="/">
@@ -64,7 +81,8 @@ $(function(){
 						break;
 					case 'replay':
 						?>
-							<li class="h4p_signin"><button type="button" class="btn btn-link h4p_header" data-toggle="modal" data-target="#authModal">サインインまたはサインアップ</button></li>
+							<li class="h4p_signin"><button type="button" class="btn btn-link h4p_header" data-toggle="modal" data-target="#signinModal">ログイン</button></li>
+							<li class="h4p_signin"><button type="button" class="btn btn-default h4p_header" data-toggle="modal" data-target="#authModal">会員登録</button></li>
 							<li class="h4p_signout"><button type="button" class="btn btn-link h4p_header" onclick="signout();">サインアウト</button></li>
 						<?php
 						break;
@@ -76,4 +94,4 @@ $(function(){
 			</ul>
 		</nav>
 	</div>
-</header>
+</header> -->
