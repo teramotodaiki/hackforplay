@@ -154,8 +154,8 @@ $(function() {
 	<div class="modal-dialog">
 		<div class="modal-content">
     		<div class="modal-header">
-    			会員登録
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4>会員登録</h4>
 	    	</div>
 		    <div class="modal-body auth-page-1" style="display: none">
 		    	<form id="signup" class="form-horizontal">
@@ -185,8 +185,7 @@ $(function() {
 						<button type="submit" class="btn btn-primary">確認</button>
 					</div>
 				</form>
-				<p>メールアドレスの入力に<button type="button" class="btn btn-link auth-modal-back">
-					もどる</button></p>
+				<p>メールアドレスの入力に<button type="button" class="btn btn-link auth-modal-back">もどる</button></p>
 		    </div>
 		    <div class="modal-body auth-page-3" style="display: none">
 		    	<h4>登録が完了しました</h4>
