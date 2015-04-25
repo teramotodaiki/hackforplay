@@ -44,7 +44,7 @@ if($confirmed == NULL){
 session_start();
 $_SESSION['UserID'] = $confirmed['UserID'];
 
-session_write_close();
+session_commit();
 
 // アカウントのStateをconnectedに
 try {

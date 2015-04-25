@@ -15,4 +15,6 @@ if (isset($_SESSION['UserID'])) {
 	exit("no-session");
 }
 
+session_commit();
+
  ?>

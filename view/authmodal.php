@@ -111,9 +111,9 @@ $(function() {
 					// 仮登録状態を解除
 					localStorage.removeItem('unconfirmed_email');
 
-					// パスワード設定画面へ
+					// プロフィール設定画面へ
 					$(".auth-page-2").hide('fast', function () {
-						$(".auth-page-fin").fadeIn();
+						$(".auth-page-3").fadeIn();
 					});
 					break;
 				case "invalid-email":
@@ -129,18 +129,34 @@ $(function() {
 		});
 	});
 
-	// パスワード変更
-	$(".auth-page-3 input").on('change', function() {
-		var new_password = $(".new-password").val();
-		var confirm_password = $(".confirm-password").val();
+	$('#profile').submit(function(event) {
+		event.preventDefault();
 
-		if (new_password.length < 8) {
-			// パスワードは８文字以上にしてください
-		}else if(new_password !== confirm_password) {
-			// パスワードがことなります
-		}else{
-			$(".auth-page-2 .auth-submit").fadeIn('fast');
-		}
+		var age = $('#age').val();
+		var gender = $('#genderIsMen').attr('checked') === true ? 'men' :
+			$('#genderIsWomen').attr('checked') === true ? 'women' : null;
+		var nickname = $('#nickname').val();
+		$('#profile .alert').addClass('hide');
+
+		$.post('/auth/updateuser.php', {
+			'age' : age,
+			'gender' : gender,
+			'nickname' : nickname
+		}, function(data, textStatus, xhr) {
+			console.log(data);
+			switch(data){
+				case 'success':
+					// ログイン完了画面へ
+					$(".auth-page-3").hide('fast', function () {
+						$(".auth-page-fin").fadeIn();
+					});
+					break;
+				case 'no-session':
+					$('#profile .alert').text('ログインされていません。もう一度ログインしてください');
+					break;
+			}
+		});
+
 	});
 
 	// ページ１に戻る
@@ -188,25 +204,31 @@ $(function() {
 				<p>メールアドレスの入力に<button type="button" class="btn btn-link auth-modal-back">もどる</button></p>
 		    </div>
 		    <div class="modal-body auth-page-3" style="display: none">
-		    	<h4>登録が完了しました</h4>
-		    	<h5>新しくパスワードを設定する場合は、こちらに入力してください</h5>
-		    	<form id="reset" class="form-horizontal">
+		    	<h4>プロフィールを入力してください</h4>
+		    	<form id="profile" class="form-horizontal">
+					<p class="alert alert-danger hide" role="alert"></p>
 				  	<div class="form-group">
-				    	<label for="resetPassword" class="col-sm-3 control-label">パスワード</label>
+				    	<label for="nickname" class="col-sm-3 control-label">ニックネーム</label>
 				    	<div class="col-sm-8">
-				    		<input type="password" class="form-control" id="resetPassword">
+				    		<input type="text" class="form-control" id="nickname">
 				    	</div>
 				  	</div>
 				  	<div class="form-group">
-				    	<label for="resetConfirmed" class="col-sm-3 control-label">もう一度入力</label>
+				  		<label class="col-sm-3 control-label" for="gender">性別</label>
+				    	<div id="gender" class="col-sm-8">
+					    	<label class="radio-inline"><input id="genderIsMen" type="radio" name="gender">男</label>
+					  		<label class="radio-inline"><input id="genderIsWoMen" type="radio" name="gender">女</label>
+				    	</div>
+				  	</div>
+				  	<div class="form-group">
+				  		<label for="age" class="col-sm-3 control-label">年齢</label>
 				    	<div class="col-sm-8">
-					    	<input type="password" class="form-control" id="resetConfirmed">
-					    </div>
+				    		<input type="number" class="form-control" id="age" value="16">
+				    	</div>
 				  	</div>
 				  	<div class="text-right">
-					  	<button type="submit" class="btn btn-default">再設定</button>
+					  	<button type="submit" class="btn btn-primary">登録</button>
 				  	</div>
-					<p>または、<button type="button" class="btn btn-link" data-dismiss="modal">スキップ</button>する</p>
 				</form>
 		    </div>
 		    <div class="modal-body auth-page-fin text-center" style="display: none">
