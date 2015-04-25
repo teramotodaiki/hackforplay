@@ -3,6 +3,7 @@
 $(function() {
 
 	$("#authModal").on('shown.bs.modal', function() {
+		$('#authModal .modal-body').hide();
 		// 状況に応じてページを表示
 		var unconfirmed_email = localStorage.getItem('unconfirmed_email');
 		if(unconfirmed_email === null){
@@ -14,6 +15,11 @@ $(function() {
 			// メールアドレスの自動入力
 			$("#signupEmail").val(unconfirmed_email);
 		}
+	});
+
+	$('#signinModal').on('shown.bs.modal', function() {
+		$('#signinModal .modal-body').hide();
+		$('.signin-page-1').show();
 	});
 
 	// サインイン
@@ -31,8 +37,8 @@ $(function() {
 			switch(data){
 				case "success":
 					// サインイン完了画面へ
-					$(".auth-page-1").hide('fast', function () {
-						$(".auth-page-fin").fadeIn();
+					$(".signin-page-1").hide('fast', function () {
+						$(".signin-page-2").fadeIn();
 					});
 					break;
 				case "invalid-email":
@@ -50,24 +56,6 @@ $(function() {
 			}
 		});
 	});
-
-	// サインアップ メールアドレスの入力
-	// $("#signupEmail").on('change', function() {
-	// 	var value = $(this).val();
-	// 	$.post('/auth/checkemail.php', {
-	// 		'email': value
-	// 	}, function(data, textStatus, xhr) {
-	// 		if(data === "available"){
-	// 			// velify
-	// 		}else if(data === "invalid"){
-	// 			// メールアドレスが無効です　のアラート表示
-	// 		}else{
-	// 			var result = jQuery.parseJSON(data);
-	// 			console.log(result);
-	// 			// サインインのサジェスト
-	// 		}
-	// 	});
-	// });
 
 	// メール送信・仮登録
 	$('#signup').submit(function(event) {
@@ -162,7 +150,7 @@ $(function() {
 	});
 });
 </script>
-<div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="authModalLabel" aria-hidden="true">
+<div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
     		<div class="modal-header">
@@ -230,4 +218,40 @@ $(function() {
     		</div>
 		</div>
 	</div>
+</div>
+<div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-hidden="true">
+  	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        	<h4 class="modal-title">ログイン</h4>
+    		</div>
+		    <div class="modal-body signin-page-1">
+		    	<form id="signin" class="form-horizontal">
+					<p class="alert alert-danger hide" role="alert"></p>
+				  	<div class="form-group">
+				    	<label for="signinEmail" class="col-sm-3 control-label">メールアドレス</label>
+				    	<div class="col-sm-8">
+				    		<input type="email" class="form-control" id="signinEmail">
+				    	</div>
+				  	</div>
+				  	<div class="form-group">
+				    	<label for="signinPassword" class="col-sm-3 control-label">パスワード</label>
+				    	<div class="col-sm-8">
+					    	<input type="password" class="form-control" id="signinPassword">
+					    </div>
+				  	</div>
+				  	<div class="text-right">
+					  	<button type="submit" class="btn btn-default">ログイン</button>
+				  	</div>
+				</form>
+		    </div>
+		    <div class="modal-body signin-page-2 text-center" style="display: none">
+		    	<h4>ログインできました</h4>
+		    </div>
+      		<div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+      		</div>
+    	</div>
+  	</div>
 </div>

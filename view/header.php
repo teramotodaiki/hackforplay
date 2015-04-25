@@ -31,7 +31,7 @@ $(function(){
 		}
 	}
 	checkSigninSession(function(result){ authtext(result); });
-	$("#authModal").on('hidden.bs.modal', function(){
+	$("#authModal,#signinModal").on('hidden.bs.modal', function(){
 		// 別タブでGET送信認証していてもlocalStorage経由で結果を得る
 		checkSigninSession(function(result){ authtext(result); }, true);
 	});
@@ -64,7 +64,8 @@ $(function(){
 						break;
 					case 'replay':
 						?>
-							<li class="h4p_signin"><button type="button" class="btn btn-link h4p_header" data-toggle="modal" data-target="#authModal">サインインまたはサインアップ</button></li>
+							<li class="h4p_signin"><button type="button" class="btn btn-link h4p_header" data-toggle="modal" data-target="#signinModal">ログイン</button></li>
+							<li class="h4p_signin"><button type="button" class="btn btn-default h4p_header" data-toggle="modal" data-target="#authModal">会員登録</button></li>
 							<li class="h4p_signout"><button type="button" class="btn btn-link h4p_header" onclick="signout();">サインアウト</button></li>
 						<?php
 						break;

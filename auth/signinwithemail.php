@@ -45,6 +45,7 @@ if($confirmed == NULL){
 // セッションをつくる
 session_start();
 $_SESSION['UserID'] = $confirmed['UserID'];
+session_commit();
 
 exit("success");
 
