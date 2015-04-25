@@ -15,7 +15,7 @@
 	<meta property="og:site_name" content="あそべるプログラミング HackforPlay"/>
 	<script type="text/javascript" charset="utf-8">
 	$(function(){
-		$(".h4p_item-title>h4").each(function(){
+		$(".h4p_item-title h4").each(function(){
 			var size = 37;
 			var txt = $(this).text();
 			var suffix = '…';
@@ -42,6 +42,45 @@
 			<div class="col-md-12">
 				<div class="row h4p_box">
 					<div class="col-md-12 h4p_box-header">
+						<h3>オリジナルステージを作る</h3>
+					</div>
+					<div class="col-md-12 h4p_box-main">
+						<div class="row">
+							<?php $item = $allstages[201]; ?>
+							<a href="/s?id=201" title="<?php echo $item['title']; ?>" target="_blank">
+								<div class="col-md-4 col-xs-4 h4p_topicitem ?>">
+									<div class="h4p_item-thumbnail">
+										<span class="h4p_item-src">/s/<?php echo $item['path']; ?>thumb.png</span>
+									</div>
+									<div class="h4p_item-title">
+										<h4><?php echo $item['title']; ?></h4>
+									</div>
+									<div class="h4p_item-footer">
+										プレイ回数：<b><?php echo $item['playcount']."回"; ?></b>
+									</div>
+								</div>
+							</a>
+							<div class="col-md-8 col-xs-8 h4p_topicitem">
+								<div class="h4p_item-title">
+									<h4>ここからが、真のハックフォープレイだ！</h4>
+								</div>
+								<div>
+									おめでとう！君はプログラミングの世界に足を踏み出した！<br>
+									このまま勉強を続ければ...自分でゲームを作ることだって、夢ではない!!<br>
+									<a href="/s?id=201" class="btn btn-success btn-block btn-lg" title="今すぐ始める" style="margin-top: 10px; margin-bottom: 10px;"><h3>今すぐ始める</h3></a>
+								</div>
+								<div class="h4p_item-footer">
+									対象年齢の目安：<b>10才以上</b><br>
+									キーボードの全角/半角と、簡単な英単語の知識が必要です。
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+	  		</div>
+			<div class="col-md-12">
+				<div class="row h4p_box">
+					<div class="col-md-12 h4p_box-header">
 						<h3>投稿されたステージ一覧</h3>
 					</div>
 					<div class="col-md-12 h4p_box-main">
@@ -58,21 +97,28 @@
 								$thumb = "/s/".$item['path']."thumb.png";
 							}
 							$author = $item['restaging']['author'];
+							$link_attr = ' href="/s?id='.$id.'" title="'.$title.' by '.$author.'" target="_blank" ';
 							?>
-							<a href="/s?id=<?php echo $id ?>" title="<?php echo $title; ?> by <?php echo $author; ?>">
-								<div class="col-md-4 col-xs-6 h4p_item <?php echo $attr ?>">
+							<div class="col-md-4 col-sm-6 col-xs-12 h4p_item <?php echo $attr ?>">
+								<a <?php echo $link_attr; ?> >
 									<div class="h4p_item-thumbnail">
 										<span class="h4p_item-src"><?php echo $thumb; ?></span>
 									</div>
-									<div class="h4p_item-title">
-										<h4><?php echo $title; ?></h4>
-									</div>
+								</a>
+								<div class="h4p_item-title">
+									<a <?php echo $link_attr; ?> ><h4><?php echo $title; ?></h4></a>
+								</div>
 									<div class="h4p_item-footer">
 										<p>作成者：<b><?php echo $author; ?></b></p>
 										<p>プレイ回数：<b><?php echo $count."回"; ?></b></p>
+										<?php if (isset($item['origin_stage'])):
+										$id = $item['origin_stage']['id'];
+										$title = $item['origin_stage']['title'];
+										?>
+										<p>改造元：<b><a href="/s?id=<?php echo $id; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a></b></p>
+										<?php endif; ?>
 									</div>
 								</div>
-							</a>
 							<?php endif; endforeach; ?>
 						</div>
 					</div>

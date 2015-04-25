@@ -3,20 +3,38 @@
 /* 要素の大きさや、間隔の広さなどを定義しています。 */
 
 /* 全体の幅など、デバイスによって変化するサイズ */
+@media(max-width: 767px) {
+	.container {
+		width: 314px;
+	}
+	.h4p_item {
+		height: 340px;
+	}
+}
 @media (min-width: 768px) {
 	.container {
 		/* 全体の幅 */
 		width: 630px;
+	}
+	.h4p_item {
+		/* ステージ一覧のアイテムの高さ */
+		height: 351px;
 	}
 }
 @media (min-width: 992px) {
 	.container {
 		width: 810px;
 	}
+	.h4p_item {
+		height: 320px;
+	}
 }
 @media (min-width: 1200px) {
 	.container {
 		width: 810px;
+	}
+	.h4p_item {
+		height: 320px;
 	}
 }
 
@@ -40,6 +58,10 @@
 
 .h4p_item-challenged img {
 	width: 60%;
+}
+
+.h4p_mapTip img {
+	width: 100%;
 }
 
 /* 間隔属性 */
@@ -79,13 +101,10 @@ header {
 	margin-bottom: 120px;
 }
 
-.h4p_item {
+.h4p_item,
+.h4p_topicitem {
 	padding-top: 15px;
 	padding-bottom: 15px;
-}
-
-.h4p_item {
-	height: 303px;
 }
 
 .h4p_item-challenged img {
@@ -129,6 +148,11 @@ header {
 
 .h4p_publish-text {
 	height: 27px;
+}
+
+.h4p_mapTip {
+	margin-top: 10px;
+	padding: 0;
 }
 
 input[name="challenge"] {

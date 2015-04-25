@@ -107,9 +107,20 @@ $retry 	= filter_input(INPUT_GET, "retry");
 		jsEditor.setSize($div.width(), $div.height());
 		if(mode !== "restaging"){
 			$(".h4p_restaging").hide();
+			$(".h4p_mapTip").hide();
 		}
+		// ステージ改造中、画面遷移するとき注意をうながす
+		var alert_on_unload = false;
+		$(window).on('beforeunload', function(event) {
+			if(alert_on_unload){
+				return "制作中のステージは保存されていません。ページを移動しますか？";
+			}else{
+				event.preventDefault();
+			}
+		});
 		(function(){
 			var beginRestaging = function(){
+				alert_on_unload = true;
 				$(".h4p_restaging").fadeIn("fast", function() {
 					if (!retry) {
 						var code = sessionStorage.getItem('restaging_code'); // default code (set somedir/main.js)
@@ -136,7 +147,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
 					sessionStorage.setItem('retry_code', code);
-					var a = sessionStorage.getItem('retry_code');
+					alert_on_unload = false;
 					location.href = '/s?id='+<?php echo $id; ?>+'&mode=restaging&retry=true';
 				});
 				$(".h4p_restaging_button").on('click', function() {
@@ -144,8 +155,10 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
 					sessionStorage.setItem('restaging_code', code);
+					alert_on_unload = false;
 					location.href = "/s?id="+<?php echo $id; ?>+"&mode=restaging";
 				});
+				$(".h4p_mapTip").show();
 			};
 			switch(mode){
 				case "official":
@@ -194,6 +207,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					        	$message.text('Thank you for your ReStaging!!');
 					        	$(".h4p_publish-complete").show();
 					        	$(".h4p_publish-return").show();
+					        	alert_on_unload = false; // 遷移時の警告を非表示
 					            if(data !== "") console.log(data);
 					            if(textStatus !== "") console.log(textStatus);
 					        });
@@ -234,6 +248,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
 					sessionStorage.setItem('extend_code', code);
+					alert_on_unload = false;
 					location.href = "/s?id="+next+"&mode=extend";
 				});
 			}
@@ -313,6 +328,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			        </form>
 			    </div>
 	    		<div class="modal-footer">
+	        		<p class="alert alert-warning">特定の個人を指すキーワードや暴言などを記入すると、削除されることがあります。</p>
 	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
 	       			<button type="button" class="btn btn-primary" id="publish-button" >投稿する</button>
 	    		</div>
@@ -402,7 +418,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					<h3 class="h4p_publish-text">この改造ステージを投稿する</h3>
 					<h5 class="h4p_publish-complete text-center" style="display:none"><br>ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。</h5>
 				</button>
-				<a href="../" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
+				<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
 			</div>
 			<div class="col-md-12 h4p_info">
 				<div class="row">
@@ -419,6 +435,9 @@ $retry 	= filter_input(INPUT_GET, "retry");
 						<button style="display: none;" class="btn btn-primary btn-lg btn-block h4p_info-retry-button" role="button" title="もう一度実行">もう一度実行</button>
 					</div>
 				</div>
+			</div>
+			<div class="col-md-12 h4p_mapTip">
+				<img src="img/mapTipIndex.jpg" alt="">
 			</div>
 		</div>
 	</div>
