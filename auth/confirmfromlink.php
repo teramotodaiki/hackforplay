@@ -83,22 +83,6 @@ try {
 	print_r($e);
 	die();
 }
+
+exit('success');
 ?>
-<!-- 暫定的にここにHTMLを置く -->
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title></title>
-</head>
-<body>
-	<script type="text/javascript" charset="utf-8">
-	localStorage.setItem('confirm-account-state', 'success');
-	console.log(localStorage.getItem('confirm-account-state'));
-	</script>
-	<div>
-		success
-	</div>
-</body>
-</html>
