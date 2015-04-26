@@ -45,53 +45,22 @@ $(function(){
 	     	</a>
 	    </div>
 	    <nav class="collapse navbar-collapse">
+	    	<ul class="nav navbar-nav">
+	    	<?php if($header_pattern == 'inGame' && $mode == 'official'): ?>
+	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
+	    	<?php elseif ($header_pattern == 'inGame' && $mode != 'official'): ?>
+	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
+	    	<?php elseif ($header_pattern == 'admin'): ?>
+	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
+		    <?php elseif ($header_pattern == 'replay'): ?>
+	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
+			<?php endif; ?>
+	    	</ul>
 	    	<ul class="nav navbar-nav navbar-right">
 	    		<li class="h4p_signin"><button type="button" class="btn btn-link navbar-btn" data-toggle="modal" data-target="#signinModal">ログイン</button></li>
 				<li class="h4p_signin"><button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#authModal">会員登録</button></li>
-				<li class="h4p_signout"><button type="button" class="btn btn-link navbar-btn" onclick="signout();">サインアウト</button></li>
+				<li class="h4p_signout"><button type="button" class="btn btn-link navbar-btn" onclick="signout();">ログアウト</button></li>
 	    	</ul>
 	    </nav>
 	</div>
 </header>
-<!-- /header -->
-<!-- <header class="navbar navbar-static-top" <?php if($header_pattern == "topPage"): ?>style="margin-bottom:0px;"<?php endif; ?>>
-	<div class="container">
-		<div class="navbar-header h4p_header">
-			<a class="" title="ハックフォープレイ" href="/">
-				<img class="h4p_header-logo" src="/logo.png" alt="hackforplay" />
-			</a>
-		</div>
-		<nav class="collapse navbar-collapse h4p_header_nav_padding" role="navigation">
-			<ul class="nav navbar-nav">
-				<?php switch ($header_pattern) :
-					case 'topPage':
-					?>
-					<li><a class="h4p_header" href="http://hackforplay.weebly.com/contact.html" title="Contact">
-					お問い合わせ</a></li>
-					<li><a class="h4p_header" href="http://hackforplay.weebly.com/blog/001" title="Blog">
-						ブログ</a></li>
-					<?php
-						break;
-					case 'inGame':
-						if ($mode == "replay" || $mode == "restaging") : ?>
-						<li><a class="h4p_header" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
-						<?php endif; ?>
-						<li><a class="h4p_header" href="../" title="トップに戻る">トップに戻る</a></li>
-						<?php
-						break;
-					case 'replay':
-						?>
-							<li class="h4p_signin"><button type="button" class="btn btn-link h4p_header" data-toggle="modal" data-target="#signinModal">ログイン</button></li>
-							<li class="h4p_signin"><button type="button" class="btn btn-default h4p_header" data-toggle="modal" data-target="#authModal">会員登録</button></li>
-							<li class="h4p_signout"><button type="button" class="btn btn-link h4p_header" onclick="signout();">サインアウト</button></li>
-						<?php
-						break;
-					default: ?>
-						<li><a class="h4p_header" href="../" title="トップに戻る">トップに戻る</a></li>
-					<?php
-						break;
-				endswitch; ?>
-			</ul>
-		</nav>
-	</div>
-</header> -->

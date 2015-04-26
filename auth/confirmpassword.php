@@ -2,7 +2,7 @@
 /*
 HackforPlayアカウント情報が正しいかどうかを判別し、あっていればStateをconnectedにする
 Input:	mail , Hash前のパスワード
-Output:	invalid-email , invalid-password , valid-but-failed , success
+Output:	invalid-email , already-confirmed , incorrect-password , valid-but-failed , success
 */
 
 require_once '../preload.php';
@@ -13,11 +13,11 @@ if($email == FALSE){
 	exit('invalid-email');
 }
 
-// unconfirmed なアカウント情報をすべて取得
+// disconnected でないアカウント情報をすべて取得
 try {
-	$stmt 	= $dbh->prepare('SELECT "ID","UserID","Hashed" FROM "Account" WHERE "Email"=:email AND "State"=:unconfirmed AND "Type"=:hackforplay');
+	$stmt 	= $dbh->prepare('SELECT "ID","UserID","Hashed","State" FROM "Account" WHERE "Email"=:email AND "State"!=:disconnected AND "Type"=:hackforplay');
 	$stmt->bindValue(":email", $email);
-	$stmt->bindValue(":unconfirmed", "unconfirmed");
+	$stmt->bindValue(":disconnected", "disconnected");
 	$stmt->bindValue(":hackforplay", "hackforplay");
 	$stmt->execute();
 	$result	= $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -25,6 +25,13 @@ try {
 } catch (PDOException $e) {
 	print_r($e);
 	die();
+}
+
+// すでに connected なアカウントがある場合
+foreach ($result as $key => $value) {
+	if ($value["State"] == 'connected') {
+		exit('already-confirmed');
+	}
 }
 
 // いずれかに整合するなら、Accountを保存する
@@ -36,7 +43,7 @@ foreach ($result as $key => $value) {
 	}
 }
 if($confirmed == NULL){
-	exit("invalid-password");
+	exit("incorrect-password");
 }
 
 
@@ -44,7 +51,7 @@ if($confirmed == NULL){
 session_start();
 $_SESSION['UserID'] = $confirmed['UserID'];
 
-session_write_close();
+session_commit();
 
 // アカウントのStateをconnectedに
 try {

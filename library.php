@@ -30,21 +30,21 @@ call_user_func(function($useCDN, $path){
 <script src="/bs-stylist.js" type="text/javascript" charset="utf-8"></script>
 <!-- Signin session -->
 <script type="text/javascript" charset="utf-8">
-function checkSigninSession (callback, useStorage) {
-	if(useStorage === undefined) useStorage = false;
-	else if(useStorage){
-		var state = localStorage.getItem('confirm-account-state');
-		console.log(state);
-		if(state !== null){
-			callback(state);
-			localStorage.removeItem('confirm-account-state');
-			return;
-		}
-	}
-	$.get('/auth/signinwithsession.php', callback);
+function checkSigninSession (callback) {
+	$.ajax({
+		url: '/auth/signinwithsession.php',
+		type: 'GET',
+		cache: false
+	})
+	.done(callback);
 }
 function signout (){
-	$.get('/auth/signout.php', function(data){
+	$.ajax({
+		url: '/auth/signout.php',
+		type: 'GET',
+		cache: false
+	})
+	.done(function(data){
 		$(".h4p_signin").show();
 		$(".h4p_signout").hide();
 	});
