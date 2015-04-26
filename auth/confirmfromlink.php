@@ -89,5 +89,5 @@ try {
 	die();
 }
 
-exit('success');
+require_once 'view/inputyourself.php';
 ?>
