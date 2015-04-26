@@ -282,6 +282,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 </head>
 <body>
 	<?php include_once("../analyticstracking.php"); ?>
+	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<!-- Modal -->
 	<div class="modal fade" id="restageModal" tabindex="-1" role="dialog" aria-labelledby="restageModalLabel" aria-hidden="true">

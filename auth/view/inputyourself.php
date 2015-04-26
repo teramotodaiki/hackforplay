@@ -17,6 +17,7 @@
 <body>
 	<?php require_once '../analyticstracking.php' ?>
 	<?php require_once '../fb-root.php' ?>
+	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<?php require_once '../view/authmodal.php'; ?>
 	<script type="text/javascript" charset="utf-8">

@@ -81,6 +81,7 @@
 <body class="">
 	<?php require_once 'analyticstracking.php' ?>
 	<?php require_once 'fb-root.php' ?>
+	<?php require_once 'sendattendance.php'; ?>
 	<?php // require_once 'header.php'; ?>
 	<!-- Modal -->
 	<div class="modal fade" id="moreModal" tabindex="-1" role="dialog" aria-labelledby="moreModalLabel" aria-hidden="true">
