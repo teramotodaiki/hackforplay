@@ -119,7 +119,10 @@ $(function() {
 				case "invalid-email":
 					$('#tmp .alert').text('無効なメールアドレスです ' + email).removeClass('hide');
 					break;
-				case "invalid-password":
+				case "already-confirmed":
+					$('#tmp .alert').text('すでに登録が完了しています').removeClass('hide');
+					break;
+				case "incorrect-password":
 					$('#tmp .alert').text('パスワードが間違っています').removeClass('hide');
 					break;
 				case "valid-but-failed":

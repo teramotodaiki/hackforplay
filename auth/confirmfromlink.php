@@ -2,7 +2,6 @@
 /*
 メールに埋め込まれたリンクから、Eメールアドレスとパスワードを認証する
 認証できたら、 本登録を行う。認証に失敗した場合は、またモーダルを表示する
-別のタブで開いてあるページに認証したことを伝えられるよう、ローカルストレージにデータを置く
 Input:	email , encrypted_password
 */
 
@@ -22,11 +21,11 @@ $iv = substr($encrypted_dec, 0, $iv_size);
 $encrypted = substr($encrypted_dec, $iv_size);
 $password = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $encription_key, $encrypted, MCRYPT_MODE_CBC, $iv);
 
-// unconfirmed なアカウント情報をすべて取得
+// disconnected でないアカウント情報をすべて取得
 try {
-	$stmt 	= $dbh->prepare('SELECT "ID","UserID","Hashed" FROM "Account" WHERE "Email"=:email AND "State"=:unconfirmed AND "Type"=:hackforplay');
+	$stmt 	= $dbh->prepare('SELECT "ID","UserID","Hashed","State" FROM "Account" WHERE "Email"=:email AND "State"!=:disconnected AND "Type"=:hackforplay');
 	$stmt->bindValue(":email", $email);
-	$stmt->bindValue(":unconfirmed", "unconfirmed");
+	$stmt->bindValue(":disconnected", "disconnected");
 	$stmt->bindValue(":hackforplay", "hackforplay");
 	$stmt->execute();
 	$result	= $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -34,6 +33,13 @@ try {
 } catch (PDOException $e) {
 	print_r($e);
 	die();
+}
+
+// すでに connected なアカウントがある場合
+foreach ($result as $key => $value) {
+	if ($value["State"] == 'connected') {
+		exit('already-confirmed');
+	}
 }
 
 // いずれかに整合するなら、Accountを保存する
@@ -45,8 +51,7 @@ foreach ($result as $key => $value) {
 	}
 }
 if($confirmed == NULL){
-	print_r('invalid password');
-	exit();
+	exit("incorrect-password");
 }
 
 // セッションを作成
