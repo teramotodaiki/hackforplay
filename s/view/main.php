@@ -378,7 +378,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 						<textarea name="restaging_code" value="// ステージ改造コードを書いて、このステージを改造してやろう!!"></textarea>
 					</div>
 					<div class="col-md-12 h4p_restaging_button">
-						<button type="button" class="btn btn-block btn-lg btn-primary">
+						<button type="button" class="btn btn-block btn-lg btn-primary ignore-attendance">
 							<span>ステージ改造コードを実行</span>
 						</button>
 					</div>
@@ -400,7 +400,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 							改造ステージ一覧へ
 						</a>
 					<?php elseif($mode == "restaging") : ?>
-						<button class="btn btn-primary btn-lg btn-block h4p_info-retry-button" role="button" title="改造コードを保存してゲームを再スタート">改造コードを保存してゲームを再スタート</button>
+						<button class="btn btn-primary btn-lg btn-block h4p_info-retry-button ignore-attendance" role="button" title="改造コードを保存してゲームを再スタート">改造コードを保存してゲームを再スタート</button>
 					<?php elseif($next != NULL) : // exist next stage ?>
 						<a href="/s?id=<?php echo $next; ?>" style="display: block;" title="つぎのステージへ">
 							<img src="img/button_next.png" height="48" width="266" alt="">
@@ -432,8 +432,8 @@ $retry 	= filter_input(INPUT_GET, "retry");
 						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">改造する</button>
 					</div>
 					<div class="col-md-3 h4p_info-retry">
-						<a class="btn btn-primary btn-lg btn-block" role="button" href="/s?id=<?php echo $id; ?>" title="はじめから">はじめから</a>
-						<button style="display: none;" class="btn btn-primary btn-lg btn-block h4p_info-retry-button" role="button" title="もう一度実行">もう一度実行</button>
+						<a class="btn btn-primary btn-lg btn-block ignore-attendance" role="button" href="/s?id=<?php echo $id; ?>" title="はじめから">はじめから</a>
+						<button style="display: none;" class="btn btn-primary btn-lg btn-block h4p_info-retry-button ignore-attendance" role="button" title="もう一度実行">もう一度実行</button>
 					</div>
 				</div>
 			</div>
