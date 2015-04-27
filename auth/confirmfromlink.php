@@ -57,6 +57,7 @@ if($confirmed == NULL){
 // セッションを作成
 session_start();
 $_SESSION['UserID'] = $confirmed['UserID'];
+$_SESSION['SignupImmediately'] = 'immediately';
 
 session_commit();
 

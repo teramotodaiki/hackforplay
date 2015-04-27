@@ -138,12 +138,17 @@ $(function() {
 		var age = $('#age').val();
 		var gender = $('input[name="gender"]:checked').val();
 		var nickname = $('#nickname').val();
+		var password = $('#password').val();
+
+		// Validation
+
 		$('#profile .alert').addClass('hide');
 
-		$.post('/auth/updateuser.php', {
+		$.post('/auth/updateuserinfoimmediately.php', {
 			'age' : age,
 			'gender' : gender,
-			'nickname' : nickname
+			'nickname' : nickname,
+			'password' : password
 		}, function(data, textStatus, xhr) {
 			console.log(data);
 			switch(data){
@@ -155,6 +160,12 @@ $(function() {
 					break;
 				case 'no-session':
 					$('#profile .alert').text('ログインされていません。もう一度ログインしてください');
+					break;
+				case 'not-immediately':
+					$('#profile .alert').text('登録してから一度ログアウトされています。マイページから情報を入力してください');
+					break;
+				default:
+					$('#profile .alert').text(data);
 					break;
 			}
 		});
@@ -226,6 +237,18 @@ $(function() {
 				  		<label for="age" class="col-sm-3 control-label">年齢</label>
 				    	<div class="col-sm-8">
 				    		<input type="number" class="form-control" id="age" value="16">
+				    	</div>
+				  	</div>
+				  	<div class="form-group">
+				    	<label for="password" class="col-sm-3 control-label">パスワード</label>
+				    	<div class="col-sm-8">
+				    		<input type="password" class="form-control" id="password">
+				    	</div>
+				  	</div>
+				  	<div class="form-group">
+				    	<label for="confirm" class="col-sm-3 control-label">もう一度入力</label>
+				    	<div class="col-sm-8">
+				    		<input type="password" class="form-control" id="confirm">
 				    	</div>
 				  	</div>
 				  	<div class="text-right">
