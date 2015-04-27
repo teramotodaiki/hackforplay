@@ -1,6 +1,8 @@
 <!-- Authorize Modal -->
 <script type="text/javascript" charset="utf-8">
 $(function() {
+	// Initialize tooltip
+	$('[data-toggle="tooltip"]').tooltip();
 
 	$("#authModal").on('shown.bs.modal', function() {
 		$('#authModal .modal-body').hide();
@@ -20,6 +22,12 @@ $(function() {
 	$('#signinModal').on('shown.bs.modal', function() {
 		$('#signinModal .modal-body').hide();
 		$('.signin-page-1').show();
+	});
+
+	$('#authModal').off('shown.bs.modal')
+	.on('shown.bs.modal', function() {
+
+		$('.auth-page-3').show();
 	});
 
 	// サインイン
@@ -142,6 +150,7 @@ $(function() {
 
 		// Validation
 
+
 		$('#profile .alert').addClass('hide');
 
 		$.post('/auth/updateuserinfoimmediately.php', {
@@ -159,13 +168,18 @@ $(function() {
 					});
 					break;
 				case 'no-session':
-					$('#profile .alert').text('ログインされていません。もう一度ログインしてください');
+					$('#profile .alert').text('ログインされていません。もう一度ログインしてください').removeClass('hide');
 					break;
 				case 'not-immediately':
-					$('#profile .alert').text('登録してから一度ログアウトされています。マイページから情報を入力してください');
+					$('#profile .alert').text('登録してから一度ログアウトされています。マイページから情報を入力してください').removeClass('hide');
 					break;
 				default:
-					$('#profile .alert').text(data);
+					$('#profile .alert').text('登録できない内容です。修正してください').removeClass('hide');
+					var invalid_inputs = jQuery.parseJSON(data);
+					invalid_inputs.forEach(function(item){
+						console.log($('#'+item).parents('.form-group'));
+						$('#'+item).parents('.form-group').addClass('has-error');
+					});
 					break;
 			}
 		});
@@ -220,35 +234,47 @@ $(function() {
 		    	<h4>プロフィールを入力してください</h4>
 		    	<form id="profile" class="form-horizontal">
 					<p class="alert alert-danger hide" role="alert"></p>
-				  	<div class="form-group">
+				  	<div class="form-group has-feedback">
 				    	<label for="nickname" class="col-sm-3 control-label">ニックネーム</label>
 				    	<div class="col-sm-8">
 				    		<input type="text" class="form-control" id="nickname">
 				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="本名は使用できません">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
 				  	</div>
-				  	<div class="form-group">
+				  	<div class="form-group has-feedback">
 				  		<label class="col-sm-3 control-label" for="gender">性別</label>
 				    	<div id="gender" class="col-sm-8">
 					    	<label class="radio-inline"><input type="radio" name="gender" value="man" checked>男</label>
 					  		<label class="radio-inline"><input type="radio" name="gender" value="woman">女</label>
 				    	</div>
 				  	</div>
-				  	<div class="form-group">
+				  	<div class="form-group has-feedback">
 				  		<label for="age" class="col-sm-3 control-label">年齢</label>
 				    	<div class="col-sm-8">
 				    		<input type="number" class="form-control" id="age" value="16">
 				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="半角の数値を入力してください">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
 				  	</div>
-				  	<div class="form-group">
+				  	<div class="form-group has-feedback">
 				    	<label for="password" class="col-sm-3 control-label">パスワード</label>
 				    	<div class="col-sm-8">
 				    		<input type="password" class="form-control" id="password">
 				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="8文字以上の長さが必要です">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
 				  	</div>
-				  	<div class="form-group">
+				  	<div class="form-group has-feedback">
 				    	<label for="confirm" class="col-sm-3 control-label">もう一度入力</label>
 				    	<div class="col-sm-8">
 				    		<input type="password" class="form-control" id="confirm">
+				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="上と同じ文字を入力してください">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
 				    	</div>
 				  	</div>
 				  	<div class="text-right">

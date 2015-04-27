@@ -90,3 +90,13 @@ iframe {
 	border: 0;
 	border-radius: 0;
 }
+
+.form-group *[data-toggle="tooltip"]{
+	height: 34px;
+	width: 34px;
+	padding: 0;
+	left: -10px;
+}
+.form-group *[data-toggle="tooltip"] .glyphicon{
+	right: 0px;
+}
