@@ -43,7 +43,7 @@ try {
 	$stmt 	= $dbh->prepare('INSERT INTO "User" ("Age") VALUES(NULL)');
 	$stmt->execute();
 
-	$userid = $dbh->lastInsertId('ID');
+	$userid = $dbh->lastInsertId();
 } catch (PDOException $e) {
 	print_r($e);
 	die();
