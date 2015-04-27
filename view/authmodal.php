@@ -24,12 +24,6 @@ $(function() {
 		$('.signin-page-1').show();
 	});
 
-	$('#authModal').off('shown.bs.modal')
-	.on('shown.bs.modal', function() {
-
-		$('.auth-page-3').show();
-	});
-
 	// サインイン
 	$('#signin').submit(function(event) {
 		event.preventDefault();
@@ -147,11 +141,18 @@ $(function() {
 		var gender = $('input[name="gender"]:checked').val();
 		var nickname = $('#nickname').val();
 		var password = $('#password').val();
-
-		// Validation
-
+		var confirm = $('#confirm').val();
 
 		$('#profile .alert').addClass('hide');
+		$('.has-error').removeClass('has-error');
+
+		// Password validation
+		if(password !== confirm) {
+			$('#profile .alert').text('パスワードが一致しません').removeClass('hide');
+			$('#password').parents('.has-feedback').addClass('has-error');
+			$('#confirm').parents('.has-feedback').addClass('has-error');
+			return;
+		}
 
 		$.post('/auth/updateuserinfoimmediately.php', {
 			'age' : age,
