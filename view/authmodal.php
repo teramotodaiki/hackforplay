@@ -218,8 +218,8 @@ $(function() {
 				  	<div class="form-group">
 				  		<label class="col-sm-3 control-label" for="gender">性別</label>
 				    	<div id="gender" class="col-sm-8">
-					    	<label class="radio-inline"><input type="radio" name="gender" value="men" checked>男</label>
-					  		<label class="radio-inline"><input type="radio" name="gender" value="women">女</label>
+					    	<label class="radio-inline"><input type="radio" name="gender" value="man" checked>男</label>
+					  		<label class="radio-inline"><input type="radio" name="gender" value="woman">女</label>
 				    	</div>
 				  	</div>
 				  	<div class="form-group">
