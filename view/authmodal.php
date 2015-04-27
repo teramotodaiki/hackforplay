@@ -147,6 +147,11 @@ $(function() {
 		$('.has-error').removeClass('has-error');
 
 		// Password validation
+		if(password.length < 8){
+			$('#profile .alert').text('安全のため、パスワードは8文字以上にしてください').removeClass('hide');
+			$('#password').parents('.has-feedback').addClass('has-error');
+			return;
+		}
 		if(password !== confirm) {
 			$('#profile .alert').text('パスワードが一致しません').removeClass('hide');
 			$('#password').parents('.has-feedback').addClass('has-error');
