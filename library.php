@@ -1,7 +1,7 @@
 <?php
 call_user_func(function($useCDN, $path){
 	// in the local scope!
-	if($useCDN && $_SERVER['SERVER_NAME'] !== 'localhost'):
+	if($useCDN || $_SERVER['SERVER_NAME'] !== 'localhost'):
 		// on the internet -> it uses CDN
 	?>
 
