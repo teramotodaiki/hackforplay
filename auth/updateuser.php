@@ -46,6 +46,7 @@ try {
 	echo "update gener, ";
 	var_dump($gender);
 	var_dump($_POST['gender']);
+	var_dump($gender != "man" && $gender != "woman");
 	// Update Gender
 	if ($gender != NULL) {
 		$stmt 	= $dbh->prepare('UPDATE "User" SET "Gender"=:gender WHERE "ID"=:userid');
