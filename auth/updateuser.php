@@ -43,6 +43,7 @@ try {
 }
 
 try {
+	echo "update gener, ";
 	// Update Gender
 	if ($gender != NULL) {
 		$stmt 	= $dbh->prepare('UPDATE "User" SET "Gender"=:gender WHERE "ID"=:userid');
