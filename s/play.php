@@ -18,7 +18,7 @@ if($stageid == FALSE || $stageid == NULL){
 }
 
 try{
-	$stmt	= $dbh->prepare('SELECT "ID","Mode","ProjectID","Path","Title","Playcount","NextStageID" FROM "Stage" WHERE "ID"=:stageid AND "State"!=:rejected');
+	$stmt	= $dbh->prepare('SELECT "ID","Mode","ProjectID","Path","Title","Playcount","NextID" FROM "Stage" WHERE "ID"=:stageid AND "State"!=:rejected');
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 	$stmt->bindValue(":rejected", 'rejected', PDO::PARAM_STR);
 	$stmt->execute();

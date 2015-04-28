@@ -2,7 +2,7 @@
 $id 	= $stage['ID'];
 $path	= $stage['Path'];
 $title 	= $stage['Title'];
-$next 	= $stage['NextStageID'];
+$next 	= $stage['NextID'];
 $count 	= $stage['Playcount'];
 // $origin_id = $stage['restaging_id'];
 $origin_id = NULL;
