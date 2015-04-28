@@ -33,22 +33,19 @@ try{
 }
 
 if ($stage['Mode'] == 'replay') {
-	// リプレイ
+	try {
+		$stmt	= $dbh->prepare('SELECT "Data" FROM "Project" WHERE "ID"=:projectid');
+		$stmt->bindValue(":projectid", $stage['ProjectID'], PDO::PARAM_INT);
+		$stmt->execute();
+		$project = $stmt->fetch(PDO::FETCH_ASSOC);
+
+	} catch (PDOException $e) {
+		print_r($e);
+		die();
+	}
 }
 
-// if(isset($stage['restaging_id'])){
-// 	try{
-// 		$stmt	= $pdo->prepare('SELECT * FROM "restaging" WHERE "id"=:id');
-// 		$stmt->bindValue(":id", $stage['restaging_id'], PDO::PARAM_INT);
-// 		$stmt->execute();
-// 		$restaging = $stmt->fetch(PDO::FETCH_ASSOC);
-// 	}catch(PDOException $e){
-// 		print("PDO Error B");
-// 		exit();
-// 	}
-// }
-
-// playcountを更新
+// Playcountを更新
 try {
 	$stmt	= $dbh->prepare('UPDATE "Stage" SET "Playcount"="Playcount"+1 WHERE "ID"=:stageid');
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);

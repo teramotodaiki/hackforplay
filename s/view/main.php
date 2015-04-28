@@ -11,9 +11,9 @@ if(!isset($mode)){
 	$mode 	= $stage['Mode'];
 }
 if($mode == "replay"){
-	$code = $restaging['code'];
-	$code = preg_replace("/\\\\/", "\\\\\\\\", $code);
-	$code = preg_replace("/\n/", "\\n", $code);
+	$code = $project['Data'];
+	// $code = preg_replace("/\\\\/", "\\\\\\\\", $code);
+	// $code = preg_replace("/\n/", "\\n", $code);
 	$code = preg_replace("/\"/", "\\\"", $code);
 }
 $retry 	= filter_input(INPUT_GET, "retry");
