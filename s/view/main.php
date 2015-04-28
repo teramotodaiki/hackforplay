@@ -1,14 +1,14 @@
 <?php
-$id 	= $stage['id'];
-$path	= $stage['path'];
-$title 	= $stage['title'];
-$next 	= $stage['next'];
-$count 	= $stage['playcount'];
-$origin_id = $stage['restaging_id'];
-$url 	= filter_input(INPUT_SERVER, "REQUEST_URI", FILTER_VALIDATE_URL);
+$id 	= $stage['ID'];
+$path	= $stage['Path'];
+$title 	= $stage['Title'];
+$next 	= $stage['NextStageID'];
+$count 	= $stage['Playcount'];
+// $origin_id = $stage['restaging_id'];
+$origin_id = NULL;
 $mode 	= filter_input(INPUT_GET, "mode");
 if(!isset($mode)){
-	$mode	= isset($stage['restaging_id']) ? "replay" : "official";
+	$mode 	= $stage['Mode'];
 }
 if($mode == "replay"){
 	$code = $restaging['code'];
@@ -23,21 +23,11 @@ $retry 	= filter_input(INPUT_GET, "retry");
 <head prefix="og: http://ogp.me/ns#">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<!-- Open graph protocol -->
-	<meta property="og:title" content="<?php echo $title; ?> - HackforPlay"/>
-	<meta property="og:description" content="プログラミングをゲームで学ぼう。小中学生向けの教育ゲーム ハックフォープレイ"/>
-	<?php if($mode == "official"): ?>
-	<meta property="og:image" content="http://hackforplay.xyz/s/<?php echo $path; ?>thumb.png"/>
-	<?php else: ?>
-	<meta property="og:image" content="http://hackforplay.xyz<?php echo $restaging['thumbnail']; ?>">
-	<?php endif; ?>
-	<meta property="og:url" content="http://hackforplay.xyz"/>
-	<meta property="og:type" content="game"/>
-	<meta property="og:site_name" content="あそべるプログラミング HackforPlay"/>
 	<title><?php echo $title; ?> - HackforPlay</title>
 	<?php require_once '../library.php' ?>
 	<script type="text/javascript" charset="utf-8">
-	var token = "<?php echo $token; ?>";
+	// var token = "<?php // echo $token; ?>";
+	var token = "";
 	var path = "<?php echo $path; ?>";
 	var next = "<?php echo $next; ?>";
 	var mode = "<?php echo $mode; ?>";
