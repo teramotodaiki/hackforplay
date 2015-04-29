@@ -146,7 +146,19 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					var code = jsEditor.getTextArea().value;
 					sessionStorage.setItem('restaging_code', code);
 					alert_on_unload = false;
-					location.href = "/s?id="+<?php echo $id; ?>+"&mode=restaging";
+					// Update data
+					console.log('clicked');
+					$.post('../../s/project/updatefromtoken.php', {
+						'token': sessionStorage.getItem('project-token'),
+						'data': code
+					}, function(data, textStatus, xhr) {
+						console.log(data);
+						switch(data){
+							case 'success':
+								location.href = "/s?id="+<?php echo $id; ?>+"&mode=restaging";
+								break;
+						}
+					});
 				});
 				$(".h4p_mapTip").show();
 			};
