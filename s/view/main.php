@@ -165,7 +165,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			var makeProject = function(){
 				// Make project
 				var code = sessionStorage.getItem('restaging_code');
-				$.post('/s/project/makefromstage.php', {
+				$.post('../project/makefromstage.php', {
 					'stageid': <?php echo $id; ?>,
 					'data': code
 				}, function(data, textStatus, xhr) {
@@ -211,11 +211,11 @@ $retry 	= filter_input(INPUT_GET, "retry");
 						focus_on_game = true;
 					});
 					$("#publish-button").on('click', function() {
-						var stage_name = $("#stage-name").val();
+						var title = $("#stage-name").val();
 						var author = $("#author").val();
-						if(stage_name === ""){ $("#stage-name_alert").show('fast'); }
+						if(title === ""){ $("#stage-name_alert").show('fast'); }
 						if(author === ""){ $("#author_alert").show('fast'); }
-						if(stage_name !== "" && author !== ""){
+						if(title !== "" && author !== ""){
 							$("#inputModal").modal('hide');
 							$(".h4p_publish").children('button').attr('disabled', 'disabled');
 							var data = sessionStorage.getItem('image');
@@ -223,21 +223,25 @@ $retry 	= filter_input(INPUT_GET, "retry");
 							$message.text('送信中・・・');
 							jsEditor.save();
 							var code = jsEditor.getTextArea().value;
-							$.post('sendRestagingCode.php', {
-					            'token':token,
-					            'code':code,
-					            'origin_id':origin_id,
-					            'stage_name':stage_name,
-					            'author':author,
-					            'thumb':data
-					        }, function(data, textStatus, xhr) {
-					        	$message.text('Thank you for your ReStaging!!');
-					        	$(".h4p_publish-complete").show();
-					        	$(".h4p_publish-return").show();
-					        	alert_on_unload = false; // 遷移時の警告を非表示
-					            if(data !== "") console.log(data);
-					            if(textStatus !== "") console.log(textStatus);
-					        });
+
+							$.post('../project/publishreplaystage.php', {
+								'token': sessionStorage.getItem('project-token'),
+								'thumb': data,
+								'path': path,
+								'title': title
+							} , function(data, textStatus, xhr) {
+								console.log(data);
+								switch(data){
+									case 'success':
+										$message.text('Thank you for your ReStaging!!');
+							        	$(".h4p_publish-complete").show();
+							        	$(".h4p_publish-return").show();
+							        	alert_on_unload = false; // 遷移時の警告を非表示
+							            if(data !== "") console.log(data);
+							            if(textStatus !== "") console.log(textStatus);
+							            break;
+								}
+							});
 						};
 					});
 					break;
