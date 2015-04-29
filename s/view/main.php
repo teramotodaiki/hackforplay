@@ -150,11 +150,36 @@ $retry 	= filter_input(INPUT_GET, "retry");
 				});
 				$(".h4p_mapTip").show();
 			};
+			var makeProject = function(){
+				// Make project
+				var code = sessionStorage.getItem('restaging_code');
+				$.post('/s/project/makefromstage.php', {
+					'stageid': <?php echo $id; ?>,
+					'data': code
+				}, function(data, textStatus, xhr) {
+					console.log(data);
+					switch(data){
+						case 'no-session':
+							// ログインしてください
+							break;
+						case 'invalid-stageid':
+							// このステージは改造できません
+							break;
+						case 'database-error':
+							// エラーにより改造できません
+							break;
+						default:
+							sessionStorage.setItem('project-token', data);
+							break;
+					}
+				});
+			}
 			switch(mode){
 				case "official":
 					// official mode (load default code from main.js)
 					$(".begin_restaging").on('click', function() {
 						beginRestaging();
+						makeProject();
 					});
 					break;
 				case "restaging":
@@ -209,12 +234,14 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					sessionStorage.setItem('restaging_code', replay_code);
 					$(".begin_restaging").on('click', function() {
 						beginRestaging();
+						makeProject();
 					});
 					break;
 				case "extend":
 					// extend mode (extends restaging-code in tutorial)
 					$(".begin_restaging").on('click', function() {
 						beginRestaging();
+						makeProject();
 					});
 					break;
 			}
