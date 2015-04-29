@@ -5,7 +5,7 @@ Input:	stageid , (data)
 Output: no-session , invalid-stageid , database-error, {project-token}
 */
 
-require_once '../../preload.php';
+require_once '../preload.php';
 
 // セッションの取得
 session_start();

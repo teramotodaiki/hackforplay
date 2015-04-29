@@ -6,7 +6,7 @@ Input:	token , data
 Output:	no-session , invalid-token , data-is-null , database-error , success
 */
 
-require_once '../../preload.php';
+require_once '../preload.php';
 
 // セッションを取得
 session_start();

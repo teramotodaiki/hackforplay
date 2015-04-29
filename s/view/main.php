@@ -148,7 +148,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					alert_on_unload = false;
 					// Update data
 					console.log('clicked');
-					$.post('../../s/project/updatefromtoken.php', {
+					$.post('../project/updatefromtoken.php', {
 						'token': sessionStorage.getItem('project-token'),
 						'data': code
 					}, function(data, textStatus, xhr) {
