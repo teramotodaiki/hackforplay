@@ -13,24 +13,6 @@
 	<meta property="og:url" content="http://hackforplay.xyz"/>
 	<meta property="og:type" content="game"/>
 	<meta property="og:site_name" content="あそべるプログラミング HackforPlay"/>
-	<script type="text/javascript" charset="utf-8">
-	$(function(){
-		$(".h4p_item-title h4").each(function(){
-			var size = 37;
-			var txt = $(this).text();
-			var suffix = '…';
-			var b = 0;
-			for(var i = 0; i < txt.length; i++) {
-		    	b += txt.charCodeAt(i) <= 255 ? 0.5 : 1;
-			    if (b > size) {
-			    	txt = txt.substr(0, i) + suffix;
-			    	break;
-			    }
-			}
-			$(this).text(txt);
-		});
-	});
-	</script>
 </head>
 <body class="">
 	<script type="text/javascript" charset="utf-8">
@@ -71,6 +53,7 @@
 							href: '/s?id=' + stage.id,
 							title: stage.title
 						}).children('.h4p_item-thumbnail').children('.h4p_item-src').text(stage.thumbnail);
+						if(stage.title.length > 37) stage.title = stage.title.substr(0, 37) + '…';
 						item.children('.h4p_item-title').children('a').attr({
 							href: '/s?id=' + stage.id,
 							title: stage.title
@@ -145,41 +128,6 @@
 					</div>
 					<div class="col-md-12 h4p_box-main">
 						<div id="h4p_stagelist" class="row">
-							<!-- stages list with PHP -->
-							<?php foreach ($allstages as $key => $item) :
-							if($item['type'] == "1") : // replay stage
-							$id		= $item['id'];
-							$title 	=  $item['title'];
-							$count	= $item['playcount'];
-							$attr 	= in_array($id, $cleared) ? "h4p_item-cleared" : "";
-							$thumb  = $item['restaging']['thumbnail'];
-							if($thumb == NULL){
-								$thumb = "/s/".$item['path']."thumb.png";
-							}
-							$author = $item['restaging']['author'];
-							$link_attr = ' href="/s?id='.$id.'" title="'.$title.' by '.$author.'" target="_blank" ';
-							?>
-							<div class="col-md-4 col-sm-6 col-xs-12 h4p_item <?php echo $attr ?>">
-								<a <?php echo $link_attr; ?> >
-									<div class="h4p_item-thumbnail">
-										<span class="h4p_item-src"><?php echo $thumb; ?></span>
-									</div>
-								</a>
-								<div class="h4p_item-title">
-									<a <?php echo $link_attr; ?> ><h4><?php echo $title; ?></h4></a>
-								</div>
-									<div class="h4p_item-footer">
-										<p>作成者：<b><?php echo $author; ?></b></p>
-										<p>プレイ回数：<b><?php echo $count."回"; ?></b></p>
-										<?php if (isset($item['origin_stage'])):
-										$id = $item['origin_stage']['id'];
-										$title = $item['origin_stage']['title'];
-										?>
-										<p>改造元：<b><a href="/s?id=<?php echo $id; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a></b></p>
-										<?php endif; ?>
-									</div>
-								</div>
-							<?php endif; endforeach; ?>
 						</div>
 					</div>
 					<div class="col-md-12 h4p_box-footer">
