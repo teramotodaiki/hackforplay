@@ -21,7 +21,7 @@ if($token == NULL || $token == FALSE){
 	exit('invalid-token');
 }
 try {
-	$stmt	= $dbh->prepare('SELECT "ID" FROM "Project" WHERE "Token"=:token');
+	$stmt	= $dbh->prepare('SELECT "ID","SourceStageID" FROM "Project" WHERE "Token"=:token');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -50,7 +50,7 @@ imagepng($image, '..' . $thumb_url); // 相対パス
 $path	= filter_input(INPUT_POST, 'path');
 $title	= filter_input(INPUT_POST, 'title');
 try{
-	$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID", "Mode", "ProjectID", "Path", "Title", "State", "Thumbnail", "Registered") VALUES(:userid, :replay, :projectid, :input_path, :input_title, :judging, :thumb_url, :gmt)');
+	$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","Path","Title","State","Thumbnail","SourceID","Registered") VALUES(:userid,:replay,:projectid,:input_path,:input_title,:judging,:thumb_url,:project_sourceid,:gmt)');
 	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
 	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
 	$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
@@ -58,6 +58,7 @@ try{
 	$stmt->bindValue(":input_title", $title, PDO::PARAM_STR);
 	$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
 	$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
+	$stmt->bindValue(":project_sourceid", $project['SourceStageID'], PDO::PARAM_INT);
 	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s").date("P"), PDO::PARAM_STR);
 	$flag 	= $stmt->execute();
 	if (!$flag) {
