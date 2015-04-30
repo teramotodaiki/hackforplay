@@ -44,7 +44,7 @@
 			)
 		).append(
 			$('<div>').addClass('h4p_item-title').append(
-				$('<a>')
+				$('<a>').append($('<h4>'))
 			)
 		).append(
 			$('<div>').addClass('h4p_item-footer').append(
@@ -74,7 +74,7 @@
 						item.children('.h4p_item-title').children('a').attr({
 							href: '/s?id=' + stage.id,
 							title: stage.title
-						}).append($('<h4>').text(stage.title));
+						}).children('h4').text(stage.title);
 						item.children('.h4p_item-footer').children('p:nth-child(1)').children('b').children('a').attr({
 							href: '/__mypagelink__',
 							title: stage.author_name
