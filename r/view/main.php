@@ -39,7 +39,7 @@
 		);
 		// 一覧取得
 		$.post('../stage/fetchrecentpublished.php', {
-			'length': 1
+			'length': 15
 		}, function(data, textStatus, xhr) {
 			switch(data){
 				case 'parse-error':
