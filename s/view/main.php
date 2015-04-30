@@ -12,8 +12,8 @@ if(!isset($mode)){
 }
 if($mode == "replay"){
 	$code = $project['Data'];
-	// $code = preg_replace("/\\\\/", "\\\\\\\\", $code);
-	// $code = preg_replace("/\n/", "\\n", $code);
+	$code = preg_replace("/\\\\/", "\\\\\\\\", $code);
+	$code = preg_replace("/\n/", "\\n", $code);
 	$code = preg_replace("/\"/", "\\\"", $code);
 }
 $retry 	= filter_input(INPUT_GET, "retry");
