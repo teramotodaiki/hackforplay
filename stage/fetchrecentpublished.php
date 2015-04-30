@@ -29,11 +29,12 @@ require_once '../preload.php';
 
 // ステージ一覧を取得
 try {
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE "Mode"=:replay AND "State"=:published ORDER BY "Published" DESC LIMIT :max_fetch_length');
+	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published ORDER BY "Published" DESC LIMIT :max_fetch_length');
 	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
 	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 	$stmt->bindValue(":max_fetch_length", $max_fetch_length, PDO::PARAM_INT);
-	$result = $dbh->fetchAll(PDO::FETCH_ASSOC);
+	$stmt->execute();
+	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
 	print_r($e);
@@ -44,15 +45,15 @@ try {
 $values = array();
 foreach ($result as $key => $value) {
 	$item 	= new stdClass();
-	$item->id 			= $value['s.ID'];
-	$item->author_id 	= $value['s.UserID'];
-	$item->author_name 	= $value['User.Nickname'];
-	$item->title 		= $value['s.Title'];
-	$item->thumbnail 	= $value['s.Thumbnail'];
-	$item->source_id 	= $value['s.SourceID'];
-	$item->source_title	= $value['Stage.Title'];
-	$item->playcount 	= $value['s.Playcount'];
-	$item->published 	= $value['s.Published'];
+	$item->id 			= $value['ID'];
+	$item->author_id 	= $value['UserID'];
+	$item->author_name 	= $value['Nickname'];
+	$item->title 		= $value['Title'];
+	$item->thumbnail 	= $value['Thumbnail'];
+	$item->source_id 	= $value['SourceID'];
+	$item->source_title	= $value['SourceTitle'];
+	$item->playcount 	= $value['Playcount'];
+	$item->published 	= $value['Published'];
 	array_push($values, $item);
 }
 
@@ -64,6 +65,7 @@ $json = json_encode($information_of_stages);
 if ($json == FALSE) {
 	exit('parse-error');
 }
+
 echo $json;
 
 ?>

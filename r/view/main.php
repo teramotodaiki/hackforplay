@@ -33,6 +33,47 @@
 	</script>
 </head>
 <body class="">
+	<script type="text/javascript" charset="utf-8">
+	$(function(){
+		// インスタンス
+		var $item = $('<div>').addClass('col-md-4 col-sm-6 col-xs-12 h4p_item').append(
+			$('<a>').append(
+				$('<div>').addClass('h4p_item-thumbnail').append(
+					$('<span>').addClass('h4p_item-src')
+				)
+			)
+		).append(
+			$('<div>').addClass('h4p_item-title').append(
+				$('<a>')
+			)
+		).append(
+			$('<div>').addClass('h4p_item-footer').append(
+				$('<p>')
+			).append(
+				$('<p>')
+			).append(
+				$('<p>')
+			)
+		);
+		// 一覧取得
+		$.post('../stage/fetchrecentpublished.php', {
+			'length': 1
+		}, function(data, textStatus, xhr) {
+			switch(data){
+				case 'parse-error':
+					break;
+				default:
+					var result = jQuery.parseJSON(data);
+					var $list = $('#h4p_stagelist');
+					result.values.forEach(function(stage){
+						var item = $item.clone(true);
+						item.appendTo($list);
+					});
+					break;
+			}
+		});
+	});
+	</script>
 	<?php require_once '../analyticstracking.php' ?>
 	<?php require_once '../fb-root.php' ?>
 	<?php require_once '../sendattendance.php'; ?>
@@ -85,7 +126,7 @@
 						<h3>投稿されたステージ一覧</h3>
 					</div>
 					<div class="col-md-12 h4p_box-main">
-						<div class="row">
+						<div id="h4p_stagelist" class="row">
 							<!-- stages list with PHP -->
 							<?php foreach ($allstages as $key => $item) :
 							if($item['type'] == "1") : // replay stage
