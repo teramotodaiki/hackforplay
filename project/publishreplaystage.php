@@ -2,7 +2,7 @@
 /*
 トークンのみからプロジェクトの情報を取得し、セッションのUserIDでステージを投稿する
 Input:	token , thumb , path , title
-Output:	no-session , invalid-token , database-error , success
+Output:	no-session , invalid-token , already-published , database-error , success
 */
 
 require_once '../preload.php';
@@ -21,12 +21,14 @@ if($token == NULL || $token == FALSE){
 	exit('invalid-token');
 }
 try {
-	$stmt	= $dbh->prepare('SELECT "ID","SourceStageID" FROM "Project" WHERE "Token"=:token');
+	$stmt	= $dbh->prepare('SELECT "ID","SourceStageID","PublishedStageID" FROM "Project" WHERE "Token"=:token');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
 	if($project == NULL){
 		exit('invalid-token');
+	}elseif ($project['PublishedStageID'] != NULL) {
+		exit('already-published');
 	}
 
 } catch (PDOException $e) {
@@ -65,6 +67,18 @@ try{
 		exit('database-error');
 	}
 }catch(PDOException $e) {
+	print_r($e);
+	die();
+}
+
+// ステージIDをProjectに関連づける
+try {
+	$stmt	= $dbh->prepare('UPDATE "Project" SET "PublishedStageID"=:lastinsertid WHERE "ID"=:projectid');
+	$stmt->bindValue(":lastinsertid", $dbh->lastInsertId('Stage'), PDO::PARAM_INT);
+	$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
+	$stmt->execute();
+
+} catch (PDOException $e) {
 	print_r($e);
 	die();
 }
