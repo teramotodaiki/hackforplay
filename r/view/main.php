@@ -34,7 +34,7 @@
 			).append(
 				$('<p>').append($('<span>')).html('プレイ回数：<b>回</b>')
 			).append(
-				$('<p>').append($('<span>')).html('作成者：<b><a></a></b>')
+				$('<p>').append($('<span>')).html('改造元：<b><a></a></b>')
 			)
 		);
 		// 一覧取得
