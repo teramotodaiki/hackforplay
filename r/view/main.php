@@ -48,11 +48,11 @@
 			)
 		).append(
 			$('<div>').addClass('h4p_item-footer').append(
-				$('<p>')
+				$('<p>').append($('<span>')).html('作成者：<b><a></a></b>')
 			).append(
-				$('<p>')
+				$('<p>').append($('<span>')).html('プレイ回数：<b>回</b>')
 			).append(
-				$('<p>')
+				$('<p>').append($('<span>')).html('作成者：<b><a></a></b>')
 			)
 		);
 		// 一覧取得
@@ -67,6 +67,24 @@
 					var $list = $('#h4p_stagelist');
 					result.values.forEach(function(stage){
 						var item = $item.clone(true);
+						item.children('a').attr({
+							href: '/s?id=' + stage.id,
+							title: stage.title
+						}).children('.h4p_item-thumbnail').children('.h4p_item-src').text(stage.thumbnail);
+						item.children('.h4p_item-title').children('a').attr({
+							href: '/s?id=' + stage.id,
+							title: stage.title
+						}).append($('<h4>').text(stage.title));
+						item.children('.h4p_item-footer').children('p:nth-child(1)').children('b').children('a').attr({
+							href: '/__mypagelink__',
+							title: stage.author_name
+						}).text(stage.author_name);
+						item.children('.h4p_item-footer').children('p:nth-child(2)').children('b').prepend(stage.playcount);
+						item.children('.h4p_item-footer').children('p:nth-child(3)').children('b').children('a').attr({
+							href: '/s?id=' + stage.source_id,
+							title: stage.source_title
+						}).text(stage.source_title);
+
 						item.appendTo($list);
 					});
 					break;

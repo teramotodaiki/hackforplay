@@ -30,13 +30,14 @@ body {
 }
 
 .h4p_item-footer,
-.h4p_item-footer * {
-	font-size: 95%;
+.h4p_item-footer p {
 	color: rgb(200,200,200);
+	font-size: 95%;
 }
 
 /* リンクのデコレーション */
 .h4p_item-footer a {
-	text-decoration: none;
+	color: rgb(200,200,200);
+	/*text-decoration: none;*/
 }
 
