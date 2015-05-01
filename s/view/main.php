@@ -318,25 +318,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<!-- Modal -->
-	<div class="modal fade" id="restageModal" tabindex="-1" role="dialog" aria-labelledby="restageModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-	    		<div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="restageModalLabel">このステージを改造しますか？</h4>
-		    	</div>
-			    <div class="modal-body">
-			    	<h2>注意：これは上級者向けの機能です。</h2>
-			    	<p>ワークショップ参加者の方は、チュートリアルを全てクリアしたあと、「本」を開いてから改造を行ってください。</p>
-			    	<p>あなたの知らない第三者にこの機能を勧められて使う場合、悪意のあるコードを埋め込まないよう注意してください。</p>
-			    </div>
-	    		<div class="modal-footer">
-	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-	       			<button type="button" class="btn btn-danger begin_restaging" data-dismiss="modal">改造を始める</button>
-	    		</div>
-			</div>
-		</div>
-	</div>
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -353,11 +334,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			        		<label for="stage-name" class="control-label">ステージ名<small>（自由に決めてください）</small>:</label>
 			        		<input type="text" class="form-control" id="stage-name">
 			        		<p id="stage-name_alert" class="alert alert-danger">ステージ名を入力してください。</p>
-			        	</div>
-			        	<div class="form-group">
-			            	<label for="author" class="control-label">あなたの名前<small>（ニックネーム）</small>:</label>
-			            	<input type="text" class="form-control" id="author"></input>
-			        		<p id="author_alert" class="alert alert-danger">あなたの名前を入力してください。</p>
 			        	</div>
 			        </form>
 			    </div>
@@ -380,24 +356,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			    </div>
 	    		<div class="modal-footer">
 	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-	    		</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="moreModal" tabindex="-1" role="dialog" aria-labelledby="moreModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-	    		<div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="moreModalLabel">改造ステージを作ってみましょう！</h4>
-		    	</div>
-			    <div class="modal-body">
-			    	<p>ワークショップ参加者の方は、ここで<b>本を開いてください</b>。</p>
-			    	<p>お家からアクセスしている方は、今までに作られたステージを遊んだり、タイトルの横にある「改造する」という緑色のボタンから改造ステージを作ることができます。</p>
-			    </div>
-	    		<div class="modal-footer">
-	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-	        		<a href="/r" class="btn btn-primary" title="次に進む">次に進む</a>
 	    		</div>
 			</div>
 		</div>
@@ -427,7 +385,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					</div>
 					<div class="col-md-12 h4p_clear-next">
 					<?php if($mode == "replay") : ?>
-						<!-- <button type="button" class="btn btn-success btn-lg btn-block" title="改造する" data-toggle="modal" data-target="#restageModal">このステージを改造する</button> -->
 						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">このステージを改造する</button>
 						<a href="/r" class="btn btn-success btn-lg btn-block" title="改造ステージ一覧へ">
 							改造ステージ一覧へ
@@ -441,7 +398,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					<?php elseif($id == 106) : // last stage of tutirial ?>
 						<h3>クリアおめでとうございます！</h3>
 						<p>こんどは、あなたもステージを作ってみましょう</p>
-						<!-- <button  data-toggle="modal" data-target="#moreModal" role="button" class="btn btn-success btn-lg" title="もっとあそぶ"><h2>もっとあそぶ</h2></button> -->
 						<a href="/s?id=201" class="btn btn-success btn-lg" title="今すぐ作る"><h3>今すぐ作る</h3></a>
 					<?php endif; ?>
 					</div>
@@ -461,7 +417,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 						<span class="h4p_info-footer">プレイ回数：<b><?php echo $count."回"; ?></b></span>
 					</div>
 					<div class="col-md-3 h4p_info-restaging">
-						<!-- <button type="button" class="btn btn-success btn-lg btn-block" title="改造する" data-toggle="modal" data-target="#restageModal">改造する</button> -->
 						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">改造する</button>
 					</div>
 					<div class="col-md-3 h4p_info-retry">
