@@ -19,7 +19,7 @@ session_commit();
 // プロジェクト情報を取得
 $token = filter_input(INPUT_POST, 'token');
 if($token == NULL || $token == FALSE){
-	exit();
+	exit('invalid-token');
 }
 try {
 	$stmt	= $dbh->prepare('SELECT "ID","PublishedStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid');
