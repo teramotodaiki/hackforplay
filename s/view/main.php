@@ -251,6 +251,18 @@ $retry 	= filter_input(INPUT_GET, "retry");
 							} , function(data, textStatus, xhr) {
 								console.log(data);
 								switch(data){
+									case 'no-session':
+										$('#signinModal').modal('show').find('.modal-title').text('ステージを投稿するには、ログインしてください');
+										break;
+									case 'invalid-token':
+										showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
+										break;
+									case 'already-published':
+										showAlert('alert-danger', 'すでに投稿されたステージです');
+										break;
+									case 'database-error':
+										showAlert('alert-danger', 'エラーにより投稿できませんでした');
+										break;
 									case 'success':
 										$message.text('Thank you for your ReStaging!!');
 							        	$(".h4p_publish-complete").show();
