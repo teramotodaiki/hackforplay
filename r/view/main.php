@@ -71,6 +71,33 @@
 						item.find('.h4p_item-footer p:nth-child(3) span').text('オリジナルステージ');
 					}
 
+					item.appendTo($list);
+				});
+			}
+		});
+		// 空のステージ一覧
+		$.post('../stage/fetchofficialbyid.php',{
+			'id': '301,302'
+		} , function(data, textStatus, xhr) {
+			console.log(data);
+			if (data === 'parse-error') {
+			}else{
+				var result = jQuery.parseJSON(data);
+				var $list = $('#h4p_emptylist');
+				result.values.forEach(function(stage){
+					var item = $item.clone(true);
+					item.children('a').attr({
+						'href': '/s?id=' + stage.id,
+						'title': stage.title
+					}).children('.h4p_item-thumbnail').children('.h4p_item-src').text(stage.thumbnail);
+					if(stage.title.length > 38) stage.title = stage.title.substr(0, 37) + '…';
+					item.children('.h4p_item-title').children('a').attr({
+						'href': '/s?id=' + stage.id,
+						'title': stage.title
+					}).children('h4').text(stage.title);
+					item.find('.h4p_item-footer p:nth-child(1) span').remove();
+					item.find('.h4p_item-footer p:nth-child(2) b').prepend(stage.playcount);
+					item.find('.h4p_item-footer p:nth-child(3) span').remove();
 
 					item.appendTo($list);
 				});
@@ -92,17 +119,16 @@
 					</div>
 					<div class="col-md-12 h4p_box-main">
 						<div class="row">
-							<?php $item = $allstages[201]; ?>
-							<a href="/s?id=201" title="<?php echo $item['title']; ?>" target="_blank">
-								<div class="col-md-4 col-xs-4 h4p_topicitem ?>">
+							<a href="/s?id=201" title="ステージをつくろう１" target="_blank">
+								<div class="col-md-4 col-xs-4 h4p_topicitem">
 									<div class="h4p_item-thumbnail">
-										<span class="h4p_item-src">/s/<?php echo $item['path']; ?>thumb.png</span>
+										<span class="h4p_item-src">/s/replay_t1/thumb.png</span>
 									</div>
 									<div class="h4p_item-title">
-										<h4><?php echo $item['title']; ?></h4>
+										<h4>ステージをつくろう１</h4>
 									</div>
 									<div class="h4p_item-footer">
-										プレイ回数：<b><?php echo $item['playcount']."回"; ?></b>
+										<span>会員登録が必要です</span>
 									</div>
 								</div>
 							</a>
@@ -143,19 +169,7 @@
 						<h3>空のステージ</h3>
 					</div>
 					<div class="col-md-12 h4p_box-main">
-						<div class="row">
-							<!-- stages list with PHP -->
-							<?php
-							// [[id1, size1], [id2, size2] ... ]
-							$more_stage_list = array(
-								array(1001,4), array(1002,4)
-							);
-							foreach ($more_stage_list as $key => $value) {
-								$item = $allstages[$value[0]];
-								$size = $value[1];
-								include 'item.php';
-							}
-							?>
+						<div id="h4p_emptylist" class="row">
 						</div>
 					</div>
 				</div>
