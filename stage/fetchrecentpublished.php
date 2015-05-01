@@ -13,6 +13,7 @@ information_of_stages:
 		thumbnail : サムネイルのURL,
 		source_id : 改造元ステージのID,
 		source_title : 改造元ステージの名前,
+		source_mode : 改造元ステージのMode (official, replay)
 		playcount : 現在のプレイ回数,
 		published : 公開された日付
 	](,,,[])
@@ -29,7 +30,7 @@ require_once '../preload.php';
 
 // ステージ一覧を取得
 try {
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published ORDER BY "Published" DESC LIMIT :max_fetch_length');
+	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published ORDER BY "Published" DESC LIMIT :max_fetch_length');
 	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
 	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 	$stmt->bindValue(":max_fetch_length", $max_fetch_length, PDO::PARAM_INT);
@@ -52,6 +53,7 @@ foreach ($result as $key => $value) {
 	$item->thumbnail 	= $value['Thumbnail'];
 	$item->source_id 	= $value['SourceID'];
 	$item->source_title	= $value['SourceTitle'];
+	$item->source_mode	= $value['Mode'];
 	$item->playcount 	= $value['Playcount'];
 	$item->published 	= $value['Published'];
 	array_push($values, $item);

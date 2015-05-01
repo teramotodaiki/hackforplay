@@ -30,11 +30,11 @@
 			)
 		).append(
 			$('<div>').addClass('h4p_item-footer').append(
-				$('<p>').append($('<span>')).html('作成者：<b><a></a></b>')
+				$('<p>').append($('<span>').html('作成者：<b><a></a></b>'))
 			).append(
-				$('<p>').append($('<span>')).html('プレイ回数：<b>回</b>')
+				$('<p>').append($('<span>').html('プレイ回数：<b>回</b>'))
 			).append(
-				$('<p>').append($('<span>')).html('改造元：<b><a></a></b>')
+				$('<p>').append($('<span>').html('改造元：<b><a></a></b>'))
 			)
 		);
 		// 一覧取得
@@ -57,15 +57,20 @@
 						href: '/s?id=' + stage.id,
 						title: stage.title
 					}).children('h4').text(stage.title);
-					item.children('.h4p_item-footer').children('p:nth-child(1)').children('b').children('a').attr({
+					item.find('.h4p_item-footer p:nth-child(1) a').attr({
 						href: '/__mypagelink__',
 						title: stage.author_name
 					}).text(stage.author_name);
-					item.children('.h4p_item-footer').children('p:nth-child(2)').children('b').prepend(stage.playcount);
-					item.children('.h4p_item-footer').children('p:nth-child(3)').children('b').children('a').attr({
-						href: '/s?id=' + stage.source_id,
-						title: stage.source_title
-					}).text(stage.source_title);
+					item.find('.h4p_item-footer p:nth-child(2) b').prepend(stage.playcount);
+					if (stage.source_mode === 'replay') {
+						item.find('.h4p_item-footer p:nth-child(3) a').attr({
+							href: '/s?id=' + stage.source_id,
+							title: stage.source_title
+						}).text(stage.source_title);
+					}else{
+						item.find('.h4p_item-footer p:nth-child(3) span').text('オリジナルステージ');
+					}
+
 
 					item.appendTo($list);
 				});
