@@ -78,9 +78,9 @@ try {
 // ParentIDがNULLのとき、自身のIDをRootIDにする
 if ($stage['ProjectID'] == NULL) {
 	try {
-		$stmt	= $dbh->prepare('UPDATE "Project" SET "RootID"=:projectid WHERE "ID"=:projectid');
-		$stmt->bindValue(":projectid", $dbh->lastInsertId('Project'), PDO::PARAM_INT);
-		$stmt->bindValue(":projectid", $dbh->lastInsertId('Project'), PDO::PARAM_INT);
+		$stmt	= $dbh->prepare('UPDATE "Project" SET "RootID"=:projectid1 WHERE "ID"=:projectid2');
+		$stmt->bindValue(":projectid1", $dbh->lastInsertId('Project'), PDO::PARAM_INT);
+		$stmt->bindValue(":projectid2", $dbh->lastInsertId('Project'), PDO::PARAM_INT);
 		$stmt->execute();
 
 	} catch (PDOException $e) {
