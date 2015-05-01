@@ -170,7 +170,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 				$(".h4p_mapTip").show();
 			};
 			var makeProject = function(){
-				// Make project
 				var code = sessionStorage.getItem('restaging_code');
 				$.post('../project/makefromstage.php', {
 					'stageid': <?php echo $id; ?>,
@@ -179,15 +178,12 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					console.log(data);
 					switch(data){
 						case 'no-session':
-							// ログインしてください
 							$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
 							break;
 						case 'invalid-stageid':
-							// このステージは改造できません
 							showAlert('alert-danger', 'このステージは改造できません');
 							break;
 						case 'database-error':
-							// エラーにより改造できません
 							showAlert('alert-danger', 'エラーにより改造できませんでした');
 							break;
 						default:
