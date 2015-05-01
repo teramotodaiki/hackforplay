@@ -133,7 +133,9 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					$(this).hover(function() {
 						focus_on_game = false; // focus on editor
 					}, function() {
-						focus_on_game = true; // focus on game
+						if (!$('.modal').hasClass('in')) {
+							focus_on_game = true; // focus on game
+						}
 					});
 				});
 				$(".h4p_info-footer").text("（リステージング中）");
