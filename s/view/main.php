@@ -161,6 +161,21 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					}, function(data, textStatus, xhr) {
 						console.log(data);
 						switch(data){
+							case 'no-session':
+								$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
+								break;
+							case 'invalid-token':
+								showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
+								break;
+							case 'already-published':
+								showAlert('alert-danger', 'すでに投稿されたステージです');
+								break;
+							case 'data-is-null':
+								showAlert('alert-danger', '更新するデータが破損していたため、更新されませんでした');
+								break;
+							case 'database-error':
+								showAlert('alert-danger', 'データベースエラーにより、更新されませんでした');
+								break;
 							case 'success':
 								location.href = "/s?id="+<?php echo $id; ?>+"&mode=restaging";
 								break;
