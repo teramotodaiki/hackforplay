@@ -3,7 +3,7 @@
 トークンからプロジェクト情報を参照し、データを更新する
 ただし、Project.UserIDと一致するUserIDをもつセッションが必要
 Input:	token , data
-Output:	no-session , invalid-token , data-is-null , database-error , success
+Output:	no-session , invalid-token , already-published , data-is-null , database-error , success
 */
 
 require_once '../preload.php';
@@ -22,13 +22,15 @@ if($token == NULL || $token == FALSE){
 	exit();
 }
 try {
-	$stmt	= $dbh->prepare('SELECT "ID" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid');
+	$stmt	= $dbh->prepare('SELECT "ID","PublishedStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
 	if($project == NULL){
 		exit('invalid-token');
+	}elseif ($project['PublishedStageID'] != NULL) {
+		exit('already-published');
 	}
 
 } catch (PDOException $e) {
