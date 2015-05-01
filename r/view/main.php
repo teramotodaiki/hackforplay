@@ -76,6 +76,12 @@
 				});
 			}
 		});
+		// 空のステージ一覧
+		$.post('../stage/fetchofficialbyid.php',{
+			'id': '301,302'
+		} , function(data, textStatus, xhr) {
+			console.log(data);
+		});
 	});
 	</script>
 	<?php require_once '../analyticstracking.php' ?>
