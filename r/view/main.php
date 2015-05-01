@@ -71,7 +71,6 @@
 						item.find('.h4p_item-footer p:nth-child(3) span').text('オリジナルステージ');
 					}
 
-
 					item.appendTo($list);
 				});
 			}
@@ -81,6 +80,28 @@
 			'id': '301,302'
 		} , function(data, textStatus, xhr) {
 			console.log(data);
+			if (data === 'parse-error') {
+			}else{
+				var result = jQuery.parseJSON(data);
+				var $list = $('#h4p_emptylist');
+				result.values.forEach(function(stage){
+					var item = $item.clone(true);
+					item.children('a').attr({
+						'href': '/s?id=' + stage.id,
+						'title': stage.title
+					}).children('.h4p_item-thumbnail').children('.h4p_item-src').text(stage.thumbnail);
+					if(stage.title.length > 38) stage.title = stage.title.substr(0, 37) + '…';
+					item.children('.h4p_item-title').children('a').attr({
+						'href': '/s?id=' + stage.id,
+						'title': stage.title
+					}).children('h4').text(stage.title);
+					item.find('.h4p_item-footer p:nth-child(1) span').remove();
+					item.find('.h4p_item-footer p:nth-child(2) b').prepend(stage.playcount);
+					item.find('.h4p_item-footer p:nth-child(3) span').remove();
+
+					item.appendTo($list);
+				});
+			}
 		});
 	});
 	</script>
@@ -149,18 +170,6 @@
 					</div>
 					<div class="col-md-12 h4p_box-main">
 						<div id="h4p_emptylist" class="row">
-							<!-- stages list with PHP -->
-							<?php
-							// [[id1, size1], [id2, size2] ... ]
-							$more_stage_list = array(
-								array(1001,4), array(1002,4)
-							);
-							foreach ($more_stage_list as $key => $value) {
-								$item = $allstages[$value[0]];
-								$size = $value[1];
-								include 'item.php';
-							}
-							?>
 						</div>
 					</div>
 				</div>
