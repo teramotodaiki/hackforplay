@@ -25,9 +25,42 @@ $retry 	= filter_input(INPUT_GET, "retry");
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title><?php echo $title; ?> - HackforPlay</title>
 	<?php require_once '../library.php' ?>
+	<!-- HackforPlay RePlay -->
+	<script src="editor/lib/codemirror.js" type="text/javascript"></script>
+	<script src="editor/mode/javascript/javascript.js" type="text/javascript"></script>
+	<script src="editor/addon/edit/closebrackets.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="editor/lib/codemirror.css">
+	<style type="text/css" media="screen">
+		.CodeMirror {
+		  top: 0px;
+		  left: 0px;
+		  background-color: rgb(245,245,245);
+		}
+	</style>
+</head>
+<body>
+	<?php include_once("../analyticstracking.php"); ?>
+	<?php require_once '../sendattendance.php'; ?>
+	<?php require_once '../view/header.php'; ?>
+	<?php require_once '../view/authmodal.php'; ?>
+	<!-- Alert -->
 	<script type="text/javascript" charset="utf-8">
-	// var token = "<?php // echo $token; ?>";
-	var token = "";
+	function showAlert (_class, _text) {
+		$('<div>').addClass('alert').addClass(_class).attr('role', 'alert').append(
+			$('<button>').addClass('close').attr({
+				'type' : 'button',
+				'data-dismiss': 'alert',
+				'aria-label': 'Close'
+			}).append(
+				$('<span>').attr('aria-hidden', 'true').html('&times;')
+			)
+		).append(
+			$('<span>').text(_text)
+		).appendTo('.h4p_alerts');
+	}
+	function screenShot () {
+		document.getElementsByTagName('iframe')[0].contentWindow.postMessage('screenShot()', '/');
+	}
 	var path = "<?php echo $path; ?>";
 	var next = "<?php echo $next; ?>";
 	var mode = "<?php echo $mode; ?>";
@@ -59,7 +92,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 		var width = $(".h4p_game").width();
 		$(".h4p_game").height(width/1.5)
 			.children('iframe').attr({
-				'src':'game.php?token='+token+'&path='+path+'&next='+next+'&mode='+mode,
+				'src':'game.php?&path='+path+'&next='+next+'&mode='+mode,
 				'width': width,
 				'height': width/1.5
 			});
@@ -156,7 +189,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					sessionStorage.setItem('restaging_code', code);
 					alert_on_unload = false;
 					// Update data
-					console.log('clicked');
 					$.post('../project/updatefromtoken.php', {
 						'token': sessionStorage.getItem('project-token'),
 						'data': code
@@ -183,6 +215,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 								break;
 						}
 					});
+					
 				});
 				$(".h4p_mapTip").show();
 			};
@@ -325,43 +358,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			}
 		})();
 	});
-	function screenShot () {
-		document.getElementsByTagName('iframe')[0].contentWindow.postMessage('screenShot()', '/');
-	}
-	</script>
-	<!-- HackforPlay RePlay -->
-	<script src="editor/lib/codemirror.js" type="text/javascript"></script>
-	<script src="editor/mode/javascript/javascript.js" type="text/javascript"></script>
-	<script src="editor/addon/edit/closebrackets.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="editor/lib/codemirror.css">
-	<style type="text/css" media="screen">
-		.CodeMirror {
-		  top: 0px;
-		  left: 0px;
-		  background-color: rgb(245,245,245);
-		}
-	</style>
-</head>
-<body>
-	<?php include_once("../analyticstracking.php"); ?>
-	<?php require_once '../sendattendance.php'; ?>
-	<?php require_once '../view/header.php'; ?>
-	<?php require_once '../view/authmodal.php'; ?>
-	<!-- Alert -->
-	<script type="text/javascript" charset="utf-8">
-	function showAlert (_class, _text) {
-		$('<div>').addClass('alert').addClass(_class).attr('role', 'alert').append(
-			$('<button>').addClass('close').attr({
-				'type' : 'button',
-				'data-dismiss': 'alert',
-				'aria-label': 'Close'
-			}).append(
-				$('<span>').attr('aria-hidden', 'true').html('&times;')
-			)
-		).append(
-			$('<span>').text(_text)
-		).appendTo('.h4p_alerts');
-	}
 	</script>
 	<!-- Modal -->
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
