@@ -80,6 +80,7 @@ if ($stage['ProjectID'] == NULL) {
 	try {
 		$stmt	= $dbh->prepare('UPDATE "Project" SET "RootID"=:projectid WHERE "ID"=:projectid');
 		$stmt->bindValue(":projectid", $dbh->lastInsertId('Project'), PDO::PARAM_INT);
+		$stmt->bindValue(":projectid", $dbh->lastInsertId('Project'), PDO::PARAM_INT);
 		$stmt->execute();
 
 	} catch (PDOException $e) {
