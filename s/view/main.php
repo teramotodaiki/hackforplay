@@ -180,12 +180,15 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					switch(data){
 						case 'no-session':
 							// ログインしてください
+							$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
 							break;
 						case 'invalid-stageid':
 							// このステージは改造できません
+							showAlert('alert-danger', 'このステージは改造できません');
 							break;
 						case 'database-error':
 							// エラーにより改造できません
+							showAlert('alert-danger', 'エラーにより改造できませんでした');
 							break;
 						default:
 							sessionStorage.setItem('project-token', data);
@@ -319,6 +322,22 @@ $retry 	= filter_input(INPUT_GET, "retry");
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<?php require_once '../view/authmodal.php'; ?>
+	<!-- Alert -->
+	<script type="text/javascript" charset="utf-8">
+	function showAlert (_class, _text) {
+		$('<div>').addClass('alert').addClass(_class).attr('role', 'alert').append(
+			$('<button>').addClass('close').attr({
+				'type' : 'button',
+				'data-dismiss': 'alert',
+				'aria-label': 'Close'
+			}).append(
+				$('<span>').attr('aria-hidden', 'true').html('&times;')
+			)
+		).append(
+			$('<span>').text(_text)
+		).appendTo('.h4p_alerts');
+	}
+	</script>
 	<!-- Modal -->
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -365,6 +384,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 	<!-- contents -->
 	<div class="container">
 		<div class="row">
+			<div class="col-md-12 h4p_alerts"></div>
 			<div class="col-md-12 h4p_restaging">
 				<div class="row">
 					<div class="col-md-12 h4p_restaging_editor">
