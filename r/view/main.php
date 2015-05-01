@@ -92,17 +92,16 @@
 					</div>
 					<div class="col-md-12 h4p_box-main">
 						<div class="row">
-							<?php $item = $allstages[201]; ?>
-							<a href="/s?id=201" title="<?php echo $item['title']; ?>" target="_blank">
-								<div class="col-md-4 col-xs-4 h4p_topicitem ?>">
+							<a href="/s?id=201" title="ステージをつくろう１" target="_blank">
+								<div class="col-md-4 col-xs-4 h4p_topicitem">
 									<div class="h4p_item-thumbnail">
-										<span class="h4p_item-src">/s/<?php echo $item['path']; ?>thumb.png</span>
+										<span class="h4p_item-src">/s/replay_t1/thumb.png</span>
 									</div>
 									<div class="h4p_item-title">
-										<h4><?php echo $item['title']; ?></h4>
+										<h4>ステージをつくろう１</h4>
 									</div>
 									<div class="h4p_item-footer">
-										プレイ回数：<b><?php echo $item['playcount']."回"; ?></b>
+										<span>会員登録が必要です</span>
 									</div>
 								</div>
 							</a>
@@ -143,7 +142,7 @@
 						<h3>空のステージ</h3>
 					</div>
 					<div class="col-md-12 h4p_box-main">
-						<div class="row">
+						<div id="h4p_emptylist" class="row">
 							<!-- stages list with PHP -->
 							<?php
 							// [[id1, size1], [id2, size2] ... ]
