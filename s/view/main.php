@@ -48,6 +48,13 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			    game.contentWindow.postMessage(source, '/');
 			}
 		}, 100);
+		// モーダル表示中は、モーダルにフォーカスする
+		$('.modal').on('show.bs.modal', function() {
+			focus_on_game = false;
+		});
+		$('.modal').on('hide.bs.modal', function() {
+			focus_on_game = true;
+		});
 		// ゲームフレームを横幅基本で3:2にする
 		var width = $(".h4p_game").width();
 		$(".h4p_game").height(width/1.5)
@@ -200,15 +207,11 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					$(".h4p_publish").show();
 					$("#stage-name_alert").hide();
 					$("#author_alert").hide();
-					$('#inputModal').on('show.bs.modal', function (e) {
-						focus_on_game = false;
+					$('#inputModal').on('show.bs.modal', function () {
 						// canvas to image
 						var game = $(".h4p_game>iframe").get(0);
 			    		var source = "saveImage();";
 			    		game.contentWindow.postMessage(source, '/');
-					});
-					$('#inputModal').on('hidden.bs.modal', function (e) {
-						focus_on_game = true;
 					});
 					$("#publish-button").on('click', function() {
 						var title = $("#stage-name").val();
@@ -237,8 +240,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 							        	$(".h4p_publish-complete").show();
 							        	$(".h4p_publish-return").show();
 							        	alert_on_unload = false; // 遷移時の警告を非表示
-							            if(data !== "") console.log(data);
-							            if(textStatus !== "") console.log(textStatus);
 							            break;
 								}
 							});
@@ -317,6 +318,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 	<?php include_once("../analyticstracking.php"); ?>
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/header.php'; ?>
+	<?php require_once '../view/authmodal.php'; ?>
 	<!-- Modal -->
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
