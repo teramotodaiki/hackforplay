@@ -188,38 +188,48 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					var code = jsEditor.getTextArea().value;
 					sessionStorage.setItem('restaging_code', code);
 					alert_on_unload = false;
-					// Update data
-					$.post('../project/updatefromtoken.php', {
-						'token': sessionStorage.getItem('project-token'),
-						'data': code
-					}, function(data, textStatus, xhr) {
-						console.log(data);
-						switch(data){
-							case 'no-session':
-								$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
-								break;
-							case 'invalid-token':
-								showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
-								break;
-							case 'already-published':
-								showAlert('alert-danger', 'すでに投稿されたステージです');
-								break;
-							case 'data-is-null':
-								showAlert('alert-danger', '更新するデータが破損していたため、更新されませんでした');
-								break;
-							case 'database-error':
-								showAlert('alert-danger', 'データベースエラーにより、更新されませんでした');
-								break;
-							case 'success':
-								location.href = "/s?id="+<?php echo $id; ?>+"&mode=restaging";
-								break;
-						}
-					});
-					
+					var updateTask = function(){
+						// Update data
+						var token = sessionStorage.getItem('project-token');
+						$.post('../project/updatefromtoken.php', {
+							'token': token,
+							'data': code
+						}, function(data, textStatus, xhr) {
+							console.log(data);
+							switch(data){
+								case 'no-session':
+									$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
+									break;
+								case 'invalid-token':
+									showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
+									break;
+								case 'already-published':
+									showAlert('alert-danger', 'すでに投稿されたステージです');
+									break;
+								case 'data-is-null':
+									showAlert('alert-danger', '更新するデータが破損していたため、更新されませんでした');
+									break;
+								case 'database-error':
+									showAlert('alert-danger', 'データベースエラーにより、更新されませんでした');
+									break;
+								case 'success':
+									location.href = "/s?id="+<?php echo $id; ?>+"&mode=restaging";
+									break;
+							}
+						});
+					};
+					if(sessionStorage.getItem('project-token') === null){
+						// プロジェクトが作られていないので、作成
+						makeProject(updateTask);
+					}else{
+						updateTask();
+					}
 				});
 				$(".h4p_mapTip").show();
 			};
-			var makeProject = function(){
+			var makeProject = function(callback){
+				// 残っているトークンを破棄
+				sessionStorage.removeItem('project-token');
 				var code = sessionStorage.getItem('restaging_code');
 				$.post('../project/makefromstage.php', {
 					'stageid': <?php echo $id; ?>,
@@ -238,6 +248,9 @@ $retry 	= filter_input(INPUT_GET, "retry");
 							break;
 						default:
 							sessionStorage.setItem('project-token', data);
+							if(callback != undefined){
+								callback();
+							}
 							break;
 					}
 				});
