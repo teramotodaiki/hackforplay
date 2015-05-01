@@ -29,13 +29,22 @@ if ($input_max_fetch_length != FALSE && $input_max_fetch_length != NULL) {
 require_once '../preload.php';
 
 // ステージ一覧を取得
+// SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
+$result = array();
 try {
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published ORDER BY "Published" DESC LIMIT :max_fetch_length');
+	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published ORDER BY "Published" DESC');
 	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
 	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
-	$stmt->bindValue(":max_fetch_length", $max_fetch_length, PDO::PARAM_INT);
 	$stmt->execute();
-	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+	for ($i = 0; $i < $max_fetch_length; $i++){
+		$item	= $stmt->fetch(PDO::FETCH_ASSOC);
+		if($item != NULL){
+			array_push($result, $item);
+		}else{
+			break;
+		}
+	}
 
 } catch (PDOException $e) {
 	print_r($e);
