@@ -5,7 +5,7 @@ if(preg_match("/^.*\/s/", $_SERVER["PHP_SELF"])){
 	$header_pattern = "inGame";
 	$mode 	= filter_input(INPUT_GET, "mode");
 	if(!isset($mode)){
-		$mode	= isset($stage['restaging_id']) ? "replay" : "official";
+		$mode	= $stage['Mode'];
 	}
 }else if(preg_match("/^.*\/m/", $_SERVER["PHP_SELF"])){
 	$header_pattern = "more";

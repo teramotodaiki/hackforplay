@@ -12,8 +12,8 @@ if(!isset($mode)){
 }
 if($mode == "replay"){
 	$code = $project['Data'];
-	// $code = preg_replace("/\\\\/", "\\\\\\\\", $code);
-	// $code = preg_replace("/\n/", "\\n", $code);
+	$code = preg_replace("/\\\\/", "\\\\\\\\", $code);
+	$code = preg_replace("/\n/", "\\n", $code);
 	$code = preg_replace("/\"/", "\\\"", $code);
 }
 $retry 	= filter_input(INPUT_GET, "retry");
@@ -48,6 +48,13 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			    game.contentWindow.postMessage(source, '/');
 			}
 		}, 100);
+		// モーダル表示中は、モーダルにフォーカスする
+		$('.modal').on('show.bs.modal', function() {
+			focus_on_game = false;
+		});
+		$('.modal').on('hide.bs.modal', function() {
+			focus_on_game = true;
+		});
 		// ゲームフレームを横幅基本で3:2にする
 		var width = $(".h4p_game").width();
 		$(".h4p_game").height(width/1.5)
@@ -126,7 +133,9 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					$(this).hover(function() {
 						focus_on_game = false; // focus on editor
 					}, function() {
-						focus_on_game = true; // focus on game
+						if (!$('.modal').hasClass('in')) {
+							focus_on_game = true; // focus on game
+						}
 					});
 				});
 				$(".h4p_info-footer").text("（リステージング中）");
@@ -146,15 +155,66 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					var code = jsEditor.getTextArea().value;
 					sessionStorage.setItem('restaging_code', code);
 					alert_on_unload = false;
-					location.href = "/s?id="+<?php echo $id; ?>+"&mode=restaging";
+					// Update data
+					console.log('clicked');
+					$.post('../project/updatefromtoken.php', {
+						'token': sessionStorage.getItem('project-token'),
+						'data': code
+					}, function(data, textStatus, xhr) {
+						console.log(data);
+						switch(data){
+							case 'no-session':
+								$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
+								break;
+							case 'invalid-token':
+								showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
+								break;
+							case 'already-published':
+								showAlert('alert-danger', 'すでに投稿されたステージです');
+								break;
+							case 'data-is-null':
+								showAlert('alert-danger', '更新するデータが破損していたため、更新されませんでした');
+								break;
+							case 'database-error':
+								showAlert('alert-danger', 'データベースエラーにより、更新されませんでした');
+								break;
+							case 'success':
+								location.href = "/s?id="+<?php echo $id; ?>+"&mode=restaging";
+								break;
+						}
+					});
 				});
 				$(".h4p_mapTip").show();
 			};
+			var makeProject = function(){
+				var code = sessionStorage.getItem('restaging_code');
+				$.post('../project/makefromstage.php', {
+					'stageid': <?php echo $id; ?>,
+					'data': code
+				}, function(data, textStatus, xhr) {
+					console.log(data);
+					switch(data){
+						case 'no-session':
+							$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
+							break;
+						case 'invalid-stageid':
+							showAlert('alert-danger', 'このステージは改造できません');
+							break;
+						case 'database-error':
+							showAlert('alert-danger', 'エラーにより改造できませんでした');
+							break;
+						default:
+							sessionStorage.setItem('project-token', data);
+							break;
+					}
+				});
+			}
 			switch(mode){
 				case "official":
 					// official mode (load default code from main.js)
 					$(".begin_restaging").on('click', function() {
 						beginRestaging();
+						makeProject();
 					});
 					break;
 				case "restaging":
@@ -163,22 +223,18 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					$(".h4p_publish").show();
 					$("#stage-name_alert").hide();
 					$("#author_alert").hide();
-					$('#inputModal').on('show.bs.modal', function (e) {
-						focus_on_game = false;
+					$('#inputModal').on('show.bs.modal', function () {
 						// canvas to image
 						var game = $(".h4p_game>iframe").get(0);
 			    		var source = "saveImage();";
 			    		game.contentWindow.postMessage(source, '/');
 					});
-					$('#inputModal').on('hidden.bs.modal', function (e) {
-						focus_on_game = true;
-					});
 					$("#publish-button").on('click', function() {
-						var stage_name = $("#stage-name").val();
+						var title = $("#stage-name").val();
 						var author = $("#author").val();
-						if(stage_name === ""){ $("#stage-name_alert").show('fast'); }
+						if(title === ""){ $("#stage-name_alert").show('fast'); }
 						if(author === ""){ $("#author_alert").show('fast'); }
-						if(stage_name !== "" && author !== ""){
+						if(title !== "" && author !== ""){
 							$("#inputModal").modal('hide');
 							$(".h4p_publish").children('button').attr('disabled', 'disabled');
 							var data = sessionStorage.getItem('image');
@@ -186,21 +242,35 @@ $retry 	= filter_input(INPUT_GET, "retry");
 							$message.text('送信中・・・');
 							jsEditor.save();
 							var code = jsEditor.getTextArea().value;
-							$.post('sendRestagingCode.php', {
-					            'token':token,
-					            'code':code,
-					            'origin_id':origin_id,
-					            'stage_name':stage_name,
-					            'author':author,
-					            'thumb':data
-					        }, function(data, textStatus, xhr) {
-					        	$message.text('Thank you for your ReStaging!!');
-					        	$(".h4p_publish-complete").show();
-					        	$(".h4p_publish-return").show();
-					        	alert_on_unload = false; // 遷移時の警告を非表示
-					            if(data !== "") console.log(data);
-					            if(textStatus !== "") console.log(textStatus);
-					        });
+
+							$.post('../project/publishreplaystage.php', {
+								'token': sessionStorage.getItem('project-token'),
+								'thumb': data,
+								'path': path,
+								'title': title
+							} , function(data, textStatus, xhr) {
+								console.log(data);
+								switch(data){
+									case 'no-session':
+										$('#signinModal').modal('show').find('.modal-title').text('ステージを投稿するには、ログインしてください');
+										break;
+									case 'invalid-token':
+										showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
+										break;
+									case 'already-published':
+										showAlert('alert-danger', 'すでに投稿されたステージです');
+										break;
+									case 'database-error':
+										showAlert('alert-danger', 'エラーにより投稿できませんでした');
+										break;
+									case 'success':
+										$message.text('Thank you for your ReStaging!!');
+							        	$(".h4p_publish-complete").show();
+							        	$(".h4p_publish-return").show();
+							        	alert_on_unload = false; // 遷移時の警告を非表示
+							            break;
+								}
+							});
 						};
 					});
 					break;
@@ -209,12 +279,14 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					sessionStorage.setItem('restaging_code', replay_code);
 					$(".begin_restaging").on('click', function() {
 						beginRestaging();
+						makeProject();
 					});
 					break;
 				case "extend":
 					// extend mode (extends restaging-code in tutorial)
 					$(".begin_restaging").on('click', function() {
 						beginRestaging();
+						makeProject();
 					});
 					break;
 			}
@@ -274,26 +346,24 @@ $retry 	= filter_input(INPUT_GET, "retry");
 	<?php include_once("../analyticstracking.php"); ?>
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/header.php'; ?>
+	<?php require_once '../view/authmodal.php'; ?>
+	<!-- Alert -->
+	<script type="text/javascript" charset="utf-8">
+	function showAlert (_class, _text) {
+		$('<div>').addClass('alert').addClass(_class).attr('role', 'alert').append(
+			$('<button>').addClass('close').attr({
+				'type' : 'button',
+				'data-dismiss': 'alert',
+				'aria-label': 'Close'
+			}).append(
+				$('<span>').attr('aria-hidden', 'true').html('&times;')
+			)
+		).append(
+			$('<span>').text(_text)
+		).appendTo('.h4p_alerts');
+	}
+	</script>
 	<!-- Modal -->
-	<div class="modal fade" id="restageModal" tabindex="-1" role="dialog" aria-labelledby="restageModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-	    		<div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="restageModalLabel">このステージを改造しますか？</h4>
-		    	</div>
-			    <div class="modal-body">
-			    	<h2>注意：これは上級者向けの機能です。</h2>
-			    	<p>ワークショップ参加者の方は、チュートリアルを全てクリアしたあと、「本」を開いてから改造を行ってください。</p>
-			    	<p>あなたの知らない第三者にこの機能を勧められて使う場合、悪意のあるコードを埋め込まないよう注意してください。</p>
-			    </div>
-	    		<div class="modal-footer">
-	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-	       			<button type="button" class="btn btn-danger begin_restaging" data-dismiss="modal">改造を始める</button>
-	    		</div>
-			</div>
-		</div>
-	</div>
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -310,11 +380,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			        		<label for="stage-name" class="control-label">ステージ名<small>（自由に決めてください）</small>:</label>
 			        		<input type="text" class="form-control" id="stage-name">
 			        		<p id="stage-name_alert" class="alert alert-danger">ステージ名を入力してください。</p>
-			        	</div>
-			        	<div class="form-group">
-			            	<label for="author" class="control-label">あなたの名前<small>（ニックネーム）</small>:</label>
-			            	<input type="text" class="form-control" id="author"></input>
-			        		<p id="author_alert" class="alert alert-danger">あなたの名前を入力してください。</p>
 			        	</div>
 			        </form>
 			    </div>
@@ -341,27 +406,10 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="moreModal" tabindex="-1" role="dialog" aria-labelledby="moreModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-	    		<div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="moreModalLabel">改造ステージを作ってみましょう！</h4>
-		    	</div>
-			    <div class="modal-body">
-			    	<p>ワークショップ参加者の方は、ここで<b>本を開いてください</b>。</p>
-			    	<p>お家からアクセスしている方は、今までに作られたステージを遊んだり、タイトルの横にある「改造する」という緑色のボタンから改造ステージを作ることができます。</p>
-			    </div>
-	    		<div class="modal-footer">
-	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-	        		<a href="/r" class="btn btn-primary" title="次に進む">次に進む</a>
-	    		</div>
-			</div>
-		</div>
-	</div>
 	<!-- contents -->
 	<div class="container">
 		<div class="row">
+			<div class="col-md-12 h4p_alerts"></div>
 			<div class="col-md-12 h4p_restaging">
 				<div class="row">
 					<div class="col-md-12 h4p_restaging_editor">
@@ -384,7 +432,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					</div>
 					<div class="col-md-12 h4p_clear-next">
 					<?php if($mode == "replay") : ?>
-						<!-- <button type="button" class="btn btn-success btn-lg btn-block" title="改造する" data-toggle="modal" data-target="#restageModal">このステージを改造する</button> -->
 						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">このステージを改造する</button>
 						<a href="/r" class="btn btn-success btn-lg btn-block" title="改造ステージ一覧へ">
 							改造ステージ一覧へ
@@ -398,7 +445,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					<?php elseif($id == 106) : // last stage of tutirial ?>
 						<h3>クリアおめでとうございます！</h3>
 						<p>こんどは、あなたもステージを作ってみましょう</p>
-						<!-- <button  data-toggle="modal" data-target="#moreModal" role="button" class="btn btn-success btn-lg" title="もっとあそぶ"><h2>もっとあそぶ</h2></button> -->
 						<a href="/s?id=201" class="btn btn-success btn-lg" title="今すぐ作る"><h3>今すぐ作る</h3></a>
 					<?php endif; ?>
 					</div>
@@ -418,7 +464,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 						<span class="h4p_info-footer">プレイ回数：<b><?php echo $count."回"; ?></b></span>
 					</div>
 					<div class="col-md-3 h4p_info-restaging">
-						<!-- <button type="button" class="btn btn-success btn-lg btn-block" title="改造する" data-toggle="modal" data-target="#restageModal">改造する</button> -->
 						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">改造する</button>
 					</div>
 					<div class="col-md-3 h4p_info-retry">
