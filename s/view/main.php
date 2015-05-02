@@ -277,15 +277,14 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					});
 					$("#publish-button").on('click', function() {
 						var title = $("#stage-name").val();
-						var author = $("#author").val();
 						if(title === ""){ $("#stage-name_alert").show('fast'); }
-						if(author === ""){ $("#author_alert").show('fast'); }
-						if(title !== "" && author !== ""){
+						if(title !== ""){
 							$("#inputModal").modal('hide');
-							$(".h4p_publish").children('button').attr('disabled', 'disabled');
+							$(this).button('loading');
+//							$(".h4p_publish").children('button').attr('disabled', 'disabled');
 							var data = sessionStorage.getItem('image');
 							var $message = $(".h4p_publish-text");
-							$message.text('送信中・・・');
+//							$message.text('送信中・・・');
 							jsEditor.save();
 							var code = jsEditor.getTextArea().value;
 
@@ -296,6 +295,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 								'title': title
 							} , function(data, textStatus, xhr) {
 								console.log(data);
+								$('#publish-button').button('reset');
 								switch(data){
 									case 'no-session':
 										$('#signinModal').modal('show').find('.modal-title').text('ステージを投稿するには、ログインしてください');
@@ -460,7 +460,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 				</div>
 			</div>
 			<div class="col-md-12 h4p_publish" style="display:none">
-				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal">
+				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="Loading...">
 					<h3 class="h4p_publish-text">この改造ステージを投稿する</h3>
 					<h5 class="h4p_publish-complete text-center" style="display:none"><br>ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。</h5>
 				</button>
