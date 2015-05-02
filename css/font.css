@@ -35,6 +35,15 @@ body {
 	font-size: 95%;
 }
 
+.h4p_publish button.btn {
+	color: rgb(255,255,255);
+	font-size: 180%;
+}
+
+.h4p_publish p{
+	font-size: 60%;
+}
+
 /* リンクのデコレーション */
 .h4p_item-footer a {
 	color: rgb(200,200,200);

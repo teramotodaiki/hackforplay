@@ -281,10 +281,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 						if(title !== ""){
 							$("#inputModal").modal('hide');
 							$(this).button('loading');
-//							$(".h4p_publish").children('button').attr('disabled', 'disabled');
 							var data = sessionStorage.getItem('image');
-							var $message = $(".h4p_publish-text");
-//							$message.text('送信中・・・');
 							jsEditor.save();
 							var code = jsEditor.getTextArea().value;
 
@@ -310,8 +307,9 @@ $retry 	= filter_input(INPUT_GET, "retry");
 										showAlert('alert-danger', 'エラーにより投稿できませんでした');
 										break;
 									case 'success':
-										$message.text('Thank you for your ReStaging!!');
-							        	$(".h4p_publish-complete").show();
+										$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled')
+										.append($('<p>').text('ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。'));
+//							        	$(".h4p_publish-complete").show();
 							        	$(".h4p_publish-return").show();
 							        	alert_on_unload = false; // 遷移時の警告を非表示
 							            break;
@@ -347,8 +345,8 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			// ステージ改造のチュートリアル
 			if(201 <= stage_id && stage_id <= 206){
 				// この改造ステージを投稿する->次のステージへ
-				$(".h4p_publish-text").text('次のステージへ');
-				$(".h4p_publish>button").attr({
+				$(".h4p_publish button").text('次のステージへ')
+				.attr({
 					'data-toggle': '',
 					'data-target': ''
 				}).on('click', function() {
@@ -460,9 +458,8 @@ $retry 	= filter_input(INPUT_GET, "retry");
 				</div>
 			</div>
 			<div class="col-md-12 h4p_publish" style="display:none">
-				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="Loading...">
-					<h3 class="h4p_publish-text">この改造ステージを投稿する</h3>
-					<h5 class="h4p_publish-complete text-center" style="display:none"><br>ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。</h5>
+				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中...">
+					この改造ステージを投稿する
 				</button>
 				<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
 			</div>
