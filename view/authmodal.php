@@ -328,6 +328,7 @@ $(function() {
 		    	<h4>ログインできました</h4>
 		    </div>
       		<div class="modal-footer">
+				<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#authModal" >アカウントを持っていません</button>
 		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
       		</div>
     	</div>
