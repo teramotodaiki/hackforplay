@@ -57,9 +57,17 @@ $retry 	= filter_input(INPUT_GET, "retry");
 		).append(
 			$('<span>').text(_text)
 		).appendTo('.h4p_alerts');
+		
+		// アラートが見えるにスクロール
+		scrollToAnchor();
 	}
 	function screenShot () {
 		document.getElementsByTagName('iframe')[0].contentWindow.postMessage('screenShot()', '/');
+	}
+	function scrollToAnchor(){
+		var top = $('#scroll-anchor').get(0).getBoundingClientRect().top;
+		console.log(top);
+		window.scrollBy(0, top);
 	}
 	var path = "<?php echo $path; ?>";
 	var next = "<?php echo $next; ?>";
@@ -368,6 +376,11 @@ $retry 	= filter_input(INPUT_GET, "retry");
 				$(".h4p_info-restaging>button").hide();
 			}
 		})();
+		
+		// #scroll-anchorまでスクロールする
+		(function () {
+			scrollToAnchor();
+		})();
 	});
 	</script>
 	<!-- Modal -->
@@ -416,7 +429,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 	<!-- contents -->
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12 h4p_alerts"></div>
 			<div class="col-md-12 h4p_restaging">
 				<div class="row">
 					<div class="col-md-12 h4p_restaging_editor">
@@ -429,6 +441,8 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					</div>
 				</div>
 			</div>
+			<div id="scroll-anchor" class="col-md-12"></div>
+			<div class="col-md-12 h4p_alerts"></div>
 			<div class="col-md-12 h4p_game" style="display:block">
 				<iframe src=""></iframe>
 			</div>
