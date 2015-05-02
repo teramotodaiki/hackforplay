@@ -25,9 +25,50 @@ $retry 	= filter_input(INPUT_GET, "retry");
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title><?php echo $title; ?> - HackforPlay</title>
 	<?php require_once '../library.php' ?>
+	<!-- HackforPlay RePlay -->
+	<script src="editor/lib/codemirror.js" type="text/javascript"></script>
+	<script src="editor/mode/javascript/javascript.js" type="text/javascript"></script>
+	<script src="editor/addon/edit/closebrackets.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="editor/lib/codemirror.css">
+	<style type="text/css" media="screen">
+		.CodeMirror {
+		  top: 0px;
+		  left: 0px;
+		  background-color: rgb(245,245,245);
+		}
+	</style>
+</head>
+<body>
+	<?php include_once("../analyticstracking.php"); ?>
+	<?php require_once '../sendattendance.php'; ?>
+	<?php require_once '../view/header.php'; ?>
+	<?php require_once '../view/authmodal.php'; ?>
+	<!-- Alert -->
 	<script type="text/javascript" charset="utf-8">
-	// var token = "<?php // echo $token; ?>";
-	var token = "";
+	function showAlert (_class, _text) {
+		$('<div>').addClass('alert').addClass(_class).attr('role', 'alert').append(
+			$('<button>').addClass('close').attr({
+				'type' : 'button',
+				'data-dismiss': 'alert',
+				'aria-label': 'Close'
+			}).append(
+				$('<span>').attr('aria-hidden', 'true').html('&times;')
+			)
+		).append(
+			$('<span>').text(_text)
+		).appendTo('.h4p_alerts');
+		
+		// アラートが見えるにスクロール
+		scrollToAnchor();
+	}
+	function screenShot () {
+		document.getElementsByTagName('iframe')[0].contentWindow.postMessage('screenShot()', '/');
+	}
+	function scrollToAnchor(){
+		var top = $('#scroll-anchor').get(0).getBoundingClientRect().top;
+		console.log(top);
+		window.scrollBy(0, top);
+	}
 	var path = "<?php echo $path; ?>";
 	var next = "<?php echo $next; ?>";
 	var mode = "<?php echo $mode; ?>";
@@ -59,7 +100,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 		var width = $(".h4p_game").width();
 		$(".h4p_game").height(width/1.5)
 			.children('iframe').attr({
-				'src':'game.php?token='+token+'&path='+path+'&next='+next+'&mode='+mode,
+				'src':'game.php?&path='+path+'&next='+next+'&mode='+mode,
 				'width': width,
 				'height': width/1.5
 			});
@@ -155,38 +196,48 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					var code = jsEditor.getTextArea().value;
 					sessionStorage.setItem('restaging_code', code);
 					alert_on_unload = false;
-					// Update data
-					console.log('clicked');
-					$.post('../project/updatefromtoken.php', {
-						'token': sessionStorage.getItem('project-token'),
-						'data': code
-					}, function(data, textStatus, xhr) {
-						console.log(data);
-						switch(data){
-							case 'no-session':
-								$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
-								break;
-							case 'invalid-token':
-								showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
-								break;
-							case 'already-published':
-								showAlert('alert-danger', 'すでに投稿されたステージです');
-								break;
-							case 'data-is-null':
-								showAlert('alert-danger', '更新するデータが破損していたため、更新されませんでした');
-								break;
-							case 'database-error':
-								showAlert('alert-danger', 'データベースエラーにより、更新されませんでした');
-								break;
-							case 'success':
-								location.href = "/s?id="+<?php echo $id; ?>+"&mode=restaging";
-								break;
-						}
-					});
+					var updateTask = function(){
+						// Update data
+						var token = sessionStorage.getItem('project-token');
+						$.post('../project/updatefromtoken.php', {
+							'token': token,
+							'data': code
+						}, function(data, textStatus, xhr) {
+							console.log(data);
+							switch(data){
+								case 'no-session':
+									$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
+									break;
+								case 'invalid-token':
+									showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
+									break;
+								case 'already-published':
+									showAlert('alert-danger', 'すでに投稿されたステージです');
+									break;
+								case 'data-is-null':
+									showAlert('alert-danger', '更新するデータが破損していたため、更新されませんでした');
+									break;
+								case 'database-error':
+									showAlert('alert-danger', 'データベースエラーにより、更新されませんでした');
+									break;
+								case 'success':
+									location.href = "/s?id="+<?php echo $id; ?>+"&mode=restaging";
+									break;
+							}
+						});
+					};
+					if(sessionStorage.getItem('project-token') === null){
+						// プロジェクトが作られていないので、作成
+						makeProject(updateTask);
+					}else{
+						updateTask();
+					}
 				});
 				$(".h4p_mapTip").show();
 			};
-			var makeProject = function(){
+			var makeProject = function(callback){
+				// 残っているトークンを破棄
+				sessionStorage.removeItem('project-token');
 				var code = sessionStorage.getItem('restaging_code');
 				$.post('../project/makefromstage.php', {
 					'stageid': <?php echo $id; ?>,
@@ -205,6 +256,9 @@ $retry 	= filter_input(INPUT_GET, "retry");
 							break;
 						default:
 							sessionStorage.setItem('project-token', data);
+							if(callback != undefined){
+								callback();
+							}
 							break;
 					}
 				});
@@ -231,15 +285,11 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					});
 					$("#publish-button").on('click', function() {
 						var title = $("#stage-name").val();
-						var author = $("#author").val();
 						if(title === ""){ $("#stage-name_alert").show('fast'); }
-						if(author === ""){ $("#author_alert").show('fast'); }
-						if(title !== "" && author !== ""){
+						if(title !== ""){
 							$("#inputModal").modal('hide');
-							$(".h4p_publish").children('button').attr('disabled', 'disabled');
+							$(this).button('loading');
 							var data = sessionStorage.getItem('image');
-							var $message = $(".h4p_publish-text");
-							$message.text('送信中・・・');
 							jsEditor.save();
 							var code = jsEditor.getTextArea().value;
 
@@ -250,6 +300,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 								'title': title
 							} , function(data, textStatus, xhr) {
 								console.log(data);
+								$('#publish-button').button('reset');
 								switch(data){
 									case 'no-session':
 										$('#signinModal').modal('show').find('.modal-title').text('ステージを投稿するには、ログインしてください');
@@ -264,8 +315,9 @@ $retry 	= filter_input(INPUT_GET, "retry");
 										showAlert('alert-danger', 'エラーにより投稿できませんでした');
 										break;
 									case 'success':
-										$message.text('Thank you for your ReStaging!!');
-							        	$(".h4p_publish-complete").show();
+										$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled')
+										.append($('<p>').text('ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。'));
+//							        	$(".h4p_publish-complete").show();
 							        	$(".h4p_publish-return").show();
 							        	alert_on_unload = false; // 遷移時の警告を非表示
 							            break;
@@ -301,8 +353,8 @@ $retry 	= filter_input(INPUT_GET, "retry");
 			// ステージ改造のチュートリアル
 			if(201 <= stage_id && stage_id <= 206){
 				// この改造ステージを投稿する->次のステージへ
-				$(".h4p_publish-text").text('次のステージへ');
-				$(".h4p_publish>button").attr({
+				$(".h4p_publish button").text('次のステージへ')
+				.attr({
 					'data-toggle': '',
 					'data-target': ''
 				}).on('click', function() {
@@ -324,44 +376,12 @@ $retry 	= filter_input(INPUT_GET, "retry");
 				$(".h4p_info-restaging>button").hide();
 			}
 		})();
+		
+		// #scroll-anchorまでスクロールする
+		(function () {
+			scrollToAnchor();
+		})();
 	});
-	function screenShot () {
-		document.getElementsByTagName('iframe')[0].contentWindow.postMessage('screenShot()', '/');
-	}
-	</script>
-	<!-- HackforPlay RePlay -->
-	<script src="editor/lib/codemirror.js" type="text/javascript"></script>
-	<script src="editor/mode/javascript/javascript.js" type="text/javascript"></script>
-	<script src="editor/addon/edit/closebrackets.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="editor/lib/codemirror.css">
-	<style type="text/css" media="screen">
-		.CodeMirror {
-		  top: 0px;
-		  left: 0px;
-		  background-color: rgb(245,245,245);
-		}
-	</style>
-</head>
-<body>
-	<?php include_once("../analyticstracking.php"); ?>
-	<?php require_once '../sendattendance.php'; ?>
-	<?php require_once '../view/header.php'; ?>
-	<?php require_once '../view/authmodal.php'; ?>
-	<!-- Alert -->
-	<script type="text/javascript" charset="utf-8">
-	function showAlert (_class, _text) {
-		$('<div>').addClass('alert').addClass(_class).attr('role', 'alert').append(
-			$('<button>').addClass('close').attr({
-				'type' : 'button',
-				'data-dismiss': 'alert',
-				'aria-label': 'Close'
-			}).append(
-				$('<span>').attr('aria-hidden', 'true').html('&times;')
-			)
-		).append(
-			$('<span>').text(_text)
-		).appendTo('.h4p_alerts');
-	}
 	</script>
 	<!-- Modal -->
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
@@ -409,7 +429,6 @@ $retry 	= filter_input(INPUT_GET, "retry");
 	<!-- contents -->
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12 h4p_alerts"></div>
 			<div class="col-md-12 h4p_restaging">
 				<div class="row">
 					<div class="col-md-12 h4p_restaging_editor">
@@ -422,6 +441,8 @@ $retry 	= filter_input(INPUT_GET, "retry");
 					</div>
 				</div>
 			</div>
+			<div id="scroll-anchor" class="col-md-12"></div>
+			<div class="col-md-12 h4p_alerts"></div>
 			<div class="col-md-12 h4p_game" style="display:block">
 				<iframe src=""></iframe>
 			</div>
@@ -451,9 +472,8 @@ $retry 	= filter_input(INPUT_GET, "retry");
 				</div>
 			</div>
 			<div class="col-md-12 h4p_publish" style="display:none">
-				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal">
-					<h3 class="h4p_publish-text">この改造ステージを投稿する</h3>
-					<h5 class="h4p_publish-complete text-center" style="display:none"><br>ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。</h5>
+				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中...">
+					この改造ステージを投稿する
 				</button>
 				<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
 			</div>

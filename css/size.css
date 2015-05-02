@@ -140,6 +140,11 @@ header {
 	margin: 0;
 }
 
+.h4p_publish button.btn {
+	padding-top: 30px;
+	padding-bottom: 20px;
+}
+
 .h4p_publish {
 	padding-left: 1px;
 	padding-right: 1px;
@@ -149,10 +154,6 @@ header {
 .h4p_publish button{
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
-}
-
-.h4p_publish-text {
-	height: 27px;
 }
 
 .h4p_mapTip {
