@@ -1,6 +1,0 @@
-/*
-Preferences のform submitについてのスクリプト
-*/
-$(function(){
-
-});

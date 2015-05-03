@@ -17,7 +17,6 @@ Preferences のビュー
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
-	<script src="submit.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
