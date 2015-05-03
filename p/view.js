@@ -7,7 +7,6 @@ $(function(){
 	/* View */
 
 	// ユーザー情報（Ajaxで取得して、ボタンをアクティブにする）
-	var $u = $('form[name="usersettings"]');
 	var getInfoTask = function(){
 		$.get('../auth/getmyinfo.php', function(data) {
 			console.log(data);
@@ -27,7 +26,8 @@ $(function(){
 					break;
 				default:
 					var info = jQuery.parseJSON(data);
-					$u.find('#nickname').val(info.nickname);
+					var $form = $('form[name="usersettings"]');
+					$form.find('#nickname').val(info.nickname);
 					userDefault.nickname = info.nickname;
 					break;
 			}
@@ -37,7 +37,7 @@ $(function(){
 
 	// ユーザー情報の変更（ひとつでもuserDefaultと違っていたらボタンをアクティブにする）
 	var userDefault = {};
-	setInputRoutine($u, function(){
+	setInputRoutine('form[name="usersettings"]', function(){
 		var count = 0;
 		if ($(this).find('#nickname').val() !== userDefault.nickname) {
 			count++;
@@ -46,7 +46,7 @@ $(function(){
 	});
 
 	// パスワードの再設定（Validationしてボタンをアクティブにする）
-	setInputRoutine($('form[name="setpassword"]'), function(){
+	setInputRoutine('form[name="setpassword"]', function(){
 		var count = 0;
 		$(this).find('input[type="password"]').each(function(index, el) {
 			// Validation
@@ -57,12 +57,13 @@ $(function(){
 				count++;
 			}
 		});
-		$(this).find('button[type="submit"]').attr('disabled', count < 3);
+		$(this).find('button').attr('disabled', count < 3);
 	});
 
-	// $element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
-	function setInputRoutine ($element, routine) {
+	// 'selector' element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
+	function setInputRoutine (selector, routine) {
 		var _intervalID = null;
+		var $element = $(selector);
 		$element.find('input').on('focus', function() {
 			clearInterval(_intervalID);
 			_intervalID = setInterval(routine.bind($element.get(0)), 100);
@@ -96,6 +97,8 @@ $(function(){
 			}
 		});
 	});
+
+
 
 	// _level のアラート _text を生成し、jQueryオブジェクトを返す
 	function bsAlert (_level, _text) {

@@ -60,9 +60,9 @@ Preferences のビュー
 							    	</div>
 					    		</div>
 						    	<div class="form-group has-feedback">
-							    	<label for="new" class="col-sm-3 control-label">パスワード</label>
+							    	<label for="password" class="col-sm-3 control-label">パスワード</label>
 							    	<div class="col-sm-8">
-							    		<input type="password" class="form-control" id="new">
+							    		<input type="password" class="form-control" id="password">
 							    	</div>
 							    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="8文字以上の長さが必要です">
 							    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
