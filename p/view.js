@@ -42,7 +42,7 @@ $(function(){
 		if ($(this).find('#nickname').val() !== userDefault.nickname) {
 			count++;
 		}
-		$(this).find('button').attr('disabled', count < 1);
+		$(this).find('button[type="submit"]').attr('disabled', count < 1);
 	});
 
 	// パスワードの再設定（Validationしてボタンをアクティブにする）
@@ -57,7 +57,7 @@ $(function(){
 				count++;
 			}
 		});
-		$(this).find('button').attr('disabled', count < 3);
+		$(this).find('button[type="submit"]').attr('disabled', count < 3);
 	});
 
 	// 'selector' element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
@@ -76,7 +76,7 @@ $(function(){
 	$('form[name="usersettings"]').submit(function(event) {
 		event.preventDefault();
 
-		var submit = $(this).find('button').button('loading');
+		var submit = $(this).find('button[type="submit"]').button('loading');
 		var nickname = $(this).find('#nickname').val();
 		$.post('../auth/updateuser.php',{
 			'nickname': nickname
@@ -102,7 +102,7 @@ $(function(){
 		event.preventDefault();
 
 		var $f = $(this);
-		var submit = $f.find('button').button('loading');
+		var submit = $f.find('button[type="submit"]').button('loading');
 		var current = $f.find('#current').val();
 		var password = $f.find('#password').val();
 		var confirm = $f.find('#confirm').val();
