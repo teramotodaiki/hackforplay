@@ -25,7 +25,7 @@ Preferences のビュー
 						<h3 class="panel-title">設定</h3>
 					</div>
 					<ul class="col-md-3 nav nav-pills nav-stacked panel-body" role="tablist">
-					    <li role="presentation">
+					    <li role="presentation" class="active">
 					    	<a href="#usersettings" aria-controls="usersettings" role="tab" data-toggle="tab">ユーザー情報</a>
 					    </li>
 					    <li role="presentation">
