@@ -98,11 +98,56 @@ $(function(){
 		});
 	});
 
+	$('form[name="setpassword"]').submit(function(event) {
+		event.preventDefault();
 
+		var $f = $(this);
+		var submit = $f.find('button').button('loading');
+		var current = $f.find('#current').val();
+		var password = $f.find('#password').val();
+		var confirm = $f.find('#confirm').val();
+		if (password.length < 8) {
+			bsAlert('alert-danger', '8文字以上のパスワードを設定してください').prependTo($f);
+			return;
+		}else if(password !== confirm){
+			bsAlert('alert-danger', '入力されたパスワードが一致していません').prependTo($f);
+			return;
+		}
+
+		$.post('../auth/updatepassword.php', {
+			'current': current,
+			'password': password
+		}, function(data, textStatus, xhr) {
+			submit.button('reset');
+			console.log(data);
+			switch(data){
+				case 'no-session':
+					$('#signinModal').modal('show');
+					break;
+				case 'invalid-password':
+					bsAlert('alert-danger', '入力されたパスワードはお使いいただけません').prependTo($f);
+					break;
+				case 'incorrect-password':
+					bsAlert('alert-danger', '現在のパスワードが間違っています').prependTo($f);
+					break;
+				case 'update-failed':
+					bsAlert('alert-danger', 'エラーによりパスワードを設定できませんでした').prependTo($f);
+					break;
+				case 'success':
+					bsAlert('alert-success', 'パスワードを変更しました').prependTo($f);
+					$f.find('input').val('');
+					setTimeout(function(){
+						// Validationにかからないよう、100ミリ秒待って非アクティブ化
+						submit.attr('disabled', true);
+					}, 100);
+					break;
+			}
+		});
+	});
 
 	// _level のアラート _text を生成し、jQueryオブジェクトを返す
 	function bsAlert (_level, _text) {
-		var bsalert =
+		var _bsalert =
 		$('<div>').addClass('alert alert-dismissible fade in').addClass(_level).attr('role', 'alert').append(
 			$('<button>').addClass('close').attr({
 				'type' : 'button',
@@ -114,6 +159,6 @@ $(function(){
 		).append(
 			$('<span>').text(_text)
 		);
-		return bsalert;
+		return _bsalert;
 	}
 });
