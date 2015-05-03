@@ -46,7 +46,7 @@ Preferences のビュー
 							    	</div>
 							  	</div>
 							  	<div class="text-right">
-								  	<button type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="送信中…">保存</button>
+								  	<button type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="送信中…" disabled>保存</button>
 							  	</div>
 					    	</form>
 					    </div>
@@ -79,7 +79,7 @@ Preferences のビュー
 							    	</div>
 							  	</div>
 							  	<div class="text-right">
-								  	<button type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="送信中…">パスワードを変更</button>
+								  	<button type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="送信中…" disabled>パスワードを変更</button>
 							  	</div>
 					    	</form>
 					    </div>

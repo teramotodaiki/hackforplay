@@ -5,8 +5,7 @@ $(function(){
 	$('[data-toggle="tooltip"]').tooltip();
 
 	// ユーザー情報（Ajaxで取得して、ボタンをアクティブにする）
-	var $f = $('form[name="usersettings"]');
-	$f.find('button').attr('disabled', true);
+	var $u = $('form[name="usersettings"]');
 	var getInfoTask = function(){
 		$.get('../auth/getmyinfo.php', function(data) {
 			console.log(data);
@@ -26,16 +25,26 @@ $(function(){
 					break;
 				default:
 					var info = jQuery.parseJSON(data);
-					$f.find('#nickname').val(info.nickname);
-					$f.find('button').attr('disabled', false);
+					$u.find('#nickname').val(info.nickname);
+					userDefault.nickname = info.nickname;
 					break;
 			}
 		});
 	};
 	getInfoTask();
 
+	// ユーザー情報の変更（ひとつでもuserDefaultと違っていたらボタンをアクティブにする）
+	var userDefault = {};
+	setInputRoutine($u, function(){
+		var count = 0;
+		if ($(this).find('#nickname').val() !== userDefault.nickname) {
+			count++;
+		}
+		$(this).find('button').attr('disabled', count < 1);
+	});
+
 	// パスワードの再設定（Validationしてボタンをアクティブにする）
-	setInputRoutine($('form[name="setpassword"]').get(0), function(){
+	setInputRoutine($('form[name="setpassword"]'), function(){
 		var count = 0;
 		$(this).find('input[type="password"]').each(function(index, el) {
 			// Validation
@@ -49,12 +58,12 @@ $(function(){
 		$(this).find('button[type="submit"]').attr('disabled', count < 3);
 	});
 
-	// element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
-	function setInputRoutine (element, routine) {
+	// $element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
+	function setInputRoutine ($element, routine) {
 		var _intervalID = null;
-		$(element).find('input').on('focus', function() {
+		$element.find('input').on('focus', function() {
 			clearInterval(_intervalID);
-			_intervalID = setInterval(routine.bind(element), 100);
+			_intervalID = setInterval(routine.bind($element.get(0)), 100);
 		}).on('blur', function() {
 			clearInterval(_intervalID);
 		});
