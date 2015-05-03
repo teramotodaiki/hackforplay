@@ -24,7 +24,7 @@ if($password == FALSE || strlen($password) < 8){
 
 // パスワードを照会
 try {
-	$stmt 	= $dbh->prepare('SELECT "ID","Hashed" FROM "Account" WHERE "ID"=:userid AND "Type"=:hackforplay AND "State"=:connected');
+	$stmt 	= $dbh->prepare('SELECT "ID","Hashed" FROM "Account" WHERE "UserID"=:userid AND "Type"=:hackforplay AND "State"=:connected');
 	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
 	$stmt->bindValue(":hackforplay", 'hackforplay', PDO::PARAM_STR);
 	$stmt->bindValue(":connected", 'connected', PDO::PARAM_STR);
@@ -42,7 +42,7 @@ try {
 // パスワードを更新
 $hashed = password_hash($password, PASSWORD_DEFAULT);
 try {
-	$stmt 	= $dbh->prepare('UPDATE "Account" SET "Hashed"=:hashed WHERE "ID"=:account_id');
+	$stmt 	= $dbh->prepare('UPDATE "Account" SET "Hashed"=:hashed WHERE "UserID"=:account_id');
 	$stmt->bindValue(":hashed", $hashed, PDO::PARAM_STR);
 	$stmt->bindValue(":account_id", $account['ID'], PDO::PARAM_INT);
 	$flag 	= $stmt->execute();
