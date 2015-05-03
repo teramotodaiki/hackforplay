@@ -26,15 +26,15 @@ Preferences のビュー
 					</div>
 					<ul class="col-md-3 nav nav-pills nav-stacked panel-body" role="tablist">
 					    <li role="presentation">
-					    	<a href="#user" aria-controls="user" role="tab" data-toggle="tab">ユーザー情報</a>
+					    	<a href="#usersettings" aria-controls="usersettings" role="tab" data-toggle="tab">ユーザー情報</a>
 					    </li>
 					    <li role="presentation">
 					    	<a href="#setpassword" aria-controls="setpassword" role="tab" data-toggle="tab">パスワード</a>
 					    </li>
 					</ul>
 					<div class="col-md-9 tab-content panel-body">
-					    <div role="tabpanel" class="tab-pane active" id="user">
-					    	<form id="usersettings" class="form-horizontal">
+					    <div role="tabpanel" class="tab-pane active" id="usersettings">
+					    	<form name="usersettings" class="form-horizontal">
 					    		<p class="alert alert-danger hide" role="alert"></p>
 							  	<div class="form-group has-feedback">
 							    	<label for="nickname" class="col-sm-3 control-label">ニックネーム</label>
@@ -45,29 +45,13 @@ Preferences のビュー
 							    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
 							    	</div>
 							  	</div>
-							  	<div class="form-group has-feedback">
-							  		<label class="col-sm-3 control-label" for="gender">性別</label>
-							    	<div id="gender" class="col-sm-8">
-								    	<label class="radio-inline"><input type="radio" name="gender" value="man">男</label>
-								  		<label class="radio-inline"><input type="radio" name="gender" value="woman">女</label>
-							    	</div>
-							  	</div>
-							  	<div class="form-group has-feedback">
-							  		<label for="age" class="col-sm-3 control-label">年齢</label>
-							    	<div class="col-sm-8">
-							    		<input type="number" class="form-control" id="age" value="">
-							    	</div>
-							    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="半角の数値を入力してください">
-							    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
-							    	</div>
-							  	</div>
 							  	<div class="text-right">
 								  	<button type="submit" class="btn btn-primary" disabled="disabled">保存</button>
 							  	</div>
 					    	</form>
 					    </div>
 					    <div role="tabpanel" class="tab-pane" id="setpassword">
-					    	<form class="form-horizontal">
+					    	<form name="setpassword" class="form-horizontal">
 					    		<div class="form-group has-feedback">
 					    			<label for="current" class="col-sm-3 control-label">現在のパスワード</label>
 							    	<div class="col-sm-8">
