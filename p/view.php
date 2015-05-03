@@ -17,6 +17,7 @@ Preferences のビュー
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<script src="submit.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -35,7 +36,6 @@ Preferences のビュー
 					<div class="col-md-9 tab-content panel-body">
 					    <div role="tabpanel" class="tab-pane active" id="usersettings">
 					    	<form name="usersettings" class="form-horizontal">
-					    		<p class="alert alert-danger hide" role="alert"></p>
 							  	<div class="form-group has-feedback">
 							    	<label for="nickname" class="col-sm-3 control-label">ニックネーム</label>
 							    	<div class="col-sm-8">
@@ -46,7 +46,7 @@ Preferences のビュー
 							    	</div>
 							  	</div>
 							  	<div class="text-right">
-								  	<button type="submit" class="btn btn-primary" disabled="disabled">保存</button>
+								  	<button type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="送信中…">保存</button>
 							  	</div>
 					    	</form>
 					    </div>
@@ -79,7 +79,7 @@ Preferences のビュー
 							    	</div>
 							  	</div>
 							  	<div class="text-right">
-								  	<button type="submit" class="btn btn-primary" disabled="disabled">パスワードを変更</button>
+								  	<button type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="送信中…">パスワードを変更</button>
 							  	</div>
 					    	</form>
 					    </div>
