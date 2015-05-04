@@ -63,7 +63,7 @@ $(function(){
 		}
 	});
 
-	$projectItem = $('<div>').addClass('col-md-4 col-sm-6 col-xs-12 h4p_item').append(
+	$projectItem = $('<div>').addClass('col-md-4 col-sm-6 col-xs-12 h4p_item h4p_item-small').append(
 		$('<div>').addClass('h4p_item-title').append(
 			$('<a>').append($('<h4>'))
 		)
