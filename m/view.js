@@ -56,7 +56,10 @@ $(function(){
 				var label_lv = (stage.state === 'published' ? 'label-success' :
 								stage.state === 'judging'	? 'label-warning' :
 								stage.state === 'rejected'	? 'label-danger' : 'label-default');
-				item.find('.h4p_item-footer p:nth-child(4) span').addClass(label_lv).text(stage.state);
+				var label_tx = (stage.state === 'published' ? '公開中' :
+								stage.state === 'judging'	? '審査中' :
+								stage.state === 'rejected'	? 'リジェクト' : '非公開');
+				item.find('.h4p_item-footer p:nth-child(4) span').addClass(label_lv).text(label_tx);
 
 				item.appendTo($list);
 			});
