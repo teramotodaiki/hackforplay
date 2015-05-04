@@ -15,6 +15,16 @@
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="row">
+			<div class="col-md-12 panel panel-default">
+				<div class="panel-body">
+					<div class="text-center">
+						<img src="tmpthumb.png" class="img-circle">
+					</div>
+					<div class="text-center">
+						<h3>ユーザーネーム</h3>
+					</div>
+				</div>
+			</div>
 			<div class="col-md-12">
 				<div class="row h4p_box">
 					<div class="col-md-12 h4p_box-header">
