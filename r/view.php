@@ -31,7 +31,7 @@
 					<div class="col-md-12 panel-body">
 						<div class="row">
 							<a href="/s?id=201" title="ステージをつくろう１" target="_blank">
-								<div class="col-md-4 col-xs-4">
+								<div class="col-lg-offset-1 col-lg-3 col-md-4 col-xs-4">
 									<div class="h4p_item-thumbnail" style="height: 160px; background-image:url(/s/replay_t1/thumb.png)">
 									</div>
 									<div class="h4p_item-title">
@@ -42,7 +42,7 @@
 									</div>
 								</div>
 							</a>
-							<div class="col-md-8 col-xs-8 h4p_topicitem">
+							<div class="col-lg-7 col-md-8 col-xs-8 h4p_topicitem">
 								<div class="h4p_item-title">
 									<h4>ここからが、真のハックフォープレイだ！</h4>
 								</div>
@@ -61,25 +61,10 @@
 				</div>
 	  		</div>
 			<div class="col-md-12">
-				<div class="row h4p_box">
-					<div class="col-md-12 h4p_box-main">
-						<div id="h4p_stagelist" class="row">
-						</div>
-					</div>
-					<div class="col-md-12 h4p_box-footer">
-					</div>
-				</div>
+				<div class="row h4p_stagelist list-stage"></div>
 			</div>
 			<div class="col-md-12">
-				<div class="row h4p_box">
-					<div class="col-md-12 h4p_box-header">
-						<h3>空のステージ</h3>
-					</div>
-					<div class="col-md-12 h4p_box-main">
-						<div id="h4p_emptylist" class="row">
-						</div>
-					</div>
-				</div>
+				<div class="row h4p_stagelist list-empty"></div>
 	  		</div>
 		</div>
 	</div>

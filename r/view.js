@@ -46,7 +46,8 @@ $(function(){
 		if (data === 'parse-error') {
 		}else{
 			var result = jQuery.parseJSON(data);
-			var $list = $('#h4p_stagelist');
+			var $list = $('.h4p_stagelist.list-stage');
+			console.log($list);
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
 				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
@@ -81,21 +82,28 @@ $(function(){
 		if (data === 'parse-error') {
 		}else{
 			var result = jQuery.parseJSON(data);
-			var $list = $('#h4p_emptylist');
+			var $list = $('.h4p_stagelist.list-empty');
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
-				item.children('a').attr({
-					'href': '/s?id=' + stage.id,
-					'title': stage.title
-				}).children('.h4p_item-thumbnail').children('.h4p_item-src').text(stage.thumbnail);
+				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
 				if(stage.title.length > 38) stage.title = stage.title.substr(0, 37) + '…';
-				item.children('.h4p_item-title').children('a').attr({
-					'href': '/s?id=' + stage.id,
-					'title': stage.title
-				}).children('h4').text(stage.title);
-				item.find('.h4p_item-footer p:nth-child(1) span').remove();
-				item.find('.h4p_item-footer p:nth-child(2) b').prepend(stage.playcount);
-				item.find('.h4p_item-footer p:nth-child(3) span').remove();
+				item.find('.title').attr({
+					href: '/s?id=' + stage.id,
+					title: stage.title
+				}).text(stage.title);
+				item.find('.author a').attr({
+					href: '/__mypagelink__',
+					title: stage.author_name
+				}).text(stage.author_name);
+				item.find('.playcount b').prepend(stage.playcount);
+				if (stage.source_mode === 'replay') {
+					item.find('.source a').attr({
+						href: '/s?id=' + stage.source_id,
+						title: stage.source_title
+					}).text(stage.source_title);
+				}else{
+					item.find('.source').text('オリジナルステージ');
+				}
 
 				item.appendTo($list);
 			});
