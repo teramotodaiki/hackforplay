@@ -4,6 +4,36 @@
 	background: url(../img/cassette/outer.png);
 }
 
+.h4p_bar-bar {
+	background: url(../img/cassette/bar.png);
+}
+
+.h4p_bar-top {
+	background: url(../img/cassette/top.png);
+	height: 12px;
+}
+
+.h4p_bar-bottom {
+	background: url(../img/cassette/bottom.png);
+	height: 12px;
+}
+
+.h4p_bar-left {
+	background: url(../img/cassette/left.png);
+	width: 12px;
+}
+
+.h4p_bar-right {
+	background: url(../img/cassette/right.png);
+	width: 12px;
+}
+
+.h4p_stagelist,
+.h4p_bar-left,
+.h4p_bar-right {
+	position: relative;
+	float: left;
+}
 
 .h4p_landing {
 	background-size: cover;

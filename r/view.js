@@ -72,6 +72,7 @@ $(function(){
 
 				item.appendTo($list);
 			});
+			alignmentOnResize();
 		}
 	});
 	// 空のステージ一覧
@@ -107,6 +108,25 @@ $(function(){
 
 				item.appendTo($list);
 			});
+			alignmentOnResize();
 		}
 	});
+
+	// サイズ調整 ロード時とリサイズ時
+	alignmentOnResize();
+	var resized_timeout_id = null;
+	$(window).on('resize', function() {
+		clearTimeout(resized_timeout_id);
+		resized_timeout_id = setTimeout(alignmentOnResize, 100);
+	});
+	// リサイズ時に変わる数値
+	function alignmentOnResize () {
+		$('.h4p_stagecontainer .container').each(function(index, el) {
+			var container = $(el);
+			var containerHeight = container.find('.h4p_stagelist').height();
+			container.find('.h4p_bar-left').height(containerHeight);
+			container.find('.h4p_bar-right').height(containerHeight);
+		});
+	}
+
 });

@@ -5,21 +5,33 @@
 /* 全体の幅など、デバイスによって変化するサイズ */
 @media(max-width: 767px) {
 	.container {
+		width: 408px;
+	}
+	.h4p_stagelist {
 		width: 384px;
 	}
 }
 @media(min-width: 768px) {
 	.container {
+		width: 792px;
+	}
+	.h4p_stagelist {
 		width: 768px;
 	}
 }
 @media (min-width: 992px) {
 	.container {
+		width: 792px;
+	}
+	.h4p_stagelist {
 		width: 768px;
 	}
 }
 @media (min-width: 1200px) {
 	.container {
+		width: 1176px;
+	}
+	.h4p_stagelist {
 		width: 1152px;
 	}
 }
@@ -34,6 +46,12 @@
 	height: 140px;
 }
 
+.h4p_bar-left,
+.h4p_bar-right {
+	width: 12px;
+	height: 100%;
+}
+
 /* 間隔属性 */
 header {
 	padding: 5px 0;
@@ -41,7 +59,21 @@ header {
 
 .nav .btn-link {
 	padding: 6px 12px;
+}
 
+.h4p_stagecontainer {
+	margin: 15px 0px;
+}
+
+.h4p_stagecontainer .row {
+	margin: 0;
+}
+
+.h4p_stagecontainer,
+.h4p_stagecontainer .container,
+.h4p_stagecontainer .row>div,
+.h4p_item {
+	padding: 0;
 }
 
 .navbar-brand {

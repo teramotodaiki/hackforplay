@@ -60,12 +60,32 @@
 					</div>
 				</div>
 	  		</div>
-			<div class="col-md-12">
-				<div class="row h4p_stagelist list-stage"></div>
+		</div>
+	</div>
+	<div class="container-fluid h4p_stagecontainer">
+		<div class="row">
+			<div class="col-md-12 h4p_bar-top"></div>
+			<div class="col-md-12 h4p_bar-bar">
+				<div class="container">
+					<div class="h4p_bar-left"></div>
+					<div class="row h4p_stagelist list-stage"></div>
+					<div class="h4p_bar-right"></div>
+				</div>
 			</div>
-			<div class="col-md-12">
-				<div class="row h4p_stagelist list-empty"></div>
-	  		</div>
+			<div class="col-md-12 h4p_bar-bottom"></div>
+		</div>
+	</div>
+	<div class="container-fluid h4p_stagecontainer">
+		<div class="row">
+			<div class="col-md-12 h4p_bar-top"></div>
+			<div class="col-md-12 h4p_bar-bar">
+				<div class="container">
+					<div class="h4p_bar-left"></div>
+					<div class="row h4p_stagelist list-empty"></div>
+					<div class="h4p_bar-right"></div>
+				</div>
+			</div>
+			<div class="col-md-12 h4p_bar-bottom"></div>
 		</div>
 	</div>
 	<?php require_once '../view/footer.php' ?>
