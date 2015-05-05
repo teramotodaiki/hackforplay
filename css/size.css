@@ -5,41 +5,31 @@
 /* 全体の幅など、デバイスによって変化するサイズ */
 @media(max-width: 767px) {
 	.container {
-		width: 314px;
-	}
-	.h4p_item {
-		height: 340px;
+		width: 384px;
 	}
 }
-@media (min-width: 768px) {
+@media(min-width: 768px) {
 	.container {
-		/* 全体の幅 */
-		width: 630px;
-	}
-	.h4p_item {
-		/* ステージ一覧のアイテムの高さ */
-		height: 351px;
+		width: 768px;
 	}
 }
 @media (min-width: 992px) {
 	.container {
-		width: 810px;
-	}
-	.h4p_item {
-		height: 320px;
+		width: 768px;
 	}
 }
 @media (min-width: 1200px) {
 	.container {
-		width: 810px;
-	}
-	.h4p_item {
-		height: 320px;
+		width: 1152px;
 	}
 }
 
 /* 全てのデバイスに共通したサイズ */
 /* 幅・高さ属性 */
+.h4p_item {
+	height: 384px;
+}
+
 .h4p_item .h4p_item-thumbnail{
 	width: 100%;
 }

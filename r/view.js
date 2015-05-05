@@ -1,6 +1,6 @@
 $(function(){
 	// インスタンス
-	var $item = $('<div>').addClass('col-md-4 col-sm-6 col-xs-12 h4p_item').append(
+	var $item = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item').append(
 		$('<a>').append(
 			$('<div>').addClass('h4p_item-thumbnail').append(
 				$('<span>').addClass('h4p_item-src')
