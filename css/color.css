@@ -4,7 +4,7 @@
 
 /* 背景色　*/
 body {
-	background-color: rgb(238, 236, 228);
+	background-color: rgb(220, 220, 220);
 }
 
 header,
@@ -12,21 +12,12 @@ footer {
 	background-color: rgb(245, 245, 245);
 }
 
-header,
-.h4p_box-header {
+header {
 	background-color: rgb(255, 255, 255);
 	background: -webkit-linear-gradient(to bottom, rgb(255, 255, 255), rgb(255, 255, 255) 80%, rgb(245, 245, 245) 100%);
 	background: -moz-linear-gradient(to bottom, rgb(255, 255, 255), rgb(255, 255, 255) 80%, rgb(245, 245, 245) 100%);
 	background: -o-linear-gradient(to bottom, rgb(255, 255, 255), rgb(255, 255, 255) 80%, rgb(245, 245, 245) 100%);
 	background: linear-gradient(to bottom, rgb(255, 255, 255), rgb(255, 255, 255) 80%, rgb(245, 245, 245) 100%);
-}
-
-.h4p_box-main {
-	background-color: rgb(255,255,255);
-}
-
-.h4p_box-footer {
-	background-color: rgb(250, 250, 250);
 }
 
 .h4p_info,
@@ -38,53 +29,15 @@ header,
 	background-color: rgb(196, 196, 191);;
 }
 
-.h4p_item:hover {
-	background-color: rgb(249, 249, 249);
-}
-
-.h4p_item-sep {
-	background-color: rgb(249, 249, 249);
-}
-
-.h4p_item-challenged {
-	background-color: rgba(240, 240, 240, 0.7);
-}
-
-/* ボタンの色 */
-/*.h4p_box-footer .btn {
-	color: #fff;
-	background: linear-gradient(to bottom, rgb(73, 154, 255), rgb(42, 122, 255));
-	text-shadow: 0 1px 0 rgba(0,0,0,.3);
-	border-color: rgb(32, 99, 206);
-	box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 3px 0px;
-}*/
-
-/*.h4p_box-footer .btn:hover {
-	color: rgb(255,255,255);
-	background-image: linear-gradient(rgb(73, 168, 255), rgb(42, 138, 255));
-}*/
-
 /* 線の幅・色 */
 header.navbar {
 	border: none;
 }
 
-.h4p_box,
 .h4p_info,
 .h4p_restaging,
 .h4p_mapTip {
 	border: 1px solid rgb(204, 204, 204);
-}
-
-.h4p_item,
-.h4p_topicitem {
-	/*border-right: 1px solid rgb(224, 224, 224);*/
-	border-top: 1px solid rgb(224, 224, 224);
-}
-
-.h4p_item-sep {
-	border-top: 1px solid rgb(224, 224, 224);
-	border-bottom: 1px solid rgb(224, 224, 224);
 }
 
 /* 影の色 */
@@ -92,10 +45,4 @@ header {
 	-webkit-box-shadow : 0 1px 2px rgba(0,0,0,.16);
 	-moz-box-shadow : 0 1px 2px rgba(0,0,0,.16);
 	box-shadow : 0 1px 2px rgba(0,0,0,.16);
-}
-
-.h4p_box-main {
-	-webkit-box-shadow : 0 1px 2px rgba(0,0,0,.1);
-	-moz-box-shadow : 0 1px 2px rgba(0,0,0,.1);
-	box-shadow : 0 1px 2px rgba(0,0,0,.1);
 }

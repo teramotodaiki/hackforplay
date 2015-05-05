@@ -30,30 +30,6 @@
 	height: 384px;
 }
 
-.h4p_item .h4p_item-thumbnail{
-	width: 100%;
-}
-
-.h4p_item-vote {
-	line-height: 30px;
-}
-
-.h4p_item-reason input {
-	height: 30px;
-}
-
-.h4p_clear-img {
-	width: 70%;
-}
-
-.h4p_item-challenged img {
-	width: 60%;
-}
-
-.h4p_mapTip img {
-	width: 100%;
-}
-
 .h4p_item-small {
 	height: 140px;
 }
@@ -72,22 +48,6 @@ header {
 	padding: 0;
 }
 
-.h4p_box {
-	margin-top: 15px;
-	margin-bottom: 20px;
-}
-
-.h4p_box-header {
-	padding-top: 20px;
-	padding-left: 15px;
-}
-
-.h4p_box-footer {
-	padding-top: 17px;
-	padding-bottom: 17px;
-	padding-right: 15px;
-}
-
 .h4p_info,
 .h4p_restaging {
 	margin-top: 10px;
@@ -98,16 +58,6 @@ header {
 .h4p_clear-img {
 	margin-top: 120px;
 	margin-bottom: 120px;
-}
-
-.h4p_item,
-.h4p_topicitem {
-	padding-top: 15px;
-	padding-bottom: 15px;
-}
-
-.h4p_item-challenged img {
-	margin-top: 18%;
 }
 
 .h4p_info-retry,

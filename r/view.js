@@ -1,22 +1,41 @@
 $(function(){
 	// インスタンス
 	var $item = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item').append(
-		$('<a>').append(
-			$('<div>').addClass('h4p_item-thumbnail').append(
-				$('<span>').addClass('h4p_item-src')
+	).append(
+		$('<div>').addClass('h4p_item-frame').css('z-index', '5').append(
+			$('<img>').attr('src', '../img/cassette/tab.png')
+		)
+	).append(
+		$('<div>').addClass('h4p_item-cassette').append(
+			$('<div>').addClass('h4p_item-frame').css('z-index', '4').append(
+				$('<img>').attr('src', '../img/cassette/inner.png')
 			)
-		)
-	).append(
-		$('<div>').addClass('h4p_item-title').append(
-			$('<a>').append($('<h4>'))
-		)
-	).append(
-		$('<div>').addClass('h4p_item-footer').append(
-			$('<p>').append($('<span>').html('作成者：<b><a></a></b>'))
 		).append(
-			$('<p>').append($('<span>').html('プレイ回数：<b>回</b>'))
+			$('<div>').addClass('h4p_item-frame h4p_item-thumbnail').css({
+				'top':   40,
+				'left':  47,
+				'width': 264,
+				'height':176,
+				'z-index': '3'
+			})
 		).append(
-			$('<p>').append($('<span>').html('改造元：<b><a></a></b>'))
+			$('<div>').addClass('h4p_item-frame').css({
+				'top':   216,
+				'left':   47,
+				'width': 264,
+				'height':127,
+				'z-index': '2',
+				'padding': '5px 5px',
+				'background-color': 'rgb(255,255,255)'
+			}).append(
+				$('<p>').append($('<a>').addClass('title'))
+			).append(
+				$('<p>').append($('<span>').addClass('author').html('作成者：<b><a></a></b>'))
+			).append(
+				$('<p>').append($('<span>').addClass('playcount').html('プレイ回数：<b>回</b>'))
+			).append(
+				$('<p>').append($('<span>').addClass('source').html('改造元：<b><a></a></b>'))
+			)
 		)
 	);
 	// 一覧取得
@@ -30,27 +49,24 @@ $(function(){
 			var $list = $('#h4p_stagelist');
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
-				item.children('a').attr({
-					href: '/s?id=' + stage.id,
-					title: stage.title
-				}).children('.h4p_item-thumbnail').children('.h4p_item-src').text(stage.thumbnail);
+				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
 				if(stage.title.length > 38) stage.title = stage.title.substr(0, 37) + '…';
-				item.children('.h4p_item-title').children('a').attr({
+				item.find('.title').attr({
 					href: '/s?id=' + stage.id,
 					title: stage.title
-				}).children('h4').text(stage.title);
-				item.find('.h4p_item-footer p:nth-child(1) a').attr({
+				}).text(stage.title);
+				item.find('.author a').attr({
 					href: '/__mypagelink__',
 					title: stage.author_name
 				}).text(stage.author_name);
-				item.find('.h4p_item-footer p:nth-child(2) b').prepend(stage.playcount);
+				item.find('.playcount b').prepend(stage.playcount);
 				if (stage.source_mode === 'replay') {
-					item.find('.h4p_item-footer p:nth-child(3) a').attr({
+					item.find('.source a').attr({
 						href: '/s?id=' + stage.source_id,
 						title: stage.source_title
 					}).text(stage.source_title);
 				}else{
-					item.find('.h4p_item-footer p:nth-child(3) span').text('オリジナルステージ');
+					item.find('.source').text('オリジナルステージ');
 				}
 
 				item.appendTo($list);

@@ -24,14 +24,14 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="row h4p_box">
-					<div class="col-md-12 h4p_box-header">
+				<div class="row panel panel-default">
+					<div class="col-md-12 panel-heading">
 						<h3>オリジナルステージを作る</h3>
 					</div>
-					<div class="col-md-12 h4p_box-main">
+					<div class="col-md-12 panel-body">
 						<div class="row">
 							<a href="/s?id=201" title="ステージをつくろう１" target="_blank">
-								<div class="col-md-4 col-xs-4 h4p_topicitem">
+								<div class="col-md-4 col-xs-4">
 									<div class="h4p_item-thumbnail" style="height: 160px; background-image:url(/s/replay_t1/thumb.png)">
 									</div>
 									<div class="h4p_item-title">
@@ -62,9 +62,6 @@
 	  		</div>
 			<div class="col-md-12">
 				<div class="row h4p_box">
-					<div class="col-md-12 h4p_box-header">
-						<h3>投稿されたステージ一覧</h3>
-					</div>
 					<div class="col-md-12 h4p_box-main">
 						<div id="h4p_stagelist" class="row">
 						</div>

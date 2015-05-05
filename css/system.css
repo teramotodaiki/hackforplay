@@ -1,13 +1,25 @@
 @charset "utf-8";
 
+#h4p_stagelist {
+	background: url(../img/cassette/outer.png);
+}
+
+
 .h4p_landing {
 	background-size: cover;
+}
+
+.h4p_item-frame {
+	position: absolute;
+	overflow: hidden;
+	top: 0px;
+	left: 0px;
 }
 
 .h4p_item-thumbnail {
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-position: top center;
+	background-position: center center;
 }
 
 .h4p_item-src {
