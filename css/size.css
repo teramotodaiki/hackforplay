@@ -64,6 +64,10 @@
 	width: 100%;
 }
 
+.h4p_item-small {
+	height: 100px;
+}
+
 /* 間隔属性 */
 header {
 	padding: 5px 0;
