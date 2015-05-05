@@ -67,12 +67,17 @@ $(function(){
 	});
 
 	$projectItem = $('<div>').addClass('col-md-4 col-sm-6 col-xs-12 h4p_item h4p_item-small').append(
-		$('<div>').addClass('h4p_item-title').append(
-			$('<a>').append($('<h4>'))
+		$('<div>').addClass('h4p_item-title').on('click', function() {
+			var token = $(this).attr('project-token');
+			openProject(token);
+		}).append(
+			$('<h4>')
 		)
 	).append(
 		$('<div>').addClass('h4p_item-footer').append(
 			$('<p>').append($('<span>').html('作成日時：<b></b>'))
+		).append(
+			$('<button>').addClass('btn btn-lg btn-block btn-default').on('click', openProject).text('開く').attr('data-loading-text', 'データの取得中…')
 		)
 	);
 
@@ -94,11 +99,9 @@ $(function(){
 				result.values.forEach(function(project){
 					var item = $projectItem.clone(true);
 					var title = project.source_mode === 'replay' ? 'Re:' + project.source_title : 'オリジナルステージ';
-					item.find('.h4p_item-title a').attr({
-						'href': '__open project__',
-						'title': title
-					}).find('h4').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
+					item.find('.h4p_item-title h4').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
 					item.find('.h4p_item-footer p:nth-child(1) b').text(project.registered);
+					item.find('.h4p_item-footer button').attr('project-token', project.token);
 
 					item.appendTo($list);
 				});
@@ -122,4 +125,32 @@ $(function(){
 		);
 		return _bsalert;
 	}
+
+	// プロジェクトを開く
+	function openProject () {
+		var loading = $(this).button('loading');
+		var token = $(this).attr('project-token');
+		$.post('../stage/fetchprojectbytoken.php', {
+			'token': token
+		} , function(data, textStatus, xhr) {
+			console.log(data);
+			loading.button('reset');
+			switch(data){
+				case 'no-session':
+					$('#signinModal').modal('show');
+					break;
+				case 'missing-project':
+					break;
+				case 'parse-error':
+					break;
+				default:
+					var value = jQuery.parseJSON(data);
+					sessionStorage.setItem('project-token', token);
+					sessionStorage.setItem('restaging_code', value.data);
+					location.href = '/s?id=' + value.source_id + '&mode=restaging';
+					break;
+			}
+		});
+	}
+
 });
