@@ -1,6 +1,6 @@
 <?php
 /*
-セッションIDをもとに、自分が作ったプロジェクトを取得
+セッションIDをもとに、自分が作ったプロジェクトのうち、まだ投稿していないものを取得
 Input:	length
 Output:	no-session , parse-error , JSON:{information_of_projects}
 information_of_projects:
@@ -36,7 +36,7 @@ session_commit();
 // SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
 $result = array();
 try {
-	$stmt	= $dbh->prepare('SELECT p."ID",p."Token",p."Registered",p."SourceStageID",s."Title",s."Mode" FROM "Project" AS p LEFT OUTER JOIN "Stage" AS s ON p."SourceStageID"=s."ID" WHERE p."UserID"=:userid ORDER BY p."Registered" DESC');
+	$stmt	= $dbh->prepare('SELECT p."ID",p."Token",p."Registered",p."SourceStageID",s."Title",s."Mode" FROM "Project" AS p LEFT OUTER JOIN "Stage" AS s ON p."SourceStageID"=s."ID" WHERE p."UserID"=:userid AND p."PublishedStageID" IS NULL ORDER BY p."Registered" DESC');
 	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
 	$stmt->execute();
 
