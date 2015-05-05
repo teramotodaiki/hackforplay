@@ -112,6 +112,11 @@ $(function(){
 		}
 	});
 
+	// あまりを詰めるためのアイテム
+	var $blank = $item.clone(true);
+	$blank.addClass('h4p_item-blank');
+	$blank.find('.h4p_item-cassette').remove();
+
 	// サイズ調整 ロード時とリサイズ時
 	alignmentOnResize();
 	var resized_timeout_id = null;
@@ -122,10 +127,29 @@ $(function(){
 	// リサイズ時に変わる数値
 	function alignmentOnResize () {
 		$('.h4p_stagecontainer .container').each(function(index, el) {
-			var container = $(el);
-			var containerHeight = container.find('.h4p_stagelist').height();
-			container.find('.h4p_bar-left').height(containerHeight);
-			container.find('.h4p_bar-right').height(containerHeight);
+			var $con = $(el);
+			// あまり
+			var column = $con.find('.h4p_stagelist').width() / $con.find('.h4p_item:first').width();
+			var itemNum = $con.find('.h4p_item').length;
+			var blankNum = $con.find('.h4p_item.h4p_item-blank').length;
+			var surplus = (itemNum - blankNum) % column;
+			var extraNum = surplus === 0 ? blankNum : blankNum - (column - surplus); // + : 過多、- : 不足
+			console.log('coloumn ' + column + '/ surplus ' + surplus + '/ extra ' + extraNum);
+			if (extraNum > 0) {
+				for (var i = 0; i < extraNum; i++) {
+					$con.find('.h4p_item.h4p_item-blank:first').remove();
+				}
+			}else if(extraNum < 0){
+				extraNum = -extraNum;
+				for (var i = 0; i < extraNum; i++) {
+					var blank = $blank.clone(true);
+					$con.find('.h4p_stagelist').append(blank);
+				}
+			}
+			// 左右の枠
+			var containerHeight = $con.find('.h4p_stagelist').height();
+			$con.find('.h4p_bar-left').height(containerHeight);
+			$con.find('.h4p_bar-right').height(containerHeight);
 		});
 	}
 
