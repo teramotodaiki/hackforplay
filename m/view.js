@@ -1,26 +1,51 @@
 $(function(){
 	// インスタンス
-	var $stageItem = $('<div>').addClass('col-md-4 col-sm-6 col-xs-12 h4p_item').append(
-		$('<a>').append(
-			$('<div>').addClass('h4p_item-thumbnail').append(
-				$('<span>').addClass('h4p_item-src')
+	var $item = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item').append(
+	).append(
+		$('<div>').addClass('h4p_item-frame h4p_item-transform').append(
+			$('<img>').addClass('h4p_item-inner').attr('src', '../img/cassette/inner_tab.png')
+		)
+	).append(
+		$('<div>').addClass('h4p_item-frame h4p_item-front h4p_item-transform').append(
+			$('<div>').addClass('h4p_item-frame h4p_item-thumbnail').css({
+				'top':   41,
+				'left':  47,
+				'width': 265,
+				'height':176,
+				'border-top-left-radius': '4px 4px',
+				'border-top-right-radius': '4px 4px',
+			})
+		).append(
+			$('<div>').addClass('h4p_item-frame').css({
+				'top':   217,
+				'left':   47,
+				'width': 265,
+				'height':126,
+				'padding': '5px 5px',
+				'background-color': 'rgb(255,255,255)',
+				'border-bottom-left-radius': '12px 12px',
+				'border-bottom-right-radius': '4px 4px'
+			}).append(
+				$('<p>').css('margin', '8px 0').append($('<a>').addClass('title'))
+			).append(
+				$('<p>').append($('<span>').addClass('author').html('作成者：<b><a></a></b>'))
+			).append(
+				$('<p>').append($('<span>').addClass('playcount').html('プレイ回数：<b>回</b>'))
+			).append(
+				$('<p>').append($('<span>').addClass('source').html('改造元：<b><a></a></b>'))
+			).append(
+				$('<p>').append($('<span>').addClass('state'))
 			)
 		)
-	).append(
-		$('<div>').addClass('h4p_item-title').append(
-			$('<a>').append($('<h4>'))
-		)
-	).append(
-		$('<div>').addClass('h4p_item-footer').append(
-			$('<p>').append($('<span>').html('作成者：<b><a></a></b>'))
-		).append(
-			$('<p>').append($('<span>').html('プレイ回数：<b>回</b>'))
-		).append(
-			$('<p>').append($('<span>').html('改造元：<b><a></a></b>'))
-		).append(
-			$('<p>').append($('<span>').addClass('label'))
-		)
 	);
+	// マウスオーバーイベント
+	$item.find('.h4p_item-front').hover(function() {
+		$(this).parent().find('.h4p_item-inner').attr('src', '../img/cassette/inner_notab.png');
+		$(this).parent().find('.h4p_item-transform').addClass('transform-on');
+	}, function() {
+		$(this).parent().find('.h4p_item-inner').attr('src', '../img/cassette/inner_tab.png');
+		$(this).parent().find('.h4p_item-transform').removeClass('transform-on');
+	});
 	// ステージ一覧取得
 	$.post('../stage/fetchmystage.php', {
 		'length': 15
@@ -29,29 +54,26 @@ $(function(){
 		if (data === 'parse-error') {
 		}else{
 			var result = jQuery.parseJSON(data);
-			var $list = $('#h4p_stagelist');
+			var $list = $('.h4p_stagelist.list-stage');
 			result.values.forEach(function(stage){
-				var item = $stageItem.clone(true);
-				item.children('a').attr({
+				var item = $item.clone(true);
+				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
+				item.find('.title').attr({
 					href: '/s?id=' + stage.id,
 					title: stage.title
-				}).children('.h4p_item-thumbnail').children('.h4p_item-src').text(stage.thumbnail);
-				item.children('.h4p_item-title').children('a').attr({
-					href: '/s?id=' + stage.id,
-					title: stage.title
-				}).children('h4').text(stage.title.length > 38 ? (stage.title.substr(0, 37) + '…') : stage.title);
-				item.find('.h4p_item-footer p:nth-child(1) a').attr({
-					href: '/__mypagelink__',
+				}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
+				item.find('.author a').attr({
+					href: '/m?id=' + stage.author_id,
 					title: stage.author_name
 				}).text(stage.author_name);
-				item.find('.h4p_item-footer p:nth-child(2) b').prepend(stage.playcount);
+				item.find('.playcount b').prepend(stage.playcount);
 				if (stage.source_mode === 'replay') {
-					item.find('.h4p_item-footer p:nth-child(3) a').attr({
+					item.find('.source a').attr({
 						href: '/s?id=' + stage.source_id,
 						title: stage.source_title
 					}).text(stage.source_title);
 				}else{
-					item.find('.h4p_item-footer p:nth-child(3) span').text('オリジナルステージ');
+					item.find('.source').text('オリジナルステージ');
 				}
 				var label_lv = (stage.state === 'published' ? 'label-success' :
 								stage.state === 'judging'	? 'label-warning' :
@@ -59,7 +81,7 @@ $(function(){
 				var label_tx = (stage.state === 'published' ? '公開中' :
 								stage.state === 'judging'	? '審査中' :
 								stage.state === 'rejected'	? 'リジェクト' : '非公開');
-				item.find('.h4p_item-footer p:nth-child(4) span').addClass(label_lv).text(label_tx);
+				item.find('.state span').addClass(label_lv).text(label_tx);
 
 				item.appendTo($list);
 			});
