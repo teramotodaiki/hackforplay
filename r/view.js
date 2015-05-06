@@ -94,9 +94,11 @@ $(function(){
 			var $list = $('.h4p_stagelist.list-empty');
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
-				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
+				item.find('.h4p_item-thumbnail').on('click', function() {
+					location.href = '/s?id=' + stage.id;
+				}).css('background-image', 'url(' + stage.thumbnail + ')');
 				if(stage.title.length > 38) stage.title = stage.title.substr(0, 37) + '…';
-				item.find('.title').attr({
+				item.find('.title a').attr({
 					href: '/s?id=' + stage.id,
 					title: stage.title
 				}).text(stage.title);
