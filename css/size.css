@@ -80,6 +80,11 @@ header {
 	padding: 0;
 }
 
+.h4p_item p {
+	margin: 0;
+	padding: 0;
+}
+
 .h4p_info,
 .h4p_restaging {
 	margin-top: 10px;
