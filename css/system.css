@@ -50,10 +50,7 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;
-}
-
-.h4p_item-src {
-	display: none;
+	cursor: pointer;
 }
 
 .h4p_item-challenged {

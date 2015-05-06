@@ -57,8 +57,9 @@ $(function(){
 			console.log($list);
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
-				item.find('a')
-				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
+				item.find('.h4p_item-thumbnail').on('click', function() {
+					location.href = '/s?id=' + stage.id;
+				}).css('background-image', 'url(' + stage.thumbnail + ')');
 				item.find('.title a').attr({
 					href: '/s?id=' + stage.id,
 					title: stage.title
