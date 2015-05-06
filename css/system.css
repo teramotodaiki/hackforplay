@@ -142,3 +142,25 @@ iframe {
 .form-group *[data-toggle="tooltip"] .glyphicon{
 	right: 0px;
 }
+
+/* アニメーション */
+
+.h4p_item-transform {
+	width: 384px;
+	height: 384px;
+}
+
+.h4p_item-transform {
+	-webkit-transform-origin: center center;
+	-webkit-transform: rotateZ(0deg) scale(1,1);
+	transform-origin: center center;
+	transform: rotateZ(0deg) scale(1,1);
+}
+
+.h4p_item-transform.transform-on {
+	-webkit-transform: rotateZ(4deg) scale(1.05,1.05);
+	transform: rotateZ(4deg) scale(1.05,1.05);
+}
+
+
+

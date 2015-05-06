@@ -2,15 +2,11 @@ $(function(){
 	// インスタンス
 	var $item = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item').append(
 	).append(
-		$('<div>').addClass('h4p_item-frame').css('z-index', '5').append(
-			$('<img>').attr('src', '../img/cassette/tab.png')
+		$('<div>').addClass('h4p_item-frame h4p_item-front h4p_item-transform').css('z-index', '10').append(
+			$('<img>').attr('src', '../img/cassette/inner_tab.png')
 		)
 	).append(
-		$('<div>').addClass('h4p_item-cassette').append(
-			$('<div>').addClass('h4p_item-frame').css('z-index', '4').append(
-				$('<img>').attr('src', '../img/cassette/inner.png')
-			)
-		).append(
+		$('<div>').addClass('h4p_item-transform').append(
 			$('<div>').addClass('h4p_item-frame h4p_item-thumbnail').css({
 				'top':   40,
 				'left':  47,
@@ -38,6 +34,16 @@ $(function(){
 			)
 		)
 	);
+	// マウスオーバーイベント
+	$item.find('.h4p_item-front').hover(function() {
+		console.log('hover');
+		$(this).find('img').attr('src', '../img/cassette/inner_notab.png');
+		$(this).parent().find('.h4p_item-transform').addClass('transform-on');
+	}, function() {
+		$(this).find('img').attr('src', '../img/cassette/inner_tab.png');
+		$(this).parent().find('.h4p_item-transform').removeClass('transform-on');
+	});
+
 	// 一覧取得
 	$.post('../stage/fetchrecentpublished.php', {
 		'length': 15
@@ -113,9 +119,11 @@ $(function(){
 	});
 
 	// あまりを詰めるためのアイテム
-	var $blank = $item.clone(true);
-	$blank.addClass('h4p_item-blank');
-	$blank.find('.h4p_item-cassette').remove();
+	var $blank = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item h4p_item-blank').append(
+		$('<div>').addClass('h4p_item-frame').append(
+			$('<img>').attr('src', '../img/cassette/tab.png')
+		)
+	);
 
 	// サイズ調整 ロード時とリサイズ時
 	alignmentOnResize();
