@@ -119,11 +119,7 @@ $(function(){
 	});
 
 	// あまりを詰めるためのアイテム
-	var $blank = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item h4p_item-blank').append(
-		$('<div>').addClass('h4p_item-frame').append(
-			$('<img>').attr('src', '../img/cassette/tab.png')
-		)
-	);
+	var $blank = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item h4p_item-blank').append();
 
 	// サイズ調整 ロード時とリサイズ時
 	alignmentOnResize();
