@@ -34,7 +34,7 @@ body {
 	color: rgb( 35, 82,124);
 }
 
-.h4p_item p .title {
+.h4p_item .title a {
 	color: rgb( 83, 83, 83);
 	font-size: 20px;
 	line-height: 20px;

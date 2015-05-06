@@ -26,7 +26,7 @@ $(function(){
 				'border-bottom-left-radius': '12px 12px',
 				'border-bottom-right-radius': '4px 4px'
 			}).append(
-				$('<p>').css('margin', '8px 0').append($('<a>').addClass('title'))
+				$('<p>').addClass('title').css('margin', '8px 0').append($('<a>'))
 			).append(
 				$('<p>').append($('<span>').addClass('author').html('作成者：<b><a></a></b>'))
 			).append(
@@ -34,7 +34,7 @@ $(function(){
 			).append(
 				$('<p>').append($('<span>').addClass('source').html('改造元：<b><a></a></b>'))
 			).append(
-				$('<p>').append($('<span>').addClass('state'))
+				$('<span>').addClass('state label')
 			)
 		)
 	);
@@ -58,14 +58,11 @@ $(function(){
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
 				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
-				item.find('.title').attr({
+				item.find('.title a').attr({
 					href: '/s?id=' + stage.id,
 					title: stage.title
 				}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
-				item.find('.author a').attr({
-					href: '/m?id=' + stage.author_id,
-					title: stage.author_name
-				}).text(stage.author_name);
+				item.find('.author').remove();
 				item.find('.playcount b').prepend(stage.playcount);
 				if (stage.source_mode === 'replay') {
 					item.find('.source a').attr({
@@ -81,7 +78,7 @@ $(function(){
 				var label_tx = (stage.state === 'published' ? '公開中' :
 								stage.state === 'judging'	? '審査中' :
 								stage.state === 'rejected'	? 'リジェクト' : '非公開');
-				item.find('.state span').addClass(label_lv).text(label_tx);
+				item.find('.state').addClass(label_lv).text(label_tx);
 
 				item.appendTo($list);
 			});
