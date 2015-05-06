@@ -12,10 +12,6 @@ body {
 	color: rgb(  0,  0,  0);
 }
 
-.h4p_box-header {
-	color: rgb( 48,128,240);
-}
-
 .h4p_landing-header {
 	/*color: rgb( 48,128,240);*/
 	color: rgb(255,255,255);
@@ -25,14 +21,24 @@ body {
 	color: rgb(255,255,255);
 }
 
-.h4p_item-title * {
-	color: rgb(  0,  0,  0);
+.h4p_item p,
+.h4p_item p a,
+.h4p_item p * {
+	color: rgb(160,160,160);
+	font-size: 13px;
+	text-decoration: none;
 }
 
-.h4p_item-footer,
-.h4p_item-footer p {
-	color: rgb(200,200,200);
-	font-size: 95%;
+.h4p_item p a:hover {
+	color: #23527c;
+	color: rgb( 35, 82,124);
+}
+
+.h4p_item p .title {
+	color: rgb( 83, 83, 83);
+	font-size: 20px;
+	line-height: 20px;
+	text-decoration: none;
 }
 
 .h4p_publish button.btn {
@@ -42,11 +48,5 @@ body {
 
 .h4p_publish p{
 	font-size: 60%;
-}
-
-/* リンクのデコレーション */
-.h4p_item-footer a {
-	color: rgb(200,200,200);
-	/*text-decoration: none;*/
 }
 

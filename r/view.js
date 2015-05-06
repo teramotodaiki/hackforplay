@@ -26,7 +26,7 @@ $(function(){
 				'border-bottom-left-radius': '12px 12px',
 				'border-bottom-right-radius': '4px 4px'
 			}).append(
-				$('<p>').append($('<a>').addClass('title'))
+				$('<p>').css('margin', '8px 0').append($('<a>').addClass('title'))
 			).append(
 				$('<p>').append($('<span>').addClass('author').html('作成者：<b><a></a></b>'))
 			).append(
@@ -58,11 +58,10 @@ $(function(){
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
 				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
-				if(stage.title.length > 38) stage.title = stage.title.substr(0, 37) + '…';
 				item.find('.title').attr({
 					href: '/s?id=' + stage.id,
 					title: stage.title
-				}).text(stage.title);
+				}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
 				item.find('.author a').attr({
 					href: '/__mypagelink__',
 					title: stage.author_name
