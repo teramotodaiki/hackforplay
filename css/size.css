@@ -42,8 +42,12 @@
 	height: 384px;
 }
 
-.h4p_item-small {
-	height: 140px;
+.h4p_projectlist .panel {
+	height: 180px;
+}
+
+.h4p_projectlist .panel .panel-heading {
+	height: 55px;
 }
 
 .h4p_bar-left,
@@ -72,7 +76,8 @@ header {
 .h4p_stagecontainer,
 .h4p_stagecontainer .container,
 .h4p_stagecontainer .row>div,
-.h4p_item {
+.h4p_item,
+.h4p_projectlist .panel {
 	padding: 0;
 }
 

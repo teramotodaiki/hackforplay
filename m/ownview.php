@@ -48,11 +48,10 @@
 			<div class="col-md-12">
 				<div class="row h4p_box">
 					<div class="col-md-12 h4p_box-header">
-						<h3>あなたのプロジェクト</h3>
+						<h3></h3>
 					</div>
 					<div class="col-md-12 h4p_box-main">
-						<div id="h4p_projectlist" class="row">
-						</div>
+						<div class="row h4p_projectlist"></div>
 					</div>
 					<div class="col-md-12 h4p_box-footer">
 					</div>

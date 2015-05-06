@@ -88,15 +88,15 @@ $(function(){
 		}
 	});
 
-	$projectItem = $('<div>').addClass('col-md-4 col-sm-6 col-xs-12 h4p_item h4p_item-small').append(
-		$('<div>').addClass('h4p_item-title').on('click', function() {
+	$projectItem = $('<div>').addClass('col-md-4 col-sm-6 col-xs-12 panel panel-default').append(
+		$('<div>').addClass('panel-heading').on('click', function() {
 			var token = $(this).attr('project-token');
 			openProject(token);
 		}).append(
-			$('<h4>')
+			$('<h4>').addClass('panel-title')
 		)
 	).append(
-		$('<div>').addClass('h4p_item-footer').append(
+		$('<div>').addClass('panel-body').append(
 			$('<p>').append($('<span>').html('作成日時：<b></b>'))
 		).append(
 			$('<button>').addClass('btn btn-lg btn-block btn-default').on('click', openProject).text('開く').attr('data-loading-text', 'データの取得中…')
@@ -117,13 +117,13 @@ $(function(){
 				break;
 			default:
 				var result = jQuery.parseJSON(data);
-				var $list = $('#h4p_projectlist');
+				var $list = $('.h4p_projectlist');
 				result.values.forEach(function(project){
 					var item = $projectItem.clone(true);
 					var title = project.source_mode === 'replay' ? 'Re:' + project.source_title : 'オリジナルステージ';
-					item.find('.h4p_item-title h4').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
-					item.find('.h4p_item-footer p:nth-child(1) b').text(project.registered);
-					item.find('.h4p_item-footer button').attr('project-token', project.token);
+					item.find('.panel-heading h4').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
+					item.find('.panel-body p span b').text(project.registered);
+					item.find('.panel-body button').attr('project-token', project.token);
 
 					item.appendTo($list);
 				});
