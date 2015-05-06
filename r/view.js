@@ -2,27 +2,29 @@ $(function(){
 	// インスタンス
 	var $item = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item').append(
 	).append(
-		$('<div>').addClass('h4p_item-frame h4p_item-front h4p_item-transform').css('z-index', '10').append(
-			$('<img>').attr('src', '../img/cassette/inner_tab.png')
+		$('<div>').addClass('h4p_item-frame h4p_item-transform').append(
+			$('<img>').addClass('h4p_item-inner').attr('src', '../img/cassette/inner_tab.png')
 		)
 	).append(
-		$('<div>').addClass('h4p_item-transform').append(
+		$('<div>').addClass('h4p_item-frame h4p_item-front h4p_item-transform').append(
 			$('<div>').addClass('h4p_item-frame h4p_item-thumbnail').css({
-				'top':   40,
+				'top':   41,
 				'left':  47,
-				'width': 264,
+				'width': 265,
 				'height':176,
-				'z-index': '3'
+				'border-top-left-radius': '4px 4px',
+				'border-top-right-radius': '4px 4px',
 			})
 		).append(
 			$('<div>').addClass('h4p_item-frame').css({
-				'top':   216,
+				'top':   217,
 				'left':   47,
-				'width': 264,
-				'height':127,
-				'z-index': '2',
+				'width': 265,
+				'height':126,
 				'padding': '5px 5px',
-				'background-color': 'rgb(255,255,255)'
+				'background-color': 'rgb(255,255,255)',
+				'border-bottom-left-radius': '12px 12px',
+				'border-bottom-right-radius': '4px 4px'
 			}).append(
 				$('<p>').append($('<a>').addClass('title'))
 			).append(
@@ -36,11 +38,10 @@ $(function(){
 	);
 	// マウスオーバーイベント
 	$item.find('.h4p_item-front').hover(function() {
-		console.log('hover');
-		$(this).find('img').attr('src', '../img/cassette/inner_notab.png');
+		$(this).parent().find('.h4p_item-inner').attr('src', '../img/cassette/inner_notab.png');
 		$(this).parent().find('.h4p_item-transform').addClass('transform-on');
 	}, function() {
-		$(this).find('img').attr('src', '../img/cassette/inner_tab.png');
+		$(this).parent().find('.h4p_item-inner').attr('src', '../img/cassette/inner_tab.png');
 		$(this).parent().find('.h4p_item-transform').removeClass('transform-on');
 	});
 

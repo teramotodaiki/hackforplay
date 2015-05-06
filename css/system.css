@@ -143,6 +143,10 @@ iframe {
 	right: 0px;
 }
 
+.h4p_item .h4p_item-front {
+	z-index: 10;
+}
+
 /* アニメーション */
 
 .h4p_item-transform {
