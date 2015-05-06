@@ -63,7 +63,7 @@ $(function(){
 					title: stage.title
 				}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
 				item.find('.author a').attr({
-					href: '/__mypagelink__',
+					href: '/m?id=' + stage.author_id,
 					title: stage.author_name
 				}).text(stage.author_name);
 				item.find('.playcount b').prepend(stage.playcount);
@@ -98,19 +98,9 @@ $(function(){
 					href: '/s?id=' + stage.id,
 					title: stage.title
 				}).text(stage.title);
-				item.find('.author a').attr({
-					href: '/__mypagelink__',
-					title: stage.author_name
-				}).text(stage.author_name);
+				item.find('.author').remove();
 				item.find('.playcount b').prepend(stage.playcount);
-				if (stage.source_mode === 'replay') {
-					item.find('.source a').attr({
-						href: '/s?id=' + stage.source_id,
-						title: stage.source_title
-					}).text(stage.source_title);
-				}else{
-					item.find('.source').text('オリジナルステージ');
-				}
+				item.find('.source').text('公式ステージ');
 
 				item.appendTo($list);
 			});
