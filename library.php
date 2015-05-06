@@ -27,7 +27,7 @@ call_user_func(function($useCDN, $path){
 <link rel="stylesheet" href="/css/size.css" />
 <link rel="stylesheet" href="/css/color.css" />
 <link rel="stylesheet" href="/css/system.css" />
-<script src="/bs-stylist.js" type="text/javascript" charset="utf-8"></script>
+<!-- <script src="/bs-stylist.js" type="text/javascript" charset="utf-8"></script> -->
 <!-- Signin session -->
 <script type="text/javascript" charset="utf-8">
 function checkSigninSession (callback) {

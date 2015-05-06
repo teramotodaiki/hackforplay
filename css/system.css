@@ -1,13 +1,55 @@
 @charset "utf-8";
 
+.h4p_stagelist {
+	background: url(../img/cassette/outer.png);
+}
+
+.h4p_bar-bar {
+	background: url(../img/cassette/bar.png);
+}
+
+.h4p_bar-top {
+	background: url(../img/cassette/top.png);
+	height: 12px;
+}
+
+.h4p_bar-bottom {
+	background: url(../img/cassette/bottom.png);
+	height: 12px;
+}
+
+.h4p_bar-left {
+	background: url(../img/cassette/left.png);
+	width: 12px;
+}
+
+.h4p_bar-right {
+	background: url(../img/cassette/right.png);
+	width: 12px;
+}
+
+.h4p_stagelist,
+.h4p_bar-left,
+.h4p_bar-right {
+	position: relative;
+	float: left;
+}
+
 .h4p_landing {
 	background-size: cover;
+}
+
+.h4p_item-frame {
+	position: absolute;
+	overflow: hidden;
+	top: 0px;
+	left: 0px;
 }
 
 .h4p_item-thumbnail {
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-position: top center;
+	background-position: center center;
 }
 
 .h4p_item-src {
@@ -100,3 +142,29 @@ iframe {
 .form-group *[data-toggle="tooltip"] .glyphicon{
 	right: 0px;
 }
+
+.h4p_item .h4p_item-front {
+	z-index: 10;
+}
+
+/* アニメーション */
+
+.h4p_item-transform {
+	width: 384px;
+	height: 384px;
+}
+
+.h4p_item-transform {
+	-webkit-transform-origin: center center;
+	-webkit-transform: rotateZ(0deg) scale(1,1);
+	transform-origin: center center;
+	transform: rotateZ(0deg) scale(1,1);
+}
+
+.h4p_item-transform.transform-on {
+	-webkit-transform: rotateZ(4deg) scale(1.05,1.05);
+	transform: rotateZ(4deg) scale(1.05,1.05);
+}
+
+
+

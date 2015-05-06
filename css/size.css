@@ -5,67 +5,51 @@
 /* 全体の幅など、デバイスによって変化するサイズ */
 @media(max-width: 767px) {
 	.container {
-		width: 314px;
+		width: 408px;
 	}
-	.h4p_item {
-		height: 340px;
+	.h4p_stagelist {
+		width: 384px;
 	}
 }
-@media (min-width: 768px) {
+@media(min-width: 768px) {
 	.container {
-		/* 全体の幅 */
-		width: 630px;
+		width: 792px;
 	}
-	.h4p_item {
-		/* ステージ一覧のアイテムの高さ */
-		height: 351px;
+	.h4p_stagelist {
+		width: 768px;
 	}
 }
 @media (min-width: 992px) {
 	.container {
-		width: 810px;
+		width: 792px;
 	}
-	.h4p_item {
-		height: 320px;
+	.h4p_stagelist {
+		width: 768px;
 	}
 }
 @media (min-width: 1200px) {
 	.container {
-		width: 810px;
+		width: 1176px;
 	}
-	.h4p_item {
-		height: 320px;
+	.h4p_stagelist {
+		width: 1152px;
 	}
 }
 
 /* 全てのデバイスに共通したサイズ */
 /* 幅・高さ属性 */
-.h4p_item .h4p_item-thumbnail{
-	width: 100%;
-}
-
-.h4p_item-vote {
-	line-height: 30px;
-}
-
-.h4p_item-reason input {
-	height: 30px;
-}
-
-.h4p_clear-img {
-	width: 70%;
-}
-
-.h4p_item-challenged img {
-	width: 60%;
-}
-
-.h4p_mapTip img {
-	width: 100%;
+.h4p_item {
+	height: 384px;
 }
 
 .h4p_item-small {
 	height: 140px;
+}
+
+.h4p_bar-left,
+.h4p_bar-right {
+	width: 12px;
+	height: 100%;
 }
 
 /* 間隔属性 */
@@ -75,27 +59,25 @@ header {
 
 .nav .btn-link {
 	padding: 6px 12px;
+}
 
+.h4p_stagecontainer {
+	margin: 15px 0px;
+}
+
+.h4p_stagecontainer .row {
+	margin: 0;
+}
+
+.h4p_stagecontainer,
+.h4p_stagecontainer .container,
+.h4p_stagecontainer .row>div,
+.h4p_item {
+	padding: 0;
 }
 
 .navbar-brand {
 	padding: 0;
-}
-
-.h4p_box {
-	margin-top: 15px;
-	margin-bottom: 20px;
-}
-
-.h4p_box-header {
-	padding-top: 20px;
-	padding-left: 15px;
-}
-
-.h4p_box-footer {
-	padding-top: 17px;
-	padding-bottom: 17px;
-	padding-right: 15px;
 }
 
 .h4p_info,
@@ -108,16 +90,6 @@ header {
 .h4p_clear-img {
 	margin-top: 120px;
 	margin-bottom: 120px;
-}
-
-.h4p_item,
-.h4p_topicitem {
-	padding-top: 15px;
-	padding-bottom: 15px;
-}
-
-.h4p_item-challenged img {
-	margin-top: 18%;
 }
 
 .h4p_info-retry,
