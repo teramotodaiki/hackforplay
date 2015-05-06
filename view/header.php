@@ -68,7 +68,7 @@ $(function(){
 					<div class="dropdown">
 						<a id="h4p_header-dropdown" class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false"><span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="h4p_header-dropdown">
-							<li role="presentation"><a href="__mypage__" title="settings">マイページ</a></li>
+							<li role="presentation"><a href="/m" title="settings">マイページ</a></li>
 							<li role="presentation"><a href="/p" title="settings">設定</a></li>
 							<li role="presentation" class="divider"></li>
 							<li role="presentation" class="h4p_signout"><a href="javascript:void(0);" onclick="signout();">ログアウト</a></li>
