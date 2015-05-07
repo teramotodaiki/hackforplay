@@ -1,4 +1,32 @@
 $(function(){
+
+	// ユーザー情報取得
+	var user_id = sessionStorage.getItem('view_user_id');
+	checkSigninSession(function(result){
+		if (result === 'success') {
+			$.post('../auth/getuserinfobyid.php',{
+				'id': user_id
+			}, function(data, textStatus, xhr) {
+				switch(data){
+					case 'no-session':
+						$('#signinModal').modal('show');
+						break;
+					case 'missing-user':
+						bsAlert('ユーザーID #' + user_id + ' は存在しません)').appendTo('.h4p_alert');
+						break;
+					case 'parse-error':
+						bsAlert('ユーザー情報の取得に失敗しました').addClass('alert-danger').appendTo('.h4p_alert');
+						break;
+					default:
+						var info = $.parseJSON(data);
+						$('.h4p_user-nickname').text(info.nickname);
+						$('.h4p_user-thumbnail').attr('src', './tmpthumb.png');
+						break;
+				}
+			});
+		}
+	});
+
 	// インスタンス
 	var $item = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item').append(
 	).append(

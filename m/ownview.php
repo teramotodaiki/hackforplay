@@ -13,11 +13,26 @@
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<script type="text/javascript" charset="utf-8">
-	var user_id = <?php echo $userid; ?>;
+	sessionStorage.setItem('view_user_id', <?php echo $userid; ?>);
+	function bsAlert (_text) {
+		console.log('call bsAlert');
+		var _bsalert =
+		$('<div>').addClass('alert alert-dismissible fade in').attr('role', 'alert').append(
+			$('<button>').addClass('close').attr({
+				'type' : 'button',
+				'data-dismiss': 'alert',
+				'aria-label': 'Close'
+			}).append($('<span>').attr('aria-hidden', 'true').html('&times;'))
+		).append(
+			$('<span>').text(_text)
+		);
+		return _bsalert;
+	}
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="row">
+			<div class="col-md-12 h4p_alert"></div>
 			<div class="col-md-12 panel panel-default">
 				<div class="panel-body">
 					<div class="text-center">
