@@ -50,3 +50,7 @@ body {
 	font-size: 60%;
 }
 
+.panel pre.panel-title {
+	font-size: 14px;
+}
+

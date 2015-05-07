@@ -78,7 +78,7 @@ $(function(){
 	$.post('../stage/fetchmystage.php', {
 		'length': 15
 	}, function(data, textStatus, xhr) {
-		console.log(data);
+		// console.log(data);
 		if (data === 'parse-error') {
 		}else{
 			var result = jQuery.parseJSON(data);
@@ -118,11 +118,13 @@ $(function(){
 			var token = $(this).attr('project-token');
 			openProject(token);
 		}).append(
-			$('<h4>').addClass('panel-title')
+			$('<pre>').addClass('panel-title')
 		)
 	).append(
 		$('<div>').addClass('panel-body').append(
-			$('<p>').append($('<span>').html('作成日時：<b></b>'))
+			$('<p>').append($('<span>').addClass('registered').html('作成日時：<b></b>'))
+		).append(
+			$('<p>').append($('<span>').addClass('source').html('改造元：<b></b>'))
 		).append(
 			$('<button>').addClass('btn btn-lg btn-block btn-default').on('click', openProject).text('開く').attr('data-loading-text', 'データの取得中…')
 		)
@@ -132,7 +134,6 @@ $(function(){
 	$.post('../stage/fetchmyproject.php',{
 		'length': 15
 	}, function(data, textStatus, xhr) {
-		console.log(data);
 		switch(data){
 			case 'no-session':
 				$('#signinModal').modal('show');
@@ -145,9 +146,10 @@ $(function(){
 				var $list = $('.h4p_projectlist');
 				result.values.forEach(function(project){
 					var item = $projectItem.clone(true);
+					item.find('.panel-title').text(project.data);
 					var title = project.source_mode === 'replay' ? 'Re:' + project.source_title : 'オリジナルステージ';
-					item.find('.panel-heading h4').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
-					item.find('.panel-body p span b').text(project.registered);
+					item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
+					item.find('.registered b').text(project.registered);
 					item.find('.panel-body button').attr('project-token', project.token);
 
 					item.appendTo($list);

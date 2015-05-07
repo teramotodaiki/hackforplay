@@ -42,12 +42,8 @@
 	height: 384px;
 }
 
-.h4p_projectlist .panel {
-	height: 180px;
-}
-
-.h4p_projectlist .panel .panel-heading {
-	height: 55px;
+.h4p_projectlist .panel-heading pre {
+	height: 117px;
 }
 
 .h4p_bar-left,

@@ -73,13 +73,6 @@ iframe {
 	position: relative;
 }
 
-.h4p_item-footer p {
-	margin: 0;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
 .h4p_box-header *:first-child {
 	margin-top: 0px;
 }
@@ -144,10 +137,16 @@ iframe {
 	z-index: 10;
 }
 
-.h4p_item p {
+.h4p_item p,
+.h4p_projectlist .panel-body p {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.h4p_projectlist .panel-heading pre {
+	word-wrap: normal;
+	overflow: auto;
 }
 
 .h4p_item p.title {
