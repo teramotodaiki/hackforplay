@@ -7,8 +7,8 @@ Mypage ユーザーごとのページ。自分のページ（ownview）を見る
 require_once '../preload.php';
 
 // 自分自身のページ（ID）か？
-$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-if($id = FALSE){
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+if($id == FALSE){
 	exit();
 }
 session_start();
