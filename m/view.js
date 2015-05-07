@@ -20,7 +20,7 @@ $(function(){
 					default:
 						var info = $.parseJSON(data);
 						$('.h4p_user-nickname').text(info.nickname);
-						$('.h4p_user-thumbnail').attr('src', './tmpthumb.png');
+						$('.h4p_user-thumbnail').attr('src', info.gender === 'man' ? 'tmpthumb_man.png' : 'tmpthumb_woman.png');
 						break;
 				}
 			});
