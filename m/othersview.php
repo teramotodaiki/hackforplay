@@ -13,7 +13,20 @@
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<script type="text/javascript" charset="utf-8">
-	var user_id = <?php echo $id; ?>;
+	sessionStorage.setItem('view_user_id', <?php echo $id; ?>);
+	function bsAlert (_text) {
+		var _bsalert =
+		$('<div>').addClass('alert alert-dismissible fade in').attr('role', 'alert').append(
+			$('<button>').addClass('close').attr({
+				'type' : 'button',
+				'data-dismiss': 'alert',
+				'aria-label': 'Close'
+			}).append($('<span>').attr('aria-hidden', 'true').html('&times;'))
+		).append(
+			$('<span>').text(_text)
+		);
+		return _bsalert;
+	}
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
@@ -21,26 +34,26 @@
 			<div class="col-md-12 panel panel-default">
 				<div class="panel-body">
 					<div class="text-center">
-						<img src="tmpthumb.png" class="img-circle">
+						<img src="tmpthumb.png" class="img-circle h4p_user-thumbnail">
 					</div>
 					<div class="text-center">
-						<h3>ユーザーネーム</h3>
+						<h3 class="h4p_user-nickname"></h3>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12">
-				<div class="row h4p_box">
-					<div class="col-md-12 h4p_box-header">
-						<h3>あなたのステージ</h3>
-					</div>
-					<div class="col-md-12 h4p_box-main">
-						<div id="h4p_stagelist" class="row">
-						</div>
-					</div>
-					<div class="col-md-12 h4p_box-footer">
-					</div>
+		</div>
+	</div>
+	<div class="container-fluid h4p_stagecontainer">
+		<div class="row">
+			<div class="col-md-12 h4p_bar-top"></div>
+			<div class="col-md-12 h4p_bar-bar">
+				<div class="container">
+					<div class="h4p_bar-left"></div>
+					<div class="row h4p_stagelist list-stage"></div>
+					<div class="h4p_bar-right"></div>
 				</div>
 			</div>
+			<div class="col-md-12 h4p_bar-bottom"></div>
 		</div>
 	</div>
 </body>

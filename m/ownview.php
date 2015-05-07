@@ -15,7 +15,6 @@
 	<script type="text/javascript" charset="utf-8">
 	sessionStorage.setItem('view_user_id', <?php echo $userid; ?>);
 	function bsAlert (_text) {
-		console.log('call bsAlert');
 		var _bsalert =
 		$('<div>').addClass('alert alert-dismissible fade in').attr('role', 'alert').append(
 			$('<button>').addClass('close').attr({
