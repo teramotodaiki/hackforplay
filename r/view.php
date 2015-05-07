@@ -31,7 +31,7 @@
 					<div class="col-md-12 panel-body">
 						<div class="row">
 							<a href="/s?id=201" title="ステージをつくろう１" target="_blank">
-								<div class="col-lg-offset-1 col-lg-3 col-md-4 col-xs-4">
+								<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
 									<div class="h4p_item-thumbnail" style="height: 160px; background-image:url(/s/replay_t1/thumb.png)">
 									</div>
 									<div class="h4p_item-title">
@@ -42,7 +42,7 @@
 									</div>
 								</div>
 							</a>
-							<div class="col-lg-7 col-md-8 col-xs-8 h4p_topicitem">
+							<div class="col-lg-offset-1 col-lg-7 col-md-8 col-sm-8 col-xs-12 h4p_topicitem">
 								<div class="h4p_item-title">
 									<h4>ここからが、真のハックフォープレイだ！</h4>
 								</div>
