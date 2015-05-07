@@ -8,7 +8,7 @@ if(preg_match("/^.*\/s/", $_SERVER["PHP_SELF"])){
 		$mode	= $stage['Mode'];
 	}
 }else if(preg_match("/^.*\/m/", $_SERVER["PHP_SELF"])){
-	$header_pattern = "more";
+	$header_pattern = "mypage";
 }else if(preg_match("/^.*\/a/", $_SERVER["PHP_SELF"])){
 	$header_pattern = "admin";
 }else if(preg_match("/^.*\/r/", $_SERVER["PHP_SELF"])){
@@ -57,6 +57,9 @@ $(function(){
 		    <?php elseif ($header_pattern == 'replay'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
 		    <?php elseif ($header_pattern == 'pref'): ?>
+	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
+	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
+		    <?php elseif ($header_pattern == 'mypage'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
 			<?php endif; ?>
