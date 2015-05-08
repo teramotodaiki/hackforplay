@@ -84,7 +84,8 @@ header {
 	padding: 0;
 }
 
-.h4p_item p {
+.h4p_item p,
+.h4p_info-datail p {
 	margin: 0;
 	padding: 0;
 }
