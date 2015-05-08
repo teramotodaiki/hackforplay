@@ -176,7 +176,7 @@ $(function(){
 				result.values.forEach(function(project){
 					var item = $projectItem.clone(true);
 					item.find('.panel-title').text(project.data);
-					var title = project.source_mode === 'replay' ? 'Re:' + project.source_title : 'オリジナルステージ';
+					var title = project.source_title;
 					item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
 					item.find('.registered b').text(project.registered);
 					item.find('.panel-body button').attr('project-token', project.token);
