@@ -23,13 +23,16 @@ body {
 
 .h4p_item p,
 .h4p_item p a,
-.h4p_item p * {
+.h4p_item p *,
+.h4p_info-datail p,
+.h4p_info-datail p a {
 	color: rgb(160,160,160);
 	font-size: 13px;
 	text-decoration: none;
 }
 
-.h4p_item p a:hover {
+.h4p_item p a:hover,
+.h4p_info-datail p a:hover {
 	color: #23527c;
 	color: rgb( 35, 82,124);
 }
