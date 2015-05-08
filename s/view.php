@@ -16,7 +16,7 @@ if($mode == "replay"){
 	$code = preg_replace("/\n/", "\\n", $code);
 	$code = preg_replace("/\"/", "\\\"", $code);
 }
-$retry 	= filter_input(INPUT_GET, "retry");
+$retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 ?>
 <!DOCTYPE html>
 <html>
@@ -57,7 +57,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 		).append(
 			$('<span>').text(_text)
 		).appendTo('.h4p_alerts');
-		
+
 		// アラートが見えるにスクロール
 		scrollToAnchor();
 	}
@@ -72,7 +72,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 	var path = "<?php echo $path; ?>";
 	var next = "<?php echo $next; ?>";
 	var mode = "<?php echo $mode; ?>";
-	var retry = "true" === "<?php echo $retry; ?>";
+	var retry = "1" === "<?php echo $retry; ?>";
 	var origin_id = "<?php echo $origin_id; ?>";
 	<?php if(isset($code)): ?>
 	var replay_code = "<?php echo $code; ?>";
@@ -376,7 +376,7 @@ $retry 	= filter_input(INPUT_GET, "retry");
 				$(".h4p_info-restaging>button").hide();
 			}
 		})();
-		
+
 		// #scroll-anchorまでスクロールする
 		(function () {
 			scrollToAnchor();
