@@ -138,7 +138,8 @@ iframe {
 }
 
 .h4p_item p,
-.h4p_projectlist .panel-body p {
+.h4p_projectlist .panel-body p,
+.h4p_info-datail p {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
