@@ -5,7 +5,7 @@ $(function(){
 	else mainSize = 1440;
 
 	// background-image
-	jQuery.each([
+	var bgImageList = [
 		['.l-1', 'img/'+mainSize+'/topback.jpg'],
 		['.l-2', 'img/lp-back-2.png'],
 		['.l-1 .h4p_landing-header', 'img/'+mainSize+'/logoh4p.png'],
@@ -14,41 +14,54 @@ $(function(){
 		['.l-2 .h4p_landing-header', 'img/'+mainSize+'/whats1.png'],
 		['.l-3 .h4p_landing-header', 'img/'+mainSize+'/logore.png'],
 		['.l-4 .h4p_landing-header', 'img/'+mainSize+'/whats2.png']
-	], function(index, val) {
-		var element = $(val[0]);
-		var imageURL = val[1];
-		var div = $("<div>").addClass('bg').prependTo(element);
-		$("<img>").attr('src', imageURL).bind('load', function() {
-			setTimeout(function(){
-				div.css({
-					'background-image': 'url('+imageURL+')',
-					'z-index': index
-				}).fadeIn('slow');
-			}, 1000 + index * 500); // delay
+	];
+	var loadAndFadein = function(index){
+		if (bgImageList.length <= index) return;
+		var selector = bgImageList[index][0];
+		var imageURL = bgImageList[index][1];
+		var $bg = $('<div>').addClass('bg').prependTo(selector);
+		$('<img>').attr('src', imageURL).on('load', function() {
+			$bg.css({
+				'background-image': 'url(' + imageURL + ')',
+				'z-index': index
+			}).fadeIn('slow', function(){
+				loadAndFadein(index + 1); // next routine
+			});
 		});
-	});
+	};
+	loadAndFadein(0);
 
 	// button
-	jQuery.each([
+	var btnImageList = [
 		[".l-1", 'img/'+mainSize+'/playbutton'],
 		[".l-2", 'img/'+mainSize+'/playbutton2'],
 		[".l-4", 'img/'+mainSize+'/playbutton3']
-	], function(index, val) {
-		var element = $(val[0]+" .h4p_landing-footer>a");
-		var prefix = val[1];
-		// vertical-align : middle
-		element.css('line-height', element.parent().height()+'px');
-		$("<img>").attr('src', prefix+'_n.png').bind('load', function() {
-			setTimeout(function(){
-				$("<img>").appendTo(element).attr('src', prefix+'_n.png').hover(function() {
-					$(this).attr('src', prefix+'_p.png');
+	];
+
+	var loadAndSetPN = function(index){
+		if (btnImageList.length <= index) return;
+		var imageURL_n = btnImageList[index][1] + '_n.png';
+		var imageURL_p = btnImageList[index][1] + '_p.png';
+		var $el = $(btnImageList[index][0] + ' .h4p_landing-footer>a');
+		$el.css('line-height', $el.parent().height()+'px');
+		var $img =
+		$("<img>").attr('src', imageURL_n).on('load', function() {
+			$('<img>').attr('src', imageURL_p).on('load', function() {
+				$img.hover(function() {
+					$(this).attr('src', imageURL_p);
 				}, function() {
-					$(this).attr('src', prefix+'_n.png');
-				}).addClass('btn-bg').fadeIn('slow');
-			}, 2500 + index * 500);
+					$(this).attr('src', imageURL_n);
+				}).addClass('btn-bg').css('z-index', '20').fadeIn('slow', function(){
+					loadAndSetPN(index + 1);
+				});
+				$el.append($img); // imageURL_n
+			});
 		});
-		$("<img>").attr('src', prefix+'_p.png'); // 押された時のボタンの画像
-	});
+	};
+	loadAndSetPN(0);
+
+
+
 
 	// スマートフォンの警告
 	var sp_word = ['Mobile', 'iPhone', 'iPod', 'iPad', 'Android', 'Windows Phone', 'BlackBerry', 'Symbian'];
