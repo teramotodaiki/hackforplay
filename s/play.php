@@ -18,7 +18,7 @@ if($stageid == FALSE || $stageid == NULL){
 }
 
 try{
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Mode",s."ProjectID",s."Path",s."Title",s."Playcount",s."NextID",u."Nickname" FROM "Stage" AS s LEFT OUTER JOIN "User" AS u ON s."UserID"=u."ID" WHERE s."ID"=:stageid AND s."State"!=:rejected');
+	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Mode",s."ProjectID",s."Path",s."Title",s."Playcount",s."NextID",s."SourceID",u."Nickname",source."Title" AS SourceTitle FROM "Stage" AS s LEFT OUTER JOIN "User" AS u ON s."UserID"=u."ID" LEFT OUTER JOIN "Stage" AS source ON s."SourceID"=source."ID" WHERE s."ID"=:stageid AND s."State"!=:rejected');
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 	$stmt->bindValue(":rejected", 'rejected', PDO::PARAM_STR);
 	$stmt->execute();

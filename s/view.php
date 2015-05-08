@@ -6,6 +6,8 @@ $next 	= $stage['NextID'];
 $count 	= $stage['Playcount'];
 $author = $stage['Nickname'];
 $author_id = $stage['UserID'];
+$source_id = $stage['SourceID'];
+$source_title = $stage['SourceTitle'];
 // $origin_id = $stage['restaging_id'];
 $origin_id = NULL;
 $mode 	= filter_input(INPUT_GET, "mode");
@@ -187,8 +189,10 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 				<div class="row">
 					<div class="col-sm-6 col-xs-12 h4p_info-datail">
 						<p><h3 class="h4p_info-title"><?php echo $title; ?></h3></p>
-						<p><span>作成者：<b><a href="../m?id=<?php echo $author_id; ?>" target="_blank"><?php echo $author; ?></a></b></span></p>
 						<p><span>プレイ回数：<b><?php echo $count."回"; ?></b></span></p>
+						<!-- 公式ステージの場合... -->
+						<p><span>作成者：<b><a href="../m?id=<?php echo $author_id; ?>" target="_blank"><?php echo $author; ?></a></b></span></p>
+						<p><span>改造元：<b><a href="../s?id=<?php echo $source_id; ?>" target="_blank"><?php echo $source_title; ?></a></b></span></p>
 					</div>
 					<div class="col-sm-3 col-xs-6 h4p_info-restaging">
 						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">改造する</button>
