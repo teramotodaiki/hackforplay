@@ -88,14 +88,16 @@ $(function(){
 				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
 				item.find('.title a').attr({
 					href: '/s?id=' + stage.id,
-					title: stage.title
+					title: stage.title,
+					target: '_blank'
 				}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
 				item.find('.author').remove();
 				item.find('.playcount b').prepend(stage.playcount);
 				if (stage.source_mode === 'replay') {
 					item.find('.source a').attr({
 						href: '/s?id=' + stage.source_id,
-						title: stage.source_title
+						title: stage.source_title,
+						target: '_blank'
 					}).text(stage.source_title);
 				}else{
 					item.find('.source').text('オリジナルステージ');
@@ -114,10 +116,7 @@ $(function(){
 	});
 
 	$projectItem = $('<div>').addClass('col-lg-6 col-md-12 panel panel-default').append(
-		$('<div>').addClass('panel-heading').on('click', function() {
-			var token = $(this).attr('project-token');
-			openProject(token);
-		}).append(
+		$('<div>').addClass('panel-heading').append(
 			$('<pre>').addClass('panel-title')
 		)
 	).append(
@@ -126,9 +125,35 @@ $(function(){
 		).append(
 			$('<p>').append($('<span>').addClass('source').html('改造元：<b></b>'))
 		).append(
-			$('<button>').addClass('btn btn-lg btn-block btn-default').on('click', openProject).text('開く').attr('data-loading-text', 'データの取得中…')
+			$('<button>').addClass('btn btn-lg btn-block btn-default').text('開く').attr('data-loading-text', 'データの取得中…')
 		)
 	);
+
+	$projectItem.find('button').on('click', function(event) {
+		var loading = $(this).button('loading');
+		var token = $(this).attr('project-token');
+		$.post('../stage/fetchprojectbytoken.php', {
+			'token': token
+		} , function(data, textStatus, xhr) {
+			console.log(data);
+			loading.button('reset');
+			switch(data){
+				case 'no-session':
+					$('#signinModal').modal('show');
+					break;
+				case 'missing-project':
+					break;
+				case 'parse-error':
+					break;
+				default:
+					var value = jQuery.parseJSON(data);
+					sessionStorage.setItem('project-token', token);
+					sessionStorage.setItem('restaging_code', value.data);
+					location.href = '/s?id=' + value.source_id + '&mode=restaging';
+					break;
+			}
+		});
+	});
 
 	// プロジェクト一覧取得
 	$.post('../stage/fetchmyproject.php',{
@@ -173,33 +198,6 @@ $(function(){
 			$('<span>').text(_text)
 		);
 		return _bsalert;
-	}
-
-	// プロジェクトを開く
-	function openProject () {
-		var loading = $(this).button('loading');
-		var token = $(this).attr('project-token');
-		$.post('../stage/fetchprojectbytoken.php', {
-			'token': token
-		} , function(data, textStatus, xhr) {
-			console.log(data);
-			loading.button('reset');
-			switch(data){
-				case 'no-session':
-					$('#signinModal').modal('show');
-					break;
-				case 'missing-project':
-					break;
-				case 'parse-error':
-					break;
-				default:
-					var value = jQuery.parseJSON(data);
-					sessionStorage.setItem('project-token', token);
-					sessionStorage.setItem('restaging_code', value.data);
-					location.href = '/s?id=' + value.source_id + '&mode=restaging';
-					break;
-			}
-		});
 	}
 
 });
