@@ -133,29 +133,29 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	<!-- contents -->
 	<div class="container container-game">
 		<div class="row">
-			<div class="col-md-12 h4p_restaging">
+			<div class="col-sm-12 h4p_restaging">
 				<div class="row">
-					<div class="col-md-12 h4p_restaging_editor">
+					<div class="col-sm-12 h4p_restaging_editor">
 						<textarea name="restaging_code" value="// ステージ改造コードを書いて、このステージを改造してやろう!!"></textarea>
 					</div>
-					<div class="col-md-12 h4p_restaging_button">
+					<div class="col-sm-12 h4p_restaging_button">
 						<button type="button" class="btn btn-block btn-lg btn-primary ignore-attendance">
 							<span>ステージ改造コードを実行</span>
 						</button>
 					</div>
 				</div>
 			</div>
-			<div id="scroll-anchor" class="col-md-12"></div>
-			<div class="col-md-12 h4p_alerts"></div>
-			<div class="col-md-12 h4p_game" style="display:block">
+			<div id="scroll-anchor" class="col-sm-12"></div>
+			<div class="col-sm-12 h4p_alerts"></div>
+			<div class="col-sm-12 h4p_game" style="display:block">
 				<iframe src=""></iframe>
 			</div>
-			<div class="col-md-12 h4p_clear text-center" style="display:none">
+			<div class="col-sm-12 h4p_clear text-center" style="display:none">
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-sm-12">
 						<img class="h4p_clear-img" src="img/clear.png" alt="">
 					</div>
-					<div class="col-md-12 h4p_clear-next">
+					<div class="col-sm-12 h4p_clear-next">
 					<?php if($mode == "replay") : ?>
 						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">このステージを改造する</button>
 						<a href="/r" class="btn btn-success btn-lg btn-block" title="改造ステージ一覧へ">
@@ -175,28 +175,28 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12 h4p_publish" style="display:none">
+			<div class="col-sm-12 h4p_publish" style="display:none">
 				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中...">
 					この改造ステージを投稿する
 				</button>
 				<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
 			</div>
-			<div class="col-md-12 h4p_info">
+			<div class="col-sm-12 col-xs-12 h4p_info">
 				<div class="row">
-					<div class="col-md-6 h4p_info-datail">
+					<div class="col-sm-6 col-xs-12 h4p_info-datail">
 						<h3 class="h4p_info-title"><?php echo $title; ?></h3>
 						<span class="h4p_info-footer">プレイ回数：<b><?php echo $count."回"; ?></b></span>
 					</div>
-					<div class="col-md-3 h4p_info-restaging">
+					<div class="col-sm-3 col-xs-6 h4p_info-restaging">
 						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">改造する</button>
 					</div>
-					<div class="col-md-3 h4p_info-retry">
+					<div class="col-sm-3 col-xs-6 h4p_info-retry">
 						<a class="btn btn-primary btn-lg btn-block ignore-attendance" role="button" href="/s?id=<?php echo $id; ?>" title="はじめから">はじめから</a>
 						<button style="display: none;" class="btn btn-primary btn-lg btn-block h4p_info-retry-button ignore-attendance" role="button" title="もう一度実行">もう一度実行</button>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12 h4p_mapTip">
+			<div class="col-sm-12 h4p_mapTip">
 				<img src="img/mapTipIndex.jpg" alt="">
 			</div>
 		</div>
