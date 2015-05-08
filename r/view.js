@@ -64,10 +64,14 @@ $(function(){
 					href: '/s?id=' + stage.id,
 					title: stage.title
 				}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
-				item.find('.author a').attr({
-					href: '/m?id=' + stage.author_id,
-					title: stage.author_name
-				}).text(stage.author_name);
+				if (stage.author_id !== null) {
+					item.find('.author a').attr({
+						href: '/m?id=' + stage.author_id,
+						title: stage.author_name
+					}).text(stage.author_name);
+				}else{
+					item.find('.author').text('いにしえのプログラマー');
+				}
 				item.find('.playcount b').prepend(stage.playcount);
 				if (stage.source_mode === 'replay') {
 					item.find('.source a').attr({
