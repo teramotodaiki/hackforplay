@@ -90,5 +90,5 @@ try {
 	die();
 }
 
-require_once 'view/inputyourself.php';
+require_once 'inputview.php';
 ?>

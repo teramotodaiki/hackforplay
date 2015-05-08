@@ -25,12 +25,10 @@
 		checkSigninSession(function(data){
 			if(data === 'success'){
 				// プロフィールの入力から
-				$('#authModal').off('shown.bs.modal')
-				.on('shown.bs.modal', function() {
+				$('#authModal').off('shown.bs.modal').on('shown.bs.modal', function() {
 					$('#authModal .modal-body').hide();
 					$('#authModal .auth-page-3').show('fast');
-				})
-				.modal('show');
+				}).modal('show');
 			}
 		});
 	});
