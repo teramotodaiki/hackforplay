@@ -27,6 +27,8 @@ $(function(){
 		}
 	});
 
+	// 一覧表示
+	var view_mode = sessionStorage.getItem('view_mode');
 	// インスタンス
 	var $item = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item').append(
 	).append(
@@ -75,7 +77,9 @@ $(function(){
 		$(this).parent().find('.h4p_item-transform').removeClass('transform-on');
 	});
 	// ステージ一覧取得
-	$.post('../stage/fetchmystage.php', {
+	var api_fetchstages = view_mode === 'ownview' ? '../stage/fetchmystage.php' : '../stage/fetchstagesbyuserid.php';
+	$.post(api_fetchstages, {
+		'userid' : user_id,
 		'length': 15
 	}, function(data, textStatus, xhr) {
 		// console.log(data);
