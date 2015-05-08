@@ -55,6 +55,10 @@
 	height: 100%;
 }
 
+.h4p_mapTip img {
+	width: 100%;
+}
+
 /* 間隔属性 */
 header {
 	padding: 5px 0;
