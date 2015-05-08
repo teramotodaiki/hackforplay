@@ -207,7 +207,7 @@ $(function() {
 	});
 });
 </script>
-<div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
     		<div class="modal-header">
@@ -305,7 +305,7 @@ $(function() {
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
   	<div class="modal-dialog">
     	<div class="modal-content">
       		<div class="modal-header">
