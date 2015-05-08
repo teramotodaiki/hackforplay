@@ -34,5 +34,14 @@
 	});
 
 	</script>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 panel panel-default">
+				<div class="panel-body text-center">
+					<a href="/m" title="Go to mypage" class="btn btn-link btn-lg" >マイページ</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
