@@ -190,7 +190,6 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 					<div class="col-sm-6 col-xs-12 h4p_info-datail">
 						<p><h3 class="h4p_info-title"><?php echo $title; ?></h3></p>
 						<p><span>プレイ回数：<b><?php echo $count."回"; ?></b></span></p>
-						<!-- 公式ステージの場合... -->
 						<?php if ($author_id === NULL) : ?>
 						<p><span><b>公式ステージ</b></span></p>
 						<?php else: ?>
