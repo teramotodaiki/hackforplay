@@ -3,10 +3,9 @@ $(function(){
 	// ゲーム画面にフォーカスする
 	setInterval(function(){
 		var game = $(".h4p_game>iframe").get(0);
-		if(	game !== undefined && game !== document.activeElement &&
-			focus_on_game){
-		    var source = "refocus();";	// フォーカスを戻すメソッドをゲーム側で呼び出す
-		    game.contentWindow.postMessage(source, '/');
+		if(	game !== undefined && game !== document.activeElement && focus_on_game){
+			var source = "refocus();";	// フォーカスを戻すメソッドをゲーム側で呼び出す
+			game.contentWindow.postMessage(source, '/');
 		}
 	}, 100);
 	// モーダル表示中は、モーダルにフォーカスする
@@ -50,7 +49,7 @@ $(function(){
 				$("#screenshotModal").modal("show");
 				// このあと"thumbnail"を呼び出す
 				break;
-		};
+		}
 	});
 
 	// HackforPlay RePlay (then externalizing the code)
@@ -80,18 +79,11 @@ $(function(){
 		var beginRestaging = function(){
 			alert_on_unload = true;
 			$(".h4p_restaging").fadeIn("fast", function() {
-				var retry = getParam('retry') === '1';
-				if (!retry) {
-					var code = sessionStorage.getItem('restaging_code'); // default code (set somedir/main.js)
-					if(code !== null){
-						jsEditor.setValue(code); // set default code
-					};
-				}else{
-					var code = sessionStorage.getItem('retry_code'); // retry code (temporary code)
-					if(code !== null){
-						jsEditor.setValue(code);
-					};
-				};
+				var storage_key = getParam('retry') === '1' ? 'retry_code' : 'restaging_code';
+				var code = sessionStorage.getItem(storage_key);
+				if(code !== null){
+					jsEditor.setValue(code);
+				}
 				$(this).hover(function() {
 					focus_on_game = false; // focus on editor
 				}, function() {
@@ -177,13 +169,13 @@ $(function(){
 						break;
 					default:
 						sessionStorage.setItem('project-token', data);
-						if(callback != undefined){
+						if(callback !== undefined){
 							callback();
 						}
 						break;
 				}
 			});
-		}
+		};
 		switch(getParam('mode')){
 			case "official":
 				// official mode (load default code from main.js)
@@ -201,8 +193,8 @@ $(function(){
 				$('#inputModal').on('show.bs.modal', function () {
 					// canvas to image
 					var game = $(".h4p_game>iframe").get(0);
-		    		var source = "saveImage();";
-		    		game.contentWindow.postMessage(source, '/');
+					var source = "saveImage();";
+					game.contentWindow.postMessage(source, '/');
 				});
 				$("#publish-button").on('click', function() {
 					var title = $("#stage-name").val();
