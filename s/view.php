@@ -131,7 +131,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 		</div>
 	</div>
 	<!-- contents -->
-	<div class="container">
+	<div class="container container-game">
 		<div class="row">
 			<div class="col-md-12 h4p_restaging">
 				<div class="row">
