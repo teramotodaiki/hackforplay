@@ -8,7 +8,7 @@ if(preg_match("/^.*\/s/", $_SERVER["PHP_SELF"])){
 		$mode	= $stage['Mode'];
 	}
 }else if(preg_match("/^.*\/m/", $_SERVER["PHP_SELF"])){
-	$header_pattern = "more";
+	$header_pattern = "mypage";
 }else if(preg_match("/^.*\/a/", $_SERVER["PHP_SELF"])){
 	$header_pattern = "admin";
 }else if(preg_match("/^.*\/r/", $_SERVER["PHP_SELF"])){
@@ -59,18 +59,22 @@ $(function(){
 		    <?php elseif ($header_pattern == 'pref'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
+		    <?php elseif ($header_pattern == 'mypage'): ?>
+	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
+	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
 			<?php endif; ?>
 	    	</ul>
 	    	<ul class="nav navbar-nav navbar-right">
 	    		<li class="h4p_signin"><button type="button" class="btn btn-link navbar-btn" data-toggle="modal" data-target="#signinModal">ログイン</button></li>
 				<li class="h4p_signin"><button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#authModal">会員登録</button></li>
-				<li class="h4p_signout"><button type="button" class="btn btn-link navbar-btn" onclick="signout();">ログアウト</button></li>
 				<li class="h4p_signout">
 					<div class="dropdown">
 						<a id="h4p_header-dropdown" class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false"><span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="h4p_header-dropdown">
-							<li role="presentation"><a href="__mypage__" title="settings">マイページ</a></li>
+							<li role="presentation"><a href="/m" title="settings">マイページ</a></li>
 							<li role="presentation"><a href="/p" title="settings">設定</a></li>
+							<li role="presentation" class="divider"></li>
+							<li role="presentation" class="h4p_signout"><a href="javascript:void(0);" onclick="signout();">ログアウト</a></li>
 						</ul>
 					</div>
 				</li>

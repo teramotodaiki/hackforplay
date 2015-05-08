@@ -26,7 +26,7 @@ $(function(){
 				'border-bottom-left-radius': '12px 12px',
 				'border-bottom-right-radius': '4px 4px'
 			}).append(
-				$('<p>').css('margin', '8px 0').append($('<a>').addClass('title'))
+				$('<p>').addClass('title').css('margin', '8px 0').append($('<a>'))
 			).append(
 				$('<p>').append($('<span>').addClass('author').html('作成者：<b><a></a></b>'))
 			).append(
@@ -57,13 +57,15 @@ $(function(){
 			console.log($list);
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
-				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
-				item.find('.title').attr({
+				item.find('.h4p_item-thumbnail').on('click', function() {
+					location.href = '/s?id=' + stage.id;
+				}).css('background-image', 'url(' + stage.thumbnail + ')');
+				item.find('.title a').attr({
 					href: '/s?id=' + stage.id,
 					title: stage.title
 				}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
 				item.find('.author a').attr({
-					href: '/__mypagelink__',
+					href: '/m?id=' + stage.author_id,
 					title: stage.author_name
 				}).text(stage.author_name);
 				item.find('.playcount b').prepend(stage.playcount);
@@ -92,25 +94,17 @@ $(function(){
 			var $list = $('.h4p_stagelist.list-empty');
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
-				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
+				item.find('.h4p_item-thumbnail').on('click', function() {
+					location.href = '/s?id=' + stage.id;
+				}).css('background-image', 'url(' + stage.thumbnail + ')');
 				if(stage.title.length > 38) stage.title = stage.title.substr(0, 37) + '…';
-				item.find('.title').attr({
+				item.find('.title a').attr({
 					href: '/s?id=' + stage.id,
 					title: stage.title
 				}).text(stage.title);
-				item.find('.author a').attr({
-					href: '/__mypagelink__',
-					title: stage.author_name
-				}).text(stage.author_name);
+				item.find('.author').remove();
 				item.find('.playcount b').prepend(stage.playcount);
-				if (stage.source_mode === 'replay') {
-					item.find('.source a').attr({
-						href: '/s?id=' + stage.source_id,
-						title: stage.source_title
-					}).text(stage.source_title);
-				}else{
-					item.find('.source').text('オリジナルステージ');
-				}
+				item.find('.source').text('公式ステージ');
 
 				item.appendTo($list);
 			});

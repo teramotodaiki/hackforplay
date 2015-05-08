@@ -50,10 +50,7 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;
-}
-
-.h4p_item-src {
-	display: none;
+	cursor: pointer;
 }
 
 .h4p_item-challenged {
@@ -74,13 +71,6 @@ iframe {
 .h4p_item-title,
 .h4p_item-footer {
 	position: relative;
-}
-
-.h4p_item-footer p {
-	margin: 0;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
 }
 
 .h4p_box-header *:first-child {
@@ -145,6 +135,22 @@ iframe {
 
 .h4p_item .h4p_item-front {
 	z-index: 10;
+}
+
+.h4p_item p,
+.h4p_projectlist .panel-body p {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.h4p_projectlist .panel-heading pre {
+	word-wrap: normal;
+	overflow: auto;
+}
+
+.h4p_item p.title {
+	white-space: normal;
 }
 
 /* アニメーション */
