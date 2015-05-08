@@ -54,13 +54,9 @@ $(function(){
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
 	    	<?php elseif ($header_pattern == 'admin'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
-		    <?php elseif ($header_pattern == 'replay'): ?>
-	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
 		    <?php elseif ($header_pattern == 'pref'): ?>
-	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
 		    <?php elseif ($header_pattern == 'mypage'): ?>
-	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
 			<?php endif; ?>
 	    	</ul>
