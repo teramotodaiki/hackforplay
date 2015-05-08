@@ -191,8 +191,12 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 						<p><h3 class="h4p_info-title"><?php echo $title; ?></h3></p>
 						<p><span>プレイ回数：<b><?php echo $count."回"; ?></b></span></p>
 						<!-- 公式ステージの場合... -->
+						<?php if ($author_id === NULL) : ?>
+						<p><span><b>公式ステージ</b></span></p>
+						<?php else: ?>
 						<p><span>作成者：<b><a href="../m?id=<?php echo $author_id; ?>" target="_blank"><?php echo $author; ?></a></b></span></p>
 						<p><span>改造元：<b><a href="../s?id=<?php echo $source_id; ?>" target="_blank"><?php echo $source_title; ?></a></b></span></p>
+						<?php endif; ?>
 					</div>
 					<div class="col-sm-3 col-xs-6 h4p_info-restaging">
 						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">改造する</button>
