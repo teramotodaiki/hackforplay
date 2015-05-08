@@ -42,7 +42,7 @@ $(function(){
 <header class="navbar navbar-static-top">
 	<div class="container">
 		<div class="navbar-header">
-	     	<a class="navbar-brand" title="ハックフォープレイ" href="/">
+	     	<a class="navbar-brand" title="ハックフォープレイ" href="/?rewrite=no">
 	        	<img alt="hackforplay" src="/logo.png">
 	     	</a>
 	    </div>
