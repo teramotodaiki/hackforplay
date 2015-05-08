@@ -113,7 +113,7 @@ $(function(){
 		}
 	});
 
-	$projectItem = $('<div>').addClass('col-md-4 col-sm-6 col-xs-12 panel panel-default').append(
+	$projectItem = $('<div>').addClass('col-lg-6 col-md-12 panel panel-default').append(
 		$('<div>').addClass('panel-heading').on('click', function() {
 			var token = $(this).attr('project-token');
 			openProject(token);
