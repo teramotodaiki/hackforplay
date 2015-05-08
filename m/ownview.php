@@ -14,7 +14,6 @@
 	<?php require_once '../view/header.php'; ?>
 	<script type="text/javascript" charset="utf-8">
 	sessionStorage.setItem('view_user_id', <?php echo $userid; ?>);
-	sessionStorage.setItem('view_mode', 'ownview');
 	function bsAlert (_text) {
 		var _bsalert =
 		$('<div>').addClass('alert alert-dismissible fade in').attr('role', 'alert').append(
@@ -29,7 +28,7 @@
 		return _bsalert;
 	}
 	</script>
-	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<script src="ownview.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12 h4p_alert"></div>
