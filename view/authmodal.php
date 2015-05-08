@@ -27,6 +27,7 @@ $(function() {
 	// サインイン
 	$('#signin').submit(function(event) {
 		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
 
 		var email = $("#signinEmail").val();
 		var password = $("#signinPassword").val();
@@ -36,6 +37,7 @@ $(function() {
 			'email': email,
 			'password': password
 		} , function(data, textStatus, xhr) {
+			submit.button('reset');
 			switch(data){
 				case "success":
 					// サインイン完了画面へ
@@ -62,6 +64,7 @@ $(function() {
 	// メール送信・仮登録
 	$('#signup').submit(function(event) {
 		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
 
 		var value = $("#signupEmail").val();
 		$('#signup .alert').addClass('hide');
@@ -70,6 +73,7 @@ $(function() {
 			'email': value
 		}, function(data, textStatus, xhr) {
 			console.log(data);
+			submit.button('reset');
 			switch(data){
 				case "success":
 					// メールアドレスをローカルストレージに記憶
@@ -99,6 +103,7 @@ $(function() {
 	// パスワード確認・本登録
 	$("#tmp").submit(function(event) {
 		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
 
 		var password = $("#tmpPassword").val();
 		var email = $("#signupEmail").val();
@@ -108,6 +113,7 @@ $(function() {
 			'password' : password,
 			'email' : email
 		}, function(data, textStatus, xhr) {
+			submit.button('reset');
 			switch(data){
 				case "success":
 					// 仮登録状態を解除
@@ -136,6 +142,7 @@ $(function() {
 
 	$('#profile').submit(function(event) {
 		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
 
 		var age = $('#age').val();
 		var gender = $('input[name="gender"]:checked').val();
@@ -166,6 +173,7 @@ $(function() {
 			'password' : password
 		}, function(data, textStatus, xhr) {
 			console.log(data);
+			submit.button('reset');
 			switch(data){
 				case 'success':
 					// ログイン完了画面へ
