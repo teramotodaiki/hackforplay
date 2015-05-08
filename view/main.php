@@ -24,8 +24,6 @@
 	<script src="view/main.js" type="text/javascript" charset="utf-8"></script>
 	<?php require_once 'modals.php'; ?>
 	<!-- Modal -->
-	<?php echo $_SERVER['REQUEST_TIME'] . '<br>'; ?>
-	<?php echo time(); ?>
 	<div class="landingpage">
 		<div class="h4p_landing l-1">
 			<div class="h4p_landing-main">
