@@ -1,26 +1,23 @@
 <?php
-// main and begining page
-// $is_beta = 1; // This is a BETA VERSION. Turn into 0 to be the official ver!
+/*
+ランディングページ
+サインインされたセッションが存在し、 ?rewrite がFALSEでない場合、 /r に再送する
+*/
 
-// 1.Preparation
 require_once 'preload.php';
 
-// 2.Sign in or sign up
-require_once 'signin.php';
+// セッションの取得
+session_start();
+if (isset($_SESSION['UserID'])) {
+	$userid	= $_SESSION['UserID'];
+}
+session_commit();
 
-// 3.Enumrate cleared stage
-// require_once 'cleared.php';
+$rewrite = filter_input(INPUT_GET, 'rewrite', FILTER_VALIDATE_BOOLEAN);
+if (isset($userid) && $rewrite !== FALSE) {
+	header('Location:../r');
+	exit();
+}
 
-// 4.Get playable stages
-// $stage_limit = 6;
-// require_once 'getstages.php';
-
-//
-// require_once 'c/challengetoday.php';
-
-// 5.Get errored code
-// require_once 'getcodes.php';
-
-// 4.Load main page html
-include('view/main.php');
+include 'view/main.php';
 ?>
