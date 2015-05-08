@@ -6,12 +6,9 @@ $pdo = null;
 $useLocalDB = true;
 try {
 	if(($useLocalDB && $_SERVER['SERVER_NAME'] == 'localhost')){
-		$pdo = new PDO('mysql:dbname=hackforplay;host=localhost;charset=utf8;', 'hackforplay', 'RtPF7JRSZ5XzFasc');
-		$pdo->exec("SET sql_mode='ANSI_QUOTES'");
 		$dbh 	= new PDO("mysql:dbname=hackforplay-localhost;host=localhost;charset=utf8", 'hackforplay', 'RtPF7JRSZ5XzFasc');
 		$dbh->exec("SET sql_mode='ANSI_QUOTES'");
 	}elseif($_SERVER['SERVER_NAME'] == 'hackforplay-staging.azurewebsites.net'){
-    	$pdo = new PDO ( "sqlsrv:server = tcp:yadw63xtf8.database.secure.windows.net,1433; Database = hackforplay-release", "hackforplay@yadw63xtf8", "9PFLn21u9TkiqlKx3ceAbawXSGsBPGT");
     	$dbh = new PDO ( "sqlsrv:server = tcp:yadw63xtf8.database.secure.windows.net,1433; Database = hackforplay-staging", "hackforplay@yadw63xtf8", "9PFLn21u9TkiqlKx3ceAbawXSGsBPGT");
 	}
     $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
