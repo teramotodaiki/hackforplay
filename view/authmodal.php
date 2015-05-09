@@ -146,9 +146,12 @@ $(function() {
 		event.preventDefault();
 		var submit = $(this).find('button[type="submit"]').button('loading');
 
-		var age = $('#age').val();
-		var gender = $('input[name="gender"]:checked').val();
 		var nickname = $('#nickname').val();
+		var gender = $('input[name="gender"]:checked').val();
+		var birthday = $('#birth_year').val() + '-' + $('#birth_month').val() + '-' + $('#birth_day').val();
+		var experience_days = $('#experience_days').val();
+		var timezone_name = $('#timezone').val();
+		var timezone_offset = $('#timezone option:selected').attr('data-offset');
 		var password = $('#password').val();
 		var confirm = $('#confirm').val();
 
@@ -169,10 +172,13 @@ $(function() {
 		}
 
 		$.post('/auth/updateuserinfoimmediately.php', {
-			'age' : age,
 			'gender' : gender,
 			'nickname' : nickname,
-			'password' : password
+			'password' : password,
+			'birthday' : birthday,
+			'experience_days' : experience_days,
+			'timezone_name' : timezone_name,
+			'timezone_offset' : timezone_offset
 		}, function(data, textStatus, xhr) {
 			console.log(data);
 			submit.button('reset');
