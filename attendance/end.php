@@ -11,7 +11,7 @@ $token = filter_input(INPUT_POST, 'token');
 if($token === NULL || $token === FALSE){
 	exit();
 }
-$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_URL);
+$timezone = filter_input(INPUT_POST, 'timezone');
 if($timezone === FALSE || $timezone === NULL){
 	exit();
 }
