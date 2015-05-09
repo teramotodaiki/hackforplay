@@ -44,7 +44,8 @@ mailWithSendGrid($email, $tmpkey, $encription_key);
 // ユーザーを追加（このとき、ひとつのユーザーに複数の有効なHackforPlayアカウントが紐付かないように気をつける）
 // セッション情報があれば、今後それを使って同じユーザーIDを使ってもよい
 try {
-	$stmt 	= $dbh->prepare('INSERT INTO "User" ("Gender") VALUES(NULL)');
+	$stmt 	= $dbh->prepare('INSERT INTO "User" ("Registered") VALUES(:gmt)');
+	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone);
 	$stmt->execute();
 
 	$userid = $dbh->lastInsertId();
