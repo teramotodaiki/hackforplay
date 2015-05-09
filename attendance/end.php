@@ -8,14 +8,18 @@ require_once '../preload.php';
 
 // トークンを取得
 $token = filter_input(INPUT_POST, 'token');
-if($token == NULL || $token == FALSE){
+if($token === NULL || $token === FALSE){
+	exit();
+}
+$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_URL);
+if($timezone === FALSE || $timezone === NULL){
 	exit();
 }
 
 // レコードを更新
 try {
 	$stmt	= $dbh->prepare('UPDATE "Attendance" SET "End"=:gmt WHERE "token"=:token');
-	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s").date("P"), PDO::PARAM_STR);
+	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->execute();
 
