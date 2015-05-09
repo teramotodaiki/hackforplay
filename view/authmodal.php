@@ -266,12 +266,58 @@ $(function() {
 					  		<label class="radio-inline"><input type="radio" name="gender" value="woman">女</label>
 				    	</div>
 				  	</div>
+				  	<!-- 生年月日 -->
 				  	<div class="form-group has-feedback">
-				  		<label for="age" class="col-sm-3 control-label">年齢</label>
-				    	<div class="col-sm-8">
-				    		<input type="number" class="form-control" id="age" value="16">
+				  		<label for="birth_year" class="col-sm-3 control-label">生年月日</label>
+				    	<div class="col-sm-4">
+				    		<select id="birth_year" class="col-sm-4 form-control">
+					    		<?php for($y = intval(date('Y')); $y > 1900; $y--): ?>
+				    			<option value="<?php echo $y; ?>"><?php echo $y; ?>年</option>
+						    	<?php endfor; ?>
+				    		</select>
 				    	</div>
-				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="半角の数値を入力してください">
+				    	<div class="col-sm-2">
+				    		<select id="birth_month" class="col-sm-2 form-control">
+					    		<?php for($m = 1; $m <= 12; $m++): ?>
+				    			<option value="<?php echo $m; ?>"><?php echo $m; ?>月</option>
+						    	<?php endfor; ?>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-2">
+				    		<select id="birth_day" class="col-sm-2 form-control">
+					    		<?php for($d = 1; $d <= 31; $d++): ?>
+				    			<option value="<?php echo $d; ?>"><?php echo $d; ?>日</option>
+						    	<?php endfor; ?>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="あなたが生まれた年月日を選んでください">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
+				  	</div>
+				  	<div class="form-group has-feedback">
+				  		<label for="experience_days" class="col-sm-3 control-label">プログラミングの経験</label>
+				    	<div class="col-sm-8">
+				    		<select id="experience_days" class="form-control">
+				    			<option value="0" selected>はじめて</option>
+				    			<option value="30">およそ１ヶ月</option>
+				    			<option value="180">およそ半年</option>
+				    			<option value="365">およそ１年</option>
+				    			<option value="1095">およそ３年</option>
+				    			<option value="1825">５年以上</option>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="これまでにプログラミングをしてきた期間を選んでください">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
+				  	</div>
+				  	<div class="form-group has-feedback">
+				  		<label for="timezone" class="col-sm-3 control-label">タイムゾーン</label>
+				    	<div class="col-sm-8">
+				    		<select id="timezone" class="form-control">
+				    			<?php include 'timezone.php'; ?>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="自分の住んでいる地域に近いところを選んでください">
 				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
 				    	</div>
 				  	</div>
