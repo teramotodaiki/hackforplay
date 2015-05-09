@@ -16,12 +16,16 @@ if (isset($_SESSION['UserID'])){
 }
 session_commit();
 
+$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_URL);
+if($timezone === FALSE || $timezone === NULL){
+	exit();
+}
 $href = filter_input(INPUT_POST, 'href', FILTER_VALIDATE_URL);
-if($href == FALSE || $href == NULL){
+if($href === FALSE || $href === NULL){
 	exit();
 }
 $pathname = filter_input(INPUT_POST, 'pathname');
-if($pathname == FALSE || $pathname == NULL){
+if($pathname === FALSE || $pathname === NULL){
 	exit();
 }
 
@@ -36,7 +40,7 @@ try {
 	$stmt->bindValue(':href', $href, PDO::PARAM_STR);
 	$stmt->bindValue(':pathname', $pathname, PDO::PARAM_STR);
 	$stmt->bindValue(':token', $token, PDO::PARAM_STR);
-	$stmt->bindValue(':gmt', gmdate("Y-m-d H:i:s").date("P"), PDO::PARAM_STR);
+	$stmt->bindValue(':gmt', gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
 
 	$flag 	= $stmt->execute();
 	if(!$flag){

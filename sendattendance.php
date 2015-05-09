@@ -18,16 +18,17 @@ Attendance 情報を送信する
 		sessionStorage.removeItem('ignore-attendance-begin');
 		if (flag === 'ignore') return;
 
+		var timezone = new Date().getTimezoneString();
 		$.ajax({
 			url: '/attendance/begin.php',
 			type: 'POST',
 			data: {
+				'timezone': timezone,
 				'href': location.href,
 				'pathname': location.pathname
 			}
 		})
 		.done(function(result) {
-			if(result !== null && result !== "");
 			sessionStorage.setItem('attendance-token', result);
 		});
 	});
@@ -36,11 +37,16 @@ Attendance 情報を送信する
 
 		var token = sessionStorage.getItem('attendance-token');
 		if(token === null) return;
+
+		var timezone = new Date().getTimezoneString();
 		$.ajax({
 			url: '/attendance/end.php',
 			type: 'POST',
 			async: false,
-			data: {'token': token},
+			data: {
+				'timezone': timezone,
+				'token': token
+			}
 		})
 		.always(function(result){
 			sessionStorage.removeItem('attendance-token');

@@ -49,4 +49,13 @@ function signout (){
 		$(".h4p_signout").hide();
 	});
 }
+(function(){
+	// Example: +09:00, +00:00, -01:00
+	Date.prototype.getTimezoneString = function(){
+		var rawValue = parseInt((new Date()).getTimezoneOffset() / 60);
+		var prefix1 = rawValue > 0 ? '-' : '+';
+		var prefix2 = Math.abs(rawValue) < 10 ? '0' : '';
+		return prefix1 + prefix2 + Math.abs(rawValue) + ':00';
+	}
+})();
 </script>
