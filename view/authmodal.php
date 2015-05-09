@@ -213,6 +213,12 @@ $(function() {
 		$("#authModal .modal-body").hide();
 		$(".auth-page-1").fadeIn('fast');
 	});
+
+	// タイムゾーンの初期値
+	var timezone = new Date().getTimezoneOffset() * -60;
+	$('#timezone option').each(function(index, el) {
+		$(el).attr('selected', $(el).data('offset') === timezone);
+	});
 });
 </script>
 <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
@@ -320,7 +326,7 @@ $(function() {
 				  		<label for="timezone" class="col-sm-3 control-label">タイムゾーン</label>
 				    	<div class="col-sm-8">
 				    		<select id="timezone" class="form-control">
-				    			<?php include 'timezone.php'; ?>
+				    			<?php require 'timezone.php'; ?>
 				    		</select>
 				    	</div>
 				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="自分の住んでいる地域に近いところを選んでください">
