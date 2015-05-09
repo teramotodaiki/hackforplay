@@ -11,6 +11,10 @@ $email 	= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 if($email == FALSE){
 	exit('invalid');
 }
+$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
+if($timezone === FALSE || $timezone === NULL){
+	$timezone = '+00:00';
+}
 
 // 同じメールアドレスでアカウントが作られていないか
 try {
@@ -57,7 +61,7 @@ try {
 	$stmt->bindValue(":unconfirmed", "unconfirmed");
 	$stmt->bindValue(":email", $email);
 	$stmt->bindValue(":hashed", $hashed);
-	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s").date("P"));
+	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone);
 	$stmt->execute();
 } catch (PDOException $e) {
 	print_r($e);

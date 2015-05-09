@@ -11,7 +11,7 @@ $token = filter_input(INPUT_POST, 'token');
 if($token === NULL || $token === FALSE){
 	exit();
 }
-$timezone = filter_input(INPUT_POST, 'timezone');
+$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
 if($timezone === FALSE || $timezone === NULL){
 	exit();
 }

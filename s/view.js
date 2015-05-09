@@ -152,9 +152,11 @@ $(function(){
 			// 残っているトークンを破棄
 			sessionStorage.removeItem('project-token');
 			var code = sessionStorage.getItem('restaging_code');
+			var timezone = new Date().getTimezoneString();
 			$.post('../project/makefromstage.php', {
 				'stageid': getParam('id'),
-				'data': code
+				'data': code,
+				'timezone': timezone
 			}, function(data, textStatus, xhr) {
 				console.log(data);
 				switch(data){
@@ -205,12 +207,13 @@ $(function(){
 						var data = sessionStorage.getItem('image');
 						jsEditor.save();
 						var code = jsEditor.getTextArea().value;
-
+						var timezone = new Date().getTimezoneString();
 						$.post('../project/publishreplaystage.php', {
 							'token': sessionStorage.getItem('project-token'),
 							'thumb': data,
 							'path': getParam('path'),
-							'title': title
+							'title': title,
+							'timezone': timezone
 						} , function(data, textStatus, xhr) {
 							console.log(data);
 							$('#publish-button').button('reset');

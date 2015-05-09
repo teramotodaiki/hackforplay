@@ -15,6 +15,11 @@ if (!isset($_SESSION['UserID'])) {
 $userid	= $_SESSION['UserID'];
 session_commit();
 
+$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
+if($timezone === FALSE || $timezone === NULL){
+	$timezone = '+00:00';
+}
+
 // ステージ情報の取得
 $stageid = filter_input(INPUT_POST, 'stageid', FILTER_VALIDATE_INT);
 if($stageid == FALSE || $stageid == NULL){
@@ -64,7 +69,7 @@ try {
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 	$stmt->bindValue(":data", $data, PDO::PARAM_STR);
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
-	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s").date("P"), PDO::PARAM_STR);
+	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
 	$flag 	= $stmt->execute();
 	if(!$flag){
 		exit('database-error');

@@ -15,6 +15,11 @@ if (!isset($_SESSION['UserID'])) {
 $userid = $_SESSION['UserID'];
 session_commit();
 
+$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
+if($timezone === FALSE || $timezone === NULL){
+	$timezone = '+00:00';
+}
+
 // プロジェクト情報を取得
 $token = filter_input(INPUT_POST, 'token');
 if($token == NULL || $token == FALSE){
@@ -61,7 +66,7 @@ try{
 	$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
 	$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
 	$stmt->bindValue(":project_sourceid", $project['SourceStageID'], PDO::PARAM_INT);
-	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s").date("P"), PDO::PARAM_STR);
+	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
 	$flag 	= $stmt->execute();
 	if (!$flag) {
 		exit('database-error');
