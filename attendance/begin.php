@@ -16,7 +16,7 @@ if (isset($_SESSION['UserID'])){
 }
 session_commit();
 
-$timezone = filter_input(INPUT_POST, 'timezone');
+$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
 if($timezone === FALSE || $timezone === NULL){
 	exit();
 }
