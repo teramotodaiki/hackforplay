@@ -152,9 +152,11 @@ $(function(){
 			// 残っているトークンを破棄
 			sessionStorage.removeItem('project-token');
 			var code = sessionStorage.getItem('restaging_code');
+			var timezone = new Date().getTimezoneString();
 			$.post('../project/makefromstage.php', {
 				'stageid': getParam('id'),
-				'data': code
+				'data': code,
+				'timezone': timezone
 			}, function(data, textStatus, xhr) {
 				console.log(data);
 				switch(data){
