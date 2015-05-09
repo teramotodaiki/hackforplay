@@ -69,8 +69,10 @@ $(function() {
 		var value = $("#signupEmail").val();
 		$('#signup .alert').addClass('hide');
 
+		var timezone = new Date().getTimezoneString();
 		$.post('/auth/signupwithemail.php', {
-			'email': value
+			'email': value,
+			'timezone': timezone
 		}, function(data, textStatus, xhr) {
 			console.log(data);
 			submit.button('reset');
