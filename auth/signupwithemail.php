@@ -83,12 +83,13 @@ mailWithSendGrid($email, $tmpkey, $encription_key);
 // ユーザーを追加（このとき、ひとつのユーザーに複数の有効なHackforPlayアカウントが紐付かないように気をつける）
 // セッション情報があれば、今後それを使って同じユーザーIDを使ってもよい
 try {
-	$stmt 	= $dbh->prepare('INSERT INTO "User" ("Gender","Nickname","Birthday","ExperienceDays","TimezoneName","TimezoneOffset","AcceptLanguage","Registered") VALUES(:gender,:nickname,:birthday,:experience_days,:timezone_name,:timezone_offset,:accept_language,:gmt)');
+	// $stmt 	= $dbh->prepare('INSERT INTO "User" ("Gender","Nickname","Birthday","ExperienceDays","TimezoneName","TimezoneOffset","AcceptLanguage","Registered") VALUES(:gender,:nickname,:birthday,:experience_days,:timezone_name,:timezone_offset,:accept_language,:gmt)');
+	$stmt 	= $dbh->prepare('INSERT INTO "User" ("Gender","Nickname","Birthday","ExperienceDays","TimezoneOffset","AcceptLanguage","Registered") VALUES(:gender,:nickname,:birthday,:experience_days,:timezone_offset,:accept_language,:gmt)');
 	$stmt->bindValue(":gender", $gender, PDO::PARAM_STR);
 	$stmt->bindValue(":nickname", $nickname, PDO::PARAM_STR);
 	$stmt->bindValue(":birthday", $birthday, PDO::PARAM_STR);
 	$stmt->bindValue(":experience_days", $experience_days, PDO::PARAM_INT);
-	$stmt->bindValue(":timezone_name", $timezone_name, PDO::PARAM_STR);
+	// $stmt->bindValue(":timezone_name", $timezone_name, PDO::PARAM_STR);
 	$stmt->bindValue(":timezone_offset", $timezone_offset, PDO::PARAM_INT);
 	$stmt->bindValue(":accept_language", $accept_language, PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
