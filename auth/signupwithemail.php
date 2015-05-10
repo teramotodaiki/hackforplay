@@ -21,8 +21,17 @@ $nickname			= filter_input(INPUT_POST, 'nickname');
 if($nickname === NULL){
 	array_push($invalid_inputs, 'nickname');
 }
-$birthday			= filter_input(INPUT_POST, 'birthday');
-if ($birthday === NULL || date_create_from_format('Y-m-d', $birthday) === FALSE) {
+function formatBirthday($value)
+{
+	$datetime		= DateTime::createFromFormat('Y-m-d', $value);
+	if ($datetime === FALSE) {
+		return FALSE;
+	}else{
+		return $datetime->format('Y-m-d');
+	}
+}
+$birthday			= filter_input(INPUT_POST, 'birthday', FILTER_CALLBACK, array('options' => 'formatBirthday'));
+if ($birthday === NULL || $birthday === FALSE) {
 	array($invalid_inputs, 'birth_year');
 }
 $experience_days	= filter_input(INPUT_POST, 'experience_days', FILTER_VALIDATE_INT);
@@ -39,7 +48,7 @@ if(count($invalid_inputs) > 0){
 	exit(json_encode($invalid_inputs));
 }
 
-var_dump($_POST);
+var_dump($birthday);
 die();
 
 // Javascriptで取得したブラウザのタイムゾーン
