@@ -73,18 +73,19 @@ $(function() {
 		var experience_days = $('#experience_days').val();
 		var timezone_name = $('#timezone').val();
 		var timezone_offset = $('#timezone option:selected').attr('data-offset');
+		var timezone = new Date().getTimezoneString();
+
 		$('#signup .alert').addClass('hide');
 
-		var timezone = new Date().getTimezoneString();
 		$.post('/auth/signupwithemail.php', {
 			'email': email,
 			'gender' : gender,
 			'nickname' : nickname,
 			'birthday' : birthday,
-			'timezone': timezone,
-			'experience_days' : experience_days,
 			'timezone_name' : timezone_name,
-			'timezone_offset' : timezone_offset
+			'timezone_offset' : timezone_offset,
+			'experience_days' : experience_days,
+			'timezone': timezone
 		}, function(data, textStatus, xhr) {
 			console.log(data);
 			submit.button('reset');
@@ -284,6 +285,17 @@ $(function() {
 				    	</div>
 				  	</div>
 				  	<div class="form-group has-feedback">
+				  		<label for="timezone" class="col-sm-3 control-label">タイムゾーン</label>
+				    	<div class="col-sm-8">
+				    		<select id="timezone" class="form-control">
+				    			<?php require 'timezone.php'; ?>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="自分の住んでいる地域に近いところを選んでください">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
+				  	</div>
+				  	<div class="form-group has-feedback">
 				  		<label for="experience_days" class="col-sm-3 control-label">プログラミングの経験</label>
 				    	<div class="col-sm-8">
 				    		<select id="experience_days" class="form-control">
@@ -296,17 +308,6 @@ $(function() {
 				    		</select>
 				    	</div>
 				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="これまでにプログラミングをしてきた期間を選んでください">
-				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
-				    	</div>
-				  	</div>
-				  	<div class="form-group has-feedback">
-				  		<label for="timezone" class="col-sm-3 control-label">タイムゾーン</label>
-				    	<div class="col-sm-8">
-				    		<select id="timezone" class="form-control">
-				    			<?php require 'timezone.php'; ?>
-				    		</select>
-				    	</div>
-				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="自分の住んでいる地域に近いところを選んでください">
 				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
 				    	</div>
 				  	</div>
