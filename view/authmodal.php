@@ -92,7 +92,7 @@ $(function() {
 			switch(data){
 				case "success":
 					// メールアドレスをローカルストレージに記憶
-					localStorage.setItem('unconfirmed_email', value);
+					localStorage.setItem('unconfirmed_email', email);
 					$('.auth-page-2 #tmpPassword').val('');
 					$('.auth-page-2 p.alert').hide();
 
