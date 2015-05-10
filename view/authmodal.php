@@ -199,12 +199,6 @@ $(function() {
 					$('#profile .alert').text('登録してから一度ログアウトされています。マイページから情報を入力してください').removeClass('hide');
 					break;
 				default:
-					$('#profile .alert').text('登録できない内容です。修正してください').removeClass('hide');
-					var invalid_inputs = jQuery.parseJSON(data);
-					invalid_inputs.forEach(function(item){
-						console.log($('#'+item).parents('.form-group'));
-						$('#'+item).parents('.form-group').addClass('has-error');
-					});
 					break;
 			}
 		});
