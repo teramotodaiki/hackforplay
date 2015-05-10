@@ -30,18 +30,17 @@
 					</div>
 					<div class="col-md-12 panel-body">
 						<div class="row">
-							<a href="/s?id=201" title="ステージをつくろう１" target="_blank">
-								<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-									<div class="h4p_item-thumbnail" style="height: 160px; background-image:url(/s/replay_t1/thumb.png)">
-									</div>
-									<div class="h4p_item-title">
-										<h4>ステージをつくろう１</h4>
-									</div>
-									<div class="h4p_item-footer">
-										<span>会員登録が必要です</span>
-									</div>
+							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+								<a href="/s?id=201" title="ステージをつくろう１" target="_blank">
+									<div class="h4p_item-thumbnail" style="height: 160px; background-image:url(/s/replay_t1/thumb.png)"></div>
+								</a>
+								<div class="h4p_item-title">
+									<h4>ステージをつくろう１</h4>
 								</div>
-							</a>
+								<div class="h4p_item-footer">
+									<span>会員登録が必要です</span>
+								</div>
+							</div>
 							<div class="col-lg-offset-1 col-lg-7 col-md-8 col-sm-8 col-xs-12 h4p_topicitem">
 								<div class="h4p_item-title">
 									<h4>ここからが、真のハックフォープレイだ！</h4>
