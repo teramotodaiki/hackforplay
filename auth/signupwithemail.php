@@ -2,7 +2,7 @@
 /*
 メールを送信したのち、新しくユーザーを作成し、アカウントを関連づける。NULLは許されない
 Input: 	email , gender, nickname , password , birthday , experience_days , timezone_name , timezone_offset , timezone
-Output: invalid , success, reserved , sendmail-error のいずれか
+Output: JSON:{invalid-inputs} , reserved , sendmail-error , success のいずれか
 */
 
 require_once '../preload.php';
@@ -48,14 +48,12 @@ if(count($invalid_inputs) > 0){
 	exit(json_encode($invalid_inputs));
 }
 
-var_dump($birthday);
-die();
-
 // Javascriptで取得したブラウザのタイムゾーン
 $timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
 if($timezone === FALSE || $timezone === NULL){
 	$timezone = '+00:00';
 }
+$accept_language	= $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 
 // 同じメールアドレスでアカウントが作られていないか
 try {
@@ -85,8 +83,15 @@ mailWithSendGrid($email, $tmpkey, $encription_key);
 // ユーザーを追加（このとき、ひとつのユーザーに複数の有効なHackforPlayアカウントが紐付かないように気をつける）
 // セッション情報があれば、今後それを使って同じユーザーIDを使ってもよい
 try {
-	$stmt 	= $dbh->prepare('INSERT INTO "User" ("Registered") VALUES(:gmt)');
-	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone);
+	$stmt 	= $dbh->prepare('INSERT INTO "User" ("Gender","Nickname","Birthday","TimezoneName","TimezoneOffset","ExperienceDays","AcceptLanguage","Registered") VALUES(:gender,:nickname,:birthday,:experience_days,:timezone_name,:timezone_offset,:accept_language,:gmt)');
+	$stmt->bindValue(":gender", $gender, PDO::PARAM_STR);
+	$stmt->bindValue(":nickname", $nickname, PDO::PARAM_STR);
+	$stmt->bindValue(":birthday", $birthday, PDO::PARAM_STR);
+	$stmt->bindValue(":experience_days", $experience_days, PDO::PARAM_INT);
+	$stmt->bindValue(":timezone_name", $timezone_name, PDO::PARAM_STR);
+	$stmt->bindValue(":timezone_offset", $timezone_offset, PDO::PARAM_INT);
+	$stmt->bindValue(":accept_language", $accept_language, PDO::PARAM_STR);
+	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
 	$stmt->execute();
 
 	$userid = $dbh->lastInsertId();
