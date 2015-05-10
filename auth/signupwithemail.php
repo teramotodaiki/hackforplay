@@ -21,12 +21,6 @@ $nickname			= filter_input(INPUT_POST, 'nickname');
 if($nickname === NULL){
 	array_push($invalid_inputs, 'nickname');
 }
-$password			= filter_input(INPUT_POST, 'password');
-if(strlen($password) < 8){
-	array_push($invalid_inputs, 'password');
-}else{
-	$hashed			= password_hash($password, PASSWORD_DEFAULT);
-}
 $birthday			= filter_input(INPUT_POST, 'birthday');
 if ($birthday === NULL || date_create_from_format('Y-m-d', $birthday) === FALSE) {
 	array($invalid_inputs, 'birth_year');
