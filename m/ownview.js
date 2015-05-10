@@ -4,9 +4,10 @@ $(function(){
 	var user_id = sessionStorage.getItem('view_user_id');
 	checkSigninSession(function(result){
 		if (result === 'success') {
-			$.post('../auth/getuserinfobyid.php',{
+			$.post('../auth/getmyinfo.php',{
 				'id': user_id
 			}, function(data, textStatus, xhr) {
+				console.log(data);
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show');

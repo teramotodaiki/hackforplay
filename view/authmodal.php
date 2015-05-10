@@ -66,12 +66,25 @@ $(function() {
 		event.preventDefault();
 		var submit = $(this).find('button[type="submit"]').button('loading');
 
-		var value = $("#signupEmail").val();
+		var email = $("#signupEmail").val();
+		var nickname = $('#nickname').val();
+		var gender = $('input[name="gender"]:checked').val();
+		var birthday = $('#birth_year').val() + '-' + $('#birth_month').val() + '-' + $('#birth_day').val();
+		var experience_days = $('#experience_days').val();
+		var timezone_name = $('#timezone').val();
+		var timezone_offset = $('#timezone option:selected').attr('data-offset');
+		var timezone = new Date().getTimezoneString();
+
 		$('#signup .alert').addClass('hide');
 
-		var timezone = new Date().getTimezoneString();
 		$.post('/auth/signupwithemail.php', {
-			'email': value,
+			'email': email,
+			'gender' : gender,
+			'nickname' : nickname,
+			'birthday' : birthday,
+			'timezone_name' : timezone_name,
+			'timezone_offset' : timezone_offset,
+			'experience_days' : experience_days,
 			'timezone': timezone
 		}, function(data, textStatus, xhr) {
 			console.log(data);
@@ -79,7 +92,9 @@ $(function() {
 			switch(data){
 				case "success":
 					// メールアドレスをローカルストレージに記憶
-					localStorage.setItem('unconfirmed_email', value);
+					localStorage.setItem('unconfirmed_email', email);
+					$('.auth-page-2 #tmpPassword').val('');
+					$('.auth-page-2 p.alert').hide();
 
 					// 仮パスワード入力画面へ
 					$(".auth-page-1").hide('fast', function () {
@@ -102,7 +117,7 @@ $(function() {
 		});
 	});
 
-	// パスワード確認・本登録
+	// 仮パスワード確認・本登録
 	$("#tmp").submit(function(event) {
 		event.preventDefault();
 		var submit = $(this).find('button[type="submit"]').button('loading');
@@ -121,7 +136,7 @@ $(function() {
 					// 仮登録状態を解除
 					localStorage.removeItem('unconfirmed_email');
 
-					// プロフィール設定画面へ
+					// パスワード設定画面へ
 					$(".auth-page-2").hide('fast', function () {
 						$(".auth-page-3").fadeIn();
 					});
@@ -142,36 +157,30 @@ $(function() {
 		});
 	});
 
-	$('#profile').submit(function(event) {
+	$('#setPassword').submit(function(event) {
 		event.preventDefault();
 		var submit = $(this).find('button[type="submit"]').button('loading');
 
-		var age = $('#age').val();
-		var gender = $('input[name="gender"]:checked').val();
-		var nickname = $('#nickname').val();
-		var password = $('#password').val();
-		var confirm = $('#confirm').val();
+		var password = $(this).find('#password').val();
+		var confirm = $(this).find('#confirm').val();
 
-		$('#profile .alert').addClass('hide');
-		$('.has-error').removeClass('has-error');
+		$(this).find('.alert').addClass('hide');
+		$(this).find('.has-error').removeClass('has-error');
 
 		// Password validation
 		if(password.length < 8){
-			$('#profile .alert').text('安全のため、パスワードは8文字以上にしてください').removeClass('hide');
-			$('#password').parents('.has-feedback').addClass('has-error');
+			$(this).find('.alert').text('安全のため、パスワードは8文字以上にしてください').removeClass('hide');
+			$(this).find('#password').parents('.has-feedback').addClass('has-error');
 			return;
 		}
 		if(password !== confirm) {
-			$('#profile .alert').text('パスワードが一致しません').removeClass('hide');
-			$('#password').parents('.has-feedback').addClass('has-error');
-			$('#confirm').parents('.has-feedback').addClass('has-error');
+			$(this).find('.alert').text('パスワードが一致しません').removeClass('hide');
+			$(this).find('#password').parents('.has-feedback').addClass('has-error');
+			$(this).find('#confirm').parents('.has-feedback').addClass('has-error');
 			return;
 		}
 
 		$.post('/auth/updateuserinfoimmediately.php', {
-			'age' : age,
-			'gender' : gender,
-			'nickname' : nickname,
 			'password' : password
 		}, function(data, textStatus, xhr) {
 			console.log(data);
@@ -184,18 +193,12 @@ $(function() {
 					});
 					break;
 				case 'no-session':
-					$('#profile .alert').text('ログインされていません。もう一度ログインしてください').removeClass('hide');
+					$(this).find('alert').text('ログインされていません。もう一度ログインしてください').removeClass('hide');
 					break;
 				case 'not-immediately':
-					$('#profile .alert').text('登録してから一度ログアウトされています。マイページから情報を入力してください').removeClass('hide');
+					$(this).find('.alert').text('登録してから一度ログアウトされています。マイページから情報を入力してください').removeClass('hide');
 					break;
 				default:
-					$('#profile .alert').text('登録できない内容です。修正してください').removeClass('hide');
-					var invalid_inputs = jQuery.parseJSON(data);
-					invalid_inputs.forEach(function(item){
-						console.log($('#'+item).parents('.form-group'));
-						$('#'+item).parents('.form-group').addClass('has-error');
-					});
 					break;
 			}
 		});
@@ -206,6 +209,12 @@ $(function() {
 	$(".auth-modal-back").on('click', function() {
 		$("#authModal .modal-body").hide();
 		$(".auth-page-1").fadeIn('fast');
+	});
+
+	// タイムゾーンの初期値
+	var timezone = new Date().getTimezoneOffset() * -60;
+	$('#timezone option').each(function(index, el) {
+		$(el).attr('selected', $(el).data('offset') === timezone);
 	});
 });
 </script>
@@ -218,13 +227,84 @@ $(function() {
 	    	</div>
 		    <div class="modal-body auth-page-1" style="display: none">
 		    	<form id="signup" class="form-horizontal">
-					<h4>メールアドレスを入力してください</h4>
+					<h4>プロフィールを入力してください</h4>
 					<p class="alert alert-danger hide" role="alert"></p>
-					<div class="form-group">
-				    	<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+					<div class="form-group has-feedback">
+				    	<label for="signupEmail" class="col-sm-3 control-label">メールアドレス</label>
+				    	<div class="col-sm-8">
 					    	<input type="email" class="form-control" id="signupEmail" placeholder="your@email.com">
-					    </div>
+				    	</div>
 					</div>
+				  	<div class="form-group has-feedback">
+				    	<label for="nickname" class="col-sm-3 control-label">ニックネーム</label>
+				    	<div class="col-sm-8">
+				    		<input type="text" class="form-control" id="nickname">
+				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="本名は使用できません">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
+				  	</div>
+				  	<div class="form-group has-feedback">
+				  		<label class="col-sm-3 control-label" for="gender">性別</label>
+				    	<div id="gender" class="col-sm-8">
+					    	<label class="radio-inline"><input type="radio" name="gender" value="man" checked>男</label>
+					  		<label class="radio-inline"><input type="radio" name="gender" value="woman">女</label>
+				    	</div>
+				  	</div>
+				  	<div class="form-group has-feedback">
+				  		<label for="birth_year" class="col-sm-3 control-label">生年月日</label>
+				    	<div class="col-sm-4">
+				    		<select id="birth_year" class="col-sm-4 form-control">
+					    		<?php for($y = intval(date('Y')); $y > 1900; $y--): ?>
+				    			<option value="<?php echo $y; ?>"><?php echo $y; ?>年</option>
+						    	<?php endfor; ?>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-2">
+				    		<select id="birth_month" class="col-sm-2 form-control">
+					    		<?php for($m = 1; $m <= 12; $m++): ?>
+				    			<option value="<?php echo $m; ?>"><?php echo $m; ?>月</option>
+						    	<?php endfor; ?>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-2">
+				    		<select id="birth_day" class="col-sm-2 form-control">
+					    		<?php for($d = 1; $d <= 31; $d++): ?>
+				    			<option value="<?php echo $d; ?>"><?php echo $d; ?>日</option>
+						    	<?php endfor; ?>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="あなたが生まれた年月日を選んでください">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
+				  	</div>
+				  	<div class="form-group has-feedback">
+				  		<label for="timezone" class="col-sm-3 control-label">タイムゾーン</label>
+				    	<div class="col-sm-8">
+				    		<select id="timezone" class="form-control">
+				    			<?php require 'timezone.php'; ?>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="自分の住んでいる地域に近いところを選んでください">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
+				  	</div>
+				  	<div class="form-group has-feedback">
+				  		<label for="experience_days" class="col-sm-3 control-label">プログラミングの経験</label>
+				    	<div class="col-sm-8">
+				    		<select id="experience_days" class="form-control">
+				    			<option value="0" selected>はじめて</option>
+				    			<option value="30">およそ１ヶ月</option>
+				    			<option value="180">およそ半年</option>
+				    			<option value="365">およそ１年</option>
+				    			<option value="1095">およそ３年</option>
+				    			<option value="1825">５年以上</option>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="これまでにプログラミングをしてきた期間を選んでください">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
+				  	</div>
 				  	<div class="text-right">
 						<button type="submit" class="btn btn-primary">メールを送信</button>
 					</div>
@@ -247,34 +327,9 @@ $(function() {
 				<p>メールアドレスの入力に<button type="button" class="btn btn-link auth-modal-back">もどる</button></p>
 		    </div>
 		    <div class="modal-body auth-page-3" style="display: none">
-		    	<h4>プロフィールを入力してください</h4>
-		    	<form id="profile" class="form-horizontal">
+		    	<h4>パスワードを設定してください</h4>
+		    	<form id="setPassword" class="form-horizontal">
 					<p class="alert alert-danger hide" role="alert"></p>
-				  	<div class="form-group has-feedback">
-				    	<label for="nickname" class="col-sm-3 control-label">ニックネーム</label>
-				    	<div class="col-sm-8">
-				    		<input type="text" class="form-control" id="nickname">
-				    	</div>
-				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="本名は使用できません">
-				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
-				    	</div>
-				  	</div>
-				  	<div class="form-group has-feedback">
-				  		<label class="col-sm-3 control-label" for="gender">性別</label>
-				    	<div id="gender" class="col-sm-8">
-					    	<label class="radio-inline"><input type="radio" name="gender" value="man" checked>男</label>
-					  		<label class="radio-inline"><input type="radio" name="gender" value="woman">女</label>
-				    	</div>
-				  	</div>
-				  	<div class="form-group has-feedback">
-				  		<label for="age" class="col-sm-3 control-label">年齢</label>
-				    	<div class="col-sm-8">
-				    		<input type="number" class="form-control" id="age" value="16">
-				    	</div>
-				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="半角の数値を入力してください">
-				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
-				    	</div>
-				  	</div>
 				  	<div class="form-group has-feedback">
 				    	<label for="password" class="col-sm-3 control-label">パスワード</label>
 				    	<div class="col-sm-8">

@@ -24,7 +24,7 @@
 	$(function(){
 		checkSigninSession(function(data){
 			if(data === 'success'){
-				// プロフィールの入力から
+				// パスワードの変更
 				$('#authModal').off('shown.bs.modal').on('shown.bs.modal', function() {
 					$('#authModal .modal-body').hide();
 					$('#authModal .auth-page-3').show('fast');

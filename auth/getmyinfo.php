@@ -4,9 +4,10 @@
 Output:	no-session , parse-error , JSON:{user-info}
 user-info:
 {
-	age : 年齢
 	gender : 性別 (man or woman),
 	nickname : ニックネーム,
+	birthday : 生年月日,
+	timezone : タイムゾーン
 }
 */
 
@@ -20,7 +21,7 @@ $userid = $_SESSION['UserID'];
 session_commit();
 
 try {
-	$stmt 	= $dbh->prepare('SELECT "Age","Gender","Nickname" FROM "User" WHERE "ID"=:userid');
+	$stmt 	= $dbh->prepare('SELECT "Gender","Nickname","Birthday","TimezoneOffset" FROM "User" WHERE "ID"=:userid');
 	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -31,9 +32,10 @@ try {
 }
 
 $user_info 	= new stdClass();
-$user_info->age 		= $result['Age'];
 $user_info->gender 		= $result['Gender'];
 $user_info->nickname 	= $result['Nickname'];
+$user_info->birthday	= $result['Birthday'];
+$user_info->timezone	= $result['TimezoneOffset'];
 
 $json 	= json_encode($user_info);
 if (!$json) {

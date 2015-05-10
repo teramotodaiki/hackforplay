@@ -38,7 +38,9 @@ try {
 // すでに connected なアカウントがある場合
 foreach ($result as $key => $value) {
 	if ($value["State"] == 'connected') {
-		exit('already-confirmed');
+		// セッションがあるなら、immediatelyにプロフィールを更新してもらう
+		require_once 'inputview.php';
+		exit();
 	}
 }
 

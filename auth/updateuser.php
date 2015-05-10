@@ -17,7 +17,7 @@ session_commit();
 
 // Input value
 $nickname = filter_input(INPUT_POST, 'nickname');
-if($nickname == FALSE){
+if($nickname === FALSE){
 	$nickname = NULL;
 }
 
