@@ -23,6 +23,7 @@ if(!isset($_SESSION['SignupImmediately'])){
 }
 
 // Input value
+$invalid_inputs = array();
 $gender				= filter_input(INPUT_POST, 'gender');
 if($gender !== "man" && $gender !== "woman"){
 	array_push($invalid_inputs, 'gender');
