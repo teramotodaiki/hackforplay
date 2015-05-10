@@ -66,13 +66,25 @@ $(function() {
 		event.preventDefault();
 		var submit = $(this).find('button[type="submit"]').button('loading');
 
-		var value = $("#signupEmail").val();
+		var email = $("#signupEmail").val();
+		var nickname = $('#nickname').val();
+		var gender = $('input[name="gender"]:checked').val();
+		var birthday = $('#birth_year').val() + '-' + $('#birth_month').val() + '-' + $('#birth_day').val();
+		var experience_days = $('#experience_days').val();
+		var timezone_name = $('#timezone').val();
+		var timezone_offset = $('#timezone option:selected').attr('data-offset');
 		$('#signup .alert').addClass('hide');
 
 		var timezone = new Date().getTimezoneString();
 		$.post('/auth/signupwithemail.php', {
-			'email': value,
-			'timezone': timezone
+			'email': email,
+			'gender' : gender,
+			'nickname' : nickname,
+			'birthday' : birthday,
+			'timezone': timezone,
+			'experience_days' : experience_days,
+			'timezone_name' : timezone_name,
+			'timezone_offset' : timezone_offset
 		}, function(data, textStatus, xhr) {
 			console.log(data);
 			submit.button('reset');
@@ -148,12 +160,6 @@ $(function() {
 		event.preventDefault();
 		var submit = $(this).find('button[type="submit"]').button('loading');
 
-		var nickname = $('#nickname').val();
-		var gender = $('input[name="gender"]:checked').val();
-		var birthday = $('#birth_year').val() + '-' + $('#birth_month').val() + '-' + $('#birth_day').val();
-		var experience_days = $('#experience_days').val();
-		var timezone_name = $('#timezone').val();
-		var timezone_offset = $('#timezone option:selected').attr('data-offset');
 		var password = $('#password').val();
 		var confirm = $('#confirm').val();
 
@@ -174,13 +180,7 @@ $(function() {
 		}
 
 		$.post('/auth/updateuserinfoimmediately.php', {
-			'gender' : gender,
-			'nickname' : nickname,
-			'password' : password,
-			'birthday' : birthday,
-			'experience_days' : experience_days,
-			'timezone_name' : timezone_name,
-			'timezone_offset' : timezone_offset
+			'password' : password
 		}, function(data, textStatus, xhr) {
 			console.log(data);
 			submit.button('reset');
@@ -232,38 +232,14 @@ $(function() {
 	    	</div>
 		    <div class="modal-body auth-page-1" style="display: none">
 		    	<form id="signup" class="form-horizontal">
-					<h4>メールアドレスを入力してください</h4>
+					<h4>プロフィールを入力してください</h4>
 					<p class="alert alert-danger hide" role="alert"></p>
-					<div class="form-group">
-				    	<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+					<div class="form-group has-feedback">
+				    	<label for="signupEmail" class="col-sm-3 control-label">メールアドレス</label>
+				    	<div class="col-sm-8">
 					    	<input type="email" class="form-control" id="signupEmail" placeholder="your@email.com">
-					    </div>
+				    	</div>
 					</div>
-				  	<div class="text-right">
-						<button type="submit" class="btn btn-primary">メールを送信</button>
-					</div>
-				</form>
-		    </div>
-		    <div class="modal-body auth-page-2" style="display: none">
-		    	<form id="tmp" class="form-horizontal">
-			    	<h4>メールが送信されました</h4>
-			    	<h5>本文に書かれた「仮パスワード」を入力してください</h5>
-					<p class="alert alert-danger hide" role="alert"></p>
-					<div class="form-group">
-				    	<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
-					    	<input type="password" class="form-control" id="tmpPassword">
-					    </div>
-					</div>
-				  	<div class="text-right">
-						<button type="submit" class="btn btn-primary">確認</button>
-					</div>
-				</form>
-				<p>メールアドレスの入力に<button type="button" class="btn btn-link auth-modal-back">もどる</button></p>
-		    </div>
-		    <div class="modal-body auth-page-3" style="display: none">
-		    	<h4>プロフィールを入力してください</h4>
-		    	<form id="profile" class="form-horizontal">
-					<p class="alert alert-danger hide" role="alert"></p>
 				  	<div class="form-group has-feedback">
 				    	<label for="nickname" class="col-sm-3 control-label">ニックネーム</label>
 				    	<div class="col-sm-8">
@@ -280,7 +256,6 @@ $(function() {
 					  		<label class="radio-inline"><input type="radio" name="gender" value="woman">女</label>
 				    	</div>
 				  	</div>
-				  	<!-- 生年月日 -->
 				  	<div class="form-group has-feedback">
 				  		<label for="birth_year" class="col-sm-3 control-label">生年月日</label>
 				    	<div class="col-sm-4">
@@ -335,6 +310,31 @@ $(function() {
 				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
 				    	</div>
 				  	</div>
+				  	<div class="text-right">
+						<button type="submit" class="btn btn-primary">メールを送信</button>
+					</div>
+				</form>
+		    </div>
+		    <div class="modal-body auth-page-2" style="display: none">
+		    	<form id="tmp" class="form-horizontal">
+			    	<h4>メールが送信されました</h4>
+			    	<h5>本文に書かれた「仮パスワード」を入力してください</h5>
+					<p class="alert alert-danger hide" role="alert"></p>
+					<div class="form-group">
+				    	<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+					    	<input type="password" class="form-control" id="tmpPassword">
+					    </div>
+					</div>
+				  	<div class="text-right">
+						<button type="submit" class="btn btn-primary">確認</button>
+					</div>
+				</form>
+				<p>メールアドレスの入力に<button type="button" class="btn btn-link auth-modal-back">もどる</button></p>
+		    </div>
+		    <div class="modal-body auth-page-3" style="display: none">
+		    	<h4>パスワードを設定してください</h4>
+		    	<form id="profile" class="form-horizontal">
+					<p class="alert alert-danger hide" role="alert"></p>
 				  	<div class="form-group has-feedback">
 				    	<label for="password" class="col-sm-3 control-label">パスワード</label>
 				    	<div class="col-sm-8">
