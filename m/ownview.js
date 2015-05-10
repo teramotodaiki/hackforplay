@@ -84,6 +84,11 @@ $(function(){
 		}else{
 			var result = jQuery.parseJSON(data);
 			var $list = $('.h4p_stagelist.list-stage');
+			if (result.values.length === 0) {
+				// ひとつもステージを作成していない
+				var topicView = createTopicView();
+				// $(topicView).appendTo($list);
+			}
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
 				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');

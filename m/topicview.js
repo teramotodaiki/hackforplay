@@ -1,7 +1,6 @@
 function createTopicView () {
 	// トピックのビューを生成
-	var view = $('<div>').addClass('row panel panel-default');
-	view.append(
+	return $('<div>').addClass('row panel panel-default').append(
 		$('<div>').addClass('col-md-12 panel-heading').html('<h3>オリジナルステージを作る</h3>')
 	).append(
 		$('<div>').addClass('col-md-12 panel-body').append(
@@ -29,7 +28,7 @@ function createTopicView () {
 					$('<div>').append(
 						$('<p>').text('おめでとう！君はプログラミングの世界に足を踏み出した！')
 					).append(
-						$('<p>').text('おめでとう！君はプログラミングの世界に足を踏み出した！')
+						$('<p>').text('このまま勉強を続ければ...自分でゲームを作ることだって、夢ではない!!')
 					).append(
 						$('<a>').addClass('btn btn-success btn-block btn-lg').attr({
 							'href': '/s?id=201',
@@ -48,6 +47,5 @@ function createTopicView () {
 				)
 			)
 		)
-	);
-	return view.get(0);
+	).get(0);
 }
