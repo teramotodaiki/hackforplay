@@ -83,7 +83,7 @@ mailWithSendGrid($email, $tmpkey, $encription_key);
 // ユーザーを追加（このとき、ひとつのユーザーに複数の有効なHackforPlayアカウントが紐付かないように気をつける）
 // セッション情報があれば、今後それを使って同じユーザーIDを使ってもよい
 try {
-	$stmt 	= $dbh->prepare('INSERT INTO "User" ("Gender","Nickname","Birthday","TimezoneName","TimezoneOffset","ExperienceDays","AcceptLanguage","Registered") VALUES(:gender,:nickname,:birthday,:experience_days,:timezone_name,:timezone_offset,:accept_language,:gmt)');
+	$stmt 	= $dbh->prepare('INSERT INTO "User" ("Gender","Nickname","Birthday","ExperienceDays","TimezoneName","TimezoneOffset","AcceptLanguage","Registered") VALUES(:gender,:nickname,:birthday,:experience_days,:timezone_name,:timezone_offset,:accept_language,:gmt)');
 	$stmt->bindValue(":gender", $gender, PDO::PARAM_STR);
 	$stmt->bindValue(":nickname", $nickname, PDO::PARAM_STR);
 	$stmt->bindValue(":birthday", $birthday, PDO::PARAM_STR);
