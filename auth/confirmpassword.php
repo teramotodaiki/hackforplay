@@ -9,7 +9,7 @@ require_once '../preload.php';
 
 $password = filter_input(INPUT_POST, "password");
 $email 	= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-if($email == FALSE){
+if($email === FALSE){
 	exit('invalid-email');
 }
 
@@ -29,7 +29,7 @@ try {
 
 // すでに connected なアカウントがある場合
 foreach ($result as $key => $value) {
-	if ($value["State"] == 'connected') {
+	if ($value["State"] === 'connected') {
 		exit('already-confirmed');
 	}
 }
@@ -42,7 +42,7 @@ foreach ($result as $key => $value) {
 		break;
 	}
 }
-if($confirmed == NULL){
+if($confirmed === NULL){
 	exit("incorrect-password");
 }
 
