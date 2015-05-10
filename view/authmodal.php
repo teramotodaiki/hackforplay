@@ -117,7 +117,7 @@ $(function() {
 		});
 	});
 
-	// パスワード確認・本登録
+	// 仮パスワード確認・本登録
 	$("#tmp").submit(function(event) {
 		event.preventDefault();
 		var submit = $(this).find('button[type="submit"]').button('loading');
@@ -136,7 +136,7 @@ $(function() {
 					// 仮登録状態を解除
 					localStorage.removeItem('unconfirmed_email');
 
-					// プロフィール設定画面へ
+					// パスワード設定画面へ
 					$(".auth-page-2").hide('fast', function () {
 						$(".auth-page-3").fadeIn();
 					});
@@ -157,26 +157,26 @@ $(function() {
 		});
 	});
 
-	$('#profile').submit(function(event) {
+	$('#setPassword').submit(function(event) {
 		event.preventDefault();
 		var submit = $(this).find('button[type="submit"]').button('loading');
 
-		var password = $('#password').val();
-		var confirm = $('#confirm').val();
+		var password = $(this).find('#password').val();
+		var confirm = $(this).find('#confirm').val();
 
-		$('#profile .alert').addClass('hide');
-		$('.has-error').removeClass('has-error');
+		$(this).find('.alert').addClass('hide');
+		$(this).find('.has-error').removeClass('has-error');
 
 		// Password validation
 		if(password.length < 8){
-			$('#profile .alert').text('安全のため、パスワードは8文字以上にしてください').removeClass('hide');
-			$('#password').parents('.has-feedback').addClass('has-error');
+			$(this).find('.alert').text('安全のため、パスワードは8文字以上にしてください').removeClass('hide');
+			$(this).find('#password').parents('.has-feedback').addClass('has-error');
 			return;
 		}
 		if(password !== confirm) {
-			$('#profile .alert').text('パスワードが一致しません').removeClass('hide');
-			$('#password').parents('.has-feedback').addClass('has-error');
-			$('#confirm').parents('.has-feedback').addClass('has-error');
+			$(this).find('.alert').text('パスワードが一致しません').removeClass('hide');
+			$(this).find('#password').parents('.has-feedback').addClass('has-error');
+			$(this).find('#confirm').parents('.has-feedback').addClass('has-error');
 			return;
 		}
 
@@ -193,10 +193,10 @@ $(function() {
 					});
 					break;
 				case 'no-session':
-					$('#profile .alert').text('ログインされていません。もう一度ログインしてください').removeClass('hide');
+					$(this).find('alert').text('ログインされていません。もう一度ログインしてください').removeClass('hide');
 					break;
 				case 'not-immediately':
-					$('#profile .alert').text('登録してから一度ログアウトされています。マイページから情報を入力してください').removeClass('hide');
+					$(this).find('.alert').text('登録してから一度ログアウトされています。マイページから情報を入力してください').removeClass('hide');
 					break;
 				default:
 					break;
@@ -328,7 +328,7 @@ $(function() {
 		    </div>
 		    <div class="modal-body auth-page-3" style="display: none">
 		    	<h4>パスワードを設定してください</h4>
-		    	<form id="profile" class="form-horizontal">
+		    	<form id="setPassword" class="form-horizontal">
 					<p class="alert alert-danger hide" role="alert"></p>
 				  	<div class="form-group has-feedback">
 				    	<label for="password" class="col-sm-3 control-label">パスワード</label>
