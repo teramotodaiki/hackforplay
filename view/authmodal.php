@@ -80,6 +80,8 @@ $(function() {
 				case "success":
 					// メールアドレスをローカルストレージに記憶
 					localStorage.setItem('unconfirmed_email', value);
+					$('.auth-page-2 #tmpPassword').val('');
+					$('.auth-page-2 p.alert').hide();
 
 					// 仮パスワード入力画面へ
 					$(".auth-page-1").hide('fast', function () {
