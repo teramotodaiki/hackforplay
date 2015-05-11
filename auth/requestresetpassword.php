@@ -36,8 +36,9 @@ $hashed		= password_hash($code, PASSWORD_DEFAULT);
 $registered	= (new DateTime())->format('Y-m-d H:i:s');
 $expired	= (new DateTime())->modify('+1 day')->format('Y-m-d H:i:s');
 try {
-	$stmt	= $dbh->prepare('INSERT INTO "AuthorizeRequest" ("UserID","Hashed","State","Registered","Expired") VALUES(:userid,:hashed,:unused,:registered,:expired)');
+	$stmt	= $dbh->prepare('INSERT INTO "AuthorizeRequest" ("UserID","Email","Hashed","State","Registered","Expired") VALUES(:userid,:email,:hashed,:unused,:registered,:expired)');
 	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
+	$stmt->bindValue(":email", $email, PDO::PARAM_STR);
 	$stmt->bindValue(":hashed", $hashed, PDO::PARAM_STR);
 	$stmt->bindValue(":unused", 'unused', PDO::PARAM_STR);
 	$stmt->bindValue(":registered", $registered, PDO::PARAM_STR);
@@ -53,6 +54,7 @@ try {
 }
 
 // メールの送信
+die($code);
 exit('success');
 
 ?>
