@@ -20,7 +20,7 @@ try {
 	$stmt->bindValue(":email", $email, PDO::PARAM_STR);
 	$stmt->execute();
 	$account	= $stmt->fetch(PDO::FETCH_ASSOC);
-	if ($account === NULL) {
+	if (empty($account)) {
 		exit('invalid-email');
 	}
 	$userid 	= $account['UserID'];
