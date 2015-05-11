@@ -77,7 +77,7 @@ $information_of_projects = new stdClass();
 $information_of_projects->values = $values;
 $json = json_encode($information_of_projects);
 
-if ($json == FALSE) {
+if ($json === FALSE) {
 	exit('parse-error');
 }
 

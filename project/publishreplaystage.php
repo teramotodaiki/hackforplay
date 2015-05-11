@@ -19,7 +19,7 @@ if($timezone === FALSE || $timezone === NULL){
 
 // プロジェクト情報を取得
 $token = filter_input(INPUT_POST, 'token');
-if($token == NULL || $token == FALSE){
+if($token === NULL || $token === FALSE){
 	exit('invalid-token');
 }
 try {
@@ -27,7 +27,7 @@ try {
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
-	if($project == NULL){
+	if($project === NULL){
 		exit('invalid-token');
 	}elseif ($project['PublishedStageID'] != NULL) {
 		exit('already-published');

@@ -14,7 +14,7 @@ $mode 	= filter_input(INPUT_GET, "mode");
 if(!isset($mode)){
 	$mode 	= $stage['Mode'];
 }
-if($mode == "replay"){
+if($mode === "replay"){
 	$code = $project['Data'];
 	$code = preg_replace("/\\\\/", "\\\\\\\\", $code);
 	$code = preg_replace("/\n/", "\\n", $code);
@@ -160,18 +160,18 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 						<img class="h4p_clear-img" src="img/clear.png" alt="">
 					</div>
 					<div class="col-sm-12 h4p_clear-next">
-					<?php if($mode == "replay") : ?>
+					<?php if($mode === "replay") : ?>
 						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">このステージを改造する</button>
 						<a href="/r" class="btn btn-success btn-lg btn-block" title="改造ステージ一覧へ">
 							改造ステージ一覧へ
 						</a>
-					<?php elseif($mode == "restaging") : ?>
+					<?php elseif($mode === "restaging") : ?>
 						<button class="btn btn-primary btn-lg btn-block h4p_info-retry-button ignore-attendance" role="button" title="改造コードを保存してゲームを再スタート">改造コードを保存してゲームを再スタート</button>
-					<?php elseif($next != NULL) : // exist next stage ?>
+					<?php elseif($next !== NULL) : // exist next stage ?>
 						<a href="/s?id=<?php echo $next; ?>" style="display: block;" title="つぎのステージへ">
 							<img src="img/button_next.png" height="48" width="266" alt="">
 						</a>
-					<?php elseif($id == 106) : // last stage of tutirial ?>
+					<?php elseif($id === 106) : // last stage of tutirial ?>
 						<h3>クリアおめでとうございます！</h3>
 						<p>こんどは、あなたもステージを作ってみましょう</p>
 						<a href="/s?id=201" class="btn btn-success btn-lg" title="今すぐ作る"><h3>今すぐ作る</h3></a>

@@ -28,7 +28,7 @@ try {
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
-	if ($project == NULL) {
+	if ($project === NULL) {
 		exit('missing-project');
 	}
 
@@ -49,7 +49,7 @@ $item->registered 	= $project['Registered'];
 // 出力
 $json = json_encode($item);
 
-if ($json == FALSE) {
+if ($json === FALSE) {
 	exit('parse-error');
 }
 

@@ -12,7 +12,7 @@ if($id === FALSE){
 	exit();
 }
 
-if (isset($session_userid) && ($id == $session_userid || $id == NULL)) {
+if (isset($session_userid) && ($id === $session_userid || $id === NULL)) {
 	include 'ownview.php';
 }elseif ($id != NULL) {
 	include 'othersview.php';

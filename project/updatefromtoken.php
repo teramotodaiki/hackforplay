@@ -14,7 +14,7 @@ if (!isset($session_userid)) {
 
 // プロジェクト情報を取得
 $token = filter_input(INPUT_POST, 'token');
-if($token == NULL || $token == FALSE){
+if($token === NULL || $token === FALSE){
 	exit('invalid-token');
 }
 try {
@@ -23,7 +23,7 @@ try {
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
-	if($project == NULL){
+	if($project === NULL){
 		exit('invalid-token');
 	}elseif ($project['PublishedStageID'] != NULL) {
 		exit('already-published');
@@ -36,7 +36,7 @@ try {
 
 // データを更新
 $data 	= filter_input(INPUT_POST, "data");
-if($data == NULL){
+if($data === NULL){
 	exit('data-is-null');
 }
 try {

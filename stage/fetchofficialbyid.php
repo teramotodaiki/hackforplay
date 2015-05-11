@@ -58,7 +58,7 @@ $information_of_stages = new stdClass();
 $information_of_stages->values = $values;
 $json = json_encode($information_of_stages);
 
-if ($json == FALSE) {
+if ($json === FALSE) {
 	exit('parse-error');
 }
 

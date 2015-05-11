@@ -48,15 +48,15 @@ $(function(){
 	    </div>
 	    <nav class="collapse navbar-collapse">
 	    	<ul class="nav navbar-nav">
-	    	<?php if($header_pattern == 'inGame' && $mode == 'official'): ?>
+	    	<?php if($header_pattern === 'inGame' && $mode === 'official'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
-	    	<?php elseif ($header_pattern == 'inGame' && $mode != 'official'): ?>
+	    	<?php elseif ($header_pattern === 'inGame' && $mode != 'official'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
-	    	<?php elseif ($header_pattern == 'admin'): ?>
+	    	<?php elseif ($header_pattern === 'admin'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
-		    <?php elseif ($header_pattern == 'pref'): ?>
+		    <?php elseif ($header_pattern === 'pref'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
-		    <?php elseif ($header_pattern == 'mypage'): ?>
+		    <?php elseif ($header_pattern === 'mypage'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
 			<?php endif; ?>
 	    	</ul>
