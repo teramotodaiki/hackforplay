@@ -213,9 +213,7 @@ $(function() {
 
 	// タイムゾーンの初期値
 	var timezone = new Date().getTimezoneOffset() * -60;
-	$('#timezone option').each(function(index, el) {
-		$(el).attr('selected', $(el).data('offset') === timezone);
-	});
+	$('#signup #timezone option[data-offset="'+timezone+'"]').attr('selected', true);
 });
 </script>
 <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
