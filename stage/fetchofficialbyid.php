@@ -38,7 +38,7 @@ try {
 		$stmt->execute();
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		if ($result != NULL) {
+		if (!empty($result)) {
 			$item 			= new stdClass();
 			$item->id 		= $result['ID'];
 			$item->title 	= $result['Title'];

@@ -21,7 +21,7 @@ require_once '../preload.php';
 // 最大値を設定
 $max_fetch_length 	= 15;
 $input_max_fetch_length = filter_input(INPUT_POST, 'length', FILTER_VALIDATE_INT);
-if ($input_max_fetch_length != FALSE && $input_max_fetch_length != NULL) {
+if ($input_max_fetch_length !== FALSE && $input_max_fetch_length !== NULL) {
 	$max_fetch_length 	= min($max_fetch_length, $input_max_fetch_length);
 }
 
@@ -40,7 +40,7 @@ try {
 
 	for ($i = 0; $i < $max_fetch_length; $i++){
 		$item	= $stmt->fetch(PDO::FETCH_ASSOC);
-		if($item != NULL){
+		if($item !== FALSE){
 			array_push($result, $item);
 		}else{
 			break;
