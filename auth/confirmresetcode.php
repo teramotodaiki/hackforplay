@@ -17,7 +17,7 @@ if ($code === NULL) {
 	exit('incorrect-code');
 }
 try {
-	$stmt	= $dbh->prepare('SELECT "UserID","Hashed","Expired" FROM "AuthorizeRequest" WHERE "Email"=:email AND "State"=:unused');
+	$stmt	= $dbh->prepare('SELECT "ID","UserID","Hashed","Expired" FROM "AuthorizeRequest" WHERE "Email"=:email AND "State"=:unused');
 	$stmt->bindValue(":email", $email, PDO::PARAM_STR);
 	$stmt->bindValue(":unused", 'unused', PDO::PARAM_STR);
 	$stmt->execute();
@@ -52,6 +52,19 @@ $_SESSION['UserID'] = $authorized['UserID'];
 $_SESSION['SignupImmediately'] = 'immediately';
 
 session_commit();
+
+try {
+	$stmt	= $dbh->prepare('UPDATE "AuthorizeRequest" SET "State"=:used WHERE "ID"=:authorized_id');
+	$stmt->bindValue(":used", 'used', PDO::PARAM_STR);
+	$stmt->bindValue(":authorized_id", $authorized['ID'], PDO::PARAM_INT);
+	$stmt->execute();
+
+} catch (PDOException $e) {
+	print_r($e);
+	die();
+}
+
+
 exit('success');
 
 ?>
