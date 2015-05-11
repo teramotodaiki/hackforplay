@@ -225,6 +225,53 @@ $(function() {
 	var timezone = new Date().getTimezoneOffset() * -60;
 	$('#signup #timezone option[data-offset="'+timezone+'"]').attr('selected', true);
 
+	// パスワードのリセット
+	$('#resetModal').on('shown.bs.modal', function() {
+		$(this).find('.modal-body').hide();
+		$(this).find('.modal-page-1').show();
+	});
+
+	$('form[name="resetRequest"] button[type="submit"]').attr('disabled', true);
+	setInputRoutine('form[name="resetRequest"]', function(){
+		var invalid = $(this).find('#email').val().indexOf('@') === -1;
+		$(this).find('button[type="submit"]').attr('disabled', invalid);
+	});
+
+	$('form[name="resetRequest"]').submit(function(event) {
+		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
+
+		var $form = $(this);
+		var submit = $form.find('button[type="submit"]');
+		var email = $form.find('#email').val();
+		console.log(email);
+		$('#resetModal .modal-body').hide('fast', function() {
+			$('#resetModal .modal-page-2').show('fast');
+		});
+	});
+
+	$('form[name="confirmCode"] button[type="submit"]').attr('disabled', true);
+	setInputRoutine('form[name="confirmCode"]', function(){
+		var invalid = $(this).find('#code').val().length !== 6;
+		$(this).find('button[type="submit"]').attr('disabled', invalid);
+	});
+
+	$('form[name="confirmCode"]').submit(function(event) {
+		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
+
+		var $form = $(this);
+		var code = $form.find('#code').val();
+		console.log(code);
+		$('#resetModal').modal('hide');
+		// パスワードの変更
+		$('#authModal').off('shown.bs.modal').on('shown.bs.modal', function() {
+			$('#authModal .modal-body').hide();
+			$('#authModal .auth-page-3').show('fast');
+		}).modal('show');
+	});
+
+
 	// 'selector' element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
 	function setInputRoutine (selector, routine) {
 		var _intervalID = null;
@@ -430,7 +477,7 @@ $(function() {
 	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        	<h4 class="modal-title">パスワードをリセットします</h4>
     		</div>
-		    <div class="modal-body reset-page-1" style="display: none">
+		    <div class="modal-body modal-page-1" style="display: none">
 		    	<form name="resetRequest" class="form-horizontal">
 					<p class="alert alert-danger hide" role="alert"></p>
 				  	<div class="form-group">
@@ -444,12 +491,12 @@ $(function() {
 				  	</div>
 				</form>
 		    </div>
-		    <div class="modal-body reset-page-2" style="display: none">
+		    <div class="modal-body modal-page-2" style="display: none">
 		    	<form name="confirmCode" class="form-horizontal">
 					<p class="alert alert-danger hide" role="alert"></p>
 				  	<div class="form-group">
 				  		<p class="alert alert-success" role="alert">
-				  			確認コードがあなたのメールに送信されました
+				  			確認コードがあなたのメールに送信されました。この画面は<b>閉じないで</b>ください
 				  		</p>
 				    	<label for="code" class="col-sm-3 control-label">確認コードを入力</label>
 				    	<div class="col-sm-8">
