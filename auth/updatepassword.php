@@ -14,7 +14,7 @@ if(!isset($session_userid)){
 // Validation
 $current = filter_input(INPUT_POST, 'current');
 $password = filter_input(INPUT_POST, 'password');
-if($password == FALSE || strlen($password) < 8){
+if($password === FALSE || strlen($password) < 8){
 	exit('invalid-password');
 }
 
@@ -26,7 +26,7 @@ try {
 	$stmt->bindValue(":connected", 'connected', PDO::PARAM_STR);
 	$stmt->execute();
 	$account = $stmt->fetch(PDO::FETCH_ASSOC);
-	if ($account == NULL || !password_verify($current, $account['Hashed'])) {
+	if ($account === NULL || !password_verify($current, $account['Hashed'])) {
 		exit('incorrect-password');
 	}
 

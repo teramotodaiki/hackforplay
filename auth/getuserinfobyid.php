@@ -17,7 +17,7 @@ if (!isset($session_userid)) {
 }
 
 $id 	= filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-if ($id == NULL || $id == FALSE) {
+if ($id === NULL || $id === FALSE) {
 	exit('missing-user');
 }
 
@@ -26,7 +26,7 @@ try {
 	$stmt->bindValue(":input_id", $id, PDO::PARAM_INT);
 	$stmt->execute();
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
-	if ($result == NULL) {
+	if ($result === NULL) {
 		exit('missing-user');
 	}
 

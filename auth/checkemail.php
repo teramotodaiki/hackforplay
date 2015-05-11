@@ -12,7 +12,7 @@ available : メールアドレスが存在しない（利用可能）
 require_once '../preload.php';
 
 $email 	= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-if($email == FALSE){
+if($email === FALSE || $email === NULL){
 	exit('invalid');
 }
 
@@ -23,7 +23,7 @@ try {
 	$stmt->execute();
 
 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	if($result == NULL){
+	if($result === NULL){
 		exit('available');
 	}else{
 		$json = json_encode($result);

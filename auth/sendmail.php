@@ -8,7 +8,7 @@ function mailWithSendGrid($address, $tmpkey, $encription_key)
 	$encrypt = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $encription_key, $tmpkey, MCRYPT_MODE_CBC, $iv);
 	$sendkey = base64_encode($iv . $encrypt);
 
-	if($_SERVER['SERVER_NAME'] == 'localhost'){
+	if($_SERVER['SERVER_NAME'] === 'localhost'){
 		$url = 'http://localhost:8888/auth/confirmfromlink.php?e=' . urlencode($address) . '&p=' . urlencode($sendkey);
 	}else{
 		$url = 'https://' . $_SERVER['SERVER_NAME'] . '/auth/confirmfromlink.php?e=' . urlencode($address) . '&p=' . urlencode($sendkey);
