@@ -63,7 +63,7 @@ try {
 	$stmt->bindValue(":connected", "connected");
 	$stmt->execute();
 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	if($result !== NULL){
+	if(empty($result)){
 		exit("reserved");
 	}
 } catch (PDOException $e) {
