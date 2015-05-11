@@ -28,6 +28,7 @@
 		return _bsalert;
 	}
 	</script>
+	<script src="topicview.js" type="text/javascript" charset="utf-8"></script>
 	<script src="ownview.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="row">

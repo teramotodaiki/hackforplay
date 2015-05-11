@@ -136,7 +136,6 @@ $(function(){
 			var blankNum = $con.find('.h4p_item.h4p_item-blank').length;
 			var surplus = (itemNum - blankNum) % column;
 			var extraNum = surplus === 0 ? blankNum : blankNum - (column - surplus); // + : 過多、- : 不足
-			console.log('coloumn ' + column + '/ surplus ' + surplus + '/ extra ' + extraNum);
 			if (extraNum > 0) {
 				for (var i = 0; i < extraNum; i++) {
 					$con.find('.h4p_item.h4p_item-blank:first').remove();
