@@ -34,8 +34,8 @@ try {
 // 照会
 $authorized = NULL;
 foreach ($requests as $key => $value) {
-	if (password_verify($code, $requests['Hashed'])) {
-		$authorized	= $requests;
+	if (password_verify($code, $value['Hashed'])) {
+		$authorized	= $value;
 		break;
 	}
 }
