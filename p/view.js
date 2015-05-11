@@ -89,12 +89,12 @@ $(function(){
 		var nickname = $(this).find('#nickname').val();
 		var timezone_name = $(this).find('#timezone').val();
 		var timezone_offset = $(this).find('#timezone option:selected').data('offset');
+		var changed = {};
+		if (nickname !== userDefault.nickname) { changed.nickname = nickname; }
+		if (timezone_name !== userDefault.timezone_name) { changed.timezone_name = timezone_name; }
+		if (timezone_offset !== userDefault.timezone_offset) { changed.timezone_offset = timezone_offset; }
 
-		$.post('../auth/updateuser.php',{
-			'nickname': nickname,
-			'timezone_name': timezone_name,
-			'timezone_offset': timezone_offset
-		} , function(data, textStatus, xhr) {
+		$.post('../auth/updateuser.php', changed , function(data, textStatus, xhr) {
 			submit.button('reset');
 			switch(data){
 				case 'no-session':
