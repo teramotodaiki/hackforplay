@@ -258,6 +258,7 @@ $(function() {
 				case 'database-error':
 					$form.find('.alert').text('エラーにより照会できませんでした').removeClass('hide');
 					break;
+				default:
 				case 'success':
 					$('#resetModal .modal-body').hide('fast', function() {
 						$('#resetModal .modal-page-2').show('fast');
@@ -279,13 +280,21 @@ $(function() {
 
 		var $form = $(this);
 		var code = $form.find('#code').val();
-		console.log(code);
-		$('#resetModal').modal('hide');
-		// パスワードの変更
-		$('#authModal').off('shown.bs.modal').on('shown.bs.modal', function() {
-			$('#authModal .modal-body').hide();
-			$('#authModal .auth-page-3').show('fast');
-		}).modal('show');
+		var email = $('form[name="resetRequest"] #email').val();
+
+		$.post('../auth/confirmresetcode.php',{
+			'email' : email,
+			'code' : code
+		}, function(data, textStatus, xhr) {
+			// invalid-email , incorrect-code , already-expired , database-error , success
+			console.log(data);
+			submit.button('reset');
+			$('#resetModal').modal('hide');
+			$('#authModal').off('shown.bs.modal').on('shown.bs.modal', function() {
+				$('#authModal .modal-body').hide();
+				$('#authModal .auth-page-3').show('fast');
+			}).modal('show');
+		});
 	});
 
 
