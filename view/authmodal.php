@@ -225,6 +225,97 @@ $(function() {
 	var timezone = new Date().getTimezoneOffset() * -60;
 	$('#signup #timezone option[data-offset="'+timezone+'"]').attr('selected', true);
 
+	// パスワードのリセット
+	$('#resetModal').on('shown.bs.modal', function() {
+		$(this).find('.modal-body').hide();
+		$(this).find('.modal-page-1').show();
+	});
+
+	$('form[name="resetRequest"] button[type="submit"]').attr('disabled', true);
+	setInputRoutine('form[name="resetRequest"]', function(){
+		var invalid = $(this).find('#email').val().indexOf('@') === -1;
+		$(this).find('button[type="submit"]').attr('disabled', invalid);
+	});
+
+	$('form[name="resetRequest"]').submit(function(event) {
+		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
+
+		var $form = $(this);
+		var submit = $form.find('button[type="submit"]');
+		var email = $form.find('#email').val();
+
+		$(this).find('.alert').addClass('hide');
+		$.post('../auth/requestresetpassword.php',{
+			'email': email
+		}, function(data, textStatus, xhr) {
+			console.log(data);
+			submit.button('reset');
+			switch(data){
+				case 'invalid-email':
+					$form.find('.alert').text('登録されていないメールアドレスです').removeClass('hide');
+					break;
+				case 'database-error':
+					$form.find('.alert').text('エラーにより照会できませんでした').removeClass('hide');
+					break;
+				default:
+				case 'success':
+					$('#resetModal .modal-body').hide('fast', function() {
+						$('#resetModal .modal-page-2').show('fast');
+						$('form[name="confirmCode"] #code').val('');
+					});
+					break;
+			}
+		});
+	});
+
+	$('form[name="confirmCode"] button[type="submit"]').attr('disabled', true);
+	setInputRoutine('form[name="confirmCode"]', function(){
+		var invalid = $(this).find('#code').val().length !== 6;
+		$(this).find('button[type="submit"]').attr('disabled', invalid);
+	});
+
+	$('form[name="confirmCode"]').submit(function(event) {
+		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
+
+		var $form = $(this);
+		var code = $form.find('#code').val();
+		var email = $('form[name="resetRequest"] #email').val();
+
+		$(this).find('.remove-after-submit').remove();
+		$(this).find('.alert').addClass('hide');
+		$.post('../auth/confirmresetcode.php',{
+			'email' : email,
+			'code' : code
+		}, function(data, textStatus, xhr) {
+			console.log(data);
+			submit.button('reset');
+			switch(data){
+				case 'invalid-email':
+					$form.find('.alert').text('メールアドレスが間違っています').removeClass('hide');
+					break;
+				case 'incorrect-code':
+					$form.find('.alert').text('確認コードが間違っています').removeClass('hide');
+					break;
+				case 'already-expired':
+					$('#resetModal .modal-body').hide('fast', function() {
+						$('#resetModal .modal-page-1').show('fast');
+						$('form[name="resetRequest"] .alert').text('確認コードの期限が切れています。もう一度コードを送信してください').removeClass('hide');
+					});
+					break;
+				case 'success':
+					$('#resetModal').modal('hide');
+					$('#authModal').off('shown.bs.modal').on('shown.bs.modal', function() {
+						$('#authModal .modal-body').hide();
+						$('#authModal .auth-page-3').show('fast');
+					}).modal('show');
+					break;
+			}
+		});
+	});
+
+
 	// 'selector' element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
 	function setInputRoutine (selector, routine) {
 		var _intervalID = null;
@@ -408,7 +499,8 @@ $(function() {
 					    </div>
 				  	</div>
 				  	<div class="text-right">
-					  	<button type="submit" class="btn btn-default">ログイン</button>
+						<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#resetModal" >パスワードを忘れました</button>
+					  	<button type="submit" class="btn btn-primary">ログイン</button>
 				  	</div>
 				</form>
 		    </div>
@@ -417,6 +509,50 @@ $(function() {
 		    </div>
       		<div class="modal-footer">
 				<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#authModal" >アカウントを持っていません</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+<div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+  	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        	<h4 class="modal-title">パスワードをリセットします</h4>
+    		</div>
+		    <div class="modal-body modal-page-1" style="display: none">
+		    	<form name="resetRequest" class="form-horizontal">
+					<p class="alert alert-danger hide" role="alert"></p>
+				  	<div class="form-group">
+				    	<label for="email" class="col-sm-3 control-label">メールアドレス</label>
+				    	<div class="col-sm-8">
+				    		<input type="email" class="form-control" id="email">
+				    	</div>
+				  	</div>
+				  	<div class="text-right">
+					  	<button type="submit" class="btn btn-primary">確認コードを送信</button>
+				  	</div>
+				</form>
+		    </div>
+		    <div class="modal-body modal-page-2" style="display: none">
+		    	<form name="confirmCode" class="form-horizontal">
+					<p class="alert alert-danger hide" role="alert"></p>
+				  	<div class="form-group">
+				  		<p class="alert alert-success remove-after-submit" role="alert">
+				  			確認コードがあなたのメールに送信されました。この画面は<b>閉じないで</b>ください
+				  		</p>
+				    	<label for="code" class="col-sm-3 control-label">確認コードを入力</label>
+				    	<div class="col-sm-8">
+				    		<input type="text" class="form-control" id="code" placeholder="######">
+				    	</div>
+				  	</div>
+				  	<div class="text-right">
+					  	<button type="submit" class="btn btn-danger">パスワードをリセット</button>
+				  	</div>
+				</form>
+		    </div>
+      		<div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
       		</div>
     	</div>
