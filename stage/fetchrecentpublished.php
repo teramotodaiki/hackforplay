@@ -36,7 +36,7 @@ try {
 	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
 	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 	$stmt->execute();
-	
+
 	for ($i = 0; $i < $max_fetch_length; $i++){
 		$item	= $stmt->fetch(PDO::FETCH_ASSOC);
 		if($item != NULL){
@@ -73,7 +73,7 @@ $information_of_stages = new stdClass();
 $information_of_stages->values = $values;
 $json = json_encode($information_of_stages);
 
-if ($json == FALSE) {
+if ($json === FALSE) {
 	exit('parse-error');
 }
 

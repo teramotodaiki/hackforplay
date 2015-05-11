@@ -26,19 +26,16 @@ if ($input_max_fetch_length != FALSE && $input_max_fetch_length != NULL) {
 }
 
 // セッションを取得
-session_start();
-if (!isset($_SESSION['UserID'])) {
+if (!isset($session_userid)) {
 	exit('no-session');
 }
-$userid = $_SESSION['UserID'];
-session_commit();
 
 // プロジェクト一覧を取得
 // SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
 $result = array();
 try {
 	$stmt	= $dbh->prepare('SELECT p."ID",p."Token",p."Registered",p."SourceStageID",p."Data",s."Title",s."Mode" FROM "Project" AS p LEFT OUTER JOIN "Stage" AS s ON p."SourceStageID"=s."ID" WHERE p."UserID"=:userid AND p."PublishedStageID" IS NULL ORDER BY p."Registered" DESC');
-	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 
 	for ($i = 0; $i < $max_fetch_length; $i++){
@@ -80,7 +77,7 @@ $information_of_projects = new stdClass();
 $information_of_projects->values = $values;
 $json = json_encode($information_of_projects);
 
-if ($json == FALSE) {
+if ($json === FALSE) {
 	exit('parse-error');
 }
 

@@ -8,7 +8,7 @@ Input:	email , encrypted_password
 require_once '../preload.php';
 
 $email 	= filter_input(INPUT_GET, 'e', FILTER_VALIDATE_EMAIL);
-if($email == FALSE){
+if($email === FALSE || $email === NULL){
 	print_r('invalid email');
 	exit();
 }
@@ -37,7 +37,7 @@ try {
 
 // すでに connected なアカウントがある場合
 foreach ($result as $key => $value) {
-	if ($value["State"] == 'connected') {
+	if ($value["State"] === 'connected') {
 		// セッションがあるなら、immediatelyにプロフィールを更新してもらう
 		require_once 'inputview.php';
 		exit();
@@ -52,7 +52,7 @@ foreach ($result as $key => $value) {
 		break;
 	}
 }
-if($confirmed == NULL){
+if($confirmed === NULL){
 	exit("incorrect-password");
 }
 

@@ -10,13 +10,11 @@ invalid-inputs:
 require_once '../preload.php';
 
 // セッションを確認
-session_start();
-if (isset($_SESSION['UserID'])) {
-	$userid = $_SESSION['UserID'];
-} else {
+if (!isset($session_userid)) {
 	exit('no-session');
 }
 // 登録直後か確認
+session_start();
 if(!isset($_SESSION['SignupImmediately'])){
 	exit('not-immediately');
 }
@@ -32,7 +30,7 @@ try {
 	// Update password
 	$stmt 	= $dbh->prepare('UPDATE "Account" SET "Hashed"=:hashed WHERE "UserID"=:userid');
 	$stmt->bindValue(":hashed", $hashed, PDO::PARAM_INT);
-	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$flag 	= $stmt->execute();
 	if (!$flag) {
 		exit('update-failed');

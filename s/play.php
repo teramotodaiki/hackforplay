@@ -12,7 +12,7 @@ Stage.State:
 $missing_page = '../r'; // ステージ情報が取得できなかった時に飛ぶページ
 
 $stageid = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-if($stageid == FALSE || $stageid == NULL){
+if($stageid === FALSE || $stageid === NULL){
 	header('Location:' . $missing_page);
 	exit();
 }
@@ -23,7 +23,7 @@ try{
 	$stmt->bindValue(":rejected", 'rejected', PDO::PARAM_STR);
 	$stmt->execute();
 	$stage	= $stmt->fetch(PDO::FETCH_ASSOC);
-	if($stage == NULL){
+	if($stage === NULL){
 		header('Location:' . $missing_page);
 		exit();
 	}
@@ -32,7 +32,7 @@ try{
 	die();
 }
 
-if ($stage['Mode'] == 'replay') {
+if ($stage['Mode'] === 'replay') {
 	try {
 		$stmt	= $dbh->prepare('SELECT "Data" FROM "Project" WHERE "ID"=:projectid');
 		$stmt->bindValue(":projectid", $stage['ProjectID'], PDO::PARAM_INT);
@@ -57,12 +57,10 @@ try {
 }
 
 // プレイログ
-session_start();
-if(isset($_SESSION['UserID'])){
+if(isset($session_userid)){
 	// プレイのログをつける
 
 }
-session_commit();
 
 // try{
 // 	if(!isset($user['id'])){

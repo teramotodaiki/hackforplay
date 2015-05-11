@@ -8,14 +8,6 @@ Output:	(token)
 
 require_once '../preload.php';
 
-session_start();
-if (isset($_SESSION['UserID'])){
-	$userid = $_SESSION['UserID'];
-} else {
-	exit();
-}
-session_commit();
-
 $timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
 if($timezone === FALSE || $timezone === NULL){
 	exit();
@@ -36,7 +28,7 @@ $token	= bin2hex($bytes); // binaly to hex
 // レコードを作成
 try {
 	$stmt	= $dbh->prepare('INSERT INTO "Attendance" ("UserID","Href","Pathname","Token","Begin") VALUES(:userid, :href, :pathname, :token, :gmt)');
-	$stmt->bindValue(':userid', $userid, PDO::PARAM_INT);
+	$stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(':href', $href, PDO::PARAM_STR);
 	$stmt->bindValue(':pathname', $pathname, PDO::PARAM_STR);
 	$stmt->bindValue(':token', $token, PDO::PARAM_STR);

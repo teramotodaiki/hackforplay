@@ -8,12 +8,9 @@ Output: no-session , invalid-stageid , database-error, {project-token}
 require_once '../preload.php';
 
 // セッションの取得
-session_start();
-if (!isset($_SESSION['UserID'])) {
+if (!isset($session_userid)) {
 	exit('no-session');
 }
-$userid	= $_SESSION['UserID'];
-session_commit();
 
 $timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
 if($timezone === FALSE || $timezone === NULL){
@@ -22,7 +19,7 @@ if($timezone === FALSE || $timezone === NULL){
 
 // ステージ情報の取得
 $stageid = filter_input(INPUT_POST, 'stageid', FILTER_VALIDATE_INT);
-if($stageid == FALSE || $stageid == NULL){
+if($stageid === FALSE || $stageid === NULL){
 	exit('invalid-stageid');
 }
 try {
@@ -30,7 +27,7 @@ try {
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 	$stmt->execute();
 	$stage 	= $stmt->fetch(PDO::FETCH_ASSOC);
-	if($stage == NULL){
+	if($stage === NULL){
 		exit('invalid-stageid');
 	}
 
@@ -44,7 +41,7 @@ $data 	= filter_input(INPUT_POST, 'data');
 
 // プロジェクト情報の取得
 $project_rootid = NULL;
-if ($stage['ProjectID'] != NULL) {
+if ($stage['ProjectID'] !== NULL) {
 	try {
 		$stmt	= $dbh->prepare('SELECT "RootID" FROM "Project" WHERE "ID"=:stage_projectid');
 		$stmt->bindValue(":stage_projectid", $stage['ProjectID'], PDO::PARAM_INT);
@@ -63,7 +60,7 @@ $bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
 $token	= bin2hex($bytes);
 try {
 	$stmt	= $dbh->prepare('INSERT INTO "Project" ("UserID","RootID","ParentID","SourceStageID","Data","Token","Registered") VALUES(:userid,:project_rootid,:stage_projectid,:stageid,:data,:token,:gmt)');
-	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":project_rootid", $project_rootid, PDO::PARAM_INT);
 	$stmt->bindValue(":stage_projectid", $stage['ProjectID'], PDO::PARAM_INT);
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
@@ -81,7 +78,7 @@ try {
 }
 
 // ParentIDがNULLのとき、自身のIDをRootIDにする
-if ($stage['ProjectID'] == NULL) {
+if ($stage['ProjectID'] === NULL) {
 	try {
 		$stmt	= $dbh->prepare('UPDATE "Project" SET "RootID"=:projectid1 WHERE "ID"=:projectid2');
 		$stmt->bindValue(":projectid1", $dbh->lastInsertId('Project'), PDO::PARAM_INT);

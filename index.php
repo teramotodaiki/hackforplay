@@ -6,15 +6,8 @@
 
 require_once 'preload.php';
 
-// セッションの取得
-session_start();
-if (isset($_SESSION['UserID'])) {
-	$userid	= $_SESSION['UserID'];
-}
-session_commit();
-
 $rewrite = filter_input(INPUT_GET, 'rewrite', FILTER_VALIDATE_BOOLEAN);
-if (isset($userid) && $rewrite !== FALSE) {
+if (isset($session_userid) && $rewrite !== FALSE) {
 	header('Location:../r');
 	exit();
 }

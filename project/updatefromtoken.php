@@ -8,28 +8,24 @@ Output:	no-session , invalid-token , already-published , data-is-null , database
 
 require_once '../preload.php';
 
-// セッションを取得
-session_start();
-if (!isset($_SESSION['UserID'])) {
+if (!isset($session_userid)) {
 	exit('no-session');
 }
-$userid = $_SESSION['UserID'];
-session_commit();
 
 // プロジェクト情報を取得
 $token = filter_input(INPUT_POST, 'token');
-if($token == NULL || $token == FALSE){
+if($token === NULL || $token === FALSE){
 	exit('invalid-token');
 }
 try {
 	$stmt	= $dbh->prepare('SELECT "ID","PublishedStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
-	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
-	if($project == NULL){
+	if($project === NULL){
 		exit('invalid-token');
-	}elseif ($project['PublishedStageID'] != NULL) {
+	}elseif ($project['PublishedStageID'] !== NULL) {
 		exit('already-published');
 	}
 
@@ -40,7 +36,7 @@ try {
 
 // データを更新
 $data 	= filter_input(INPUT_POST, "data");
-if($data == NULL){
+if($data === NULL){
 	exit('data-is-null');
 }
 try {

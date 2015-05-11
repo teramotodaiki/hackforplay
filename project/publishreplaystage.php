@@ -8,12 +8,9 @@ Output:	no-session , invalid-token , already-published , database-error , succes
 require_once '../preload.php';
 
 // セッションを取得
-session_start();
-if (!isset($_SESSION['UserID'])) {
+if (!isset($session_userid)) {
 	exit('no-session');
 }
-$userid = $_SESSION['UserID'];
-session_commit();
 
 $timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
 if($timezone === FALSE || $timezone === NULL){
@@ -22,7 +19,7 @@ if($timezone === FALSE || $timezone === NULL){
 
 // プロジェクト情報を取得
 $token = filter_input(INPUT_POST, 'token');
-if($token == NULL || $token == FALSE){
+if($token === NULL || $token === FALSE){
 	exit('invalid-token');
 }
 try {
@@ -30,9 +27,9 @@ try {
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
-	if($project == NULL){
+	if($project === NULL){
 		exit('invalid-token');
-	}elseif ($project['PublishedStageID'] != NULL) {
+	}elseif ($project['PublishedStageID'] !== NULL) {
 		exit('already-published');
 	}
 
@@ -58,7 +55,7 @@ $path	= filter_input(INPUT_POST, 'path');
 $title	= filter_input(INPUT_POST, 'title');
 try{
 	$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","Path","Title","State","Thumbnail","SourceID","Registered") VALUES(:userid,:replay,:projectid,:input_path,:input_title,:judging,:thumb_url,:project_sourceid,:gmt)');
-	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
 	$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
 	$stmt->bindValue(":input_path", $path, PDO::PARAM_STR);

@@ -30,13 +30,9 @@ if ($input_max_fetch_length != FALSE && $input_max_fetch_length != NULL) {
 	$max_fetch_length 	= min($max_fetch_length, $input_max_fetch_length);
 }
 
-// セッションを取得
-session_start();
-if (!isset($_SESSION['UserID'])) {
+if (!isset($session_userid)) {
 	exit('no-session');
 }
-$userid = $_SESSION['UserID'];
-session_commit();
 
 // ステージ一覧を取得
 $input_id 	= filter_input(INPUT_POST, 'userid', FILTER_VALIDATE_INT);
@@ -88,7 +84,7 @@ $information_of_stages = new stdClass();
 $information_of_stages->values = $values;
 $json = json_encode($information_of_stages);
 
-if ($json == FALSE) {
+if ($json === FALSE) {
 	exit('parse-error');
 }
 
