@@ -7,13 +7,9 @@ Output: no-session, success
 
 require_once '../preload.php';
 
-// セッションからUserIDを取得
-session_start();
-if(!isset($_SESSION['UserID'])){
+if(!isset($session_userid)){
 	exit('no-session');
 }
-$userid = $_SESSION['UserID'];
-session_commit();
 
 // Input value
 $nickname = filter_input(INPUT_POST, 'nickname');
@@ -26,7 +22,7 @@ try {
 	if ($nickname != NULL) {
 		$stmt 	= $dbh->prepare('UPDATE "User" SET "Nickname"=:nickname WHERE "ID"=:userid');
 		$stmt->bindValue(":nickname", $nickname, PDO::PARAM_STR);
-		$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
+		$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 		$stmt->execute();
 	}
 } catch (PDOException $e) {

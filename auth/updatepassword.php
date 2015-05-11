@@ -7,13 +7,9 @@ Output:	no-session , invalid-password , incorrect-password , update-failed , suc
 
 require_once '../preload.php';
 
-// セッションからUserIDを取得
-session_start();
-if(!isset($_SESSION['UserID'])){
+if(!isset($session_userid)){
 	exit('no-session');
 }
-$userid = $_SESSION['UserID'];
-session_commit();
 
 // Validation
 $current = filter_input(INPUT_POST, 'current');
@@ -25,7 +21,7 @@ if($password == FALSE || strlen($password) < 8){
 // パスワードを照会
 try {
 	$stmt 	= $dbh->prepare('SELECT "ID","Hashed" FROM "Account" WHERE "UserID"=:userid AND "Type"=:hackforplay AND "State"=:connected');
-	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":hackforplay", 'hackforplay', PDO::PARAM_STR);
 	$stmt->bindValue(":connected", 'connected', PDO::PARAM_STR);
 	$stmt->execute();

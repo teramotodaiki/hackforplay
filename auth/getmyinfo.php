@@ -14,16 +14,13 @@ user-info:
 
 require_once '../preload.php';
 
-session_start();
-if (!isset($_SESSION['UserID'])) {
+if (!isset($session_userid)) {
 	exit('no-session');
 }
-$userid = $_SESSION['UserID'];
-session_commit();
 
 try {
 	$stmt 	= $dbh->prepare('SELECT "Gender","Nickname","Birthday","TimezoneName","TimezoneOffset" FROM "User" WHERE "ID"=:userid');
-	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
 

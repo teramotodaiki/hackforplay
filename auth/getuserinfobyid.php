@@ -12,12 +12,9 @@ user-info:
 
 require_once '../preload.php';
 
-session_start();
-if (!isset($_SESSION['UserID'])) {
+if (!isset($session_userid)) {
 	exit('no-session');
 }
-$userid = $_SESSION['UserID'];
-session_commit();
 
 $id 	= filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 if ($id == NULL || $id == FALSE) {

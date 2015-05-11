@@ -8,13 +8,9 @@ Output:	no-session , invalid-token , already-published , data-is-null , database
 
 require_once '../preload.php';
 
-// セッションを取得
-session_start();
-if (!isset($_SESSION['UserID'])) {
+if (!isset($session_userid)) {
 	exit('no-session');
 }
-$userid = $_SESSION['UserID'];
-session_commit();
 
 // プロジェクト情報を取得
 $token = filter_input(INPUT_POST, 'token');
@@ -24,7 +20,7 @@ if($token == NULL || $token == FALSE){
 try {
 	$stmt	= $dbh->prepare('SELECT "ID","PublishedStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
-	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
 	if($project == NULL){

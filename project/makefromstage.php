@@ -8,12 +8,9 @@ Output: no-session , invalid-stageid , database-error, {project-token}
 require_once '../preload.php';
 
 // セッションの取得
-session_start();
-if (!isset($_SESSION['UserID'])) {
+if (!isset($session_userid)) {
 	exit('no-session');
 }
-$userid	= $_SESSION['UserID'];
-session_commit();
 
 $timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
 if($timezone === FALSE || $timezone === NULL){
@@ -63,7 +60,7 @@ $bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
 $token	= bin2hex($bytes);
 try {
 	$stmt	= $dbh->prepare('INSERT INTO "Project" ("UserID","RootID","ParentID","SourceStageID","Data","Token","Registered") VALUES(:userid,:project_rootid,:stage_projectid,:stageid,:data,:token,:gmt)');
-	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":project_rootid", $project_rootid, PDO::PARAM_INT);
 	$stmt->bindValue(":stage_projectid", $stage['ProjectID'], PDO::PARAM_INT);
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);

@@ -57,12 +57,10 @@ try {
 }
 
 // プレイログ
-session_start();
-if(isset($_SESSION['UserID'])){
+if(isset($session_userid)){
 	// プレイのログをつける
 
 }
-session_commit();
 
 // try{
 // 	if(!isset($user['id'])){
