@@ -54,28 +54,15 @@ try {
 }
 
 // メールの送信
-require_once("../sendgrid-php/sendgrid-php.php");
-
-$sendgrid = new SendGrid('azure_6e7a2cecf7a9b88492fedbe609465546@azure.com', '8kPZ01rAB5ZkAsu');
-$sg_email = new SendGrid\Email();
-$sg_email
+require_once 'sendmail.php';
+$sendGridMail	= createNewMail();
+$sendGridMail
     ->addTo($email)
     ->setFrom('noreply@hackforplay.xyz')
     ->setSubject('パスワードのリセット - HackforPlay')
     ->setText('確認コード：' . $code)
     ->setHtml('確認コード： <strong>' . $code . '</strong><br>');
-
-try {
-    $sendgrid->send($sg_email);
-} catch(\SendGrid\Exception $e) {
-    echo $e->getCode();
-    foreach($e->getErrors() as $er) {
-        echo $er;
-    }
-    // リリース時はこちらにする
-    // die('sendmail-error');
-}
-
+trySending($sendGridMail);
 
 die($code);
 exit('success');
