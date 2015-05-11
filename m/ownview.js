@@ -87,7 +87,7 @@ $(function(){
 			if (result.values.length === 0) {
 				// ひとつもステージを作成していない
 				var topicView = createTopicView();
-				// $(topicView).appendTo($list);
+				$(topicView).appendTo($list);
 			}
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);

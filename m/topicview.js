@@ -1,19 +1,19 @@
 function createTopicView () {
 	// トピックのビューを生成
-	return $('<div>').addClass('row panel panel-default').append(
-		$('<div>').addClass('col-md-12 panel-heading').html('<h3>オリジナルステージを作る</h3>')
+	return $('<div>').addClass('col-md-12 panel panel-default').append(
+		$('<div>').addClass('panel-heading').html('<h3>オリジナルステージを作る</h3>')
 	).append(
-		$('<div>').addClass('col-md-12 panel-body').append(
+		$('<div>').addClass('panel-body').append(
 			$('<div>').addClass('row').append(
 				$('<div>').addClass('col-lg-3 col-md-4 col-sm-4 col-xs-12').append(
-					$('a').attr({
+					$('<a>').attr({
 						'href': '/s?id=201',
 						'title': 'ステージをつくろう１',
 						'target': '_blank'
 					}).append(
 						$('<div>').addClass('h4p_item-thumbnail').css({
-							'heigh': '160px',
-							'background-image': 'url(/s/replay_t1/thumb.png)'
+							'height': '160px',
+							'background-image': 'url(../s/replay_t1/thumb.png)'
 						})
 					)
 				).append(
