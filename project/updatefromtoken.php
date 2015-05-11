@@ -25,7 +25,7 @@ try {
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
 	if($project === NULL){
 		exit('invalid-token');
-	}elseif ($project['PublishedStageID'] != NULL) {
+	}elseif ($project['PublishedStageID'] !== NULL) {
 		exit('already-published');
 	}
 

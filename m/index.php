@@ -14,7 +14,7 @@ if($id === FALSE){
 
 if (isset($session_userid) && ($id === $session_userid || $id === NULL)) {
 	include 'ownview.php';
-}elseif ($id != NULL) {
+}elseif ($id !== NULL) {
 	include 'othersview.php';
 }else{
 	header('Location:../');

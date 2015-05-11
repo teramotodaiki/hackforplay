@@ -19,7 +19,7 @@ if($nickname === FALSE){
 
 try {
 	// Update Nickname
-	if ($nickname != NULL) {
+	if ($nickname !== NULL) {
 		$stmt 	= $dbh->prepare('UPDATE "User" SET "Nickname"=:nickname WHERE "ID"=:userid');
 		$stmt->bindValue(":nickname", $nickname, PDO::PARAM_STR);
 		$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);

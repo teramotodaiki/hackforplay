@@ -50,7 +50,7 @@ $(function(){
 	    	<ul class="nav navbar-nav">
 	    	<?php if($header_pattern === 'inGame' && $mode === 'official'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
-	    	<?php elseif ($header_pattern === 'inGame' && $mode != 'official'): ?>
+	    	<?php elseif ($header_pattern === 'inGame' && $mode !== 'official'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
 	    	<?php elseif ($header_pattern === 'admin'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>

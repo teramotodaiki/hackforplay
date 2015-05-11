@@ -41,7 +41,7 @@ $data 	= filter_input(INPUT_POST, 'data');
 
 // プロジェクト情報の取得
 $project_rootid = NULL;
-if ($stage['ProjectID'] != NULL) {
+if ($stage['ProjectID'] !== NULL) {
 	try {
 		$stmt	= $dbh->prepare('SELECT "RootID" FROM "Project" WHERE "ID"=:stage_projectid');
 		$stmt->bindValue(":stage_projectid", $stage['ProjectID'], PDO::PARAM_INT);
