@@ -244,9 +244,22 @@ $(function() {
 		var $form = $(this);
 		var submit = $form.find('button[type="submit"]');
 		var email = $form.find('#email').val();
-		console.log(email);
-		$('#resetModal .modal-body').hide('fast', function() {
-			$('#resetModal .modal-page-2').show('fast');
+
+		$.post('../auth/requestresetpassword.php',{
+			'email': email
+		}, function(data, textStatus, xhr) {
+			console.log(data);
+			switch(data){
+				case 'invalid-email':
+					break;
+				case 'database-error':
+					break;
+				case 'success':
+					$('#resetModal .modal-body').hide('fast', function() {
+						$('#resetModal .modal-page-2').show('fast');
+					});
+					break;
+			}
 		});
 	});
 
