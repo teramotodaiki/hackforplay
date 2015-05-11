@@ -245,14 +245,18 @@ $(function() {
 		var submit = $form.find('button[type="submit"]');
 		var email = $form.find('#email').val();
 
+		$(this).find('.alert').addClass('hide');
 		$.post('../auth/requestresetpassword.php',{
 			'email': email
 		}, function(data, textStatus, xhr) {
 			console.log(data);
+			submit.button('reset');
 			switch(data){
 				case 'invalid-email':
+					$form.find('.alert').text('登録されていないメールアドレスです').removeClass('hide');
 					break;
 				case 'database-error':
+					$form.find('.alert').text('エラーにより照会できませんでした').removeClass('hide');
 					break;
 				case 'success':
 					$('#resetModal .modal-body').hide('fast', function() {
