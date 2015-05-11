@@ -61,6 +61,16 @@ $(function() {
 		});
 	});
 
+	// メール送信前のValidation（Validationしてボタンをアクティブにする）
+	$('form#signup button[type="submit"]').attr('disabled', true);
+	setInputRoutine('form#signup', function(){
+		var count = 0;
+		$(this).find('input').each(function(index, el) {
+			if($(el).val() === '') count++;
+		});
+		$(this).find('button[type="submit"]').attr('disabled', count > 0);
+	});
+
 	// メール送信・仮登録
 	$('#signup').submit(function(event) {
 		event.preventDefault();
@@ -214,6 +224,21 @@ $(function() {
 	// タイムゾーンの初期値
 	var timezone = new Date().getTimezoneOffset() * -60;
 	$('#signup #timezone option[data-offset="'+timezone+'"]').attr('selected', true);
+
+	// 'selector' element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
+	function setInputRoutine (selector, routine) {
+		var _intervalID = null;
+		var $element = $(selector);
+		$element.find('input').on('focus', function() {
+			clearInterval(_intervalID);
+			_intervalID = setInterval(routine.bind($element.get(0)), 100);
+		}).on('blur', function() {
+			clearInterval(_intervalID);
+		});
+		$element.find('select').on('change', function() {
+			routine.call($element.get(0));
+		});
+	}
 });
 </script>
 <div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
