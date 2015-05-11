@@ -408,7 +408,8 @@ $(function() {
 					    </div>
 				  	</div>
 				  	<div class="text-right">
-					  	<button type="submit" class="btn btn-default">ログイン</button>
+						<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#resetModal" >パスワードを忘れました</button>
+					  	<button type="submit" class="btn btn-primary">ログイン</button>
 				  	</div>
 				</form>
 		    </div>
@@ -417,6 +418,50 @@ $(function() {
 		    </div>
       		<div class="modal-footer">
 				<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#authModal" >アカウントを持っていません</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+<div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+  	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        	<h4 class="modal-title">パスワードをリセットします</h4>
+    		</div>
+		    <div class="modal-body reset-page-1" style="display: none">
+		    	<form name="resetRequest" class="form-horizontal">
+					<p class="alert alert-danger hide" role="alert"></p>
+				  	<div class="form-group">
+				    	<label for="email" class="col-sm-3 control-label">メールアドレス</label>
+				    	<div class="col-sm-8">
+				    		<input type="email" class="form-control" id="email">
+				    	</div>
+				  	</div>
+				  	<div class="text-right">
+					  	<button type="submit" class="btn btn-primary">確認コードを送信</button>
+				  	</div>
+				</form>
+		    </div>
+		    <div class="modal-body reset-page-2" style="display: none">
+		    	<form name="confirmCode" class="form-horizontal">
+					<p class="alert alert-danger hide" role="alert"></p>
+				  	<div class="form-group">
+				  		<p class="alert alert-success" role="alert">
+				  			確認コードがあなたのメールに送信されました
+				  		</p>
+				    	<label for="code" class="col-sm-3 control-label">確認コードを入力</label>
+				    	<div class="col-sm-8">
+				    		<input type="text" class="form-control" id="code" placeholder="######">
+				    	</div>
+				  	</div>
+				  	<div class="text-right">
+					  	<button type="submit" class="btn btn-danger">パスワードをリセット</button>
+				  	</div>
+				</form>
+		    </div>
+      		<div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
       		</div>
     	</div>
