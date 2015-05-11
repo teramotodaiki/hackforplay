@@ -262,6 +262,7 @@ $(function() {
 				case 'success':
 					$('#resetModal .modal-body').hide('fast', function() {
 						$('#resetModal .modal-page-2').show('fast');
+						$('form[name="confirmCode"] #code').val('');
 					});
 					break;
 			}
@@ -286,14 +287,29 @@ $(function() {
 			'email' : email,
 			'code' : code
 		}, function(data, textStatus, xhr) {
-			// invalid-email , incorrect-code , already-expired , database-error , success
 			console.log(data);
 			submit.button('reset');
-			$('#resetModal').modal('hide');
-			$('#authModal').off('shown.bs.modal').on('shown.bs.modal', function() {
-				$('#authModal .modal-body').hide();
-				$('#authModal .auth-page-3').show('fast');
-			}).modal('show');
+			switch(data){
+				case 'invalid-email':
+					$form.find('.alert').text('メールアドレスが間違っています').removeClass('hide');
+					break;
+				case 'incorrect-code':
+					$form.find('.alert').text('確認コードが間違っています').removeClass('hide');
+					break;
+				case 'already-expired':
+					$('#resetModal .modal-body').hide('fast', function() {
+						$('#resetModal .modal-page-1').show('fast');
+						$('form[name="resetRequest"] .alert').text('確認コードの期限が切れています。もう一度コードを送信してください').removeClass('hide');
+					});
+					break;
+				case 'success':
+					$('#resetModal').modal('hide');
+					$('#authModal').off('shown.bs.modal').on('shown.bs.modal', function() {
+						$('#authModal .modal-body').hide();
+						$('#authModal .auth-page-3').show('fast');
+					}).modal('show');
+					break;
+			}
 		});
 	});
 

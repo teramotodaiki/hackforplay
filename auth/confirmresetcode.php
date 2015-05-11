@@ -2,7 +2,7 @@
 /*
 メールで送信した確認コードを照会し、セッションを作成する
 Input:	email , code
-Output:	invalid-email , incorrect-code , already-expired , database-error , success
+Output:	invalid-email , incorrect-code , already-expired , success
 */
 
 require_once '../preload.php';
