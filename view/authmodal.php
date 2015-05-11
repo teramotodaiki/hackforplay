@@ -283,6 +283,8 @@ $(function() {
 		var code = $form.find('#code').val();
 		var email = $('form[name="resetRequest"] #email').val();
 
+		$(this).find('.remove-after-submit').remove();
+		$(this).find('.alert').addClass('hide');
 		$.post('../auth/confirmresetcode.php',{
 			'email' : email,
 			'code' : code
@@ -537,7 +539,7 @@ $(function() {
 		    	<form name="confirmCode" class="form-horizontal">
 					<p class="alert alert-danger hide" role="alert"></p>
 				  	<div class="form-group">
-				  		<p class="alert alert-success" role="alert">
+				  		<p class="alert alert-success remove-after-submit" role="alert">
 				  			確認コードがあなたのメールに送信されました。この画面は<b>閉じないで</b>ください
 				  		</p>
 				    	<label for="code" class="col-sm-3 control-label">確認コードを入力</label>
