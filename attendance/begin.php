@@ -2,23 +2,18 @@
 /*
 セッションを取得し、 Attendance レコードを新たに作成し、Tokenを発行する。EndはNULLにしておく
 レコードを作成しなかった場合、何も出力せずに終了する
-Input:	href, pathname
+Input:	self_path , refferer , query_string , timezone
 Output:	(token)
 */
 
 require_once '../preload.php';
 
-$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
+$self_path		= filter_input(INPUT_POST, 'self_path');
+$refferer		= filter_input(INPUT_POST, 'refferer');
+$query_string	= filter_input(INPUT_POST, 'query_string');
+$timezone		= filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
 if($timezone === FALSE || $timezone === NULL){
-	exit();
-}
-$href = filter_input(INPUT_POST, 'href', FILTER_VALIDATE_URL);
-if($href === FALSE || $href === NULL){
-	exit();
-}
-$pathname = filter_input(INPUT_POST, 'pathname');
-if($pathname === FALSE || $pathname === NULL){
-	exit();
+	$timezone	= '+00:00';
 }
 
 // Tokenを生成
@@ -47,9 +42,9 @@ require_once 'keyvaluedata.php';
 setData($dbh->lastInsertId('Attendance'), array(
 	'AcceptLanguage' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
 	'RomoteAddress' => $_SERVER['REMOTE_ADDR'],
-	'SelfPath' => $href,
-	'Refferer' => '',
-	'QueryString' => ''
+	'SelfPath' => $self_path,
+	'Refferer' => $refferer,
+	'QueryString' => $query_string
 ));
 
 // 正常終了
