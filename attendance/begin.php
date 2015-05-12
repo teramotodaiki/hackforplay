@@ -27,10 +27,8 @@ $token	= bin2hex($bytes); // binaly to hex
 
 // レコードを作成
 try {
-	$stmt	= $dbh->prepare('INSERT INTO "Attendance" ("UserID","Href","Pathname","Token","Begin") VALUES(:userid, :href, :pathname, :token, :gmt)');
+	$stmt	= $dbh->prepare('INSERT INTO "Attendance" ("UserID","Token","Begin") VALUES(:userid,:token,:gmt)');
 	$stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
-	$stmt->bindValue(':href', $href, PDO::PARAM_STR);
-	$stmt->bindValue(':pathname', $pathname, PDO::PARAM_STR);
 	$stmt->bindValue(':token', $token, PDO::PARAM_STR);
 	$stmt->bindValue(':gmt', gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
 
