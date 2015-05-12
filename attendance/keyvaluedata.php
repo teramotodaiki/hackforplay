@@ -9,13 +9,13 @@ function setData($attendance_id, $data)
 
 	// プリペアドステートメント
 	$stmt_se_data	= $dbh->prepare('SELECT "ID" FROM "KeyValueData" WHERE "KeyString"=:key_string AND "ValueString"=:value_string');
-	$stmt_in_data	= $dbh->prepare('INSERT INTO "KeyValueData" ("KeyString","ValueString") VALUES(:key_string,:value_string');
-	$stmt_in_map	= $dbh->prepare('INSERT INTO "AttendanceMap" ("AttendanceID","KeyValueDataID") VALUES(:attendance_id,:key_value_data_id');
+	$stmt_in_data	= $dbh->prepare('INSERT INTO "KeyValueData" ("KeyString","ValueString") VALUES(:key_string,:value_string)');
+	$stmt_in_map	= $dbh->prepare('INSERT INTO "AttendanceMap" ("AttendanceID","KeyValueDataID") VALUES(:attendance_id,:key_value_data_id)');
 
 	$data = is_array($data) ? $data : array($data);
 	foreach ($data as $key => $value) {
-		$key_string		= (string)$value['key'];
-		$value_string	= (string)$value['value'];
+		$key_string		= (string)$key;
+		$value_string	= (string)$value;
 
 		try {
 			// 1.KeyValueData.IDを取得する

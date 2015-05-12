@@ -29,6 +29,7 @@ Attendance 情報を送信する
 			}
 		})
 		.done(function(result) {
+			console.log(result);
 			sessionStorage.setItem('attendance-token', result);
 		});
 	});

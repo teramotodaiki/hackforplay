@@ -42,6 +42,16 @@ try {
 	die();
 }
 
+// UserAgentなどを格納
+require_once 'keyvaluedata.php';
+setData($dbh->lastInsertId('Attendance'), array(
+	'AcceptLanguage' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
+	'RomoteAddress' => $_SERVER['REMOTE_ADDR'],
+	'SelfPath' => $href,
+	'Refferer' => '',
+	'QueryString' => ''
+));
+
 // 正常終了
 exit($token);
 ?>
