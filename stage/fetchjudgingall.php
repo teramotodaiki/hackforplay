@@ -13,7 +13,8 @@ information_of_stages:
 		source_title : 改造元ステージの名前,
 		source_mode : 改造元ステージのMode (official, replay)
 		state : ステージの状態,
-		registered : 投稿された日付
+		registered : 投稿された日付,
+		project_id : プロジェクトのID
 	](,,,[])
 }
 */
@@ -23,7 +24,7 @@ require_once '../preload.php';
 // ステージ一覧を取得
 $result = array();
 try {
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Registered",s."State","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."State"=:judging ORDER BY s."Registered" DESC');
+	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Registered",s."State",s."ProjectID","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."State"=:judging ORDER BY s."Registered" DESC');
 	$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
 	$stmt->execute();
 	$result	= $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -47,6 +48,7 @@ foreach ($result as $key => $value) {
 	$item->source_mode	= $value['Mode'];
 	$item->state 	 	= $value['State'];
 	$item->registered	= $value['Registered'];
+	$item->project_id	= $value['ProjectID'];
 	array_push($values, $item);
 }
 
