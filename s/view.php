@@ -30,7 +30,6 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	<meta property="og:title" content="<?php echo $title; ?>"/>
 	<meta property="og:description" content="Produced it by <?php echo $author; ?>. This is a new game in HackforPlay"/>
 	<meta property="og:image" content="https://hackforplay-staging.azurewebsites.net/logo.png"/>
-	<meta property="og:url" content="https://hackforplay-staging.azurewebsites.net/s?id=<?php echo $id; ?>"/>
 	<meta property="og:type" content="game"/>
 	<meta property="fb:admins" content="100002019469687"/>
 	<meta property="fb:app_id" content="481208065364232"/>
