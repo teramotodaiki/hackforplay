@@ -27,13 +27,13 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta property="og:title" content="Facebookページ制作サービス"/>
-	<meta property="og:description" content="Facebookページの企画・制作・運用代行はお任せください"/>
-	<meta property="og:image" content="http://kansai.mrfusion.co.jp/img/logo.png"/>
-	<meta property="og:url" content="http://kansai.mrfusion.co.jp/"/>
-	<meta property="og:type" content="company"/>
-	<meta property="fb:admins" content="277285078955926"/>
-	<meta property="og:site_name" content="株式会社ミスターフュージョン関西支社"/>
+	<meta property="og:title" content="<?php echo $title; ?>"/>
+	<meta property="og:description" content="Produced it by <?php echo $author; ?>. This is a new game in HackforPlay"/>
+	<meta property="og:image" content="http://hackforplay-staging.azurewebsites.net/logo.png"/>
+	<meta property="og:url" content="http://hackforplay-staging.azurewebsites.net"/>
+	<meta property="og:type" content="game"/>
+	<meta property="fb:admins" content="481208065364232"/>
+	<meta property="og:site_name" content="<?php echo $title; ?>"/>
 	<title><?php echo $title; ?> - HackforPlay</title>
 	<?php require_once '../library.php' ?>
 	<!-- HackforPlay RePlay -->
