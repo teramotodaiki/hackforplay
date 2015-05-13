@@ -63,7 +63,7 @@ $(function(){
 			).append(
 				$('<p>').append($('<span>').addClass('source').html('改造元：<b><a></a></b>'))
 			).append(
-				$('<span>').addClass('state label')
+				$('<a>').addClass('state label').attr('href', 'javascript:void(0)')
 			)
 		)
 	);
@@ -74,6 +74,28 @@ $(function(){
 	}, function() {
 		$(this).parent().find('.h4p_item-inner').attr('src', '../img/cassette/inner_tab.png');
 		$(this).parent().find('.h4p_item-transform').removeClass('transform-on');
+	});
+	$item.find('.state').on('click', function() {
+		$(this).off('click').off('mouseenter mouseleave');
+		var state = $(this).data('state');
+		var id = $(this).data('stage_id');
+		var $label = $(this);
+		switch(state){
+			case 'published':
+				$.post('../stage/changetoprivate.php',{
+					'stage_id': id
+				}, function(data, textStatus, xhr) {
+					$label.text(data === 'success' ? '非公開にしました' : '失敗しました').removeClass('label-success label-default').addClass('label-info');
+				});
+				break;
+			case 'private':
+				$.post('../stage/changetopublished.php',{
+					'stage_id': id
+				}, function(data, textStatus, xhr) {
+					$label.text(data === 'success' ? '公開しました' : '失敗しました').removeClass('label-success label-default').addClass('label-info');
+				});
+				break;
+		}
 	});
 	// ステージ一覧取得
 	$.post('../stage/fetchmystage.php', {
@@ -114,8 +136,18 @@ $(function(){
 				var label_tx = (stage.state === 'published' ? '公開中' :
 								stage.state === 'judging'	? '審査中' :
 								stage.state === 'rejected'	? 'リジェクト' : '非公開');
-				item.find('.state').addClass(label_lv).text(label_tx);
-
+				var label_pt = (stage.state === 'published' ? true :
+								stage.state === 'private'	? true : false);
+				item.find('.state').addClass(label_lv).text(label_tx).data('state', stage.state).data('stage_id', stage.id);
+				if (label_pt) {
+					item.find('.state').hover(function() {
+						$(this).text(stage.state === 'published' ? '非公開にする' : '公開する');
+					}, function() {
+						$(this).text(label_tx);
+					});
+				}else{
+					item.find('.state').css('cursor', 'default');
+				}
 				item.appendTo($list);
 			});
 		}
