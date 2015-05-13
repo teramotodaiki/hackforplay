@@ -17,7 +17,7 @@ if ($project_id === FALSE || $project_id === NULL) {
 
 // プロジェクトの情報を取得
 try {
-	$stmt	= $dbh->prepare('SELECT p."Data" FROM "Project" WHERE p."ID"=:project_id');
+	$stmt	= $dbh->prepare('SELECT "Data" FROM "Project" WHERE "ID"=:project_id');
 	$stmt->bindValue(":project_id", $project_id, PDO::PARAM_INT);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
