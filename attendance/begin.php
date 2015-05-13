@@ -6,11 +6,11 @@ Input:	self_path , refferer , query_string , timezone
 Output:	(token)
 */
 
+require_once '../preload.php';
+
 if (!isset($session_userid)) {
 	exit();
 }
-
-require_once '../preload.php';
 
 $self_path		= filter_input(INPUT_POST, 'self_path');
 $refferer		= filter_input(INPUT_POST, 'refferer');
