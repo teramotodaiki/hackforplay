@@ -29,7 +29,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta property="og:title" content="<?php echo $title; ?>"/>
-	<meta property="og:description" content="Produced it by <?php echo $author; ?>. This is a new game in HackforPlay"/>
+	<meta property="og:description" content="Produced it by <?php echo $author; ?>. このゲームは「あそべるプログラミング HackforPlay」で作られた、無料のブラウザゲームです。（現時点でのプレイ回数：<?php echo $count; ?>回）"/>
 	<meta property="og:image" content="https://<?php echo $_SERVER["SERVER_NAME"].$thumbnail; ?>"/>
 	<meta property="og:type" content="game"/>
 	<meta property="fb:admins" content="100002019469687"/>
