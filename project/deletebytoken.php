@@ -1,4 +1,3 @@
 <?php
-
-exit('success');
+exit('failed');
  ?>

@@ -212,6 +212,8 @@ $(function(){
 						})
 					));
 				});
+			}else{
+				panel.find('.panel-body').append(bsAlert('alert-danger', '削除に失敗しました'));
 			}
 		});
 	});
