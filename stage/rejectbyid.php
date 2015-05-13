@@ -14,6 +14,7 @@ if ($stage_id === FALSE || $stage_id === NULL) {
 
 try {
 	$stmt	= $dbh->prepare('UPDATE "Stage" SET "State"=:rejected WHERE "ID"=:stage_id');
+	$stmt->bindValue(":rejected", 'rejected', PDO::PARAM_STR);
 	$stmt->bindValue(":stage_id", $stage_id, PDO::PARAM_INT);
 	$flag	= $stmt->execute();
 	if (!$flag) {
