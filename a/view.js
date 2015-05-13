@@ -21,7 +21,7 @@ $(function(){
 			)
 		).append(
 			$('<div>').addClass('col-md-4').append(
-				$('<button>').addClass('btn btn-success btn-block').data('toggle', 'modal').data('target', '#codeModal').text('View code')
+				$('<button>').addClass('btn btn-success btn-lg btn-block').data('toggle', 'modal').data('target', '#codeModal').text('View code')
 			).append(
 				$('<button>').addClass('btn btn-primary btn-block h4p_accept-button').text('Accept this stage')
 			).append(
@@ -45,7 +45,8 @@ $(function(){
 				}).css('background-image', 'url(' + stage.thumbnail + ')');
 				item.find('.title a').attr({
 					href: '/s?id=' + stage.id,
-					title: stage.title
+					title: stage.title,
+					target: '_blank'
 				}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
 				if (stage.author_id !== null) {
 					item.find('.author a').attr({
