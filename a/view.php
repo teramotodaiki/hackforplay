@@ -33,14 +33,14 @@
 	<?php require_once '../view/header.php'; ?>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<!-- Modal -->
-	<div class="modal fade" id="codeModal" tabindex="-1" role="dialog" aria-labelledby="codeModalLabel" aria-hidden="true">
+	<div class="modal fade" id="codeModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
 	    		<div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		    	</div>
 			    <div class="modal-body">
-			    	<pre style="font-family: monospace;"></pre>
+			    	<pre><code></code></pre>
 			    </div>
 	    		<div class="modal-footer">
 	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>

@@ -21,7 +21,10 @@ $(function(){
 			)
 		).append(
 			$('<div>').addClass('col-md-4').append(
-				$('<button>').addClass('btn btn-success btn-lg btn-block').data('toggle', 'modal').data('target', '#codeModal').text('View code')
+				$('<button>').addClass('btn btn-success btn-lg btn-block h4p_code-button').attr({
+					'data-toggle': 'modal',
+					'data-target': '#codeModal'
+				}).text('View code')
 			).append(
 				$('<button>').addClass('btn btn-primary btn-block h4p_accept-button').text('Accept this stage')
 			).append(
@@ -29,6 +32,11 @@ $(function(){
 			)
 		)
 	);
+
+	// イベント
+	$item.on('click', function() {
+
+	});
 
 	$.post('../stage/fetchjudgingall.php',{
 
