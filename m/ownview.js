@@ -153,7 +153,7 @@ $(function(){
 		}
 	});
 
-	$projectItem = $('<div>').addClass('col-lg-6 col-md-12 panel panel-default').append(
+	var $projectItem = $('<div>').addClass('col-lg-6 col-md-12 panel panel-default').append(
 		$('<div>').addClass('panel-heading').append(
 			$('<pre>').addClass('panel-title')
 		)
@@ -168,6 +168,7 @@ $(function(){
 			$('<button>').addClass('btn btn-link btn-block h4p_delete-project').text('このプロジェクトを削除').attr('data-loading-text', 'お待ちください…')
 		)
 	);
+	var $projectItem_fixButton = $('<button>').text('元に戻す').addClass('btn btn-link btn-block h4p_fix-project');
 
 	$projectItem.find('.h4p_open-project').on('click', function(event) {
 		var loading = $(this).button('loading');
@@ -207,13 +208,38 @@ $(function(){
 				panel.find('.panel-heading').remove();
 				panel.find('.panel-body').fadeOut('fast', function() {
 					panel.append($('<div>').addClass('panel-body').append(
-						$('<button>').text('元に戻す').addClass('btn btn-link btn-block h4p_fix-project').attr({
-							'project-token': token
-						})
+						bsAlert('alert-success', '削除できました')
+					).append(
+						$projectItem_fixButton.clone(true).attr('project-token', token)
 					));
 				});
 			}else{
 				panel.find('.panel-body').append(bsAlert('alert-danger', '削除に失敗しました'));
+			}
+		});
+	});
+	$projectItem_fixButton.on('click', function() {
+		var loading = $(this).button('loading');
+		var token = $(this).attr('project-token');
+		var panel = $(this).parents('.panel');
+		panel.find('.alert').remove();
+		$.post('../project/canceldeletionbytoken.php',{
+			'token': token
+		}, function(data, textStatus, xhr) {
+			console.log(data);
+			loading.button('reset');
+			if (data === 'failed'){
+				panel.find('.panel-body').prepend(bsAlert('alert-danger', '削除に失敗しました'));
+			}else{
+				var project = jQuery.parseJSON(data);
+				var item = $projectItem.clone(true);
+				item.find('.panel-title').text(project.data);
+				var title = project.source_title;
+				item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
+				item.find('.registered b').text(project.registered);
+				item.find('.panel-body button').attr('project-token', project.token);
+				panel.after(item);
+				panel.remove();
 			}
 		});
 	});
