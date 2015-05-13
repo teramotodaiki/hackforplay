@@ -194,14 +194,25 @@ $(function(){
 			}
 		});
 	});
-	$projectItem.find('.h4p_delete-project').on('click', function(event) {
+	$projectItem.find('.h4p_delete-project').on('click', function() {
 		var loading = $(this).button('loading');
 		var token = $(this).attr('project-token');
-		$.post('', {
+		var panel = $(this).parents('.panel');
+		$.post('../project/deletebytoken.php', {
 			'token': token
 		} , function(data, textStatus, xhr) {
 			console.log(data);
 			loading.button('reset');
+			if (data === 'success') {
+				panel.find('.panel-heading').remove();
+				panel.find('.panel-body').fadeOut('fast', function() {
+					panel.append($('<div>').addClass('panel-body').append(
+						$('<button>').text('元に戻す').addClass('btn btn-link btn-block h4p_fix-project').attr({
+							'project-token': token
+						})
+					));
+				});
+			}
 		});
 	});
 
