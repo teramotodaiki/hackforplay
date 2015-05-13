@@ -47,6 +47,21 @@ $(function(){
 			}
 		});
 	});
+	$item.find('.h4p_reject-button').on('click', function() {
+		var item = $(this).parents('.panel-body');
+		var stage_id = $(this).data('stage_id');
+		$.post('../stage/rejectbyid.php', {
+			'stage_id': stage_id
+		} , function(data, textStatus, xhr) {
+			console.log(data);
+			if (data === 'success') {
+				item.after(bsAlert('alert-success', 'Successfly rejected'));
+				item.remove();
+			}else{
+				item.after(bsAlert('alert-danger', 'Failed to reject'));
+			}
+		});
+	});
 
 	$.post('../stage/fetchjudgingall.php',{
 
@@ -86,9 +101,27 @@ $(function(){
 					item.find('.source').text('オリジナルステージ');
 				}
 				item.find('.h4p_code-button').data('project_id', stage.project_id);
+				item.find('.h4p_reject-button').data('stage_id', stage.id);
 
 				item.appendTo($list);
 			});
 		}
 	});
+
+	// _level のアラート _text を生成し、jQueryオブジェクトを返す
+	function bsAlert (_level, _text) {
+		var _bsalert =
+		$('<div>').addClass('alert alert-dismissible fade in').addClass(_level).attr('role', 'alert').append(
+			$('<button>').addClass('close').attr({
+				'type' : 'button',
+				'data-dismiss': 'alert',
+				'aria-label': 'Close'
+			}).append(
+				$('<span>').attr('aria-hidden', 'true').html('&times;')
+			)
+		).append(
+			$('<span>').text(_text)
+		);
+		return _bsalert;
+	}
 });
