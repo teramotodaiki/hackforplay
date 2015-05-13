@@ -31,6 +31,7 @@
 <body class="">
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/header.php'; ?>
+	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<!-- Modal -->
 	<div class="modal fade" id="codeModal" tabindex="-1" role="dialog" aria-labelledby="codeModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -49,9 +50,7 @@
 	</div>
 	<!-- contents -->
 	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-			</div>
+		<div class="row list-judging">
 		</div>
 	</div>
 </body>
