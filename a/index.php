@@ -1,22 +1,20 @@
 <?php
-// more view
-//$is_beta = 1; // This is a BETA VERSION. Turn into 0 to be the official ver!
-
-// 1.Preparation
 require_once '../preload.php';
 
-// 2.Sign in or sign up
-require_once '../signin.php';
+// ユーザー名・パスワード
+$accept_page_username	= 'hackforplay';
+$accept_page_password	= 'hackforplay';
 
-// 3.Enumrate cleared stage
-require_once '../cleared.php';
+switch (true) {
+    case !isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']):
+    case $_SERVER['PHP_AUTH_USER'] !== $accept_page_username:
+    case $_SERVER['PHP_AUTH_PW']   !== $accept_page_password:
+        header('WWW-Authenticate: Basic realm="Enter username and password."');
+        header('Content-Type: text/plain; charset=utf-8');
+        die('Sorry!! but in this page, visitors are limited browsing');
+}
 
-// 4.Get all stages
-require_once '../getstages.php';
+header('Content-Type: text/html; charset=utf-8');
 
-// 5. Get restaging codes
-require_once '../getrestagingcodes.php';
-
-// 4.Load page html
-include('view/main.php');
+include 'view.php';
 ?>
