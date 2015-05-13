@@ -21,9 +21,11 @@ $(function(){
 			)
 		).append(
 			$('<div>').addClass('col-md-4').append(
-				$('<button>').addClass('btn btn-warning btn-block h4p_accept-button').data('toggle', 'modal').data('target', '#codeModal')
+				$('<button>').addClass('btn btn-success btn-block').data('toggle', 'modal').data('target', '#codeModal').text('View code')
 			).append(
-				$('<button>').addClass('btn btn-danger btn-block h4p_accept-button')
+				$('<button>').addClass('btn btn-primary btn-block h4p_accept-button').text('Accept this stage')
+			).append(
+				$('<button>').addClass('btn btn-danger btn-block h4p_reject-button').text('Reject this stage')
 			)
 		)
 	);
