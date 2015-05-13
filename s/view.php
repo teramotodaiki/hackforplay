@@ -29,8 +29,8 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta property="og:title" content="<?php echo $title; ?>"/>
 	<meta property="og:description" content="Produced it by <?php echo $author; ?>. This is a new game in HackforPlay"/>
-	<meta property="og:image" content="http://hackforplay.xyz/logo.png"/>
-	<meta property="og:url" content="http://hackforplay.xyz"/>
+	<meta property="og:image" content="https://hackforplay-staging.azurewebsites.net/logo.png"/>
+	<meta property="og:url" content="https://hackforplay-staging.azurewebsites.net/s?id=<?php echo $id; ?>"/>
 	<meta property="og:type" content="game"/>
 	<meta property="fb:admins" content="100002019469687"/>
 	<meta property="fb:app_id" content="481208065364232"/>
