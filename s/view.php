@@ -27,6 +27,13 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 <head prefix="og: http://ogp.me/ns#">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta property="og:title" content="Facebookページ制作サービス"/>
+	<meta property="og:description" content="Facebookページの企画・制作・運用代行はお任せください"/>
+	<meta property="og:image" content="http://kansai.mrfusion.co.jp/img/logo.png"/>
+	<meta property="og:url" content="http://kansai.mrfusion.co.jp/"/>
+	<meta property="og:type" content="company"/>
+	<meta property="fb:admins" content="277285078955926"/>
+	<meta property="og:site_name" content="株式会社ミスターフュージョン関西支社"/>
 	<title><?php echo $title; ?> - HackforPlay</title>
 	<?php require_once '../library.php' ?>
 	<!-- HackforPlay RePlay -->
