@@ -50,7 +50,7 @@ $(function(){
 	$item.find('.h4p_accept-button').on('click', function() {
 		var item = $(this).parents('.panel-body');
 		var stage_id = $(this).data('stage_id');
-		$.post('', {
+		$.post('../stage/publishbyid.php', {
 			'stage_id': stage_id
 		} , function(data, textStatus, xhr) {
 			console.log(data);
