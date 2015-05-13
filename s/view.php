@@ -5,8 +5,9 @@ $title 	= $stage['Title'];
 $next 	= $stage['NextID'];
 $count 	= $stage['Playcount'];
 $author = $stage['Nickname'];
-$author_id = $stage['UserID'];
-$source_id = $stage['SourceID'];
+$thumbnail	= $stage['THumbnail'];
+$author_id	= $stage['UserID'];
+$source_id	= $stage['SourceID'];
 $source_title = $stage['SourceTitle'];
 // $origin_id = $stage['restaging_id'];
 $origin_id = NULL;
@@ -29,7 +30,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta property="og:title" content="<?php echo $title; ?>"/>
 	<meta property="og:description" content="Produced it by <?php echo $author; ?>. This is a new game in HackforPlay"/>
-	<meta property="og:image" content="https://hackforplay-staging.azurewebsites.net/logo.png"/>
+	<meta property="og:image" content="https://<?php echo $_SERVER["SERVER_NAME"].$thumbnail; ?>"/>
 	<meta property="og:type" content="game"/>
 	<meta property="fb:admins" content="100002019469687"/>
 	<meta property="fb:app_id" content="481208065364232"/>
