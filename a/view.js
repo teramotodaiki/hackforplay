@@ -34,8 +34,13 @@ $(function(){
 	);
 
 	// イベント
-	$item.on('click', function() {
-
+	$item.find('.h4p_code-button').on('click', function() {
+		var project_id = $(this).data('project_id');
+		$.post('../stage/fetchprojectbyid.php',{
+			'project_id': project_id
+		}, function(data, textStatus, xhr) {
+			console.log(data);
+		});
 	});
 
 	$.post('../stage/fetchjudgingall.php',{
@@ -75,6 +80,7 @@ $(function(){
 				}else{
 					item.find('.source').text('オリジナルステージ');
 				}
+				item.find('.h4p_code-button').data('project_id', stage.project_id);
 
 				item.appendTo($list);
 			});

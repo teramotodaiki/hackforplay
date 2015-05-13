@@ -1,6 +1,6 @@
 <?php
 /*
-Project IDからプロジェクトの情報を取得する。Basic認証が必要
+Project IDからプロジェクトの情報を取得する
 Input:	project_id
 Output:	(JSON{information_of_project})
 information_of_project:
@@ -10,15 +10,6 @@ information_of_project:
 
 require_once '../preload.php';
 
-// ユーザー名・パスワード
-$accept_page_username	= 'hackforplay';
-$accept_page_password	= 'hackforplay';
-
-if(!isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) ||
-    $_SERVER['PHP_AUTH_USER'] !== $accept_page_username ||
-    $_SERVER['PHP_AUTH_PW'] !== $accept_page_password){
-	exit();
-}
 $project_id = filter_input(INPUT_POST, 'project_id', FILTER_VALIDATE_INT);
 if ($project_id === FALSE || $project_id === NULL) {
 	exit();
