@@ -76,14 +76,24 @@ $(function(){
 		$(this).parent().find('.h4p_item-transform').removeClass('transform-on');
 	});
 	$item.find('.state').on('click', function() {
+		$(this).off('click').off('mouseenter mouseleave');
 		var state = $(this).data('state');
 		var id = $(this).data('stage_id');
+		var $label = $(this);
 		switch(state){
 			case 'published':
-				console.log('非公開化' + id);
+				$.post('../stage/changetoprivate.php',{
+					'stage_id': id
+				}, function(data, textStatus, xhr) {
+					$label.text(data === 'success' ? '非公開にしました' : '失敗しました').removeClass('label-success label-default').addClass('label-info');
+				});
 				break;
 			case 'private':
-				console.log('公開');
+				$.post('../stage/changetopublished.php',{
+					'stage_id': id
+				}, function(data, textStatus, xhr) {
+					$label.text(data === 'success' ? '公開しました' : '失敗しました').removeClass('label-success label-default').addClass('label-info');
+				});
 				break;
 		}
 	});
