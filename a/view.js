@@ -11,7 +11,7 @@ $(function(){
 			)
 		).append(
 			$('<div>').addClass('col-md-4').append(
-				$('<p>').append($('<span>').addClass('title').html('<a></a>'))
+				$('<p>').append($('<h4>').addClass('title').html('<a></a>'))
 			).append(
 				$('<p>').append($('<span>').addClass('registered').html('作成日：<b></b>'))
 			).append(
@@ -30,7 +30,45 @@ $(function(){
 		)
 	);
 
-	var $list = $('.list-judging');
-	var item = $item.clone(true);
-	item.appendTo($list);
+	$.post('../stage/fetchjudgingall.php',{
+
+	}, function(data, textStatus, xhr) {
+		console.log(data);
+		if (data === 'parse-error') {
+		}else{
+			var result = jQuery.parseJSON(data);
+			var $list = $('.list-judging');
+			result.values.forEach(function(stage){
+				var item = $item.clone(true);
+				item.find('.h4p_item-thumbnail').on('click', function() {
+					window.open('/s?id=' + stage.id, '_blank');
+				}).css('background-image', 'url(' + stage.thumbnail + ')');
+				item.find('.title a').attr({
+					href: '/s?id=' + stage.id,
+					title: stage.title
+				}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
+				if (stage.author_id !== null) {
+					item.find('.author a').attr({
+						href: '/m?id=' + stage.author_id,
+						title: stage.author_name,
+						target: '_blank'
+					}).text(stage.author_name);
+				}else{
+					item.find('.author').text('いにしえのプログラマー');
+				}
+				item.find('.registered b').text(stage.registered);
+				if (stage.source_mode === 'replay') {
+					item.find('.source a').attr({
+						href: '/s?id=' + stage.source_id,
+						title: stage.source_title,
+						target: '_blank'
+					}).text(stage.source_title);
+				}else{
+					item.find('.source').text('オリジナルステージ');
+				}
+
+				item.appendTo($list);
+			});
+		}
+	});
 });
