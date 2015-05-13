@@ -24,7 +24,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 ?>
 <!DOCTYPE html>
 <html>
-<head prefix="og: http://ogp.me/ns#">
+<head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta property="og:title" content="Facebookページ制作サービス"/>
