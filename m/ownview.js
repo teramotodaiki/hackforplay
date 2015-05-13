@@ -163,11 +163,13 @@ $(function(){
 		).append(
 			$('<p>').append($('<span>').addClass('source').html('改造元：<b></b>'))
 		).append(
-			$('<button>').addClass('btn btn-lg btn-block btn-default').text('開く').attr('data-loading-text', 'データの取得中…')
+			$('<button>').addClass('btn btn-lg btn-block btn-default h4p_open-project').text('開く').attr('data-loading-text', 'データの取得中…')
+		).append(
+			$('<button>').addClass('btn btn-link btn-block h4p_delete-project').text('このプロジェクトを削除').attr('data-loading-text', 'お待ちください…')
 		)
 	);
 
-	$projectItem.find('button').on('click', function(event) {
+	$projectItem.find('.h4p_open-project').on('click', function(event) {
 		var loading = $(this).button('loading');
 		var token = $(this).attr('project-token');
 		$.post('../stage/fetchprojectbytoken.php', {
@@ -190,6 +192,16 @@ $(function(){
 					location.href = '/s?id=' + value.source_id + '&mode=restaging';
 					break;
 			}
+		});
+	});
+	$projectItem.find('.h4p_delete-project').on('click', function(event) {
+		var loading = $(this).button('loading');
+		var token = $(this).attr('project-token');
+		$.post('', {
+			'token': token
+		} , function(data, textStatus, xhr) {
+			console.log(data);
+			loading.button('reset');
 		});
 	});
 
