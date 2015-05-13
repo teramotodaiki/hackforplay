@@ -39,7 +39,12 @@ $(function(){
 		$.post('../stage/fetchprojectbyid.php',{
 			'project_id': project_id
 		}, function(data, textStatus, xhr) {
-			console.log(data);
+			if (data === '') {
+				alert('Project is not exist');
+			}else{
+				var result = jQuery.parseJSON(data);
+				$('#codeModal code').text(result.data);
+			}
 		});
 	});
 
