@@ -13,7 +13,7 @@
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<script type="text/javascript" charset="utf-8">
-	sessionStorage.setItem('view_user_id', <?php echo $userid; ?>);
+	sessionStorage.setItem('view_user_id', <?php echo $session_userid; ?>);
 	function bsAlert (_text) {
 		var _bsalert =
 		$('<div>').addClass('alert alert-dismissible fade in').attr('role', 'alert').append(
