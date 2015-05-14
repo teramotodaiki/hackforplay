@@ -23,7 +23,7 @@ try {
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
-	if($project === NULL){
+	if(empty($project)){
 		exit('invalid-token');
 	}elseif ($project['PublishedStageID'] !== NULL) {
 		exit('already-published');
