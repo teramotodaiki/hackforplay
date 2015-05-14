@@ -17,21 +17,17 @@ if ($project_id === FALSE || $project_id === NULL) {
 
 // プロジェクトの情報を取得
 try {
-	$stmt	= $dbh->prepare('SELECT "Data" FROM "Project" WHERE "ID"=:project_id');
-	$stmt->bindValue(":project_id", $project_id, PDO::PARAM_INT);
-	$stmt->execute();
-	$project = $stmt->fetch(PDO::FETCH_ASSOC);
-	if (empty($project)) {
-		exit();
-	}
+	require_once '../project/getcurrentcode.php';
+	$code	= getCurrentCode($project_id);
+
 } catch (PDOException $e) {
 	print_r($e);
 	die();
 }
 
 // データを格納
-$item 	= new stdClass();
-$item->data 		= $project['Data'];
+$item 		= new stdClass();
+$item->data = $code;
 
 // 出力
 $json = json_encode($item);
