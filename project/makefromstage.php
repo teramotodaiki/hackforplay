@@ -1,7 +1,7 @@
 <?php
 /*
 新たにプロジェクトを作成する
-Input:	stageid , (data)
+Input:	stageid
 Output: no-session , invalid-stageid , database-error, {project-token}
 */
 
@@ -36,9 +36,6 @@ try {
 	die();
 }
 
-// データの取得
-$data 	= filter_input(INPUT_POST, 'data');
-
 // プロジェクト情報の取得
 $project_rootid = NULL;
 if ($stage['ProjectID'] !== NULL) {
@@ -59,12 +56,11 @@ if ($stage['ProjectID'] !== NULL) {
 $bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
 $token	= bin2hex($bytes);
 try {
-	$stmt	= $dbh->prepare('INSERT INTO "Project" ("UserID","RootID","ParentID","SourceStageID","Data","Token","State","Registered") VALUES(:userid,:project_rootid,:stage_projectid,:stageid,:data,:token,:enabled,:gmt)');
+	$stmt	= $dbh->prepare('INSERT INTO "Project" ("UserID","RootID","ParentID","SourceStageID","Token","State","Registered") VALUES(:userid,:project_rootid,:stage_projectid,:stageid,:token,:enabled,:gmt)');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":project_rootid", $project_rootid, PDO::PARAM_INT);
 	$stmt->bindValue(":stage_projectid", $stage['ProjectID'], PDO::PARAM_INT);
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
-	$stmt->bindValue(":data", $data, PDO::PARAM_STR);
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->bindValue(":enabled", 'enabled', PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);

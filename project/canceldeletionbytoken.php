@@ -27,7 +27,7 @@ if($token === NULL || $token === FALSE){
 	exit('invalid-token');
 }
 try {
-	$stmt	= $dbh->prepare('SELECT p."ID",p."Token",p."Registered",p."SourceStageID",p."Data",s."Title",s."Mode" FROM "Project" AS p LEFT OUTER JOIN "Stage" AS s ON p."SourceStageID"=s."ID" WHERE p."Token"=:token AND p."UserID"=:userid AND p."State"=:disabled');
+	$stmt	= $dbh->prepare('SELECT p."ID",p."Token",p."Registered",p."SourceStageID",s."Title",s."Mode" FROM "Project" AS p LEFT OUTER JOIN "Stage" AS s ON p."SourceStageID"=s."ID" WHERE p."Token"=:token AND p."UserID"=:userid AND p."State"=:disabled');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":disabled", 'disabled', PDO::PARAM_STR);
@@ -36,6 +36,9 @@ try {
 	if (empty($project)) {
 		exit('invalid-token');
 	}
+	require_once 'getcurrentcode.php';
+	$project['Data']	= getCurrentCode($project['ID']);
+
 } catch (PDOException $e) {
 	print_r($e);
 	die();

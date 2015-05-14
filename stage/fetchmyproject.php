@@ -34,7 +34,7 @@ if (!isset($session_userid)) {
 // SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
 $result = array();
 try {
-	$stmt	= $dbh->prepare('SELECT p."ID",p."Token",p."Registered",p."SourceStageID",p."Data",s."Title",s."Mode" FROM "Project" AS p LEFT OUTER JOIN "Stage" AS s ON p."SourceStageID"=s."ID" WHERE p."UserID"=:userid AND p."PublishedStageID" IS NULL AND p."State"=:enabled ORDER BY p."Registered" DESC');
+	$stmt	= $dbh->prepare('SELECT p."ID",p."Token",p."Registered",p."SourceStageID",s."Title",s."Mode" FROM "Project" AS p LEFT OUTER JOIN "Stage" AS s ON p."SourceStageID"=s."ID" WHERE p."UserID"=:userid AND p."PublishedStageID" IS NULL AND p."State"=:enabled ORDER BY p."Registered" DESC');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":enabled", 'enabled', PDO::PARAM_STR);
 	$stmt->execute();
@@ -54,6 +54,7 @@ try {
 }
 
 // 配列のvalueを生成し、データを格納
+require_once '../project/getcurrentcode.php';
 $values = array();
 foreach ($result as $key => $value) {
 	$item 	= new stdClass();
@@ -63,12 +64,13 @@ foreach ($result as $key => $value) {
 	$item->source_mode	= $value['Mode'];
 	$item->token 		= $value['Token'];
 	$item->registered 	= $value['Registered'];
+	$item->data			= getCurrentCode($value['ID']);
 	// dataを最初の4行だけ抜き出し
-	$data_exploded		= explode("\n", $value['Data'], 5);
-	if (count($data_exploded) > 4) {
-		unset($data_exploded[4]);
-	}
-	$item->data			= implode("\n", $data_exploded);
+	// $data_exploded		= explode("\n", , 5);
+	// if (count($data_exploded) > 4) {
+	// 	unset($data_exploded[4]);
+	// }
+	// $item->data			= implode("\n", $data_exploded);
 
 	array_push($values, $item);
 }
