@@ -122,7 +122,7 @@ try {
 					$stmt_move->execute();
 					$old_code_cursor++;
 					$new_code_cursor++;
-					continue;
+					continue 2;
 				}
 			}
 		}
@@ -142,7 +142,7 @@ try {
 				}
 				$old_code_cursor++;
 				$new_code_cursor++;
-				continue;
+				continue 1;
 			}
 		}
 		if (isset($new_code[$line])) {
@@ -166,7 +166,7 @@ try {
 					$stmt_move->execute();
 					$old_code_cursor++;
 					$new_code_cursor++;
-					continue;
+					continue 2;
 				}
 			}
 		}
