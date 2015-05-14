@@ -34,10 +34,8 @@ try{
 
 if ($stage['Mode'] === 'replay') {
 	try {
-		$stmt	= $dbh->prepare('SELECT "Data" FROM "Project" WHERE "ID"=:projectid');
-		$stmt->bindValue(":projectid", $stage['ProjectID'], PDO::PARAM_INT);
-		$stmt->execute();
-		$project = $stmt->fetch(PDO::FETCH_ASSOC);
+		require_once '../project/getcurrentcode.php';
+		$project['Data']	= getCurrentCode($stage['ProjectID']);
 
 	} catch (PDOException $e) {
 		print_r($e);
