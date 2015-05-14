@@ -13,7 +13,6 @@
 			event.preventDefault();
 
 			var code = $(this).find('.code').val();
-			console.log(code);
 			$.post('project/commitregistration.php',{
 				'code': code
 			}, function(data, textStatus, xhr) {
@@ -26,7 +25,7 @@
 		<div class="alert alert-default"></div>
 		<form id="commit">
 			<h4>Code</h4>
-			<textarea name="code" style="width:100%;height:400px;font-family:monospace;"></textarea>
+			<textarea name="code" class="code" style="width:100%;height:400px;font-family:monospace;"></textarea>
 			<button type="submit">Commit</button>
 		</form>
 	</div>
