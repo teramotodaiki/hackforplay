@@ -16,7 +16,7 @@
 			$.post('project/commitregistration.php',{
 				'code': code
 			}, function(data, textStatus, xhr) {
-				$('.alert').text(data);
+				$('.alert').hide().text(data).fadeIn('fast');
 			});
 		});
 	});
