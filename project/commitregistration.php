@@ -65,7 +65,7 @@ try {
 
 // 差分を管理するテーブルを作成
 try {
-	$stmt		= $dbh->prepare('INSERT INTO "Difference" ("ProjectID","Line","Registered") VALUES(:test_project_id,:line,:empty)');
+	$stmt		= $dbh->prepare('INSERT INTO "Difference" ("ProjectID","LineNum","Registered") VALUES(:test_project_id,:line,:empty)');
 	$stmt->bindValue(":test_project_id", $test_project_id, PDO::PARAM_INT);
 	$stmt->bindValue(":line", count($new_code), PDO::PARAM_INT);
 	$stmt->bindValue(":empty", '', PDO::PARAM_STR);
@@ -108,6 +108,7 @@ try {
 					}
 					$stmt_move->bindValue(":before", $old_code_cursor, PDO::PARAM_INT);
 					$stmt_move->bindValue(":after", $new_code_cursor, PDO::PARAM_INT);
+					$stmt_move->execute();
 					$old_code_cursor++;
 					$new_code_cursor++;
 					continue;
@@ -150,6 +151,7 @@ try {
 					}
 					$stmt_move->bindValue(":before", $old_code_cursor, PDO::PARAM_INT);
 					$stmt_move->bindValue(":after", $new_code_cursor, PDO::PARAM_INT);
+					$stmt_move->execute();
 					$old_code_cursor++;
 					$new_code_cursor++;
 					continue;
