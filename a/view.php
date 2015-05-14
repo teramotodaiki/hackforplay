@@ -6,27 +6,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>あそべるプログラミング hackforplay</title>
 	<?php require_once '../library.php' ?>
-	<script type="text/javascript" charset="utf-8">
-	$(function(){
-		$("button.accept-button").on('click', function() {
-			$(this).attr('disabled', 'disabled');
-			var $div = $(this).parent();
-			$.post('../makestage.php', {
-	            'stage_name':$div.children('.stage_name').text(),
-	            'restaging_id':$div.children('.rid').text()
-	        }, function(data, textStatus, xhr) {
-	        	if(data !== "") console.log(data);
-	        	if(textStatus !== "success") console.log(textStatus);
-	        	else location.href = "/a";
-	        });
-		});
-		$("button.code-button").on('click', function() {
-			var code = $(this).parent().children('.code').text();
-			$('.modal-body>pre').text(code);
-		});
-
-	});
-	</script>
 </head>
 <body class="">
 	<?php require_once '../sendattendance.php'; ?>
