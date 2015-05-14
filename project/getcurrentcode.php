@@ -15,6 +15,7 @@ function getCurrentCode($project_id)
 	}
 
 	$stmt	= $dbh->prepare('SELECT "Value" FROM "Line" INNER JOIN "Code" ON "Line"."CodeID"="Code"."ID" WHERE "Append"=:each_line AND "DifferenceID" IN (SELECT "ID" FROM "Difference" WHERE "ProjectID"=:project_id) ORDER BY "DifferenceID" DESC');
+	$lines	= array();
 	for ($each_line=0; $each_line < $recent['LineNum']; $each_line++) {
 		$stmt->bindValue(":each_line", $each_line, PDO::PARAM_INT);
 		$stmt->bindValue(":project_id", $project_id, PDO::PARAM_INT);
