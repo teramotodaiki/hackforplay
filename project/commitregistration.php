@@ -108,6 +108,7 @@ try {
 					}
 					$stmt_move->bindValue(":before", $old_code_cursor, PDO::PARAM_INT);
 					$stmt_move->bindValue(":after", $new_code_cursor, PDO::PARAM_INT);
+					$stmt_move->bindValue(":code_id", $new_code[$new_code_cursor], PDO::PARAM_INT);
 					$stmt_move->execute();
 					$old_code_cursor++;
 					$new_code_cursor++;
@@ -151,6 +152,7 @@ try {
 					}
 					$stmt_move->bindValue(":before", $old_code_cursor, PDO::PARAM_INT);
 					$stmt_move->bindValue(":after", $new_code_cursor, PDO::PARAM_INT);
+					$stmt_move->bindValue(":code_id", $new_code[$new_code_cursor], PDO::PARAM_INT);
 					$stmt_move->execute();
 					$old_code_cursor++;
 					$new_code_cursor++;
