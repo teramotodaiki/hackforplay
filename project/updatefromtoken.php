@@ -42,18 +42,18 @@ if($data === NULL || $data === FALSE){
 // 現時点でのコードを、差分から復元する。Append=0は1行目を表しているため、そのまま[0]に格納する
 $old_code	= array();
 try {
-	$stmt	= $dbh->prepare('SELECT "LineNum" FROM "Difference" WHERE "ProjectID"=:test_project_id ORDER BY "ID" DESC');
-	$stmt->bindValue("test_project_id", $test_project_id, PDO::PARAM_INT);
+	$stmt	= $dbh->prepare('SELECT "LineNum" FROM "Difference" WHERE "ProjectID"=:project_id ORDER BY "ID" DESC');
+	$stmt->bindValue("project_id", $project['ID'], PDO::PARAM_INT);
 	$stmt->execute();
 	$recent	= $stmt->fetch(PDO::FETCH_ASSOC);
 	if (empty($recent)) {
 		$recent	= array('LineNum' => 0);
 	}
 
-	$stmt	= $dbh->prepare('SELECT "CodeID" FROM "Line" WHERE "Append"=:each_line AND "DifferenceID" IN (SELECT "ID" FROM "Difference" WHERE "ProjectID"=:test_project_id) ORDER BY "DifferenceID" DESC');
+	$stmt	= $dbh->prepare('SELECT "CodeID" FROM "Line" WHERE "Append"=:each_line AND "DifferenceID" IN (SELECT "ID" FROM "Difference" WHERE "ProjectID"=:project_id) ORDER BY "DifferenceID" DESC');
 	for ($each_line=0; $each_line < $recent['LineNum']; $each_line++) {
 		$stmt->bindValue(":each_line", $each_line, PDO::PARAM_INT);
-		$stmt->bindValue(":test_project_id", $test_project_id, PDO::PARAM_INT);
+		$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
 		$stmt->execute();
 		$old_code[$each_line]	= $stmt->fetch(PDO::FETCH_ASSOC);
 	}
@@ -80,8 +80,8 @@ try {
 	}
 
 	// 差分を管理するテーブルを作成
-	$stmt		= $dbh->prepare('INSERT INTO "Difference" ("ProjectID","LineNum","Registered") VALUES(:test_project_id,:line,:empty)');
-	$stmt->bindValue(":test_project_id", $test_project_id, PDO::PARAM_INT);
+	$stmt		= $dbh->prepare('INSERT INTO "Difference" ("ProjectID","LineNum","Registered") VALUES(:project_id,:line,:empty)');
+	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
 	$stmt->bindValue(":line", count($new_code), PDO::PARAM_INT);
 	$stmt->bindValue(":empty", '', PDO::PARAM_STR);
 	$stmt->execute();
