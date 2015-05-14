@@ -155,7 +155,6 @@ $(function(){
 			var timezone = new Date().getTimezoneString();
 			$.post('../project/makefromstage.php', {
 				'stageid': getParam('id'),
-				'data': code,
 				'timezone': timezone
 			}, function(data, textStatus, xhr) {
 				console.log(data);
