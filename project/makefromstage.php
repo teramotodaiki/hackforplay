@@ -56,7 +56,7 @@ if ($stage['ProjectID'] !== NULL) {
 $bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
 $token	= bin2hex($bytes);
 try {
-	$stmt	= $dbh->prepare('INSERT INTO "Project" ("UserID","RootID","ParentID","SourceStageID","Data","Token","State","Registered") VALUES(:userid,:project_rootid,:stage_projectid,:stageid,:token,:enabled,:gmt)');
+	$stmt	= $dbh->prepare('INSERT INTO "Project" ("UserID","RootID","ParentID","SourceStageID","Token","State","Registered") VALUES(:userid,:project_rootid,:stage_projectid,:stageid,:token,:enabled,:gmt)');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":project_rootid", $project_rootid, PDO::PARAM_INT);
 	$stmt->bindValue(":stage_projectid", $stage['ProjectID'], PDO::PARAM_INT);
