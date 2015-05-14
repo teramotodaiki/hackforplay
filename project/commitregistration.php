@@ -32,7 +32,6 @@ try {
 	print_r($e);
 	die();
 }
-// var_dump($old_code);
 
 // 新しいコードのCodeIDを取得する
 $code 			= filter_input(INPUT_POST, 'code');
@@ -63,85 +62,114 @@ try {
 	print_r($e);
 	die();
 }
-// var_dump($new_code);
 
 // 差分を管理するテーブルを作成
-// try {
-// 	$stmt		= $dbh->prepare('INSERT INTO "Difference" ("ProjectID", "Registered") VALUES(:test_project_id,:empty)');
-// 	$stmt->bindValue(":test_project_id", $test_project_id, PDO::PARAM_INT);
-// 	$stmt->bindValue(":empty", '', PDO::PARAM_STR);
-// 	$stmt->execute();
-// 	$difference	= array('ID' => $dbh->lastInsertId('Code'));
-// 	if (empty($difference['ID'])) {
-// 		exit('failed');
-// 	}
-// } catch (PDOException $e) {
-// 	print_r($e);
-// 	die();
-// }
+try {
+	$stmt		= $dbh->prepare('INSERT INTO "Difference" ("ProjectID","Line","Registered") VALUES(:test_project_id,:line,:empty)');
+	$stmt->bindValue(":test_project_id", $test_project_id, PDO::PARAM_INT);
+	$stmt->bindValue(":line", count($new_code), PDO::PARAM_INT);
+	$stmt->bindValue(":empty", '', PDO::PARAM_STR);
+	$stmt->execute();
+	$difference	= array('ID' => $dbh->lastInsertId('Code'));
+	if (empty($difference['ID'])) {
+		exit('failed');
+	}
+} catch (PDOException $e) {
+	print_r($e);
+	die();
+}
 
 // 差分を求める
-$old_code_cursor	= 0;
-$new_code_cursor	= 0;
-$loop	= max($old_code_length = count($old_code), $new_code_length = count($new_code));
-for ($line=0; $line < $loop; $line++) {
-	if (isset($old_code[$line])) {
-		// 1.$old_code[$line]と一致する、現在の行より前の$new_lineを探索
-		for ($i=$new_code_cursor; $i < $line && $i < $new_code_length; $i++) {
-			if ($old_code[$line] === $new_code[$i]) {
-				// 一致：Old->New'へMove
+$stmt_append	= $dbh->prepare('INSERT INTO "Line" ("DifferenceID","Append","CodeID") VALUES(:difference_id,:line,:code_id)');
+$stmt_remove	= $dbh->prepare('INSERT INTO "Line" ("DifferenceID","Remove","CodeID") VALUES(:difference_id,:line,:code_id)');
+$stmt_move		= $dbh->prepare('INSERT INTO "Line" ("DifferenceID","Remove","Append","CodeID") VALUES(:difference_id,:before,:after,:code_id)');
+$stmt_append->bindValue(":difference_id", $difference['ID'], PDO::PARAM_INT);
+$stmt_remove->bindValue(":difference_id", $difference['ID'], PDO::PARAM_INT);
+$stmt_move->bindValue(":difference_id", $difference['ID'], PDO::PARAM_INT);
+try {
+	$old_code_cursor	= 0;
+	$new_code_cursor	= 0;
+	$loop	= max($old_code_length = count($old_code), $new_code_length = count($new_code));
+	for ($line=0; $line < $loop; $line++) {
+		if (isset($old_code[$line])) {
+			// 1.$old_code[$line]と一致する、現在の行より前の$new_lineを探索
+			for ($i=$new_code_cursor; $i < $line && $i < $new_code_length; $i++) {
+				if ($old_code[$line] === $new_code[$i]) {
+					// 一致：Old->New'へMove
+					for (; $old_code_cursor < $line; $old_code_cursor++) {
+						$stmt_remove->bindValue(":line", $old_code_cursor, PDO::PARAM_INT);
+						$stmt_remove->bindValue(":code_id", $old_code[$old_code_cursor]['CodeID'], PDO::PARAM_INT);
+						$stmt_remove->execute();
+					}
+					for (; $new_code_cursor < $i; $new_code_cursor++) {
+						$stmt_append->bindValue(":line", $new_code_cursor, PDO::PARAM_INT);
+						$stmt_append->bindValue(":code_id", $new_code[$new_code_cursor]['CodeID'], PDO::PARAM_INT);
+						$stmt_append->execute();
+					}
+					$stmt_move->bindValue(":before", $old_code_cursor, PDO::PARAM_INT);
+					$stmt_move->bindValue(":after", $new_code_cursor, PDO::PARAM_INT);
+					$old_code_cursor++;
+					$new_code_cursor++;
+					continue;
+				}
+			}
+		}
+		if (isset($old_code[$line]) && isset($new_code[$line])) {
+			// 2.$old_code[$line]と$new_code[$line]が一致するか調べる
+			if ($old_code[$line] === $new_code[$line]) {
+				// 一致：Old->NewへMove
 				for (; $old_code_cursor < $line; $old_code_cursor++) {
-					echo "Remove $old_code_cursor\n";
-				}
-				for (; $new_code_cursor < $i; $new_code_cursor++) {
-					echo "Append $new_code_cursor\n";
-				}
-				echo "Move $old_code_cursor to $new_code_cursor\n";
-				$old_code_cursor++;
-				$new_code_cursor++;
-				continue;
-			}
-		}
-	}
-	if (isset($old_code[$line]) && isset($new_code[$line])) {
-		// 2.$old_code[$line]と$new_code[$line]が一致するか調べる
-		if ($old_code[$line] === $new_code[$line]) {
-			// 一致：Old->NewへMove
-			for (; $old_code_cursor < $line; $old_code_cursor++) {
-				echo "Remove $old_code_cursor\n";
-			}
-			for (; $new_code_cursor < $line; $new_code_cursor++) {
-				echo "Append $new_code_cursor\n";
-			}
-			$old_code_cursor++;
-			$new_code_cursor++;
-			continue;
-		}
-	}
-	if (isset($new_code[$line])) {
-		// 3.$new_code[$line]と一致する、現在の行より前の$old_lineを探索
-		for ($i=$old_code_cursor; $i < $line && $i < $old_code_length; $i++) {
-			if ($new_code[$line] === $old_code[$i]) {
-				// 一致：Old'->NewへMove
-				for (; $old_code_cursor < $i; $old_code_cursor++) {
-					echo "Remove $old_code_cursor\n";
+					$stmt_remove->bindValue(":line", $old_code_cursor, PDO::PARAM_INT);
+					$stmt_remove->bindValue(":code_id", $old_code[$old_code_cursor]['CodeID'], PDO::PARAM_INT);
+					$stmt_remove->execute();
 				}
 				for (; $new_code_cursor < $line; $new_code_cursor++) {
-					echo "Append $new_code_cursor\n";
+					$stmt_append->bindValue(":line", $new_code_cursor, PDO::PARAM_INT);
+					$stmt_append->bindValue(":code_id", $new_code[$new_code_cursor]['CodeID'], PDO::PARAM_INT);
+					$stmt_append->execute();
 				}
-				echo "Move $old_code_cursor to $new_code_cursor\n";
 				$old_code_cursor++;
 				$new_code_cursor++;
 				continue;
 			}
 		}
+		if (isset($new_code[$line])) {
+			// 3.$new_code[$line]と一致する、現在の行より前の$old_lineを探索
+			for ($i=$old_code_cursor; $i < $line && $i < $old_code_length; $i++) {
+				if ($new_code[$line] === $old_code[$i]) {
+					// 一致：Old'->NewへMove
+					for (; $old_code_cursor < $i; $old_code_cursor++) {
+						$stmt_remove->bindValue(":line", $old_code_cursor, PDO::PARAM_INT);
+						$stmt_remove->bindValue(":code_id", $old_code[$old_code_cursor]['CodeID'], PDO::PARAM_INT);
+						$stmt_remove->execute();
+					}
+					for (; $new_code_cursor < $line; $new_code_cursor++) {
+						$stmt_append->bindValue(":line", $new_code_cursor, PDO::PARAM_INT);
+						$stmt_append->bindValue(":code_id", $new_code[$new_code_cursor]['CodeID'], PDO::PARAM_INT);
+						$stmt_append->execute();
+					}
+					$stmt_move->bindValue(":before", $old_code_cursor, PDO::PARAM_INT);
+					$stmt_move->bindValue(":after", $new_code_cursor, PDO::PARAM_INT);
+					$old_code_cursor++;
+					$new_code_cursor++;
+					continue;
+				}
+			}
+		}
 	}
-}
-for (; $old_code_cursor < $old_code_length; $old_code_cursor++) {
-	echo "Remove $old_code_cursor\n";
-}
-for (; $new_code_cursor < $new_code_length; $new_code_cursor++) {
-	echo "Append $new_code_cursor\n";
+	for (; $old_code_cursor < $old_code_length; $old_code_cursor++) {
+		$stmt_remove->bindValue(":line", $old_code_cursor, PDO::PARAM_INT);
+		$stmt_remove->bindValue(":code_id", $old_code[$old_code_cursor]['CodeID'], PDO::PARAM_INT);
+		$stmt_remove->execute();
+	}
+	for (; $new_code_cursor < $new_code_length; $new_code_cursor++) {
+		$stmt_append->bindValue(":line", $new_code_cursor, PDO::PARAM_INT);
+		$stmt_append->bindValue(":code_id", $new_code[$new_code_cursor]['CodeID'], PDO::PARAM_INT);
+		$stmt_append->execute();
+	}
+} catch (PDOException $e) {
+	print_r($e);
+	die();
 }
 
 exit('success');
