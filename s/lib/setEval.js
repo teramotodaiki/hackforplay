@@ -34,7 +34,11 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
             }
         });
     };
+    // 残っているトークンを削除
     __H4PENV__SENDCODE = function(){
+        // トークンをもとにプロジェクトを見つけ、前回との差分を記録する
+
+        // エラーが発生していた場合、Acitive Log - CodeGeneratesErrorに、コードの全文とエラー例外のメッセージを送信
         $.post('sendCode.php', {
             'token':__H4PENV__TOKEN,
             'raw':raw,
