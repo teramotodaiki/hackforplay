@@ -32,6 +32,15 @@ if(!isset($mode)){
 			window.parent.postMessage('screenshot', '/');
 			saveImage();
 		}
+		(function(){
+			// Example: +09:00, +00:00, -01:00
+			Date.prototype.getTimezoneString = function(){
+				var rawValue = parseInt((new Date()).getTimezoneOffset() / 60);
+				var prefix1 = rawValue > 0 ? '-' : '+';
+				var prefix2 = Math.abs(rawValue) < 10 ? '0' : '';
+				return prefix1 + prefix2 + Math.abs(rawValue) + ':00';
+			}
+		})();
 		</script>
 		<script src="/s/lib/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/s/lib/enchant.js" type="text/javascript" charset="utf-8"></script>

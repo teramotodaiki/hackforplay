@@ -38,13 +38,14 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
     var tokenKey = 'sendcode-project-token';
     sessionStorage.removeItem(tokenKey);
     __H4PENV__SENDCODE = function(){
+        var _sendcode = raw;
         // トークンをもとにプロジェクトを見つけ、前回との差分を記録する
         var updateTask = function(){
             var sendCodeToken = sessionStorage.getItem(tokenKey);
             if (sendCodeToken === null) return;
             $.post('../../project/updatefromtoken.php',{
                 'token': sendCodeToken,
-                'data': raw
+                'data': _sendcode
             }, function(data, textStatus, xhr) {
                 console.log(data);
             });
@@ -53,9 +54,11 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
             // プロジェクトの作成
             var stageid = sessionStorage.getItem('stage_param_id');
             var attendanceToken = sessionStorage.getItem('attendance-token');
+            var timezone = new Date().getTimezoneString();
             $.post('../../project/makefromplaying.php',{
                 'stageid': stageid,
-                'attendance-token': attendanceToken
+                'attendance-token': attendanceToken,
+                'timezone': timezone
             }, function(data, textStatus, xhr) {
                 if (data !== 'failed') {
                     sessionStorage.setItem(tokenKey, data);
