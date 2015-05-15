@@ -35,17 +35,38 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
         });
     };
     // 残っているトークンを削除
+    var tokenKey = 'sendcode-project-token';
+    sessionStorage.removeItem(tokenKey);
     __H4PENV__SENDCODE = function(){
         // トークンをもとにプロジェクトを見つけ、前回との差分を記録する
+        var updateTask = function(){
+            var sendCodeToken = sessionStorage.getItem(tokenKey);
+            if (sendCodeToken === null) return;
+            $.post('../../project/updatefromtoken.php',{
+                'token': sendCodeToken,
+                'data': raw
+            }, function(data, textStatus, xhr) {
+                console.log(data);
+            });
+        };
+        if (sessionStorage.getItem(tokenKey) === null) {
+            // プロジェクトの作成
+            var stageid = sessionStorage.getItem('stage_param_id');
+            var attendanceToken = sessionStorage.getItem('attendance-token');
+            $.post('../../project/makefromplaying.php',{
+                'stageid': stageid,
+                'attendance-token': attendanceToken
+            }, function(data, textStatus, xhr) {
+                if (data !== 'failed') {
+                    sessionStorage.setItem(tokenKey, data);
+                    updateTask();
+                }
+            });
+        }else{
+            updateTask();
+        }
 
         // エラーが発生していた場合、Acitive Log - CodeGeneratesErrorに、コードの全文とエラー例外のメッセージを送信
-        $.post('sendCode.php', {
-            'token':__H4PENV__TOKEN,
-            'raw':raw,
-            'error':error
-        }, function(data, textStatus, xhr) {
-            if(data !== "") console.log(data);
-            if(textStatus !== "") console.log(textStatus);
-        });
+
     };
 })();
