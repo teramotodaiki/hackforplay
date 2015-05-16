@@ -105,6 +105,7 @@ $(function(){
 			});
 			$(".h4p_restaging_button").on('click', function() {
 				// RUN (Add &mode=restaging)
+				var loading = $(this).find('button').button('loading');
 				jsEditor.save();
 				var code = jsEditor.getTextArea().value;
 				sessionStorage.setItem('restaging_code', code);
@@ -117,6 +118,7 @@ $(function(){
 						'data': code
 					}, function(data, textStatus, xhr) {
 						console.log(data);
+						loading.button('reset');
 						switch(data){
 							case 'no-session':
 								$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');

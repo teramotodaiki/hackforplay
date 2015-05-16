@@ -151,7 +151,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 						<textarea name="restaging_code" value="// ステージ改造コードを書いて、このステージを改造してやろう!!"></textarea>
 					</div>
 					<div class="col-sm-12 h4p_restaging_button">
-						<button type="button" class="btn btn-block btn-lg btn-primary ignore-attendance">
+						<button type="button" class="btn btn-block btn-lg btn-primary ignore-attendance" data-loading-text="保存中…">
 							<span>ステージ改造コードを実行</span>
 						</button>
 					</div>
