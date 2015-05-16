@@ -95,6 +95,10 @@ header {
 	padding: 0;
 }
 
+.h4p_projectlist .panel {
+	margin-top: 10px;
+}
+
 .h4p_info,
 .h4p_restaging {
 	margin-top: 10px;

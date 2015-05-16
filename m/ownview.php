@@ -61,14 +61,12 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="row h4p_box">
-					<div class="col-md-12 h4p_box-header">
-						<h3></h3>
+				<div class="row panel panel-primary">
+					<div class="col-md-12 panel-heading">
+						<h4>改造を中断したステージ</h4>
 					</div>
-					<div class="col-md-12 h4p_box-main">
+					<div class="panel-body">
 						<div class="row h4p_projectlist"></div>
-					</div>
-					<div class="col-md-12 h4p_box-footer">
 					</div>
 				</div>
 			</div>
