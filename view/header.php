@@ -27,6 +27,20 @@ $(function(){
 		if(result === "success"){
 			$(".h4p_signin").hide();
 			$(".h4p_signout").show();
+			$.post('../auth/getmyinfo.php',{}, function(data, textStatus, xhr) {
+				switch(data){
+					case 'no-session':
+					case 'missing-user':
+					case 'parse-error':
+						break;
+					default:
+						var result = $.parseJSON(data);
+						if (result.gender !== undefined) {
+							$('.h4p_user-thumbnail').attr('src', result.gender === 'man' ? '../m/icon_m.png' : '../m/icon_w.png');
+						};
+						break;
+				}
+			});
 		}else{
 			$(".h4p_signin").show();
 			$(".h4p_signout").hide();
@@ -38,7 +52,7 @@ $(function(){
 		checkSigninSession(function(result){ authtext(result); }, true);
 	});
 
-	$('[data-toggle="tooltip"]').tooltip()
+	$('[data-toggle="tooltip"]').tooltip();
 });
 </script>
 <header class="navbar navbar-static-top">
@@ -67,7 +81,7 @@ $(function(){
 				<li class="h4p_signin"><button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#authModal">会員登録</button></li>
 				<li class="h4p_signout">
 					<div class="dropdown">
-						<a id="h4p_header-dropdown" class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" onfocus="this.blur();"><img src="../m/tmpthumb_man.png" height="41" width="44" alt="" data-toggle="tooltip" data-placement="bottom" title="マイページと設定"></a>
+						<a id="h4p_header-dropdown" class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" onfocus="this.blur();"><img class="img-circle h4p_user-thumbnail" data-toggle="tooltip" data-placement="bottom" title="マイページと設定"></a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="h4p_header-dropdown">
 							<li role="presentation"><a href="/m" title="settings">マイページ</a></li>
 							<li role="presentation"><a href="/p" title="settings">設定</a></li>
