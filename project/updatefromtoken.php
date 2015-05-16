@@ -71,7 +71,7 @@ try {
 	if (empty($difference['ID'])) {
 		exit('failed');
 	}
-	$stmt	= $dbh->prepare('INSERT INTO "Line"("ScriptID","Append","CodeID") VALUES(:difference_id,:line,:code_id)');
+	$stmt	= $dbh->prepare('INSERT INTO "Line"("ScriptID","Line","CodeID") VALUES(:difference_id,:line,:code_id)');
 	$stmt->bindValue(":difference_id", $difference['ID'], PDO::PARAM_INT);
 	foreach ($new_code as $key => $value) {
 		$stmt->bindValue(":line", $key, PDO::PARAM_INT);

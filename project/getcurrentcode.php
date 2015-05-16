@@ -15,7 +15,7 @@ function getCurrentCode($project_id)
 		return ''; // プロジェクトが空
 	}
 
-	$stmt	= $dbh->prepare('SELECT "Code"."Value" FROM "Code" INNER JOIN "Line" ON "Line"."CodeID"="Code"."ID" WHERE "Line"."ScriptID"=:script_id ORDER BY "Line"."Append"');
+	$stmt	= $dbh->prepare('SELECT "Code"."Value" FROM "Code" INNER JOIN "Line" ON "Line"."CodeID"="Code"."ID" WHERE "Line"."ScriptID"=:script_id ORDER BY "Line"."Line"');
 	$stmt->bindValue(":script_id", $script_id, PDO::PARAM_INT);
 	$stmt->execute();
 	$lines	= $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
