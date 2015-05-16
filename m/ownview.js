@@ -153,19 +153,21 @@ $(function(){
 		}
 	});
 
-	var $projectItem = $('<div>').addClass('col-lg-6 col-md-12 panel panel-default').append(
-		$('<div>').addClass('panel-heading').append(
-			$('<pre>').addClass('panel-title')
-		)
-	).append(
-		$('<div>').addClass('panel-body').append(
-			$('<p>').append($('<span>').addClass('registered').html('作成日時：<b></b>'))
+	var $projectItem = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12').append(
+		$('<div>').addClass('panel panel-default').append(
+			$('<div>').addClass('panel-heading').append(
+				$('<pre>').addClass('panel-title')
+			)
 		).append(
-			$('<p>').append($('<span>').addClass('source').html('改造元：<b></b>'))
-		).append(
-			$('<button>').addClass('btn btn-lg btn-block btn-default h4p_open-project').text('開く').attr('data-loading-text', 'データの取得中…')
-		).append(
-			$('<button>').addClass('btn btn-link btn-block h4p_delete-project').text('このプロジェクトを削除').attr('data-loading-text', 'お待ちください…')
+			$('<div>').addClass('panel-body').append(
+				$('<p>').append($('<span>').addClass('registered').html('作成日時：<b></b>'))
+			).append(
+				$('<p>').append($('<span>').addClass('source').html('改造元：<b></b>'))
+			).append(
+				$('<button>').addClass('btn btn-lg btn-block btn-default h4p_open-project').text('開く').attr('data-loading-text', 'データの取得中…')
+			).append(
+				$('<button>').addClass('btn btn-link btn-block h4p_delete-project').text('このプロジェクトを削除').attr('data-loading-text', 'お待ちください…')
+			)
 		)
 	);
 	var $projectItem_fixButton = $('<button>').text('元に戻す').addClass('btn btn-link btn-block h4p_fix-project');
