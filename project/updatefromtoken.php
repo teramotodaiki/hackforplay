@@ -3,7 +3,7 @@
 トークンからプロジェクト情報を参照し、データを更新する
 ただし、Project.UserIDと一致するUserIDをもつセッションが必要
 Input:	token , data
-Output:	no-session , invalid-token , already-published , data-is-null , database-error , success
+Output:	no-session , invalid-token , already-published , data-is-null , no-update , database-error , success
 */
 
 require_once '../preload.php';
@@ -40,8 +40,15 @@ if($data === NULL || $data === FALSE){
 	exit('data-is-null');
 }
 try {
+	// 現在のコードを復元
+	require_once 'getcurrentcode.php';
+	$old_code		= getCurrentCode($project['ID']);
+	if ($data === $old_code) {
+		exit('no-update');
+	}
+
 	// 新しいコードのCodeIDを取得する
-	$new_code			= array();
+	$new_code		= array();
 	$code_exp		= explode("\n", $data);
 
 	$stmt_se_code	= $dbh->prepare('SELECT "ID" AS "CodeID" FROM "Code" WHERE "Value"=:value');

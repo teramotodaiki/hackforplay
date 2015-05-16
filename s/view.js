@@ -135,6 +135,7 @@ $(function(){
 							case 'database-error':
 								showAlert('alert-danger', 'データベースエラーにより、更新されませんでした');
 								break;
+							case 'no-update':
 							case 'success':
 								location.href = "/s?id=" + getParam('id') + "&mode=restaging";
 								break;
