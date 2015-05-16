@@ -89,7 +89,8 @@ header {
 }
 
 .h4p_item p,
-.h4p_info-datail p {
+.h4p_info-datail p,
+#h4p_header-dropdown {
 	margin: 0;
 	padding: 0;
 }
