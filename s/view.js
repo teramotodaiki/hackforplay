@@ -70,7 +70,7 @@ $(function(){
 	var alert_on_unload = false;
 	$(window).on('beforeunload', function(event) {
 		if(alert_on_unload){
-			return "制作中のステージは保存されていません。ページを移動しますか？";
+			return "制作中のステージは「マイページ」に保存されています。ただし「ステージ改造コードを実行」を押してから変更した部分は保存されません";
 		}else{
 			event.preventDefault();
 		}
