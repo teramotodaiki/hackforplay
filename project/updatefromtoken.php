@@ -62,16 +62,16 @@ try {
 	}
 
 	// データを格納
-	$stmt	= $dbh->prepare('INSERT INTO "Difference" ("ProjectID","LineNum","Registered") VALUES(:project_id,:line,:empty)');
+	$stmt	= $dbh->prepare('INSERT INTO "Script" ("ProjectID","LineNum","Registered") VALUES(:project_id,:line,:empty)');
 	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
 	$stmt->bindValue(":line", count($new_code), PDO::PARAM_INT);
 	$stmt->bindValue(":empty", '', PDO::PARAM_STR);
 	$stmt->execute();
-	$difference	= array('ID' => $dbh->lastInsertId('Difference'));
+	$difference	= array('ID' => $dbh->lastInsertId('Script'));
 	if (empty($difference['ID'])) {
 		exit('failed');
 	}
-	$stmt	= $dbh->prepare('INSERT INTO "Line"("DifferenceID","Append","CodeID") VALUES(:difference_id,:line,:code_id)');
+	$stmt	= $dbh->prepare('INSERT INTO "Line"("ScriptID","Append","CodeID") VALUES(:difference_id,:line,:code_id)');
 	$stmt->bindValue(":difference_id", $difference['ID'], PDO::PARAM_INT);
 	foreach ($new_code as $key => $value) {
 		$stmt->bindValue(":line", $key, PDO::PARAM_INT);
