@@ -29,6 +29,10 @@ header {
 	background-color: rgb(196, 196, 191);;
 }
 
+#h4p_header-dropdown {
+	background-color: rgba(0,0,0,0);
+}
+
 /* 線の幅・色 */
 header.navbar {
 	border: none;
@@ -38,6 +42,10 @@ header.navbar {
 .h4p_restaging,
 .h4p_mapTip {
 	border: 1px solid rgb(204, 204, 204);
+}
+
+#h4p_header-dropdown {
+	border-color: rgba(0,0,0,0);
 }
 
 /* 影の色 */

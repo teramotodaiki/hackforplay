@@ -37,6 +37,8 @@ $(function(){
 		// 別タブでGET送信認証していてもlocalStorage経由で結果を得る
 		checkSigninSession(function(result){ authtext(result); }, true);
 	});
+
+	$('[data-toggle="tooltip"]').tooltip()
 });
 </script>
 <header class="navbar navbar-static-top">
@@ -65,7 +67,7 @@ $(function(){
 				<li class="h4p_signin"><button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#authModal">会員登録</button></li>
 				<li class="h4p_signout">
 					<div class="dropdown">
-						<a id="h4p_header-dropdown" class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false"><span class="caret"></span></a>
+						<a id="h4p_header-dropdown" class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" onfocus="this.blur();"><img src="../m/tmpthumb_man.png" height="41" width="44" alt="" data-toggle="tooltip" data-placement="bottom" title="マイページと設定"></a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="h4p_header-dropdown">
 							<li role="presentation"><a href="/m" title="settings">マイページ</a></li>
 							<li role="presentation"><a href="/p" title="settings">設定</a></li>
