@@ -169,7 +169,6 @@ $(function() {
 
 	$('#setPassword').submit(function(event) {
 		event.preventDefault();
-		var submit = $(this).find('button[type="submit"]').button('loading');
 
 		var password = $(this).find('#password').val();
 		var confirm = $(this).find('#confirm').val();
@@ -190,6 +189,7 @@ $(function() {
 			return;
 		}
 
+		var submit = $(this).find('button[type="submit"]').button('loading');
 		$.post('/auth/updateuserinfoimmediately.php', {
 			'password' : password
 		}, function(data, textStatus, xhr) {
