@@ -1,5 +1,6 @@
 <?php
-// Require before processing
+// Develop: E_ALL, Release: 0
+error_reporting(E_ALL);
 
 // 1.Generate PDO object (connecting mysql)
 $pdo = null;
