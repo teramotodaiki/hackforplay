@@ -6,21 +6,21 @@ function getCurrentCode($project_id)
 {
 	global $dbh;
 
-	$stmt	= $dbh->prepare('SELECT "LineNum" FROM "Difference" WHERE "ProjectID"=:project_id ORDER BY "ID" DESC');
+	// 最も新しい(値の大きい)ScriptIDを取得
+	$stmt	= $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id');
 	$stmt->bindValue("project_id", $project_id, PDO::PARAM_INT);
 	$stmt->execute();
-	$recent	= $stmt->fetch(PDO::FETCH_ASSOC);
-	if (empty($recent)) {
-		$recent	= array('LineNum' => 0);
+	$script_id	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
+	if (empty($script_id)) {
+		return ''; // プロジェクトが空
 	}
 
-	$stmt	= $dbh->prepare('SELECT "Value" FROM "Line" INNER JOIN "Code" ON "Line"."CodeID"="Code"."ID" WHERE "Append"=:each_line AND "DifferenceID" IN (SELECT "ID" FROM "Difference" WHERE "ProjectID"=:project_id) ORDER BY "DifferenceID" DESC');
-	$lines	= array();
-	for ($each_line=0; $each_line < $recent['LineNum']; $each_line++) {
-		$stmt->bindValue(":each_line", $each_line, PDO::PARAM_INT);
-		$stmt->bindValue(":project_id", $project_id, PDO::PARAM_INT);
-		$stmt->execute();
-		$lines[$each_line]	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
+	$stmt	= $dbh->prepare('SELECT "Code"."Value" FROM "Code" INNER JOIN "Line" ON "Line"."CodeID"="Code"."ID" WHERE "Line"."ScriptID"=:script_id ORDER BY "Line"."Line"');
+	$stmt->bindValue(":script_id", $script_id, PDO::PARAM_INT);
+	$stmt->execute();
+	$lines	= $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+	if (empty($lines)) {
+		return '';
 	}
 
 	$code	= implode("\n", $lines);
