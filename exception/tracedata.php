@@ -2,10 +2,10 @@
 /*
 Message, Code, File, Lineの組み合わせでテーブルに格納し、Attendanceとひも付けて例外を格納する
 Example:
-require_once '../exception/setexceptiondata.php';
-setExceptionData($e);
+require_once '../exception/tracedata.php';
+traceData($e);
 */
-function setExceptionData($exception, $token=NULL)
+function traceData($exception, $token=NULL)
 {
 	global $dbh;
 
