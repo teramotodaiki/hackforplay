@@ -9,6 +9,15 @@ function traceData($exception, $token=NULL)
 {
 	global $dbh;
 
+	/* DEVELOPPING MODE OR RELEASE MODE --- */
+	$trace_mode = 'dump'; // dump or other
+
+	if ($trace_mode === 'dump') {
+		var_dump($exception);
+		return TRUE;
+	}
+	/* --- DEVELOPPING MODE OR RELEASE MODE */
+
 	// Exceptionを探索
 	$stmt	= $dbh->prepare('SELECT "ID" FROM "ExceptionData" WHERE "Message"=:message AND "Code"=:code AND "File"=:flie AND "Line"=:line');
 	$stmt->bindValue(":message", $exception->getMessage(), PDO::PARAM_STR);
