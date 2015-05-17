@@ -17,30 +17,25 @@ function setData($attendance_id, $data)
 		$key_string		= (string)$key;
 		$value_string	= (string)$value;
 
-		try {
-			// 1.KeyValueData.IDを取得する
-			$stmt_se_data->bindValue(":key_string", $key_string, PDO::PARAM_STR);
-			$stmt_se_data->bindValue(":value_string", $value_string, PDO::PARAM_STR);
-			$stmt_se_data->execute();
-			$key_value_data	= $stmt_se_data->fetch(PDO::FETCH_ASSOC);
+		// 1.KeyValueData.IDを取得する
+		$stmt_se_data->bindValue(":key_string", $key_string, PDO::PARAM_STR);
+		$stmt_se_data->bindValue(":value_string", $value_string, PDO::PARAM_STR);
+		$stmt_se_data->execute();
+		$key_value_data	= $stmt_se_data->fetch(PDO::FETCH_ASSOC);
 
-			if (empty($key_value_data)) {
-				// 2.KeyValueDataを作成し、IDを取得する
-				$stmt_in_data->bindValue(":key_string", $key_string, PDO::PARAM_STR);
-				$stmt_in_data->bindValue(":value_string", $value_string, PDO::PARAM_STR);
-				$stmt_in_data->execute();
-				$key_value_data = array('ID' => $dbh->lastInsertId('KeyValueData'));
-			}
-
-			// 3.Mapに新しい行を追加する
-			$stmt_in_map->bindValue(":attendance_id", $attendance_id, PDO::PARAM_INT);
-			$stmt_in_map->bindValue(":key_value_data_id", $key_value_data['ID'], PDO::PARAM_INT);
-			$stmt_in_map->execute();
-
-		} catch (PDOException $e) {
-			print_r($e);
-			die();
+		if (empty($key_value_data)) {
+			// 2.KeyValueDataを作成し、IDを取得する
+			$stmt_in_data->bindValue(":key_string", $key_string, PDO::PARAM_STR);
+			$stmt_in_data->bindValue(":value_string", $value_string, PDO::PARAM_STR);
+			$stmt_in_data->execute();
+			$key_value_data = array('ID' => $dbh->lastInsertId('KeyValueData'));
 		}
+
+		// 3.Mapに新しい行を追加する
+		$stmt_in_map->bindValue(":attendance_id", $attendance_id, PDO::PARAM_INT);
+		$stmt_in_map->bindValue(":key_value_data_id", $key_value_data['ID'], PDO::PARAM_INT);
+		$stmt_in_map->execute();
+
 	}
 }
 ?>

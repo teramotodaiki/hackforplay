@@ -1,5 +1,8 @@
 <?php
 /*
+
+/// 旧仕様 削除対象 ///
+
 Sign in/Sign upにかかわらず、ひとまずメールアドレスの存在チェックを行う
 Input:	メールアドレス(POST)
 Output:	invalid , available または reserved-{service} の配列を格納したJSONデータ
@@ -11,12 +14,13 @@ available : メールアドレスが存在しない（利用可能）
 
 require_once '../preload.php';
 
-$email 	= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-if($email === FALSE || $email === NULL){
-	exit('invalid');
-}
-
 try {
+
+	$email 	= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+	if($email === FALSE || $email === NULL){
+		exit('invalid');
+	}
+
 	$stmt 	= $dbh->prepare('SELECT "Type" FROM "Account" WHERE "Email"=:Email AND "State"=:connected');
 	$stmt->bindValue(":Email", $email, PDO::PARAM_STR);
 	$stmt->bindValue(":connected", "connected", PDO::PARAM_STR);
@@ -29,8 +33,10 @@ try {
 		$json = json_encode($result);
 		exit($json);
 	}
-} catch (PDOException $e) {
-	print_r($e);
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
 

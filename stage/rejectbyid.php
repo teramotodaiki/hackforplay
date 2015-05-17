@@ -7,12 +7,13 @@ Ouput:	failed , success
 
 require_once '../preload.php';
 
-$stage_id 	= filter_input(INPUT_POST, 'stage_id', FILTER_VALIDATE_INT);
-if ($stage_id === FALSE || $stage_id === NULL) {
-	exit('failed');
-}
-
 try {
+
+	$stage_id 	= filter_input(INPUT_POST, 'stage_id', FILTER_VALIDATE_INT);
+	if ($stage_id === FALSE || $stage_id === NULL) {
+		exit('failed');
+	}
+
 	$stmt	= $dbh->prepare('UPDATE "Stage" SET "State"=:rejected WHERE "ID"=:stage_id');
 	$stmt->bindValue(":rejected", 'rejected', PDO::PARAM_STR);
 	$stmt->bindValue(":stage_id", $stage_id, PDO::PARAM_INT);
@@ -21,11 +22,11 @@ try {
 		exit('failed');
 	}
 
-} catch (PDOException $e) {
-	print_r($e);
+	exit('success');
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
-
-exit('success');
-
 ?>

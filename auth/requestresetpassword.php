@@ -8,12 +8,14 @@ code: 6桁の数値 [100000-999999]
 
 require_once '../preload.php';
 
-// アカウントの照会
-$email 		= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-if ($email === NULL || $email === FALSE) {
-	exit('invalid-email');
-}
 try {
+
+	// アカウントの照会
+	$email 		= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+	if ($email === NULL || $email === FALSE) {
+		exit('invalid-email');
+	}
+
 	$stmt		= $dbh->prepare('SELECT "UserID" FROM "Account" WHERE "Type"=:hackforplay AND "State"=:connected AND "Email"=:email');
 	$stmt->bindValue(":hackforplay", 'hackforplay', PDO::PARAM_STR);
 	$stmt->bindValue(":connected", 'connected', PDO::PARAM_STR);
@@ -25,17 +27,12 @@ try {
 	}
 	$userid 	= $account['UserID'];
 
-} catch (PDOException $e) {
-	print_r($e);
-	die();
-}
+	// コードの生成
+	$code		= (string)mt_rand(100000, 999999); // [100000-999999]
+	$hashed		= password_hash($code, PASSWORD_DEFAULT);
+	$registered	= (new DateTime())->format('Y-m-d H:i:s');
+	$expired	= (new DateTime())->modify('+1 day')->format('Y-m-d H:i:s');
 
-// コードの生成
-$code		= (string)mt_rand(100000, 999999); // [100000-999999]
-$hashed		= password_hash($code, PASSWORD_DEFAULT);
-$registered	= (new DateTime())->format('Y-m-d H:i:s');
-$expired	= (new DateTime())->modify('+1 day')->format('Y-m-d H:i:s');
-try {
 	$stmt	= $dbh->prepare('INSERT INTO "AuthorizeRequest" ("UserID","Email","Hashed","State","Registered","Expired") VALUES(:userid,:email,:hashed,:unused,:registered,:expired)');
 	$stmt->bindValue(":userid", $userid, PDO::PARAM_INT);
 	$stmt->bindValue(":email", $email, PDO::PARAM_STR);
@@ -48,23 +45,22 @@ try {
 		exit('database-error');
 	}
 
-} catch (PDOException $e) {
-	print_r($e);
+	// メールの送信
+	require_once 'sendmail.php';
+	$sendGridMail	= createNewMail();
+	$sendGridMail
+	    ->addTo($email)
+	    ->setFrom('noreply@hackforplay.xyz')
+	    ->setSubject('パスワードのリセット - HackforPlay')
+	    ->setText('確認コード：' . $code)
+	    ->setHtml('確認コード： <strong>' . $code . '</strong><br>');
+	trySending($sendGridMail);
+
+	exit('success');
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
-
-// メールの送信
-require_once 'sendmail.php';
-$sendGridMail	= createNewMail();
-$sendGridMail
-    ->addTo($email)
-    ->setFrom('noreply@hackforplay.xyz')
-    ->setSubject('パスワードのリセット - HackforPlay')
-    ->setText('確認コード：' . $code)
-    ->setHtml('確認コード： <strong>' . $code . '</strong><br>');
-trySending($sendGridMail);
-
-die($code);
-exit('success');
-
 ?>

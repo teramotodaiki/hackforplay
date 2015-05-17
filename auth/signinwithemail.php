@@ -7,14 +7,15 @@ Output:	invalid-email , unregistered , incorrect-password , success
 
 require_once '../preload.php';
 
-$email 	= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-if($email === FALSE || $email === NULL){
-	exit('invalid-email');
-}
-$password = filter_input(INPUT_POST, 'password');
-
-// Emailよりアカウントを確認
 try {
+
+	$email 	= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+	if($email === FALSE || $email === NULL){
+		exit('invalid-email');
+	}
+	$password = filter_input(INPUT_POST, 'password');
+
+	// Emailよりアカウントを確認
 	$stmt 	= $dbh->prepare('SELECT "ID","UserID","Hashed" FROM "Account" WHERE "Email"=:email AND "Type"=:hackforplay AND "State"=:connected');
 	$stmt->bindValue(":email", $email);
 	$stmt->bindValue(":hackforplay", "hackforplay");
@@ -25,28 +26,28 @@ try {
 		exit("unregistered");
 	}
 
-} catch (PDOException $e) {
-	print_r($e);
+	// パスワードを照会する
+	$confirmed = NULL;
+	foreach ($result as $key => $value) {
+		if(password_verify($password, $value['Hashed'])){
+			$confirmed = $value;
+			break;
+		}
+	}
+	if($confirmed === NULL){
+		exit("incorrect-password");
+	}
+
+	// セッションをつくる
+	session_start();
+	$_SESSION['UserID'] = $confirmed['UserID'];
+	session_commit();
+
+	exit("success");
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
-
-// パスワードを照会する
-$confirmed = NULL;
-foreach ($result as $key => $value) {
-	if(password_verify($password, $value['Hashed'])){
-		$confirmed = $value;
-		break;
-	}
-}
-if($confirmed === NULL){
-	exit("incorrect-password");
-}
-
-// セッションをつくる
-session_start();
-$_SESSION['UserID'] = $confirmed['UserID'];
-session_commit();
-
-exit("success");
-
- ?>
+?>

@@ -14,33 +14,34 @@ user-info:
 
 require_once '../preload.php';
 
-if (!isset($session_userid)) {
-	exit('no-session');
-}
-
 try {
+
+	if (!isset($session_userid)) {
+		exit('no-session');
+	}
+
 	$stmt 	= $dbh->prepare('SELECT "Gender","Nickname","Birthday","TimezoneName","TimezoneOffset" FROM "User" WHERE "ID"=:userid');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-} catch (PDOException $e) {
-	print_r($e);
+	$user_info 	= new stdClass();
+	$user_info->gender 		= $result['Gender'];
+	$user_info->nickname 	= $result['Nickname'];
+	$user_info->birthday	= $result['Birthday'];
+	$user_info->timezone_name	= $result['TimezoneName'];
+	$user_info->timezone_offset	= $result['TimezoneOffset'];
+
+	$json 	= json_encode($user_info);
+	if (!$json) {
+		exit('parse-error');
+	}
+	exit($json);
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
-
-$user_info 	= new stdClass();
-$user_info->gender 		= $result['Gender'];
-$user_info->nickname 	= $result['Nickname'];
-$user_info->birthday	= $result['Birthday'];
-$user_info->timezone_name	= $result['TimezoneName'];
-$user_info->timezone_offset	= $result['TimezoneOffset'];
-
-$json 	= json_encode($user_info);
-if (!$json) {
-	exit('parse-error');
-}
-
-exit($json);
 
 ?>
