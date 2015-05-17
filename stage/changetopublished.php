@@ -7,18 +7,19 @@ Output:	no-session , database-error
 
 require_once '../preload.php';
 
-// セッションを取得
-if (!isset($session_userid)) {
-	exit('no-session');
-}
-
-$stage_id = filter_input(INPUT_POST, 'stage_id', FILTER_VALIDATE_INT);
-if ($stage_id === FALSE || $stage_id === NULL) {
-	exit();
-}
-
-// 状態を変更
 try {
+
+	// セッションを取得
+	if (!isset($session_userid)) {
+		exit('no-session');
+	}
+
+	$stage_id = filter_input(INPUT_POST, 'stage_id', FILTER_VALIDATE_INT);
+	if ($stage_id === FALSE || $stage_id === NULL) {
+		exit();
+	}
+
+	// 状態を変更
 	$stmt	= $dbh->prepare('UPDATE "Stage" SET "State"=:published WHERE "ID"=:stage_id AND "UserID"=:userid AND "State"=:private');
 	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 	$stmt->bindValue(":stage_id", $stage_id, PDO::PARAM_INT);
@@ -29,11 +30,11 @@ try {
 		exit('database-error');
 	}
 
-} catch (PDOException $e) {
-	print_r($e);
+	exit('success');
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
-
-exit('success');
-
 ?>

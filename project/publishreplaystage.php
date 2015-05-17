@@ -7,22 +7,24 @@ Output:	no-session , invalid-token , already-published , database-error , succes
 
 require_once '../preload.php';
 
-// セッションを取得
-if (!isset($session_userid)) {
-	exit('no-session');
-}
-
-$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
-if($timezone === FALSE || $timezone === NULL){
-	$timezone = '+00:00';
-}
-
-// プロジェクト情報を取得
-$token = filter_input(INPUT_POST, 'token');
-if($token === NULL || $token === FALSE){
-	exit('invalid-token');
-}
 try {
+
+	// セッションを取得
+	if (!isset($session_userid)) {
+		exit('no-session');
+	}
+
+	$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
+	if($timezone === FALSE || $timezone === NULL){
+		$timezone = '+00:00';
+	}
+
+	// プロジェクト情報を取得
+	$token = filter_input(INPUT_POST, 'token');
+	if($token === NULL || $token === FALSE){
+		exit('invalid-token');
+	}
+
 	$stmt	= $dbh->prepare('SELECT "ID","SourceStageID","PublishedStageID" FROM "Project" WHERE "Token"=:token');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->execute();
@@ -33,27 +35,22 @@ try {
 		exit('already-published');
 	}
 
-} catch (PDOException $e) {
-	print_r($e);
-	die();
-}
+	// サムネイルを作成
+	$thumb	= filter_input(INPUT_POST, 'thumb');
 
-// サムネイルを作成
-$thumb	= filter_input(INPUT_POST, 'thumb');
+	$thumb = preg_replace('/data:[^,]+,/i', '', $thumb); //ヘッダに「data:image/png;base64,」が付いているので、それは外す
+	$thumb = base64_decode($thumb); //残りのデータはbase64エンコードされているので、デコードする
+	$image = imagecreatefromstring($thumb); //まだ文字列の状態なので、画像リソース化
+	imagesavealpha($image, TRUE); // 透明色の有効
+	// random name
+	$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
+	$thumb_url	= '/s/thumbs/'.bin2hex($bytes).'.png'; // binaly to hex
+	imagepng($image, '..' . $thumb_url); // 相対パス
 
-$thumb = preg_replace('/data:[^,]+,/i', '', $thumb); //ヘッダに「data:image/png;base64,」が付いているので、それは外す
-$thumb = base64_decode($thumb); //残りのデータはbase64エンコードされているので、デコードする
-$image = imagecreatefromstring($thumb); //まだ文字列の状態なので、画像リソース化
-imagesavealpha($image, TRUE); // 透明色の有効
-// random name
-$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
-$thumb_url	= '/s/thumbs/'.bin2hex($bytes).'.png'; // binaly to hex
-imagepng($image, '..' . $thumb_url); // 相対パス
+	// ステージを作成
+	$path	= filter_input(INPUT_POST, 'path');
+	$title	= filter_input(INPUT_POST, 'title');
 
-// ステージを作成
-$path	= filter_input(INPUT_POST, 'path');
-$title	= filter_input(INPUT_POST, 'title');
-try{
 	$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","Path","Title","State","Thumbnail","SourceID","Registered") VALUES(:userid,:replay,:projectid,:input_path,:input_title,:judging,:thumb_url,:project_sourceid,:gmt)');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
@@ -68,22 +65,18 @@ try{
 	if (!$flag) {
 		exit('database-error');
 	}
-}catch(PDOException $e) {
-	print_r($e);
-	die();
-}
 
-// ステージIDをProjectに関連づける
-try {
+	// ステージIDをProjectに関連づける
 	$stmt	= $dbh->prepare('UPDATE "Project" SET "PublishedStageID"=:lastinsertid WHERE "ID"=:projectid');
 	$stmt->bindValue(":lastinsertid", $dbh->lastInsertId('Stage'), PDO::PARAM_INT);
 	$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
 	$stmt->execute();
 
-} catch (PDOException $e) {
-	print_r($e);
+	exit('success');
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
-
-exit('success');
 ?>

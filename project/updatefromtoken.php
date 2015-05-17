@@ -8,16 +8,18 @@ Output:	no-session , invalid-token , already-published , data-is-null , no-updat
 
 require_once '../preload.php';
 
-if (!isset($session_userid)) {
-	exit('no-session');
-}
-
-// プロジェクト情報を取得
-$token = filter_input(INPUT_POST, 'token');
-if($token === NULL || $token === FALSE){
-	exit('invalid-token');
-}
 try {
+
+	if (!isset($session_userid)) {
+		exit('no-session');
+	}
+
+	// プロジェクト情報を取得
+	$token = filter_input(INPUT_POST, 'token');
+	if($token === NULL || $token === FALSE){
+		exit('invalid-token');
+	}
+
 	$stmt	= $dbh->prepare('SELECT "ID","PublishedStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
@@ -29,17 +31,12 @@ try {
 		exit('already-published');
 	}
 
-} catch (PDOException $e) {
-	print_r($e);
-	die();
-}
+	// データを更新
+	$data 			= filter_input(INPUT_POST, 'data');
+	if($data === NULL || $data === FALSE){
+		exit('data-is-null');
+	}
 
-// データを更新
-$data 			= filter_input(INPUT_POST, 'data');
-if($data === NULL || $data === FALSE){
-	exit('data-is-null');
-}
-try {
 	// 現在のコードを復元
 	require_once 'getcurrentcode.php';
 	$old_code		= getCurrentCode($project['ID']);
@@ -86,11 +83,11 @@ try {
 		$stmt->execute();
 	}
 
-} catch (PDOException $e) {
-	print_r($e);
+	exit('success');
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
-
-exit('success');
-
 ?>

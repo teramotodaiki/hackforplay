@@ -10,32 +10,33 @@ information_of_project:
 
 require_once '../preload.php';
 
-$project_id = filter_input(INPUT_POST, 'project_id', FILTER_VALIDATE_INT);
-if ($project_id === FALSE || $project_id === NULL) {
-	exit();
-}
-
-// プロジェクトの情報を取得
 try {
+
+	$project_id = filter_input(INPUT_POST, 'project_id', FILTER_VALIDATE_INT);
+	if ($project_id === FALSE || $project_id === NULL) {
+		exit();
+	}
+
+	// プロジェクトの情報を取得
 	require_once '../project/getcurrentcode.php';
 	$code	= getCurrentCode($project_id);
 
-} catch (PDOException $e) {
-	print_r($e);
+	// データを格納
+	$item 		= new stdClass();
+	$item->data = $code;
+
+	// 出力
+	$json = json_encode($item);
+
+	if ($json === FALSE) {
+		exit('parse-error');
+	}
+
+	echo $json;
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
-
-// データを格納
-$item 		= new stdClass();
-$item->data = $code;
-
-// 出力
-$json = json_encode($item);
-
-if ($json === FALSE) {
-	exit('parse-error');
-}
-
-echo $json;
-
 ?>

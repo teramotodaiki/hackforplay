@@ -7,12 +7,13 @@ Ouput:	failed , success
 
 require_once '../preload.php';
 
-$stage_id 	= filter_input(INPUT_POST, 'stage_id', FILTER_VALIDATE_INT);
-if ($stage_id === FALSE || $stage_id === NULL) {
-	exit('failed');
-}
-
 try {
+
+	$stage_id 	= filter_input(INPUT_POST, 'stage_id', FILTER_VALIDATE_INT);
+	if ($stage_id === FALSE || $stage_id === NULL) {
+		exit('failed');
+	}
+
 	$stmt	= $dbh->prepare('SELECT "ID" FROM "Stage" WHERE "ID"=:stage_id AND "State"=:judging');
 	$stmt->bindValue(":stage_id", $stage_id, PDO::PARAM_INT);
 	$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
@@ -21,12 +22,6 @@ try {
 		exit('failed');
 	}
 
-} catch (PDOException $e) {
-	print_r($e);
-	die();
-}
-
-try {
 	$stmt	= $dbh->prepare('UPDATE "Stage" SET "State"=:published,"Published"=:gmt WHERE "ID"=:stage_id');
 	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . date("P"), PDO::PARAM_STR); // サーバー時刻
@@ -36,11 +31,11 @@ try {
 		exit('failed');
 	}
 
-} catch (PDOException $e) {
-	print_r($e);
+	exit('success');
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
-
-exit('success');
-
 ?>

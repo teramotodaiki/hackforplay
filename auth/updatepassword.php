@@ -7,19 +7,20 @@ Output:	no-session , invalid-password , incorrect-password , update-failed , suc
 
 require_once '../preload.php';
 
-if(!isset($session_userid)){
-	exit('no-session');
-}
-
-// Validation
-$current = filter_input(INPUT_POST, 'current');
-$password = filter_input(INPUT_POST, 'password');
-if($password === FALSE || strlen($password) < 8){
-	exit('invalid-password');
-}
-
-// パスワードを照会
 try {
+
+	if(!isset($session_userid)){
+		exit('no-session');
+	}
+
+	// Validation
+	$current = filter_input(INPUT_POST, 'current');
+	$password = filter_input(INPUT_POST, 'password');
+	if($password === FALSE || strlen($password) < 8){
+		exit('invalid-password');
+	}
+
+	// パスワードを照会
 	$stmt 	= $dbh->prepare('SELECT "ID","Hashed" FROM "Account" WHERE "UserID"=:userid AND "Type"=:hackforplay AND "State"=:connected');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":hackforplay", 'hackforplay', PDO::PARAM_STR);
@@ -30,14 +31,8 @@ try {
 		exit('incorrect-password');
 	}
 
-} catch (PDOException $e) {
-	print_r($e);
-	die();
-}
-
-// パスワードを更新
-$hashed = password_hash($password, PASSWORD_DEFAULT);
-try {
+	// パスワードを更新
+	$hashed = password_hash($password, PASSWORD_DEFAULT);
 	$stmt 	= $dbh->prepare('UPDATE "Account" SET "Hashed"=:hashed WHERE "UserID"=:account_id');
 	$stmt->bindValue(":hashed", $hashed, PDO::PARAM_STR);
 	$stmt->bindValue(":account_id", $account['ID'], PDO::PARAM_INT);
@@ -45,11 +40,12 @@ try {
 	if (!$flag) {
 		exit('update-failed');
 	}
-} catch (PDOException $e) {
-	print_r($e);
+
+	exit('success');
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
-
-exit('success');
-
 ?>

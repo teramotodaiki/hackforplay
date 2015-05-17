@@ -7,14 +7,14 @@ Output:	invalid-email , already-confirmed , incorrect-password , valid-but-faile
 
 require_once '../preload.php';
 
-$password = filter_input(INPUT_POST, "password");
-$email 	= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-if($email === FALSE){
-	exit('invalid-email');
-}
-
-// disconnected でないアカウント情報をすべて取得
 try {
+	$password = filter_input(INPUT_POST, "password");
+	$email 	= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+	if($email === FALSE){
+		exit('invalid-email');
+	}
+
+	// disconnected でないアカウント情報をすべて取得
 	$stmt 	= $dbh->prepare('SELECT "ID","UserID","Hashed","State" FROM "Account" WHERE "Email"=:email AND "State"!=:disconnected AND "Type"=:hackforplay');
 	$stmt->bindValue(":email", $email);
 	$stmt->bindValue(":disconnected", "disconnected");
@@ -22,40 +22,33 @@ try {
 	$stmt->execute();
 	$result	= $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-} catch (PDOException $e) {
-	print_r($e);
-	die();
-}
-
-// すでに connected なアカウントがある場合
-foreach ($result as $key => $value) {
-	if ($value["State"] === 'connected') {
-		exit('already-confirmed');
+	// すでに connected なアカウントがある場合
+	foreach ($result as $key => $value) {
+		if ($value["State"] === 'connected') {
+			exit('already-confirmed');
+		}
 	}
-}
 
-// いずれかに整合するなら、Accountを保存する
-$confirmed = NULL;
-foreach ($result as $key => $value) {
-	if(password_verify($password, $value['Hashed'])){
-		$confirmed = $value;
-		break;
+	// いずれかに整合するなら、Accountを保存する
+	$confirmed = NULL;
+	foreach ($result as $key => $value) {
+		if(password_verify($password, $value['Hashed'])){
+			$confirmed = $value;
+			break;
+		}
 	}
-}
-if($confirmed === NULL){
-	exit("incorrect-password");
-}
+	if($confirmed === NULL){
+		exit("incorrect-password");
+	}
 
+	// セッションを作成
+	session_start();
+	$_SESSION['UserID'] = $confirmed['UserID'];
+	$_SESSION['SignupImmediately'] = 'immediately';
 
-// セッションを作成
-session_start();
-$_SESSION['UserID'] = $confirmed['UserID'];
-$_SESSION['SignupImmediately'] = 'immediately';
+	session_commit();
 
-session_commit();
-
-// アカウントのStateをconnectedに
-try {
+	// アカウントのStateをconnectedに
 	$stmt	= $dbh->prepare('UPDATE "Account" SET "State"=:connected WHERE "ID"=:confirmed_id');
 	$stmt->bindValue(":connected", "connected");
 	$stmt->bindValue("confirmed_id", $confirmed['ID'], PDO::PARAM_INT);
@@ -64,13 +57,7 @@ try {
 		exit("valid-but-failed");
 	}
 
-} catch (PDOException $e) {
-	print_r($e);
-	die();
-}
-
-// 同じメールアドレスで作られたHackforPlayアカウントのすべての unconfirmed なアカウントを disconnected に
-try {
+	// 同じメールアドレスで作られたHackforPlayアカウントのすべての unconfirmed なアカウントを disconnected に
 	$stmt	= $dbh->prepare('UPDATE "Account" SET "State"=:disconnected WHERE "Type"=:hackforplay AND "email"=:email AND "State"=:unconfirmed');
 	$stmt->bindValue(":disconnected", "disconnected");
 	$stmt->bindValue(":hackforplay", "hackforplay");
@@ -78,11 +65,11 @@ try {
 	$stmt->bindValue(":unconfirmed", "unconfirmed");
 	$stmt->execute();
 
-} catch (PDOException $e) {
-	print_r($e);
+	exit("success");
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
-
-exit("success");
-
- ?>
+?>

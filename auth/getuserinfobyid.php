@@ -12,16 +12,17 @@ user-info:
 
 require_once '../preload.php';
 
-if (!isset($session_userid)) {
-	exit('no-session');
-}
-
-$id 	= filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-if ($id === NULL || $id === FALSE) {
-	exit('missing-user');
-}
-
 try {
+
+	if (!isset($session_userid)) {
+		exit('no-session');
+	}
+
+	$id 	= filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+	if ($id === NULL || $id === FALSE) {
+		exit('missing-user');
+	}
+
 	$stmt 	= $dbh->prepare('SELECT "Gender","Nickname" FROM "User" WHERE "ID"=:input_id');
 	$stmt->bindValue(":input_id", $id, PDO::PARAM_INT);
 	$stmt->execute();
@@ -30,20 +31,20 @@ try {
 		exit('missing-user');
 	}
 
-} catch (PDOException $e) {
-	print_r($e);
+	$user_info 	= new stdClass();
+	$user_info->gender 		= $result['Gender'];
+	$user_info->nickname 	= $result['Nickname'];
+
+	$json 	= json_encode($user_info);
+	if (!$json) {
+		exit('parse-error');
+	}
+
+	exit($json);
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
 	die();
 }
-
-$user_info 	= new stdClass();
-$user_info->gender 		= $result['Gender'];
-$user_info->nickname 	= $result['Nickname'];
-
-$json 	= json_encode($user_info);
-if (!$json) {
-	exit('parse-error');
-}
-
-exit($json);
-
 ?>
