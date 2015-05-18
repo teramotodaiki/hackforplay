@@ -50,13 +50,15 @@ try {
 	// ステージを作成
 	$path	= filter_input(INPUT_POST, 'path');
 	$title	= filter_input(INPUT_POST, 'title');
+	$explain= filter_input(INPUT_POST, 'explain');
 
-	$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","Path","Title","State","Thumbnail","SourceID","Registered") VALUES(:userid,:replay,:projectid,:input_path,:input_title,:judging,:thumb_url,:project_sourceid,:gmt)');
+	$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","Path","Title","Explain","State","Thumbnail","SourceID","Registered") VALUES(:userid,:replay,:projectid,:input_path,:input_title,:input_explain,:judging,:thumb_url,:project_sourceid,:gmt)');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
 	$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
 	$stmt->bindValue(":input_path", $path, PDO::PARAM_STR);
 	$stmt->bindValue(":input_title", $title, PDO::PARAM_STR);
+	$stmt->bindValue(":input_explain", $explain, PDO::PARAM_STR);
 	$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
 	$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
 	$stmt->bindValue(":project_sourceid", $project['SourceStageID'], PDO::PARAM_INT);
