@@ -202,6 +202,7 @@ $(function(){
 				});
 				$("#publish-button").on('click', function() {
 					var title = $("#stage-name").val();
+					var explain = $('#stage-explain').val();
 					if(title === ""){ $("#stage-name_alert").show('fast'); }
 					if(title !== ""){
 						$("#inputModal").modal('hide');
@@ -215,6 +216,7 @@ $(function(){
 							'thumb': data,
 							'path': getParam('path'),
 							'title': title,
+							'explain': explain,
 							'timezone': timezone
 						} , function(data, textStatus, xhr) {
 							console.log(data);

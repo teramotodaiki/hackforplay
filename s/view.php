@@ -117,6 +117,11 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 			        		<input type="text" class="form-control" id="stage-name">
 			        		<p id="stage-name_alert" class="alert alert-danger">ステージ名を入力してください。</p>
 			        	</div>
+			        	<div class="form-group">
+			        		<label for="stage-explain" class="control-label">ステージの説明:</label>
+			        		<textarea class="form-control" id="stage-explain"></textarea>
+			        		<p id="stage-explain_alert" class="alert alert-danger" style="display:none;"></p>
+			        	</div>
 			        </form>
 			    </div>
 	    		<div class="modal-footer">
