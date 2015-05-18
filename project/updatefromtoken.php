@@ -37,6 +37,10 @@ try {
 		exit('data-is-null');
 	}
 
+	// ! 1
+	echo microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'] . "\n";
+	$currentTime = microtime(true);
+
 	// 現在のコードを復元
 	require_once 'getcurrentcode.php';
 	$old_code		= getCurrentCode($project['ID']);
@@ -44,14 +48,16 @@ try {
 		exit('no-update');
 	}
 
+	// ! 2
+	echo microtime(true) - $currentTime . "\n";
+	$currentTime = microtime(true);
+
 	// 新しいコードのCodeIDを取得する
 	$new_code		= array();
 	$code_exp		= explode("\n", $data);
 
 	$stmt_se_code	= $dbh->prepare('SELECT "ID" AS "CodeID" FROM "Code" WHERE "Value"=:value');
 	$stmt_in_code	= $dbh->prepare('INSERT INTO "Code" ("Value") VALUES(:value)');
-	// ! Test
-	$insert_count	= 0;
 	foreach ($code_exp as $key => $value) {
 
 		// 1.Code.IDの取得をこころみる
@@ -64,9 +70,12 @@ try {
 			$stmt_in_code->bindValue(":value", $value, PDO::PARAM_STR);
 			$stmt_in_code->execute();
 			$new_code[$key] = $dbh->lastInsertId('Code');
-			$insert_count++;
 		}
 	}
+
+	// ! 3
+	echo microtime(true) - $currentTime . "\n";
+	$currentTime = microtime(true);
 
 	// データを格納
 	$stmt	= $dbh->prepare('INSERT INTO "Script" ("ProjectID","LineNum","Registered") VALUES(:project_id,:line,:empty)');
@@ -86,7 +95,10 @@ try {
 		$stmt->execute();
 	}
 
-	var_dump($insert_count);
+	// ! 4
+	echo microtime(true) - $currentTime . "\n";
+	$currentTime = microtime(true);
+
 	exit;
 	exit('success');
 
