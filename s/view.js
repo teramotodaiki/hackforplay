@@ -119,7 +119,6 @@ $(function(){
 						'data': code
 					}, function(data, textStatus, xhr) {
 						// ! Test
-						alert((new Date().getTime() - currentTime) / 1000);
 						alert(data);
 						location.href = "/s?id=" + getParam('id') + "&mode=restaging";
 
