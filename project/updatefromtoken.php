@@ -37,20 +37,12 @@ try {
 		exit('data-is-null');
 	}
 
-	// ! 1
-	echo microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'] . "\n";
-	$currentTime = microtime(true);
-
 	// 現在のコードを復元
 	require_once 'getcurrentcode.php';
 	$old_code		= getCurrentCode($project['ID']);
 	if ($data === $old_code) {
 		exit('no-update');
 	}
-
-	// ! 2
-	echo microtime(true) - $currentTime . "\n";
-	$currentTime = microtime(true);
 
 	// 新しいコードのCodeIDを取得する
 	$new_code		= array();
@@ -73,10 +65,6 @@ try {
 		}
 	}
 
-	// ! 3
-	echo microtime(true) - $currentTime . "\n";
-	$currentTime = microtime(true);
-
 	// データを格納
 	$stmt	= $dbh->prepare('INSERT INTO "Script" ("ProjectID","LineNum","Registered") VALUES(:project_id,:line,:empty)');
 	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
@@ -95,11 +83,6 @@ try {
 		$stmt->execute();
 	}
 
-	// ! 4
-	echo microtime(true) - $currentTime . "\n";
-	$currentTime = microtime(true);
-
-	exit;
 	exit('success');
 
 } catch (Exception $e) {

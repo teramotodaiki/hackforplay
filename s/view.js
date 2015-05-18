@@ -110,7 +110,6 @@ $(function(){
 				var code = jsEditor.getTextArea().value;
 				sessionStorage.setItem('restaging_code', code);
 				alert_on_unload = false;
-				var currentTime = new Date().getTime();
 				var updateTask = function(){
 					// Update data
 					var token = sessionStorage.getItem('project-token');
@@ -118,11 +117,6 @@ $(function(){
 						'token': token,
 						'data': code
 					}, function(data, textStatus, xhr) {
-						// ! Test
-						alert((new Date().getTime() - currentTime) / 1000);
-						alert(data);
-						location.href = "/s?id=" + getParam('id') + "&mode=restaging";
-
 						console.log(data);
 						loading.button('reset');
 						switch(data){
