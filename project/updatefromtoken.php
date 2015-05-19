@@ -48,10 +48,8 @@ try {
 
 	// 現在のコードを復元
 	require_once 'getcurrentcode.php';
-	$old_code		= getCurrentCode($project['ID'], TRUE);
-	$old_code_serial= implode("\n", $old_code['Value']);
-
-	if ($data === $old_code_serial) {
+	$old_code		= getCurrentCode($project['ID']);
+	if ($data === $old_code) {
 		exit('no-update');
 	}
 
@@ -62,6 +60,10 @@ try {
 	$new_code		= array();
 	$code_exp		= explode("\n", $data);
 
+	// 古いコードのValue-IDテーブルをキャッシュのためにロード
+	require_once 'getcurrentcodeascache.php';
+	$old_code_cache	= getCurrentCodeAsCache($project['ID']);
+
 	// ! 3
 	$currentTime = microtime(true);
 
@@ -70,11 +72,9 @@ try {
 	foreach ($code_exp as $key => $value) {
 
 		// 0.old codeの配列に「同じ行」がないか調べる（キャッシュ）
-		foreach ($old_code['Value'] as $old_code_id => $old_code_value) {
-			if ($old === $old_code_value) {
-				$new_code[$key]	= $old_code_id;
-				continue 2; // 次の$keyへ...
-			}
+		if (isset($old_code_cache[$value])) {
+			$new_code[$key]	= $old_code_cache[$value];
+			continue;
 		}
 
 		// 1.Code.IDの取得をこころみる
@@ -113,13 +113,14 @@ try {
 	// ! 5
 	$currentTime = microtime(true);
 
-	$stmt	= $dbh->prepare('INSERT INTO "Line"("ScriptID","Line","CodeID") VALUES(:difference_id,:line,:code_id)');
-	$stmt->bindValue(":difference_id", $difference['ID'], PDO::PARAM_INT);
+	$placeHolder	= array_fill(0, count($new_code), '(?,?,?)');
+	$stmt	= $dbh->prepare('INSERT INTO "Line"("ScriptID","Line","CodeID") VALUES' . implode(',', $placeHolder));
 	foreach ($new_code as $key => $value) {
-		$stmt->bindValue(":line", $key, PDO::PARAM_INT);
-		$stmt->bindValue(":code_id", $value, PDO::PARAM_INT);
-		$stmt->execute();
+		$stmt->bindValue($key * 3 + 1, $difference['ID'], PDO::PARAM_INT);
+		$stmt->bindValue($key * 3 + 2, $key, PDO::PARAM_INT);
+		$stmt->bindValue($key * 3 + 3, $value, PDO::PARAM_INT);
 	}
+	$stmt->execute();
 
 	// ! 5
 	echo microtime(true) - $currentTime . "\n";
