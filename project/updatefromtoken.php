@@ -20,6 +20,9 @@ try {
 		exit('invalid-token');
 	}
 
+	// ! 1
+	$currentTime = microtime(true);
+
 	$stmt	= $dbh->prepare('SELECT "ID","PublishedStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
@@ -31,14 +34,16 @@ try {
 		exit('already-published');
 	}
 
+	// ! 1
+	echo microtime(true) - $currentTime . "\n";
+
 	// データを更新
 	$data 			= filter_input(INPUT_POST, 'data');
 	if($data === NULL || $data === FALSE){
 		exit('data-is-null');
 	}
 
-	// ! 1
-	echo microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'] . "\n";
+	// ! 2
 	$currentTime = microtime(true);
 
 	// 現在のコードを復元
@@ -50,11 +55,13 @@ try {
 
 	// ! 2
 	echo microtime(true) - $currentTime . "\n";
-	$currentTime = microtime(true);
 
 	// 新しいコードのCodeIDを取得する
 	$new_code		= array();
 	$code_exp		= explode("\n", $data);
+
+	// ! 3
+	$currentTime = microtime(true);
 
 	$stmt_se_code	= $dbh->prepare('SELECT "ID" AS "CodeID" FROM "Code" WHERE "Value"=:value');
 	$stmt_in_code	= $dbh->prepare('INSERT INTO "Code" ("Value") VALUES(:value)');
@@ -75,6 +82,8 @@ try {
 
 	// ! 3
 	echo microtime(true) - $currentTime . "\n";
+
+	// ! 4
 	$currentTime = microtime(true);
 
 	// データを格納
@@ -87,6 +96,13 @@ try {
 	if (empty($difference['ID'])) {
 		exit('failed');
 	}
+
+	// ! 4
+	echo microtime(true) - $currentTime . "\n";
+
+	// ! 5
+	$currentTime = microtime(true);
+
 	$stmt	= $dbh->prepare('INSERT INTO "Line"("ScriptID","Line","CodeID") VALUES(:difference_id,:line,:code_id)');
 	$stmt->bindValue(":difference_id", $difference['ID'], PDO::PARAM_INT);
 	foreach ($new_code as $key => $value) {
@@ -95,9 +111,11 @@ try {
 		$stmt->execute();
 	}
 
-	// ! 4
+	// ! 5
 	echo microtime(true) - $currentTime . "\n";
-	$currentTime = microtime(true);
+
+	// ! Request Time
+	echo microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
 
 	exit;
 	exit('success');
