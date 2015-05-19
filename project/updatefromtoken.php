@@ -48,8 +48,10 @@ try {
 
 	// 現在のコードを復元
 	require_once 'getcurrentcode.php';
-	$old_code		= getCurrentCode($project['ID']);
-	if ($data === $old_code) {
+	$old_code		= getCurrentCode($project['ID'], TRUE);
+	$old_code_serial= implode("\n", $old_code['Value']);
+
+	if ($data === $old_code_serial) {
 		exit('no-update');
 	}
 
@@ -66,6 +68,14 @@ try {
 	$stmt_se_code	= $dbh->prepare('SELECT "ID" AS "CodeID" FROM "Code" WHERE "Value"=:value');
 	$stmt_in_code	= $dbh->prepare('INSERT INTO "Code" ("Value") VALUES(:value)');
 	foreach ($code_exp as $key => $value) {
+
+		// 0.old codeの配列に「同じ行」がないか調べる（キャッシュ）
+		foreach ($old_code['Value'] as $old_code_id => $old_code_value) {
+			if ($old === $old_code_value) {
+				$new_code[$key]	= $old_code_id;
+				continue 2; // 次の$keyへ...
+			}
+		}
 
 		// 1.Code.IDの取得をこころみる
 		$stmt_se_code->bindValue(":value", $value, PDO::PARAM_STR);

@@ -2,7 +2,7 @@
 /*
 そのプロジェクトの現在のコードをシリアライズして文字列として取得する
 */
-function getCurrentCode($project_id)
+function getCurrentCode($project_id, $fetch_array=false)
 {
 	global $dbh;
 
@@ -15,10 +15,20 @@ function getCurrentCode($project_id)
 		return ''; // プロジェクトが空
 	}
 
-	$stmt	= $dbh->prepare('SELECT "Code"."Value" FROM "Code" INNER JOIN "Line" ON "Line"."CodeID"="Code"."ID" WHERE "Line"."ScriptID"=:script_id ORDER BY "Line"."Line"');
+	$stmt	= $dbh->prepare('SELECT "Code"."ID","Code"."Value" FROM "Code" INNER JOIN "Line" ON "Line"."CodeID"="Code"."ID" WHERE "Line"."ScriptID"=:script_id ORDER BY "Line"."Line"');
 	$stmt->bindValue(":script_id", $script_id, PDO::PARAM_INT);
 	$stmt->execute();
-	$lines	= $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+
+	// idとvalueをそれぞれの配列で取得するモード
+	if ($fetch_array) {
+		$result			= array();
+		$result['ID']	= $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+		$result['Value']= $stmt->fetchAll(PDO::FETCH_COLUMN, 1);
+		return $result;
+	}
+
+	// 単一の文字列で取得するモード
+	$lines	= $stmt->fetchAll(PDO::FETCH_COLUMN, 1);
 	if (empty($lines)) {
 		return '';
 	}
