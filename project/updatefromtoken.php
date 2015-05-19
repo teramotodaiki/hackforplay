@@ -48,10 +48,8 @@ try {
 
 	// 現在のコードを復元
 	require_once 'getcurrentcode.php';
-	$old_code		= getCurrentCode($project['ID'], TRUE);
-	$old_code_serial= implode("\n", $old_code['Value']);
-
-	if ($data === $old_code_serial) {
+	$old_code		= getCurrentCode($project['ID']);
+	if ($data === $old_code) {
 		exit('no-update');
 	}
 
@@ -62,6 +60,10 @@ try {
 	$new_code		= array();
 	$code_exp		= explode("\n", $data);
 
+	// 古いコードのValue-IDテーブルをキャッシュのためにロード
+	require_once 'getcurrentcodeascache.php';
+	$old_code_cache	= getCurrentCodeAsCache($project['ID']);
+
 	// ! 3
 	$currentTime = microtime(true);
 
@@ -70,11 +72,9 @@ try {
 	foreach ($code_exp as $key => $value) {
 
 		// 0.old codeの配列に「同じ行」がないか調べる（キャッシュ）
-		foreach ($old_code['Value'] as $old_code_id => $old_code_value) {
-			if ($old === $old_code_value) {
-				$new_code[$key]	= $old_code_id;
-				continue 2; // 次の$keyへ...
-			}
+		if (isset($old_code_cache[$value])) {
+			$new_code[$key]	= $old_code_cache[$value];
+			continue;
 		}
 
 		// 1.Code.IDの取得をこころみる
