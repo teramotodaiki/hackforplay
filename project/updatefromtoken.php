@@ -113,13 +113,14 @@ try {
 	// ! 5
 	$currentTime = microtime(true);
 
-	$stmt	= $dbh->prepare('INSERT INTO "Line"("ScriptID","Line","CodeID") VALUES(:difference_id,:line,:code_id)');
-	$stmt->bindValue(":difference_id", $difference['ID'], PDO::PARAM_INT);
+	$placeHolder	= array_fill(0, count($new_code), '(?,?,?)');
+	$stmt	= $dbh->prepare('INSERT INTO "Line"("ScriptID","Line","CodeID") VALUES' . implode(',', $placeHolder));
 	foreach ($new_code as $key => $value) {
-		$stmt->bindValue(":line", $key, PDO::PARAM_INT);
-		$stmt->bindValue(":code_id", $value, PDO::PARAM_INT);
-		$stmt->execute();
+		$stmt->bindValue($key * 3 + 1, $difference['ID'], PDO::PARAM_INT);
+		$stmt->bindValue($key * 3 + 2, $key, PDO::PARAM_INT);
+		$stmt->bindValue($key * 3 + 3, $value, PDO::PARAM_INT);
 	}
+	$stmt->execute();
 
 	// ! 5
 	echo microtime(true) - $currentTime . "\n";
