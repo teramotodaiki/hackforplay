@@ -10,11 +10,10 @@ function traceData($exception, $token=NULL)
 	global $dbh;
 
 	/* DEVELOPPING MODE OR RELEASE MODE --- */
-	$trace_mode_dump = TRUE; // develop: TRUE
+	$trace_mode_dump = FALSE; // develop: TRUE
 
 	if ($trace_mode_dump) {
 		var_dump($exception);
-		return TRUE;
 	}
 	/* --- DEVELOPPING MODE OR RELEASE MODE */
 
