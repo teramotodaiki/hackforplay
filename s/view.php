@@ -179,7 +179,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 						<a href="/s?id=<?php echo $next; ?>" style="display: block;" title="つぎのステージへ">
 							<img src="img/button_next.png" height="48" width="266" alt="">
 						</a>
-					<?php elseif($id === 106) : // last stage of tutirial ?>
+					<?php elseif($id == 106) : // last stage of tutirial ?>
 						<h3>クリアおめでとうございます！</h3>
 						<p>こんどは、あなたもステージを作ってみましょう</p>
 						<a href="/s?id=201" class="btn btn-success btn-lg" title="今すぐ作る"><h3>今すぐ作る</h3></a>
