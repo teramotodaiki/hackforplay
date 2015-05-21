@@ -5,7 +5,7 @@ Input:	userid
 Output:	no-session , missing-user , parse-error , JSON:{user-info}
 user-info:
 {
-	gender : 性別 (man or woman),
+	gender : 性別 (male or female),
 	nickname : ニックネーム,
 }
 */
