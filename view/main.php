@@ -51,7 +51,7 @@
 			<div class="h4p_landing-main">
 				<div class="h4p_landing-header"></div>
 				<div class="h4p_landing-footer">
-					<a href="javascript:void(0)" title="Try RePlay" data-toggle="modal" data-target="#moreModal"></a>
+					<a href="/r" title="Try RePlay">次に進む</a>
 				</div>
 			</div>
 		</div>
