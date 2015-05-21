@@ -21,6 +21,7 @@ try {
 	}
 
 	$stmt	= $dbh->prepare('SELECT "ID","PublishedStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid');
+	$stmt->fetchAll();
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
