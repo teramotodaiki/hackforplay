@@ -15,10 +15,6 @@ var gameover; // gameoverメソッドも
         var token = __H4PENV__TOKEN;
 
         // クリア状態を送信
-        $.post('clear.php', {'token':token}, function(data, textStatus, xhr) {
-            if(data !== "") console.log(data);
-            if(textStatus !== "") console.log(textStatus);
-        });
 
         // 演出
         var game = enchant.Game.instance;
