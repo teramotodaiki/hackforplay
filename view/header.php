@@ -36,7 +36,7 @@ $(function(){
 					default:
 						var result = $.parseJSON(data);
 						if (result.gender !== undefined) {
-							$('.h4p_user-thumbnail').attr('src', result.gender === 'man' ? '../m/icon_m.png' : '../m/icon_w.png');
+							$('.h4p_user-thumbnail').attr('src', result.gender === 'male' ? '../m/icon_m.png' : '../m/icon_w.png');
 						};
 						break;
 				}

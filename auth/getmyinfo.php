@@ -4,7 +4,7 @@
 Output:	no-session , parse-error , JSON:{user-info}
 user-info:
 {
-	gender : 性別 (man or woman),
+	gender : 性別 (male or female),
 	nickname : ニックネーム,
 	birthday : 生年月日,
 	timezone_name : タイムゾーン

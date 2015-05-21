@@ -16,7 +16,7 @@ try {
 		array_push($invalid_inputs, 'email');
 	}
 	$gender				= filter_input(INPUT_POST, 'gender');
-	if($gender !== "man" && $gender !== "woman"){
+	if($gender !== "male" && $gender !== "female"){
 		array_push($invalid_inputs, 'gender');
 	}
 	$nickname			= filter_input(INPUT_POST, 'nickname');
