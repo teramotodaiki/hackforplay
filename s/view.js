@@ -118,11 +118,6 @@ $(function(){
 						'token': token,
 						'data': code
 					}, function(data, textStatus, xhr) {
-						// ! Test
-						alert((new Date().getTime() - currentTime) / 1000);
-						alert(data);
-						location.href = "/s?id=" + getParam('id') + "&mode=restaging";
-
 						console.log(data);
 						loading.button('reset');
 						switch(data){
