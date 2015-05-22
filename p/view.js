@@ -8,7 +8,9 @@ $(function(){
 
 	// ユーザー情報（Ajaxで取得して、ボタンをアクティブにする）
 	var getInfoTask = function(){
-		$.get('../auth/getmyinfo.php', function(data) {
+		$.post('../auth/getmyinfo.php', {
+			'attendance-token': sessionStorage.getItem('attendance-token')
+		}, function(data, textStatus, xhr) {
 			console.log(data);
 			switch(data){
 				case 'no-session':
@@ -89,7 +91,9 @@ $(function(){
 		var nickname = $(this).find('#nickname').val();
 		var timezone_name = $(this).find('#timezone').val();
 		var timezone_offset = $(this).find('#timezone option:selected').data('offset');
-		var changed = {};
+		var changed = {
+			'attendance-token': sessionStorage.getItem('attendance-token')
+		};
 		if (nickname !== userDefault.nickname) { changed.nickname = nickname; }
 		if (timezone_name !== userDefault.timezone_name) { changed.timezone_name = timezone_name; }
 		if (timezone_offset !== userDefault.timezone_offset) { changed.timezone_offset = timezone_offset; }
@@ -130,7 +134,8 @@ $(function(){
 
 		$.post('../auth/updatepassword.php', {
 			'current': current,
-			'password': password
+			'password': password,
+			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
 			submit.button('reset');
 			console.log(data);

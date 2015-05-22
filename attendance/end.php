@@ -1,7 +1,7 @@
 <?php
 /*
 トークンを取得し、 Attendance レコードを更新する
-Input:	token
+Input:	attendance-token
 */
 
 require_once '../preload.php';
@@ -9,7 +9,7 @@ require_once '../preload.php';
 try {
 
 	// トークンを取得
-	$token = filter_input(INPUT_POST, 'token');
+	$token = filter_input(INPUT_POST, 'attendance-token');
 	if($token === NULL || $token === FALSE){
 		exit();
 	}

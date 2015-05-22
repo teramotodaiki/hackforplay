@@ -1,7 +1,7 @@
 <?php
 /*
 あたえられたトークンから、そのユーザーが制作したプロジェクトの情報を取得する。セッションが必要
-Input:	token
+Input:	token , (attendance-token)
 Output:	no-session , missing-project , parse-error , JSON{information_of_project}
 information_of_project:
 	id : プロジェクトのID,

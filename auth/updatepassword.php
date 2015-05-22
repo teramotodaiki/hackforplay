@@ -1,7 +1,7 @@
 <?php
 /*
 ユーザーのパスワードを更新する。セッションと現在のパスワードが必要
-Input:	current , password
+Input:	current , password , (attendance-token)
 Output:	no-session , invalid-password , incorrect-password , update-failed , success
 */
 

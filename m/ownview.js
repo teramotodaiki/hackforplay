@@ -5,7 +5,7 @@ $(function(){
 	checkSigninSession(function(result){
 		if (result === 'success') {
 			$.post('../auth/getmyinfo.php',{
-				'id': user_id
+				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
 				console.log(data);
 				switch(data){
@@ -83,14 +83,16 @@ $(function(){
 		switch(state){
 			case 'published':
 				$.post('../stage/changetoprivate.php',{
-					'stage_id': id
+					'stage_id': id,
+					'attendance-token': sessionStorage.getItem('attendance-token')
 				}, function(data, textStatus, xhr) {
 					$label.text(data === 'success' ? '非公開にしました' : '失敗しました').removeClass('label-success label-default').addClass('label-info');
 				});
 				break;
 			case 'private':
 				$.post('../stage/changetopublished.php',{
-					'stage_id': id
+					'stage_id': id,
+					'attendance-token': sessionStorage.getItem('attendance-token')
 				}, function(data, textStatus, xhr) {
 					$label.text(data === 'success' ? '公開しました' : '失敗しました').removeClass('label-success label-default').addClass('label-info');
 				});
@@ -99,7 +101,8 @@ $(function(){
 	});
 	// ステージ一覧取得
 	$.post('../stage/fetchmystage.php', {
-		'length': 15
+		'length': 15,
+		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
 		// console.log(data);
 		if (data === 'parse-error') {
@@ -176,7 +179,8 @@ $(function(){
 		var loading = $(this).button('loading');
 		var token = $(this).attr('project-token');
 		$.post('../stage/fetchprojectbytoken.php', {
-			'token': token
+			'token': token,
+			'attendance-token': sessionStorage.getItem('attendance-token')
 		} , function(data, textStatus, xhr) {
 			console.log(data);
 			loading.button('reset');
@@ -202,7 +206,8 @@ $(function(){
 		var token = $(this).attr('project-token');
 		var panel = $(this).parents('.panel');
 		$.post('../project/deletebytoken.php', {
-			'token': token
+			'token': token,
+			'attendance-token': sessionStorage.getItem('attendance-token')
 		} , function(data, textStatus, xhr) {
 			console.log(data);
 			loading.button('reset');
@@ -226,7 +231,8 @@ $(function(){
 		var panel = $(this).parents('.panel');
 		panel.find('.alert').remove();
 		$.post('../project/canceldeletionbytoken.php',{
-			'token': token
+			'token': token,
+			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
 			console.log(data);
 			loading.button('reset');
@@ -248,7 +254,8 @@ $(function(){
 
 	// プロジェクト一覧取得
 	$.post('../stage/fetchmyproject.php',{
-		'length': 15
+		'length': 15,
+		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
 		switch(data){
 			case 'no-session':

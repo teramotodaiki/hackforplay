@@ -2,7 +2,7 @@
 /*
 IDの配列を受け取り、対応するステージの情報を返す。ただしofficialなステージにのみ取得できる
 無効なIDは無視する
-Input:	[id (,,,)] カンマ区切りのID
+Input:	[id (,,,)] カンマ区切りのID , (attendance-token)
 Output:	JSON:{information_of_stages} , parse-error
 information_of_stages:
 {

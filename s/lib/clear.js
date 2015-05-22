@@ -15,6 +15,12 @@ var gameover; // gameoverメソッドも
         var token = __H4PENV__TOKEN;
 
         // クリア状態を送信
+        $.post('../../stage/playlog.php', {
+            'value': 'clear',
+            'attendance-token': sessionStorage.getItem('attendance-token')
+        }, function(data, textStatus, xhr) {
+            console.log(data);
+        });
 
         // 演出
         var game = enchant.Game.instance;

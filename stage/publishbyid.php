@@ -1,7 +1,7 @@
 <?php
 /*
 管理者用API。与えられたIDに該当する審査中のステージを承認し公開する。
-Input:	stage_id
+Input:	stage_id , (attendance-token)
 Ouput:	failed , success
 */
 

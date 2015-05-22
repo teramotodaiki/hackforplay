@@ -1,7 +1,7 @@
 <?php
 /*
 トークンのみからプロジェクトの情報を取得し、セッションのUserIDでステージを投稿する
-Input:	token , thumb , path , title
+Input:	token , thumb , path , title , (attendance-token)
 Output:	no-session , invalid-token , already-published , database-error , success
 */
 

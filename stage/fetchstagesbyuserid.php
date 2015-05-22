@@ -1,7 +1,7 @@
 <?php
 /*
 ユーザーIDをもとに、そのユーザーが公開しているステージを取得する。セッションが必要
-Input:	user_id , length
+Input:	user_id , length , (attendance-token)
 Output:	no-session , missing-user , parse-error , JSON:{information_of_stages}
 information_of_stages:
 {

@@ -1,7 +1,7 @@
 <?php
 /*
 Project IDからプロジェクトの情報を取得する
-Input:	project_id
+Input:	project_id , (attendance-token)
 Output:	(JSON{information_of_project})
 information_of_project:
 	data : ソースコードなどのデータ

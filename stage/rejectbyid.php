@@ -1,7 +1,7 @@
 <?php
 /*
 管理者用API。与えられたIDに該当するステージをリジェクトする。そのステージのステートは問わない。ただしデータは削除されない
-Input:	stage_id
+Input:	stage_id , (attendance-token)
 Ouput:	failed , success
 */
 

@@ -1,6 +1,7 @@
 <?php
 /*
 セッション情報から、自分の情報を取得する
+Input:	(attendance-token)
 Output:	no-session , parse-error , JSON:{user-info}
 user-info:
 {

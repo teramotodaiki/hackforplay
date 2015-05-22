@@ -1,7 +1,7 @@
 <?php
 /*
 セッションIDをもとに、自分が作ったプロジェクトのうち、まだ投稿していないもので、enabledステートのものを取得
-Input:	length
+Input:	length , (attendance-token)
 Output:	no-session , parse-error , JSON:{information_of_projects}
 information_of_projects:
 	values : [

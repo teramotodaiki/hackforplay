@@ -47,7 +47,8 @@ $(function(){
 
 	// 一覧取得
 	$.post('../stage/fetchrecentpublished.php', {
-		'length': 15
+		'length': 15,
+		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
 		console.log(data);
 		if (data === 'parse-error') {
@@ -89,7 +90,8 @@ $(function(){
 	});
 	// 空のステージ一覧
 	$.post('../stage/fetchofficialbyid.php',{
-		'id': '301,302'
+		'id': '301,302',
+		'attendance-token': sessionStorage.getItem('attendance-token')
 	} , function(data, textStatus, xhr) {
 		console.log(data);
 		if (data === 'parse-error') {

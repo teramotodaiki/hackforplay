@@ -27,7 +27,9 @@ $(function(){
 		if(result === "success"){
 			$(".h4p_signin").hide();
 			$(".h4p_signout").show();
-			$.post('../auth/getmyinfo.php',{}, function(data, textStatus, xhr) {
+			$.post('../auth/getmyinfo.php', {
+				'attendance-token': sessionStorage.getItem('attendance-token')
+			}, function(data, textStatus, xhr) {
 				switch(data){
 					case 'no-session':
 					case 'missing-user':

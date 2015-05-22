@@ -247,7 +247,8 @@ $(function() {
 
 		$(this).find('.alert').addClass('hide');
 		$.post('../auth/requestresetpassword.php',{
-			'email': email
+			'email': email,
+			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
 			console.log(data);
 			submit.button('reset');
