@@ -47,7 +47,7 @@ Attendance 情報を送信する
 			async: false,
 			data: {
 				'timezone': timezone,
-				'token': token
+				'attendance-token': token
 			}
 		})
 		.always(function(result){
