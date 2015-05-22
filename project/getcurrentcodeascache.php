@@ -11,7 +11,7 @@ function getCurrentCodeAsCache($project_id)
 
 	if (!$script_id) {
 		// プロジェクトがまだ空の場合、親プロジェクトのプロジェクトの最新のコミットを利用
-		$stmt		= $dbh->prepare('SELECT "ParentID" FROM "Project" WHERE "ProjectID"=:project_id');
+		$stmt		= $dbh->prepare('SELECT "ParentID" FROM "Project" WHERE "ID"=:project_id');
 		$stmt->bindValue("project_id", $project_id, PDO::PARAM_INT);
 		$stmt->execute();
 		$parent_id	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
