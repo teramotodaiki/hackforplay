@@ -389,9 +389,11 @@ var Knight = enchant.Class.create(Player, {
         this.hp = 1;
         this.atk = 1;
         game.onabuttondown = function(){
-            env.player.attack(0, 1);
-            env.player.animCount = 0;
-            env.player.behavior = BehaviorTypes.Attack;
+            if (env.player.behavior === BehaviorTypes.Idle) {
+                env.player.attack(0, 1);
+                env.player.animCount = 0;
+                env.player.behavior = BehaviorTypes.Attack;
+            }
         };
     },
     onenterframe : function(){
