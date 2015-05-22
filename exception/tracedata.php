@@ -5,7 +5,7 @@ Example:
 require_once '../exception/tracedata.php';
 traceData($e);
 */
-function traceData($exception, $token=NULL)
+function traceData($exception)
 {
 	global $dbh;
 
@@ -39,9 +39,10 @@ function traceData($exception, $token=NULL)
 
 	// AttendanceIDを取得
 	$attendance_id		= NULL;
-	if ($token !== NULL) {
+	$attendance_token	= filter_input(INPUT_POST, 'attendance-token');
+	if ($attendance_token !== NULL) {
 		$stmt	= $dbh->prepare('SELECT "ID" FROM  "Attendance" WHERE "Token"=:token');
-		$stmt->bindValue(":token", $token, PDO::PARAM_STR);
+		$stmt->bindValue(":token", $attendance_token, PDO::PARAM_STR);
 		$stmt->execute();
 		$attendance_id	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
 		if (!$attendance_id) {
