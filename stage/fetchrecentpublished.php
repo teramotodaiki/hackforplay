@@ -1,7 +1,7 @@
 <?php
 /*
 最大$max_fetch_length件までのリミット値を受け取り、その個数だけの、すでに公開されたステージを、新しいものから順に出力する
-Input:	length
+Input:	length , (attendance-token)
 Output:	JSON:{information_of_stages} , parse-error
 information_of_stages:
 {

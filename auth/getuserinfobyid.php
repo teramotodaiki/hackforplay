@@ -1,7 +1,7 @@
 <?php
 /*
 ユーザーの情報の一部を取得する。ただしセッションが必要
-Input:	userid
+Input:	userid , (attendance-token)
 Output:	no-session , missing-user , parse-error , JSON:{user-info}
 user-info:
 {

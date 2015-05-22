@@ -1,7 +1,7 @@
 <?php
 /*
 トークンとひも付けられたプロジェクトが、自分のプロジェクトだった場合、ステートをdisabledにする
-Input:	token
+Input:	token , (attendance-token)
 Output: no-session , invalid-token , database-error , success
 */
 

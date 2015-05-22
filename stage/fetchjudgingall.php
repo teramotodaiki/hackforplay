@@ -1,6 +1,7 @@
 <?php
 /*
 judgingステートの全てのステージを、投稿時刻が早い順に取得する。
+Input:	(attendance-token)
 Output: parse-error , JSON:{information_of_stages}
 information_of_stages:
 	values : [

@@ -2,7 +2,7 @@
 /*
 トークンからプロジェクト情報を参照し、データを更新する
 ただし、Project.UserIDと一致するUserIDをもつセッションが必要
-Input:	token , data
+Input:	token , data , (attendance-token)
 Output:	no-session , invalid-token , already-published , data-is-null , no-update , database-error , success
 */
 

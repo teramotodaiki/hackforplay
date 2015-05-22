@@ -1,7 +1,7 @@
 <?php
 /*
 セッションIDをもとに、自分が作ったステージを取得
-Input:	length
+Input:	length , (attendance-token)
 Output:	no-session , parse-error , JSON:{information_of_stages}
 information_of_stages:
 {

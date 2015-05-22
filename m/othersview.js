@@ -5,7 +5,8 @@ $(function(){
 	checkSigninSession(function(result){
 		if (result === 'success') {
 			$.post('../auth/getuserinfobyid.php',{
-				'id': user_id
+				'id': user_id,
+				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
 				switch(data){
 					case 'no-session':
@@ -77,7 +78,8 @@ $(function(){
 	// ステージ一覧取得
 	$.post('../stage/fetchstagesbyuserid.php', {
 		'userid' : user_id,
-		'length': 15
+		'length': 15,
+		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
 		// console.log(data);
 		if (data === 'parse-error') {

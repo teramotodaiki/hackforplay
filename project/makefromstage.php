@@ -1,7 +1,7 @@
 <?php
 /*
 新たにプロジェクトを作成する
-Input:	stageid
+Input:	stageid , (attendance-token)
 Output: no-session , invalid-stageid , database-error, {project-token}
 */
 

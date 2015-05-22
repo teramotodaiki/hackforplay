@@ -1,7 +1,7 @@
 <?php
 /*
 与えられたStageIDに該当するステージが、自分のステージであり非公開のとき、ステージを公開状態にする
-Input:	stage_id
+Input:	stage_id , (attendance-token)
 Output:	no-session , database-error
 */
 

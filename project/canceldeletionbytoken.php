@@ -1,7 +1,7 @@
 <?php
 /*
 トークンとひも付けられたプロジェクトが、自分のプロジェクトであり、disabledステートであるとき、ステートをenabledにして情報を返す
-Input:	token
+Input:	token , (attendance-token)
 Output: no-session , invalid-token , database-error , JSON:{information_of_project}
 information_of_projects:
 {

@@ -45,7 +45,8 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
             if (sendCodeToken === null) return;
             $.post('../../project/updatefromtoken.php',{
                 'token': sendCodeToken,
-                'data': _sendcode
+                'data': _sendcode,
+                'attendance-token': sessionStorage.getItem('attendance-token')
             }, function(data, textStatus, xhr) {
                 console.log(data);
             });

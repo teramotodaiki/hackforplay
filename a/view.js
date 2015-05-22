@@ -37,7 +37,8 @@ $(function(){
 	$item.find('.h4p_code-button').on('click', function() {
 		var project_id = $(this).data('project_id');
 		$.post('../stage/fetchprojectbyid.php',{
-			'project_id': project_id
+			'project_id': project_id,
+			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
 			if (data === '') {
 				alert('Project is not exist');
@@ -51,7 +52,8 @@ $(function(){
 		var item = $(this).parents('.panel-body');
 		var stage_id = $(this).data('stage_id');
 		$.post('../stage/publishbyid.php', {
-			'stage_id': stage_id
+			'stage_id': stage_id,
+			'attendance-token': sessionStorage.getItem('attendance-token')
 		} , function(data, textStatus, xhr) {
 			console.log(data);
 			if (data === 'success') {
@@ -66,7 +68,8 @@ $(function(){
 		var item = $(this).parents('.panel-body');
 		var stage_id = $(this).data('stage_id');
 		$.post('../stage/rejectbyid.php', {
-			'stage_id': stage_id
+			'stage_id': stage_id,
+			'attendance-token': sessionStorage.getItem('attendance-token')
 		} , function(data, textStatus, xhr) {
 			console.log(data);
 			if (data === 'success') {
@@ -79,7 +82,7 @@ $(function(){
 	});
 
 	$.post('../stage/fetchjudgingall.php',{
-
+		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
 		console.log(data);
 		if (data === 'parse-error') {

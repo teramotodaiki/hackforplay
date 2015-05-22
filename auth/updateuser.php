@@ -1,7 +1,7 @@
 <?php
 /*
 ユーザーの情報を更新する
-Input:	nickname , timezone_name , timezone_offset
+Input:	nickname , timezone_name , timezone_offset , (attendance-token)
 Output: no-session, success
 */
 

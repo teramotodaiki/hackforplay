@@ -116,7 +116,8 @@ $(function(){
 					var token = sessionStorage.getItem('project-token');
 					$.post('../project/updatefromtoken.php', {
 						'token': token,
-						'data': code
+						'data': code,
+						'attendance-token': sessionStorage.getItem('attendance-token')
 					}, function(data, textStatus, xhr) {
 						console.log(data);
 						loading.button('reset');
@@ -159,7 +160,8 @@ $(function(){
 			var timezone = new Date().getTimezoneString();
 			$.post('../project/makefromstage.php', {
 				'stageid': getParam('id'),
-				'timezone': timezone
+				'timezone': timezone,
+				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
 				console.log(data);
 				switch(data){
@@ -216,7 +218,8 @@ $(function(){
 							'thumb': data,
 							'path': getParam('path'),
 							'title': title,
-							'timezone': timezone
+							'timezone': timezone,
+							'attendance-token': sessionStorage.getItem('attendance-token')
 						} , function(data, textStatus, xhr) {
 							console.log(data);
 							$('#publish-button').button('reset');

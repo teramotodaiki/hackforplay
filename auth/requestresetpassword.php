@@ -1,7 +1,7 @@
 <?php
 /*
 セッション不要。コードを生成し、パスワードの再設定をリクエストするメールを送信する
-Input:	email
+Input:	email , (attendance-token)
 Output:	invalid-email , database-error , success
 code: 6桁の数値 [100000-999999]
 */
