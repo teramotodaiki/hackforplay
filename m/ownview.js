@@ -5,7 +5,6 @@ $(function(){
 	checkSigninSession(function(result){
 		if (result === 'success') {
 			$.post('../auth/getmyinfo.php',{
-				'id': user_id,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
 				console.log(data);
