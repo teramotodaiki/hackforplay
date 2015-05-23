@@ -41,6 +41,7 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
     sessionStorage.removeItem(tokenKey);
     __H4PENV__SENDCODE = function(){
         var _sendcode = raw;
+        var _message = error ? exmes : false;
         var updateTask = function(){
             var sendCodeToken = sessionStorage.getItem(tokenKey);
             if (sendCodeToken === null) return;
@@ -52,10 +53,10 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
                 console.log(data);
             });
             // エラーが発生していた場合、SendcodeExceptionに登録
-            if (error) {
+            if (_message) {
                 $.post('../../exception/tracebysendcode.php', {
                     'project-token': sendCodeToken,
-                    'message': exmes,
+                    'message': _message,
                     'attendance-token': sessionStorage.getItem('attendance-token')
                 }, function(data, textStatus, xhr) {
                     console.log(data);
