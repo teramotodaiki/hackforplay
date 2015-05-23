@@ -51,6 +51,16 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
             }, function(data, textStatus, xhr) {
                 console.log(data);
             });
+            // エラーが発生していた場合、SendcodeExceptionに登録
+            if (error) {
+                $.post('../../exception/tracebysendcode.php', {
+                    'project-token': sendCodeToken,
+                    'message': exmes,
+                    'attendance-token': sessionStorage.getItem('attendance-token')
+                }, function(data, textStatus, xhr) {
+                    console.log(data);
+                });
+            }
         };
         if (sessionStorage.getItem(tokenKey) === null) {
             // プロジェクトの作成
@@ -69,20 +79,6 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
             });
         }else{
             updateTask();
-        }
-
-        // エラーが発生していた場合、ErroredCodeLogに、コードの全文とエラー例外のメッセージをJSONで送信
-        if (error) {
-            var value = JSON.stringify({
-                'code': raw,
-                'message': exmes,
-            });
-            $.post('../../stage/erroredcodelog.php', {
-                'value': value,
-                'attendance-token': sessionStorage.getItem('attendance-token')
-            }, function(data, textStatus, xhr) {
-                console.log(data);
-            });
         }
     };
 })();
