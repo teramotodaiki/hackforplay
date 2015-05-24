@@ -36,6 +36,7 @@ window.addEventListener('load', function() {
         var dragon = new Dragon('dragon'); // make dragon
         map.scene.addChild(dragon);
         dragon.locate(8, 2);
+
         var ruby = new Ruby('ruby');
         map.scene.addChild(ruby);
         ruby.locate(10, 5);
@@ -273,7 +274,7 @@ window.addEventListener('load', function() {
             this.useMessage = false;
             this.collisionFlag = true;
             this.fire = true; // Use fire
-            this.hp = 75;
+            this.hp = 27;
         },
         damage : function(atk){
             this.hp -= atk;
