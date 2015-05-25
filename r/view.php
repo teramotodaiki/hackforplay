@@ -20,6 +20,13 @@
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
+	<script type="text/javascript" charset="utf-8">
+	(function(){
+		var start = '<?php echo $fetch_start_id; ?>';
+		start = isNaN(parseInt(start)) ? '0' : start;
+		sessionStorage.setItem('view_param_start', start);
+	})();
+	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="row">
