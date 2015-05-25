@@ -62,7 +62,7 @@ $(function(){
 			if (result.values.length > view_param_length) {
 				// 次のページが存在する
 				var next = view_param_start + view_param_length;
-				$('a.go_page_next').attr('href', location.pathname + '?start=' + next);
+				$('a.go_page_next').attr('href', location.pathname + '?start=' + next + '#page_anchor');
 				delete result.values[view_param_length];
 			}else{
 				$('a.go_page_next').remove();
@@ -70,7 +70,7 @@ $(function(){
 			if (view_param_start > 0) {
 				// 前のページが存在する
 				var previous = Math.max(view_param_start - view_param_length, 0);
-				$('a.go_page_previous').attr('href', location.pathname + '?start=' + previous);
+				$('a.go_page_previous').attr('href', location.pathname + '?start=' + previous + '#page_anchor');
 			}else{
 				$('a.go_page_previous').remove();
 			}
