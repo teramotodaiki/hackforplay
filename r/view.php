@@ -74,6 +74,20 @@
 			<div class="col-md-12 h4p_bar-bottom"></div>
 		</div>
 	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6 text-center ">
+				<button type="button" class="btn btn-lg btn-link">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				</button>
+			</div>
+			<div class="col-md-6 text-center">
+				<button type="button" class="btn btn-lg btn-link">
+					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				</button>
+			</div>
+		</div>
+	</div>
 	<div class="container-fluid h4p_stagecontainer">
 		<div class="row">
 			<div class="col-md-12 h4p_bar-top"></div>
