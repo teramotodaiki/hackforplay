@@ -83,15 +83,15 @@
 	</div>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-6 text-center ">
-				<button type="button" class="btn btn-lg btn-link">
+			<div class="col-md-6 text-center">
+				<a href="javascript:void(0);" title="previous" class="btn btn-lg btn-link go_page_previous">
 					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-				</button>
+				</a>
 			</div>
 			<div class="col-md-6 text-center">
-				<button type="button" class="btn btn-lg btn-link">
+				<a href="javascript:void(0);" title="next" class="btn btn-lg btn-link go_page_next">
 					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-				</button>
+				</a>
 			</div>
 		</div>
 	</div>

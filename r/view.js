@@ -45,9 +45,11 @@ $(function(){
 		$(this).parent().find('.h4p_item-transform').removeClass('transform-on');
 	});
 
-	// 一覧取得
+	// 一覧取得（１つ多く取得して、次のページがあるかどうか調べる）
+	var view_param_length = 3;
 	$.post('../stage/fetchrecentpublished.php', {
-		'length': 15,
+		'start': sessionStorage.getItem('view_param_start'),
+		'length': view_param_length + 1,
 		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
 		console.log(data);
@@ -56,6 +58,22 @@ $(function(){
 			var result = jQuery.parseJSON(data);
 			var $list = $('.h4p_stagelist.list-stage');
 			console.log($list);
+			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'));
+			if (result.values.length > view_param_length) {
+				// 次のページが存在する
+				var next = view_param_start + view_param_length;
+				$('a.go_page_next').attr('href', location.pathname + '?start=' + next);
+				delete result.values[view_param_length];
+			}else{
+				$('a.go_page_next').remove();
+			}
+			if (view_param_start > 0) {
+				// 前のページが存在する
+				var previous = Math.max(view_param_start - view_param_length, 0);
+				$('a.go_page_previous').attr('href', location.pathname + '?start=' + previous);
+			}else{
+				$('a.go_page_previous').remove();
+			}
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
 				item.find('.h4p_item-thumbnail').on('click', function() {
