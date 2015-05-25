@@ -3,7 +3,7 @@ try {
 
 	require_once '../preload.php';
 
-	$fetch_start_id		= filter_input(INPUT_POST, 'start', FILTER_VALIDATE_INT);
+	$fetch_start_id		= filter_input(INPUT_GET, 'start', FILTER_VALIDATE_INT);
 	if (!$fetch_start_id) {
 		$fetch_start_id	= 0;
 	}

@@ -1,7 +1,7 @@
 <?php
 /*
 最大$max_fetch_length件までのリミット値を受け取り、その個数だけの、すでに公開されたステージを、新しいものから順に出力する
-Input:	length , (attendance-token)
+Input:	start , length , (attendance-token)
 Output:	JSON:{information_of_stages} , parse-error
 information_of_stages:
 {
@@ -30,6 +30,10 @@ try {
 	if ($input_max_fetch_length !== FALSE && $input_max_fetch_length !== NULL) {
 		$max_fetch_length 	= min($max_fetch_length, $input_max_fetch_length);
 	}
+	$fetch_start		= filter_input(INPUT_POST, 'start', FILTER_VALIDATE_INT);
+	if (!$fetch_start) {
+		$fetch_start	= 0;
+	}
 
 	// ステージ一覧を取得
 	// SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
@@ -39,6 +43,9 @@ try {
 	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 	$stmt->execute();
 
+	for ($i=0; $i < $fetch_start; $i++) {
+		$item	= $stmt->fetch();
+	}
 	for ($i = 0; $i < $max_fetch_length; $i++){
 		$item	= $stmt->fetch(PDO::FETCH_ASSOC);
 		if($item != NULL){
