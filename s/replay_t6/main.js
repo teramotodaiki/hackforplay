@@ -114,7 +114,7 @@ window.addEventListener('load', function() {
     "hint = \n"+
     "\t\"// ここは深遠なる迷宮...\\n\"+\n"+
     "\t\"// はたして無事に階段までたどり着けるかな...\\n\\n\"+\n"+
-    "\t\"blueSlime.hp = 99\\n\\n\"+\n"+
+    "\t\"blueSlime.hp = 99;\\n\\n\"+\n"+
     "\t\"// 最強のスライムの前にひれ伏すがいい...!\\n\"+\n"+
     "\t\"\";\n"+
     "sendToEditor('setHint();');\n\n"+
