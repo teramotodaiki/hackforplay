@@ -427,7 +427,7 @@ $(function() {
 		    </div>
 		    <div class="modal-body auth-page-2" style="display: none">
 		    	<form id="tmp" class="form-horizontal">
-			    	<h4>メールが送信されました</h4>
+			    	<h4>メールが送信されました。届くまでに数分かかることがありますので、お気をつけください</h4>
 			    	<h5>本文に書かれた「仮パスワード」を入力してください</h5>
 					<p class="alert alert-danger hide" role="alert"></p>
 					<div class="form-group">
