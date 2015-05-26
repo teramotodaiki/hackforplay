@@ -6,8 +6,8 @@ var policy = "/";
 window.addEventListener('click', function(e){
 	// クリック時、ゲームウィンドウにフォーカスを戻す
 	if(!jsEditor.state.focused){	// テキストエリアにフォーカスが当たっていないときのみ
-	    var source = "refocus();";	// フォーカスを戻すメソッドをゲーム側で呼び出す
-	    game.postMessage(source, policy);
+		var source = "refocus();";	// フォーカスを戻すメソッドをゲーム側で呼び出す
+		game.postMessage(source, policy);
 	}
 });
 
