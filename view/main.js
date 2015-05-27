@@ -46,7 +46,9 @@ $(function(){
 		$el.css('line-height', $el.parent().height()+'px');
 		var $img =
 		$("<img>").attr('src', imageURL_n).on('load', function() {
+			$(this).off('load');
 			$('<img>').attr('src', imageURL_p).on('load', function() {
+				$(this).off('load');
 				$img.hover(function() {
 					$(this).attr('src', imageURL_p);
 				}, function() {
