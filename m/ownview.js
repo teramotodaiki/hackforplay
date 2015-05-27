@@ -101,6 +101,7 @@ $(function(){
 	});
 	// ステージ一覧取得
 	$.post('../stage/fetchmystage.php', {
+		'start': sessionStorage.getItem('view_param_start'),
 		'length': 15,
 		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
