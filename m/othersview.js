@@ -76,7 +76,7 @@ $(function(){
 		$(this).parent().find('.h4p_item-transform').removeClass('transform-on');
 	});
 	// ステージ一覧取得（１つ多く取得して、次のページがあるかどうか調べる）
-	var view_param_length = 3;
+	var view_param_length = 15;
 	$.post('../stage/fetchstagesbyuserid.php', {
 		'userid' : user_id,
 		'start': sessionStorage.getItem('view_param_start'),
