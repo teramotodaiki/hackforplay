@@ -274,7 +274,7 @@ $(function(){
 					item.find('.panel-title').text(project.data);
 					var title = project.source_title;
 					item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
-					item.find('.registered b').text(project.registered);
+					item.find('.registered b').text(convertLocaleTimeString(project.registered));
 					item.find('.panel-body button').attr('project-token', project.token);
 
 					item.appendTo($list);
@@ -300,4 +300,9 @@ $(function(){
 		return _bsalert;
 	}
 
+	function convertLocaleTimeString (datetimeoffset) {
+		var timestamp = new Date(datetimeoffset.replace(' ', 'T')).getTime();
+		var date = new Date(timestamp - 60 * 1000 * new Date().getTimezoneOffset());
+		return date.toLocaleString();
+	}
 });
