@@ -1,7 +1,7 @@
 <?php
 /*
 セッションIDをもとに、自分が作ったステージを取得
-Input:	length , (attendance-token)
+Input:	start , length , (attendance-token)
 Output:	no-session , parse-error , JSON:{information_of_stages}
 information_of_stages:
 {
@@ -31,6 +31,10 @@ try {
 	if ($input_max_fetch_length !== FALSE && $input_max_fetch_length !== NULL) {
 		$max_fetch_length 	= min($max_fetch_length, $input_max_fetch_length);
 	}
+	$fetch_start		= filter_input(INPUT_POST, 'start', FILTER_VALIDATE_INT);
+	if (!$fetch_start) {
+		$fetch_start	= 0;
+	}
 
 	if (!isset($session_userid)) {
 		exit('no-session');
@@ -43,6 +47,9 @@ try {
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 
+	for ($i=0; $i < $fetch_start; $i++) {
+		$item	= $stmt->fetch();
+	}
 	for ($i = 0; $i < $max_fetch_length; $i++){
 		$item	= $stmt->fetch(PDO::FETCH_ASSOC);
 		if($item !== FALSE){
