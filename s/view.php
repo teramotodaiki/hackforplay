@@ -77,7 +77,8 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 		document.getElementsByTagName('iframe')[0].contentWindow.postMessage('screenShot()', '/');
 	}
 	function scrollToAnchor(){
-		var top = $('#scroll-anchor').get(0).getBoundingClientRect().top;
+		var selector = arguments.length > 0 ? arguments[0] : '#scroll-anchor';
+		var top = $(selector).get(0).getBoundingClientRect().top;
 		console.log(top);
 		window.scrollBy(0, top);
 	}

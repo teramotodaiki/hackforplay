@@ -117,6 +117,7 @@ $(function(){
 					$.post('../project/updatefromtoken.php', {
 						'token': token,
 						'data': code,
+						'source_stage_id': getParam('id'),
 						'attendance-token': sessionStorage.getItem('attendance-token')
 					}, function(data, textStatus, xhr) {
 						console.log(data);
@@ -245,6 +246,7 @@ $(function(){
 						});
 					}
 				});
+				scrollToAnchor();
 				break;
 			case "replay":
 				// replay mode (load javascript-code and run it)
@@ -256,10 +258,8 @@ $(function(){
 				break;
 			case "extend":
 				// extend mode (extends restaging-code in tutorial)
-				$(".begin_restaging").on('click', function() {
-					beginRestaging();
-					makeProject();
-				});
+				beginRestaging();
+				scrollToAnchor('.h4p_restaging');
 				break;
 		}
 	})();
@@ -287,9 +287,6 @@ $(function(){
 			});
 		}
 	})();
-
-	// #scroll-anchorまでスクロールする
-	scrollToAnchor();
 
 	function getParam(key){
 		return sessionStorage.getItem('stage_param_'+key);

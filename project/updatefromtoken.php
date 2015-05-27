@@ -2,7 +2,7 @@
 /*
 トークンからプロジェクト情報を参照し、データを更新する
 ただし、Project.UserIDと一致するUserIDをもつセッションが必要
-Input:	token , data , (attendance-token)
+Input:	token , data , (source_stage_id) , (attendance-token)
 Output:	no-session , invalid-token , already-published , data-is-null , no-update , database-error , success
 */
 
@@ -20,7 +20,7 @@ try {
 		exit('invalid-token');
 	}
 
-	$stmt	= $dbh->prepare('SELECT "ID","PublishedStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid');
+	$stmt	= $dbh->prepare('SELECT "ID","SourceStageID","PublishedStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
@@ -94,6 +94,19 @@ try {
 		$stmt->bindValue($key * 3 + 3, $value, PDO::PARAM_INT);
 	}
 	$stmt->execute();
+
+	// SourceStageIDの更新
+	$source_stage_id	= filter_input(INPUT_POST, 'source_stage_id', FILTER_VALIDATE_INT);
+	if ($source_stage_id && $source_stage_id != $project['SourceStageID']) {
+		$stmt	= $dbh->prepare('UPDATE "Project" SET "SourceStageID"=:source_stage_id WHERE "ID"=:project_id');
+		$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
+		$stmt->bindValue(":source_stage_id", $source_stage_id, PDO::PARAM_INT);
+		$flag	= $stmt->execute();
+		if (!$flag) {
+			$project_id	= $project['ID'];
+			throw new Exception("Selfish exception: didn't update SourceStageID of Project, which id=$project_id", 9999);
+		}
+	}
 
 	exit('success');
 

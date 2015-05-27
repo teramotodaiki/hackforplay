@@ -3,7 +3,8 @@
 
 	// Run restaging code
 	if(	__H4PENV__MODE === "restaging" ||
-		__H4PENV__MODE === "replay"){
+		__H4PENV__MODE === "replay" ||
+		__H4PENV__MODE === "extend"){
 		var reStaging = function(){
 			if(__H4PENV__SETEVALFLAG){
 				var code = storage.getItem('restaging_code');
