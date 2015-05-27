@@ -28,11 +28,13 @@
 		return _default_code;
 	});
 	window.__defineSetter__('__H4PENV__DEFAULTCODE', function(_code){
+		console.log('set code / ', _code);
 		_default_code = _code;
 		if(__H4PENV__MODE === "official" || __H4PENV__MODE === "extend"){
 			storage.setItem('restaging_code', _default_code);
 		}
 	});
+	console.log('default code is ', __H4PENV__DEFAULTCODE);
 	__H4PENV__DEFAULTCODE =
 	"// ステージ改造コードを書いて、このステージを改造してやろう!!\n"+
 	"// デフォルトのコードが取得できませんでした。再読み込みするか、お好きなコードから始めてください\n";
