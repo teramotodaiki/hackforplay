@@ -256,9 +256,7 @@ $(function(){
 				break;
 			case "extend":
 				// extend mode (extends restaging-code in tutorial)
-				$(".begin_restaging").on('click', function() {
-					beginRestaging();
-				});
+				beginRestaging();
 				break;
 		}
 	})();
