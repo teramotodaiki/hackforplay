@@ -301,8 +301,9 @@ $(function(){
 	}
 
 	function convertLocaleTimeString (datetimeoffset) {
-		console.log(datetimeoffset);
-		var timestamp = new Date(datetimeoffset.replace(' ', 'T')).getTime();
+		var _t = datetimeoffset.indexOf(' ');
+		datetimeoffset = datetimeoffset.substr(0, _t) + 'T' + datetimeoffset.substr(_t + 1).replace(' ', '');
+		var timestamp = new Date(datetimeoffset).getTime();
 		var date = new Date(timestamp - 60 * 1000 * new Date().getTimezoneOffset());
 		return date.toLocaleString();
 	}
