@@ -24,6 +24,10 @@ window.onload = function(){
 	$("input[name=run]").on('click', run);
 	$("input[name=cls]").on('click', cls);
 	jsEditor.on('beforeChange', function(cm, change) {
+		if (change.origin === "undo" && cm.doc.history.generation === 1) {
+			// Ctrl+Zの押し過ぎで、全部消えてしまうのをふせぐ
+			change.cancel();
+		}
 		if (change.origin === "+input" /*|| change.origin === "paste"*/) {
 			var matchFlag = false;
 			var replaced = [];
@@ -45,7 +49,7 @@ window.onload = function(){
 			if(matchFlag){
 				change.update(change.from, change.to, replaced, "");
 			}
-		};
+		}
 	});
 };
 
