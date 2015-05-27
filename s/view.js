@@ -49,6 +49,11 @@ $(function(){
 				$("#screenshotModal").modal("show");
 				// このあと"thumbnail"を呼び出す
 				break;
+			case "replace_code":
+				var code = sessionStorage.getItem('restaging_code');
+				console.log('replace_code: ', code);
+				jsEditor.setValue(code);
+				break;
 		}
 	});
 

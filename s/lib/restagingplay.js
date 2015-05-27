@@ -31,6 +31,7 @@
 		_default_code = _code;
 		if(__H4PENV__MODE === "official" || __H4PENV__MODE === "extend"){
 			storage.setItem('restaging_code', _default_code);
+			window.parent.postMessage('replace_code', '/');
 		}
 	});
 	__H4PENV__DEFAULTCODE =
