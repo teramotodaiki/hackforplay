@@ -117,6 +117,7 @@ $(function(){
 					$.post('../project/updatefromtoken.php', {
 						'token': token,
 						'data': code,
+						'source_stage_id': getParam('id'),
 						'attendance-token': sessionStorage.getItem('attendance-token')
 					}, function(data, textStatus, xhr) {
 						console.log(data);
