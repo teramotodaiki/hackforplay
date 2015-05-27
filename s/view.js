@@ -81,7 +81,6 @@ $(function(){
 			$(".h4p_restaging").fadeIn("fast", function() {
 				var storage_key = getParam('retry') === '1' ? 'retry_code' : 'restaging_code';
 				var code = sessionStorage.getItem(storage_key);
-				console.log('code:', code);
 				if(code !== null){
 					jsEditor.setValue(code);
 				}
