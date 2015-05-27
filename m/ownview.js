@@ -204,7 +204,7 @@ $(function(){
 	$projectItem.find('.h4p_delete-project').on('click', function() {
 		var loading = $(this).button('loading');
 		var token = $(this).attr('project-token');
-		var panel = $(this).parents('.panel');
+		var panel = $(this).parents('.panel').first();
 		$.post('../project/deletebytoken.php', {
 			'token': token,
 			'attendance-token': sessionStorage.getItem('attendance-token')
@@ -228,7 +228,7 @@ $(function(){
 	$projectItem_fixButton.on('click', function() {
 		var loading = $(this).button('loading');
 		var token = $(this).attr('project-token');
-		var panel = $(this).parents('.panel');
+		var panel = $(this).parents('.panel').first();
 		panel.find('.alert').remove();
 		$.post('../project/canceldeletionbytoken.php',{
 			'token': token,
@@ -246,8 +246,8 @@ $(function(){
 				item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
 				item.find('.registered b').text(project.registered);
 				item.find('.panel-body button').attr('project-token', project.token);
-				panel.after(item);
-				panel.remove();
+				panel.parent().after(item);
+				panel.parent().remove();
 			}
 		});
 	});
