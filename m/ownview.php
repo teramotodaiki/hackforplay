@@ -48,7 +48,7 @@
 			</div>
 		</div>
 	</div>
-	<div id="page_anchor" class="container-fluid h4p_stagecontainer">
+	<div class="container-fluid h4p_stagecontainer">
 		<div class="row">
 			<div class="col-md-12 h4p_bar-top"></div>
 			<div class="col-md-12 h4p_bar-bar">
