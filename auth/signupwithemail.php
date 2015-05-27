@@ -69,7 +69,7 @@ try {
 	}
 
 	// 仮パスワードを生成する
-	$bytes 	= openssl_random_pseudo_bytes(8); // 8bytes (16chars)
+	$bytes 	= openssl_random_pseudo_bytes(4); // 4bytes (8chars)
 	$tmpkey	= bin2hex($bytes); // binaly to hex
 	$hashed = password_hash($tmpkey, PASSWORD_DEFAULT);
 
