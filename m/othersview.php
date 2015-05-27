@@ -46,7 +46,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container-fluid h4p_stagecontainer">
+	<div id="page_anchor" class="container-fluid h4p_stagecontainer">
 		<div class="row">
 			<div class="col-md-12 h4p_bar-top"></div>
 			<div class="col-md-12 h4p_bar-bar">
@@ -57,6 +57,20 @@
 				</div>
 			</div>
 			<div class="col-md-12 h4p_bar-bottom"></div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6 text-center">
+				<a href="javascript:void(0);" title="previous" class="btn btn-lg btn-link go_page_previous">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				</a>
+			</div>
+			<div class="col-md-6 text-center">
+				<a href="javascript:void(0);" title="next" class="btn btn-lg btn-link go_page_next">
+					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				</a>
+			</div>
 		</div>
 	</div>
 </body>
