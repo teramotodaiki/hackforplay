@@ -99,10 +99,11 @@ $(function(){
 				break;
 		}
 	});
-	// ステージ一覧取得
+	// ステージ一覧取得（１つ多く取得して、次のページがあるかどうか調べる）
+	var view_param_length = 3;
 	$.post('../stage/fetchmystage.php', {
 		'start': sessionStorage.getItem('view_param_start'),
-		'length': 15,
+		'length': view_param_length + 1,
 		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
 		// console.log(data);
@@ -114,6 +115,22 @@ $(function(){
 				// ひとつもステージを作成していない
 				var topicView = createTopicView();
 				$(topicView).appendTo($list);
+			}
+			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'));
+			if (result.values.length > view_param_length) {
+				// 次のページが存在する
+				var next = view_param_start + view_param_length;
+				$('a.go_page_next').attr('href', location.pathname + '?start=' + next + '#page_anchor');
+				delete result.values[view_param_length];
+			}else{
+				$('a.go_page_next').remove();
+			}
+			if (view_param_start > 0) {
+				// 前のページが存在する
+				var previous = Math.max(view_param_start - view_param_length, 0);
+				$('a.go_page_previous').attr('href', location.pathname + '?start=' + previous + '#page_anchor');
+			}else{
+				$('a.go_page_previous').remove();
 			}
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);

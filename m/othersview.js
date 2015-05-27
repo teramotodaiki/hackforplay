@@ -75,11 +75,12 @@ $(function(){
 		$(this).parent().find('.h4p_item-inner').attr('src', '../img/cassette/inner_tab.png');
 		$(this).parent().find('.h4p_item-transform').removeClass('transform-on');
 	});
-	// ステージ一覧取得
+	// ステージ一覧取得（１つ多く取得して、次のページがあるかどうか調べる）
+	var view_param_length = 3;
 	$.post('../stage/fetchstagesbyuserid.php', {
 		'userid' : user_id,
 		'start': sessionStorage.getItem('view_param_start'),
-		'length': 15,
+		'length': view_param_length + 1,
 		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
 		// console.log(data);
@@ -87,6 +88,22 @@ $(function(){
 		}else{
 			var result = jQuery.parseJSON(data);
 			var $list = $('.h4p_stagelist.list-stage');
+			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'));
+			if (result.values.length > view_param_length) {
+				// 次のページが存在する
+				var next = view_param_start + view_param_length;
+				$('a.go_page_next').attr('href', location.pathname + '?id=' + user_id + '&start=' + next + '#page_anchor');
+				delete result.values[view_param_length];
+			}else{
+				$('a.go_page_next').remove();
+			}
+			if (view_param_start > 0) {
+				// 前のページが存在する
+				var previous = Math.max(view_param_start - view_param_length, 0);
+				$('a.go_page_previous').attr('href', location.pathname + '?id=' + user_id + '&start=' + previous + '#page_anchor');
+			}else{
+				$('a.go_page_previous').remove();
+			}
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
 				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
