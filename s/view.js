@@ -258,7 +258,6 @@ $(function(){
 				// extend mode (extends restaging-code in tutorial)
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
-					makeProject();
 				});
 				break;
 		}
