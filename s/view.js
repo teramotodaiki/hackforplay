@@ -245,6 +245,7 @@ $(function(){
 						});
 					}
 				});
+				scrollToAnchor();
 				break;
 			case "replay":
 				// replay mode (load javascript-code and run it)
@@ -257,6 +258,7 @@ $(function(){
 			case "extend":
 				// extend mode (extends restaging-code in tutorial)
 				beginRestaging();
+				scrollToAnchor('.h4p_restaging');
 				break;
 		}
 	})();
@@ -284,9 +286,6 @@ $(function(){
 			});
 		}
 	})();
-
-	// #scroll-anchorまでスクロールする
-	scrollToAnchor();
 
 	function getParam(key){
 		return sessionStorage.getItem('stage_param_'+key);
