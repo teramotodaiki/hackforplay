@@ -26,7 +26,7 @@ require_once '../preload.php';
 try {
 
 	// 最大値を設定
-	$max_fetch_length 	= 15;
+	$max_fetch_length 	= 100;
 	$input_max_fetch_length = filter_input(INPUT_POST, 'length', FILTER_VALIDATE_INT);
 	if ($input_max_fetch_length !== FALSE && $input_max_fetch_length !== NULL) {
 		$max_fetch_length 	= min($max_fetch_length, $input_max_fetch_length);
