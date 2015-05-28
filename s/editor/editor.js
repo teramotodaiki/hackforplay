@@ -23,8 +23,10 @@ window.onload = function(){
 	setHint();
 	$("input[name=run]").on('click', run);
 	$("input[name=cls]").on('click', cls);
+	$("input[name=undo]").on('click', undo);
+	$("input[name=redo]").on('click', redo);
 	jsEditor.on('beforeChange', function(cm, change) {
-		if (change.origin === "undo" && cm.doc.history.generation === 1) {
+		if (change.origin === "undo" && cm.doc.historySize().undo === 0) {
 			// Ctrl+Zの押し過ぎで、全部消えてしまうのをふせぐ
 			change.cancel();
 		}
@@ -51,6 +53,9 @@ window.onload = function(){
 			}
 		}
 	});
+	jsEditor.on('change', function(cm, change) {
+		renderUI();
+	});
 };
 
 window.addEventListener('message', function(e){
@@ -75,6 +80,21 @@ function cls(){
 	"e.tl.scaleTo(0, 1, 7, enchant.Easing.BACK_EASEIN);"+
 	"window.focus();";
 	game.postMessage(source, policy);
+}
+
+function undo () {
+	jsEditor.doc.undo();
+	renderUI();
+}
+
+function redo () {
+	jsEditor.doc.redo();
+	renderUI();
+}
+
+function renderUI () {
+	$("input[name=undo]").attr('src', 'img/ui_undo_' + (jsEditor.doc.historySize().undo > 1 ? 'enabled.png':'disabled.png'));
+	$("input[name=redo]").attr('src', 'img/ui_redo_' + (jsEditor.doc.historySize().redo > 0 ? 'enabled.png':'disabled.png'));
 }
 
 function setHint(){
