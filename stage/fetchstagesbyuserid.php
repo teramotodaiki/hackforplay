@@ -1,7 +1,7 @@
 <?php
 /*
 ユーザーIDをもとに、そのユーザーが公開しているステージを取得する。セッションが必要
-Input:	user_id , length , (attendance-token)
+Input:	user_id , start , length , (attendance-token)
 Output:	no-session , missing-user , parse-error , JSON:{information_of_stages}
 information_of_stages:
 {
@@ -26,10 +26,14 @@ require_once '../preload.php';
 try {
 
 	// 最大値を設定
-	$max_fetch_length 	= 15;
+	$max_fetch_length 	= 100;
 	$input_max_fetch_length = filter_input(INPUT_POST, 'length', FILTER_VALIDATE_INT);
 	if ($input_max_fetch_length != FALSE && $input_max_fetch_length != NULL) {
 		$max_fetch_length 	= min($max_fetch_length, $input_max_fetch_length);
+	}
+	$fetch_start		= filter_input(INPUT_POST, 'start', FILTER_VALIDATE_INT);
+	if (!$fetch_start) {
+		$fetch_start	= 0;
 	}
 
 	if (!isset($session_userid)) {
@@ -48,6 +52,9 @@ try {
 	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 	$stmt->execute();
 
+	for ($i=0; $i < $fetch_start; $i++) {
+		$item	= $stmt->fetch();
+	}
 	for ($i = 0; $i < $max_fetch_length; $i++){
 		$item	= $stmt->fetch(PDO::FETCH_ASSOC);
 		if($item != NULL){

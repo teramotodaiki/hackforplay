@@ -20,6 +20,13 @@
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
+	<script type="text/javascript" charset="utf-8">
+	(function(){
+		var start = '<?php echo $fetch_start_id; ?>';
+		start = isNaN(parseInt(start)) ? '0' : start;
+		sessionStorage.setItem('view_param_start', start);
+	})();
+	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="row">
@@ -61,7 +68,7 @@
 	  		</div>
 		</div>
 	</div>
-	<div class="container-fluid h4p_stagecontainer">
+	<div id="page_anchor" class="container-fluid h4p_stagecontainer">
 		<div class="row">
 			<div class="col-md-12 h4p_bar-top"></div>
 			<div class="col-md-12 h4p_bar-bar">
@@ -72,6 +79,20 @@
 				</div>
 			</div>
 			<div class="col-md-12 h4p_bar-bottom"></div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6 text-center">
+				<a href="javascript:void(0);" title="previous" class="btn btn-lg btn-link go_page_previous">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				</a>
+			</div>
+			<div class="col-md-6 text-center">
+				<a href="javascript:void(0);" title="next" class="btn btn-lg btn-link go_page_next">
+					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				</a>
+			</div>
 		</div>
 	</div>
 	<div class="container-fluid h4p_stagecontainer">

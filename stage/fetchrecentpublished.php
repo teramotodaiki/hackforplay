@@ -1,7 +1,7 @@
 <?php
 /*
 最大$max_fetch_length件までのリミット値を受け取り、その個数だけの、すでに公開されたステージを、新しいものから順に出力する
-Input:	length , (attendance-token)
+Input:	start , length , (attendance-token)
 Output:	JSON:{information_of_stages} , parse-error
 information_of_stages:
 {
@@ -25,10 +25,14 @@ require_once '../preload.php';
 try {
 
 	// 最大値を設定
-	$max_fetch_length 	= 15;
+	$max_fetch_length 	= 100;
 	$input_max_fetch_length = filter_input(INPUT_POST, 'length', FILTER_VALIDATE_INT);
 	if ($input_max_fetch_length !== FALSE && $input_max_fetch_length !== NULL) {
 		$max_fetch_length 	= min($max_fetch_length, $input_max_fetch_length);
+	}
+	$fetch_start		= filter_input(INPUT_POST, 'start', FILTER_VALIDATE_INT);
+	if (!$fetch_start) {
+		$fetch_start	= 0;
 	}
 
 	// ステージ一覧を取得
@@ -39,6 +43,9 @@ try {
 	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 	$stmt->execute();
 
+	for ($i=0; $i < $fetch_start; $i++) {
+		$item	= $stmt->fetch();
+	}
 	for ($i = 0; $i < $max_fetch_length; $i++){
 		$item	= $stmt->fetch(PDO::FETCH_ASSOC);
 		if($item != NULL){
