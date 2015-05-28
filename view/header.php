@@ -37,9 +37,8 @@ $(function(){
 						break;
 					default:
 						var result = $.parseJSON(data);
-						if (result.gender !== undefined) {
-							$('.h4p_user-thumbnail').attr('src', result.gender === 'male' ? '../m/icon_m.png' : '../m/icon_w.png');
-						};
+						$('.h4p_user-nickname').text(result.nickname);
+						$('.h4p_user-thumbnail').attr('src', result.gender === 'male' ? '../m/icon_m.png' : '../m/icon_w.png');
 						break;
 				}
 			});
@@ -83,7 +82,12 @@ $(function(){
 				<li class="h4p_signin"><button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#authModal">会員登録</button></li>
 				<li class="h4p_signout">
 					<div class="dropdown">
-						<a id="h4p_header-dropdown" class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" onfocus="this.blur();"><img class="img-circle h4p_user-thumbnail" data-toggle="tooltip" data-placement="bottom" title="マイページと設定"></a>
+						<a id="h4p_header-dropdown" class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" onfocus="this.blur();" >
+							<div data-toggle="tooltip" data-placement="bottom" title="マイページと設定">
+								<span class="h4p_user-nickname btn btn-link"></span>
+								<img class="img-circle h4p_user-thumbnail">
+							</div>
+						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="h4p_header-dropdown">
 							<li role="presentation"><a href="/m" title="settings">マイページ</a></li>
 							<li role="presentation"><a href="/p" title="settings">設定</a></li>
