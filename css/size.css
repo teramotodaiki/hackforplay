@@ -59,6 +59,10 @@
 	width: 100%;
 }
 
+.h4p_info-explain p {
+	height: 36px;
+}
+
 /* 間隔属性 */
 header {
 	padding: 5px 0;

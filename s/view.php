@@ -2,6 +2,7 @@
 $id 	= $stage['ID'];
 $path	= $stage['Path'];
 $title 	= $stage['Title'];
+$explain= $stage['Explain'];
 $next 	= $stage['NextID'];
 $count 	= $stage['Playcount'];
 $author = $stage['Nickname'];
@@ -118,6 +119,11 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 			        		<input type="text" class="form-control" id="stage-name">
 			        		<p id="stage-name_alert" class="alert alert-danger">ステージ名を入力してください。</p>
 			        	</div>
+			        	<div class="form-group">
+			        		<label for="stage-explain" class="control-label">ステージの説明:</label>
+			        		<textarea class="form-control" id="stage-explain"></textarea>
+			        		<p id="stage-explain_alert" class="alert alert-danger" style="display:none;"></p>
+			        	</div>
 			        </form>
 			    </div>
 	    		<div class="modal-footer">
@@ -213,6 +219,11 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 						<a class="btn btn-primary btn-lg btn-block ignore-attendance" role="button" href="/s?id=<?php echo $id; ?>" title="はじめから">はじめから</a>
 						<button style="display: none;" class="btn btn-primary btn-lg btn-block h4p_info-retry-button ignore-attendance" role="button" title="もう一度実行">もう一度実行</button>
 					</div>
+					<?php if ($explain !== NULL && $explain !== '') : ?>
+					<div class="col-sm-12 h4p_info-explain">
+						<p><?php echo $explain; ?></p>
+					</div>
+					<?php endif; ?>
 				</div>
 			</div>
 			<div class="col-sm-12 h4p_mapTip">

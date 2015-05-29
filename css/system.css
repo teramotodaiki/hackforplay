@@ -154,6 +154,10 @@ iframe {
 	white-space: normal;
 }
 
+.h4p_info-explain p {
+	overflow-y: scroll;
+}
+
 /* アニメーション */
 
 .h4p_item-transform {

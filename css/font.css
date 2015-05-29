@@ -26,7 +26,8 @@ body {
 .h4p_item p a,
 .h4p_item p *,
 .h4p_info-datail p,
-.h4p_info-datail p a {
+.h4p_info-datail p a,
+.h4p_info-explain p {
 	color: rgb(160,160,160);
 	font-size: 13px;
 	text-decoration: none;
@@ -43,6 +44,11 @@ body {
 	font-size: 20px;
 	line-height: 20px;
 	text-decoration: none;
+}
+
+.h4p_info-title,
+.h4p_info-explain p {
+	color: rgb(51, 51, 51);
 }
 
 .h4p_publish button.btn {
