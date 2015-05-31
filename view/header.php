@@ -70,7 +70,7 @@ $(function(){
 	    	<?php elseif ($header_pattern === 'inGame' && $mode !== 'official'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
 	    		<?php if ($author_id !== NULL) : ?>
-		    		<li><a class="btn btn-link navbar-btn" href="/m?id=<?php echo $author_id; ?>" target="_blank" title="作成者のマイページ"><?php echo $author; ?>のマイページ</a></li>
+		    		<li><a class="btn btn-link navbar-btn" href="/m?id=<?php echo $author_id; ?>" target="_blank" title="この人が作った他のステージ">この人が作った他のステージ</a></li>
 	    		<?php endif; ?>
 	    	<?php elseif ($header_pattern === 'admin'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
