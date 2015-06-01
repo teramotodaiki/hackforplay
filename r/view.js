@@ -138,12 +138,19 @@ $(function(){
 
 	// ページナンバーを選択するビュー
 	var $pageLink = $('<a>').addClass('btn btn-lg btn-default');
-	var pageNum = sessionStorage.getItem('view_param_length') / view_param_length + 1 >> 0;
+	var view_param_num = parseInt(sessionStorage.getItem('view_param_length'), 10);
+	var pageNum = view_param_num / view_param_length + 1 >> 0;
 	for (var i = 0; i < pageNum; i++) {
 		var pageLink = $pageLink.clone(true);
 		var n = i * view_param_length;
 		pageLink.attr('href', location.pathname + '?start=' + n + '#page_anchor').text(i).appendTo('.page-numbers');
+
+		var here = parseInt(sessionStorage.getItem('view_param_start'), 10) / view_param_length >> 0;
+		if (i === here) {
+			pageLink.attr('disabled', true);
+		}
 	}
+
 
 	// あまりを詰めるためのアイテム
 	var $blank = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item h4p_item-blank').append();

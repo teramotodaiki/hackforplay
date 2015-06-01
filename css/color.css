@@ -33,6 +33,11 @@ header {
 	background-color: rgba(0,0,0,0);
 }
 
+.page-numbers .btn[disabled] {
+	background-color: rgb(108, 108, 108);
+	color: rgb(255,255,255);
+}
+
 /* 線の幅・色 */
 header.navbar {
 	border: none;
