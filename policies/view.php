@@ -31,17 +31,17 @@
 							<tbody>
 								<tr>
 									<td>enchant.js</td>
-									<td>...</td>
+									<td>(c) Ubiquitous Entertainment Inc.</td>
 									<td>MIT License</td>
 								</tr>
 								<tr>
 									<td>CodeMirror</td>
-									<td>...</td>
+									<td>(C) 2015 by Marijn Haverbeke and others</td>
 									<td>MIT License</td>
 								</tr>
 								<tr>
 									<td>BootStrap</td>
-									<td>...</td>
+									<td>(c) 2015 Twitter.</td>
 									<td>MIT License</td>
 								</tr>
 							</tbody>
@@ -65,7 +65,7 @@
 						<h4>プライバシーポリシー</h4>
 					</div>
 					<div class="panel-body">
-						<pre>プライバシーポリシー</pre>
+						<pre><?php include '../privacy.txt'; ?></pre>
 					</div>
 				</div>
 			</div>
