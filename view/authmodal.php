@@ -64,11 +64,12 @@ $(function() {
 	// メール送信前のValidation（Validationしてボタンをアクティブにする）
 	$('form#signup button[type="submit"]').attr('disabled', true);
 	setInputRoutine('form#signup', function(){
+		var policy = $(this).find('#policy').is(':checked');
 		var count = 0;
 		$(this).find('input').each(function(index, el) {
 			if($(el).val() === '') count++;
 		});
-		$(this).find('button[type="submit"]').attr('disabled', count > 0);
+		$(this).find('button[type="submit"]').attr('disabled', count > 0 || !policy);
 	});
 
 	// メール送信・仮登録
@@ -327,7 +328,7 @@ $(function() {
 		}).on('blur', function() {
 			clearInterval(_intervalID);
 		});
-		$element.find('select').on('change', function() {
+		$element.find('select,input').on('change', function() {
 			routine.call($element.get(0));
 		});
 	}
@@ -420,7 +421,10 @@ $(function() {
 				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
 				    	</div>
 				  	</div>
-				  	<div class="text-right">
+				  	<div class="checkbox text-center">
+				  		<label><input type="checkbox" id="policy">ハックフォープレイ株式会社が定める<a href="../policies/#anchor-agreement" title="利用規約">利用規約</a>に同意します</label>
+				  	</div>
+				  	<div class="text-center">
 						<button type="submit" class="btn btn-primary">メールを送信</button>
 					</div>
 				</form>

@@ -14,7 +14,7 @@
 	<?php require_once '../view/header.php'; ?>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div id="anchor-licence" class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4>ライセンス表記</h4>
@@ -31,17 +31,17 @@
 							<tbody>
 								<tr>
 									<td>enchant.js</td>
-									<td>...</td>
+									<td>(c) Ubiquitous Entertainment Inc.</td>
 									<td>MIT License</td>
 								</tr>
 								<tr>
 									<td>CodeMirror</td>
-									<td>...</td>
+									<td>(C) 2015 by Marijn Haverbeke and others</td>
 									<td>MIT License</td>
 								</tr>
 								<tr>
 									<td>BootStrap</td>
-									<td>...</td>
+									<td>(c) 2015 Twitter.</td>
 									<td>MIT License</td>
 								</tr>
 							</tbody>
@@ -49,7 +49,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12">
+			<div id="anchor-agreement" class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4>利用規約</h4>
@@ -59,13 +59,13 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12">
+			<div id="anchor-privacy" class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4>プライバシーポリシー</h4>
 					</div>
 					<div class="panel-body">
-						<pre>プライバシーポリシー</pre>
+						<pre><?php include '../privacy.txt'; ?></pre>
 					</div>
 				</div>
 			</div>
