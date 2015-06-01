@@ -25,6 +25,9 @@
 		var start = '<?php echo $fetch_start_id; ?>';
 		start = isNaN(parseInt(start)) ? '0' : start;
 		sessionStorage.setItem('view_param_start', start);
+		var length = '<?php echo $stagelist_length; ?>';
+		length = isNaN(parseInt(length)) ? '0' : length;
+		sessionStorage.setItem('view_param_length', length);
 	})();
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
