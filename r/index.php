@@ -12,7 +12,7 @@ try {
 	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
 	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 	$stmt->execute();
-	$stagelist_length	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
+	$stage_num			= $stmt->fetch(PDO::FETCH_COLUMN, 0);
 
 
 	include('view.php');

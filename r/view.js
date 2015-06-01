@@ -58,7 +58,7 @@ $(function(){
 			var result = jQuery.parseJSON(data);
 			var $list = $('.h4p_stagelist.list-stage');
 			console.log($list);
-			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'));
+			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'), 10);
 			if (result.values.length > view_param_length) {
 				// 次のページが存在する
 				var next = view_param_start + view_param_length;
@@ -138,7 +138,7 @@ $(function(){
 
 	// ページナンバーを選択するビュー
 	var $pageLink = $('<a>').addClass('btn btn-lg btn-default');
-	var view_param_num = parseInt(sessionStorage.getItem('view_param_length'), 10);
+	var view_param_num = parseInt(sessionStorage.getItem('view_param_num'), 10);
 	var pageNum = view_param_num / view_param_length + 1 >> 0;
 	for (var i = 0; i < pageNum; i++) {
 		var pageLink = $pageLink.clone(true);
