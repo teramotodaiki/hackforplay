@@ -91,10 +91,7 @@
 					前へ
 				</a>
 			</div>
-			<div class="col-md-4 text-center">
-				<a href="javascript:void(0);" title="" class="btn btn-lg btn-default">
-					dammy
-				</a>
+			<div class="col-md-4 text-center page-numbers">
 			</div>
 			<div class="col-md-4 text-left">
 				<a href="javascript:void(0);" title="next" class="btn btn-lg btn-default go_page_next">
