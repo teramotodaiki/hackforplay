@@ -8,11 +8,19 @@ try {
 		$fetch_start_id	= 0;
 	}
 
+	$stmt				= $dbh->prepare('SELECT COUNT(*) FROM "Stage" WHERE "Mode"=:replay AND "State"=:published');
+	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
+	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
+	$stmt->execute();
+	$stage_num			= $stmt->fetch(PDO::FETCH_COLUMN, 0);
+
+
 	include('view.php');
 
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';
 	traceData($e);
-	die();
+
+	header('Location: ../e');
 }
 ?>
