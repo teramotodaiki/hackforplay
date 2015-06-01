@@ -9,12 +9,16 @@
 						ブログ</a></li>
 					<li class="pull-left"><a class="h4p_footer" href="http://goo.gl/forms/vgL5XUT0Ay" title="Request">リクエスト</a></li>
 					<li class="pull-left">
-						<a class="h4p_footer" href="http://goo.gl/forms/Mw9wUqVRnq" title="Questionnaire for Parents">
-						アンケート（保護者の方）</a>
+						<a class="h4p_footer" href="../policies/#anchor-licence" title="ライセンス表記">
+						ライセンス表記</a>
 					</li>
 					<li class="pull-left">
-						<a class="h4p_footer" href="http://goo.gl/forms/lkEBfvNZVA" title="Questionnaire for Students">
-						アンケート（学生の方）</a>
+						<a class="h4p_footer" href="../policies/#anchor-agreement" title="利用規約">
+						利用規約</a>
+					</li>
+					<li class="pull-left">
+						<a class="h4p_footer" href="../policies/#anchor-privacy" title="プライバシーポリシー">
+						プライバシーポリシー</a>
 					</li>
 				</ul>
 			</div>
