@@ -420,7 +420,10 @@ $(function() {
 				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
 				    	</div>
 				  	</div>
-				  	<div class="text-right">
+				  	<div class="checkbox text-center">
+				  		<label><input type="checkbox" id="policy">ハックフォープレイ株式会社が定める<a href="../policies/" title="利用規約">利用規約</a>に同意します</label>
+				  	</div>
+				  	<div class="text-center">
 						<button type="submit" class="btn btn-primary">メールを送信</button>
 					</div>
 				</form>
