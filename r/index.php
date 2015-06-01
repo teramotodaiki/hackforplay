@@ -20,6 +20,7 @@ try {
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';
 	traceData($e);
-	die();
+
+	header('Location: ../e');
 }
 ?>
