@@ -86,14 +86,19 @@
 	</div>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-6 text-center">
-				<a href="javascript:void(0);" title="previous" class="btn btn-lg btn-link go_page_previous">
-					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			<div class="col-md-4 text-right">
+				<a href="javascript:void(0);" title="previous" class="btn btn-lg btn-default go_page_previous">
+					前へ
 				</a>
 			</div>
-			<div class="col-md-6 text-center">
-				<a href="javascript:void(0);" title="next" class="btn btn-lg btn-link go_page_next">
-					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			<div class="col-md-4 text-center">
+				<a href="javascript:void(0);" title="" class="btn btn-lg btn-default">
+					dammy
+				</a>
+			</div>
+			<div class="col-md-4 text-left">
+				<a href="javascript:void(0);" title="next" class="btn btn-lg btn-default go_page_next">
+					次へ
 				</a>
 			</div>
 		</div>
