@@ -14,7 +14,7 @@
 	<?php require_once '../view/header.php'; ?>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div id="anchor-licence" class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4>ライセンス表記</h4>
@@ -49,7 +49,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12">
+			<div id="anchor-agreement" class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4>利用規約</h4>
@@ -59,7 +59,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12">
+			<div id="anchor-privacy" class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4>プライバシーポリシー</h4>

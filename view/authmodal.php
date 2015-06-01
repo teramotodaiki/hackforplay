@@ -422,7 +422,7 @@ $(function() {
 				    	</div>
 				  	</div>
 				  	<div class="checkbox text-center">
-				  		<label><input type="checkbox" id="policy">ハックフォープレイ株式会社が定める<a href="../policies/" title="利用規約">利用規約</a>に同意します</label>
+				  		<label><input type="checkbox" id="policy">ハックフォープレイ株式会社が定める<a href="../policies/#anchor-agreement" title="利用規約">利用規約</a>に同意します</label>
 				  	</div>
 				  	<div class="text-center">
 						<button type="submit" class="btn btn-primary">メールを送信</button>
