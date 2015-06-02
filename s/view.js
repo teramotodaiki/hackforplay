@@ -51,7 +51,6 @@ $(function(){
 				break;
 			case "replace_code":
 				var code = sessionStorage.getItem('restaging_code');
-				console.log('replace_code: ', code);
 				jsEditor.setValue(code);
 				break;
 		}
@@ -125,7 +124,6 @@ $(function(){
 						'source_stage_id': getParam('id'),
 						'attendance-token': sessionStorage.getItem('attendance-token')
 					}, function(data, textStatus, xhr) {
-						console.log(data);
 						loading.button('reset');
 						switch(data){
 							case 'no-session':
@@ -169,7 +167,6 @@ $(function(){
 				'timezone': timezone,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
-				console.log(data);
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
@@ -229,7 +226,6 @@ $(function(){
 							'timezone': timezone,
 							'attendance-token': sessionStorage.getItem('attendance-token')
 						} , function(data, textStatus, xhr) {
-							console.log(data);
 							$('#publish-button').button('reset');
 							switch(data){
 								case 'no-session':

@@ -55,7 +55,6 @@ $(function(){
 			'stage_id': stage_id,
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		} , function(data, textStatus, xhr) {
-			console.log(data);
 			if (data === 'success') {
 				item.after(bsAlert('alert-success', 'Successfly published'));
 				item.remove();
@@ -71,7 +70,6 @@ $(function(){
 			'stage_id': stage_id,
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		} , function(data, textStatus, xhr) {
-			console.log(data);
 			if (data === 'success') {
 				item.after(bsAlert('alert-success', 'Successfly rejected'));
 				item.remove();
@@ -84,7 +82,6 @@ $(function(){
 	$.post('../stage/fetchjudgingall.php',{
 		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
-		console.log(data);
 		if (data === 'parse-error') {
 		}else{
 			var result = jQuery.parseJSON(data);

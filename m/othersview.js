@@ -83,7 +83,6 @@ $(function(){
 		'length': view_param_length + 1,
 		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
-		// console.log(data);
 		if (data === 'parse-error') {
 		}else{
 			var result = jQuery.parseJSON(data);

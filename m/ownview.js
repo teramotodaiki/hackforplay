@@ -7,7 +7,6 @@ $(function(){
 			$.post('../auth/getmyinfo.php',{
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
-				console.log(data);
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show');
@@ -100,7 +99,6 @@ $(function(){
 			'state': pattern[state].nextState,
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
-			console.log(data);
 			$label.text(data === 'success' ? pattern[state].message : '失敗しました').removeClass('label-success label-default label-success label-warning label-primary').addClass('label-info');
 		});
 	});
@@ -111,7 +109,6 @@ $(function(){
 		'length': view_param_length + 1,
 		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
-		// console.log(data);
 		if (data === 'parse-error') {
 		}else{
 			var result = jQuery.parseJSON(data);
@@ -212,7 +209,6 @@ $(function(){
 			'token': token,
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		} , function(data, textStatus, xhr) {
-			console.log(data);
 			loading.button('reset');
 			switch(data){
 				case 'no-session':
@@ -239,7 +235,6 @@ $(function(){
 			'token': token,
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		} , function(data, textStatus, xhr) {
-			console.log(data);
 			loading.button('reset');
 			if (data === 'success') {
 				panel.find('.panel-heading').remove();
@@ -264,7 +259,6 @@ $(function(){
 			'token': token,
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
-			console.log(data);
 			loading.button('reset');
 			if (data === 'failed'){
 				panel.find('.panel-body').prepend(bsAlert('alert-danger', '削除に失敗しました'));

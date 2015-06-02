@@ -11,7 +11,6 @@ $(function(){
 		$.post('../auth/getmyinfo.php', {
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
-			console.log(data);
 			switch(data){
 				case 'no-session':
 					$('#signinModal').modal('show');
@@ -24,7 +23,6 @@ $(function(){
 					});
 					break;
 				case 'parse-error':
-					console.log(data);
 					break;
 				default:
 					var info = jQuery.parseJSON(data);
@@ -48,8 +46,6 @@ $(function(){
 		}else if ($(this).find('#timezone').val() !== userDefault.timezone_name) {
 			count++;
 		}
-		console.log($(this).find('#timezone').val());
-		console.log(userDefault.timezone_name);
 		$(this).find('button[type="submit"]').attr('disabled', count < 1);
 	});
 
@@ -138,7 +134,6 @@ $(function(){
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
 			submit.button('reset');
-			console.log(data);
 			switch(data){
 				case 'no-session':
 					$('#signinModal').modal('show');

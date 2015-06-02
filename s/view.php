@@ -80,7 +80,6 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	function scrollToAnchor(){
 		var selector = arguments.length > 0 ? arguments[0] : '#scroll-anchor';
 		var top = $(selector).get(0).getBoundingClientRect().top;
-		console.log(top);
 		window.scrollBy(0, top);
 	}
 	</script>

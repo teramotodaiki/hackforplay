@@ -23,7 +23,6 @@ $(function(){
 	$(".h4p_signin,.h4p_signout").hide();
 
 	function authtext(result){
-		console.log(result);
 		if(result === "success"){
 			$(".h4p_signin").hide();
 			$(".h4p_signout").show();

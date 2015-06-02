@@ -52,12 +52,10 @@ $(function(){
 		'length': view_param_length + 1,
 		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
-		console.log(data);
 		if (data === 'parse-error') {
 		}else{
 			var result = jQuery.parseJSON(data);
 			var $list = $('.h4p_stagelist.list-stage');
-			console.log($list);
 			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'), 10);
 			if (result.values.length > view_param_length) {
 				// 次のページが存在する
@@ -111,7 +109,6 @@ $(function(){
 		'id': '301,302',
 		'attendance-token': sessionStorage.getItem('attendance-token')
 	} , function(data, textStatus, xhr) {
-		console.log(data);
 		if (data === 'parse-error') {
 		}else{
 			var result = jQuery.parseJSON(data);

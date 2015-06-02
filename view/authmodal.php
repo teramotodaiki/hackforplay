@@ -55,7 +55,6 @@ $(function() {
 					$('#signin .alert').text('パスワードが間違っています').removeClass('hide');
 					break;
 				default:
-					console.log(data);
 					break;
 			}
 		});
@@ -98,7 +97,6 @@ $(function() {
 			'experience_days' : experience_days,
 			'timezone': timezone
 		}, function(data, textStatus, xhr) {
-			console.log(data);
 			submit.button('reset');
 			switch(data){
 				case "success":
@@ -122,7 +120,6 @@ $(function() {
 					$('#signup .alert').text('メールの送信に失敗しました').removeClass('hide');
 					break;
 				default:
-					console.log(data);
 					break;
 			}
 		});
@@ -194,7 +191,6 @@ $(function() {
 		$.post('/auth/updateuserinfoimmediately.php', {
 			'password' : password
 		}, function(data, textStatus, xhr) {
-			console.log(data);
 			submit.button('reset');
 			switch(data){
 				case 'success':
@@ -251,7 +247,6 @@ $(function() {
 			'email': email,
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
-			console.log(data);
 			submit.button('reset');
 			switch(data){
 				case 'invalid-email':
@@ -291,7 +286,6 @@ $(function() {
 			'email' : email,
 			'code' : code
 		}, function(data, textStatus, xhr) {
-			console.log(data);
 			submit.button('reset');
 			switch(data){
 				case 'invalid-email':

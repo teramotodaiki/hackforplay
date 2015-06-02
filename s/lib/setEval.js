@@ -50,7 +50,7 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
                 'data': _sendcode,
                 'attendance-token': sessionStorage.getItem('attendance-token')
             }, function(data, textStatus, xhr) {
-                console.log(data);
+
             });
             // エラーが発生していた場合、SendcodeExceptionに登録
             if (_message) {
@@ -59,7 +59,7 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
                     'message': _message,
                     'attendance-token': sessionStorage.getItem('attendance-token')
                 }, function(data, textStatus, xhr) {
-                    console.log(data);
+
                 });
             }
         };
