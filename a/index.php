@@ -3,7 +3,7 @@ require_once '../preload.php';
 
 // ユーザー名・パスワード
 $accept_page_username	= 'hackforplay';
-$accept_page_password	= 'hackforplay';
+$accept_page_password	= 'Wbjgqdp6vLq7tFv';
 
 switch (true) {
     case !isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']):
