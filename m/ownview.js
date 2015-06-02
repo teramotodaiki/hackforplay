@@ -82,16 +82,19 @@ $(function(){
 		var $label = $(this);
 		switch(state){
 			case 'published':
-				$.post('../stage/changetoprivate.php',{
+				$.post('../stage/changestate.php',{
 					'stage_id': id,
+					'state': 'private',
 					'attendance-token': sessionStorage.getItem('attendance-token')
 				}, function(data, textStatus, xhr) {
+					console.log(data);
 					$label.text(data === 'success' ? '非公開にしました' : '失敗しました').removeClass('label-success label-default').addClass('label-info');
 				});
 				break;
 			case 'private':
-				$.post('../stage/changetopublished.php',{
+				$.post('../stage/changestate.php',{
 					'stage_id': id,
+					'state': 'published',
 					'attendance-token': sessionStorage.getItem('attendance-token')
 				}, function(data, textStatus, xhr) {
 					$label.text(data === 'success' ? '公開しました' : '失敗しました').removeClass('label-success label-default').addClass('label-info');
