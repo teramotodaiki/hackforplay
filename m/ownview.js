@@ -80,24 +80,29 @@ $(function(){
 		var state = $(this).data('state');
 		var id = $(this).data('stage_id');
 		var $label = $(this);
-		switch(state){
-			case 'published':
-				$.post('../stage/changetoprivate.php',{
-					'stage_id': id,
-					'attendance-token': sessionStorage.getItem('attendance-token')
-				}, function(data, textStatus, xhr) {
-					$label.text(data === 'success' ? '非公開にしました' : '失敗しました').removeClass('label-success label-default').addClass('label-info');
-				});
-				break;
-			case 'private':
-				$.post('../stage/changetopublished.php',{
-					'stage_id': id,
-					'attendance-token': sessionStorage.getItem('attendance-token')
-				}, function(data, textStatus, xhr) {
-					$label.text(data === 'success' ? '公開しました' : '失敗しました').removeClass('label-success label-default').addClass('label-info');
-				});
-				break;
-		}
+		var pattern = {
+			'published' : {
+				nextState : 'private',
+				message : '非公開にしました'
+			},
+			'private' : {
+				nextState : 'published',
+				message : '公開しました'
+			},
+			'judging' : {
+				nextState : 'pending',
+				message : '審査を停止しました'
+			}
+		};
+		if (pattern[state] === undefined) return;
+		$.post('../stage/changestate.php', {
+			'stage_id': id,
+			'state': pattern[state].nextState,
+			'attendance-token': sessionStorage.getItem('attendance-token')
+		}, function(data, textStatus, xhr) {
+			console.log(data);
+			$label.text(data === 'success' ? pattern[state].message : '失敗しました').removeClass('label-success label-default label-success label-warning label-primary').addClass('label-info');
+		});
 	});
 	// ステージ一覧取得（１つ多く取得して、次のページがあるかどうか調べる）
 	var view_param_length = 15;
@@ -155,16 +160,21 @@ $(function(){
 				}
 				var label_lv = (stage.state === 'published' ? 'label-success' :
 								stage.state === 'judging'	? 'label-warning' :
+								stage.state === 'pending'	? 'label-primary' :
 								stage.state === 'rejected'	? 'label-danger' : 'label-default');
 				var label_tx = (stage.state === 'published' ? '公開中' :
 								stage.state === 'judging'	? '審査中' :
+								stage.state === 'pending'	? '審査停止中' :
 								stage.state === 'rejected'	? 'リジェクト' : '非公開');
 				var label_pt = (stage.state === 'published' ? true :
+								stage.state === 'judging'	? true :
 								stage.state === 'private'	? true : false);
 				item.find('.state').addClass(label_lv).text(label_tx).data('state', stage.state).data('stage_id', stage.id);
 				if (label_pt) {
 					item.find('.state').hover(function() {
-						$(this).text(stage.state === 'published' ? '非公開にする' : '公開する');
+						$(this).text(
+							stage.state === 'published' ? '非公開にする' :
+							stage.state === 'judging'	? '審査を停止する' : '公開する');
 					}, function() {
 						$(this).text(label_tx);
 					});
