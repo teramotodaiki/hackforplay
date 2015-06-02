@@ -9,8 +9,8 @@
 	<!-- Open graph protocol -->
 	<meta property="og:title" content="あそべるプログラミング HackforPlay"/>
 	<meta property="og:description" content="プログラミングをゲームで学ぼう。小中学生向けの教育ゲーム ハックフォープレイ"/>
-	<meta property="og:image" content="http://hackforplay.xyz/img/ogimg.jpg"/>
-	<meta property="og:url" content="http://hackforplay.xyz"/>
+	<meta property="og:image" content="https://hackforplay.xyz/img/lp.jpg"/>
+	<meta property="og:url" content="https://hackforplay.xyz"/>
 	<meta property="og:type" content="game"/>
 	<meta property="og:site_name" content="あそべるプログラミング HackforPlay"/>
 	<title>あそべるプログラミング hackforplay</title>
