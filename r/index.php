@@ -1,19 +1,26 @@
 <?php
-// more view
-//$is_beta = 1; // This is a BETA VERSION. Turn into 0 to be the official ver!
+try {
 
-// 1.Preparation
-require_once '../preload.php';
+	require_once '../preload.php';
 
-// 2.Sign in or sign up
-require_once '../signin.php';
+	$fetch_start_id		= filter_input(INPUT_GET, 'start', FILTER_VALIDATE_INT);
+	if (!$fetch_start_id) {
+		$fetch_start_id	= 0;
+	}
 
-// 3.Enumrate cleared stage
-require_once '../cleared.php';
+	$stmt				= $dbh->prepare('SELECT COUNT(*) FROM "Stage" WHERE "Mode"=:replay AND "State"=:published');
+	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
+	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
+	$stmt->execute();
+	$stage_num			= $stmt->fetch(PDO::FETCH_COLUMN, 0);
 
-// 4.Get all stages
-require_once '../getstages.php';
 
-// 4.Load page html
-include('view/main.php');
+	include('view.php');
+
+} catch (Exception $e) {
+	require_once '../exception/tracedata.php';
+	traceData($e);
+
+	header('Location: ../e');
+}
 ?>

@@ -15,9 +15,10 @@ var gameover; // gameoverメソッドも
         var token = __H4PENV__TOKEN;
 
         // クリア状態を送信
-        $.post('clear.php', {'token':token}, function(data, textStatus, xhr) {
-            if(data !== "") console.log(data);
-            if(textStatus !== "") console.log(textStatus);
+        $.post('../../stage/playlog.php', {
+            'value': 'clear',
+            'attendance-token': sessionStorage.getItem('attendance-token')
+        }, function(data, textStatus, xhr) {
         });
 
         // 演出
@@ -30,9 +31,7 @@ var gameover; // gameoverメソッドも
             gameclearray.moveTo(106, 136);
             game.rootScene.addChild(gameclearray);
             gameclearray.opacity = 0;
-            gameclearray.tl.fadeIn(30, enchant.Easing.LINEAR).then(function(){
-                console.log("cleared");
-            });
+            gameclearray.tl.fadeIn(30, enchant.Easing.LINEAR);
         }else{
             var lay = new Overlay('black'); // rgba(0,0,0,1)や#000000でも可能
             game.rootScene.addChild(lay);

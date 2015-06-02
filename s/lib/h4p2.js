@@ -389,9 +389,11 @@ var Knight = enchant.Class.create(Player, {
         this.hp = 1;
         this.atk = 1;
         game.onabuttondown = function(){
-            env.player.attack(0, 1);
-            env.player.animCount = 0;
-            env.player.behavior = BehaviorTypes.Attack;
+            if (env.player.behavior === BehaviorTypes.Idle) {
+                env.player.attack(0, 1);
+                env.player.animCount = 0;
+                env.player.behavior = BehaviorTypes.Attack;
+            }
         };
     },
     onenterframe : function(){
@@ -634,6 +636,8 @@ var Effect = enchant.Class(Behaviour, {
 
 /* 親ウィンドウ（ゲームウィンドウ）にフォーカスを戻す。主にエディタから呼び出す */
 function refocus(){
+
+    window.document.activeElement.blur();
     window.focus();
 
     // game.keybind(" ".charCodeAt(0), 'b'); // bボタンはスペースキー

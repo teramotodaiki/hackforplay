@@ -1,22 +1,56 @@
 @charset "utf-8";
 
+.h4p_stagelist {
+	background: url(../img/cassette/outer.png);
+}
+
+.h4p_bar-bar {
+	background: url(../img/cassette/bar.png);
+}
+
+.h4p_bar-top {
+	background: url(../img/cassette/top.png);
+	height: 12px;
+}
+
+.h4p_bar-bottom {
+	background: url(../img/cassette/bottom.png);
+	height: 12px;
+}
+
+.h4p_bar-left {
+	background: url(../img/cassette/left.png);
+	width: 12px;
+}
+
+.h4p_bar-right {
+	background: url(../img/cassette/right.png);
+	width: 12px;
+}
+
+.h4p_stagelist,
+.h4p_bar-left,
+.h4p_bar-right {
+	position: relative;
+	float: left;
+}
+
 .h4p_landing {
 	background-size: cover;
 }
 
-.nav li a {
-	vertical-align: middle;
-	padding-top: 0px;
+.h4p_item-frame {
+	position: absolute;
+	overflow: hidden;
+	top: 0px;
+	left: 0px;
 }
 
 .h4p_item-thumbnail {
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-position: top center;
-}
-
-.h4p_item-src {
-	display: none;
+	background-position: center center;
+	cursor: pointer;
 }
 
 .h4p_item-challenged {
@@ -37,13 +71,6 @@ iframe {
 .h4p_item-title,
 .h4p_item-footer {
 	position: relative;
-}
-
-.h4p_item-footer p {
-	margin: 0;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
 }
 
 .h4p_box-header *:first-child {
@@ -95,3 +122,60 @@ iframe {
 	border: 0;
 	border-radius: 0;
 }
+
+.form-group *[data-toggle="tooltip"]{
+	height: 34px;
+	width: 34px;
+	padding: 0;
+	left: -10px;
+}
+.form-group *[data-toggle="tooltip"] .glyphicon{
+	right: 0px;
+}
+
+.h4p_item .h4p_item-front {
+	z-index: 10;
+}
+
+.h4p_item p,
+.h4p_projectlist .panel-body p,
+.h4p_info-datail p {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.h4p_projectlist .panel-heading pre {
+	word-wrap: normal;
+	overflow: auto;
+}
+
+.h4p_item p.title {
+	white-space: normal;
+}
+
+.h4p_info-explain p {
+	overflow-y: scroll;
+}
+
+/* アニメーション */
+
+.h4p_item-transform {
+	width: 384px;
+	height: 384px;
+}
+
+.h4p_item-transform {
+	-webkit-transform-origin: center center;
+	-webkit-transform: rotateZ(0deg) scale(1,1);
+	transform-origin: center center;
+	transform: rotateZ(0deg) scale(1,1);
+}
+
+.h4p_item-transform.transform-on {
+	-webkit-transform: rotateZ(4deg) scale(1.05,1.05);
+	transform: rotateZ(4deg) scale(1.05,1.05);
+}
+
+
+
