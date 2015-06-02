@@ -80,27 +80,25 @@ $(function(){
 		var state = $(this).data('state');
 		var id = $(this).data('stage_id');
 		var $label = $(this);
-		switch(state){
-			case 'published':
-				$.post('../stage/changestate.php',{
-					'stage_id': id,
-					'state': 'private',
-					'attendance-token': sessionStorage.getItem('attendance-token')
-				}, function(data, textStatus, xhr) {
-					console.log(data);
-					$label.text(data === 'success' ? '非公開にしました' : '失敗しました').removeClass('label-success label-default').addClass('label-info');
-				});
-				break;
-			case 'private':
-				$.post('../stage/changestate.php',{
-					'stage_id': id,
-					'state': 'published',
-					'attendance-token': sessionStorage.getItem('attendance-token')
-				}, function(data, textStatus, xhr) {
-					$label.text(data === 'success' ? '公開しました' : '失敗しました').removeClass('label-success label-default').addClass('label-info');
-				});
-				break;
-		}
+		var pattern = {
+			'published' : {
+				nextState : 'private',
+				message : '非公開にしました'
+			},
+			'private' : {
+				nextState : 'published',
+				message : '公開しました'
+			}
+		};
+		if (pattern[state] === undefined) return;
+		$.post('../stage/changestate.php', {
+			'stage_id': id,
+			'state': pattern[state].nextState,
+			'attendance-token': sessionStorage.getItem('attendance-token')
+		}, function(data, textStatus, xhr) {
+			console.log(data);
+			$label.text(data === 'success' ? pattern[state].message : '失敗しました').removeClass('label-success label-default').addClass('label-info');
+		});
 	});
 	// ステージ一覧取得（１つ多く取得して、次のページがあるかどうか調べる）
 	var view_param_length = 15;
