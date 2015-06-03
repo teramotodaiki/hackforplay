@@ -41,7 +41,6 @@
 			<div class="col-md-10 tab-content">
 			    <div role="tabpanel" class="tab-pane active" id="summary">
 			    	<div class="chart text-center">
-			    		chart
 			    	</div>
 			    	<div class="detail table-responsive">
 			    		<table class="table table-striped">
