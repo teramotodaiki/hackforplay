@@ -135,7 +135,6 @@ $(function(){
 	).append(
 		$('<td>').addClass('line')
 	);
-
 	// ExceptionMapのチャート
 	$.post('../analytics/exceptionsummary.php',{
 		'begin' : '2010-01-01 00:00:00',
