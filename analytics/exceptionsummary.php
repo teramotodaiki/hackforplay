@@ -30,7 +30,6 @@ try {
 	$summary_of_exceptions->values = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 	$json = json_encode($summary_of_exceptions);
-
 	if ($json === FALSE) {
 		exit('parse-error');
 	}
