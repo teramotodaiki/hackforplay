@@ -28,8 +28,40 @@
 		</div>
 	</div>
 	<!-- contents -->
-	<div class="container">
-		<div class="row list-judging">
+	<div class="container panel panel-default">
+		<div class="row panel-body">
+			<ul class="col-md-2 nav nav-pills nav-stacked panel-body" role="tablist">
+			    <li role="presentation" class="active">
+			    	<a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">summary</a>
+			    </li>
+			    <li role="presentation">
+			    	<a href="#judge" aria-controls="judge" role="tab" data-toggle="tab">judge</a>
+			    </li>
+			</ul>
+			<div class="col-md-10 tab-content">
+			    <div role="tabpanel" class="tab-pane active" id="summary">
+			    	<div class="chart text-center">
+			    	</div>
+			    	<div class="detail table-responsive">
+			    		<table class="table table-striped">
+			    			<caption>詳細</caption>
+			    			<thead>
+			    				<tr>
+			    					<th>Message</th>
+			    					<th>Code</th>
+			    					<th>File</th>
+			    					<th>Line</th>
+			    				</tr>
+			    			</thead>
+			    			<tbody class="detail-container">
+			    			</tbody>
+			    		</table>
+			    	</div>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="judge">
+			    	<div class="row list-judging"></div>
+			    </div>
+			</div>
 		</div>
 	</div>
 </body>
