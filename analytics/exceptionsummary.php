@@ -18,7 +18,12 @@ require_once '../preload.php';
 
 try {
 
-	$stmt	= $dbh->prepare('SELECT * FROM "ExceptionData"');
+	$begin	= filter_input(INPUT_POST, "begin");
+	$end	= filter_input(INPUT_POST, "end");
+
+	$stmt	= $dbh->prepare('SELECT * FROM "ExceptionData" WHERE "ID" IN (SELECT DISTINCT "DataID" FROM "ExceptionMap" WHERE "Registered">:_begin AND "Registered"<:end)');
+	$stmt->bindValue(":_begin", $begin, PDO::PARAM_STR);
+	$stmt->bindValue(":end", $end, PDO::PARAM_STR);
 	$stmt->execute();
 
 	$summary_of_exceptions		= new stdClass;
