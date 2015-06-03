@@ -1,4 +1,5 @@
 $(function(){
+
 	var $item = $('<div>').addClass('col-md-12 panel').append(
 		$('<div>').addClass('row panel-body').append(
 			$('<div>').addClass('col-md-4').append(
