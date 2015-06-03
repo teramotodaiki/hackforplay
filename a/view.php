@@ -40,7 +40,24 @@
 			</ul>
 			<div class="col-md-10 tab-content">
 			    <div role="tabpanel" class="tab-pane active" id="summary">
-			    	summary
+			    	<div class="chart text-center">
+			    		chart
+			    	</div>
+			    	<div class="detail table-responsive">
+			    		<table class="table table-striped">
+			    			<caption>詳細</caption>
+			    			<thead>
+			    				<tr>
+			    					<th>Message</th>
+			    					<th>Code</th>
+			    					<th>File</th>
+			    					<th>Line</th>
+			    				</tr>
+			    			</thead>
+			    			<tbody class="detail-container">
+			    			</tbody>
+			    		</table>
+			    	</div>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="judge">
 			    	<div class="row list-judging"></div>
