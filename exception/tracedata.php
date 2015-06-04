@@ -10,9 +10,7 @@ function traceData($exception)
 	global $dbh;
 
 	/* DEVELOPPING MODE OR RELEASE MODE --- */
-	$trace_mode_dump = FALSE; // develop: TRUE
-
-	if ($trace_mode_dump) {
+	if ($_SERVER['SERVER_NAME'] === 'localhost') {
 		var_dump($exception);
 	}
 	/* --- DEVELOPPING MODE OR RELEASE MODE */
