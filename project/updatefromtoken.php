@@ -86,7 +86,7 @@ try {
 		exit('failed');
 	}
 
-	$insertion_max	= 700; // 一度に挿入できる最大数
+	$insertion_max	= 500; // 一度に挿入できる最大数
 	for ($offset_index=0; $offset_index < count($new_code); $offset_index += $insertion_max) {
 
 		$once			= array_slice($new_code, $offset_index, $insertion_max); // max以下の個数を取得(添え字は0から)
