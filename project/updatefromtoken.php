@@ -86,14 +86,19 @@ try {
 		exit('failed');
 	}
 
-	$placeHolder	= array_fill(0, count($new_code), '(?,?,?)');
-	$stmt	= $dbh->prepare('INSERT INTO "Line"("ScriptID","Line","CodeID") VALUES' . implode(',', $placeHolder));
-	foreach ($new_code as $key => $value) {
-		$stmt->bindValue($key * 3 + 1, $difference['ID'], PDO::PARAM_INT);
-		$stmt->bindValue($key * 3 + 2, $key, PDO::PARAM_INT);
-		$stmt->bindValue($key * 3 + 3, $value, PDO::PARAM_INT);
+	$insertion_max	= 700; // 一度に挿入できる最大数
+	for ($offset_index=0; $offset_index < count($new_code); $offset_index += $insertion_max) {
+
+		$once			= array_slice($new_code, $offset_index, $insertion_max); // max以下の個数を取得(添え字は0から)
+		$placeHolder	= array_fill(0, count($once), '(?,?,?)');
+		$stmt	= $dbh->prepare('INSERT INTO "Line"("ScriptID","Line","CodeID") VALUES' . implode(',', $placeHolder));
+		foreach ($once as $key => $value) {
+			$stmt->bindValue($key * 3 + 1, $difference['ID'], PDO::PARAM_INT);
+			$stmt->bindValue($key * 3 + 2, $key + $offset_index, PDO::PARAM_INT);
+			$stmt->bindValue($key * 3 + 3, $value, PDO::PARAM_INT);
+		}
+		$stmt->execute();
 	}
-	$stmt->execute();
 
 	// SourceStageIDの更新
 	$source_stage_id	= filter_input(INPUT_POST, 'source_stage_id', FILTER_VALIDATE_INT);
