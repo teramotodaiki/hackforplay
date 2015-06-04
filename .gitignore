@@ -1,5 +1,6 @@
 .DS_Store
 .htaccess
+preload.php
 
 c/
 codemirror/
