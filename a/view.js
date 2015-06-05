@@ -50,7 +50,7 @@ $(function(){
 		});
 	});
 	$item.find('.h4p_accept-button').on('click', function() {
-		var item = $(this).parents('.panel-body');
+		var item = $(this).parents('.panel-body').first();
 		var stage_id = $(this).data('stage_id');
 		$.post('../stage/publishbyid.php', {
 			'stage_id': stage_id,
@@ -65,7 +65,7 @@ $(function(){
 		});
 	});
 	$item.find('.h4p_reject-button').on('click', function() {
-		var item = $(this).parents('.panel-body');
+		var item = $(this).parents('.panel-body').first();
 		var stage_id = $(this).data('stage_id');
 		$.post('../stage/rejectbyid.php', {
 			'stage_id': stage_id,
