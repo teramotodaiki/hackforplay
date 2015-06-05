@@ -75,8 +75,7 @@ try {
 	$stmt->execute();
 
 	// 管理者にメール送信
-	$flag = mail('i101323@gmail.com', 'New stage posted', $title . "\r\nPosted at " . gmdate("Y-m-d H:i:s") . "GMT");
-	throw new Exception("Selfish exception: Mail sending flag is $flag", 9999);
+	mail('i101323@gmail.com', 'New stage posted', $title . "\r\nPosted at " . gmdate("Y-m-d H:i:s") . "GMT");
 
 	exit('success');
 
