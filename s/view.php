@@ -151,7 +151,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	<!-- contents -->
 	<div class="container container-game">
 		<div class="row">
-			<div class="col-sm-12 h4p_restaging">
+			<div class="col-sm-12 h4p_restaging directly_floating_shadow">
 				<div class="row">
 					<div class="col-sm-12 h4p_restaging_editor">
 						<textarea name="restaging_code" value="// ステージ改造コードを書いて、このステージを改造してやろう!!"></textarea>
