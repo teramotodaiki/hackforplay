@@ -63,6 +63,11 @@ $(function(){
 				$('<p>').append($('<span>').addClass('source').html('改造元：<b><a></a></b>'))
 			).append(
 				$('<a>').addClass('state label').attr('href', 'javascript:void(0)')
+			).append(
+				$('<a>').addClass('btn btn-link btn-sm hide show_reason').attr({
+					'data-toggle': 'modal',
+					'data-target': '#reasonModal'
+				}).text('リジェクトされた理由')
 			)
 		)
 	);
@@ -118,7 +123,7 @@ $(function(){
 				var topicView = createTopicView();
 				$(topicView).appendTo($list);
 			}
-			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'));
+			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'), 10);
 			if (result.values.length > view_param_length) {
 				// 次のページが存在する
 				var next = view_param_start + view_param_length;
@@ -178,9 +183,29 @@ $(function(){
 				}else{
 					item.find('.state').css('cursor', 'default');
 				}
+				if (stage.state === 'rejected') {
+					var reason_json = JSON.stringify(stage.reject_reason);
+					item.find('.show_reason').removeClass('hide').data('reason', reason_json);
+				}
 				item.appendTo($list);
 			});
 		}
+	});
+	// リジェクトされた理由を表示するモーダル
+	var $reasonItem =
+	$('<div>').addClass('alert alert-danger').append(
+		$('<p>').addClass('message')
+	);
+	$('#reasonModal').on('show.bs.modal', function(event) {
+		$(this).find('.modal-body').children().remove();
+		var $button = $(event.relatedTarget);
+		var reason_json = $button.data('reason');
+		var reason = $.parseJSON(reason_json);
+		reason.forEach(function(item){
+			var reasonItem = $reasonItem.clone(true);
+			reasonItem.text(item);
+			reasonItem.appendTo('#reasonModal .modal-body');
+		});
 	});
 
 	var $projectItem = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12').append(

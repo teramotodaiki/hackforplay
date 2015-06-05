@@ -29,7 +29,10 @@ $(function(){
 			).append(
 				$('<button>').addClass('btn btn-primary btn-block h4p_accept-button').text('Accept this stage')
 			).append(
-				$('<button>').addClass('btn btn-danger btn-block h4p_reject-button').text('Reject this stage')
+				$('<button>').addClass('btn btn-danger btn-block h4p_reject-button').attr({
+					'data-toggle': 'modal',
+					'data-target': '#rejectModal'
+				}).text('Reject this stage')
 			)
 		)
 	);
@@ -61,21 +64,6 @@ $(function(){
 				item.remove();
 			}else{
 				item.after(bsAlert('alert-danger', 'Failed to publish'));
-			}
-		});
-	});
-	$item.find('.h4p_reject-button').on('click', function() {
-		var item = $(this).parents('.panel-body').first();
-		var stage_id = $(this).data('stage_id');
-		$.post('../stage/rejectbyid.php', {
-			'stage_id': stage_id,
-			'attendance-token': sessionStorage.getItem('attendance-token')
-		} , function(data, textStatus, xhr) {
-			if (data === 'success') {
-				item.after(bsAlert('alert-success', 'Successfly rejected'));
-				item.remove();
-			}else{
-				item.after(bsAlert('alert-danger', 'Failed to reject'));
 			}
 		});
 	});
@@ -125,6 +113,66 @@ $(function(){
 		}
 	});
 
+	(function(){
+		var $button = false;
+
+		// モーダルの初期化
+		var $reasonItem =
+		$('<div>').addClass('checkbox').append(
+			$('<label>').append(
+				$('<input>').attr('type', 'checkbox')
+			).append(
+				$('<span>').addClass('message')
+			)
+		);
+
+		$.post('../stage/getrejectreasons.php',{
+			'attendance-token': sessionStorage.getItem('attendance-token')
+		}, function(data, textStatus, xhr) {
+			var result = $.parseJSON(data);
+
+			result.values.forEach(function(item){
+				var reasonItem = $reasonItem.clone(true);
+				reasonItem.find('input').val(item.ID);
+				reasonItem.find('.message').text(item.Message);
+				reasonItem.prependTo('#rejectModal form');
+			});
+		});
+
+		$('#rejectModal').on('show.bs.modal', function(event) {
+			$button = $(event.relatedTarget);
+			$(this).find('input[type="checkbox"]:checked').prop('checked', false);
+
+		}).find('form').submit(function(event) {
+			event.preventDefault();
+
+			var reasons = [];
+			$(this).find('input[type="checkbox"]:checked').each(function(index, el) {
+				reasons.push(el.value);
+			});
+			var reasons_json = JSON.stringify(reasons);
+
+			var item = $button.parents('.panel-body').first();
+			var stage_id = $button.data('stage_id');
+			$.post('../stage/rejectbyid.php', {
+				'stage_id': stage_id,
+				'reasons': reasons_json,
+				'attendance-token': sessionStorage.getItem('attendance-token')
+			} , function(data, textStatus, xhr) {
+				console.log(data);
+				console.log(item);
+				if (data === 'success') {
+					item.after(bsAlert('alert-success', 'Successfly rejected'));
+					item.remove();
+				}else{
+					item.after(bsAlert('alert-danger', 'Failed to reject'));
+				}
+			});
+
+			$('#rejectModal').modal('hide');
+		});
+	})();
+
 	var $exceptionItem =
 	$('<tr>').append(
 		$('<td>').addClass('message')
@@ -149,7 +197,6 @@ $(function(){
 			eItem.find('.file').text(item.File);
 			eItem.find('.line').text(item.Line);
 			eItem.appendTo('.detail-container');
-			console.log(eItem);
 		});
 	});
 

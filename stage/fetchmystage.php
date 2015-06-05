@@ -16,7 +16,8 @@ information_of_stages:
 		source_mode : 改造元ステージのMode (official, replay)
 		playcount : 現在のプレイ回数,
 		state : ステージの状態,
-		published : 公開された日付
+		published : 公開された日付,
+		reject_reason : [(リジェクトされた理由),,,]
 	](,,,[])
 }
 */
@@ -59,6 +60,19 @@ try {
 		}
 	}
 
+	foreach ($result as $key => $value) {
+		$reason		= array();
+
+		if ($value['State'] === 'rejected') {
+			// リジェクトされた理由を取得
+			$stmt	= $dbh->prepare('SELECT "Message" FROM "RejectReasonData" WHERE "ID" IN (SELECT "DataID" FROM "RejectReasonMap" WHERE "StageID"=:stage_id)');
+			$stmt->bindValue(":stage_id", $value['ID'], PDO::PARAM_INT);
+			$stmt->execute();
+			$reason	= $stmt->fetchAll(PDO::FETCH_COLUMN);
+		}
+		$result[$key]['Reason']	= $reason;
+	}
+
 	// 配列のvalueを生成し、データを格納
 	$values = array();
 	foreach ($result as $key => $value) {
@@ -74,6 +88,7 @@ try {
 		$item->playcount 	= $value['Playcount'];
 		$item->state 	 	= $value['State'];
 		$item->published 	= $value['Published'];
+		$item->reject_reason= $value['Reason'];
 		array_push($values, $item);
 	}
 
