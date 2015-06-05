@@ -29,7 +29,10 @@ $(function(){
 			).append(
 				$('<button>').addClass('btn btn-primary btn-block h4p_accept-button').text('Accept this stage')
 			).append(
-				$('<button>').addClass('btn btn-danger btn-block h4p_reject-button').text('Reject this stage')
+				$('<button>').addClass('btn btn-danger btn-block h4p_reject-button').attr({
+					'data-toggle': 'modal',
+					'data-target': '#rejectModal'
+				}).text('Reject this stage')
 			)
 		)
 	);
@@ -61,21 +64,6 @@ $(function(){
 				item.remove();
 			}else{
 				item.after(bsAlert('alert-danger', 'Failed to publish'));
-			}
-		});
-	});
-	$item.find('.h4p_reject-button').on('click', function() {
-		var item = $(this).parents('.panel-body').first();
-		var stage_id = $(this).data('stage_id');
-		$.post('../stage/rejectbyid.php', {
-			'stage_id': stage_id,
-			'attendance-token': sessionStorage.getItem('attendance-token')
-		} , function(data, textStatus, xhr) {
-			if (data === 'success') {
-				item.after(bsAlert('alert-success', 'Successfly rejected'));
-				item.remove();
-			}else{
-				item.after(bsAlert('alert-danger', 'Failed to reject'));
 			}
 		});
 	});
@@ -124,6 +112,43 @@ $(function(){
 			});
 		}
 	});
+
+	(function(){
+		var $button = false;
+
+		$('#rejectModal').on('show.bs.modal', function(event) {
+			$button = $(event.relatedTarget);
+
+		}).find('form').submit(function(event) {
+			event.preventDefault();
+
+			var reasons = [];
+			$(this).find('input[type="checkbox"]:checked').each(function(index, el) {
+				reasons.push(el.value);
+			});
+			var reasons_json = JSON.stringify(reasons);
+			console.log(reasons_json);
+
+			var item = $button.parents('.panel-body').first();
+			var stage_id = $button.data('stage_id');
+			$.post('../stage/rejectbyid.php', {
+				'stage_id': stage_id,
+				'reasons': reasons_json,
+				'attendance-token': sessionStorage.getItem('attendance-token')
+			} , function(data, textStatus, xhr) {
+				console.log(data);
+				console.log(item);
+				if (data === 'success') {
+					item.after(bsAlert('alert-success', 'Successfly rejected'));
+					item.remove();
+				}else{
+					item.after(bsAlert('alert-danger', 'Failed to reject'));
+				}
+			});
+
+			$('#rejectModal').modal('hide');
+		});
+	})();
 
 	var $exceptionItem =
 	$('<tr>').append(
