@@ -36,18 +36,6 @@
 		    	</div>
 			    <div class="modal-body">
 			    	<form>
-			    		<div class="checkbox">
-			    			<label>
-			    				<input type="checkbox" name="c1" value="1">
-			    				<span>(例)個人情報にアクセスしようとしている</span>
-			    			</label>
-			    		</div>
-			    		<div class="checkbox">
-			    			<label>
-			    				<input type="checkbox" name="c2" value="2">
-			    				<span>(例)投稿の練習をしているようにみえる</span>
-			    			</label>
-			    		</div>
 			    		<button type="submit" class="btn btn-danger btn-lg btn-block" >リジェクト</button>
 			    	</form>
 			    </div>

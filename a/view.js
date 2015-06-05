@@ -116,8 +116,32 @@ $(function(){
 	(function(){
 		var $button = false;
 
+		// モーダルの初期化
+		var $reasonItem =
+		$('<div>').addClass('checkbox').append(
+			$('<label>').append(
+				$('<input>').attr('type', 'checkbox')
+			).append(
+				$('<span>').addClass('message')
+			)
+		);
+
+		$.post('../stage/getrejectreasons.php',{
+			'attendance-token': sessionStorage.getItem('attendance-token')
+		}, function(data, textStatus, xhr) {
+			var result = $.parseJSON(data);
+
+			result.values.forEach(function(item){
+				var reasonItem = $reasonItem.clone(true);
+				reasonItem.find('input').val(item.ID);
+				reasonItem.find('.message').text(item.Message);
+				reasonItem.prependTo('#rejectModal form');
+			});
+		});
+
 		$('#rejectModal').on('show.bs.modal', function(event) {
 			$button = $(event.relatedTarget);
+			$(this).find('input[type="checkbox"]:checked').prop('checked', false);
 
 		}).find('form').submit(function(event) {
 			event.preventDefault();
@@ -127,7 +151,6 @@ $(function(){
 				reasons.push(el.value);
 			});
 			var reasons_json = JSON.stringify(reasons);
-			console.log(reasons_json);
 
 			var item = $button.parents('.panel-body').first();
 			var stage_id = $button.data('stage_id');
@@ -174,7 +197,6 @@ $(function(){
 			eItem.find('.file').text(item.File);
 			eItem.find('.line').text(item.Line);
 			eItem.appendTo('.detail-container');
-			console.log(eItem);
 		});
 	});
 
