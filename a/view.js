@@ -159,8 +159,6 @@ $(function(){
 				'reasons': reasons_json,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			} , function(data, textStatus, xhr) {
-				console.log(data);
-				console.log(item);
 				if (data === 'success') {
 					item.after(bsAlert('alert-success', 'Successfly rejected'));
 					item.remove();
@@ -196,7 +194,7 @@ $(function(){
 			eItem.find('.code').text(item.Code);
 			eItem.find('.file').text(item.File);
 			eItem.find('.line').text(item.Line);
-			eItem.appendTo('.detail-container');
+			eItem.appendTo('#summary .detail-container');
 		});
 	});
 
