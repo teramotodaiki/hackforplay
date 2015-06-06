@@ -3,11 +3,8 @@
 過去1ヶ月間のアクティブ率(DAU/MAU比)を１日(00:00:00GMT - 23:59:59GMT)ごとに取得する
 Output:	no-data , parse-error , JSON{summary_of_activerate}
 {
-	values : [
-		Span : 計測スパン,
-		DAU : デイリーアクティブユーザー
-		Rate : アクティブ率
-	]
+	labels : [計測スパン],
+	values : [アクティブ率]
 }
 */
 
@@ -38,17 +35,15 @@ try {
 		$stmt->execute();
 		$DAU	= $stmt->fetchColumn(0);
 
-		$value	= new stdClass;
-		$value->DAU		= (int)$DAU;
-		$value->Rate	= (int)$DAU / (int)$MAU;
-		$value->Span	= $datetime->format("D m/d");
-		$values[$i]	= $value;
+		$labels[$i]	= $datetime->format("D m/d");
+		$values[$i]	= (int)$DAU / (int)$MAU;
 
 		$datetime->modify('+1 day');
 	}
 
 	$summary_of_activerate		= new stdClass;
 	$summary_of_activerate->values = $values;
+	$summary_of_activerate->labels = $labels;
 
 	$json = json_encode($summary_of_activerate);
 	if ($json === FALSE) {
