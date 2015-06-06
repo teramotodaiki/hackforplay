@@ -9,9 +9,10 @@ require_once '../preload.php';
 try {
 
 	// KeyValueData.IDを取得
-	$stmt	= $dbh->prepare('SELECT "ID" FROM "KeyValueData" WHERE "KeyString"=:selfpath AND "ValueString" LIKE :pattern');
+	$pattern= $_SERVER['SERVER_NAME'] === 'localhost' ? '/hackforplay/s/index.php' : '/s/index.php';
+	$stmt	= $dbh->prepare('SELECT "ID" FROM "KeyValueData" WHERE "KeyString"=:selfpath AND "ValueString"=:pattern');
 	$stmt->bindValue(":selfpath", 'selfpath', PDO::PARAM_STR);
-	$stmt->bindValue(":pattern", '%/s/index.php', PDO::PARAM_STR);
+	$stmt->bindValue(":pattern", $pattern, PDO::PARAM_STR);
 	$stmt->execute();
 	$kvd_id	= $stmt->fetchColumn(0);
 
