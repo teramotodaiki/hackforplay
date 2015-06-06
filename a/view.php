@@ -61,6 +61,9 @@
 			    	<a href="#playcount" aria-controls="playcount" role="tab" data-toggle="tab">プレイ回数</a>
 			    </li>
 			    <li role="presentation">
+			    	<a href="#poststage" aria-controls="poststage" role="tab" data-toggle="tab">投稿回数</a>
+			    </li>
+			    <li role="presentation">
 			    	<a href="#judge" aria-controls="judge" role="tab" data-toggle="tab">judge</a>
 			    </li>
 			</ul>
@@ -88,6 +91,9 @@
 					<canvas id="canvas" height="300" width="600"></canvas>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="playcount">
+					<canvas id="canvas" height="300" width="600"></canvas>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="poststage">
 					<canvas id="canvas" height="300" width="600"></canvas>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="judge">
