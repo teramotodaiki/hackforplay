@@ -46,7 +46,7 @@ try {
 	// ラベル
 	$labels	= array();
 	for ($i=1; $i < 100; $i++) {
-		array_push($labels, $i.'回');
+		array_push($labels, (string)$i);
 	}
 	array_push($labels, '100+');
 
