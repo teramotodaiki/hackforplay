@@ -11,7 +11,7 @@ try {
 	// KeyValueData.IDを取得
 	$pattern= $_SERVER['SERVER_NAME'] === 'localhost' ? '/hackforplay/s/index.php' : '/s/index.php';
 	$stmt	= $dbh->prepare('SELECT "ID" FROM "KeyValueData" WHERE "KeyString"=:selfpath AND "ValueString"=:pattern');
-	$stmt->bindValue(":selfpath", 'selfpath', PDO::PARAM_STR);
+	$stmt->bindValue(":selfpath", 'SelfPath', PDO::PARAM_STR);
 	$stmt->bindValue(":pattern", $pattern, PDO::PARAM_STR);
 	$stmt->execute();
 	$kvd_id	= $stmt->fetchColumn(0);
