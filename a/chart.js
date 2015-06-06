@@ -4,6 +4,7 @@ $(function(){
 		$.get('../analytics/activeratesummary.php',{
 
 		}, function(data) {
+			console.log(data);
 			var result = $.parseJSON(data);
 
 			new Chart($('#activerate canvas').get(0).getContext("2d")).Line({
@@ -30,6 +31,7 @@ $(function(){
 		$.get('../analytics/playcountdist.php',{
 
 		}, function(data) {
+			console.log(data);
 			var result = $.parseJSON(data);
 
 			new Chart($('#playcount canvas').get(0).getContext("2d")).Line({
@@ -66,6 +68,7 @@ $(function(){
 		$.get('../analytics/poststagedist.php',{
 
 		}, function(data) {
+			console.log(data);
 			var result = $.parseJSON(data);
 
 			new Chart($('#poststage canvas').get(0).getContext("2d")).Line({
