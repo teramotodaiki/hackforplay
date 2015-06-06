@@ -18,7 +18,7 @@ try {
 	$stmt	= $dbh->prepare('SELECT COUNT("UserID") FROM "Attendance" AS a WHERE a."End">:_begin AND a."Begin"<:_end AND :kvd_id IN (SELECT "KeyValueDataID" FROM "AttendanceMap" AS m WHERE m."AttendanceID"=a."ID") GROUP BY a."UserID"');
 
 	// 過去７日間
-	$datetime	= (new DateTime())->modify('-1 day')->setTime(0,0,0);
+	$datetime	= (new DateTime())->modify('+1 day')->setTime(0,0,0);
 	$stmt->bindValue(":_end", $datetime->format('Y-m-d H:i:s'), PDO::PARAM_STR);
 	$stmt->bindValue(":_begin", $datetime->modify('-7 days')->format('Y-m-d H:i:s'), PDO::PARAM_STR);
 	$stmt->bindValue(":kvd_id", $kvd_id, PDO::PARAM_INT);
@@ -31,7 +31,7 @@ try {
 	}
 
 	// １４日前からの７日間
-	$datetime	= (new DateTime())->modify('-8 day')->setTime(0,0,0);
+	$datetime	= (new DateTime())->modify('-6 day')->setTime(0,0,0);
 	$stmt->bindValue(":_end", $datetime->format('Y-m-d H:i:s'), PDO::PARAM_STR);
 	$stmt->bindValue(":_begin", $datetime->modify('-7 days')->format('Y-m-d H:i:s'), PDO::PARAM_STR);
 	$stmt->bindValue(":kvd_id", $kvd_id, PDO::PARAM_INT);

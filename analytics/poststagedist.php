@@ -11,7 +11,7 @@ try {
 	$stmt	= $dbh->prepare('SELECT COUNT("UserID") FROM "Stage" WHERE "Registered">:_begin AND "Registered"<:_end AND "UserID" IS NOT NULL GROUP BY "UserID"');
 
 	// 過去７日間
-	$datetime	= (new DateTime())->modify('-1 day')->setTime(0,0,0);
+	$datetime	= (new DateTime())->modify('+1 day')->setTime(0,0,0);
 	$stmt->bindValue(":_end", $datetime->format('Y-m-d H:i:s'), PDO::PARAM_STR);
 	$stmt->bindValue(":_begin", $datetime->modify('-7 days')->format('Y-m-d H:i:s'), PDO::PARAM_STR);
 	$stmt->execute();
@@ -23,7 +23,7 @@ try {
 	}
 
 	// １４日前からの７日間
-	$datetime	= (new DateTime())->modify('-8 day')->setTime(0,0,0);
+	$datetime	= (new DateTime())->modify('-6 day')->setTime(0,0,0);
 	$stmt->bindValue(":_end", $datetime->format('Y-m-d H:i:s'), PDO::PARAM_STR);
 	$stmt->bindValue(":_begin", $datetime->modify('-7 days')->format('Y-m-d H:i:s'), PDO::PARAM_STR);
 	$stmt->execute();
