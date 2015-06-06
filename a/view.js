@@ -196,7 +196,7 @@ $(function(){
 			eItem.find('.code').text(item.Code);
 			eItem.find('.file').text(item.File);
 			eItem.find('.line').text(item.Line);
-			eItem.appendTo('.detail-container');
+			eItem.appendTo('#summary .detail-container');
 		});
 	});
 

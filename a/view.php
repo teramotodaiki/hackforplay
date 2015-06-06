@@ -10,7 +10,9 @@
 <body class="">
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/header.php'; ?>
+	<script src="../chartjs/Chart.js" type="text/javascript" charset="utf-8"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<script src="chart.js" type="text/javascript" charset="utf-8"></script>
 	<!-- Modal -->
 	<div class="modal fade" id="codeModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog">
@@ -49,15 +51,24 @@
 	<div class="container panel panel-default">
 		<div class="row panel-body">
 			<ul class="col-md-2 nav nav-pills nav-stacked panel-body" role="tablist">
-			    <li role="presentation" class="active">
+			    <li role="presentation">
 			    	<a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">summary</a>
+			    </li>
+			    <li role="presentation">
+			    	<a href="#activerate" aria-controls="activerate" role="tab" data-toggle="tab">アクティブ率</a>
+			    </li>
+			    <li role="presentation">
+			    	<a href="#playcount" aria-controls="playcount" role="tab" data-toggle="tab">プレイ回数</a>
+			    </li>
+			    <li role="presentation">
+			    	<a href="#poststage" aria-controls="poststage" role="tab" data-toggle="tab">投稿回数</a>
 			    </li>
 			    <li role="presentation">
 			    	<a href="#judge" aria-controls="judge" role="tab" data-toggle="tab">judge</a>
 			    </li>
 			</ul>
 			<div class="col-md-10 tab-content">
-			    <div role="tabpanel" class="tab-pane active" id="summary">
+			    <div role="tabpanel" class="tab-pane" id="summary">
 			    	<div class="chart text-center">
 			    	</div>
 			    	<div class="detail table-responsive">
@@ -75,6 +86,15 @@
 			    			</tbody>
 			    		</table>
 			    	</div>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="activerate">
+					<canvas id="canvas" height="300" width="600"></canvas>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="playcount">
+					<canvas id="canvas" height="300" width="600"></canvas>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="poststage">
+					<canvas id="canvas" height="300" width="600"></canvas>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="judge">
 			    	<div class="row list-judging"></div>
