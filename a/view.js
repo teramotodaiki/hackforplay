@@ -159,8 +159,6 @@ $(function(){
 				'reasons': reasons_json,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			} , function(data, textStatus, xhr) {
-				console.log(data);
-				console.log(item);
 				if (data === 'success') {
 					item.after(bsAlert('alert-success', 'Successfly rejected'));
 					item.remove();
