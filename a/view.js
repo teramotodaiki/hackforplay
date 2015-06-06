@@ -200,40 +200,6 @@ $(function(){
 		});
 	});
 
-	var $activerateItem =
-	$('<tr>').append(
-		$('<td>').addClass('span')
-	).append(
-		$('<td>').addClass('dau')
-	).append(
-		$('<td>').addClass('rate')
-	);
-	// ExceptionMapのチャート
-	$.get('../analytics/activeratesummary.php',{
-
-	}, function(data) {
-		var result = $.parseJSON(data);
-		console.log(result);
-
-		new Chart($('#activerate canvas').get(0).getContext("2d")).Line({
-			labels : result.labels,
-			datasets : [
-				{
-					label: "Active User Rate",
-					fillColor : "rgba(220,220,220,0.2)",
-					strokeColor : "rgba(220,220,220,1)",
-					pointColor : "rgba(220,220,220,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(220,220,220,1)",
-					data : result.values
-				}
-			]
-		}, {
-			responsive: true
-		});
-	});
-
 	// _level のアラート _text を生成し、jQueryオブジェクトを返す
 	function bsAlert (_level, _text) {
 		var _bsalert =
