@@ -15,7 +15,7 @@ try {
 	$stmt->execute();
 	$kvd_id	= $stmt->fetchColumn(0);
 
-	$stmt	= $dbh->prepare('SELECT COUNT("UserID") FROM "Attendance" AS a WHERE a."End">:_begin AND a."Begin">:_end AND :kvd_id IN (SELECT "KeyValueDataID" FROM "AttendanceMap" AS m WHERE m."AttendanceID"=a."ID") GROUP BY a."UserID"');
+	$stmt	= $dbh->prepare('SELECT COUNT("UserID") FROM "Attendance" AS a WHERE a."End">:_begin AND a."Begin"<:_end AND :kvd_id IN (SELECT "KeyValueDataID" FROM "AttendanceMap" AS m WHERE m."AttendanceID"=a."ID") GROUP BY a."UserID"');
 
 	// 過去７日間
 	$datetime	= (new DateTime())->modify('-1 day')->setTime(0,0,0);
