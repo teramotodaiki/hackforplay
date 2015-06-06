@@ -85,10 +85,10 @@
 			    	</div>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="activerate">
-					<canvas id="canvas" height="450" width="600"></canvas>
+					<canvas id="canvas" height="300" width="600"></canvas>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="playcount">
-					<canvas id="canvas" height="450" width="600"></canvas>
+					<canvas id="canvas" height="300" width="600"></canvas>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="judge">
 			    	<div class="row list-judging"></div>
