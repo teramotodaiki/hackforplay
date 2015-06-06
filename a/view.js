@@ -196,7 +196,31 @@ $(function(){
 			eItem.find('.code').text(item.Code);
 			eItem.find('.file').text(item.File);
 			eItem.find('.line').text(item.Line);
-			eItem.appendTo('.detail-container');
+			eItem.appendTo('#summary .detail-container');
+		});
+	});
+
+	var $activerateItem =
+	$('<tr>').append(
+		$('<td>').addClass('span')
+	).append(
+		$('<td>').addClass('dau')
+	).append(
+		$('<td>').addClass('rate')
+	);
+	// ExceptionMapのチャート
+	$.get('../analytics/activeratesummary.php',{
+
+	}, function(data) {
+		console.log(data);
+		var result = $.parseJSON(data);
+		console.log(result);
+		result.values.forEach(function(item){
+			var eItem = $activerateItem.clone(true);
+			eItem.find('.span').text(item.Span);
+			eItem.find('.dau').text(item.DAU);
+			eItem.find('.rate').text(item.Rate);
+			eItem.appendTo('#activerate .detail-container');
 		});
 	});
 

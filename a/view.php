@@ -53,6 +53,9 @@
 			    	<a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">summary</a>
 			    </li>
 			    <li role="presentation">
+			    	<a href="#activerate" aria-controls="activerate" role="tab" data-toggle="tab">アクティブ率</a>
+			    </li>
+			    <li role="presentation">
 			    	<a href="#judge" aria-controls="judge" role="tab" data-toggle="tab">judge</a>
 			    </li>
 			</ul>
@@ -69,6 +72,22 @@
 			    					<th>Code</th>
 			    					<th>File</th>
 			    					<th>Line</th>
+			    				</tr>
+			    			</thead>
+			    			<tbody class="detail-container">
+			    			</tbody>
+			    		</table>
+			    	</div>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="activerate">
+			    	<div class="detail table-responsive">
+			    		<table class="table table-striped">
+			    			<caption>詳細</caption>
+			    			<thead>
+			    				<tr>
+			    					<th>Span</th>
+			    					<th>DAU</th>
+			    					<th>Rate</th>
 			    				</tr>
 			    			</thead>
 			    			<tbody class="detail-container">
