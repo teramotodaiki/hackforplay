@@ -54,8 +54,11 @@
 			    <li role="presentation">
 			    	<a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">summary</a>
 			    </li>
-			    <li role="presentation" class="active">
+			    <li role="presentation">
 			    	<a href="#activerate" aria-controls="activerate" role="tab" data-toggle="tab">アクティブ率</a>
+			    </li>
+			    <li role="presentation">
+			    	<a href="#playcount" aria-controls="playcount" role="tab" data-toggle="tab">プレイ回数</a>
 			    </li>
 			    <li role="presentation">
 			    	<a href="#judge" aria-controls="judge" role="tab" data-toggle="tab">judge</a>
@@ -81,7 +84,10 @@
 			    		</table>
 			    	</div>
 			    </div>
-			    <div role="tabpanel" class="tab-pane active" id="activerate">
+			    <div role="tabpanel" class="tab-pane" id="activerate">
+					<canvas id="canvas" height="450" width="600"></canvas>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="playcount">
 					<canvas id="canvas" height="450" width="600"></canvas>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="judge">
