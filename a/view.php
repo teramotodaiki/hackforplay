@@ -10,6 +10,7 @@
 <body class="">
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/header.php'; ?>
+	<script src="../chartjs/Chart.js" type="text/javascript" charset="utf-8"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<!-- Modal -->
 	<div class="modal fade" id="codeModal" tabindex="-1" role="dialog">
@@ -49,10 +50,10 @@
 	<div class="container panel panel-default">
 		<div class="row panel-body">
 			<ul class="col-md-2 nav nav-pills nav-stacked panel-body" role="tablist">
-			    <li role="presentation" class="active">
+			    <li role="presentation">
 			    	<a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">summary</a>
 			    </li>
-			    <li role="presentation">
+			    <li role="presentation" class="active">
 			    	<a href="#activerate" aria-controls="activerate" role="tab" data-toggle="tab">アクティブ率</a>
 			    </li>
 			    <li role="presentation">
@@ -60,7 +61,7 @@
 			    </li>
 			</ul>
 			<div class="col-md-10 tab-content">
-			    <div role="tabpanel" class="tab-pane active" id="summary">
+			    <div role="tabpanel" class="tab-pane" id="summary">
 			    	<div class="chart text-center">
 			    	</div>
 			    	<div class="detail table-responsive">
@@ -79,21 +80,8 @@
 			    		</table>
 			    	</div>
 			    </div>
-			    <div role="tabpanel" class="tab-pane" id="activerate">
-			    	<div class="detail table-responsive">
-			    		<table class="table table-striped">
-			    			<caption>詳細</caption>
-			    			<thead>
-			    				<tr>
-			    					<th>Span</th>
-			    					<th>DAU</th>
-			    					<th>Rate</th>
-			    				</tr>
-			    			</thead>
-			    			<tbody class="detail-container">
-			    			</tbody>
-			    		</table>
-			    	</div>
+			    <div role="tabpanel" class="tab-pane active" id="activerate">
+					<canvas id="canvas" height="450" width="600"></canvas>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="judge">
 			    	<div class="row list-judging"></div>

@@ -212,15 +212,25 @@ $(function(){
 	$.get('../analytics/activeratesummary.php',{
 
 	}, function(data) {
-		console.log(data);
 		var result = $.parseJSON(data);
 		console.log(result);
-		result.values.forEach(function(item){
-			var eItem = $activerateItem.clone(true);
-			eItem.find('.span').text(item.Span);
-			eItem.find('.dau').text(item.DAU);
-			eItem.find('.rate').text(item.Rate);
-			eItem.appendTo('#activerate .detail-container');
+
+		new Chart($('#activerate canvas').get(0).getContext("2d")).Line({
+			labels : result.labels,
+			datasets : [
+				{
+					label: "Active User Rate",
+					fillColor : "rgba(220,220,220,0.2)",
+					strokeColor : "rgba(220,220,220,1)",
+					pointColor : "rgba(220,220,220,1)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgba(220,220,220,1)",
+					data : result.values
+				}
+			]
+		}, {
+			responsive: true
 		});
 	});
 
