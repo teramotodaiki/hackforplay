@@ -23,25 +23,8 @@ catch ( PDOException $e ) {
     die();
 }
 
-// セッションのテスト
-/* set the cache limiter to 'private' */
-
-session_cache_limiter('private');
-$cache_limiter = session_cache_limiter();
-
-/* set the cache expire to 30 minutes */
-session_cache_expire(48 * 60);
-$cache_expire = session_cache_expire();
-
-session_start();
-
-echo "The cache limiter is now set to $cache_limiter<br />";
-echo "The cached session pages expire after $cache_expire minutes";
-
-exit;
-
-
 // セッション ユーザーID取得
+session_cache_limiter('private');
 session_cache_expire(48 * 60); // 48時間セッション継続
 session_start();
 if(isset($_SESSION['UserID'])){
