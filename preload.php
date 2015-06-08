@@ -24,6 +24,7 @@ catch ( PDOException $e ) {
 }
 
 // セッション ユーザーID取得
+session_cache_limiter('private');
 session_cache_expire(48 * 60); // 48時間セッション継続
 session_start();
 if(isset($_SESSION['UserID'])){
