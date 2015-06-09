@@ -87,7 +87,7 @@ $(function(){
 		}else{
 			var result = jQuery.parseJSON(data);
 			var $list = $('.h4p_stagelist.list-stage');
-			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'));
+			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'), 10);
 			if (result.values.length > view_param_length) {
 				// 次のページが存在する
 				var next = view_param_start + view_param_length;
