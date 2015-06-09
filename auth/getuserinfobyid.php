@@ -1,8 +1,8 @@
 <?php
 /*
-ユーザーの情報の一部を取得する。ただしセッションが必要
+ユーザーの情報の一部を取得する。セッションは不要
 Input:	userid , (attendance-token)
-Output:	no-session , missing-user , parse-error , JSON:{user-info}
+Output:	missing-user , parse-error , JSON:{user-info}
 user-info:
 {
 	gender : 性別 (male or female),
@@ -13,10 +13,6 @@ user-info:
 require_once '../preload.php';
 
 try {
-
-	if (!isset($session_userid)) {
-		exit('no-session');
-	}
 
 	$id 	= filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 	if ($id === NULL || $id === FALSE) {

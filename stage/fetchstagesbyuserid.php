@@ -1,8 +1,8 @@
 <?php
 /*
-ユーザーIDをもとに、そのユーザーが公開しているステージを取得する。セッションが必要
+ユーザーIDをもとに、そのユーザーが公開しているステージを取得する。セッションは不要
 Input:	user_id , start , length , (attendance-token)
-Output:	no-session , missing-user , parse-error , JSON:{information_of_stages}
+Output:	missing-user , parse-error , JSON:{information_of_stages}
 information_of_stages:
 {
 	values : [
@@ -34,10 +34,6 @@ try {
 	$fetch_start		= filter_input(INPUT_POST, 'start', FILTER_VALIDATE_INT);
 	if (!$fetch_start) {
 		$fetch_start	= 0;
-	}
-
-	if (!isset($session_userid)) {
-		exit('no-session');
 	}
 
 	// ステージ一覧を取得
