@@ -12,7 +12,8 @@ var_dump($session_userid);
 echo "\nrewrite";
 var_dump($rewrite);
 if (isset($session_userid) && $rewrite !== FALSE) {
-	header('Location:../r');
+	echo "\n Move to /r success!!";
+	// header('Location:../r');
 	exit();
 }
 
