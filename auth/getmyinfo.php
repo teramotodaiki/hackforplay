@@ -7,9 +7,7 @@ user-info:
 {
 	gender : 性別 (male or female),
 	nickname : ニックネーム,
-	birthday : 生年月日,
-	timezone_name : タイムゾーン
-	timezone_offset : タイムゾーン
+	birthday : 生年月日
 }
 */
 
@@ -21,7 +19,7 @@ try {
 		exit('no-session');
 	}
 
-	$stmt 	= $dbh->prepare('SELECT "Gender","Nickname","Birthday","TimezoneName","TimezoneOffset" FROM "User" WHERE "ID"=:userid');
+	$stmt 	= $dbh->prepare('SELECT "Gender","Nickname","Birthday" FROM "User" WHERE "ID"=:userid');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -30,8 +28,6 @@ try {
 	$user_info->gender 		= $result['Gender'];
 	$user_info->nickname 	= $result['Nickname'];
 	$user_info->birthday	= $result['Birthday'];
-	$user_info->timezone_name	= $result['TimezoneName'];
-	$user_info->timezone_offset	= $result['TimezoneOffset'];
 
 	$json 	= json_encode($user_info);
 	if (!$json) {

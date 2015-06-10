@@ -45,17 +45,6 @@ Preferences のビュー
 							    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
 							    	</div>
 							  	</div>
-							  	<div class="form-group has-feedback">
-							  		<label for="timezone" class="col-sm-3 control-label">タイムゾーン</label>
-							    	<div class="col-sm-8">
-							    		<select id="timezone" class="form-control">
-							    			<?php require '../view/timezone.php'; ?>
-							    		</select>
-							    	</div>
-							    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="自分の住んでいる地域に近いところを選んでください">
-							    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
-							    	</div>
-							  	</div>
 							  	<div class="text-right">
 								  	<button type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="送信中…" disabled>保存</button>
 							  	</div>

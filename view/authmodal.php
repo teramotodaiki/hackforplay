@@ -81,8 +81,6 @@ $(function() {
 		var gender = $('input[name="gender"]:checked').val();
 		var birthday = $('#birth_year').val() + '-' + $('#birth_month').val() + '-' + $('#birth_day').val();
 		var experience_days = $('#experience_days').val();
-		var timezone_name = $('#timezone').val();
-		var timezone_offset = $('#timezone option:selected').attr('data-offset');
 		var timezone = new Date().getTimezoneString();
 
 		$('#signup .alert').addClass('hide');
@@ -92,8 +90,6 @@ $(function() {
 			'gender' : gender,
 			'nickname' : nickname,
 			'birthday' : birthday,
-			'timezone_name' : timezone_name,
-			'timezone_offset' : timezone_offset,
 			'experience_days' : experience_days,
 			'timezone': timezone
 		}, function(data, textStatus, xhr) {
@@ -217,10 +213,6 @@ $(function() {
 		$("#authModal .modal-body").hide();
 		$(".auth-page-1").fadeIn('fast');
 	});
-
-	// タイムゾーンの初期値
-	var timezone = new Date().getTimezoneOffset() * -60;
-	$('#signup #timezone option[data-offset="'+timezone+'"]').attr('selected', true);
 
 	// パスワードのリセット
 	$('#resetModal').on('shown.bs.modal', function() {
@@ -385,17 +377,6 @@ $(function() {
 				    		</select>
 				    	</div>
 				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="あなたが生まれた年月日を選んでください">
-				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
-				    	</div>
-				  	</div>
-				  	<div class="form-group has-feedback">
-				  		<label for="timezone" class="col-sm-3 control-label">タイムゾーン</label>
-				    	<div class="col-sm-8">
-				    		<select id="timezone" class="form-control">
-				    			<?php require 'timezone.php'; ?>
-				    		</select>
-				    	</div>
-				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="自分の住んでいる地域に近いところを選んでください">
 				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
 				    	</div>
 				  	</div>
