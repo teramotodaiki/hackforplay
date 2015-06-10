@@ -118,10 +118,12 @@ $(function(){
 				var updateTask = function(){
 					// Update data
 					var token = sessionStorage.getItem('project-token');
+					var timezone = new Date().getTimezoneString();
 					$.post('../project/updatefromtoken.php', {
 						'token': token,
 						'data': code,
 						'source_stage_id': getParam('id'),
+						'timezone': timezone,
 						'attendance-token': sessionStorage.getItem('attendance-token')
 					}, function(data, textStatus, xhr) {
 						loading.button('reset');

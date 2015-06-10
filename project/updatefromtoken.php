@@ -2,7 +2,7 @@
 /*
 トークンからプロジェクト情報を参照し、データを更新する
 ただし、Project.UserIDと一致するUserIDをもつセッションが必要
-Input:	token , data , (source_stage_id) , (attendance-token)
+Input:	token , data , timezone , (source_stage_id) , (attendance-token)
 Output:	no-session , invalid-token , already-published , data-is-null , no-update , database-error , success
 */
 
@@ -76,10 +76,14 @@ try {
 	}
 
 	// データを格納
-	$stmt	= $dbh->prepare('INSERT INTO "Script" ("ProjectID","LineNum","Registered") VALUES(:project_id,:line,:empty)');
+	$timezone		= filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
+	if($timezone === FALSE || $timezone === NULL){
+		$timezone	= '+00:00';
+	}
+	$stmt	= $dbh->prepare('INSERT INTO "Script" ("ProjectID","LineNum","Registered") VALUES(:project_id,:line,:gmt)');
 	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
 	$stmt->bindValue(":line", count($new_code), PDO::PARAM_INT);
-	$stmt->bindValue(":empty", '', PDO::PARAM_STR);
+	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
 	$stmt->execute();
 	$difference	= array('ID' => $dbh->lastInsertId('Script'));
 	if (empty($difference['ID'])) {
