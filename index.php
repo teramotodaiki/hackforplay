@@ -7,13 +7,8 @@
 require_once 'preload.php';
 
 $rewrite = filter_input(INPUT_GET, 'rewrite', FILTER_VALIDATE_BOOLEAN);
-echo 'session_userid';
-var_dump($session_userid);
-echo "\nrewrite";
-var_dump($rewrite);
 if (isset($session_userid) && $rewrite !== FALSE) {
-	echo "\n Move to /r success!!";
-	// header('Location:../r');
+	header('Location:../r');
 	exit();
 }
 
