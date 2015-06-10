@@ -10,7 +10,7 @@ $thumbnail	= $stage['Thumbnail'];
 $author_id	= $stage['UserID'];
 $source_id	= $stage['SourceID'];
 $source_title = $stage['SourceTitle'];
-$src	= 'rpg.php';
+$src	= $stage['Src'];
 $origin_id = NULL;
 $mode 	= filter_input(INPUT_GET, "mode");
 if(!isset($mode)){

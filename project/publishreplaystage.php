@@ -47,12 +47,18 @@ try {
 	$thumb_url	= '/s/thumbs/'.bin2hex($bytes).'.png'; // binaly to hex
 	imagepng($image, '..' . $thumb_url); // 相対パス
 
+	// Srcを取得
+	$stmt	= $dbh->prepare('SELECT "Src" FROM "Stage" WHERE "ID"=:project_sourceid');
+	$stmt->bindValue(":project_sourceid", $project['SourceStageID'], PDO::PARAM_INT);
+	$stmt->execute();
+	$stage	= $stmt->fetch(PDO::FETCH_ASSOC);
+
 	// ステージを作成
 	$path	= filter_input(INPUT_POST, 'path');
 	$title	= filter_input(INPUT_POST, 'title');
 	$explain= filter_input(INPUT_POST, 'explain');
 
-	$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","Path","Title","Explain","State","Thumbnail","SourceID","Registered") VALUES(:userid,:replay,:projectid,:input_path,:input_title,:input_explain,:judging,:thumb_url,:project_sourceid,:gmt)');
+	$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","Path","Title","Explain","State","Thumbnail","SourceID","Src","Registered") VALUES(:userid,:replay,:projectid,:input_path,:input_title,:input_explain,:judging,:thumb_url,:project_sourceid,:stage_src,:gmt)');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
 	$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
@@ -62,6 +68,7 @@ try {
 	$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
 	$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
 	$stmt->bindValue(":project_sourceid", $project['SourceStageID'], PDO::PARAM_INT);
+	$stmt->bindValue(":stage_src", $stage['Src'], PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
 	$flag 	= $stmt->execute();
 	if (!$flag) {
