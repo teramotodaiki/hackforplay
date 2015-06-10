@@ -45,9 +45,11 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
         var updateTask = function(){
             var sendCodeToken = sessionStorage.getItem(tokenKey);
             if (sendCodeToken === null) return;
+            var timezone = new Date().getTimezoneString();
             $.post('../../project/updatefromtoken.php',{
                 'token': sendCodeToken,
                 'data': _sendcode,
+                'timezone': timezone,
                 'attendance-token': sessionStorage.getItem('attendance-token')
             }, function(data, textStatus, xhr) {
 

@@ -24,7 +24,9 @@ Attendance 情報を送信する
 			type: 'POST',
 			data: {
 				'self_path': <?php echo '"'.$_SERVER['PHP_SELF'].'"'; ?>,
-				'refferer': <?php echo isset($_SERVER['HTTP_REFERER']) ? '"'.$_SERVER['HTTP_REFERER'].'"' : '""'; ?>,
+				'refferer': <?php echo isset($_SERVER['HTTP_REFERER']) ? '"'
+				. parse_url($_SERVER['HTTP_REFERER'])['host']
+				. '"' : '""'; ?>,
 				'query_string': <?php echo '"'.$_SERVER['QUERY_STRING'].'"'; ?>,
 				'timezone': timezone
 			}

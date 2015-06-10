@@ -29,8 +29,6 @@ $(function(){
 					var $form = $('form[name="usersettings"]');
 					$form.find('#nickname').val(info.nickname);
 					userDefault.nickname = info.nickname;
-					$form.find('#timezone').val(info.timezone_name);
-					userDefault.timezone_name = info.timezone_name;
 					break;
 			}
 		});
@@ -42,8 +40,6 @@ $(function(){
 	setInputRoutine('form[name="usersettings"]', function(){
 		var count = 0;
 		if ($(this).find('#nickname').val() !== userDefault.nickname) {
-			count++;
-		}else if ($(this).find('#timezone').val() !== userDefault.timezone_name) {
 			count++;
 		}
 		$(this).find('button[type="submit"]').attr('disabled', count < 1);
@@ -85,14 +81,10 @@ $(function(){
 
 		var submit = $(this).find('button[type="submit"]').button('loading');
 		var nickname = $(this).find('#nickname').val();
-		var timezone_name = $(this).find('#timezone').val();
-		var timezone_offset = $(this).find('#timezone option:selected').data('offset');
 		var changed = {
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		};
 		if (nickname !== userDefault.nickname) { changed.nickname = nickname; }
-		if (timezone_name !== userDefault.timezone_name) { changed.timezone_name = timezone_name; }
-		if (timezone_offset !== userDefault.timezone_offset) { changed.timezone_offset = timezone_offset; }
 
 		$.post('../auth/updateuser.php', changed , function(data, textStatus, xhr) {
 			submit.button('reset');

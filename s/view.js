@@ -19,7 +19,7 @@ $(function(){
 	var width = $(".h4p_game").width();
 	$(".h4p_game").height(width/1.5)
 		.children('iframe').attr({
-			'src':'game.php?&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=' + getParam('mode'),
+			'src': getParam('src')+'?&path='+getParam('path')+'&next='+getParam('next')+'&mode='+getParam('mode'),
 			'width': width,
 			'height': width/1.5
 		});
@@ -105,7 +105,7 @@ $(function(){
 				var code = jsEditor.getTextArea().value;
 				sessionStorage.setItem('retry_code', code);
 				alert_on_unload = false;
-				location.href = '/s?id=' + getParam('id') + '&mode=restaging&retry=true';
+				location.href = '/s?id='+getParam('id') + '&mode=restaging&retry=true';
 			});
 			$(".h4p_restaging_button").on('click', function() {
 				// RUN (Add &mode=restaging)
@@ -118,10 +118,12 @@ $(function(){
 				var updateTask = function(){
 					// Update data
 					var token = sessionStorage.getItem('project-token');
+					var timezone = new Date().getTimezoneString();
 					$.post('../project/updatefromtoken.php', {
 						'token': token,
 						'data': code,
 						'source_stage_id': getParam('id'),
+						'timezone': timezone,
 						'attendance-token': sessionStorage.getItem('attendance-token')
 					}, function(data, textStatus, xhr) {
 						loading.button('reset');

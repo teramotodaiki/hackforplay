@@ -2,29 +2,22 @@ $(function(){
 
 	// ユーザー情報取得
 	var user_id = sessionStorage.getItem('view_user_id');
-	checkSigninSession(function(result){
-		if (result === 'success') {
-			$.post('../auth/getuserinfobyid.php',{
-				'id': user_id,
-				'attendance-token': sessionStorage.getItem('attendance-token')
-			}, function(data, textStatus, xhr) {
-				switch(data){
-					case 'no-session':
-						$('#signinModal').modal('show');
-						break;
-					case 'missing-user':
-						bsAlert('ユーザーID #' + user_id + ' は存在しません)').appendTo('.h4p_alert');
-						break;
-					case 'parse-error':
-						bsAlert('ユーザー情報の取得に失敗しました').addClass('alert-danger').appendTo('.h4p_alert');
-						break;
-					default:
-						var info = $.parseJSON(data);
-						$('.h4p_user-nickname').text(info.nickname);
-						$('.h4p_user-thumbnail').attr('src', info.gender === 'male' ? 'icon_m.png' : 'icon_w.png');
-						break;
-				}
-			});
+	$.post('../auth/getuserinfobyid.php',{
+		'id': user_id,
+		'attendance-token': sessionStorage.getItem('attendance-token')
+	}, function(data, textStatus, xhr) {
+		switch(data){
+			case 'missing-user':
+				bsAlert('ユーザーID #' + user_id + ' は存在しません)').appendTo('.h4p_alert');
+				break;
+			case 'parse-error':
+				bsAlert('ユーザー情報の取得に失敗しました').addClass('alert-danger').appendTo('.h4p_alert');
+				break;
+			default:
+				var info = $.parseJSON(data);
+				$('.h4p_user-nickname').text(info.nickname);
+				$('.h4p_user-thumbnail').attr('src', info.gender === 'male' ? 'icon_m.png' : 'icon_w.png');
+				break;
 		}
 	});
 
@@ -87,7 +80,7 @@ $(function(){
 		}else{
 			var result = jQuery.parseJSON(data);
 			var $list = $('.h4p_stagelist.list-stage');
-			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'));
+			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'), 10);
 			if (result.values.length > view_param_length) {
 				// 次のページが存在する
 				var next = view_param_start + view_param_length;
