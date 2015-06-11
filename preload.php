@@ -1,7 +1,9 @@
 <?php
 
+echo session_save_path();
+exit();
+
 // Develop: E_ALL, Release: 0
-$tmp[0] = session_save_path();
 
 // 1.Generate PDO object (connecting mysql)
 $pdo = null;
@@ -13,11 +15,9 @@ try {
 		$dbh->exec("SET sql_mode='ANSI_QUOTES'");
 	}elseif($_SERVER['SERVER_NAME'] === 'hackforplay-staging.azurewebsites.net'){
 		error_reporting(0);
-		session_save_path('D:\local\Temp\hackforplay-staging');
     	$dbh = new PDO ( "sqlsrv:server = tcp:yadw63xtf8.database.secure.windows.net,1433; Database = hackforplay-staging", "hackforplay@yadw63xtf8", "9PFLn21u9TkiqlKx3ceAbawXSGsBPGT");
 	}else{
 		error_reporting(0);
-		session_save_path('D:\local\Temp\hackforplay');
     	$dbh = new PDO ( "sqlsrv:server = tcp:yadw63xtf8.database.secure.windows.net,1433; Database = hackforplay", "hackforplay@yadw63xtf8", "9PFLn21u9TkiqlKx3ceAbawXSGsBPGT");
 	}
     $dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
@@ -26,10 +26,6 @@ catch ( PDOException $e ) {
     print( "Error connecting to SQL Server." );
     die();
 }
-
-$tmp[1] = session_save_path();
-print_r($tmp);
-exit();
 
 // セッション ユーザーID取得
 session_cache_limiter('private_no_expire');
