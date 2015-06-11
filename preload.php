@@ -24,7 +24,7 @@ catch ( PDOException $e ) {
 }
 
 try {
-
+	error_reporting(E_ALL);
 	require_once 'sessionsettings.php';
 	session_start();
 	$GLOBALS['session_userid'] = isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
