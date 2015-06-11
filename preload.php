@@ -35,9 +35,10 @@ try {
 	session_commit();
 
 } catch (Exception $e) {
+	var_dump($e);
+	exit;
 	require_once 'exception/tracedata.php';
 	traceData($e);
-	var_dump($e);
 	die;
 }
 
