@@ -19,6 +19,16 @@ function screenShot () {
 	window.parent.postMessage('screenshot', '/');
 	window.saveImage();
 }
+function refocus () {
+    window.document.activeElement.blur();
+    window.focus();
+}
+function getEditor () {
+	// tmp
+}
+function sendToEditor () {
+	// tmp
+}
 
 window.addEventListener('load', function() {
     enchant();
