@@ -27,16 +27,10 @@ try {
 
 	require_once 'sessionsettings.php';
 	session_start();
-	if(isset($_SESSION['UserID'])){
-		$session_userid = $_SESSION['UserID'];
-	}else{
-		$session_userid = NULL;
-	}
+	$GLOBALS['session_userid'] = isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
 	session_commit();
 
 } catch (Exception $e) {
-	var_dump($e);
-	exit;
 	require_once 'exception/tracedata.php';
 	traceData($e);
 	die;
