@@ -9,17 +9,16 @@
 		}
 	});
 })();
-
-Hack.saveImage = function(){
+function saveImage () {
 	var canvas = document.getElementById('enchant-stage').firstChild.firstChild;
 	var data = canvas.toDataURL();
 	sessionStorage.setItem('image', data);
     window.parent.postMessage('thumbnail', '/');
-};
-Hack.screenShot = function(){
+}
+function screenShot () {
 	window.parent.postMessage('screenshot', '/');
-	this.saveImage();
-};
+	window.saveImage();
+}
 
 window.addEventListener('load', function() {
     enchant();
