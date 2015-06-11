@@ -11,14 +11,14 @@
 })();
 
 Hack.saveImage = function(){
-	var canvas = $("#enchant-stage>div").children('canvas').get(0);
+	var canvas = document.getElementById('enchant-stage').firstChild.firstChild;
 	var data = canvas.toDataURL();
 	sessionStorage.setItem('image', data);
     window.parent.postMessage('thumbnail', '/');
 };
 Hack.screenShot = function(){
-	window.parent('screenshot', '/');
-	saveImage();
+	window.parent.postMessage('screenshot', '/');
+	this.saveImage();
 };
 
 window.addEventListener('load', function() {
