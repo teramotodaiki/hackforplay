@@ -1,4 +1,8 @@
 <?php
+
+echo session_save_path();
+exit();
+
 // Develop: E_ALL, Release: 0
 
 // 1.Generate PDO object (connecting mysql)
