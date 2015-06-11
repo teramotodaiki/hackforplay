@@ -43,6 +43,7 @@ try {
 	}
 
 	// セッションを作成
+	require_once '../sessionsettings.php';
 	session_start();
 	$_SESSION['UserID'] = $authorized['UserID'];
 	$_SESSION['SignupImmediately'] = 'immediately';
