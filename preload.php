@@ -37,6 +37,7 @@ try {
 } catch (Exception $e) {
 	require_once 'exception/tracedata.php';
 	traceData($e);
+	var_dump($e);
 	die;
 }
 
