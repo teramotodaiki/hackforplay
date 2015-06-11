@@ -23,8 +23,6 @@ catch ( PDOException $e ) {
     die();
 }
 
-echo 'test';
-
 try {
 
 	require_once 'sessionsettings.php';
@@ -37,8 +35,6 @@ try {
 	traceData($e);
 	die;
 }
-
-echo 'test2 ' . $session_userid;
 
 // 暗号化キーの生成
 $encription_key = pack('H*', "29fdebae5e1d48b54763051cef08bc55abe017e2ffb2a00a3bcb04b7e103a0cd");
