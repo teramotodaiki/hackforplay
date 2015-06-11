@@ -15,6 +15,7 @@ try {
 		exit('no-session');
 	}
 	// 登録直後か確認
+	require_once '../sessionsettings.php';
 	session_start();
 	if(!isset($_SESSION['SignupImmediately'])){
 		exit('not-immediately');
