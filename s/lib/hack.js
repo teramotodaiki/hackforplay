@@ -56,6 +56,7 @@ window.addEventListener('load', function() {
 		this.width = game.width;
 		this.height = game.height;
 		this.opacity = 1;
+		this.visible = false;
 		this.backgroundColor = 'rgba(210,210,210,0.5)';
 
 		this._element = window.document.createElement('textarea');
