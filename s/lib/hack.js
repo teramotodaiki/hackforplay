@@ -25,7 +25,7 @@ window.addEventListener('message', function (e) {
 		try {
 			eval(e.data);
 		} catch (exception) {
-			console.error(exception);
+			Hack.log('Error:', exception.__proto__.name, exception);
 		}
 	}
 });
@@ -108,7 +108,7 @@ window.addEventListener('load', function() {
     game.start();
     game.addEventListener('load', function(){
 
-		window.postMessage('Hack.log(0, "text", [], {});', '/');
+		window.postMessage('--Error throw--', '/');
 		window.postMessage('Hack.log("next");', '/');
 
     });
