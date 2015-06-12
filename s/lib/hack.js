@@ -90,13 +90,26 @@ window.addEventListener('load', function() {
 
 	}).call(new enchant.Entity());
 
+	Hack.log = function () {
+		var values = [];
+		for (var i = arguments.length - 1; i >= 0; i--) {
+			switch(typeof arguments[i]){
+				case 'object': values[i] = JSON.stringify(arguments[i]); break;
+				default: values[i] = arguments[i] + ''; break;
+			}
+		}
+		this.textarea.text += (this.textarea.text !== '' ? '\n' : '') + values.join(' ');
+		this.textarea.show();
+	};
+
 	// Hack.onloadのコール
 	Hack.dispatchEvent(new Event('load'));
 
     game.start();
     game.addEventListener('load', function(){
 
-		window.postMessage('Hack.textarea.show("nice hack");', '/');
+		window.postMessage('Hack.log(0, "text", [], {});', '/');
+		window.postMessage('Hack.log("next");', '/');
 
     });
 });
