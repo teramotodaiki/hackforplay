@@ -44,6 +44,7 @@ if(!isset($mode)){
 		</script>
 		<script src="/s/lib/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/s/lib/enchant.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/s/lib/rpg.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/s/lib/h4p2.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/s/lib/getEditor.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/s/lib/setEval.js" type="text/javascript" charset="utf-8"></script>
