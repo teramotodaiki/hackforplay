@@ -49,6 +49,26 @@ window.addEventListener('load', function() {
 		}
 	});
 
+	// evaluate restaging code
+	switch (__H4PENV__MODE) {
+		case 'restaging':
+		case 'replay':
+		case 'extend':
+			window.postMessage(sessionStorage.getItem('restaging_code'), "/");
+			break;
+	}
+	// Set default restaging code
+	var _default_code =
+	'Hack.log("Put into textarea");';
+
+	switch (__H4PENV__MODE) {
+		case 'official':
+		case 'extend':
+			sessionStorage.setItem('restaging_code', _default_code);
+			window.parent.postMessage('replace_code', '/');
+			break;
+	}
+
 	// textarea : 画面全体をおおう半透明のテキストエリア(DOM)
 	Hack.textarea = (function(){
 		// scope: new Entity
@@ -107,9 +127,6 @@ window.addEventListener('load', function() {
 
     game.start();
     game.addEventListener('load', function(){
-
-		window.postMessage('--Error throw--', '/');
-		window.postMessage('Hack.log("next");', '/');
 
     });
 });
