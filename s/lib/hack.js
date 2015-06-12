@@ -19,6 +19,17 @@ function sendToEditor () {
 	// tmp
 }
 
+// set eval
+window.addEventListener('message', function (e) {
+	if(e.origin === window.location.protocol + '//' + window.location.host){
+		try {
+			eval(e.data);
+		} catch (exception) {
+			console.error(exception);
+		}
+	}
+});
+
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
@@ -83,7 +94,8 @@ window.addEventListener('load', function() {
 
     game.start();
     game.addEventListener('load', function(){
-		var label = new enchant.Label('game start!');
-		game.rootScene.addChild(label);
+
+		window.postMessage('Hack.textarea.show("nice hack");', '/');
+
     });
 });
