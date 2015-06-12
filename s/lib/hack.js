@@ -38,6 +38,46 @@ window.addEventListener('load', function() {
 		}
 	});
 
+	// textarea : 画面全体をおおう半透明のテキストエリア(DOM)
+	Hack.textarea = (function(){
+		// scope: new Entity
+
+		this.width = game.width;
+		this.height = game.height;
+		this.opacity = 1;
+		this.backgroundColor = 'rgba(210,210,210,0.5)';
+
+		this._element = window.document.createElement('textarea');
+		this._element.type = 'textarea';
+		this._element.setAttribute('disabled', 'disabled');
+
+		game.on('load', function(event) {
+			game.rootScene.addChild(Hack.textarea);
+		});
+
+		Object.defineProperty(this, 'text', {
+			configurable: true, enumerable: true,
+			get: function () {
+				return this._element.value;
+			},
+			set: function (text) {
+				this._element.value = text;
+			}
+		});
+		this.show = function (text) {
+			if (text !== undefined) {
+				this.text = String(text);
+			}
+			this.visible = true;
+		};
+		this.hide = function () {
+			this.visible = false;
+		};
+
+		return this;
+
+	}).call(new enchant.Entity());
+
 	// Hack.onloadのコール
 	Hack.dispatchEvent(new Event('load'));
 
