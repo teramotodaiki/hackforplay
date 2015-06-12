@@ -38,6 +38,9 @@ window.addEventListener('load', function() {
 		}
 	});
 
+	// Hack.onloadのコール
+	Hack.dispatchEvent(new Event('load'));
+
     game.start();
     game.addEventListener('load', function(){
 		var label = new enchant.Label('game start!');
