@@ -1,14 +1,3 @@
-(function(){
-	// Initialize
-	var Hack = {};
-	Object.defineProperty(window, 'Hack', {
-		configurable: true,
-		enumerable: true,
-		get: function(){
-			return Hack;
-		}
-	});
-})();
 function saveImage () {
 	var canvas = document.getElementById('enchant-stage').firstChild.firstChild;
 	var data = canvas.toDataURL();
@@ -33,6 +22,22 @@ function sendToEditor () {
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
+
+    // Hackのクラスを生成 インスタンスはget only
+    var HackEnchant = enchant.Class.create(enchant.EventTarget, {
+		initialize: function(){
+			enchant.EventTarget.call(this);
+		}
+    });
+    var _Hack = new HackEnchant();
+	Object.defineProperty(window, 'Hack', {
+		configurable: true,
+		enumerable: true,
+		get: function(){
+			return _Hack;
+		}
+	});
+
     game.start();
     game.addEventListener('load', function(){
 		var label = new enchant.Label('game start!');
