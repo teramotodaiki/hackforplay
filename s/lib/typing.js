@@ -7,42 +7,6 @@
 
 window.addEventListener('load', function() {
 
-	// ====> game.phpに移植予定
-	Hack.createLabel = function(text, prop) {
-		return (function () {
-			this.text = text;
-			this.moveTo(prop.x || 0, prop.y || 0);
-			this.width = prop.width || this.width;
-			this.height = prop.height || this.height;
-			this.font = prop.font || 'bold large sans-serif';
-			this.color = prop.color || '#000';
-			enchant.Core.instance.rootScene.addChild(this);
-			return this;
-		}).call(new enchant.Label());
-	};
-
-	Hack.clearLog = function() {
-		this.textarea.text = '';
-	};
-
-	Object.defineProperty(Hack, 'restagingCode', {
-		configurable: true,
-		enumerable: true,
-		get: function(){
-			return sessionStorage.getItem('restaging_code');
-		},
-		set: function(code){
-			switch (__H4PENV__MODE) {
-				case 'official':
-				case 'extend':
-					sessionStorage.setItem('restaging_code', code);
-					window.parent.postMessage('replace_code', '/');
-					break;
-			}
-		}
-	});
-	// <==== game.phpに移植予定
-
 	enchant.ENV.PREVENT_DEFAULT_KEY_CODES = [];
 	var game = enchant.Core.instance;
 

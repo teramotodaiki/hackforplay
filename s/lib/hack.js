@@ -57,17 +57,6 @@ window.addEventListener('load', function() {
 			window.postMessage(sessionStorage.getItem('restaging_code'), "/");
 			break;
 	}
-	// Set default restaging code
-	var _default_code =
-	'Hack.log("Put into textarea");';
-
-	switch (__H4PENV__MODE) {
-		case 'official':
-		case 'extend':
-			sessionStorage.setItem('restaging_code', _default_code);
-			window.parent.postMessage('replace_code', '/');
-			break;
-	}
 
 	// textarea : 画面全体をおおう半透明のテキストエリア(DOM)
 	Hack.textarea = (function(){
@@ -122,6 +111,40 @@ window.addEventListener('load', function() {
 		this.textarea.text += (this.textarea.text !== '' ? '\n' : '') + values.join(' ');
 		this.textarea.show();
 	};
+
+	Hack.clearLog = function() {
+		this.textarea.text = '';
+	};
+
+	Hack.createLabel = function(text, prop) {
+		return (function () {
+			this.text = text;
+			this.moveTo(prop.x || 0, prop.y || 0);
+			this.width = prop.width || this.width;
+			this.height = prop.height || this.height;
+			this.font = prop.font || 'bold large sans-serif';
+			this.color = prop.color || '#000';
+			enchant.Core.instance.rootScene.addChild(this);
+			return this;
+		}).call(new enchant.Label());
+	};
+
+	Object.defineProperty(Hack, 'restagingCode', {
+		configurable: true,
+		enumerable: true,
+		get: function(){
+			return sessionStorage.getItem('restaging_code');
+		},
+		set: function(code){
+			switch (__H4PENV__MODE) {
+				case 'official':
+				case 'extend':
+					sessionStorage.setItem('restaging_code', code);
+					window.parent.postMessage('replace_code', '/');
+					break;
+			}
+		}
+	});
 
 	window.postMessage("Hack.dispatchEvent(new Event('load'));", "/"); // Hack.onloadのコール
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
