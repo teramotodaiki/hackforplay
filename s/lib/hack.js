@@ -129,6 +129,13 @@ window.addEventListener('load', function() {
 		}).call(new enchant.Label());
 	};
 
+	Hack.createSprite = function(width, height, prop) {
+		return (function(){
+			this.image = prop.image || null;
+			return this;
+		}).call(new enchant.Sprite(width, height));
+	};
+
 	Object.defineProperty(Hack, 'restagingCode', {
 		configurable: true,
 		enumerable: true,
