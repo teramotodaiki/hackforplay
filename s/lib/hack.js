@@ -55,7 +55,8 @@ window.addEventListener('load', function() {
 		case 'replay':
 		case 'extend':
 			window.postMessage(sessionStorage.getItem('restaging_code'), "/");
-			window.postMessage("Hack.dispatchEvent(new Event('load'))", "/"); // Hack.onloadのコール
+			window.postMessage("Hack.dispatchEvent(new Event('load'));", "/"); // Hack.onloadのコール
+			window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 			break;
 	}
 	// Set default restaging code
@@ -124,7 +125,6 @@ window.addEventListener('load', function() {
 		this.textarea.show();
 	};
 
-    game.start();
     game.addEventListener('load', function(){
 
     });
