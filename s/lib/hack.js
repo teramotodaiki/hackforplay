@@ -13,7 +13,7 @@ function refocus () {
     window.focus();
 }
 function getEditor() {
-	return Hack.enchantBook ? Hack.enchantBook._element : undefined;
+	return Hack.enchantBook;
 }
 function sendToEditor(message) {
 	if(Hack.enchantBook === undefined){
@@ -25,6 +25,9 @@ function sendToEditor(message) {
 		Hack.enchantBook._element.contentWindow.postMessage(message, '/');
 	}
 }
+function __H4PENV__SENDCODE () {
+	// 互換性を残すための関数
+}
 
 // set eval
 window.addEventListener('message', function (e) {
@@ -32,6 +35,7 @@ window.addEventListener('message', function (e) {
 		try {
 			eval(e.data);
 		} catch (exception) {
+			console.log(exception);
 			Hack.log('Error:', exception.__proto__.name, exception);
 		}
 	}
@@ -121,6 +125,40 @@ window.addEventListener('load', function() {
 
 	Hack.clearLog = function() {
 		this.textarea.text = '';
+	};
+
+	// enchantBook
+	Hack.enchantBook = (function(){
+		// scope: new Entity
+
+		window.hint = '// test value';
+		this.width = game.width;
+		this.height = game.height;
+		this.visible = false;
+		this._element = window.document.createElement('iframe');
+		this._element.id = 'editor';
+		this._element.src = 'editor';
+		this._element.setAttribute('width', '480');
+		this._element.setAttribute('height', '320');
+		this._element.type = 'iframe';
+		game.rootScene.addChild(this);
+		return this;
+
+	}).call(new enchant.Entity());
+
+	Hack.openEditor = function(){
+		if (!this.enchantBook) return;
+		this.enchantBook.scale(1, 0);
+		this.enchantBook.tl.scaleTo(1, 1, 7, enchant.Easing.BACK_EASEOUT); // うごきあり
+		this.enchantBook.visible = true;
+	};
+
+	Hack.closeEditor = function(){
+		if (!this.enchantBook) return;
+		this.enchantBook.scale(1, 1);
+		this.enchantBook.tl.scaleTo(0, 1, 7, enchant.Easing.BACK_EASEIN).then(function() {
+			this.enchantBook.visible = false;
+		});
 	};
 
 	Hack.createLabel = function(text, prop) {
