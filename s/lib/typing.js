@@ -71,6 +71,17 @@ window.addEventListener('load', function() {
 	"\tHack.startTime = enchant.Core.instance.getElapsedTime();\n"+
 	"};\n"+
 	"\n"+
+	"Hack.onkeydown = function() {\n"+
+	"\tif (Hack.started !== true) return;\n"+
+	"\n"+
+	"\tif (Hack.getPreviousKey === Hack.textarea.text[0]) {\n"+
+	"\t\tHack.textarea.text = Hack.textarea.text.substr(1);\n"+
+	"\t}\n"+
+	"\tif (Hack.textarea.text === '') {\n"+
+	"\t\tHack.dispatchEvent(new enchant.Event('endgame'));\n"+
+	"\t}\n"+
+	"};\n"+
+	"\n"+
 	"Hack.onendgame = function() {\n"+
 	"\tHack.endTime = enchant.Core.instance.getElapsedTime();\n"+
 	"\tHack.textarea.hide();\n"+
@@ -83,6 +94,7 @@ window.addEventListener('load', function() {
 	"\t\tx: 140,\n"+
 	"\t\ty: 100,\n"+
 	"\t\twidth: 200,\n"+
+	"\t\tcolor: '#fff',\n"+
 	"\t\tfont: 'bold x-large/150% sans-serif'\n"+
 	"\t});\n"+
 	"\tenchant.Core.instance.pause();\n"+
@@ -108,22 +120,22 @@ window.addEventListener('load', function() {
 			x: 140,
 			y: 100,
 			width: 200,
+			color: '#fff',
 			font: 'bold x-large/150% sans-serif'
 		});
 		enchant.Core.instance.pause();
 	};
 
-	Hack.on('keydown', function(event) {
-		this.log(Hack.getPreviousKey);
-		if (!Hack.started) return;
-		var first_cap = Hack.textarea.text[0].toUpperCase();
-		if (Hack.getPreviousKey === first_cap) {
+	Hack.onkeydown = Hack.onkeydown || function() {
+		if (Hack.started !== true) return;
+
+		if (Hack.getPreviousKey === Hack.textarea.text[0]) {
 			Hack.textarea.text = Hack.textarea.text.substr(1);
 		}
 		if (Hack.textarea.text === '') {
 			Hack.dispatchEvent(new enchant.Event('endgame'));
 		}
-	});
+	};
 
 	Hack.pressStartKey = function(keyString) {
 		var keyCode = keyString.charCodeAt(0);
@@ -140,7 +152,8 @@ window.addEventListener('load', function() {
 	// input
 	// きちんとこのへん例外処理する
 	window.addEventListener('keydown', function(event) {
-		Hack.getPreviousKey = String.fromCharCode(event.keyCode);
+		var keyCode = String.fromCharCode(event.keyCode);
+		Hack.getPreviousKey = 'A' <= keyCode && keyCode <= 'Z' ? keyCode.toLowerCase() : keyCode;
 		Hack.dispatchEvent(new enchant.Event('keydown'));
 	});
 
