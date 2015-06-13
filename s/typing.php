@@ -1,6 +1,5 @@
 <?php
 // Play game
-$token = filter_input(INPUT_GET, "token");
 $next = filter_input(INPUT_GET, "next");
 $mode = filter_input(INPUT_GET, "mode");
 if(!isset($mode)){
@@ -17,14 +16,14 @@ if(!isset($mode)){
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 		<title><?php echo $title; ?> - hackforplay</title>
 	</head>
-	<body style="margin: 0; background-color: #fff;">
+	<body style="margin: 0; background-color: #000;">
 		<script type="text/javascript" charset="utf-8">
-		var __H4PENV__TOKEN     = "<?php echo $token; ?>";
 		var __H4PENV__NEXT		= "<?php echo $next; ?>";
 		var __H4PENV__MODE		= "<?php echo $mode; ?>";
 		</script>
 		<script src="/s/lib/enchant.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/s/lib/hack.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/s/lib/typing.js" type="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
 		textarea.log {
 			color: #fff;
