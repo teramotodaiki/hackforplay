@@ -12,11 +12,18 @@ function refocus () {
     window.document.activeElement.blur();
     window.focus();
 }
-function getEditor () {
-	// tmp
+function getEditor() {
+	return Hack.enchantBook ? Hack.enchantBook._element : undefined;
 }
-function sendToEditor () {
-	// tmp
+function sendToEditor(message) {
+	if(Hack.enchantBook === undefined){
+		console.error("sendToEditor関数が呼び出されましたが、Editorが作られていなかったため、イベントリスナに追加します。");
+		Hack.on('loadeditor', function(event) {
+			this.enchantBook._element.contentWindow.postMessage(message, '/');
+		});
+	}else{
+		Hack.enchantBook._element.contentWindow.postMessage(message, '/');
+	}
 }
 
 // set eval
