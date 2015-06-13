@@ -7,33 +7,96 @@
 
 window.addEventListener('load', function() {
 
+	// ====> game.phpに移植予定
+	Hack.createLabel = function(text, prop) {
+		return (function () {
+			this.text = text;
+			this.moveTo(prop.x || 0, prop.y || 0);
+			this.width = prop.width || this.width;
+			this.height = prop.height || this.height;
+			this.font = prop.font || 'bold large sans-serif';
+			this.color = prop.color || '#000';
+			enchant.Core.instance.rootScene.addChild(this);
+			return this;
+		}).call(new enchant.Label());
+	};
+
+	Hack.clearLog = function() {
+		this.textarea.text = '';
+	};
+
+	Object.defineProperty(Hack, 'restagingCode', {
+		configurable: true,
+		enumerable: true,
+		get: function(){
+			return sessionStorage.getItem('restaging_code');
+		},
+		set: function(code){
+			switch (__H4PENV__MODE) {
+				case 'official':
+				case 'extend':
+					sessionStorage.setItem('restaging_code', code);
+					window.parent.postMessage('replace_code', '/');
+					break;
+			}
+		}
+	});
+	// <==== game.phpに移植予定
+
 	enchant.ENV.PREVENT_DEFAULT_KEY_CODES = [];
 	var game = enchant.Core.instance;
 
 	var binded_key = ' '.charCodeAt(0);
 	game.keybind(binded_key, 'a'); // aボタンはスペースキー
 
-	// ====> 改造コードへ
-	Hack.onload = function() {
-		Hack.pressStartKey(' ');
-		Hack.log('Press space key to start the Typing Game!!');
-		Hack.log('スペースキーを押して、タイピングゲームを始めよう!!');
+	Hack.log('Press space key to start the Typing Game!!');
+	Hack.log('スペースキーを押して、タイピングゲームを始めよう!!');
+	Hack.started = false;
 
-		Hack.started = false;
-	};
-	Hack.onpressstart = function() {
-		var word = ('var function window String Number length call').split(' ');
-		var container = [];
-		for (var i = 0; i < 5; i++) {
-			var index = (Math.random() * word.length) >> 0;
-			container.push(word[index]);
-		}
-		Hack.textarea.show(container.join(' '));
+	// ====> 改造コードへ
+	Hack.restagingCode =
+	"Hack.onload = function() {\n"+
+	"\tHack.pressStartKey(' ');\n"+
+	"\tHack.clearLog();\n"+
+	"\tHack.log('Press space key to start the Typing Game!!');\n"+
+	"\tHack.log('スペースキーを押して、タイピングゲームを始めよう!!');\n"+
+	"\n"+
+	"\tHack.started = false;\n"+
+	"};\n"+
+	"\n"+
+	"Hack.onpressstart = function() {\n"+
+	"\tHack.shuffleAndLog('apple grape orange pineapple strawberry banana');\n"+
+	"\n"+
+	"\tHack.started = true;\n"+
+	"\tHack.startTime = enchant.Core.instance.getElapsedTime();\n"+
+	"};\n"+
+	"\n"+
+	"Hack.onendgame = function() {\n"+
+	"\tHack.endTime = enchant.Core.instance.getElapsedTime();\n"+
+	"\tHack.textarea.hide();\n"+
+	"\n"+
+	"\tHack.clearLabel = Hack.createLabel([\n"+
+	"\t\t'CLEAR!! Your time:',\n"+
+	"\t\tHack.endTime - Hack.startTime,\n"+
+	"\t\t'sec'\n"+
+	"\t].join('<br>'), {\n"+
+	"\t\tx: 140,\n"+
+	"\t\ty: 100,\n"+
+	"\t\twidth: 200,\n"+
+	"\t\tfont: 'bold x-large/150% sans-serif'\n"+
+	"\t});\n"+
+	"\tenchant.Core.instance.pause();\n"+
+	"};\n";
+	// <==== 改造コード
+
+	Hack.onpressstart = Hack.onpressstart || function() {
+		Hack.shuffleAndLog('apple grape orange pineapple strawberry banana');
 
 		Hack.started = true;
 		Hack.startTime = enchant.Core.instance.getElapsedTime();
 	};
-	Hack.onendgame = function() {
+
+	Hack.onendgame = Hack.onendgame || function() {
 		Hack.endTime = enchant.Core.instance.getElapsedTime();
 		Hack.textarea.hide();
 
@@ -47,9 +110,20 @@ window.addEventListener('load', function() {
 			width: 200,
 			font: 'bold x-large/150% sans-serif'
 		});
-		enchant.Core.instance.end();
+		enchant.Core.instance.pause();
 	};
-	// <==== 改造コード
+
+	Hack.on('keydown', function(event) {
+		this.log(Hack.getPreviousKey);
+		if (!Hack.started) return;
+		var first_cap = Hack.textarea.text[0].toUpperCase();
+		if (Hack.getPreviousKey === first_cap) {
+			Hack.textarea.text = Hack.textarea.text.substr(1);
+		}
+		if (Hack.textarea.text === '') {
+			Hack.dispatchEvent(new enchant.Event('endgame'));
+		}
+	});
 
 	Hack.pressStartKey = function(keyString) {
 		var keyCode = keyString.charCodeAt(0);
@@ -66,30 +140,21 @@ window.addEventListener('load', function() {
 	// input
 	// きちんとこのへん例外処理する
 	window.addEventListener('keydown', function(event) {
-		if (!Hack.started) return;
-		var input_cap = String.fromCharCode(event.keyCode).toUpperCase();
-		var first_cap = Hack.textarea.text[0].toUpperCase();
-		if (input_cap === first_cap) {
-			Hack.textarea.text = Hack.textarea.text.substr(1);
-		}
-		if (Hack.textarea.text === '') {
-			Hack.dispatchEvent(new enchant.Event('endgame'));
-		}
+		Hack.getPreviousKey = String.fromCharCode(event.keyCode);
+		Hack.dispatchEvent(new enchant.Event('keydown'));
 	});
 
-	Hack.createLabel = function(text, prop) {
-		return (function () {
-			this.text = text;
-			this.moveTo(prop.x || 0, prop.y || 0);
-			this.width = prop.width || this.width;
-			this.height = prop.height || this.height;
-			this.font = prop.font || 'bold large sans-serif';
-			this.color = prop.color || '#000';
-			enchant.Core.instance.rootScene.addChild(this);
-			return this;
-		}).call(new enchant.Label());
+	Hack.shuffleAndLog = function (list, count) {
+		var words = list.split(' ');
+		// shuffle
+		for (var i = count || list.length; i >= 0; i--) {
+			var index1 = (Math.random() * words.length) >> 0;
+			var index2 = (Math.random() * words.length) >> 0;
+			var swap = words[index1];
+			words[index1] = words[index2];
+			words[index2] = swap;
+		}
+		Hack.textarea.show(words.join(' '));
 	};
-
-	Hack.dispatchEvent(new enchant.Event('load')); // 本来はいらない
 
 });
