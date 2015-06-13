@@ -25,5 +25,15 @@ if(!isset($mode)){
 		</script>
 		<script src="/s/lib/enchant.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/s/lib/hack.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+		textarea.log {
+			color: #fff;
+			font: bold large sans-serif;
+			border: 3px solid #fff;
+			border-radius: 10px;
+			padding: 10px;
+			margin: 3px;
+		}
+		</style>
 	</body>
 </html>

@@ -74,15 +74,16 @@ window.addEventListener('load', function() {
 	Hack.textarea = (function(){
 		// scope: new Entity
 
-		this.width = game.width;
-		this.height = game.height;
+		this.width = game.width - 32;
+		this.height = game.height - 32;
 		this.opacity = 1;
 		this.visible = false;
-		this.backgroundColor = 'rgba(210,210,210,0.5)';
+		this.backgroundColor = 'rgba(0,0,0,0.7)';
 
 		this._element = window.document.createElement('textarea');
 		this._element.type = 'textarea';
 		this._element.setAttribute('disabled', 'disabled');
+		this._element.classList.add('log');
 
 		game.on('load', function(event) {
 			game.rootScene.addChild(Hack.textarea);
