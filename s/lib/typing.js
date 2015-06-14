@@ -61,12 +61,12 @@ window.addEventListener('load', function() {
 	"\t\tcolor: '#fff',\n"+
 	"\t\tfont: 'bold x-large/150% sans-serif'\n"+
 	"\t});\n"+
-	"\tenchant.Core.instance.pause();\n"+
+	"\tHack.onendgame = function(){};\n"+
 	"};\n";
 	// <==== 改造コード
 
 	Hack.onpressstart = Hack.onpressstart || function() {
-		Hack.shuffleAndLog('apple grape orange pineapple strawberry banana');
+		Hack.shuffleAndLog('apple');
 
 		Hack.started = true;
 		Hack.startTime = enchant.Core.instance.getElapsedTime();
@@ -75,6 +75,7 @@ window.addEventListener('load', function() {
 	Hack.onendgame = Hack.onendgame || function() {
 		Hack.endTime = enchant.Core.instance.getElapsedTime();
 		Hack.textarea.hide();
+		console.log('end');
 
 		Hack.clearLabel = Hack.createLabel([
 			'CLEAR!! Your time:',
@@ -87,7 +88,8 @@ window.addEventListener('load', function() {
 			color: '#fff',
 			font: 'bold x-large/150% sans-serif'
 		});
-		enchant.Core.instance.pause();
+
+		Hack.onendgame = function(){};
 	};
 
 	Hack.onkeydown = Hack.onkeydown || function() {
