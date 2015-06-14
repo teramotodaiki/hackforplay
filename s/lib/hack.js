@@ -1,8 +1,7 @@
 function saveImage () {
 	var canvas = document.getElementById('enchant-stage').firstChild.firstChild;
-	var data = canvas.toDataURL();
-	sessionStorage.setItem('image', data);
-    window.parent.postMessage('thumbnail', '/');
+	sessionStorage.setItem('image', canvas ? canvas.toDataURL() : null);
+	window.parent.postMessage('thumbnail', '/');
 }
 function screenShot () {
 	window.parent.postMessage('screenshot', '/');

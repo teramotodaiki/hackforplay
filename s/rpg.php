@@ -23,9 +23,8 @@ if(!isset($mode)){
 		var __H4PENV__NEXT		= "<?php echo $next; ?>";
 		var __H4PENV__MODE		= "<?php echo $mode; ?>";
 		function saveImage(){
-			var canvas = $("#enchant-stage>div").children('canvas').get(0);
-			var data = canvas.toDataURL();
-			sessionStorage.setItem('image', data);
+			var $canvas = $("#enchant-stage>div").children('canvas');
+			sessionStorage.setItem('image', $canvas ? $canvas.get(0).toDataURL() : null);
             window.parent.postMessage('thumbnail', '/');
 		}
 		function screenShot(){
