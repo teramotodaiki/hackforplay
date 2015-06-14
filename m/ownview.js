@@ -19,8 +19,8 @@ $(function(){
 						break;
 					default:
 						var info = $.parseJSON(data);
-						$('.h4p_user-nickname').text(info.nickname);
-						$('.h4p_user-thumbnail').attr('src', info.gender === 'male' ? 'icon_m.png' : 'icon_w.png');
+						$('.h4p_own-nickname').text(info.nickname);
+						$('.h4p_own-thumbnail').attr('src', info.gender === 'male' ? 'icon_m.png' : 'icon_w.png');
 						break;
 				}
 			});
@@ -143,7 +143,10 @@ $(function(){
 				var item = $item.clone(true);
 				item.find('.h4p_item-thumbnail').on('click', function() {
 					window.open('/s?id=' + stage.id, '_blank');
-				}).css('background-image', 'url(' + stage.thumbnail + ')');
+				});
+				if (stage.thumbnail) {
+					item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
+				}
 				item.find('.title a').attr({
 					href: '/s?id=' + stage.id,
 					title: stage.title,

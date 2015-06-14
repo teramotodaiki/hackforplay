@@ -23,17 +23,18 @@ catch ( PDOException $e ) {
     die();
 }
 
-// セッション ユーザーID取得
-session_cache_limiter('private_no_expire');
-session_cache_expire(48 * 60); // 48時間セッション継続
-session_set_cookie_params(48 * 60 * 60);
-session_start();
-if(isset($_SESSION['UserID'])){
-	$session_userid = $_SESSION['UserID'];
-}else{
-	$session_userid = NULL;
+try {
+
+	require_once 'sessionsettings.php';
+	session_start();
+	$GLOBALS['session_userid'] = isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
+	session_commit();
+
+} catch (Exception $e) {
+	require_once 'exception/tracedata.php';
+	traceData($e);
+	die;
 }
-session_commit();
 
 // 暗号化キーの生成
 $encription_key = pack('H*', "29fdebae5e1d48b54763051cef08bc55abe017e2ffb2a00a3bcb04b7e103a0cd");

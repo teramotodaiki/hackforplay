@@ -36,8 +36,8 @@ $(function(){
 						break;
 					default:
 						var result = $.parseJSON(data);
-						$('.h4p_user-nickname').text(result.nickname);
-						$('.h4p_user-thumbnail').attr('src', result.gender === 'male' ? '../m/icon_m.png' : '../m/icon_w.png');
+						$('.h4p_own-nickname').text(result.nickname);
+						$('.h4p_own-thumbnail').attr('src', result.gender === 'male' ? '../m/icon_m.png' : '../m/icon_w.png');
 						break;
 				}
 			});
@@ -86,8 +86,8 @@ $(function(){
 					<div class="dropdown">
 						<a id="h4p_header-dropdown" class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" onfocus="this.blur();" >
 							<div data-toggle="tooltip" data-placement="bottom" title="マイページと設定">
-								<span class="h4p_user-nickname btn btn-link"></span>
-								<img class="img-circle h4p_user-thumbnail">
+								<span class="h4p_own-nickname btn btn-link"></span>
+								<img class="img-circle h4p_own-thumbnail">
 							</div>
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="h4p_header-dropdown">

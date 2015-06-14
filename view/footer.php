@@ -9,15 +9,15 @@
 						ブログ</a></li>
 					<li class="pull-left"><a class="h4p_footer" href="http://goo.gl/forms/vgL5XUT0Ay" title="Request">リクエスト</a></li>
 					<li class="pull-left">
-						<a class="h4p_footer" href="../policies/#anchor-licence" title="ライセンス表記">
+						<a class="h4p_footer" href="../policies/#anchor-licence" title="ライセンス表記" target='_blank'>
 						ライセンス表記</a>
 					</li>
 					<li class="pull-left">
-						<a class="h4p_footer" href="../policies/#anchor-agreement" title="利用規約">
+						<a class="h4p_footer" href="../policies/#anchor-agreement" title="利用規約" target='_blank'>
 						利用規約</a>
 					</li>
 					<li class="pull-left">
-						<a class="h4p_footer" href="../policies/#anchor-privacy" title="プライバシーポリシー">
+						<a class="h4p_footer" href="../policies/#anchor-privacy" title="プライバシーポリシー" target='_blank'>
 						プライバシーポリシー</a>
 					</li>
 				</ul>

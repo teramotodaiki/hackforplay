@@ -43,7 +43,7 @@ $(function(){
 				break;
 			case "thumbnail":
 				var data = sessionStorage.getItem('image');
-				$(".stage-thumbnail").attr('src', data);
+				if (data) $(".stage-thumbnail").attr('src', data);
 				break;
 			case "screenshot":
 				$("#screenshotModal").modal("show");
@@ -215,13 +215,12 @@ $(function(){
 					if(title !== ""){
 						$("#inputModal").modal('hide');
 						$(this).button('loading');
-						var data = sessionStorage.getItem('image');
 						jsEditor.save();
 						var code = jsEditor.getTextArea().value;
 						var timezone = new Date().getTimezoneString();
 						$.post('../project/publishreplaystage.php', {
 							'token': sessionStorage.getItem('project-token'),
-							'thumb': data,
+							'thumb': sessionStorage.getItem('image') || null,
 							'path': getParam('path'),
 							'title': title,
 							'explain': explain,

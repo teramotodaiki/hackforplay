@@ -52,6 +52,7 @@ try {
 	}
 
 	// セッションを作成
+	require_once '../sessionsettings.php';
 	session_start();
 	$_SESSION['UserID'] = $confirmed['UserID'];
 	$_SESSION['SignupImmediately'] = 'immediately';

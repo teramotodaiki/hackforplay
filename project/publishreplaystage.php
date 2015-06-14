@@ -38,14 +38,20 @@ try {
 	// サムネイルを作成
 	$thumb	= filter_input(INPUT_POST, 'thumb');
 
-	$thumb = preg_replace('/data:[^,]+,/i', '', $thumb); //ヘッダに「data:image/png;base64,」が付いているので、それは外す
-	$thumb = base64_decode($thumb); //残りのデータはbase64エンコードされているので、デコードする
-	$image = imagecreatefromstring($thumb); //まだ文字列の状態なので、画像リソース化
-	imagesavealpha($image, TRUE); // 透明色の有効
-	// random name
-	$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
-	$thumb_url	= '/s/thumbs/'.bin2hex($bytes).'.png'; // binaly to hex
-	imagepng($image, '..' . $thumb_url); // 相対パス
+	if ($thumb) {
+		$thumb = preg_replace('/data:[^,]+,/i', '', $thumb); //ヘッダに「data:image/png;base64,」が付いているので、それは外す
+		$thumb = base64_decode($thumb); //残りのデータはbase64エンコードされているので、デコードする
+		$image = imagecreatefromstring($thumb); //まだ文字列の状態なので、画像リソース化
+		imagesavealpha($image, TRUE); // 透明色の有効
+
+		// random name
+		$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
+		$thumb_url	= '/s/thumbs/'.bin2hex($bytes).'.png'; // binaly to hex
+		imagepng($image, '..' . $thumb_url); // 相対パス
+	}else{
+		$thumb_url = NULL;
+	}
+
 
 	// Srcを取得
 	$stmt	= $dbh->prepare('SELECT "Src" FROM "Stage" WHERE "ID"=:project_sourceid');
