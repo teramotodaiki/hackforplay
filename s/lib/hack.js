@@ -33,6 +33,7 @@ function __H4PENV__SENDCODE () {
 window.addEventListener('message', function (e) {
 	if(e.origin === window.location.protocol + '//' + window.location.host){
 		try {
+			var game = enchant ? enchant.Core.instance : undefined;
 			eval(e.data);
 		} catch (exception) {
 			console.log(exception);
