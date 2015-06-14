@@ -166,9 +166,9 @@ window.addEventListener('load', function() {
 		return (function () {
 			this.text = text;
 			if (prop) {
-				prop.forEach(function(item, index) {
-					this[index] = item;
-				});
+				Object.keys(prop).forEach(function(key) {
+					this[key] = prop[key];
+				}, this);
 			}
 			game.rootScene.addChild(this);
 			return this;
