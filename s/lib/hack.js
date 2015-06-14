@@ -45,7 +45,7 @@ window.addEventListener('message', function (e) {
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
-    game.preload(['img/clear.png']);
+    game.preload(['img/clear.png', 'img/gameover.png', 'img/button_retry.png']);
 
     // Hackのクラスを生成 インスタンスはget only
     var HackEnchant = enchant.Class.create(enchant.EventTarget, {
@@ -166,11 +166,11 @@ window.addEventListener('load', function() {
 	Hack.createLabel = function(text, prop) {
 		return (function () {
 			this.text = text;
-			this.moveTo(prop.x || 0, prop.y || 0);
-			this.width = prop.width || this.width;
-			this.height = prop.height || this.height;
-			this.font = prop.font || 'bold large sans-serif';
-			this.color = prop.color || '#000';
+			if (prop) {
+				prop.forEach(function(item, index) {
+					this[index] = item;
+				});
+			}
 			game.rootScene.addChild(this);
 			return this;
 		}).call(new enchant.Label());
@@ -178,18 +178,25 @@ window.addEventListener('load', function() {
 
 	Hack.createSprite = function(width, height, prop) {
 		return (function(){
-			this.image = (prop && prop.image) || new Surface(width, height);
+			if (prop) {
+				Object.keys(prop).forEach(function(key) {
+					this[key] = prop[key];
+				}, this);
+			}
 			game.rootScene.addChild(this);
 			return this;
 		}).call(new enchant.Sprite(width, height));
 	};
 
 	// overlay
-	Hack.overlay = function(fill) {
-		return (function(){
+	Hack.overlay = function() {
+		return (function(args){
 			// scope: createSprite()
 
-			switch(true){
+			this.image = new Surface(game.width, game.height);
+			for (var i = 0; i < args.length; i++) {
+				var fill = args[i];
+				switch(true){
 				case fill instanceof Surface:
 					this.image.draw(fill, 0, 0 ,game.width, game.height);
 					break;
@@ -200,15 +207,14 @@ window.addEventListener('load', function() {
 					this.image.context.fillStyle = fill;
 					this.image.context.fillRect(0, 0, game.width, game.height);
 					break;
+				}
 			}
 			return this;
 
-		}).call(Hack.createSprite(game.width, game.height));
+		}).call(Hack.createSprite(game.width, game.height), arguments);
 	};
 
 	Hack.gameclear = function() {
-		if (Hack.cleared) return;
-		Hack.cleared = true;
 		if (__H4PENV__MODE === 'official' && __H4PENV__NEXT) {
 			Hack.overlay('black').tl.then(function(){
 				this.opacity = 0;
@@ -216,10 +222,31 @@ window.addEventListener('load', function() {
                 window.parent.postMessage('clear', '/');
 			});
 		}else{
-			Hack.overlay('img/clear.png').tl.then(function(){
+			Hack.overlay('img/clear.png').tl.then(function() {
 				this.opacity = 0;
 			}).fadeIn(30, enchant.Easing.LINEAR);
 		}
+
+		Hack.gameclear = function(){};
+		Hack.gameover = function(){};
+	};
+
+	Hack.gameover = function() {
+		var lay = Hack.overlay('rgba(0,0,0,0.4)', 'img/gameover.png');
+		lay.opacity = 0;
+		lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
+			Hack.createSprite(128, 32, {
+				image: game.assets['img/button_retry.png'],
+				x: 176, y: 320
+			}).tl.then(function() {
+				this.ontouchstart = function() {
+					location.reload();
+				};
+			}).moveTo(176, 270, 10);
+		});
+
+		Hack.gameclear = function(){};
+		Hack.gameover = function(){};
 	};
 
 	Object.defineProperty(Hack, 'restagingCode', {
