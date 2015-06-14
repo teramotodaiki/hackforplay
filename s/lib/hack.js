@@ -45,6 +45,7 @@ window.addEventListener('message', function (e) {
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
+    game.preload(['img/clear.png']);
 
     // Hackのクラスを生成 インスタンスはget only
     var HackEnchant = enchant.Class.create(enchant.EventTarget, {
@@ -203,6 +204,22 @@ window.addEventListener('load', function() {
 			return this;
 
 		}).call(Hack.createSprite(game.width, game.height));
+	};
+
+	Hack.gameclear = function() {
+		if (Hack.cleared) return;
+		Hack.cleared = true;
+		if (__H4PENV__MODE === 'official' && __H4PENV__NEXT) {
+			Hack.overlay('black').tl.then(function(){
+				this.opacity = 0;
+			}).fadeIn(30, enchant.Easing.LINEAR).then(function() {
+                window.parent.postMessage('clear', '/');
+			});
+		}else{
+			Hack.overlay('img/clear.png').tl.then(function(){
+				this.opacity = 0;
+			}).fadeIn(30, enchant.Easing.LINEAR);
+		}
 	};
 
 	Object.defineProperty(Hack, 'restagingCode', {
