@@ -59,10 +59,10 @@
 			<div class="col-md-12 panel panel-default">
 				<div class="panel-body">
 					<div class="text-center">
-						<img src="tmpthumb.png" class="img-circle h4p_user-thumbnail">
+						<img src="tmpthumb.png" class="img-circle h4p_own-thumbnail">
 					</div>
 					<div class="text-center">
-						<h3 class="h4p_user-nickname"></h3>
+						<h3 class="h4p_own-nickname"></h3>
 					</div>
 				</div>
 			</div>
