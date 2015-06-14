@@ -169,16 +169,39 @@ window.addEventListener('load', function() {
 			this.height = prop.height || this.height;
 			this.font = prop.font || 'bold large sans-serif';
 			this.color = prop.color || '#000';
-			enchant.Core.instance.rootScene.addChild(this);
+			game.rootScene.addChild(this);
 			return this;
 		}).call(new enchant.Label());
 	};
 
 	Hack.createSprite = function(width, height, prop) {
 		return (function(){
-			this.image = prop.image || null;
+			this.image = (prop && prop.image) || new Surface(width, height);
+			game.rootScene.addChild(this);
 			return this;
 		}).call(new enchant.Sprite(width, height));
+	};
+
+	// overlay
+	Hack.overlay = function(fill) {
+		return (function(){
+			// scope: createSprite()
+
+			switch(true){
+				case fill instanceof Surface:
+					this.image.draw(fill, 0, 0 ,game.width, game.height);
+					break;
+				case game.assets[fill] instanceof Surface:
+					this.image.draw(game.assets[fill], 0, 0 ,game.width, game.height);
+					break;
+				default:
+					this.image.context.fillStyle = fill;
+					this.image.context.fillRect(0, 0, game.width, game.height);
+					break;
+			}
+			return this;
+
+		}).call(Hack.createSprite(game.width, game.height));
 	};
 
 	Object.defineProperty(Hack, 'restagingCode', {
