@@ -64,6 +64,12 @@ $(function(){
 		indentUnit: 4,
 		autoClossBrackets: true
 	});
+	jsEditor.on('beforeChange', function(cm, change) {
+		if (change.origin === "undo" && cm.doc.historySize().undo === 0) {
+			// Ctrl+Zの押し過ぎで、全部消えてしまうのをふせぐ
+			change.cancel();
+		}
+	});
 	var $div = $("div.h4p_restaging_editor");
 	jsEditor.setSize($div.width(), $div.height());
 	if(getParam('mode') !== "restaging"){
