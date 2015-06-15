@@ -15,7 +15,7 @@
 	<script src="chart.js" type="text/javascript" charset="utf-8"></script>
 	<!-- Modal -->
 	<div class="modal fade" id="codeModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 	    		<div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
