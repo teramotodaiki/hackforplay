@@ -77,6 +77,12 @@ window.addEventListener('load', function() {
 	game.onenterframe = function() {
 		if (!Hack.started) return;
 
+		// goal (player.x becomes more than {Number})
+		if (Hack.player.x >= 3000) {
+			Hack.gameclear();
+			Hack.started = false;
+		}
+
 		// scroll
 		Hack.defaultParentNode.x = - (Hack.player.x - 64);
 		Hack.backgroundImage.forEach(function(item) {
@@ -95,6 +101,9 @@ window.addEventListener('load', function() {
 
 					if (Hack.player.hp <= 0) {
 						Hack.gameover();
+						Hack.started = false;
+						Hack.player.velocity = { x: 0, y: 0 };
+						Hack.player.tl.fadeOut(10);
 					} else {
 						var saveFrame = Hack.player._originalFrameSequence;
 						Hack.player.frame = [-1, -1, 3, 3];
