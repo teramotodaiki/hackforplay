@@ -21,6 +21,9 @@ window.addEventListener('load', function() {
 
 	game.onload = function() {
 
+		Hack.stage = new enchant.Group();
+		game.rootScene.addChild(Hack.stage);
+
 		Hack.backgroundImage = [];
 		for (var i = 0; i < 16; i++) {
 			Hack.backgroundImage[i] = new enchant.Map(32, 32);
@@ -29,7 +32,7 @@ window.addEventListener('load', function() {
 				[22],[21],[20],[19],[18],[18],[0],[1],[1],[1]
 			]);
 			Hack.backgroundImage[i].x = i * 32;
-			game.rootScene.addChild(Hack.backgroundImage[i]);
+			Hack.stage.addChild(Hack.backgroundImage[i]);
 		}
 
 		Hack.player = Hack.createMovingSprite(48, 48, {
@@ -38,6 +41,7 @@ window.addEventListener('load', function() {
 			frame: [4, 4, 4, 3, 3, 3, 4, 4, 4, 5, 5, 5],
 			useGravity: true, useGround: true, footHeight: 32
 		});
+		Hack.player.hp = 3; // player's hit point
 		Hack.player.isDamaged = false; // damaged flag
 
 		Hack.monster = [];
@@ -52,7 +56,8 @@ window.addEventListener('load', function() {
 	Hack.onpressstart = function() {
 		Hack.started = true;
 
-		game.rootScene.addChild(Hack.player); // bring to the front
+		Hack.stage.addChild(Hack.player); // bring to the front
+
 
 		// move and jump
 		Hack.player.velocity.x = 4;
@@ -67,8 +72,7 @@ window.addEventListener('load', function() {
 		if (!Hack.started) return;
 
 		// scroll
-		game.rootScene.x = - (Hack.player.x - 64);
-		Hack.textarea.x = -game.rootScene.x;
+		Hack.stage.x = - (Hack.player.x - 64);
 		Hack.backgroundImage.forEach(function(item) {
 			if (item.x + item.parentNode.x <= -32) {
 				item.x += game.width + 32;
@@ -76,19 +80,26 @@ window.addEventListener('load', function() {
 		});
 
 		//damage
-		Hack.log(game.rootScene.x, Hack.player.x);
 		if (!Hack.player.isDamaged) {
 			Hack.monster.forEach(function(enemy) {
-				if (enemy.intersect(col)) {
-				// 	// ouch!!
-				// 	Hack.player.isDamaged = true; // damaged flag
-				// 	Hack.player.frame = [-1, -1, 3, 3];
+				if (Hack.player.intersect(enemy)) {
+					// ouch!!
+					Hack.player.hp--;
+					Hack.player.isDamaged = true; // damaged flag
 
-				// 	window.setTimeout(function() {
-				// 		// 3 second left...
-				// 		Hack.player.isDamaged = false;
-				// 	}, 3000);
-				// 	return;
+					if (Hack.player.hp <= 0) {
+						Hack.gameover();
+					} else {
+						var saveFrame = Hack.player._originalFrameSequence;
+						Hack.player.frame = [-1, -1, 3, 3];
+
+						window.setTimeout(function() {
+							// 3 second left...
+							Hack.player.isDamaged = false;
+							Hack.player.frame = saveFrame;
+						}, 3000);
+					}
+					return;
 				}
 			});
 		}
@@ -131,7 +142,7 @@ window.addEventListener('load', function() {
 					this[key] = prop[key];
 				}, this);
 			}
-			game.rootScene.addChild(this);
+			Hack.stage.addChild(this);
 			return this;
 
 		}).call(new Hack.MovingSprite(width, height));
