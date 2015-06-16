@@ -56,9 +56,14 @@ window.addEventListener('load', function() {
 		Hack.started = true;
 
 		Hack.player.parentNode.addChild(Hack.player); // bring to the front
+		// {defaultParentNode: game.rootScene} means no-scroll
 		Hack.hpLabel = Hack.createLabel('HP: ', {
-			x: 400, y: 20, color: 'black'
+			x: 400, y: 20, color: 'black',
+			defaultParentNode: game.rootScene
 		});
+		Hack.hpLabel.onenterframe = function() {
+			this.text = 'HP: ' + Hack.player.hp;
+		};
 
 		// move and jump
 		Hack.player.velocity.x = 4;

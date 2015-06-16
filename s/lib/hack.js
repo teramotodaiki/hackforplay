@@ -170,8 +170,9 @@ window.addEventListener('load', function() {
 					this[key] = prop[key];
 				}, this);
 			}
-			if (Hack.defaultParentNode) {
-				Hack.defaultParentNode.addChild(this);
+			var parent = this.defaultParentNode || Hack.defaultParentNode;
+			if (parent) {
+				parent.addChild(this);
 			}
 			return this;
 		}).call(new enchant.Label());
@@ -184,8 +185,9 @@ window.addEventListener('load', function() {
 					this[key] = prop[key];
 				}, this);
 			}
-			if (Hack.defaultParentNode) {
-				Hack.defaultParentNode.addChild(this);
+			var parent = this.defaultParentNode || Hack.defaultParentNode;
+			if (parent) {
+				parent.addChild(this);
 			}
 			return this;
 		}).call(new enchant.Sprite(width, height));
@@ -214,7 +216,7 @@ window.addEventListener('load', function() {
 			}
 			return this;
 
-		}).call(Hack.createSprite(game.width, game.height), arguments);
+		}).call(Hack.createSprite(game.width, game.height, {defaultParentNode: game.rootScene}), arguments);
 	};
 
 	Hack.gameclear = function() {
@@ -240,7 +242,7 @@ window.addEventListener('load', function() {
 		lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
 			Hack.createSprite(128, 32, {
 				image: game.assets['img/button_retry.png'],
-				x: 176, y: 320
+				x: 176, y: 320, defaultParentNode: lay.parentNode
 			}).tl.then(function() {
 				this.ontouchstart = function() {
 					location.reload();
