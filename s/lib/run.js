@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
 
 	var game = enchant.Core.instance;
-	game.preload(['img/map2.png', 'img/monster1.gif', 'img/monster2.gif', 'img/monster3.gif', 'img/monster4.gif']);
+	game.preload(['img/map2.png', 'img/chara0.png', 'img/monster1.gif', 'img/monster2.gif', 'img/monster3.gif', 'img/monster4.gif']);
 
 	var binded_key = ' '.charCodeAt(0);
 	game.keybind(binded_key, 'a'); // aボタンはスペースキー
@@ -35,10 +35,10 @@ window.addEventListener('load', function() {
 		}
 
 		Hack.player = Hack.createMovingSprite(48, 48, {
-			x: 64, y: 160, scaleX: -1,
-			image: game.assets['img/monster4.gif'],
-			frame: [4, 4, 4, 3, 3, 3, 4, 4, 4, 5, 5, 5],
-			useGravity: true, useGround: true, footHeight: 32
+			x: 64, y: 160,
+			image: game.assets['img/chara0.png'],
+			frame: [25, 25, 25, 24, 24, 24, 25, 25, 25, 26, 26, 26],
+			useGravity: true, useGround: true, footHeight: 48
 		});
 		Hack.player.hp = 3; // player's hit point
 		Hack.player.isDamaged = false; // damaged flag
@@ -106,7 +106,7 @@ window.addEventListener('load', function() {
 						Hack.player.tl.fadeOut(10);
 					} else {
 						var saveFrame = Hack.player._originalFrameSequence;
-						Hack.player.frame = [-1, -1, 3, 3];
+						Hack.player.frame = [-1, -1, 24, 24];
 
 						window.setTimeout(function() {
 							// 3 second left...
