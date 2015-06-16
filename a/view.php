@@ -69,6 +69,9 @@
 			    <li role="presentation">
 			    	<a href="#judge" aria-controls="judge" role="tab" data-toggle="tab">judge</a>
 			    </li>
+			    <li role="presentation">
+			    	<a href="#user" aria-controls="user" role="tab" data-toggle="tab">user</a>
+			    </li>
 			</ul>
 			<div class="col-md-10 tab-content">
 			    <div role="tabpanel" class="tab-pane" id="summary">
@@ -104,6 +107,32 @@
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="judge">
 			    	<div class="row list-judging"></div>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="user">
+			    	<div class="table-responsive">
+				    	<table class="table table-striped">
+				    		<caption>User</caption>
+				    		<thead>
+				    			<tr>
+				    				<th>Nickname</th>
+				    				<th>Mail</th>
+				    			</tr>
+				    		</thead>
+				    		<tbody>
+<?php
+$stmt	= $dbh->prepare('SELECT u."Nickname",a."Email" FROM "User" AS u INNER JOIN "Account" AS a ON u."ID"=a."UserID" WHERE a."Type"=:hackforplay AND a."State"=:connected');
+$stmt->bindValue(":hackforplay", 'hackforplay', PDO::PARAM_STR);
+$stmt->bindValue(":connected", 'connected', PDO::PARAM_STR);
+$stmt->execute();
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) : ?>
+								<tr>
+									<td> <?php echo $row['Nickname'] ?> </td>
+									<td> <?php echo $row['Email'] ?> </td>
+								</tr>
+<?php endwhile; ?>
+				    		</tbody>
+				    	</table>
+			    	</div>
 			    </div>
 			</div>
 		</div>
