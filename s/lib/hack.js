@@ -170,7 +170,10 @@ window.addEventListener('load', function() {
 					this[key] = prop[key];
 				}, this);
 			}
-			game.rootScene.addChild(this);
+			var parent = this.defaultParentNode || Hack.defaultParentNode;
+			if (parent) {
+				parent.addChild(this);
+			}
 			return this;
 		}).call(new enchant.Label());
 	};
@@ -182,7 +185,10 @@ window.addEventListener('load', function() {
 					this[key] = prop[key];
 				}, this);
 			}
-			game.rootScene.addChild(this);
+			var parent = this.defaultParentNode || Hack.defaultParentNode;
+			if (parent) {
+				parent.addChild(this);
+			}
 			return this;
 		}).call(new enchant.Sprite(width, height));
 	};
@@ -210,20 +216,21 @@ window.addEventListener('load', function() {
 			}
 			return this;
 
-		}).call(Hack.createSprite(game.width, game.height), arguments);
+		}).call(Hack.createSprite(game.width, game.height, {defaultParentNode: game.rootScene}), arguments);
 	};
 
 	Hack.gameclear = function() {
+		var lay;
 		if (__H4PENV__MODE === 'official' && __H4PENV__NEXT) {
-			Hack.overlay('black').tl.then(function(){
-				this.opacity = 0;
-			}).fadeIn(30, enchant.Easing.LINEAR).then(function() {
+			lay = Hack.overlay('black');
+			lay.opacity = 0;
+			lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
                 window.parent.postMessage('clear', '/');
 			});
 		}else{
-			Hack.overlay('img/clear.png').tl.then(function() {
-				this.opacity = 0;
-			}).fadeIn(30, enchant.Easing.LINEAR);
+			lay = Hack.overlay('img/clear.png');
+			lay.opacity = 0;
+			lay.tl.fadeIn(30, enchant.Easing.LINEAR);
 		}
 
 		Hack.gameclear = function(){};
@@ -236,7 +243,7 @@ window.addEventListener('load', function() {
 		lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
 			Hack.createSprite(128, 32, {
 				image: game.assets['img/button_retry.png'],
-				x: 176, y: 320
+				x: 176, y: 320, defaultParentNode: lay.parentNode
 			}).tl.then(function() {
 				this.ontouchstart = function() {
 					location.reload();
@@ -269,6 +276,6 @@ window.addEventListener('load', function() {
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
     game.addEventListener('load', function(){
-
+		this.rootScene.addChild(Hack.defaultParentNode);
     });
 });
