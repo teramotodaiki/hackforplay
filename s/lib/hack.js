@@ -220,16 +220,17 @@ window.addEventListener('load', function() {
 	};
 
 	Hack.gameclear = function() {
+		var lay;
 		if (__H4PENV__MODE === 'official' && __H4PENV__NEXT) {
-			Hack.overlay('black').tl.then(function(){
-				this.opacity = 0;
-			}).fadeIn(30, enchant.Easing.LINEAR).then(function() {
+			lay = Hack.overlay('black');
+			lay.opacity = 0;
+			lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
                 window.parent.postMessage('clear', '/');
 			});
 		}else{
-			Hack.overlay('img/clear.png').tl.then(function() {
-				this.opacity = 0;
-			}).fadeIn(30, enchant.Easing.LINEAR);
+			lay = Hack.overlay('img/clear.png');
+			lay.opacity = 0;
+			lay.tl.fadeIn(30, enchant.Easing.LINEAR);
 		}
 
 		Hack.gameclear = function(){};
