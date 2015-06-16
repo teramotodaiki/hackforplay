@@ -6,7 +6,7 @@ window.addEventListener('load', function() {
 	var binded_key = ' '.charCodeAt(0);
 	game.keybind(binded_key, 'a'); // aボタンはスペースキー
 
-	Hack.textarea.backgroundColor = '#024';
+	Hack.textarea.backgroundColor = 'rgba(0,20,40,0.5)';
 
 	// ===>
 
@@ -36,9 +36,9 @@ window.addEventListener('load', function() {
 			x: 64, y: 160, scaleX: -1,
 			image: game.assets['img/monster4.gif'],
 			frame: [4, 4, 4, 3, 3, 3, 4, 4, 4, 5, 5, 5],
-			useGravity: true, useGround: true,
-			footHeight: 32
+			useGravity: true, useGround: true, footHeight: 32
 		});
+		Hack.player.isDamaged = false; // damaged flag
 
 		Hack.monster = [];
 		Hack.monster[0] = makeMonster(1, 400, 154);
@@ -68,11 +68,31 @@ window.addEventListener('load', function() {
 
 		// scroll
 		game.rootScene.x = - (Hack.player.x - 64);
+		Hack.textarea.x = -game.rootScene.x;
 		Hack.backgroundImage.forEach(function(item) {
 			if (item.x + item.parentNode.x <= -32) {
 				item.x += game.width + 32;
 			}
 		});
+
+		//damage
+		Hack.log(game.rootScene.x, Hack.player.x);
+		if (!Hack.player.isDamaged) {
+			Hack.monster.forEach(function(enemy) {
+				if (enemy.intersect(col)) {
+				// 	// ouch!!
+				// 	Hack.player.isDamaged = true; // damaged flag
+				// 	Hack.player.frame = [-1, -1, 3, 3];
+
+				// 	window.setTimeout(function() {
+				// 		// 3 second left...
+				// 		Hack.player.isDamaged = false;
+				// 	}, 3000);
+				// 	return;
+				}
+			});
+		}
+
 	};
 
 	// Environments and classes
