@@ -170,7 +170,9 @@ window.addEventListener('load', function() {
 					this[key] = prop[key];
 				}, this);
 			}
-			game.rootScene.addChild(this);
+			if (Hack.defaultParentNode) {
+				Hack.defaultParentNode.addChild(this);
+			}
 			return this;
 		}).call(new enchant.Label());
 	};
@@ -182,7 +184,9 @@ window.addEventListener('load', function() {
 					this[key] = prop[key];
 				}, this);
 			}
-			game.rootScene.addChild(this);
+			if (Hack.defaultParentNode) {
+				Hack.defaultParentNode.addChild(this);
+			}
 			return this;
 		}).call(new enchant.Sprite(width, height));
 	};
@@ -269,6 +273,6 @@ window.addEventListener('load', function() {
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
     game.addEventListener('load', function(){
-
+		this.rootScene.addChild(Hack.defaultParentNode);
     });
 });

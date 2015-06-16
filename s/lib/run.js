@@ -21,8 +21,7 @@ window.addEventListener('load', function() {
 
 	game.onload = function() {
 
-		Hack.stage = new enchant.Group();
-		game.rootScene.addChild(Hack.stage);
+		Hack.defaultParentNode = new enchant.Group(); // prepear to scroll
 
 		Hack.backgroundImage = [];
 		for (var i = 0; i < 16; i++) {
@@ -32,7 +31,7 @@ window.addEventListener('load', function() {
 				[22],[21],[20],[19],[18],[18],[0],[1],[1],[1]
 			]);
 			Hack.backgroundImage[i].x = i * 32;
-			Hack.stage.addChild(Hack.backgroundImage[i]);
+			Hack.defaultParentNode.addChild(Hack.backgroundImage[i]);
 		}
 
 		Hack.player = Hack.createMovingSprite(48, 48, {
@@ -56,8 +55,10 @@ window.addEventListener('load', function() {
 	Hack.onpressstart = function() {
 		Hack.started = true;
 
-		Hack.stage.addChild(Hack.player); // bring to the front
-
+		Hack.player.parentNode.addChild(Hack.player); // bring to the front
+		Hack.hpLabel = Hack.createLabel('HP: ', {
+			x: 400, y: 20, color: 'black'
+		});
 
 		// move and jump
 		Hack.player.velocity.x = 4;
@@ -72,7 +73,7 @@ window.addEventListener('load', function() {
 		if (!Hack.started) return;
 
 		// scroll
-		Hack.stage.x = - (Hack.player.x - 64);
+		Hack.defaultParentNode.x = - (Hack.player.x - 64);
 		Hack.backgroundImage.forEach(function(item) {
 			if (item.x + item.parentNode.x <= -32) {
 				item.x += game.width + 32;
@@ -142,7 +143,9 @@ window.addEventListener('load', function() {
 					this[key] = prop[key];
 				}, this);
 			}
-			Hack.stage.addChild(this);
+			if (Hack.defaultParentNode) {
+				Hack.defaultParentNode.addChild(this);
+			}
 			return this;
 
 		}).call(new Hack.MovingSprite(width, height));
