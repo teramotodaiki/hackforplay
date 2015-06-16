@@ -11,9 +11,10 @@ window.addEventListener('load', function() {
 	// ===>
 
 	function makeMonster (_number, _x, _y) {
-		var monster = Hack.createSprite(48, 48, {
+		var monster = Hack.createMovingSprite(48, 48, {
 			x: _x, y: _y, image: game.assets['img/monster' + _number + '.gif'],
-			frame: [2, 2, 2, 3, 3, 3]
+			frame: [2, 2, 2, 3, 3, 3],
+			useGravity: true, useGround: true, footHeight: 32
 		});
 		return monster;
 	}
@@ -31,10 +32,12 @@ window.addEventListener('load', function() {
 			game.rootScene.addChild(Hack.backgroundImage[i]);
 		}
 
-		Hack.player = Hack.createSprite(48, 48, {
+		Hack.player = Hack.createMovingSprite(48, 48, {
 			x: 64, y: 160, scaleX: -1,
 			image: game.assets['img/monster4.gif'],
-			frame: [4, 4, 4, 3, 3, 3, 4, 4, 4, 5, 5, 5]
+			frame: [4, 4, 4, 3, 3, 3, 4, 4, 4, 5, 5, 5],
+			useGravity: true, useGround: true,
+			footHeight: 32
 		});
 
 		Hack.monster = [];
@@ -51,9 +54,13 @@ window.addEventListener('load', function() {
 
 		game.rootScene.addChild(Hack.player); // bring to the front
 
-		Hack.player.onenterframe = function() {
-			this.x += 2;
-		};
+		// move and jump
+		Hack.player.velocity.x = 4;
+		Hack.player.on('enterframe', function(event) {
+			if (game.input.up && this.y + this.footHeight >= Hack.groundHeight) {
+				this.velocity.y = -14;
+			}
+		});
 	};
 
 	game.onenterframe = function() {
@@ -66,6 +73,48 @@ window.addEventListener('load', function() {
 				item.x += game.width + 32;
 			}
 		});
+	};
+
+	// Environments and classes
+	Hack.groundHeight = 32 * 6; // define ground height by
+	console.log('set gravity force');
+	Hack.gravityForce = { x: 0, y: 1 };
+	Hack.MovingSprite = enchant.Class.create(enchant.Sprite, {
+		initialize: function(width, height) {
+			enchant.Sprite.call(this, width, height);
+			this.velocity = { x: 0, y: 0 };
+		},
+		onenterframe: function() {
+			// gravity
+			if (this.useGravity) {
+				var mass = this.mass || 1;
+				this.velocity.x += Hack.gravityForce.x / mass;
+				this.velocity.y += Hack.gravityForce.y / mass;
+			}
+			// move
+			this.moveBy(this.velocity.x, this.velocity.y);
+			// get a foot on the ground
+			if (this.useGround) {
+				var foot = this.y + (this.footHeight || this.height);
+				if (foot >= Hack.groundHeight) {
+					this.velocity.y = 0;
+					this.y = Hack.groundHeight - (this.footHeight || this.height);
+				}
+			}
+		}
+	});
+	Hack.createMovingSprite = function(width, height, prop) {
+		return (function () {
+			// @ new Hack.MovingSprite()
+			if (prop) {
+				Object.keys(prop).forEach(function(key) {
+					this[key] = prop[key];
+				}, this);
+			}
+			game.rootScene.addChild(this);
+			return this;
+
+		}).call(new Hack.MovingSprite(width, height));
 	};
 
 	// <===
