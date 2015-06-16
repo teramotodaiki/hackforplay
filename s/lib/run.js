@@ -94,7 +94,7 @@ window.addEventListener('load', function() {
 		//damage
 		if (!Hack.player.isDamaged) {
 			Hack.monster.forEach(function(enemy) {
-				if (Hack.player.intersect(enemy)) {
+				if (Hack.player.within(enemy, 20)) {
 					// ouch!!
 					Hack.player.hp--;
 					Hack.player.isDamaged = true; // damaged flag
