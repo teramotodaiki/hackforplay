@@ -8,31 +8,46 @@ window.addEventListener('load', function() {
 
 	Hack.textarea.backgroundColor = 'rgba(0,20,40,0.5)';
 
-	// ===>
+	// ====> 改造コードへ
+	Hack.restagingCode =
+	"function makeMonster (_number, _x, _y, _frame, _useGravity, _useGround, _footHeight) {\n"+
+	"\treturn Hack.createMovingSprite(48, 48, {\n"+
+	"\t\tx: _x || 0, y: _y || 0,\n"+
+	"\t\timage: game.assets['img/monster' + (_number || 1) + '.gif'],\n"+
+	"\t\tframe: _frame || [2, 2, 2, 3, 3, 3],\n"+
+	"\t\tuseGravity: _useGravity || true,\n"+
+	"\t\tuseGround:  _useGround  || true,\n"+
+	"\t\tfootHeight: _footHeight || 32\n"+
+	"\t});\n"+
+	"}\n";
 
-	function makeMonster (_number, _x, _y) {
-		var monster = Hack.createMovingSprite(48, 48, {
-			x: _x, y: _y, image: game.assets['img/monster' + _number + '.gif'],
-			frame: [2, 2, 2, 3, 3, 3],
-			useGravity: true, useGround: true, footHeight: 32
+	function makeMonster (_number, _x, _y, _frame, _useGravity, _useGround, _footHeight) {
+		return Hack.createMovingSprite(48, 48, {
+			x: _x || 0, y: _y || 0,
+			image: game.assets['img/monster' + (_number || 1) + '.gif'],
+			frame: _frame || [2, 2, 2, 3, 3, 3],
+			useGravity: _useGravity || true,
+			useGround: _useGround|| true,
+			footHeight: _footHeight || 32
 		});
-		return monster;
 	}
 
 	game.onload = function() {
-
+		Hack.pressStartKey(' ');
 		Hack.defaultParentNode = new enchant.Group(); // prepear to scroll
 
-		Hack.backgroundImage = [];
-		for (var i = 0; i < 16; i++) {
-			Hack.backgroundImage[i] = new enchant.Map(32, 32);
-			Hack.backgroundImage[i].image = game.assets['img/map2.png'];
-			Hack.backgroundImage[i].loadData([
-				[22],[21],[20],[19],[18],[18],[0],[1],[1],[1]
-			]);
-			Hack.backgroundImage[i].x = i * 32;
-			Hack.defaultParentNode.addChild(Hack.backgroundImage[i]);
-		}
+		Hack.createScrollMap([
+			[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22],
+			[21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21],
+			[20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20],
+			[19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19],
+			[18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18],
+			[18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			[ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2],
+			[ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1],
+			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+		]);
 
 		Hack.player = Hack.createMovingSprite(48, 48, {
 			x: 64, y: 160,
@@ -84,12 +99,7 @@ window.addEventListener('load', function() {
 		}
 
 		// scroll
-		Hack.defaultParentNode.x = - (Hack.player.x - 64);
-		Hack.backgroundImage.forEach(function(item) {
-			if (item.x + item.parentNode.x <= -32) {
-				item.x += game.width + 32;
-			}
-		});
+		Hack.scrollRight(Hack.player.x - 64);
 
 		//damage
 		if (!Hack.player.isDamaged) {
@@ -167,13 +177,43 @@ window.addEventListener('load', function() {
 
 	// <===
 
+	Hack.createScrollMap = function(map) {
+		// Vertical stick maps are lined up horizontal
+		// Can move only  <====RIGHT TO LEFT====
+		Hack.backgroundImage = [];
+		// repeat horizontal
+		for (var x = 0; x < Math.max(16, map[0].length); x++) {
+			Hack.backgroundImage[x] = new enchant.Map(32, 32);
+			Hack.backgroundImage[x].image = game.assets['img/map2.png'];
+			var stickMap = [];
+			for (var y = 0; y < 10; y++) {
+				stickMap[y] = [];
+				stickMap[y][0] = map[y][x] || map[y][x%map[y].length]; // map[y].length less than 16
+			}
+			Hack.backgroundImage[x].loadData(stickMap);
+			Hack.backgroundImage[x].x = x * 32;
+			if (Hack.defaultParentNode) {
+				Hack.defaultParentNode.addChild(Hack.backgroundImage[x]);
+			}
+		}
+		return Hack.backgroundImage;
+	};
+
+	Hack.scrollRight = function(x) {
+		Hack.defaultParentNode.x = -x;
+		Hack.backgroundImage.forEach(function(item) {
+			if (item.x + item.parentNode.x <= -32) {
+				item.x += game.width + 32;
+			}
+		});
+	};
+
 	Hack.pressStartKey = function(keyString) {
 		var keyCode = keyString.charCodeAt(0);
 		game.keyunbind(binded_key, 'a');
 		game.keybind(keyCode, 'a');
 		binded_key = keyCode;
 	};
-
 
 	game.on('abuttondown', function(event) {
 		if (Hack.started) return;
