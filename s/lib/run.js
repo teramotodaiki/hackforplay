@@ -10,6 +10,41 @@ window.addEventListener('load', function() {
 
 	// ====> 改造コードへ
 	Hack.restagingCode =
+	"game.onload = function() {\n"+
+	"\tHack.pressStartKey(' ');\n"+
+	"\tHack.defaultParentNode = new enchant.Group(); // prepear to scroll\n"+
+	"\n"+
+	"\tHack.createScrollMap([\n"+
+	"\t\t[22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22],\n"+
+	"\t\t[21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21],\n"+
+	"\t\t[20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20],\n"+
+	"\t\t[19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19],\n"+
+	"\t\t[18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18],\n"+
+	"\t\t[18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18],\n"+
+	"\t\t[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],\n"+
+	"\t\t[ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2],\n"+
+	"\t\t[ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1],\n"+
+	"\t\t[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]\n"+
+	"\t]);\n"+
+	"\n"+
+	"\tHack.player = Hack.createMovingSprite(48, 48, {\n"+
+	"\t\tx: 64, y: 160,\n"+
+	"\t\timage: game.assets['img/chara0.png'],\n"+
+	"\t\tframe: [25, 25, 25, 24, 24, 24, 25, 25, 25, 26, 26, 26],\n"+
+	"\t\tuseGravity: true, useGround: true, footHeight: 48\n"+
+	"\t});\n"+
+	"\tHack.player.hp = 3; // player's hit point\n"+
+	"\tHack.player.isDamaged = false; // damaged flag\n"+
+	"\n"+
+	"\tHack.monster = [];\n"+
+	"\tHack.monster[0] = makeMonster(1, 400, 154);\n"+
+	"\tHack.monster[1] = makeMonster(1, 800, 154);\n"+
+	"\tHack.monster[2] = makeMonster(1,1200, 154);\n"+
+	"\tHack.monster[3] = makeMonster(1,1600, 154);\n"+
+	"\tHack.monster[4] = makeMonster(1,2000, 154);\n"+
+	"\tHack.monster[5] = makeMonster(1,2400, 154);\n"+
+	"};\n"+
+	"\n"+
 	"function makeMonster (_number, _x, _y, _frame, _useGravity, _useGround, _footHeight) {\n"+
 	"\treturn Hack.createMovingSprite(48, 48, {\n"+
 	"\t\tx: _x || 0, y: _y || 0,\n"+
@@ -21,18 +56,7 @@ window.addEventListener('load', function() {
 	"\t});\n"+
 	"}\n";
 
-	function makeMonster (_number, _x, _y, _frame, _useGravity, _useGround, _footHeight) {
-		return Hack.createMovingSprite(48, 48, {
-			x: _x || 0, y: _y || 0,
-			image: game.assets['img/monster' + (_number || 1) + '.gif'],
-			frame: _frame || [2, 2, 2, 3, 3, 3],
-			useGravity: _useGravity || true,
-			useGround: _useGround|| true,
-			footHeight: _footHeight || 32
-		});
-	}
-
-	game.onload = function() {
+	game.onload = game.onload || function() {
 		Hack.pressStartKey(' ');
 		Hack.defaultParentNode = new enchant.Group(); // prepear to scroll
 
@@ -174,6 +198,17 @@ window.addEventListener('load', function() {
 
 		}).call(new Hack.MovingSprite(width, height));
 	};
+
+	function makeMonster (_number, _x, _y, _frame, _useGravity, _useGround, _footHeight) {
+		return Hack.createMovingSprite(48, 48, {
+			x: _x || 0, y: _y || 0,
+			image: game.assets['img/monster' + (_number || 1) + '.gif'],
+			frame: _frame || [2, 2, 2, 3, 3, 3],
+			useGravity: _useGravity || true,
+			useGround: _useGround|| true,
+			footHeight: _footHeight || 32
+		});
+	}
 
 	// <===
 
