@@ -10,6 +10,7 @@ window.addEventListener('load', function() {
 
 	// ====> 改造コードへ
 	Hack.restagingCode =
+	"game.preload(['img/map2.png', 'img/chara0.png', 'img/monster1.gif', 'img/monster2.gif', 'img/monster3.gif', 'img/monster4.gif']);\n"+
 	"game.onload = function() {\n"+
 	"\tHack.pressStartKey(' ');\n"+
 	"\tHack.defaultParentNode = new enchant.Group(); // prepear to scroll\n"+
