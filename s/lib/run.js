@@ -67,6 +67,49 @@ window.addEventListener('load', function() {
 	"\t});\n"+
 	"};\n"+
 	"\n"+
+	"game.onenterframe = function() {\n"+
+	"\tif (!Hack.started) return; // game started and running flag\n"+
+	"\n"+
+	"\t// goal (player.x becomes more than {Number})\n"+
+	"\tif (Hack.player.x >= 3000) {\n"+
+	"\t\tHack.gameclear();\n"+
+	"\t\tHack.started = false;\n"+
+	"\t}\n"+
+	"\n"+
+	"\t// scroll\n"+
+	"\tHack.scrollRight(Hack.player.x - 64);\n"+
+	"\n"+
+	"\t//damage\n"+
+	"\tif (!Hack.player.isDamaged) {\n"+
+	"\t\tHack.monster.forEach(function(enemy) {\n"+
+	"\t\t\t// collision detection\n"+
+	"\t\t\tif (Hack.player.within(enemy, 20)) {\n"+
+	"\t\t\t\tHack.player.hp--; // ouch!!\n"+
+	"\t\t\t\tHack.player.isDamaged = true; // damaged (flashing) flag\n"+
+	"\n"+
+	"\t\t\t\tif (Hack.player.hp <= 0) {\n"+
+	"\t\t\t\t\t// R.I.P\n"+
+	"\t\t\t\t\tHack.gameover();\n"+
+	"\t\t\t\t\tHack.started = false;\n"+
+	"\t\t\t\t\tHack.player.onenterframe = null; // remove 'onenterframe'\n"+
+	"\t\t\t\t\tHack.player.tl.fadeOut(10);\n"+
+	"\t\t\t\t} else {\n"+
+	"\t\t\t\t\t// still living\n"+
+	"\t\t\t\t\tvar saveFrame = Hack.player._originalFrameSequence; // ~= player.frame\n"+
+	"\t\t\t\t\tHack.player.frame = [-1, -1, 24, 24]; // flashing (-1: invisible)\n"+
+	"\n"+
+	"\t\t\t\t\twindow.setTimeout(function() {\n"+
+	"\t\t\t\t\t\t// 3 second left...\n"+
+	"\t\t\t\t\t\tHack.player.isDamaged = false;\n"+
+	"\t\t\t\t\t\tHack.player.frame = saveFrame; // walking animation\n"+
+	"\t\t\t\t\t}, 3000);\n"+
+	"\t\t\t\t}\n"+
+	"\t\t\t\treturn;\n"+
+	"\t\t\t}\n"+
+	"\t\t});\n"+
+	"\t}\n"+
+	"};\n"+
+	"\n"+
 	"function makeMonster (_number, _x, _y, _frame, _useGravity, _useGround, _footHeight) {\n"+
 	"\treturn Hack.createMovingSprite(48, 48, {\n"+
 	"\t\tx: _x || 0, y: _y || 0,\n"+
@@ -135,8 +178,8 @@ window.addEventListener('load', function() {
 		});
 	};
 
-	game.onenterframe = function() {
-		if (!Hack.started) return;
+	game.onenterframe = game.onenterframe || function() {
+		if (!Hack.started) return; // game started and running flag
 
 		// goal (player.x becomes more than {Number})
 		if (Hack.player.x >= 3000) {
@@ -150,31 +193,32 @@ window.addEventListener('load', function() {
 		//damage
 		if (!Hack.player.isDamaged) {
 			Hack.monster.forEach(function(enemy) {
+				// collision detection
 				if (Hack.player.within(enemy, 20)) {
-					// ouch!!
-					Hack.player.hp--;
-					Hack.player.isDamaged = true; // damaged flag
+					Hack.player.hp--; // ouch!!
+					Hack.player.isDamaged = true; // damaged (flashing) flag
 
 					if (Hack.player.hp <= 0) {
+						// R.I.P
 						Hack.gameover();
 						Hack.started = false;
-						Hack.player.velocity = { x: 0, y: 0 };
+						Hack.player.onenterframe = null; // remove 'onenterframe'
 						Hack.player.tl.fadeOut(10);
 					} else {
-						var saveFrame = Hack.player._originalFrameSequence;
-						Hack.player.frame = [-1, -1, 24, 24];
+						// still living
+						var saveFrame = Hack.player._originalFrameSequence; // ~= player.frame
+						Hack.player.frame = [-1, -1, 24, 24]; // flashing (-1: invisible)
 
 						window.setTimeout(function() {
 							// 3 second left...
 							Hack.player.isDamaged = false;
-							Hack.player.frame = saveFrame;
+							Hack.player.frame = saveFrame; // walking animation
 						}, 3000);
 					}
 					return;
 				}
 			});
 		}
-
 	};
 
 	// Environments and classes
