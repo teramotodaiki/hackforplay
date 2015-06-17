@@ -45,6 +45,28 @@ window.addEventListener('load', function() {
 	"\tHack.monster[5] = makeMonster(1,2400, 154);\n"+
 	"};\n"+
 	"\n"+
+	"Hack.onpressstart = function() {\n"+
+	"\tHack.started = true;\n"+
+	"\n"+
+	"\tHack.player.parentNode.addChild(Hack.player); // bring to the front\n"+
+	"\t// {defaultParentNode: game.rootScene} means no-scroll\n"+
+	"\tHack.hpLabel = Hack.createLabel('HP: ', {\n"+
+	"\t\tx: 400, y: 20, color: 'black',\n"+
+	"\t\tdefaultParentNode: game.rootScene\n"+
+	"\t});\n"+
+	"\tHack.hpLabel.onenterframe = function() {\n"+
+	"\t\tthis.text = 'HP: ' + Hack.player.hp;\n"+
+	"\t};\n"+
+	"\n"+
+	"\t// move and jump\n"+
+	"\tHack.player.velocity.x = 4;\n"+
+	"\tHack.player.on('enterframe', function(event) {\n"+
+	"\t\tif (game.input.up && this.y + this.footHeight >= Hack.groundHeight) {\n"+
+	"\t\t\tthis.velocity.y = -14;\n"+
+	"\t\t}\n"+
+	"\t});\n"+
+	"};\n"+
+	"\n"+
 	"function makeMonster (_number, _x, _y, _frame, _useGravity, _useGround, _footHeight) {\n"+
 	"\treturn Hack.createMovingSprite(48, 48, {\n"+
 	"\t\tx: _x || 0, y: _y || 0,\n"+
@@ -91,7 +113,7 @@ window.addEventListener('load', function() {
 		Hack.monster[5] = makeMonster(1,2400, 154);
 	};
 
-	Hack.onpressstart = function() {
+	Hack.onpressstart = Hack.onpressstart || function() {
 		Hack.started = true;
 
 		Hack.player.parentNode.addChild(Hack.player); // bring to the front
