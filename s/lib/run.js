@@ -119,7 +119,49 @@ window.addEventListener('load', function() {
 	"\t\tuseGround:  _useGround  || true,\n"+
 	"\t\tfootHeight: _footHeight || 32\n"+
 	"\t});\n"+
-	"}\n";
+	"}\n"+
+	"\n"+
+	"\n"+
+	"// Environments and classes\n"+
+	"Hack.groundHeight = 32 * 6; // define ground distance from Y=0\n"+
+	"Hack.gravity = { x: 0, y: 1 };\n"+
+	"Hack.MovingSprite = enchant.Class.create(enchant.Sprite, {\n"+
+	"\tinitialize: function(width, height) {\n"+
+	"\t\tenchant.Sprite.call(this, width, height);\n"+
+	"\t\tthis.velocity = { x: 0, y: 0 };\n"+
+	"\t},\n"+
+	"\tonenterframe: function() {\n"+
+	"\t\t// move then effect from gravity\n"+
+	"\t\tif (this.useGravity) {\n"+
+	"\t\t\tthis.velocity.x += Hack.gravity.x;\n"+
+	"\t\t\tthis.velocity.y += Hack.gravity.y;\n"+
+	"\t\t}\n"+
+	"\t\tthis.moveBy(this.velocity.x, this.velocity.y); // move\n"+
+	"\t\t// get a foot on the ground\n"+
+	"\t\tif (this.useGround) {\n"+
+	"\t\t\tvar foot = this.y + (this.footHeight || this.height);\n"+
+	"\t\t\tif (foot >= Hack.groundHeight) {\n"+
+	"\t\t\t\tthis.velocity.y = 0;\n"+
+	"\t\t\t\tthis.y = Hack.groundHeight - (this.footHeight || this.height);\n"+
+	"\t\t\t}\n"+
+	"\t\t}\n"+
+	"\t}\n"+
+	"});\n"+
+	"Hack.createMovingSprite = function(width, height, prop) {\n"+
+	"\treturn (function () {\n"+
+	"\t\t// @ new Hack.MovingSprite()\n"+
+	"\t\tif (prop) {\n"+
+	"\t\t\tObject.keys(prop).forEach(function(key) {\n"+
+	"\t\t\t\tthis[key] = prop[key];\n"+
+	"\t\t\t}, this);\n"+
+	"\t\t}\n"+
+	"\t\tif (Hack.defaultParentNode) {\n"+
+	"\t\t\tHack.defaultParentNode.addChild(this);\n"+
+	"\t\t}\n"+
+	"\t\treturn this;\n"+
+	"\n"+
+	"\t}).call(new Hack.MovingSprite(width, height));\n"+
+	"};\n";
 
 	game.onload = game.onload || function() {
 		Hack.pressStartKey(' ');
@@ -222,23 +264,20 @@ window.addEventListener('load', function() {
 	};
 
 	// Environments and classes
-	Hack.groundHeight = 32 * 6; // define ground height by
-	console.log('set gravity force');
-	Hack.gravityForce = { x: 0, y: 1 };
+	Hack.groundHeight = 32 * 6; // define ground distance from Y=0
+	Hack.gravity = { x: 0, y: 1 };
 	Hack.MovingSprite = enchant.Class.create(enchant.Sprite, {
 		initialize: function(width, height) {
 			enchant.Sprite.call(this, width, height);
 			this.velocity = { x: 0, y: 0 };
 		},
 		onenterframe: function() {
-			// gravity
+			// move then effect from gravity
 			if (this.useGravity) {
-				var mass = this.mass || 1;
-				this.velocity.x += Hack.gravityForce.x / mass;
-				this.velocity.y += Hack.gravityForce.y / mass;
+				this.velocity.x += Hack.gravity.x;
+				this.velocity.y += Hack.gravity.y;
 			}
-			// move
-			this.moveBy(this.velocity.x, this.velocity.y);
+			this.moveBy(this.velocity.x, this.velocity.y); // move
 			// get a foot on the ground
 			if (this.useGround) {
 				var foot = this.y + (this.footHeight || this.height);
