@@ -347,6 +347,11 @@ window.addEventListener('load', function() {
 				item.x += game.width + 32;
 			}
 		});
+		game.rootScene.childNodes.forEach(function(item) {
+			if (Hack.defaultParentNode && item !== Hack.defaultParentNode) {
+				game.rootScene.addChild(item);
+			}
+		});
 	};
 
 	Hack.pressStartKey = function(keyString) {
