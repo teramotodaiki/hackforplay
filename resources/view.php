@@ -46,8 +46,8 @@ game.onenterframe = function() {
 			        <h4 class="modal-title">Spriteクラスの<var>frame</var>プロパティに数値を指定します</h4>
 		    	</div>
 			    <div class="modal-body">
-			    	<div class="frameMap" style="height: 242px">
-				    	<img src="../img/lp.jpg" style="width: 568px; height: 242px">
+			    	<div class="frameMap">
+				    	<img src="">
 				    	<table style="width: 568px; height: 242px;" class="table table-bordered">
 			    			<tr>
 			    				<td>1</td>

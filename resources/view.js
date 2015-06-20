@@ -28,16 +28,19 @@ $(function() {
 				$('<button>').addClass('btn btn-info').attr({
 					'type': 'button',
 					'data-toggle': 'modal',
-					'data-target': '#useModal'
+					'data-target': '#frameModal'
 				}).css({
-					'display': 'none'
+					'visibility': 'hidden',
+					'margin-left': '5px'
 				}).text('View frames')
 			)
 		)
 	);
 
 	var $parent = $('#anchor-enchantjs .row');
-	[['../img/lp.jpg', '817x1917', '空のステージ', '../s?id=303']].forEach(function(param) {
+	[['../img/lp.jpg', '817x1917', '空のステージ', '../s?id=303'],
+	['../s/enchantjs/x1.5/chara0.png', '48x48', 'リンク', '', [4, 9]]
+	].forEach(function(param) {
 
 		var path = param[0].substr(3);
 
@@ -47,6 +50,12 @@ $(function() {
 		item.find('.size').text(param[1]);
 		item.find('.use').text(param[2]).attr('href', param[3]);
 		item.find('button[data-target="#useModal"]').data('path', path);
+
+		if (param[4]) {
+			item.find('button[data-target="#frameModal"]').css({
+				'visibility': 'visible'
+			}).data('path', param[0]).data('row', param[4][0]).data('column', param[4][1]);
+		}
 
 		$parent.append(item);
 	});
@@ -59,5 +68,26 @@ $(function() {
 			return $button.data(key);
 		}));
 	});
+
+	$('#frameModal').on('shown.bs.modal', function(event) {
+		var $button = $(event.relatedTarget);
+
+		$(this).find('.frameMap').width($(this).find('.modal-body').width());
+
+		// load resource
+		$(this).find('.frameMap img').attr('src', $button.data('path')).on('load', function() {
+			// callback then loaded
+
+			var w = $(this).parent().width();
+			var h = w / this.naturalWidth * this.naturalHeight;
+			$(this).parent().height(h);
+			$(this).width(w);
+			$(this).height(h);
+			var $table = $(this).parent().children('table');
+			$table.width(w);
+			$table.height(h);
+		});
+	});
+
 
 });
