@@ -276,6 +276,6 @@ window.addEventListener('load', function() {
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
     game.addEventListener('load', function(){
-		this.rootScene.addChild(Hack.defaultParentNode);
+		this.rootScene.addChild(Hack.defaultParentNode || new enchant.Group());
     });
 });
