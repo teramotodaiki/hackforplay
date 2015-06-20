@@ -45,20 +45,20 @@ game.onenterframe = function() {
 			        <h4 class="modal-title">Spriteクラスの<var>frame</var>プロパティに数値を指定します</h4>
 		    	</div>
 			    <div class="modal-body">
-			    	<div style="height: 242px">
-				    	<img src="../img/lp.jpg" style="position: absolute; width: 568px; height: 242px">
-				    	<table style="position: absolute; width: 568px; height: 242px; background-color: rgba(255,255,255,0.7);" class="table table-bordered">
+			    	<div class="frameMap" style="height: 242px">
+				    	<img src="../img/lp.jpg" style="width: 568px; height: 242px">
+				    	<table style="width: 568px; height: 242px;" class="table table-bordered">
 			    			<tr>
-			    				<td style="text-align: center; vertical-align: middle; font: bold x-large sans-serif">1</td>
-			    				<td style="text-align: center; vertical-align: middle; font: bold x-large sans-serif">2</td>
-			    				<td style="text-align: center; vertical-align: middle; font: bold x-large sans-serif">3</td>
-			    				<td style="text-align: center; vertical-align: middle; font: bold x-large sans-serif">4</td>
+			    				<td>1</td>
+			    				<td>2</td>
+			    				<td>3</td>
+			    				<td>4</td>
 			    			</tr>
 			    			<tr>
-			    				<td style="text-align: center; vertical-align: middle; font: bold x-large sans-serif">5</td>
-			    				<td style="text-align: center; vertical-align: middle; font: bold x-large sans-serif">6</td>
-			    				<td style="text-align: center; vertical-align: middle; font: bold x-large sans-serif">7</td>
-			    				<td style="text-align: center; vertical-align: middle; font: bold x-large sans-serif">8</td>
+			    				<td>5</td>
+			    				<td>6</td>
+			    				<td>7</td>
+			    				<td>8</td>
 			    			</tr>
 				    	</table>
 			    	</div>

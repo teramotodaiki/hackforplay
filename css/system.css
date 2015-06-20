@@ -163,6 +163,11 @@ iframe {
 	overflow-y: scroll;
 }
 
+#frameModal .frameMap img,
+#frameModal .frameMap table {
+	position: absolute;
+}
+
 /* アニメーション */
 
 .h4p_item-transform {
