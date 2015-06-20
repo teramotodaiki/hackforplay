@@ -62,7 +62,14 @@ $(function() {
 
 	$('#useModal').on('show.bs.modal', function(event) {
 		var $button = $(event.relatedTarget);
-		var text = $(this).find('pre').text();
+		var text =
+		"game.preload(['----path----']);\n"+
+		"game.onenterframe = function() {\n"+
+		"    createSprite(w, h, {\n"+
+		"        x: 0, y: 0,\n"+
+		"        image: game.assets['----path----']\n"+
+		"    });\n"+
+		"}\n";
 		$(this).find('pre').text(text.replace(/----.*----/g, function(match) {
 			var key = match.substr(4, match.length - 8);
 			return $button.data(key);

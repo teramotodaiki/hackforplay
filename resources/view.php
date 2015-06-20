@@ -23,13 +23,6 @@
 		    	</div>
 			    <div class="modal-body">
 			    	<pre>
-game.preload(['----path----']);
-game.onenterframe = function() {
-    createSprite(w, h, {
-        x: 0, y: 0,
-        image: game.assets['----path----']
-    });
-}
 			    	</pre>
 			    </div>
 	    		<div class="modal-footer">
