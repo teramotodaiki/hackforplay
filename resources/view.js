@@ -42,7 +42,7 @@ $(function() {
 	['../s/enchantjs/x1.5/chara0.png', '48x48', 'リンク', '', [4, 9]]
 	].forEach(function(param) {
 
-		var path = param[0].substr(3);
+		var path = param[0].substr(5);
 
 		var item = $item.clone(true);
 		item.find('.image').attr('src', param[0]);
@@ -71,22 +71,31 @@ $(function() {
 
 	$('#frameModal').on('shown.bs.modal', function(event) {
 		var $button = $(event.relatedTarget);
+		var $table = $(this).find('table');
 
 		$(this).find('.frameMap').width($(this).find('.modal-body').width());
 
 		// load resource
 		$(this).find('.frameMap img').attr('src', $button.data('path')).on('load', function() {
 			// callback then loaded
-
 			var w = $(this).parent().width();
 			var h = w / this.naturalWidth * this.naturalHeight;
 			$(this).parent().height(h);
 			$(this).width(w);
 			$(this).height(h);
-			var $table = $(this).parent().children('table');
 			$table.width(w);
 			$table.height(h);
 		});
+
+		// tile
+		var row = parseInt($button.data('row'), 10);
+		var column = parseInt($button.data('column'), 10);
+		for (var i = 0; i < row; i++) {
+			var $tl = $('<tr>').appendTo($table);
+			for (var j = 0; j < column; j++) {
+				$('<td>').text(i * column + j).appendTo($tl);
+			}
+		}
 	});
 
 
