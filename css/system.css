@@ -168,6 +168,10 @@ iframe {
 	position: absolute;
 }
 
+#frameModal .frameMap table {
+	table-layout: fixed;
+}
+
 /* アニメーション */
 
 .h4p_item-transform {
