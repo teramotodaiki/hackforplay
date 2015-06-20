@@ -37,6 +37,38 @@ game.onenterframe = function() {
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="frameModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+	    		<div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">Spriteクラスの<var>frame</var>プロパティに、表示したい画像の数値を指定します</h4>
+		    	</div>
+			    <div class="modal-body">
+			    	<div style="height: 242px">
+				    	<img src="../img/lp.jpg" style="position: absolute; width: 568px; height: 242px">
+				    	<table style="position: absolute">
+			    			<tr>
+			    				<td>1</td>
+			    				<td>2</td>
+			    				<td>3</td>
+			    				<td>4</td>
+			    			</tr>
+			    			<tr>
+			    				<td>5</td>
+			    				<td>6</td>
+			    				<td>7</td>
+			    				<td>8</td>
+			    			</tr>
+				    	</table>
+			    	</div>
+			    </div>
+	    		<div class="modal-footer">
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+	    		</div>
+			</div>
+		</div>
+	</div>
 	<div class="container">
 		<div class="row">
 			<div id="anchor-enchantjs" class="col-md-12">
@@ -44,7 +76,7 @@ game.onenterframe = function() {
 				<div class="row">
 					<div class="col-md-4 col-sm-6">
 						<div class="thumbnail">
-							<img src="../img/lp.jpg" height="817" width="1917">
+							<img src="../img/lp.jpg">
 							<div class="caption">
 								<h3>File Name</h3>
 								<dl>
@@ -60,7 +92,7 @@ game.onenterframe = function() {
 					</div>
 					<div class="col-md-4 col-sm-6">
 						<div class="thumbnail">
-							<img src="../img/lp.jpg" height="817" width="1917">
+							<img src="../img/lp.jpg">
 							<div class="caption">
 								<h3>File Name</h3>
 								<dl>
@@ -70,8 +102,8 @@ game.onenterframe = function() {
 									<dd><a href="../s?id=303" title="からのステージ">からのステージ</a></dd>
 									<dd>...</dd>
 								</dl>
-								<button type="button" class="btn btn-primary">Use This</button>
-								<button type="button" class="btn btn-info">View Frame</button>
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#useModal">Use This</button>
+								<button type="button" class="btn btn-info" data-toggle="modal" data-target="#frameModal">View Frame</button>
 							</div>
 						</div>
 					</div>
