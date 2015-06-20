@@ -98,5 +98,8 @@ $(function() {
 		}
 	});
 
+	$('#frameModal').on('hide.bs.modal', function(event) {
+		$(this).find('table').children().remove();
+	});
 
 });
