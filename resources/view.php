@@ -25,10 +25,10 @@
 			    	<pre>
 game.preload(['----path----']);
 game.onenterframe = function() {
-	createSprite(w, h, {
-		x: 0, y: 0,
-		image: game.assets['----path----']
-	});
+    createSprite(w, h, {
+        x: 0, y: 0,
+        image: game.assets['----path----']
+    });
 }
 			    	</pre>
 			    </div>
