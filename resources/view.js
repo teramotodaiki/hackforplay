@@ -5,7 +5,7 @@ $(function() {
 			$('<img>').addClass('image')
 		).append(
 			$('<div>').addClass('caption').append(
-				$('<h3>').addClass('src')
+				$('<h3>').addClass('path')
 			).append(
 				$('<dl>').append(
 					$('<dt>').text('Size')
@@ -38,13 +38,26 @@ $(function() {
 
 	var $parent = $('#anchor-enchantjs .row');
 	[['../img/lp.jpg', '817x1917', '空のステージ', '../s?id=303']].forEach(function(param) {
+
+		var path = param[0].substr(3);
+
 		var item = $item.clone(true);
 		item.find('.image').attr('src', param[0]);
-		item.find('.src').text(param[0].substr(3));
+		item.find('.path').text(path);
 		item.find('.size').text(param[1]);
 		item.find('.use').text(param[2]).attr('href', param[3]);
+		item.find('button[data-target="#useModal"]').data('path', path);
 
 		$parent.append(item);
+	});
+
+	$('#useModal').on('show.bs.modal', function(event) {
+		var $button = $(event.relatedTarget);
+		var text = $(this).find('pre').text();
+		$(this).find('pre').text(text.replace(/----.*----/g, function(match) {
+			var key = match.substr(4, match.length - 8);
+			return $button.data(key);
+		}));
 	});
 
 });

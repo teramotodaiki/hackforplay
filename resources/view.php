@@ -22,12 +22,12 @@
 			        <p class="text-warning"><var>game.onenterframe</var> がすでに書かれている場合は、その中に書き入れてください</p>
 		    	</div>
 			    <div class="modal-body">
-			    	<pre class-"font-family: monospace;">
-game.preload(['img/path']);
+			    	<pre>
+game.preload(['----path----']);
 game.onenterframe = function() {
 	createSprite(w, h, {
 		x: 0, y: 0,
-		image: game.assets['img/path']
+		image: game.assets['----path----']
 	});
 }
 			    	</pre>
