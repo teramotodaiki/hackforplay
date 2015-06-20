@@ -12,6 +12,7 @@
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
+	<script src="view.js" type="text/javascript"></script>
 	<div class="modal fade" id="useModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -74,39 +75,6 @@ game.onenterframe = function() {
 			<div id="anchor-enchantjs" class="col-md-12">
 				<h2>enchant.js</h2>
 				<div class="row">
-					<div class="col-md-4 col-sm-6">
-						<div class="thumbnail">
-							<img src="../img/lp.jpg">
-							<div class="caption">
-								<h3>File Name</h3>
-								<dl>
-									<dt>Size</dt>
-									<dd>817x1917</dd>
-									<dt>Example of use</dt>
-									<dd><a href="../s?id=303" title="からのステージ">からのステージ</a></dd>
-									<dd>...</dd>
-								</dl>
-								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#useModal">Use This</button>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 col-sm-6">
-						<div class="thumbnail">
-							<img src="../img/lp.jpg">
-							<div class="caption">
-								<h3>File Name</h3>
-								<dl>
-									<dt>Size</dt>
-									<dd>817x1917</dd>
-									<dt>Example of use</dt>
-									<dd><a href="../s?id=303" title="からのステージ">からのステージ</a></dd>
-									<dd>...</dd>
-								</dl>
-								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#useModal">Use This</button>
-								<button type="button" class="btn btn-info" data-toggle="modal" data-target="#frameModal">View Frame</button>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
