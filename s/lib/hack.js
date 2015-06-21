@@ -132,7 +132,7 @@ window.addEventListener('load', function() {
 	Hack.enchantBook = (function(){
 		// scope: new Entity
 
-		window.hint = '// test value';
+		Hack.hint = '// test value';
 		this.width = game.width;
 		this.height = game.height;
 		this.visible = false;
