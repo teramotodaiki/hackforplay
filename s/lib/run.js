@@ -369,7 +369,8 @@ window.addEventListener('load', function() {
 			}
 		});
 		game.rootScene.childNodes.forEach(function(item) {
-			if (Hack.defaultParentNode && item !== Hack.defaultParentNode) {
+			if (Hack.defaultParentNode && item !== Hack.defaultParentNode
+				&& item._element === undefined) {
 				game.rootScene.addChild(item);
 			}
 		});
