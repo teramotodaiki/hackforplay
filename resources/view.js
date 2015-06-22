@@ -16,12 +16,6 @@ $(function() {
 				$('<dt>').text('Size')
 			).append(
 				$('<dd>').addClass('size')
-			).append(
-				$('<dt>').text('Example of use')
-			).append(
-				$('<dd>').append(
-					$('<a>').addClass('use').attr('target', '_blank')
-				)
 			)
 		).append(
 			$('<button>').addClass('btn btn-primary').attr({
@@ -41,55 +35,13 @@ $(function() {
 		)
 	);
 
-	var $parent = $('#anchor-enchantjs .row');
 	[
-['../s/enchantjs/apad.png', '', '', ''],
-['../s/enchantjs/avatarBg1.png', '', '', ''],
-['../s/enchantjs/avatarBg2.png', '', '', ''],
-['../s/enchantjs/avatarBg3.png', '', '', ''],
-['../s/enchantjs/bar.png', '', '', ''],
-['../s/enchantjs/bigmonster1.gif', '', '', '', [4, 3]],
-['../s/enchantjs/bigmonster2.gif', '', '', '', [4, 3]],
-['../s/enchantjs/chara0.png', '', '', '', [9, 4]],
-['../s/enchantjs/x1.5/chara0.png', '', '', '', [9, 4]],
-['../s/enchantjs/chara1.png', '', '', ''],
-['../s/enchantjs/chara2.png', '', '', ''],
-['../s/enchantjs/chara3.png', '', '', ''],
-['../s/enchantjs/chara4.png', '', '', ''],
-['../s/enchantjs/chara5.png', '', '', '', [9, 4]],
-['../s/enchantjs/x1.5/chara5.png', '', '', '', [9, 4]],
-['../s/enchantjs/chara6.png', '', '', ''],
-['../s/enchantjs/chara7.png', '', '', '', [9, 4]],
-['../s/enchantjs/clear.png', '', '', ''],
-['../s/enchantjs/effect0.png', '', '', ''],
-['../s/enchantjs/enchant.png', '', '', ''],
-['../s/enchantjs/end.png', '', '', ''],
-['../s/enchantjs/font0.png', '', '', ''],
-['../s/enchantjs/font1.png', '', '', ''],
-['../s/enchantjs/font2.png', '', '', ''],
-['../s/enchantjs/gameover.png', '', '', ''],
-['../s/enchantjs/icon0.png', '', '', ''],
-['../s/enchantjs/icon1.png', '', '', ''],
-['../s/enchantjs/indicator.png', '', '', ''],
-['../s/enchantjs/map0.png', '', '', ''],
-['../s/enchantjs/x2/map0.png', '', '', ''],
-['../s/enchantjs/map1.png', '', '', ''],
-['../s/enchantjs/x2/map1.png', '', '', ''],
-['../s/enchantjs/map2.png', '', '', ''],
-['../s/enchantjs/x2/map2.png', '', '', ''],
-['../s/enchantjs/monster1.gif', '', '', ''],
-['../s/enchantjs/monster2.gif', '', '', ''],
-['../s/enchantjs/monster3.gif', '', '', ''],
-['../s/enchantjs/monster4.gif', '', '', ''],
-['../s/enchantjs/monster5.gif', '', '', ''],
-['../s/enchantjs/monster6.gif', '', '', ''],
-['../s/enchantjs/monster7.gif', '', '', ''],
-['../s/enchantjs/pad.png', '', '', ''],
-['../s/enchantjs/space0.png', '', '', ''],
-['../s/enchantjs/space1.png', '', '', ''],
-['../s/enchantjs/space2.png', '', '', ''],
-['../s/enchantjs/space3.png', '', '', ''],
-['../s/enchantjs/start.png', '', '', '']
+['../s/hackforplay/button_next.png', [266, 48]],
+['../s/hackforplay/button_retry.png', [128, 32]],
+['../s/hackforplay/clear.png', [480, 320]],
+['../s/hackforplay/dot_syuj.png', [ 40, 56], [3, 4]],
+['../s/hackforplay/enchantbook.png', [ 64, 64]],
+['../s/hackforplay/gameover.png', [480, 320]]
 	].forEach(function(param) {
 
 		var path = param[0].substr(5);
@@ -97,18 +49,82 @@ $(function() {
 		var item = $item.clone(true);
 		item.find('.image').attr('src', param[0]);
 		item.find('.path').text(path);
-		item.find('.size').text(param[1]);
-		item.find('.use').text(param[2]).attr('href', param[3]);
-		item.find('button[data-target="#useModal"]').data('path', path);
+		item.find('.size').text(param[1][0] + 'x' + param[1][1]);
 
-		if (param[4]) {
+		if (param[2]) {
 			item.find('button[data-target="#frameModal"]').css({
 				'visibility': 'visible'
-			}).data('path', param[0]).data('column', param[4][0]).data('row', param[4][1]);
+			}).data('path', param[0]).data('column', param[2][0]).data('row', param[2][1]);
 		}
 
-		$parent.append(item);
-	});
+		this.append(item);
+	}, $('#anchor-hackforplay .row'));
+
+	[
+['../s/enchantjs/apad.png', [100,100]],
+['../s/enchantjs/avatarBg1.png', [ 32,128],[4, 1]],
+['../s/enchantjs/avatarBg2.png', [320, 50], [1, 4]],
+['../s/enchantjs/avatarBg3.png', [320, 32], [1, 4]],
+['../s/enchantjs/bar.png', [  1, 16]],
+['../s/enchantjs/bigmonster1.gif', [ 80, 80], [4, 3]],
+['../s/enchantjs/bigmonster2.gif', [ 80, 80], [4, 3]],
+['../s/enchantjs/chara0.png', [ 32, 32], [9, 4]],
+['../s/enchantjs/x1.5/chara0.png', [ 48, 48], [9, 4]],
+['../s/enchantjs/chara1.png', [ 32, 32], [5, 3]],
+['../s/enchantjs/chara2.png', [ 32, 32], [3, 1]],
+['../s/enchantjs/chara3.png', [ 32, 32], [6, 4]],
+['../s/enchantjs/chara4.png', [ 32, 32], [4, 1]],
+['../s/enchantjs/chara5.png', [ 32, 32], [9, 4]],
+['../s/enchantjs/x1.5/chara5.png', [ 48, 48], [9, 4]],
+['../s/enchantjs/chara6.png', [ 32, 32], [6, 4]],
+['../s/enchantjs/chara7.png', [ 32, 32], [9, 4]],
+['../s/enchantjs/clear.png', [267, 48]],
+['../s/enchantjs/effect0.png', [ 16, 16], [5, 1]],
+['../s/enchantjs/enchant.png', [512,512]],
+['../s/enchantjs/end.png', [189, 97]],
+['../s/enchantjs/font0.png', [ 16, 16], [16,8]],
+['../s/enchantjs/font1.png', [ 16, 16], [16,8]],
+['../s/enchantjs/font2.png', [ 16, 16], [16,8]],
+['../s/enchantjs/gameover.png', []],
+['../s/enchantjs/icon0.png', [ 16, 16], [16,5]],
+['../s/enchantjs/icon1.png', [ 16, 16], [8, 1]],
+['../s/enchantjs/indicator.png', [115,115]],
+['../s/enchantjs/map0.png', [ 16, 16], [16,16]],
+['../s/enchantjs/x2/map0.png', [ 32, 32], [16,16]],
+['../s/enchantjs/map1.png', [ 16, 16], [16,16]],
+['../s/enchantjs/x2/map1.png', [ 32, 32], [16,16]],
+['../s/enchantjs/map2.png', [ 16, 16], [9, 3]],
+['../s/enchantjs/x2/map2.png', [ 32, 32], [9, 3]],
+['../s/enchantjs/monster1.gif', [ 48, 48], [4, 2]],
+['../s/enchantjs/monster2.gif', [ 64, 64], [4, 3]],
+['../s/enchantjs/monster3.gif', [ 48, 48], [4, 3]],
+['../s/enchantjs/monster4.gif', [ 48, 48], [4, 2]],
+['../s/enchantjs/monster5.gif', [ 80, 80], [4, 3]],
+['../s/enchantjs/monster6.gif', [ 64, 64], [4, 3]],
+['../s/enchantjs/monster7.gif', [ 48, 48], [4, 2]],
+['../s/enchantjs/pad.png', [100,100], [2, 1]],
+['../s/enchantjs/space0.png', [ 32, 64]],
+['../s/enchantjs/space1.png', [ 64, 64]],
+['../s/enchantjs/space2.png', [ 32, 32], [4, 1]],
+['../s/enchantjs/space3.png', [ 32, 32], [5, 4]],
+['../s/enchantjs/start.png', [236, 48]]
+	].forEach(function(param) {
+
+		var path = param[0].substr(5);
+
+		var item = $item.clone(true);
+		item.find('.image').attr('src', param[0]);
+		item.find('.path').text(path);
+		item.find('.size').text(param[1][0] + 'x' + param[1][1]);
+
+		if (param[2]) {
+			item.find('button[data-target="#frameModal"]').css({
+				'visibility': 'visible'
+			}).data('path', param[0]).data('column', param[2][0]).data('row', param[2][1]);
+		}
+
+		this.append(item);
+	}, $('#anchor-enchantjs .row'));
 
 	$('#useModal').on('show.bs.modal', function(event) {
 		var $button = $(event.relatedTarget);

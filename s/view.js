@@ -74,7 +74,7 @@ $(function(){
 	jsEditor.setSize($div.width(), $div.height());
 	if(getParam('mode') !== "restaging"){
 		$(".h4p_restaging").hide();
-		$(".h4p_mapTip").hide();
+		$(".h4p_while-restaging").hide();
 	}
 	// ステージ改造中、画面遷移するとき注意をうながす
 	var alert_on_unload = false;
@@ -163,7 +163,7 @@ $(function(){
 					updateTask();
 				}
 			});
-			$(".h4p_mapTip").show();
+			$(".h4p_while-restaging").show();
 		};
 		var makeProject = function(callback){
 			// 残っているトークンを破棄
