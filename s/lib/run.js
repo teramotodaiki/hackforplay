@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
 
 	var game = enchant.Core.instance;
-	game.preload(['enchantjs/x2/map2.png', 'enchantjs/x1.5/chara0.png', 'enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif']);
+	game.preload(['enchantjs/x2/map2.png', 'enchantjs/x1.5/chara0.png', 'enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'hackforplay/enchantbook.png']);
 
 	var binded_key = ' '.charCodeAt(0);
 	game.keybind(binded_key, 'a'); // aボタンはスペースキー
@@ -10,7 +10,7 @@ window.addEventListener('load', function() {
 
 	// ====> 改造コードへ
 	Hack.restagingCode =
-	"game.preload(['enchantjs/x2/map2.png', 'enchantjs/x1.5/chara0.png', 'enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif']);\n"+
+	"game.preload(['enchantjs/x2/map2.png', 'enchantjs/x1.5/chara0.png', 'enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'hackforplay/enchantbook.png']);\n"+
 	"game.onload = function() {\n"+
 	"\tHack.pressStartKey(' ');\n"+
 	"\tHack.defaultParentNode = new enchant.Group(); // prepear to scroll\n"+
@@ -44,6 +44,14 @@ window.addEventListener('load', function() {
 	"\tHack.monster[3] = makeMonster(1,1600, 154);\n"+
 	"\tHack.monster[4] = makeMonster(1,2000, 154);\n"+
 	"\tHack.monster[5] = makeMonster(1,2400, 154);\n"+
+	"\t// 魔道書\n"+
+	"\tHack.enchantBookIcon = Hack.createSprite(64, 64, {\n"+
+	"\t\timage: game.assets['hackforplay/enchantbook.png'],\n"+
+	"\t\tdefaultParentNode: game.rootScene,\n"+
+	"\t\tontouchend: function() {\n"+
+	"\t\t\tHack.openEditor();\n"+
+	"\t\t}\n"+
+	"\t});\n"+
 	"};\n"+
 	"\n"+
 	"Hack.onpressstart = function() {\n"+
@@ -197,6 +205,15 @@ window.addEventListener('load', function() {
 		Hack.monster[3] = makeMonster(1,1600, 154);
 		Hack.monster[4] = makeMonster(1,2000, 154);
 		Hack.monster[5] = makeMonster(1,2400, 154);
+
+		// 魔道書
+		Hack.enchantBookIcon = Hack.createSprite(64, 64, {
+			image: game.assets['hackforplay/enchantbook.png'],
+			defaultParentNode: game.rootScene,
+			ontouchend: function() {
+				Hack.openEditor();
+			}
+		});
 	};
 
 	Hack.onpressstart = Hack.onpressstart || function() {
