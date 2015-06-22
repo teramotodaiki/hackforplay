@@ -15,7 +15,7 @@
 	<script src="view.js" type="text/javascript"></script>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-9">
+			<div class="col-md-10">
 				<div id="anchor-hack" class="panel panel-default">
 					<div class="panel-heading">
 						<h2>hack.js <small>すべてのステージで共通して使える機能</small></h2>
@@ -38,6 +38,19 @@
 					</div>
 					<div class="panel-body">
 
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<nav>
+							<ul class="list-unstyled">
+								<li><a href="#anchor-hack" class="btn btn-link" title="hack.js">hack.js</a></li>
+								<li><a href="#anchor-typing" class="btn btn-link" title="typing.js">typing.js</a></li>
+								<li><a href="#anchor-run" class="btn btn-link" title="run.js">run.js</a></li>
+							</ul>
+						</nav>
 					</div>
 				</div>
 			</div>
