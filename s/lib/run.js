@@ -52,6 +52,8 @@ window.addEventListener('load', function() {
 	"\t\t\tHack.openEditor();\n"+
 	"\t\t}\n"+
 	"\t});\n"+
+	"// 魔道書の中身\n"+
+	"Hack.hint = 'Hack.player.velocity.x += 1; // 加速!!';\n"+
 	"};\n"+
 	"\n"+
 	"Hack.onpressstart = function() {\n"+
@@ -214,6 +216,8 @@ window.addEventListener('load', function() {
 				Hack.openEditor();
 			}
 		});
+		// 魔道書の中身
+		Hack.hint = 'Hack.player.velocity.x += 1; // 加速!!';
 	};
 
 	Hack.onpressstart = Hack.onpressstart || function() {
