@@ -45,7 +45,8 @@ window.addEventListener('message', function (e) {
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
-    game.preload(['img/clear.png', 'img/gameover.png', 'img/button_retry.png']);
+    game.preload(['img/clear.png', 'img/gameover.png', 'img/button_retry.png',
+		'hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png']);
 
     // Hackのクラスを生成 インスタンスはget only
     var HackEnchant = enchant.Class.create(enchant.EventTarget, {
@@ -241,7 +242,7 @@ window.addEventListener('load', function() {
                 window.parent.postMessage('clear', '/');
 			});
 		}else{
-			lay = Hack.overlay('img/clear.png');
+			lay = Hack.overlay('hackforplay/clear.png');
 			lay.opacity = 0;
 			lay.tl.fadeIn(30, enchant.Easing.LINEAR);
 		}
@@ -251,11 +252,11 @@ window.addEventListener('load', function() {
 	};
 
 	Hack.gameover = function() {
-		var lay = Hack.overlay('rgba(0,0,0,0.4)', 'img/gameover.png');
+		var lay = Hack.overlay('rgba(0,0,0,0.4)', 'hackforplay/gameover.png');
 		lay.opacity = 0;
 		lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
 			Hack.createSprite(128, 32, {
-				image: game.assets['img/button_retry.png'],
+				image: game.assets['hackforplay/button_retry.png'],
 				x: 176, y: 320, defaultParentNode: lay.parentNode
 			}).tl.then(function() {
 				this.ontouchstart = function() {
