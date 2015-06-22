@@ -104,13 +104,15 @@
 				</div>
 			</div>
 			<div class="col-md-2">
-				<div class="panel panel-default">
+				<div class="panel panel-default affix">
 					<div class="panel-body">
 						<nav>
 							<ul class="list-unstyled">
 								<li><a href="#anchor-hack" class="btn btn-link" title="hack.js">hack.js</a></li>
 								<li><a href="#anchor-typing" class="btn btn-link" title="typing.js">typing.js</a></li>
 								<li><a href="#anchor-run" class="btn btn-link" title="run.js">run.js</a></li>
+								<hr>
+								<li><a href="#" class="btn btn-link" title="Back to top">Back to top</a></li>
 							</ul>
 						</nav>
 					</div>
