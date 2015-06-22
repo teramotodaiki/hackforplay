@@ -60,6 +60,11 @@ window.addEventListener('load', function() {
 	"\t});\n"+
 	"\t// 魔道書の中身\n"+
 	"\tHack.hint = 'Hack.player.velocity.x += 1; // 加速!!';\n"+
+	"\n"+
+	"\t// 最初のラベル\n"+
+	"\tHack.pressStartLabel = Hack.createLabel('スペースキーを押してスタート<br>↑キーでジャンプ', {\n"+
+	"\t\tx: 120, y: 160, width: 400\n"+
+	"\t});\n"+
 	"};\n"+
 	"\n"+
 	"// スタート（スペースキー）を押したときに呼ばれるイベント\n"+
@@ -232,6 +237,11 @@ window.addEventListener('load', function() {
 		});
 		// 魔道書の中身
 		Hack.hint = 'Hack.player.velocity.x += 1; // 加速!!';
+
+		// 最初のラベル
+		Hack.pressStartLabel = Hack.createLabel('スペースキーを押してスタート<br>↑キーでジャンプ', {
+			x: 120, y: 160, width: 400
+		});
 	};
 
 	Hack.onpressstart = Hack.onpressstart || function() {
