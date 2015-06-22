@@ -53,6 +53,11 @@
 	</div>
 	<div class="container">
 		<div class="row">
+			<div id="anchor-hackforplay" class="col-md-12">
+				<h2>HackforPlay</h2>
+				<div class="row">
+				</div>
+			</div>
 			<div id="anchor-enchantjs" class="col-md-12">
 				<h2>enchant.js</h2>
 				<div class="row">

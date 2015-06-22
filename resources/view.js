@@ -41,7 +41,33 @@ $(function() {
 		)
 	);
 
-	var $parent = $('#anchor-enchantjs .row');
+	[
+['../s/hackforplay/button_next.png', '', '', ''],
+['../s/hackforplay/button_retry.png', '', '', ''],
+['../s/hackforplay/clear.png', '', '', ''],
+['../s/hackforplay/dot_syuj.png', '', '', ''],
+['../s/hackforplay/enchantbook.png', '', '', ''],
+['../s/hackforplay/gameover.png', '', '', '']
+	].forEach(function(param) {
+
+		var path = param[0].substr(5);
+
+		var item = $item.clone(true);
+		item.find('.image').attr('src', param[0]);
+		item.find('.path').text(path);
+		item.find('.size').text(param[1]);
+		item.find('.use').text(param[2]).attr('href', param[3]);
+		item.find('button[data-target="#useModal"]').data('path', path);
+
+		if (param[4]) {
+			item.find('button[data-target="#frameModal"]').css({
+				'visibility': 'visible'
+			}).data('path', param[0]).data('column', param[4][0]).data('row', param[4][1]);
+		}
+
+		this.append(item);
+	}, $('#anchor-hackforplay .row'));
+
 	[
 ['../s/enchantjs/apad.png', '', '', ''],
 ['../s/enchantjs/avatarBg1.png', '', '', ''],
@@ -107,8 +133,8 @@ $(function() {
 			}).data('path', param[0]).data('column', param[4][0]).data('row', param[4][1]);
 		}
 
-		$parent.append(item);
-	});
+		this.append(item);
+	}, $('#anchor-enchantjs .row'));
 
 	$('#useModal').on('show.bs.modal', function(event) {
 		var $button = $(event.relatedTarget);
