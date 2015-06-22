@@ -96,10 +96,19 @@ function renderUI () {
 	$("input[name=redo]").attr('src', 'img/ui_redo_' + (jsEditor.doc.historySize().redo > 0 ? 'enabled.png':'disabled.png'));
 }
 
+// RPG互換性維持のための仕様
 function setHint(){
 	// ゲーム側に、ヒントを送信してセットするようリクエストを送る。
 	// postMessageされることでエスケープ\nが改行になってしまうことを防ぐため、\\nにしている。
 	var source =
-	"sendToEditor('jsEditor.setValue(\"'+hint.replace(/\\n/g, \"\\\\n\")+'\");');";
+	"sendToEditor('jsEditor.setValue(\"'+(hint).replace(/\\n/g, \"\\\\n\")+'\");');";
+	game.postMessage(source, policy);
+}
+
+function setEditor(){
+	// ゲーム側に、ヒントを送信してセットするようリクエストを送る。
+	// postMessageされることでエスケープ\nが改行になってしまうことを防ぐため、\\nにしている。
+	var source =
+	"sendToEditor('jsEditor.setValue(\"'+(Hack.hint).replace(/\\n/g, \"\\\\n\")+'\");');";
 	game.postMessage(source, policy);
 }

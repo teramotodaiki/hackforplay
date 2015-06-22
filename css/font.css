@@ -64,3 +64,9 @@ body {
 	font-size: 14px;
 }
 
+#frameModal .frameMap td {
+	text-align: center;
+	vertical-align: middle;
+	font: bold large sans-serif;
+}
+

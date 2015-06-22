@@ -32,6 +32,7 @@ function __H4PENV__SENDCODE () {
 window.addEventListener('message', function (e) {
 	if(e.origin === window.location.protocol + '//' + window.location.host){
 		try {
+			var hint = Hack.hint; // 旧RPGとの互換性を維持するための仕様(hintがないとsetHintされた時にエラー)
 			var game = enchant ? enchant.Core.instance : undefined;
 			eval(e.data);
 		} catch (exception) {
@@ -44,7 +45,8 @@ window.addEventListener('message', function (e) {
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
-    game.preload(['img/clear.png', 'img/gameover.png', 'img/button_retry.png']);
+    game.preload(['img/clear.png', 'img/gameover.png', 'img/button_retry.png',
+		'hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png']);
 
     // Hackのクラスを生成 インスタンスはget only
     var HackEnchant = enchant.Class.create(enchant.EventTarget, {
@@ -132,7 +134,19 @@ window.addEventListener('load', function() {
 	Hack.enchantBook = (function(){
 		// scope: new Entity
 
-		window.hint = '// test value';
+		var _hint = '// test value';
+		Object.defineProperty(Hack, 'hint', {
+			configurable: true,
+			enumerable: true,
+			get: function(){
+				return _hint;
+			},
+			set: function(text){
+				_hint = text;
+				sendToEditor('setEditor();');
+			}
+		});
+
 		this.width = game.width;
 		this.height = game.height;
 		this.visible = false;
@@ -170,7 +184,10 @@ window.addEventListener('load', function() {
 					this[key] = prop[key];
 				}, this);
 			}
-			game.rootScene.addChild(this);
+			var parent = this.defaultParentNode || Hack.defaultParentNode;
+			if (parent) {
+				parent.addChild(this);
+			}
 			return this;
 		}).call(new enchant.Label());
 	};
@@ -182,7 +199,10 @@ window.addEventListener('load', function() {
 					this[key] = prop[key];
 				}, this);
 			}
-			game.rootScene.addChild(this);
+			var parent = this.defaultParentNode || Hack.defaultParentNode;
+			if (parent) {
+				parent.addChild(this);
+			}
 			return this;
 		}).call(new enchant.Sprite(width, height));
 	};
@@ -210,20 +230,21 @@ window.addEventListener('load', function() {
 			}
 			return this;
 
-		}).call(Hack.createSprite(game.width, game.height), arguments);
+		}).call(Hack.createSprite(game.width, game.height, {defaultParentNode: game.rootScene}), arguments);
 	};
 
 	Hack.gameclear = function() {
+		var lay;
 		if (__H4PENV__MODE === 'official' && __H4PENV__NEXT) {
-			Hack.overlay('black').tl.then(function(){
-				this.opacity = 0;
-			}).fadeIn(30, enchant.Easing.LINEAR).then(function() {
+			lay = Hack.overlay('black');
+			lay.opacity = 0;
+			lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
                 window.parent.postMessage('clear', '/');
 			});
 		}else{
-			Hack.overlay('img/clear.png').tl.then(function() {
-				this.opacity = 0;
-			}).fadeIn(30, enchant.Easing.LINEAR);
+			lay = Hack.overlay('hackforplay/clear.png');
+			lay.opacity = 0;
+			lay.tl.fadeIn(30, enchant.Easing.LINEAR);
 		}
 
 		Hack.gameclear = function(){};
@@ -231,12 +252,12 @@ window.addEventListener('load', function() {
 	};
 
 	Hack.gameover = function() {
-		var lay = Hack.overlay('rgba(0,0,0,0.4)', 'img/gameover.png');
+		var lay = Hack.overlay('rgba(0,0,0,0.4)', 'hackforplay/gameover.png');
 		lay.opacity = 0;
 		lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
 			Hack.createSprite(128, 32, {
-				image: game.assets['img/button_retry.png'],
-				x: 176, y: 320
+				image: game.assets['hackforplay/button_retry.png'],
+				x: 176, y: 320, defaultParentNode: lay.parentNode
 			}).tl.then(function() {
 				this.ontouchstart = function() {
 					location.reload();
@@ -269,6 +290,10 @@ window.addEventListener('load', function() {
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
     game.addEventListener('load', function(){
-
+		if (Hack.defaultParentNode) {
+			game.rootScene.addChild(Hack.defaultParentNode);
+		} else {
+			Hack.defaultParentNode = game.rootScene;
+		}
     });
 });
