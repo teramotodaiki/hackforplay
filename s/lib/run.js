@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
 
 	var game = enchant.Core.instance;
-	game.preload(['img/map2.png', 'img/chara0.png', 'img/monster1.gif', 'img/monster2.gif', 'img/monster3.gif', 'img/monster4.gif']);
+	game.preload(['enchantjs/x2/map2.png', 'enchantjs/x1.5/chara0.png', 'enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif']);
 
 	var binded_key = ' '.charCodeAt(0);
 	game.keybind(binded_key, 'a'); // aボタンはスペースキー
@@ -10,7 +10,7 @@ window.addEventListener('load', function() {
 
 	// ====> 改造コードへ
 	Hack.restagingCode =
-	"game.preload(['img/map2.png', 'img/chara0.png', 'img/monster1.gif', 'img/monster2.gif', 'img/monster3.gif', 'img/monster4.gif']);\n"+
+	"game.preload(['enchantjs/x2/map2.png', 'enchantjs/x1.5/chara0.png', 'enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif']);\n"+
 	"game.onload = function() {\n"+
 	"\tHack.pressStartKey(' ');\n"+
 	"\tHack.defaultParentNode = new enchant.Group(); // prepear to scroll\n"+
@@ -30,7 +30,7 @@ window.addEventListener('load', function() {
 	"\n"+
 	"\tHack.player = Hack.createMovingSprite(48, 48, {\n"+
 	"\t\tx: 64, y: 160,\n"+
-	"\t\timage: game.assets['img/chara0.png'],\n"+
+	"\t\timage: game.assets['enchantjs/x1.5/chara0.png'],\n"+
 	"\t\tframe: [25, 25, 25, 24, 24, 24, 25, 25, 25, 26, 26, 26],\n"+
 	"\t\tuseGravity: true, useGround: true, footHeight: 48\n"+
 	"\t});\n"+
@@ -114,7 +114,7 @@ window.addEventListener('load', function() {
 	"function makeMonster (_number, _x, _y, _frame, _useGravity, _useGround, _footHeight) {\n"+
 	"\treturn Hack.createMovingSprite(48, 48, {\n"+
 	"\t\tx: _x || 0, y: _y || 0,\n"+
-	"\t\timage: game.assets['img/monster' + (_number || 1) + '.gif'],\n"+
+	"\t\timage: game.assets['enchantjs/monster' + (_number || 1) + '.gif'],\n"+
 	"\t\tframe: _frame || [2, 2, 2, 3, 3, 3],\n"+
 	"\t\tuseGravity: _useGravity || true,\n"+
 	"\t\tuseGround:  _useGround  || true,\n"+
@@ -183,7 +183,7 @@ window.addEventListener('load', function() {
 
 		Hack.player = Hack.createMovingSprite(48, 48, {
 			x: 64, y: 160,
-			image: game.assets['img/chara0.png'],
+			image: game.assets['enchantjs/x1.5/chara0.png'],
 			frame: [25, 25, 25, 24, 24, 24, 25, 25, 25, 26, 26, 26],
 			useGravity: true, useGround: true, footHeight: 48
 		});
@@ -308,7 +308,7 @@ window.addEventListener('load', function() {
 	function makeMonster (_number, _x, _y, _frame, _useGravity, _useGround, _footHeight) {
 		return Hack.createMovingSprite(48, 48, {
 			x: _x || 0, y: _y || 0,
-			image: game.assets['img/monster' + (_number || 1) + '.gif'],
+			image: game.assets['enchantjs/monster' + (_number || 1) + '.gif'],
 			frame: _frame || [2, 2, 2, 3, 3, 3],
 			useGravity: _useGravity || true,
 			useGround: _useGround|| true,
@@ -325,7 +325,7 @@ window.addEventListener('load', function() {
 		// repeat horizontal
 		for (var x = 0; x < Math.max(16, map[0].length); x++) {
 			Hack.backgroundImage[x] = new enchant.Map(32, 32);
-			Hack.backgroundImage[x].image = game.assets['img/map2.png'];
+			Hack.backgroundImage[x].image = game.assets['enchantjs/x2/map2.png'];
 			var stickMap = [];
 			for (var y = 0; y < 10; y++) {
 				stickMap[y] = [];
