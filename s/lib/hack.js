@@ -132,7 +132,19 @@ window.addEventListener('load', function() {
 	Hack.enchantBook = (function(){
 		// scope: new Entity
 
-		Hack.hint = '// test value';
+		var _hint = '// test value';
+		Object.defineProperty(Hack, 'hint', {
+			configurable: true,
+			enumerable: true,
+			get: function(){
+				return _hint;
+			},
+			set: function(text){
+				_hint = text;
+				sendToEditor('setEditor();');
+			}
+		});
+
 		this.width = game.width;
 		this.height = game.height;
 		this.visible = false;
