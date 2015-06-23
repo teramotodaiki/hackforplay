@@ -112,6 +112,28 @@ $(function() {
 
 	// Hack.js
 	[
-		['method', 'log', [['text', 'String', '表示する文字']], ['テキストエリアに文字を表示する','すでに文字がある場合は下に１行追加して表示する'], [], 304]
+['method', 'clearLog', [], ['テキストエリアの文字を全てクリアする'], [], 0],
+['method', 'closeEditor', [], ['エディタ(魔道書)を閉じる'], [], 0],
+['method', 'createLabel', [['text', 'String', '表示したい文字'], ['[prop]', 'Object', 'Labelオブジェクトに追加したいメンバ']], ['ラベルを作成して表示する', 'enchant.Labelクラスのコンストラクタをラップしている', 'オブジェクトはHack.defaultParentNodeに追加される'], [['', 'enchant.Label', '作成されたラベル']], 0],
+['method', 'createSprite', [['width', 'Number', 'スプライトの横幅'], ['height', 'Number', 'スプライトの縦幅'], ['[prop]', 'Object', 'Spriteオブジェクトに追加したいメンバ']], ['スプライトを作成して表示する', 'enchant.Spriteクラスのコンストラクタをラップしている', 'オブジェクトはHack.defaultParentNodeに追加される'], [['', 'enchant.Sprite', '作成されたスプライト']], 0],
+['method', 'gameclear', [], ['ゲームクリア画面を表示する', 'Hack.gameclear, Hack.gameoverが呼び出されていないとき使える'], [], 0],
+['method', 'gameover', [], ['ゲームオーバー画面を表示する', 'Hack.gameclear, Hack.gameoverが呼び出されていないとき使える'], [], 0],
+['method', 'log', [['text', 'String', '表示する文字']], ['テキストエリアに文字を表示する','すでに文字がある場合は下に１行追加する'], [], 304],
+['method', 'openEditor', [], ['エディタ(魔道書)を開く'], [], 0],
+['method', 'overlay', [['fill/imagePath/fillStyle', 'Surface/String/String', '表示したい画像/画像のパス/CSSカラースタイル'], ['[...]', 'Surface/String/String', '複数指定できる']], ['画面全体に画像を表示する', 'fill: Hack.overlay(sprite.image);', 'imagePath: Hack.overlay(\'hackforplay/clear.png\');', 'fillStyle: Hack.overlay(\'black\'); Hack.overlay(\'rgba(0,0,0,0.7)\'); など'], [['', 'enchant.Sprite', '描画されたスプライト']], 0],
+['member', 'defaultParentNode', [['', 'enchant.Group', 'デフォルトの親ノード']], ['デフォルトの親ノードを取得・設定する', 'なにも設定されなかった場合はgame.rootSceneになる'], [['', 'enchant.Group', '現在のデフォルトの親ノード']], 0],
+['property', 'textarea', [['', 'enchant.Entity', 'テキストエリア']], ['テキストエリアを取得・設定する', 'text, show, hide といったメンバをもつ'], [['', 'enchant.Entity', 'テキストエリア']], 0],
+['property', 'hint', [['', 'String', 'エディタ(魔道書)の内容']], ['エディタ(魔道書)の内容を取得・設定する'], [['', 'String', '現在のエディタ(魔道書)の内容']], 0],
 	].forEach(addRow, $('#anchor-hack tbody'));
 });
+
+
+
+
+
+
+
+
+
+
+
