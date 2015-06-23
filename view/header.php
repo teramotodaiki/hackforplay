@@ -7,6 +7,12 @@ if(preg_match("/^.*\/s/", $_SERVER["PHP_SELF"])){
 	if(!isset($mode)){
 		$mode	= $stage['Mode'];
 	}
+}else if(preg_match("/^.*\/policies/", $_SERVER["PHP_SELF"])){
+	$header_pattern = "policies";
+}else if(preg_match("/^.*\/resources/", $_SERVER["PHP_SELF"])){
+	$header_pattern = "resources";
+}else if(preg_match("/^.*\/reference/", $_SERVER["PHP_SELF"])){
+	$header_pattern = "reference";
 }else if(preg_match("/^.*\/m/", $_SERVER["PHP_SELF"])){
 	$header_pattern = "mypage";
 }else if(preg_match("/^.*\/a/", $_SERVER["PHP_SELF"])){
@@ -71,12 +77,10 @@ $(function(){
 	    		<?php if ($author_id !== NULL) : ?>
 		    		<li><a class="btn btn-link navbar-btn" href="/m?id=<?php echo $author_id; ?>" target="_blank" title="この人が作った他のステージ">この人が作った他のステージ</a></li>
 	    		<?php endif; ?>
-	    	<?php elseif ($header_pattern === 'admin'): ?>
-	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
-		    <?php elseif ($header_pattern === 'pref'): ?>
-	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
-		    <?php elseif ($header_pattern === 'mypage'): ?>
-	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
+	    	<?php else: ?>
+	    		<li><a class="btn btn-link navbar-btn" href="/r" title="新着ステージ">新着ステージ</a></li>
+	    		<li><a class="btn btn-link navbar-btn" href="/resources" title="リソース">リソース</a></li>
+	    		<li><a class="btn btn-link navbar-btn" href="/reference" title="リファレンス">リファレンス</a></li>
 			<?php endif; ?>
 	    	</ul>
 	    	<ul class="nav navbar-nav navbar-right">

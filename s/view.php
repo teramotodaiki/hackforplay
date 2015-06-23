@@ -231,9 +231,14 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 				<img src="img/mapTipIndex.jpg" alt="">
 			</div>
 			<?php else : ?>
-			<div class="col-sm-12 panel panel-default h4p_while-restaging">
+			<div class="col-sm-6 panel panel-default h4p_while-restaging">
 				<div class="panel-body text-center">
 					<a class="btn btn-link btn-lg" href="../resources/" target="_blank" title="Other Resources / 他の画像をみる">Other resources / 他の画像をみる</a>
+				</div>
+			</div>
+			<div class="col-sm-6 panel panel-default h4p_while-restaging">
+				<div class="panel-body text-center">
+					<a class="btn btn-link btn-lg" href="../reference/" target="_blank" title="Reference / リファレンスを見る">Reference / リファレンスを見る</a>
 				</div>
 			</div>
 			<?php endif; ?>
