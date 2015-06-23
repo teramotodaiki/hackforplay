@@ -3,17 +3,19 @@ $(function() {
 	var $tr =
 	$('<tr>').append(
 		$('<td>').append(
+			$('<span>').addClass('member-is-class hide').text('new ')
+		).append(
 			'Hack.'
 		).append(
 			$('<span>').addClass('member-name')
 		).append(
-			$('<span>').addClass('member-is-method hide').text('( ')
+			$('<span>').addClass('member-is-method member-is-class hide').text('( ')
 		).append(
 			$('<var>').append(
 				$('<b>').addClass('member-args')
 			)
 		).append(
-			$('<span>').addClass('member-is-method hide').text(' )')
+			$('<span>').addClass('member-is-method member-is-class hide').text(' )')
 		)
 	).append(
 		$('<td>').append(
@@ -60,8 +62,13 @@ $(function() {
 		var tr = $tr.clone(true, true).appendTo(this);
 
 		// column: Name
-		if (type === 'method') {
-			tr.find('.member-is-method').removeClass('hide');
+		switch (type) {
+			case 'method':
+				tr.find('.member-is-method').removeClass('hide');
+				break;
+			case 'class':
+				tr.find('.member-is-class').removeClass('hide');
+				break;
 		}
 		tr.find('.member-name').text(name);
 		params.forEach(function(item, index) {
@@ -138,6 +145,24 @@ $(function() {
 ['member', 'started', [['', 'Boolean', '現在のゲームがスタートしているか']], ['現在のゲームのスタート状況を取得または設定する', 'game.startとは無関係'], [['', 'Boolean', '現在のゲームがスタートしているか']], 304],
 ['member','getPreviousKey', [], ['直前に入力されたキーを文字で取得する', 'A-ZのキーコードはすべてLowerCase(a-z)に変換される'], [['', 'String', '直前に入力されたキーの文字']], 304]
 	].forEach(addRow, $('#anchor-typing tbody'));
+
+	// run.js
+	[
+
+['class', 'MovingSprite', [['width', 'Number', 'オブジェクトの横幅'], ['height', 'Number', 'オブジェクトの縦幅']], ['enchant.Spriteを継承したクラス', 'velocity, useGravity, useGround などのメンバをもつ', 'Hack.createMovingSpriteメソッドで作成する'], [['', 'Hack.MovingSprite', '作成されたMovingSpriteオブジェクト']], 305],
+['method', 'createMovingSprite', [['width', 'Number', 'スプライトの横幅'], ['height', 'Number', 'スプライトの縦幅'], ['[prop]', 'Object', '追加したいメンバ']], ['MovingSpriteを作成して表示する', 'Hack.MovingSpriteクラスのコンストラクタをラップしている', 'オブジェクトはHack.defaultParentNodeに追加される'], [['', 'enchant.MovingSprite', '作成されたオブジェクト']], 305],
+['method', 'createScrollMap', [['map', 'Array', 'マップ']], ['スクロール可能な横視点マップを作成する', 'Hack.backgroundImageとして参照可能', 'オブジェクトはHack.defaultParentNodeに追加される'], [['', 'Array', 'Hack.backgroundImage']], 305],
+['method', 'pressStartKey', [['keyString', 'String', 'スタートキーに設定したいキーの文字']], ['Hack.onpressstartイベントを発行するキーを設定する', 'Sキーを設定: Hack.pressStartKey(\'S\');'], [], 305],
+['method', 'scrollRight', [['x', 'Number', 'スクロールする量(x>0)']], ['Hack.defaultParentNodeをxだけ左にスクロールする', '逆方向へはスクロールできない'], [], 305],
+['event', 'onpressstart', [['', 'Function', '任意の処理']], ['Hack.pressStartKeyで設定されたキーが入力され、まだHack.startedがfalseのとき呼び出されるイベント'], [['', 'Function', '現在のonpressstart']], 305],
+['member', 'player', [], ['ゲームのプレイヤーを取得する'], [['', 'Hack.MovingSprite', 'プレイヤー']], 305],
+['member', 'monster', [], ['ゲームのモンスターを取得する'], [['', 'Array', 'モンスターの配列']], 305],
+['member', 'backgroundImage', [], ['スクロールマップを取得する', '実体は短冊状のスプライトの配列'], [['', 'Array', 'スクロールマップ']], 305],
+['member', 'enchantBookIcon', [], ['魔道書のアイコンを取得する', 'クリックするとHack.openEditorを呼び出すイベントが定義されている'], [['', 'enchant.Entity', '魔道書のアイコン']], 305],
+['member', 'gravity', [['', 'Object', 'ゲーム内の重力']], ['ゲーム内の重力を取得または設定する', 'x, y というプロパティをもつ'], [['', 'Object', '現在のゲーム内の重力']], 305],
+['member', 'groundHeight', [['', 'Number', 'ゲーム内の地面の高さ']], ['ゲーム内の地面の高さを取得または設定する', '画面上部を基準としたYの値'], [['', 'Number', '現在のゲーム内の地面の高さ']], 305]
+
+	].forEach(addRow, $('#anchor-run tbody'));
 });
 
 
