@@ -24,64 +24,14 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<td>
-										Name
-									</td>
-									<td>
-										Parameters
-									</td>
-									<td>
-										Discription
-									</td>
-									<td>
-										Return
-									</td>
-									<td>
-										Example
-									</td>
+									<td>Name</td>
+									<td>Parameters</td>
+									<td>Discription</td>
+									<td>Return</td>
+									<td>Example</td>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>
-										Hack.log( <var><b>text</b></var> )
-									</td>
-									<td>
-										<dl class="">
-											<dt><var>text</var> <span class="text-muted">{String}</span></dt>
-											<dd>表示する文字</dd>
-										</dl>
-									</td>
-									<td>
-										テキストエリアに文字を表示する<br>すでに文字がある場合は下に１行追加して表示する
-									</td>
-									<td>
-										-
-									</td>
-									<td>
-										<a href="../s?id=304" title="タイピングゲーム">タイピングゲーム</a>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										Hack.log( <var><b>text</b></var> )
-									</td>
-									<td>
-										<dl class="">
-											<dt><var>text</var> <span class="text-muted">{String}</span></dt>
-											<dd>表示する文字</dd>
-										</dl>
-									</td>
-									<td>
-										テキストエリアに文字を表示する<br>すでに文字がある場合は下に１行追加して表示する
-									</td>
-									<td>
-										-
-									</td>
-									<td>
-										<a href="../s?id=304" title="タイピングゲーム">タイピングゲーム</a>
-									</td>
-								</tr>
 							</tbody>
 						</table>
 					</div>
