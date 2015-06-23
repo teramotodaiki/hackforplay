@@ -41,7 +41,19 @@
 						<h2>typing.js <small><a href="../s?id=304" target="_blank" title="タイピングゲーム">タイピングゲーム</a>で使える機能</small></h2>
 					</div>
 					<div class="panel-body">
-
+						<table class="table">
+							<thead>
+								<tr>
+									<td>Name</td>
+									<td>Parameters</td>
+									<td>Discription</td>
+									<td>Return</td>
+									<td>Example</td>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
 					</div>
 				</div>
 				<div id="anchor-run" class="panel panel-default">

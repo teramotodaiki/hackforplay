@@ -122,9 +122,22 @@ $(function() {
 ['method', 'openEditor', [], ['エディタ(魔道書)を開く'], [], 0],
 ['method', 'overlay', [['fill/imagePath/fillStyle', 'Surface/String/String', '表示したい画像/画像のパス/CSSカラースタイル'], ['[...]', 'Surface/String/String', '複数指定できる']], ['画面全体に画像を表示する', 'fill: Hack.overlay(sprite.image);', 'imagePath: Hack.overlay(\'hackforplay/clear.png\');', 'fillStyle: Hack.overlay(\'black\'); Hack.overlay(\'rgba(0,0,0,0.7)\'); など'], [['', 'enchant.Sprite', '描画されたスプライト']], 0],
 ['member', 'defaultParentNode', [['', 'enchant.Group', 'デフォルトの親ノード']], ['デフォルトの親ノードを取得・設定する', 'なにも設定されなかった場合はgame.rootSceneになる'], [['', 'enchant.Group', '現在のデフォルトの親ノード']], 0],
-['property', 'textarea', [['', 'enchant.Entity', 'テキストエリア']], ['テキストエリアを取得・設定する', 'text, show, hide といったメンバをもつ'], [['', 'enchant.Entity', 'テキストエリア']], 0],
+['member', 'textarea', [['', 'enchant.Entity', 'テキストエリア']], ['テキストエリアを取得・設定する', 'text, show, hide といったメンバをもつ'], [['', 'enchant.Entity', 'テキストエリア']], 0],
+['event', 'onload', [['', 'Function', '任意の処理']], ['Hackオブジェクトが設定された直後に呼び出されるイベント'], [['', 'Function', '現在のonload']], 0],
 ['property', 'hint', [['', 'String', 'エディタ(魔道書)の内容']], ['エディタ(魔道書)の内容を取得・設定する'], [['', 'String', '現在のエディタ(魔道書)の内容']], 0],
 	].forEach(addRow, $('#anchor-hack tbody'));
+
+	// typing.js
+	[
+
+['method', 'pressStartKey', [['keyString', 'String', 'スタートキーに設定したいキーの文字']], ['Hack.onpressstartイベントを発行するキーを設定する', 'Sキーを設定: Hack.pressStartKey(\'S\');'], [], 304],
+['method', 'shuffleAndLog', [['list', 'String', 'テキストエリアに表示したい文字列をスペース区切りでまとめた文字列'], ['[count]', 'Number', 'シャッフル回数']], ['リストにふくまれる文字列をシャッフルしてスペース区切りでテキストエリアに出力する', 'countを省略した場合、シャッフル回数はlist.lengthになる'], [], 304],
+['event', 'onendgame', [['', 'Function', '任意の処理']], ['全てのキーを打ち終えたとき呼び出されるイベント'], [['', 'Function', '現在のonendgame']], 304],
+['event', 'onkeydown', [['', 'Function', '任意の処理']], ['キー入力があったときに呼び出されるイベント'], [['', 'Function', '現在のonkeydown']], 304],
+['event', 'onpressstart', [['', 'Function', '任意の処理']], ['Hack.pressStartKeyで設定されたキーが入力され、まだHack.startedがfalseのとき呼び出されるイベント'], [['', 'Function', '現在のonpressstart']], 304],
+['member', 'started', [['', 'Boolean', '現在のゲームがスタートしているか']], ['現在のゲームのスタート状況を取得または設定する', 'game.startとは無関係'], [['', 'Boolean', '現在のゲームがスタートしているか']], 304],
+['member','getPreviousKey', [], ['直前に入力されたキーを文字で取得する', 'A-ZのキーコードはすべてLowerCase(a-z)に変換される'], [['', 'String', '直前に入力されたキーの文字']], 304]
+	].forEach(addRow, $('#anchor-typing tbody'));
 });
 
 
