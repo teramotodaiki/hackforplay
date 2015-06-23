@@ -7,12 +7,12 @@ $(function() {
 		).append(
 			'Hack.'
 		).append(
-			$('<span>').addClass('member-name')
+			$('<span>').addClass('member-name text-info')
 		).append(
 			$('<span>').addClass('member-is-method member-is-class hide').text('( ')
 		).append(
 			$('<var>').append(
-				$('<b>').addClass('member-args')
+				$('<b>').addClass('member-args text-warning')
 			)
 		).append(
 			$('<span>').addClass('member-is-method member-is-class hide').text(' )')
@@ -93,7 +93,7 @@ $(function() {
 		// column: Description
 		desc.forEach(function(item) {
 			$(this).append(
-				$('<p>').text(item)
+				$('<p>').addClass('small').text(item)
 			);
 		}, tr.find('.member-desc'));
 

@@ -15,7 +15,7 @@
 	<script src="view.js" type="text/javascript"></script>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-10">
+			<div class="col-md-11">
 				<div id="anchor-hack" class="panel panel-default">
 					<div class="panel-heading">
 						<h2>hack.js <small>すべてのステージで共通して使える機能</small></h2>
@@ -77,7 +77,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-2">
+			<div class="col-md-1">
 				<div class="panel panel-default affix">
 					<div class="panel-body">
 						<nav>
