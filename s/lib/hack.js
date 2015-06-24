@@ -36,8 +36,13 @@ window.addEventListener('message', function (e) {
 			var game = enchant ? enchant.Core.instance : undefined;
 			eval(e.data);
 		} catch (exception) {
-			console.log(exception);
-			Hack.log('Error:', exception.__proto__.name, exception);
+			if (exception.sourceURL && exception.stack.indexOf('eval') !== -1) {
+				// ランタイムエラー
+				Hack.log('Error', exception.message);
+			} else if (!exception.sourceURL) {
+				// 改造コード実行直後のエラー
+				Hack.log('Error', exception.message, '...on line', exception.line);
+			}
 		}
 	}
 });
@@ -127,7 +132,7 @@ window.addEventListener('load', function() {
 			this.textarea.show();
 
 		} catch (e) {
-			Hack.log('Error ', e.message);
+			Hack.log('Error', e.message);
 		}
 	};
 
