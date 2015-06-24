@@ -115,15 +115,20 @@ window.addEventListener('load', function() {
 	}).call(new enchant.Entity());
 
 	Hack.log = function () {
-		var values = [];
-		for (var i = arguments.length - 1; i >= 0; i--) {
-			switch(typeof arguments[i]){
-				case 'object': values[i] = JSON.stringify(arguments[i]); break;
-				default: values[i] = arguments[i] + ''; break;
+		try {
+			var values = [];
+			for (var i = arguments.length - 1; i >= 0; i--) {
+				switch(typeof arguments[i]){
+					case 'object': values[i] = JSON.stringify(arguments[i]); break;
+					default: values[i] = arguments[i] + ''; break;
+				}
 			}
+			this.textarea.text += (this.textarea.text !== '' ? '\n' : '') + values.join(' ');
+			this.textarea.show();
+
+		} catch (e) {
+			Hack.log('Error ', e.message);
 		}
-		this.textarea.text += (this.textarea.text !== '' ? '\n' : '') + values.join(' ');
-		this.textarea.show();
 	};
 
 	Hack.clearLog = function() {
