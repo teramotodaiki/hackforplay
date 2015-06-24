@@ -42,6 +42,8 @@ window.addEventListener('message', function (e) {
 			} else if (!exception.sourceURL) {
 				// 改造コード実行直後のエラー
 				Hack.log('Error', exception.message, '...on line', exception.line);
+			} else {
+				console.log(exception);
 			}
 		}
 	}
