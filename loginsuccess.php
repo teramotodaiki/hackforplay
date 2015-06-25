@@ -25,9 +25,33 @@ try {
 	$stmt->execute();
 
 	$user_id = $stmt->fetch(PDO::FETCH_COLUMN, 0);
-	if ($user_id) {
-		$_SESSION['UserID'] = $user_id;
+	if (!$user_id) {
+
+		// 初回ログイン
+		$stmt	= $dbh->prepare('INSERT INTO "User" ("Nickname","TimezoneName","TimezoneOffset","AcceptLanguage","ProfileImageURL","Registered") VALUES(:nickname,:timezone_name,:timezone_offset,:accept_language,:profile_image_url,:gmt)');
+		$stmt->bindValue(":nickname", $twitter->screen_name, PDO::PARAM_STR);
+		$stmt->bindValue(":timezone_name", $twitter->time_zone, PDO::PARAM_STR);
+		$stmt->bindValue(":timezone_offset", $twitter->utc_offset, PDO::PARAM_INT);
+		$stmt->bindValue(":accept_language", $_SERVER['HTTP_ACCEPT_LANGUAGE'], PDO::PARAM_STR);
+		$stmt->bindValue(":profile_image_url", $twitter->profile_image_url, PDO::PARAM_STR);
+		$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . '+00:00', PDO::PARAM_STR);
+		$stmt->execute();
+
+		$user_id	= $dbh->lastInsertId('User');
+
+		// アカウント作成
+		$stmt	= $dbh->prepare('INSERT INTO "Account" ("UserID","Type","State","Email","Hashed","ExternalID","Registered") VALUES (:user_id,:twitter,:connected,:email,:hashed,:twitter_id,:gmt)');
+		$stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+		$stmt->bindValue(":twitter", 'twitter', PDO::PARAM_STR);
+		$stmt->bindValue(":connected", 'connected', PDO::PARAM_STR);
+		$stmt->bindValue(":email", '', PDO::PARAM_STR);
+		$stmt->bindValue(":hashed", '', PDO::PARAM_STR);
+		$stmt->bindValue(":twitter_id", $twitter->id, PDO::PARAM_INT);
+		$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . '+00:00', PDO::PARAM_STR);
+		$stmt->execute();
 	}
+
+	$_SESSION['UserID'] = $user_id;
 	session_commit();
 
 } catch (Exception $e) {
