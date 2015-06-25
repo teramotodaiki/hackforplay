@@ -41,9 +41,13 @@ $(function(){
 					case 'parse-error':
 						break;
 					default:
-						var result = $.parseJSON(data);
-						$('.h4p_own-nickname').text(result.nickname);
-						$('.h4p_own-thumbnail').attr('src', result.gender === 'male' ? '../m/icon_m.png' : '../m/icon_w.png');
+						var info = $.parseJSON(data);
+						$('.h4p_own-nickname').text(info.nickname);
+						if (info.profile_image_url) {
+							$('.h4p_own-thumbnail').attr('src', info.profile_image_url);
+						} else {
+							$('.h4p_own-thumbnail').attr('src', info.gender === 'male' ? 'icon_m.png' : 'icon_w.png');
+						}
 						break;
 				}
 			});
