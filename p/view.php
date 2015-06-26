@@ -32,6 +32,9 @@ Preferences のビュー
 					    <li role="presentation">
 					    	<a href="#setpassword" aria-controls="setpassword" role="tab" data-toggle="tab">パスワード</a>
 					    </li>
+					    <li role="presentation">
+					    	<a href="#twitter" aria-controls="twitter" role="tab" data-toggle="tab">Twitter連携</a>
+					    </li>
 					</ul>
 					<div class="col-md-9 tab-content panel-body">
 					    <div role="tabpanel" class="tab-pane active" id="usersettings">
@@ -82,6 +85,13 @@ Preferences のビュー
 								  	<button type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="送信中…" disabled>パスワードを変更</button>
 							  	</div>
 					    	</form>
+					    </div>
+					    <div role="tabpanel" class="tab-pane" id="twitter">
+						  	<div class="alert alert-danger">
+							  	<button type="button" class="btn btn-danger btn-lg disconnect-twitter-account">Twitter連携を解除する</button>
+						  		<h2 class="text-danger">警告：Twitterからログインできなくなってしまいます</h2>
+						  		<span class="text-muted">メールアドレスでログインしているアカウントに切り替える場合など、限られた場合以外で使用することはオススメしません。</span>
+						  	</div>
 					    </div>
 					</div>
 		  		</div>

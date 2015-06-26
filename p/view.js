@@ -151,6 +151,12 @@ $(function(){
 		});
 	});
 
+	// Twitterとの連携を解除する OAuth認証を行う
+	$('.disconnect-twitter-account').on('click', function(event) {
+		var callback = 'disconnecttotwitter.php';
+		location.href = '../loginwithtwitter.php?callback=' + callback;
+	});
+
 	// _level のアラート _text を生成し、jQueryオブジェクトを返す
 	function bsAlert (_level, _text) {
 		var _bsalert =
