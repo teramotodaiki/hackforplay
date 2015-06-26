@@ -305,8 +305,11 @@ $(function() {
 
 	// Twitter OAuth認証
 	$('.login-with-twitter').on('click', function(event) {
-		var authed = $(this).data('authed') || window.location.pathname + window.location.search;
-		location.href = '/loginwithtwitter.php?authed=' + encodeURIComponent(authed);
+		var authed = '/loginsuccess.php';
+		var login_successed = $(this).data('login_successed') || window.location.pathname + window.location.search;
+		location.href =
+		'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
+		'&login_successed=' + encodeURIComponent(login_successed);
 	});
 
 	// 'selector' element内のinputにfocusされている間のみroutineを実行し続ける処理をセット

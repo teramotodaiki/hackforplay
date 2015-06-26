@@ -158,6 +158,12 @@ $(function(){
 		location.href = '../loginwithtwitter.php?authed=' + encodeURIComponent(authed);
 	});
 
+	// あらたにTwitterとの連携を作成する OAuth認証を行う
+	$('.add-twitter-connection').on('click', function(event) {
+		var authed = '/addtwitterconnection.php';
+		location.href = '../loginwithtwitter.php?authed=' + encodeURIComponent(authed);
+	});
+
 	// _level のアラート _text を生成し、jQueryオブジェクトを返す
 	function bsAlert (_level, _text) {
 		var _bsalert =

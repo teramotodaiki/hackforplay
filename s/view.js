@@ -307,7 +307,7 @@ $(function(){
 		var code = jsEditor.getTextArea().value;
 		if (code !== '') {
 
-			$(this).data('authed', '/s?id=' + getParam('id') + '&mode=restaging');
+			$(this).data('login_successed', '/s?id=' + getParam('id') + '&mode=restaging');
 			alert_on_unload = false; // 警告を出さない
 			sessionStorage.setItem('restaging_code', code);
 		}
