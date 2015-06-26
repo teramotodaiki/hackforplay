@@ -411,6 +411,15 @@ $(function() {
 						<button type="submit" class="btn btn-primary">メールを送信</button>
 					</div>
 				</form>
+			  	<hr>
+			  	<div>
+			  		<p class="text-center">
+			  			<span class="text-muted">または、Twitterでアカウントを作成</span>
+			  			<a href="javascript:void(0)" title="Signin with twitter" class="login-with-twitter">
+			  				<img src="../img/signin-with-twitter.png" height="28" width="158" alt="signin with twitter">
+			  			</a>
+			  		</p>
+			  	</div>
 		    </div>
 		    <div class="modal-body auth-page-2" style="display: none">
 		    	<form id="tmp" class="form-horizontal">
