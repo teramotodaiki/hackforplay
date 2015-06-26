@@ -19,9 +19,10 @@ try {
 	$json = json_encode($twitter);
 
 	// Accountと照合
-	$stmt	= $dbh->prepare('SELECT "UserID" FROM "Account" WHERE "Type"=:twitter AND "ExternalID"=:twitter_id');
+	$stmt	= $dbh->prepare('SELECT "UserID" FROM "Account" WHERE "Type"=:twitter AND "ExternalID"=:twitter_id AND "State"=:connected');
 	$stmt->bindValue(":twitter", 'twitter', PDO::PARAM_STR);
 	$stmt->bindValue(":twitter_id", $twitter->id, PDO::PARAM_INT);
+	$stmt->bindValue(":connected", 'connected', PDO::PARAM_STR);
 	$stmt->execute();
 
 	$user_id = $stmt->fetch(PDO::FETCH_COLUMN, 0);
