@@ -91,11 +91,21 @@ Preferences のビュー
 					    	</form>
 					    </div>
 					    <div role="tabpanel" class="tab-pane" id="twitter">
+					    	<?php
+					    	// 有効なTwitterアカウントがある場合
+					    	if ($conneted_twitter) : ?>
 						  	<div class="alert alert-danger">
 							  	<button type="button" class="btn btn-danger btn-lg disconnect-twitter-account">Twitter連携を解除する</button>
 						  		<h2 class="text-danger">警告：Twitterからログインできなくなってしまいます</h2>
 						  		<span class="text-muted">メールアドレスでログインしているアカウントに切り替える場合など、限られた場合以外で使用することはオススメしません。</span>
 						  	</div>
+						  	<?php else: ?>
+						  	<div class="alert alert-info">
+						  		<button type="button" class="btn btn-info btn-lg add-twitter-connection">Twitterと連携する</button>
+						  		<h2 class="text-info">Twitterからログインできるようになります</h2>
+						  		<span class="text-muted">今までのメールアドレスでのログインも、引き続きご利用いただけます。</span>
+						  	</div>
+							<?php endif; ?>
 					    </div>
 					</div>
 		  		</div>

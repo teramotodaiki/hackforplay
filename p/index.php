@@ -9,6 +9,17 @@ try {
 
 	require_once '../preload.php';
 
+	if ($session_userid) {
+
+		// Twitterとの連携情報を確認
+		$stmt	= $dbh->prepare('SELECT "ID" FROM "Account" WHERE "UserID"=:user_id AND "Type"=:twitter AND "State"=:connected');
+		$stmt->bindValue(":user_id", $session_userid, PDO::PARAM_INT);
+		$stmt->bindValue(":twitter", 'twitter', PDO::PARAM_STR);
+		$stmt->bindValue(":connected", 'connected', PDO::PARAM_STR);
+		$stmt->execute();
+		$conneted_twitter	= $stmt->fetch() ? TRUE : FALSE; // 有効なTwitterアカウントがあればTRUE
+	}
+
 	include 'view.php';
 
 } catch (Exception $e) {
