@@ -25,8 +25,9 @@ try {
 	//セッションIDをリジェネレート
 	session_regenerate_id();
 
-	//リダイレクト
-	header( 'location: /loginsuccess.php' );
+	// 認証後のコールバックURL
+	$callback_url = $_SESSION['authed_callback_url'];
+	header('Location: ' . $callback_url);
 
 } catch (Exception $e) {
 	require_once 'exception/tracedata.php';
@@ -34,5 +35,4 @@ try {
 
 	header('Location: e');
 }
-
- ?>
+?>

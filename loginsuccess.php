@@ -56,7 +56,7 @@ try {
 	session_commit();
 
 	// 認証後のコールバックURL
-	$callback_url = $_SESSION['authorized_callback_url'];
+	$callback_url = $_SESSION['loginsuccessed_callback_url'];
 	header('Location: ' . $callback_url); // 認証前にいたページにジャンプ
 
 } catch (Exception $e) {
