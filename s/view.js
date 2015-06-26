@@ -305,7 +305,6 @@ $(function(){
 		// restaging中ならrestaging_codeを保管する処理を行う
 		jsEditor.save();
 		var code = jsEditor.getTextArea().value;
-		console.log('code is ', code);
 		if (code !== '') {
 
 			$(this).data('authed', '/s?id=' + getParam('id') + '&mode=restaging');

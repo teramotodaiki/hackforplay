@@ -493,6 +493,7 @@ $(function() {
 				  		<p class="text-center">
 					  		<button type="button" class="btn btn-link login-with-twitter">Login with twitter</button>
 				  		</p>
+				  		<p class="text-muted text-center">ログインしたあと、このページに戻ってきます</p>
 				  	</div>
 				</form>
 		    </div>
