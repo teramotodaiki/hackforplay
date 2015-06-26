@@ -153,8 +153,9 @@ $(function(){
 
 	// Twitterとの連携を解除する OAuth認証を行う
 	$('.disconnect-twitter-account').on('click', function(event) {
-		var callback = 'disconnecttotwitter.php';
-		location.href = '../loginwithtwitter.php?callback=' + callback;
+		var user_id = sessionStorage.getItem('view_user_id');
+		var authed = 'disconnecttotwitter.php?user_id=' + user_id;
+		location.href = '../loginwithtwitter.php?authed=' + encodeURIComponent(authed);
 	});
 
 	// _level のアラート _text を生成し、jQueryオブジェクトを返す

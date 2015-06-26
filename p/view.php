@@ -17,6 +17,10 @@ Preferences のビュー
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
+	<script type="text/javascript" charset="utf-8">
+	<?php // セッションからUserIDを取得 ?>
+	sessionStorage.setItem('view_user_id', '<?php echo $session_userid; ?>' );
+	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="row">
