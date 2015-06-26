@@ -19,9 +19,10 @@ try {
 	$json = json_encode($twitter);
 
 	// Accountと照合
-	$stmt	= $dbh->prepare('SELECT "UserID" FROM "Account" WHERE "Type"=:twitter AND "ExternalID"=:twitter_id');
+	$stmt	= $dbh->prepare('SELECT "UserID" FROM "Account" WHERE "Type"=:twitter AND "ExternalID"=:twitter_id AND "State"=:connected');
 	$stmt->bindValue(":twitter", 'twitter', PDO::PARAM_STR);
 	$stmt->bindValue(":twitter_id", $twitter->id, PDO::PARAM_INT);
+	$stmt->bindValue(":connected", 'connected', PDO::PARAM_STR);
 	$stmt->execute();
 
 	$user_id = $stmt->fetch(PDO::FETCH_COLUMN, 0);
@@ -54,6 +55,7 @@ try {
 	$_SESSION['UserID'] = $user_id;
 	session_commit();
 
+	// 認証後のコールバックURL
 	$callback_url = $_SESSION['authorized_callback_url'];
 	header('Location: ' . $callback_url); // 認証前にいたページにジャンプ
 
@@ -65,19 +67,3 @@ try {
 }
 
  ?>
-
- <!DOCTYPE html>
- <html>
- <head>
- 	<meta charset="utf-8">
- 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
- 	<title></title>
- </head>
- <body>
- 	<?php echo $user_id; ?>
- 	<script type="text/javascript" charset="utf-8">
- 	var json = <?php echo $json; ?>;
- 	console.log(json);
- 	</script>
- </body>
- </html>

@@ -10,7 +10,7 @@ try {
 	//TwitterOAuth をインスタンス化
 	$connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET);
 
-	//コールバックURLをここでセット
+	//コールバックURLをセット
 	$request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => OAUTH_CALLBACK));
 
 	//callback.phpで使うのでセッションに入れる
@@ -22,7 +22,7 @@ try {
 	//Twitter.com 上の認証画面のURLを取得( この行についてはコメント欄も参照 )
 	$url = $connection->url('oauth/authenticate', array('oauth_token' => $request_token['oauth_token']));
 
-	// 認証後のコールバック( callback.phpではない )をセッションに保持
+	// loginsccessのあと.認証後のコールバック( callback.phpではない )をセッションに保持
 	$authed_url = filter_input(INPUT_GET, 'authed');
 	$_SESSION['authorized_callback_url'] = $authed_url ? $authed_url : '/';
 
@@ -35,5 +35,3 @@ try {
 
 	header('Location: e');
 }
-
- ?>
