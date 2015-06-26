@@ -303,6 +303,11 @@ $(function() {
 		});
 	});
 
+	// Twitter OAuth認証
+	$('.login-with-twitter').on('click', function(event) {
+		var authed = $(this).data('authed') || window.location.pathname + window.location.search;
+		location.href = '/loginwithtwitter.php?authed=' + encodeURIComponent(authed);
+	});
 
 	// 'selector' element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
 	function setInputRoutine (selector, routine) {
@@ -486,7 +491,7 @@ $(function() {
 				  	<div>
 				  		<h4>または、別のSNSアカウントでログイン</h4>
 				  		<p class="text-center">
-					  		<button type="button" class-"btn btn-link">Login with twitter</button>
+					  		<button type="button" class="btn btn-link login-with-twitter">Login with twitter</button>
 				  		</p>
 				  	</div>
 				</form>

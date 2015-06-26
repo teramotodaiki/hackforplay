@@ -298,6 +298,23 @@ $(function(){
 		}
 	})();
 
+	// Twitter OAuthログイン
+	$('.login-with-twitter').on('mousedown', function(event) {
+		// clickイベントより先に呼び出されるので、色々仕込みができる
+
+		// restaging中ならrestaging_codeを保管する処理を行う
+		jsEditor.save();
+		var code = jsEditor.getTextArea().value;
+		console.log('code is ', code);
+		if (code !== '') {
+
+			$(this).data('authed', '/s?id=' + getParam('id') + '&mode=restaging');
+			alert_on_unload = false; // 警告を出さない
+			sessionStorage.setItem('restaging_code', code);
+		}
+	});
+
+
 	function getParam(key){
 		return sessionStorage.getItem('stage_param_'+key);
 	}
