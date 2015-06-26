@@ -46,7 +46,7 @@ $(function(){
 						if (info.profile_image_url) {
 							$('.h4p_own-thumbnail').attr('src', info.profile_image_url);
 						} else {
-							$('.h4p_own-thumbnail').attr('src', info.gender === 'male' ? 'icon_m.png' : 'icon_w.png');
+							$('.h4p_own-thumbnail').attr('src', info.gender === 'male' ? '/m/icon_m.png' : '/m/icon_w.png');
 						}
 						break;
 				}
