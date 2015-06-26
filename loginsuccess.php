@@ -54,6 +54,9 @@ try {
 	$_SESSION['UserID'] = $user_id;
 	session_commit();
 
+	$callback_url = $_SESSION['authorized_callback_url'];
+	header('Location: ' . $callback_url); // 認証前にいたページにジャンプ
+
 } catch (Exception $e) {
 	require_once 'exception/tracedata.php';
 	traceData($e);

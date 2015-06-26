@@ -22,6 +22,10 @@ try {
 	//Twitter.com 上の認証画面のURLを取得( この行についてはコメント欄も参照 )
 	$url = $connection->url('oauth/authenticate', array('oauth_token' => $request_token['oauth_token']));
 
+	// 認証後のコールバック( callback.phpではない )をセッションに保持
+	$authed_url = filter_input(INPUT_GET, 'authed');
+	$_SESSION['authorized_callback_url'] = $authed_url ? $authed_url : '/';
+
 	//Twitter.com の認証画面へリダイレクト
 	header( 'location: '. $url );
 
