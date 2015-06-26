@@ -489,9 +489,11 @@ $(function() {
 				  	</div>
 				  	<hr>
 				  	<div>
-				  		<h4>または、別のSNSアカウントでログイン</h4>
+				  		<h4>または、Twitterでログイン</h4>
 				  		<p class="text-center">
-					  		<button type="button" class="btn btn-link login-with-twitter">Login with twitter</button>
+				  			<a href="javascript:void(0)" title="Signin with twitter" class="login-with-twitter">
+				  				<img src="../img/signin-with-twitter.png" height="28" width="158" alt="signin with twitter">
+				  			</a>
 				  		</p>
 				  		<p class="text-muted text-center">ログインしたあと、このページに戻ってきます</p>
 				  	</div>
