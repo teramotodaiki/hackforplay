@@ -482,6 +482,13 @@ $(function() {
 						<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#resetModal" >パスワードを忘れました</button>
 					  	<button type="submit" class="btn btn-primary">ログイン</button>
 				  	</div>
+				  	<hr>
+				  	<div>
+				  		<h4>または、別のSNSアカウントでログイン</h4>
+				  		<p class="text-center">
+					  		<button type="button" class-"btn btn-link">Login with twitter</button>
+				  		</p>
+				  	</div>
 				</form>
 		    </div>
 		    <div class="modal-body signin-page-2 text-center" style="display: none">
