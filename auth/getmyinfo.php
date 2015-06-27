@@ -7,7 +7,8 @@ user-info:
 {
 	gender : 性別 (male or female),
 	nickname : ニックネーム,
-	birthday : 生年月日
+	birthday : 生年月日,
+	profile_image_url : アイコン画像のURL（あれば）
 }
 */
 
@@ -19,7 +20,7 @@ try {
 		exit('no-session');
 	}
 
-	$stmt 	= $dbh->prepare('SELECT "Gender","Nickname","Birthday" FROM "User" WHERE "ID"=:userid');
+	$stmt 	= $dbh->prepare('SELECT "Gender","Nickname","Birthday","ProfileImageURL" FROM "User" WHERE "ID"=:userid');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -28,6 +29,7 @@ try {
 	$user_info->gender 		= $result['Gender'];
 	$user_info->nickname 	= $result['Nickname'];
 	$user_info->birthday	= $result['Birthday'];
+	$user_info->profile_image_url = $result['ProfileImageURL'];
 
 	$json 	= json_encode($user_info);
 	if (!$json) {

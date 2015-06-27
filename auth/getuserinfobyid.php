@@ -7,6 +7,7 @@ user-info:
 {
 	gender : 性別 (male or female),
 	nickname : ニックネーム,
+	profile_image_url : アイコン画像のURL（あれば）
 }
 */
 
@@ -19,7 +20,7 @@ try {
 		exit('missing-user');
 	}
 
-	$stmt 	= $dbh->prepare('SELECT "Gender","Nickname" FROM "User" WHERE "ID"=:input_id');
+	$stmt 	= $dbh->prepare('SELECT "Gender","Nickname","ProfileImageURL" FROM "User" WHERE "ID"=:input_id');
 	$stmt->bindValue(":input_id", $id, PDO::PARAM_INT);
 	$stmt->execute();
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -30,6 +31,7 @@ try {
 	$user_info 	= new stdClass();
 	$user_info->gender 		= $result['Gender'];
 	$user_info->nickname 	= $result['Nickname'];
+	$user_info->profile_image_url = $result['ProfileImageURL'];
 
 	$json 	= json_encode($user_info);
 	if (!$json) {

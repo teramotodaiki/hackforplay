@@ -303,6 +303,14 @@ $(function() {
 		});
 	});
 
+	// Twitter OAuth認証
+	$('.login-with-twitter').on('click', function(event) {
+		var authed = '/loginsuccess.php';
+		var login_successed = $(this).data('login_successed') || window.location.pathname + window.location.search;
+		location.href =
+		'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
+		'&login_successed=' + encodeURIComponent(login_successed);
+	});
 
 	// 'selector' element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
 	function setInputRoutine (selector, routine) {
@@ -403,6 +411,15 @@ $(function() {
 						<button type="submit" class="btn btn-primary">メールを送信</button>
 					</div>
 				</form>
+			  	<hr>
+			  	<div>
+			  		<p class="text-center">
+			  			<span class="text-muted">または、Twitterでアカウントを作成</span>
+			  			<a href="javascript:void(0)" title="Signin with twitter" class="login-with-twitter">
+			  				<img src="../img/signin-with-twitter.png" height="28" width="158" alt="signin with twitter">
+			  			</a>
+			  		</p>
+			  	</div>
 		    </div>
 		    <div class="modal-body auth-page-2" style="display: none">
 		    	<form id="tmp" class="form-horizontal">
@@ -481,6 +498,16 @@ $(function() {
 				  	<div class="text-right">
 						<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#resetModal" >パスワードを忘れました</button>
 					  	<button type="submit" class="btn btn-primary">ログイン</button>
+				  	</div>
+				  	<hr>
+				  	<div>
+				  		<h4>または、Twitterでログイン</h4>
+				  		<p class="text-center">
+				  			<a href="javascript:void(0)" title="Signin with twitter" class="login-with-twitter">
+				  				<img src="../img/signin-with-twitter.png" height="28" width="158" alt="signin with twitter">
+				  			</a>
+				  		</p>
+				  		<p class="text-muted text-center">ログインしたあと、このページに戻ってきます</p>
 				  	</div>
 				</form>
 		    </div>
