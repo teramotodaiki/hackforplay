@@ -9,7 +9,6 @@ try {
 
 	require_once 'preload.php';
 
-	require_once 'sessionsettings.php';
 	session_start();
 	$access_token = $_SESSION['access_token'];
 
@@ -53,7 +52,6 @@ try {
 	}
 
 	$_SESSION['UserID'] = $user_id;
-	session_commit();
 
 	// 認証後のコールバックURL
 	$callback_url = $_SESSION['loginsuccessed_callback_url'];

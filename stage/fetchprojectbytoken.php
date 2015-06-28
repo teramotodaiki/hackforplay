@@ -17,6 +17,10 @@ require_once '../preload.php';
 
 try {
 
+	session_start();
+	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
+	session_commit();
+
 	$token = filter_input(INPUT_POST, 'token');
 
 	if (!isset($session_userid)) {

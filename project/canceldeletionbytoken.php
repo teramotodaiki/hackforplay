@@ -19,6 +19,10 @@ require_once '../preload.php';
 
 try {
 
+	session_start();
+	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
+	session_commit();
+
 	if (!isset($session_userid)) {
 		exit('no-session');
 	}

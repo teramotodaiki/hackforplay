@@ -3,7 +3,8 @@
 セッション情報を空にし、クッキーを削除する
 */
 
-require_once '../sessionsettings.php';
+require_once '../preload.php';
+
 session_start();
 setcookie(session_name(), '', time() - 1);
 

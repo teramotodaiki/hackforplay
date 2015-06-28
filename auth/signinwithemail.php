@@ -39,7 +39,6 @@ try {
 	}
 
 	// セッションをつくる
-	require_once '../sessionsettings.php';
 	session_start();
 	$_SESSION['UserID'] = $confirmed['UserID'];
 	session_commit();
