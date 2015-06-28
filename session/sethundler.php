@@ -84,7 +84,8 @@ class SQLSessionHundler implements SessionHandlerInterface
 		date_default_timezone_set('UTC');
 
 		$stmt	= $this->dbh->prepare('DELETE FROM "Sessions" WHERE "Timestamp" < ?');
-		$stmt->execute(time() - $maxlifetime);
+		$stmt->bindValue(0, time() - $maxlifetime, PDO::PARAM_INT);
+		$stmt->execute();
 		return true;
 	}
 }
