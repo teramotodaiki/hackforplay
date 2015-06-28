@@ -1,5 +1,6 @@
 <?php
 
+require_once 'preload.php';
 
 require_once 'common.php';
 require_once 'twitteroauth/autoload.php';
@@ -8,8 +9,8 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 
 try {
 
-	require_once 'sessionsettings.php';
 	session_start();
+
 	$request_token = [];
 	$request_token['oauth_token'] = $_SESSION['oauth_token'];
 	$request_token['oauth_token_secret'] = $_SESSION['oauth_token_secret'];

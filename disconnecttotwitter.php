@@ -12,7 +12,6 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 try {
 	require_once 'preload.php';
 
-	require_once 'sessionsettings.php';
 	session_start();
 	$access_token = $_SESSION['access_token'];
 

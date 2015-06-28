@@ -3,6 +3,10 @@ try {
 
 	require_once '../preload.php';
 
+	session_start();
+	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
+	session_commit();
+
 	$fetch_start_id		= filter_input(INPUT_GET, 'start', FILTER_VALIDATE_INT);
 	if (!$fetch_start_id) {
 		$fetch_start_id	= 0;

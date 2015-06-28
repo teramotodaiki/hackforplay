@@ -25,10 +25,7 @@ catch ( PDOException $e ) {
 
 try {
 
-	require_once 'sessionsettings.php';
-	session_start();
-	$GLOBALS['session_userid'] = isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
-	session_commit();
+	require_once 'session/sethundler.php';
 
 } catch (Exception $e) {
 	require_once 'exception/tracedata.php';
