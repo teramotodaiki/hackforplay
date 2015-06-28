@@ -115,13 +115,14 @@ $(function(){
 			});
 			$(".h4p_restaging_button").on('click', function() {
 				// RUN (Add &mode=restaging)
-				var loading = $(this).find('button').button('loading');
+				var loading = $(this).find('button');
 				jsEditor.save();
 				var code = jsEditor.getTextArea().value;
 				sessionStorage.setItem('restaging_code', code);
 				alert_on_unload = false;
 				var currentTime = new Date().getTime();
 				var updateTask = function(){
+					loading.button('loading');
 					// Update data
 					var token = sessionStorage.getItem('project-token');
 					var timezone = new Date().getTimezoneString();
