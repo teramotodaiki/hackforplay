@@ -26,6 +26,10 @@ require_once '../preload.php';
 
 try {
 
+	session_start();
+	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
+	session_commit();
+
 	// 最大値を設定
 	$max_fetch_length 	= 100;
 	$input_max_fetch_length = filter_input(INPUT_POST, 'length', FILTER_VALIDATE_INT);

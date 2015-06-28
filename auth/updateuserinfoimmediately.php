@@ -10,13 +10,15 @@ invalid-inputs:
 require_once '../preload.php';
 
 try {
+
+	session_start();
+	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
+
 	// セッションを確認
 	if (!isset($session_userid)) {
 		exit('no-session');
 	}
 	// 登録直後か確認
-	require_once '../sessionsettings.php';
-	session_start();
 	if(!isset($_SESSION['SignupImmediately'])){
 		exit('not-immediately');
 	}

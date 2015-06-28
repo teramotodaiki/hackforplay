@@ -9,6 +9,11 @@ try {
 
 	require_once '../preload.php';
 
+	session_start();
+	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
+	session_commit();
+
+	$conneted_twitter	= FALSE;
 	if ($session_userid) {
 
 		// Twitterとの連携情報を確認

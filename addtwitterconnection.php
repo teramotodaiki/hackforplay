@@ -9,7 +9,6 @@ try {
 
 	require_once 'preload.php';
 
-	require_once 'sessionsettings.php';
 	session_start();
 	$access_token = $_SESSION['access_token'];
 
@@ -30,11 +29,11 @@ try {
 	if (!$user) {
 
 		// セッションがあるかどうか確認
-		if ($session_userid) {
+		if ($_SESSION['UserID']) {
 
 			// アカウント作成してユーザーと紐付け
 			$stmt	= $dbh->prepare('INSERT INTO "Account" ("UserID","Type","State","Email","Hashed","ExternalID","Registered") VALUES (:user_id,:twitter,:connected,:email,:hashed,:twitter_id,:gmt)');
-			$stmt->bindValue(":user_id", $session_userid, PDO::PARAM_INT);
+			$stmt->bindValue(":user_id", $_SESSION['UserID'], PDO::PARAM_INT);
 			$stmt->bindValue(":twitter", 'twitter', PDO::PARAM_STR);
 			$stmt->bindValue(":connected", 'connected', PDO::PARAM_STR);
 			$stmt->bindValue(":email", '', PDO::PARAM_STR);

@@ -8,6 +8,10 @@ try {
 
 	require_once '../preload.php';
 
+	session_start();
+	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
+	session_commit();
+
 	// ステージ一覧をフェッチする開始位置
 	$fetch_start_id		= filter_input(INPUT_GET, 'start', FILTER_VALIDATE_INT);
 	if (!$fetch_start_id) {
