@@ -55,7 +55,7 @@ var gameover; // gameoverメソッドも
         lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function(){
             if(__H4PENV__MODE === "official" || __H4PENV__MODE === "replay"){
                 var retry = new Sprite(128, 32);
-                retry.image = game.assets['img/button_retry.png'];
+                retry.image = game.assets['hackforplay/button_retry.png'];
                 retry.moveTo(176, 320);
                 retry.tl.moveTo(176, 270, 10);
                 retry.on('touchstart', function() {
