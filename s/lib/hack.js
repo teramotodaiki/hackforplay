@@ -52,7 +52,7 @@ window.addEventListener('message', function (e) {
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
-    game.preload(['img/clear.png', 'img/gameover.png', 'img/button_retry.png',
+    game.preload(['hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png',
 		'hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png']);
 
     // Hackのクラスを生成 インスタンスはget only
@@ -247,7 +247,7 @@ window.addEventListener('load', function() {
 
 	Hack.gameclear = function() {
 		var lay;
-		if (__H4PENV__MODE === 'official' && __H4PENV__NEXT) {
+		if (__H4PENV__MODE === 'official' && __H4PENV__NEXT > 0) {
 			lay = Hack.overlay('black');
 			lay.opacity = 0;
 			lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
