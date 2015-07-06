@@ -71,3 +71,7 @@ body {
 	padding: 0;
 }
 
+.h4p_topic-comment .comment-header {
+	font-size: 110%;
+	font-weight: 600;
+}

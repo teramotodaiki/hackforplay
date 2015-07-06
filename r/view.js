@@ -193,4 +193,56 @@ $(function(){
 		});
 	}
 
+	// コメント
+	var $com =
+	$('<div>').addClass('col-md-6').append(
+		$('<div>').addClass('panel panel-default').append(
+			$('<div>').addClass('panel-body row').append(
+				$('<div>').addClass('col-md-6 comment-thumbnail').append(
+					$('<img>').addClass('h4p_thumbnail')
+				)
+			).append(
+				$('<div>').addClass('col-md-6 comment-header').append(
+					$('<img>').addClass('img-circle pull-left comment-item-padding')
+				).append(
+					$('<div>').addClass('pull-left').append(
+						$('<div>').addClass('text-muted comment-item-padding nickname')
+					).append(
+						$('<div>').addClass('comment-item-padding hashtag')
+					)
+				)
+			).append(
+				$('<div>').addClass('col-md-6 comment-body').append(
+					$('<p>').addClass('comment-item-padding')
+				)
+			).append(
+				$('<div>').addClass('col-md-6 comment-footer').append(
+					$('<p>').addClass('pull-right')
+				)
+			)
+		)
+	);
+
+	(function(item) {
+
+		var com = $com.clone(true, true);
+		com.find('.comment-thumbnail img').attr('src', item.thumbnail);
+		com.find('.comment-header img').attr('src', item.icon);
+		com.find('.nickname').text(item.nickname);
+		com.find('.hashtag').text(item.hashtag);
+		com.find('.comment-body p').text(item.message);
+		com.find('.comment-footer p').addClass(item.tag_class).text(item.tag_text);
+
+		$(this).append(com);
+
+	}).call($('.h4p_topic-comment .row'), {
+		thumbnail: '/s/thumbs/09d2a9c963322ca7f18d9580649848a6.png',
+		icon: '/m/icon_m.png',
+		nickname: 'てら',
+		hashtag: '#ハッシュタグ',
+		message: 'こんなステージ見たことないやばい！',
+		tag_class: 'comment-tag-basic',
+		tag_text: '初級'
+	});
+
 });

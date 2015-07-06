@@ -73,26 +73,6 @@
 	</div>
 	<div class="container-fluid h4p_topic-comment">
 		<div class="row">
-			<div class="col-md-6">
-				<div class="panel panel-default">
-					<div class="panel-body row">
-							<div class="col-md-6 comment-thumbnail">
-								<img class="" src="../s/thumbs/09d2a9c963322ca7f18d9580649848a6.png">
-							</div>
-							<div class="col-md-6 comment-header">
-									<img class="img-circle pull-left comment-item-padding" src="../m/icon_m.png" />
-									<b class="pull-left text-muted comment-item-padding" style="width:200px">name</b>
-									<b class="pull-left comment-item-padding" style="width:200px">#hashtag</b>
-							</div>
-							<div class="col-md-6 comment-body">
-								<p class="comment-item-padding">text</p>
-							</div>
-							<div class="col-md-6 comment-footer">
-								<p class="pull-right comment-tag-basic">初級</p>
-							</div>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 	<div id="page_anchor" class="container-fluid h4p_stagecontainer">
