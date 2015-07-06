@@ -195,7 +195,7 @@ $(function(){
 
 	// コメント
 	var $com =
-	$('<div>').addClass('col-md-6').append(
+	$('<div>').append(
 		$('<div>').addClass('panel panel-default').append(
 			$('<div>').addClass('panel-body row').append(
 				$('<div>').addClass('col-md-6 comment-thumbnail').append(
@@ -223,9 +223,51 @@ $(function(){
 		)
 	);
 
-	(function(item) {
+	[
+	{
+		thumbnail: '/s/thumbs/09d2a9c963322ca7f18d9580649848a6.png',
+		icon: '/m/icon_m.png',
+		nickname: 'てら',
+		hashtag: '#ハッシュタグ',
+		message: 'こんなステージ見たことないやばい！',
+		tag_class: 'comment-tag-basic',
+		tag_text: '初級',
+		position: 'outerleft-to-left'
+	},
+	{
+		thumbnail: '/s/thumbs/09d2a9c963322ca7f18d9580649848a6.png',
+		icon: '/m/icon_m.png',
+		nickname: 'てら',
+		hashtag: '#ハッシュタグ',
+		message: 'こんなステージ見たことないやばい！',
+		tag_class: 'comment-tag-basic',
+		tag_text: '初級',
+		position: 'left-to-center'
+	},
+	{
+		thumbnail: '/s/thumbs/09d2a9c963322ca7f18d9580649848a6.png',
+		icon: '/m/icon_m.png',
+		nickname: 'てら',
+		hashtag: '#ハッシュタグ',
+		message: 'こんなステージ見たことないやばい！',
+		tag_class: 'comment-tag-basic',
+		tag_text: '初級',
+		position: 'center-to-right'
+	},
+	{
+		thumbnail: '/s/thumbs/09d2a9c963322ca7f18d9580649848a6.png',
+		icon: '/m/icon_m.png',
+		nickname: 'てら',
+		hashtag: '#ハッシュタグ',
+		message: 'こんなステージ見たことないやばい！',
+		tag_class: 'comment-tag-basic',
+		tag_text: '初級',
+		position: 'right-to-outerright'
+	}
+	].forEach(function(item) {
 
 		var com = $com.clone(true, true);
+		com.addClass(item.position);
 		com.find('.comment-thumbnail img').attr('src', item.thumbnail);
 		com.find('.comment-header img').attr('src', item.icon);
 		com.find('.nickname').text(item.nickname);
@@ -235,14 +277,6 @@ $(function(){
 
 		$(this).append(com);
 
-	}).call($('.h4p_topic-comment .row'), {
-		thumbnail: '/s/thumbs/09d2a9c963322ca7f18d9580649848a6.png',
-		icon: '/m/icon_m.png',
-		nickname: 'てら',
-		hashtag: '#ハッシュタグ',
-		message: 'こんなステージ見たことないやばい！',
-		tag_class: 'comment-tag-basic',
-		tag_text: '初級'
-	});
+	}, $('.h4p_topic-comment'));
 
 });

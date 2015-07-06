@@ -219,3 +219,94 @@ iframe {
 	font-weight: 600;
 }
 
+/* タイムラインアニメーション(暫定) */
+/* 本番はalternate->normal,infinite->1 */
+
+.h4p_topic-comment>div {
+	position: absolute;
+	width: 52%;
+}
+
+.outerleft-to-left {
+	-webkit-animation: outerleft-to-left 1s ease-in-out 0 infinite alternate forwards;
+	-o-animation: outerleft-to-left 1s ease-in-out 0 infinite alternate forwards;
+	animation: outerleft-to-left 1s ease-in-out 0 infinite alternate forwards;
+}
+
+.left-to-center {
+	-webkit-animation: left-to-center 1s ease-in-out 0 infinite alternate forwards;
+	-o-animation: left-to-center 1s ease-in-out 0 infinite alternate forwards;
+	animation: left-to-center 1s ease-in-out 0 infinite alternate forwards;
+}
+
+.center-to-right {
+	-webkit-animation: center-to-right 1s ease-in-out 0 infinite alternate forwards;
+	-o-animation: center-to-right 1s ease-in-out 0 infinite alternate forwards;
+	animation: center-to-right 1s ease-in-out 0 infinite alternate forwards;
+}
+
+.right-to-outerright {
+	-webkit-animation: right-to-outerright 1s ease-in-out 0 infinite alternate forwards;
+	-o-animation: right-to-outerright 1s ease-in-out 0 infinite alternate forwards;
+	animation: right-to-outerright 1s ease-in-out 0 infinite alternate forwards;
+}
+
+@-webkit-keyframes outerleft-to-left {
+	from {
+		left: -75%;
+		-webkit-transform: scale(0.9, 0.9);
+		transform: scale(0.9, 0.9);
+		opacity: 0.4;
+	}
+	to {
+		left: -25%;
+		-webkit-transform: scale(0.9, 0.9);
+		transform: scale(0.9, 0.9);
+		opacity: 0.4;
+	}
+}
+
+@-webkit-keyframes left-to-center {
+	from {
+		left: -25%;
+		-webkit-transform: scale(0.9, 0.9);
+		transform: scale(0.9, 0.9);
+		opacity: 0.4;
+	}
+	to {
+		left: 25%;
+		-webkit-transform: scale(1.0, 1.0);
+		transform: scale(1.0, 1.0);
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes center-to-right {
+	from {
+		left: 25%;
+		-webkit-transform: scale(1.0, 1.0);
+		transform: scale(1.0, 1.0);
+		opacity: 1;
+	}
+	to {
+		left: 75%;
+		-webkit-transform: scale(0.9, 0.9);
+		transform: scale(0.9, 0.9);
+		opacity: 0.4;
+	}
+}
+
+@-webkit-keyframes right-to-outerright {
+	from {
+		left: 75%;
+		-webkit-transform: scale(0.9, 0.9);
+		transform: scale(0.9, 0.9);
+		opacity: 0.4;
+	}
+	to {
+		left: 125%;
+		-webkit-transform: scale(0.9, 0.9);
+		transform: scale(0.9, 0.9);
+		opacity: 0.4;
+	}
+}

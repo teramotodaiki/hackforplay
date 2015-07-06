@@ -71,9 +71,7 @@
 	  		</div>
 		</div>
 	</div>
-	<div class="container-fluid h4p_topic-comment">
-		<div class="row">
-		</div>
+	<div class="h4p_topic-comment">
 	</div>
 	<div id="page_anchor" class="container-fluid h4p_stagecontainer">
 		<div class="row">

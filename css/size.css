@@ -184,6 +184,10 @@ header {
 	margin: 0 8px;
 }
 
+.h4p_topic-comment {
+	height: 270px;
+}
+
 .comment-item-padding {
 	padding-left: 6px;
 	padding-right: 6px;
