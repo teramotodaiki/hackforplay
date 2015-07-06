@@ -177,6 +177,7 @@ iframe {
 	table-layout: fixed;
 }
 
+
 /* アニメーション */
 
 .h4p_item-transform {
@@ -206,3 +207,15 @@ iframe {
 	z-index: 2;
 	box-shadow: 0px 10px 20px 4px rgba(0,0,0,0.5);
 }
+
+/* コメントタグ(暫定) */
+
+.comment-tag-basic {
+	border: 1px solid rgb(5, 135, 255);
+	border-radius: 4px;
+	background-color: rgb(190, 226, 251);
+	color: rgb(5, 135, 255);
+	padding: 3px 16px;
+	font-weight: 600;
+}
+
