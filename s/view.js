@@ -94,6 +94,15 @@ $(function(){
 
 	});
 
+	$('.h4p_my-comment .h4p_comment-trash').on('click', function(event) {
+
+		// コメントの削除
+		var message = $('.h4p_my-comment .comment-message').text();
+		if (confirm(message + '\n\nこのメッセージを さくじょ します')) {
+			alert('削除！');
+		}
+	});
+
 	// HackforPlay RePlay (then externalizing the code)
 	// 読み込み時の処理
 	var jsEditor = CodeMirror.fromTextArea($('textarea[name=restaging_code]').get(0), {

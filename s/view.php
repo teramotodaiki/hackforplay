@@ -263,18 +263,18 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 					<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
 				</button>
 			</div>
-			<div class="col-sm-12 h4p_comment-edit">
+			<div class="col-sm-12 h4p_my-comment">
 				<h4>おくったメッセージ</h4>
 				<div class="row">
 					<div class="col-sm-3">
 						<img class="img-responsive" src="../s/thumbs/09d2a9c963322ca7f18d9580649848a6.png" />
 					</div>
 					<div class="col-sm-9">
-						<p class="label label-success">Beginners // かんたん</p>
-						<p>メッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージ</p>
+						<p class="label label-success comment-tag">Beginners // かんたん</p>
+						<p class="comment-message">メッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージ</p>
 					</div>
-					<button type="button" class="btn btn-link pull-right h4p_edit-start">
-						<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					<button type="button" class="btn btn-link pull-right h4p_comment-trash">
+						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 					</button>
 				</div>
 			</div>

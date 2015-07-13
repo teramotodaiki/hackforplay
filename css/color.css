@@ -22,7 +22,7 @@ header {
 
 .h4p_info,
 .h4p_restaging,
-.h4p_comment-edit {
+.h4p_my-comment {
 	background-color: rgb(255,255,255);
 }
 
@@ -52,7 +52,7 @@ header.navbar {
 .h4p_info,
 .h4p_restaging,
 .h4p_mapTip,
-.h4p_comment-edit {
+.h4p_my-comment {
 	border: 1px solid rgb(204, 204, 204);
 }
 
