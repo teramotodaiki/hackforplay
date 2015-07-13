@@ -58,6 +58,23 @@ $(function(){
 		}
 	});
 
+	// leave comment then take
+	$('#commentModal').on('show.bs.modal', function () {
+		// canvas to image
+		var game = $(".h4p_game>iframe").get(0);
+		var source = "saveImage();";
+		game.contentWindow.postMessage(source, '/');
+	});
+
+	$('#commentModal #leave-comment').on('click', function(event) {
+
+		var tag_value = $('#commentModal input[name="comment-tag"]').val();
+		var tag_message = $('#commentModal #comment-message').val();
+
+		// submit
+
+	});
+
 	// HackforPlay RePlay (then externalizing the code)
 	// 読み込み時の処理
 	var jsEditor = CodeMirror.fromTextArea($('textarea[name=restaging_code]').get(0), {
