@@ -26,9 +26,10 @@ try {
 
 	// すでにコメントされていないか？
 	if ($session_userid) {
-		$stmt			= $dbh->prepare('SELECT "ID" FROM "CommentData" WHERE "StageID"=:stageid AND "UserID"=:userid');
+		$stmt			= $dbh->prepare('SELECT "ID" FROM "CommentData" WHERE "StageID"=:stageid AND "UserID"=:userid AND "State"!=:removed');
 		$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 		$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+		$stmt->bindValue(":removed", 'removed', PDO::PARAM_STR);
 		$stmt->execute();
 		$old_comment	= $stmt->fetch();
 
@@ -64,12 +65,13 @@ try {
 		$timezone	= '+00:00';
 	}
 
-	$stmt		= $dbh->prepare('INSERT INTO "CommentData" ("StageID","UserID","Message","Thumbnail","Registered") VALUES(:stageid,:userid,:message,:thumbnail,:gmt)');
+	$stmt		= $dbh->prepare('INSERT INTO "CommentData" ("StageID","UserID","Message","Thumbnail","State","Registered") VALUES(:stageid,:userid,:message,:thumbnail,:published,:gmt)');
 
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":message", $message, PDO::PARAM_STR);
 	$stmt->bindValue(":thumbnail", $thumb_url, PDO::PARAM_STR);
+	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
 	$flag		= $stmt->execute();
 
