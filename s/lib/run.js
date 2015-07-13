@@ -10,6 +10,18 @@ window.addEventListener('load', function() {
 
 	// ====> 改造コードへ
 	Hack.restagingCode =
+	"/**\n"+
+	" * ようこそ クリエイターさん！\n"+
+	" *\n"+
+	" * このせかいでは、あなたがゲームをつくるクリエイターです\n"+
+	" * 「#1」や「#2」…をみつけたら、ぜひ かきかえてみてください！\n"+
+	" *\n"+
+	" * かきかえたら、「ステージ改造コードを実行」ボタンをおしてみましょう\n"+
+	" *\n"+
+	" * Let's create your game!!\n"+
+	" *\n"+
+	"*/\n"+
+	"\n"+
 	"game.preload(['enchantjs/x2/map2.png', 'enchantjs/x1.5/chara0.png', 'enchantjs/monster1.gif', 'hackforplay/enchantbook.png']);\n"+
 	"\n"+
 	"// ゲームが開始されたときに呼ばれるイベント\n"+
