@@ -72,7 +72,6 @@ $(function(){
 
 		var tag_value = $('#commentModal input[name="comment-tag"]').val();
 		var message_value = $('#commentModal #comment-message').val();
-
 		var loading = $(this).button('loading');
 
 		// submit
@@ -94,12 +93,38 @@ $(function(){
 
 	});
 
+	// コメントを取得
+	$.post('../stage/getmycommentbyid.php', {
+		'stageid' : getParam('id'),
+		'attendance-token' : sessionStorage.getItem('attendance-token')
+	} , function(data, textStatus, xhr) {
+
+		switch(data) {
+			case 'parse-error':
+			case '':
+				break;
+			case 'no-session':
+			case 'not-found':
+				$('.h4p_comment-add').removeClass('hidden');
+				break;
+			default:
+				var result = JSON.parse(data);
+
+				var $comment = $('.h4p_my-comment').removeClass('hidden');
+				$comment.find('.comment-tag').text('__tag__');
+				$comment.find('.comment-message').text(result.Message);
+				$comment.find('.comment-thumb').attr('src', result.Thumbnail);
+				break;
+		}
+
+	});
+
+
 	$('.h4p_my-comment .h4p_comment-trash').on('click', function(event) {
 
 		// コメントの削除
 		var message = $('.h4p_my-comment .comment-message').text();
 		if (confirm(message + '\n\nこのメッセージを さくじょ します')) {
-			alert('削除！');
 		}
 	});
 

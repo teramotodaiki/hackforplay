@@ -258,16 +258,16 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 				</button>
 				<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
 			</div>
-			<div class="col-sm-offset-11 col-sm-1 h4p_comment-add">
+			<div class="col-sm-offset-11 col-sm-1 h4p_comment-add hidden">
 				<button type="button" class="btn btn-link btn-lg" data-toggle="modal" data-target="#commentModal">
 					<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
 				</button>
 			</div>
-			<div class="col-sm-12 h4p_my-comment">
+			<div class="col-sm-12 h4p_my-comment hidden">
 				<h4>おくったメッセージ</h4>
 				<div class="row">
 					<div class="col-sm-3">
-						<img class="img-responsive" src="../s/thumbs/09d2a9c963322ca7f18d9580649848a6.png" />
+						<img class="img-responsive comment-thumb" src="" />
 					</div>
 					<div class="col-sm-9">
 						<p class="label label-success comment-tag">Beginners // かんたん</p>
