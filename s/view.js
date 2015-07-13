@@ -111,6 +111,7 @@ $(function(){
 				var result = JSON.parse(data);
 
 				var $comment = $('.h4p_my-comment').removeClass('hidden');
+				$comment.find('.h4p_comment-trash').data('id', result.ID);
 				$comment.find('.comment-tag').text('__tag__');
 				$comment.find('.comment-message').text(result.Message);
 				$comment.find('.comment-thumb').attr('src', result.Thumbnail);
@@ -125,6 +126,27 @@ $(function(){
 		// コメントの削除
 		var message = $('.h4p_my-comment .comment-message').text();
 		if (confirm(message + '\n\nこのメッセージを さくじょ します')) {
+
+			// 削除の実行
+			$.post('../stage/removecommentbyid.php', {
+				'comment_id': $('.h4p_my-comment .h4p_comment-trash').data('id'),
+				'attendance-token' : sessionStorage.getItem('attendance-token')
+			} , function(data, textStatus, xhr) {
+				console.log($('.h4p_my-comment .h4p_comment-trash').data('id'), data);
+				switch (data) {
+					case 'no-session':
+						$('#signinModal').modal('show');
+						break;
+					case 'not-found':
+					case 'database-error':
+						alert('エラー\nさくじょ できなかった');
+						break;
+					case 'success':
+						$('.h4p_comment-add').removeClass('hidden');
+						$('.h4p_my-comment').addClass('hidden');
+						break;
+				}
+			});
 		}
 	});
 
