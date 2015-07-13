@@ -187,7 +187,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	    		<div class="modal-footer">
 	        		<p class="alert alert-warning">特定の個人を指すキーワードや暴言などを記入すると、削除されることがあります。</p>
 	        		<button type="button" class="btn btn-default" data-dismiss="modal">とじる</button>
-	       			<button type="submit" class="btn btn-primary" id="leave-comment" >コメントする</button>
+	       			<button type="submit" class="btn btn-primary" id="leave-comment" data-loading-text="送信中...">コメントする</button>
 	    		</div>
 			</div>
 		</div>

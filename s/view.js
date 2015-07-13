@@ -64,14 +64,33 @@ $(function(){
 		var game = $(".h4p_game>iframe").get(0);
 		var source = "saveImage();";
 		game.contentWindow.postMessage(source, '/');
+
+		$(this).find('#leave-comment').button('reset');
 	});
 
 	$('#commentModal #leave-comment').on('click', function(event) {
 
 		var tag_value = $('#commentModal input[name="comment-tag"]').val();
-		var tag_message = $('#commentModal #comment-message').val();
+		var message_value = $('#commentModal #comment-message').val();
+
+		var loading = $(this).button('loading');
 
 		// submit
+		var timezone = new Date().getTimezoneString();
+		$.post('../stage/addcommentandtag.php',{
+			'stageid' : getParam('id'),
+			'message': message_value,
+			'tags': tag_value,
+			'thumb': sessionStorage.getItem('image') || null,
+			'timezone': timezone,
+			'attendance-token': sessionStorage.getItem('attendance-token')
+		}, function(data, textStatus, xhr) {
+
+			loading.button('reset');
+
+			console.log(data, textStatus);
+
+		});
 
 	});
 
