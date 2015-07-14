@@ -8,6 +8,7 @@ information_of_comments:
 	values : [
 		ID : このコメントのID,
 		StageID : コメントしたステージのID,
+		Hashtag : コメントのハッシュタグ,
 		Message : コメントの内容,
 		Thumbnail : コメントのサムネイル画像のURL,
 		Registered : コメントをした日時(GMT+Timezone)
@@ -97,6 +98,23 @@ try {
 			$result[$key]['Nickname'] = $result[$key]['Gender'] = $result[$key]['ProfileImageURL'] = NULL;
 		}
 	}
+
+
+	// ハッシュタグを作成 (ハッシュタグに使用できない文字を削る)
+	$stmt	= $dbh->prepare('SELECT "Title" FROM "Stage" WHERE "ID"=:stage_id');
+	foreach ($result as $key => $value) {
+
+		$stmt->bindValue(":stage_id", $value['StageID'], PDO::PARAM_INT);
+		$stmt->execute();
+		$stage_title				= $stmt->fetch(PDO::FETCH_COLUMN, 0);
+		$pattern					= '/^(0-9A-Za-z〃々ぁ-ゖ゛-ゞァ-ヺーヽヾ一-龥０-９Ａ-Ｚａ-ｚｦ-ﾟ)/';
+		$hashtag					= preg_replace($pattern, '', $stage_title);
+		if ($hashtag === '') {
+			$hashtag 				= 'hackforplay';
+		}
+		$result[$key]['Hashtag']	= '#' . $hashtag;
+	}
+
 
 	// 出力
 	$information_of_stages = new stdClass();

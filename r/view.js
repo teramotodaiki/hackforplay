@@ -199,7 +199,9 @@ $(function(){
 		$('<div>').addClass('panel panel-default').append(
 			$('<div>').addClass('panel-body row').append(
 				$('<div>').addClass('col-md-6 comment-thumbnail').append(
-					$('<img>').addClass('h4p_thumbnail')
+					$('<a>').attr('target', '_blank').append(
+						$('<img>').addClass('h4p_thumbnail')
+					)
 				)
 			).append(
 				$('<div>').addClass('col-md-6 comment-header').append(
@@ -208,7 +210,9 @@ $(function(){
 					$('<div>').addClass('pull-left').append(
 						$('<div>').addClass('text-muted comment-item-padding nickname')
 					).append(
-						$('<div>').addClass('comment-item-padding hashtag')
+						$('<div>').addClass('comment-item-padding').append(
+							$('<a>').addClass('hashtag').attr('target', '_blank')
+						)
 					)
 				)
 			).append(
@@ -245,6 +249,7 @@ $(function(){
 						default: com.addClass('hidden'); break;
 					}
 					com.data('index', index);
+					com.find('.comment-thumbnail a').attr('href', '/s?id=' + item.StageID);
 					com.find('.comment-thumbnail img').attr('src', item.Thumbnail);
 					if (item.Nickname) {
 						if (item.ProfileImageURL) {
@@ -254,7 +259,7 @@ $(function(){
 						}
 						com.find('.nickname').text(item.Nickname);
 					}
-					com.find('.hashtag').text(item.hashtag);
+					com.find('.hashtag').text(item.Hashtag).attr('href', '/s?id=' + item.StageID);
 					com.find('.comment-body p').text(item.Message);
 					if (item.Tags[0]) {
 						com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);

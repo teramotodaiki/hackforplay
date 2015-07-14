@@ -16,7 +16,7 @@ try {
 	$stageid	= filter_input(INPUT_POST, 'stageid', FILTER_VALIDATE_INT);
 
 	// ステージが存在するか？
-	$stmt	= $dbh->prepare('SELECT "ID" FROM "Stage" WHERE "ID"=:stageid');
+	$stmt	= $dbh->prepare('SELECT "Title" FROM "Stage" WHERE "ID"=:stageid');
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 	$stmt->execute();
 	$stage	= $stmt->fetch();
