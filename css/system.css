@@ -28,6 +28,11 @@
 	width: 12px;
 }
 
+.overflow-x-hidden {
+	overflow-x: hidden;
+	position: relative;
+}
+
 .h4p_stagelist,
 .h4p_bar-left,
 .h4p_bar-right {

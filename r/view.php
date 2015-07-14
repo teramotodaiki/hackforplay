@@ -14,7 +14,7 @@
 	<meta property="og:type" content="game"/>
 	<meta property="og:site_name" content="あそべるプログラミング HackforPlay"/>
 </head>
-<body class="">
+<body>
 	<?php require_once '../analyticstracking.php' ?>
 	<?php require_once '../fb-root.php' ?>
 	<?php require_once '../sendattendance.php'; ?>
@@ -71,7 +71,7 @@
 	  		</div>
 		</div>
 	</div>
-	<div class="h4p_topic-comment">
+	<div class="h4p_topic-comment overflow-x-hidden">
 	</div>
 	<div id="page_anchor" class="container-fluid h4p_stagecontainer">
 		<div class="row">
