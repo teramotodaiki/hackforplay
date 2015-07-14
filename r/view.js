@@ -217,66 +217,47 @@ $(function(){
 				)
 			).append(
 				$('<div>').addClass('col-md-6 comment-footer').append(
-					$('<p>').addClass('pull-right')
+					$('<p>').addClass('label pull-right')
 				)
 			)
 		)
 	);
 
-	[
-	{
-		thumbnail: '/s/thumbs/09d2a9c963322ca7f18d9580649848a6.png',
-		icon: '/m/icon_m.png',
-		nickname: 'てら',
-		hashtag: '#ハッシュタグ',
-		message: 'こんなステージ見たことないやばい！',
-		tag_class: 'comment-tag-basic',
-		tag_text: '初級',
-		position: 'outerleft-to-left'
-	},
-	{
-		thumbnail: '/s/thumbs/09d2a9c963322ca7f18d9580649848a6.png',
-		icon: '/m/icon_m.png',
-		nickname: 'てら',
-		hashtag: '#ハッシュタグ',
-		message: 'こんなステージ見たことないやばい！',
-		tag_class: 'comment-tag-basic',
-		tag_text: '初級',
-		position: 'left-to-center'
-	},
-	{
-		thumbnail: '/s/thumbs/09d2a9c963322ca7f18d9580649848a6.png',
-		icon: '/m/icon_m.png',
-		nickname: 'てら',
-		hashtag: '#ハッシュタグ',
-		message: 'こんなステージ見たことないやばい！',
-		tag_class: 'comment-tag-basic',
-		tag_text: '初級',
-		position: 'center-to-right'
-	},
-	{
-		thumbnail: '/s/thumbs/09d2a9c963322ca7f18d9580649848a6.png',
-		icon: '/m/icon_m.png',
-		nickname: 'てら',
-		hashtag: '#ハッシュタグ',
-		message: 'こんなステージ見たことないやばい！',
-		tag_class: 'comment-tag-basic',
-		tag_text: '初級',
-		position: 'right-to-outerright'
-	}
-	].forEach(function(item) {
+	$.post('../stage/fetchrecentcomments.php', {
+		'start' : 0,
+		'length' : 10,
+		'attendance-token' : sessionStorage.getItem('attendance-token')
+	} , function(data, textStatus, xhr) {
 
-		var com = $com.clone(true, true);
-		com.addClass(item.position);
-		com.find('.comment-thumbnail img').attr('src', item.thumbnail);
-		com.find('.comment-header img').attr('src', item.icon);
-		com.find('.nickname').text(item.nickname);
-		com.find('.hashtag').text(item.hashtag);
-		com.find('.comment-body p').text(item.message);
-		com.find('.comment-footer p').addClass(item.tag_class).text(item.tag_text);
+		switch(data) {
+			case 'parse-error':
+				break;
+			default:
+				var result = JSON.parse(data);
+				result.values.forEach(function(item, index, array) {
 
-		$(this).append(com);
+					var com = $com.clone(true, true);
+					switch (index) {
+						case 0: com.addClass('right-to-center'); break;
+						case 1: com.addClass('outerright-to-right'); break;
+						case array.length - 1: com.addClass('center-to-left'); break;
+						case array.length - 2: com.addClass('left-to-outerleft');　break;
+						default: com.addClass('hidden'); break;
+					}
+					com.data('index', index);
+					com.find('.comment-thumbnail img').attr('src', item.Thumbnail);
+					// com.find('.comment-header img').attr('src', item.icon);
+					// com.find('.nickname').text(item.nickname);
+					// com.find('.hashtag').text(item.hashtag);
+					com.find('.comment-body p').text(item.Message);
+					if (item.Tags[0]) {
+						com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
+					}
+					$(this).append(com);
 
-	}, $('.h4p_topic-comment'));
+				}, $('.h4p_topic-comment'));
+				break;
+		}
+	});
 
 });

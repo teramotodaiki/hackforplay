@@ -219,36 +219,36 @@ iframe {
 	font-weight: 600;
 }
 
-/* タイムラインアニメーション(暫定) */
-/* 本番はalternate->normal,infinite->1 */
+/* タイムラインアニメーション */
 
 .h4p_topic-comment>div {
 	position: absolute;
 	width: 52%;
 }
 
+/* ====> */
 .outerleft-to-left {
-	-webkit-animation: outerleft-to-left 1s ease-in-out 0 infinite alternate forwards;
-	-o-animation: outerleft-to-left 1s ease-in-out 0 infinite alternate forwards;
-	animation: outerleft-to-left 1s ease-in-out 0 infinite alternate forwards;
+	-webkit-animation: outerleft-to-left 1s ease-in-out 0 1 normal forwards;
+	-o-animation: outerleft-to-left 1s ease-in-out 0 1 normal forwards;
+	animation: outerleft-to-left 1s ease-in-out 0 1 normal forwards;
 }
 
 .left-to-center {
-	-webkit-animation: left-to-center 1s ease-in-out 0 infinite alternate forwards;
-	-o-animation: left-to-center 1s ease-in-out 0 infinite alternate forwards;
-	animation: left-to-center 1s ease-in-out 0 infinite alternate forwards;
+	-webkit-animation: left-to-center 1s ease-in-out 0 1 normal forwards;
+	-o-animation: left-to-center 1s ease-in-out 0 1 normal forwards;
+	animation: left-to-center 1s ease-in-out 0 1 normal forwards;
 }
 
 .center-to-right {
-	-webkit-animation: center-to-right 1s ease-in-out 0 infinite alternate forwards;
-	-o-animation: center-to-right 1s ease-in-out 0 infinite alternate forwards;
-	animation: center-to-right 1s ease-in-out 0 infinite alternate forwards;
+	-webkit-animation: center-to-right 1s ease-in-out 0 1 normal forwards;
+	-o-animation: center-to-right 1s ease-in-out 0 1 normal forwards;
+	animation: center-to-right 1s ease-in-out 0 1 normal forwards;
 }
 
 .right-to-outerright {
-	-webkit-animation: right-to-outerright 1s ease-in-out 0 infinite alternate forwards;
-	-o-animation: right-to-outerright 1s ease-in-out 0 infinite alternate forwards;
-	animation: right-to-outerright 1s ease-in-out 0 infinite alternate forwards;
+	-webkit-animation: right-to-outerright 1s ease-in-out 0 1 normal forwards;
+	-o-animation: right-to-outerright 1s ease-in-out 0 1 normal forwards;
+	animation: right-to-outerright 1s ease-in-out 0 1 normal forwards;
 }
 
 @-webkit-keyframes outerleft-to-left {
@@ -305,6 +305,91 @@ iframe {
 	}
 	to {
 		left: 125%;
+		-webkit-transform: scale(0.9, 0.9);
+		transform: scale(0.9, 0.9);
+		opacity: 0.4;
+	}
+}
+
+/* <==== */
+.left-to-outerleft {
+	-webkit-animation: left-to-outerleft 1s ease-in-out 0 1 normal forwards;
+	-o-animation: left-to-outerleft 1s ease-in-out 0 1 normal forwards;
+	animation: left-to-outerleft 1s ease-in-out 0 1 normal forwards;
+}
+
+.center-to-left {
+	-webkit-animation: center-to-left 1s ease-in-out 0 1 normal forwards;
+	-o-animation: center-to-left 1s ease-in-out 0 1 normal forwards;
+	animation: center-to-left 1s ease-in-out 0 1 normal forwards;
+}
+
+.right-to-center {
+	-webkit-animation: right-to-center 1s ease-in-out 0 1 normal forwards;
+	-o-animation: right-to-center 1s ease-in-out 0 1 normal forwards;
+	animation: right-to-center 1s ease-in-out 0 1 normal forwards;
+}
+
+.outerright-to-right {
+	-webkit-animation: outerright-to-right 1s ease-in-out 0 1 normal forwards;
+	-o-animation: outerright-to-right 1s ease-in-out 0 1 normal forwards;
+	animation: outerright-to-right 1s ease-in-out 0 1 normal forwards;
+}
+
+@-webkit-keyframes left-to-outerleft {
+	from {
+		left: -25%;
+		-webkit-transform: scale(0.9, 0.9);
+		transform: scale(0.9, 0.9);
+		opacity: 0.4;
+	}
+	to {
+		left: -75%;
+		-webkit-transform: scale(0.9, 0.9);
+		transform: scale(0.9, 0.9);
+		opacity: 0.4;
+	}
+}
+
+@-webkit-keyframes center-to-left {
+	from {
+		left: 25%;
+		-webkit-transform: scale(1.0, 1.0);
+		transform: scale(1.0, 1.0);
+		opacity: 1;
+	}
+	to {
+		left: -25%;
+		-webkit-transform: scale(0.9, 0.9);
+		transform: scale(0.9, 0.9);
+		opacity: 0.4;
+	}
+}
+
+@-webkit-keyframes right-to-center {
+	from {
+		left: 75%;
+		-webkit-transform: scale(0.9, 0.9);
+		transform: scale(0.9, 0.9);
+		opacity: 0.4;
+	}
+	to {
+		left: 25%;
+		-webkit-transform: scale(1.0, 1.0);
+		transform: scale(1.0, 1.0);
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes outerright-to-right {
+	from {
+		left: 125%;
+		-webkit-transform: scale(0.9, 0.9);
+		transform: scale(0.9, 0.9);
+		opacity: 0.4;
+	}
+	to {
+		left: 75%;
 		-webkit-transform: scale(0.9, 0.9);
 		transform: scale(0.9, 0.9);
 		opacity: 0.4;
