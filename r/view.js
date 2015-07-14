@@ -230,8 +230,9 @@ $(function(){
 			$('.h4p_topic-comment .left-to-center').data('index') :
 			$('.h4p_topic-comment .right-to-center').data('index');
 		var offset = $(this).data('index') - centerIndex;
-		var length = $('.h4p_topic-comment div').length;
+		var length = $('.h4p_topic-comment>div').length;
 
+		console.log(offset, length);
 		switch (offset) {
 			case -1:
 			case length - 1:
@@ -355,11 +356,11 @@ $(function(){
 		});
 
 		(function autoMove() {
-			console.log(hoverFlag, $('.h4p_topic-comment div').length > 0);
-			if (!hoverFlag && $('.h4p_topic-comment div').length > 0) {
+			console.log(hoverFlag, $('.h4p_topic-comment>div').length > 0);
+			if (!hoverFlag && $('.h4p_topic-comment>div').length > 0) {
 				moveCommentList('left');
 			}
-			setTimeout(autoMove, 3000);
+			setTimeout(autoMove, 4000);
 		})();
 
 	})();
