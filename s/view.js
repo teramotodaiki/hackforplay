@@ -58,6 +58,46 @@ $(function(){
 		}
 	});
 
+	// tag list view
+	$.post('../stage/getaglist.php', {
+
+	} , function(data, textStatus, xhr) {
+		switch (data) {
+			case '':
+			case 'parse-error':
+				$('.h4p_stage-tag-list').append('Sorry, But load failed // よみこみに しっぱいしました ごめんなさい');
+				break;
+			default:
+				var result = JSON.parse(data);
+
+				// 先頭が偏らないようランダムを加える (swap)
+				var headIndex = Math.random() * result.values.length >> 0;
+				console.log(headIndex);
+				var tmp = result.values[0];
+				result.values[0] = result.values[headIndex];
+				result.values[headIndex] = tmp;
+
+				result.values.forEach(function(item) {
+
+					$(this).append(
+						$('<label>').addClass('radio-inline').append(
+							$('<input>').attr({
+								'type': 'radio',
+								'name': 'comment-tag'
+							}).val(item.IdentifierString)
+						).append(
+							$('<p>').addClass('label').text(item.DisplayString).css('background-color', item.LabelColor)
+						)
+					);
+
+				}, $('.h4p_stage-tag-list'));
+
+				$('.h4p_stage-tag-list input').first().attr('checked', true);
+				console.log($('.h4p_stage-tag-list input').first());
+				break;
+		}
+	});
+
 	// leave comment then take
 	$('#commentModal').on('show.bs.modal', function () {
 		// canvas to image
@@ -112,7 +152,7 @@ $(function(){
 
 				var $comment = $('.h4p_my-comment').removeClass('hidden');
 				$comment.find('.h4p_comment-trash').data('id', result.ID);
-				$comment.find('.comment-tag').text('__tag__');
+				$comment.find('.comment-tag').text(result.Tags[0].DisplayString).css('background-color', result.Tags[0].LabelColor);
 				$comment.find('.comment-message').text(result.Message);
 				$comment.find('.comment-thumb').attr('src', result.Thumbnail);
 				break;

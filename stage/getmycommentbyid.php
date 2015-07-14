@@ -10,6 +10,11 @@ information_of_comment:
 	Message : コメントの内容,
 	Thumbnail : コメントのサムネイル画像のURL,
 	Registered : コメントをした日時(GMT+Timezone)
+	Tags : [
+		IdentifierString : タグの識別子
+		DisplayString : タグをラベルとして表示する場合の文字
+		LabelColor : タグをラベルとして表示する場合の背景色
+	],,,
 }
 */
 
@@ -46,6 +51,12 @@ try {
 		// コメントしていない
 		exit('not-found');
 	}
+
+	// タグを取得
+	$stmt				= $dbh->prepare('SELECT d."IdentifierString",d."DisplayString",d."LabelColor" FROM "StageTagData" AS d INNER JOIN "StageTagMap" AS m ON d."ID"=m."TagID" WHERE m."CommentID"=:comment_id');
+	$stmt->bindValue(":comment_id", $comment['ID'], PDO::PARAM_INT);
+	$stmt->execute();
+	$comment['Tags']	= $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 	// JSONで返す
 	$json	= json_encode($comment);

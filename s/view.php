@@ -163,18 +163,8 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 			        	</div>
 			        	<div class="form-group">
 			        		<p class="control-label"><b>ステージのタグ:</b></p>
-			        		<label class="radio-inline">
-								<input type="radio" name="comment-tag" value="beginner" checked>
-								<p class="label label-success">Beginners // かんたん</p>
-							</label>
-			        		<label class="radio-inline">
-								<input type="radio" name="comment-tag" value="addicted">
-								<p class="label label-primary">Addicted // ハマる</p>
-							</label>
-			        		<label class="radio-inline">
-								<input type="radio" name="comment-tag" value="fullscale">
-								<p class="label label-default">Full-scale // ほんかくてき</p>
-							</label>
+			        		<div class="h4p_stage-tag-list">
+			        		</div>
 			        		<p id="comment-alert-tag" class="alert alert-danger hidden">タグをえらんでください。</p>
 			        	</div>
 			        	<div class="form-group">
