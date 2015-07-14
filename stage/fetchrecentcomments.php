@@ -15,7 +15,10 @@ information_of_comments:
 			IdentifierString : タグの識別子
 			DisplayString : タグをラベルとして表示する場合の文字
 			LabelColor : タグをラベルとして表示する場合の背景色
-		](,,,[])
+		](,,,[]),
+		Nickname : ユーザーのニックネーム (or NULL),
+		Gender : ユーザーの性別,
+		ProfileImageURL : ユーザーのアイコン画像のURL
 	](,,,[])
 }
 */
@@ -35,10 +38,10 @@ try {
 		$fetch_start	= 0;
 	}
 
-	// ステージ一覧を取得
+	// コメント一覧を取得
 	// SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
 	$result = array();
-	$stmt	= $dbh->prepare('SELECT "ID","StageID","Message","Thumbnail","Registered" FROM "CommentData" WHERE "State" IN (:published, :rejected) ORDER BY "Registered" DESC');
+	$stmt	= $dbh->prepare('SELECT "ID","StageID","UserID","Message","Thumbnail","Registered" FROM "CommentData" WHERE "State" IN (:published, :rejected) ORDER BY "Registered" DESC');
 	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 	$stmt->bindValue(":rejected", 'rejected', PDO::PARAM_STR);
 	$stmt->execute();
@@ -71,6 +74,27 @@ try {
 		$result[$key]['Tags']	= array();
 		foreach ($tag_id_list as $index => $tag_id) {
 			array_push($result[$key]['Tags'], isset($tag_value_list[$tag_id]) ? $tag_value_list[$tag_id][0] : array());
+		}
+	}
+
+	// ユーザー情報を取得
+	$stmt	= $dbh->prepare('SELECT "Nickname","Gender","ProfileImageURL" FROM "User" WHERE "ID"=:user_id');
+	foreach ($result as $key => $value) {
+
+		if ($value['UserID']) {
+
+			$stmt->bindValue(":user_id", $value['UserID'], PDO::PARAM_INT);
+			$stmt->execute();
+			$user	= $stmt->fetch(PDO::FETCH_ASSOC);
+
+			if ($user) {
+				$result[$key]['Nickname'] = $user['Nickname'];
+				$result[$key]['Gender'] = $user['Gender'];
+				$result[$key]['ProfileImageURL'] = $user['ProfileImageURL'];
+			}
+
+		} else {
+			$result[$key]['Nickname'] = $result[$key]['Gender'] = $result[$key]['ProfileImageURL'] = NULL;
 		}
 	}
 

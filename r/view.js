@@ -246,9 +246,15 @@ $(function(){
 					}
 					com.data('index', index);
 					com.find('.comment-thumbnail img').attr('src', item.Thumbnail);
-					// com.find('.comment-header img').attr('src', item.icon);
-					// com.find('.nickname').text(item.nickname);
-					// com.find('.hashtag').text(item.hashtag);
+					if (item.Nickname) {
+						if (item.ProfileImageURL) {
+							$('.comment-header img').attr('src', item.ProfileImageURL);
+						} else {
+							$('.comment-header img').attr('src', item.Gender === 'male' ? '/m/icon_m.png' : '/m/icon_w.png');
+						}
+						com.find('.nickname').text(item.Nickname);
+					}
+					com.find('.hashtag').text(item.hashtag);
 					com.find('.comment-body p').text(item.Message);
 					if (item.Tags[0]) {
 						com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
