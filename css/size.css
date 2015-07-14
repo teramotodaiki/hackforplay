@@ -63,6 +63,7 @@
 	height: 36px;
 }
 
+.h4p_topic-comment>div,
 .h4p_topic-comment .panel-body {
 	height: 240px;
 }
@@ -186,8 +187,13 @@ header {
 }
 
 .h4p_topic-comment {
-	height: 270px;
+	min-height: 270px;
 	width: 100%;
+	padding-top: 15px;
+}
+
+.h4p_topic-comment .panel-body {
+	margin: 0;
 }
 
 .comment-item-padding {
