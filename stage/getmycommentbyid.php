@@ -53,7 +53,7 @@ try {
 	}
 
 	// タグを取得
-	$stmt				= $dbh->prepare('SELECT d."IdentifierString",d."DisplayString",d."LabelColor" FROM "StageTagData" AS d INNER JOIN "StageTagMap" AS m ON d."ID"=m."TagID" WHERE m."CommentID"=:comment_id');
+	$stmt				= $dbh->prepare('SELECT d."IdentifierString",d."DisplayString",d."LabelColor" FROM "StageTagData" AS d INNER JOIN "StageTagMap" AS m ON d."ID"=m."TagID" WHERE m."CommentID"=:comment_id ');
 	$stmt->bindValue(":comment_id", $comment['ID'], PDO::PARAM_INT);
 	$stmt->execute();
 	$comment['Tags']	= $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -113,6 +113,7 @@ $(function(){
 		var tag_value = $('#commentModal input[name="comment-tag"]').val();
 		var message_value = $('#commentModal #comment-message').val();
 		var loading = $(this).button('loading');
+		$('#commentModal #comment-alert-message').addClass('hidden');
 
 		// submit
 		var timezone = new Date().getTimezoneString();
@@ -124,42 +125,61 @@ $(function(){
 			'timezone': timezone,
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
-
-			loading.button('reset');
-
-			console.log(data, textStatus);
-
+			console.log(data);
+			switch (data) {
+				case 'missing-message':
+					$('#commentModal #comment-alert-message').removeClass('hidden');
+					loading.button('reset');
+					break;
+				case 'missing-stage':
+				case 'already-comment':
+				case 'database-error':
+				case '':
+					// コメントのリロード
+					getCommentTask(function() {
+						loading.button('reset');
+						$('#commentModal').modal('hide');
+					});
+					break;
+			}
 		});
 
 	});
 
 	// コメントを取得
-	$.post('../stage/getmycommentbyid.php', {
-		'stageid' : getParam('id'),
-		'attendance-token' : sessionStorage.getItem('attendance-token')
-	} , function(data, textStatus, xhr) {
+	function getCommentTask(callback) {
 
-		switch(data) {
-			case 'parse-error':
-			case '':
-				break;
-			case 'no-session':
-			case 'not-found':
-				$('.h4p_comment-add').removeClass('hidden');
-				break;
-			default:
-				var result = JSON.parse(data);
+		$('.h4p_comment-add').addClass('hidden');
+		$('.h4p_my-comment').addClass('hidden');
 
-				var $comment = $('.h4p_my-comment').removeClass('hidden');
-				$comment.find('.h4p_comment-trash').data('id', result.ID);
-				$comment.find('.comment-tag').text(result.Tags[0].DisplayString).css('background-color', result.Tags[0].LabelColor);
-				$comment.find('.comment-message').text(result.Message);
-				$comment.find('.comment-thumb').attr('src', result.Thumbnail);
-				break;
-		}
+		$.post('../stage/getmycommentbyid.php', {
+			'stageid' : getParam('id'),
+			'attendance-token' : sessionStorage.getItem('attendance-token')
+		} , function(data, textStatus, xhr) {
 
-	});
+			switch(data) {
+				case 'parse-error':
+				case '':
+					break;
+				case 'no-session':
+				case 'not-found':
+					$('.h4p_comment-add').removeClass('hidden');
+					break;
+				default:
+					var result = JSON.parse(data);
 
+					var $comment = $('.h4p_my-comment').removeClass('hidden');
+					$comment.find('.h4p_comment-trash').data('id', result.ID);
+					$comment.find('.comment-tag').text(result.Tags[0].DisplayString).css('background-color', result.Tags[0].LabelColor);
+					$comment.find('.comment-message').text(result.Message);
+					$comment.find('.comment-thumb').attr('src', result.Thumbnail);
+					break;
+			}
+			if (callback)
+				callback();
+		});
+	}
+	getCommentTask();
 
 	$('.h4p_my-comment .h4p_comment-trash').on('click', function(event) {
 

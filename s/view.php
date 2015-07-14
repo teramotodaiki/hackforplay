@@ -170,7 +170,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 			        	<div class="form-group">
 			        		<label for="comment-message" class="control-label">メッセージ:</label>
 			        		<textarea class="form-control" id="comment-message"></textarea>
-			        		<p id="comment-alert-message" class="alert alert-danger hidden"></p>
+			        		<p id="comment-alert-message" class="alert alert-danger hidden">Message can't become empty. // メッセージを かいてください</p>
 			        	</div>
 			        </form>
 			    </div>
