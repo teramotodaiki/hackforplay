@@ -195,13 +195,11 @@ $(function(){
 
 	// コメント
 	var $com =
-	$('<div>').append(
+	$('<div>').css('cursor', 'pointer').append(
 		$('<div>').addClass('panel panel-default').append(
 			$('<div>').addClass('panel-body row').append(
 				$('<div>').addClass('col-md-6 comment-thumbnail').append(
-					$('<a>').attr('target', '_blank').append(
-						$('<img>').addClass('h4p_thumbnail')
-					)
+					$('<img>').addClass('h4p_thumbnail')
 				)
 			).append(
 				$('<div>').addClass('col-md-6 comment-header').append(
@@ -210,9 +208,7 @@ $(function(){
 					$('<div>').addClass('pull-left').append(
 						$('<div>').addClass('text-muted comment-item-padding nickname')
 					).append(
-						$('<div>').addClass('comment-item-padding').append(
-							$('<a>').addClass('hashtag').attr('target', '_blank')
-						)
+						$('<div>').addClass('comment-item-padding hashtag')
 					)
 				)
 			).append(
@@ -226,6 +222,30 @@ $(function(){
 			)
 		)
 	);
+
+	// アイテムをクリック => 全体を右に移動 | ステージを開く | 全体を左に移動
+	$com.on('click', function(event) {
+
+		var centerIndex = $('.h4p_topic-comment .left-to-center').length > 0 ?
+			$('.h4p_topic-comment .left-to-center').data('index') :
+			$('.h4p_topic-comment .right-to-center').data('index');
+		var offset = $(this).data('index') - centerIndex;
+		var length = $('.h4p_topic-comment div').length;
+
+		switch (offset) {
+			case -1:
+			case length - 1:
+				moveCommentList('right');
+				break;
+			case 0:
+				open('/s?id=' + $(this).data('stageid'), '_blank');
+				break;
+			case 1:
+			case -length + 1:
+				moveCommentList('left');
+				break;
+		}
+	});
 
 	$.post('../stage/fetchrecentcomments.php', {
 		'start' : 0,
@@ -249,7 +269,7 @@ $(function(){
 						default: com.addClass('hidden'); break;
 					}
 					com.data('index', index);
-					com.find('.comment-thumbnail a').attr('href', '/s?id=' + item.StageID);
+					com.data('stageid', item.StageID);
 					com.find('.comment-thumbnail img').attr('src', item.Thumbnail);
 					if (item.Nickname) {
 						if (item.ProfileImageURL) {
@@ -259,7 +279,7 @@ $(function(){
 						}
 						com.find('.nickname').text(item.Nickname);
 					}
-					com.find('.hashtag').text(item.Hashtag).attr('href', '/s?id=' + item.StageID);
+					com.find('.hashtag').text(item.Hashtag);
 					com.find('.comment-body p').text(item.Message);
 					if (item.Tags[0]) {
 						com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
@@ -267,11 +287,6 @@ $(function(){
 					$(this).append(com);
 
 				}, $('.h4p_topic-comment'));
-
-				setInterval(function() {
-					moveCommentList('left');
-				}, 3000);
-				break;
 		}
 	});
 
@@ -328,5 +343,25 @@ $(function(){
 			}
 		});
 	}
+
+	// 自動でうごく
+	(function() {
+
+		var hoverFlag = false;
+		$('.h4p_topic-comment').hover(function() {
+			hoverFlag = true;
+		}, function() {
+			hoverFlag = false;
+		});
+
+		(function autoMove() {
+			console.log(hoverFlag, $('.h4p_topic-comment div').length > 0);
+			if (!hoverFlag && $('.h4p_topic-comment div').length > 0) {
+				moveCommentList('left');
+			}
+			setTimeout(autoMove, 3000);
+		})();
+
+	})();
 
 });
