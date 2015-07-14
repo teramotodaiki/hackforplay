@@ -110,7 +110,7 @@ $(function(){
 
 	$('#commentModal #leave-comment').on('click', function(event) {
 
-		var tag_value = $('#commentModal input[name="comment-tag"]').val();
+		var tag_value = $('#commentModal input[name="comment-tag"]:checked').val();
 		var message_value = $('#commentModal #comment-message').val();
 		var loading = $(this).button('loading');
 		$('#commentModal #comment-alert-message').addClass('hidden');
