@@ -149,6 +149,54 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+	    		<div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="commentModalLabel">クリエイターに おうえんメッセージ をおくりましょう</h4>
+		    	</div>
+			    <div class="modal-body">
+			    	<form>
+			        	<div class="form-group">
+			    			<img class="stage-thumbnail" src="" alt="" width="240" height="160">
+			        	</div>
+			        	<div class="form-group">
+			        		<p class="control-label"><b>ステージのタグ:</b></p>
+			        		<div class="h4p_stage-tag-list">
+			        		</div>
+			        		<p id="comment-alert-tag" class="alert alert-danger hidden">タグをえらんでください。</p>
+			        	</div>
+			        	<div class="form-group">
+			        		<label for="comment-message" class="control-label">メッセージ:</label>
+			        		<textarea class="form-control" id="comment-message"></textarea>
+			        		<p id="comment-alert-message" class="alert alert-danger hidden">Message can't become empty. // メッセージを かいてください</p>
+			        	</div>
+			        </form>
+			    </div>
+	    		<div class="modal-footer">
+	        		<p class="alert alert-warning">特定の個人を指すキーワードや暴言などを記入すると、削除されることがあります。</p>
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">とじる</button>
+	       			<button type="submit" class="btn btn-primary" id="leave-comment" data-loading-text="送信中...">コメントする</button>
+	    		</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="screenshotModal" tabindex="-1" role="dialog" aria-labelledby="screenshotModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+	    			<h4>右クリックで保存してください</h4>
+				</div>
+			    <div class="modal-body">
+			    	<img class="stage-thumbnail" src="" width="480" height="320" />
+			    </div>
+	    		<div class="modal-footer">
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+	    		</div>
+			</div>
+		</div>
+	</div>
 	<!-- contents -->
 	<div class="container container-game">
 		<div class="row">
@@ -199,6 +247,26 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 					この改造ステージを投稿する
 				</button>
 				<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
+			</div>
+			<div class="col-sm-offset-11 col-sm-1 h4p_comment-add hidden">
+				<button type="button" class="btn btn-link btn-lg" data-toggle="modal" data-target="#commentModal">
+					<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+				</button>
+			</div>
+			<div class="col-sm-12 h4p_my-comment hidden">
+				<h4>おくったメッセージ</h4>
+				<div class="row">
+					<div class="col-sm-3">
+						<img class="img-responsive comment-thumb" src="" />
+					</div>
+					<div class="col-sm-9">
+						<p class="label label-success comment-tag">Beginners // かんたん</p>
+						<p class="comment-message">メッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージメッセージ</p>
+					</div>
+					<button type="button" class="btn btn-link pull-right h4p_comment-trash">
+						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+					</button>
+				</div>
 			</div>
 			<div class="col-sm-12 col-xs-12 h4p_info">
 				<div class="row">

@@ -193,4 +193,176 @@ $(function(){
 		});
 	}
 
+	// コメント
+	var $com =
+	$('<div>').css('cursor', 'pointer').append(
+		$('<div>').addClass('panel panel-default').append(
+			$('<div>').addClass('panel-body row').append(
+				$('<div>').addClass('col-md-6 comment-thumbnail').append(
+					$('<img>').addClass('h4p_thumbnail')
+				)
+			).append(
+				$('<div>').addClass('col-md-6 comment-header').append(
+					$('<img>').addClass('img-circle pull-left comment-item-padding')
+				).append(
+					$('<div>').addClass('pull-left').append(
+						$('<div>').addClass('text-muted comment-item-padding nickname')
+					).append(
+						$('<div>').addClass('comment-item-padding hashtag')
+					)
+				)
+			).append(
+				$('<div>').addClass('col-md-6 comment-body').append(
+					$('<p>').addClass('comment-item-padding')
+				)
+			).append(
+				$('<div>').addClass('col-md-6 comment-footer').append(
+					$('<p>').addClass('label pull-right')
+				)
+			)
+		)
+	);
+
+	// アイテムをクリック => 全体を右に移動 | ステージを開く | 全体を左に移動
+	$com.on('click', function(event) {
+
+		var centerIndex = $('.h4p_topic-comment .left-to-center').length > 0 ?
+			$('.h4p_topic-comment .left-to-center').data('index') :
+			$('.h4p_topic-comment .right-to-center').data('index');
+		var offset = $(this).data('index') - centerIndex;
+		var length = $('.h4p_topic-comment>div').length;
+
+		console.log(offset, length);
+		switch (offset) {
+			case -1:
+			case length - 1:
+				moveCommentList('right');
+				break;
+			case 0:
+				open('/s?id=' + $(this).data('stageid'), '_blank');
+				break;
+			case 1:
+			case -length + 1:
+				moveCommentList('left');
+				break;
+		}
+	});
+
+	$.post('../stage/fetchrecentcomments.php', {
+		'start' : 0,
+		'length' : 10,
+		'attendance-token' : sessionStorage.getItem('attendance-token')
+	} , function(data, textStatus, xhr) {
+
+		switch(data) {
+			case 'parse-error':
+				break;
+			default:
+				var result = JSON.parse(data);
+				result.values.forEach(function(item, index, array) {
+
+					var com = $com.clone(true, true);
+					switch (index) {
+						case 0: com.addClass('right-to-center'); break;
+						case 1: com.addClass('outerright-to-right'); break;
+						case array.length - 1: com.addClass('center-to-left'); break;
+						case array.length - 2: com.addClass('left-to-outerleft');　break;
+						default: com.addClass('hidden'); break;
+					}
+					com.data('index', index);
+					com.data('stageid', item.StageID);
+					com.find('.comment-thumbnail img').attr('src', item.Thumbnail);
+					if (item.Nickname) {
+						if (item.ProfileImageURL) {
+							$('.comment-header img').attr('src', item.ProfileImageURL);
+						} else {
+							$('.comment-header img').attr('src', item.Gender === 'male' ? '/m/icon_m.png' : '/m/icon_w.png');
+						}
+						com.find('.nickname').text(item.Nickname);
+					}
+					com.find('.hashtag').text(item.Hashtag);
+					com.find('.comment-body p').text(item.Message);
+					if (item.Tags[0]) {
+						com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
+					}
+					$(this).append(com);
+
+				}, $('.h4p_topic-comment'));
+		}
+	});
+
+	function moveCommentList (direction) {
+
+		var centerIndex = $('.h4p_topic-comment .left-to-center').length > 0 ?
+			$('.h4p_topic-comment .left-to-center').data('index') :
+			$('.h4p_topic-comment .right-to-center').data('index'); // 現在のセンターのインデックス
+		var listLength = $('.h4p_topic-comment>div').length; // リストの長さ
+		var appearIndex = (centerIndex + (direction === 'left' ? 2 : listLength - 2)) % listLength; // 新しく出現させるindex
+		var appearClass = direction === 'left' ? 'outerright-to-right' : 'outerleft-to-left';// 新しく出現するアイテムのクラス
+
+		// 移動処理
+		$('.h4p_topic-comment>div').each(function(index, el) {
+
+			// 現在位置を取得
+			var position = null;
+			el.className.split(' ').forEach(function(item) {
+
+				if (item.indexOf('-to-') !== -1) {
+					position = item.split('-to-')[1];
+					el.classList.remove(item);
+				}
+
+			});
+
+			if ($(el).data('index') >> 0 === appearIndex) {
+
+
+				// hidden => 端へ表示されるアイテム
+				el.classList.remove('hidden');
+				el.classList.add(appearClass);
+
+			} else if (position && direction === 'left') {
+
+				// 左に移動
+				switch (position) {
+					case 'right' : el.classList.add(position + '-to-center'); break;
+					case 'center' : el.classList.add(position + '-to-left'); break;
+					case 'left' : el.classList.add(position + '-to-outerleft'); break;
+					case 'outerleft' : el.classList.add('hidden'); break;
+				}
+
+			} else if (position && direction === 'right') {
+
+				// 右に移動
+				switch (position) {
+					case 'left' : el.classList.add(position + '-to-center'); break;
+					case 'center' : el.classList.add(position + '-to-right'); break;
+					case 'right' : el.classList.add(position + '-to-outerright'); break;
+					case 'outerright' : el.classList.add('hidden'); break;
+				}
+
+			}
+		});
+	}
+
+	// 自動でうごく
+	(function() {
+
+		var hoverFlag = false;
+		$('.h4p_topic-comment').hover(function() {
+			hoverFlag = true;
+		}, function() {
+			hoverFlag = false;
+		});
+
+		(function autoMove() {
+			console.log(hoverFlag, $('.h4p_topic-comment>div').length > 0);
+			if (!hoverFlag && $('.h4p_topic-comment>div').length > 0) {
+				moveCommentList('left');
+			}
+			setTimeout(autoMove, 4000);
+		})();
+
+	})();
+
 });

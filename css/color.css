@@ -21,7 +21,8 @@ header {
 }
 
 .h4p_info,
-.h4p_restaging {
+.h4p_restaging,
+.h4p_my-comment {
 	background-color: rgb(255,255,255);
 }
 
@@ -42,6 +43,7 @@ header {
 	background-color: rgba(255,255,255,0.4);
 }
 
+
 /* 線の幅・色 */
 header.navbar {
 	border: none;
@@ -49,7 +51,8 @@ header.navbar {
 
 .h4p_info,
 .h4p_restaging,
-.h4p_mapTip {
+.h4p_mapTip,
+.h4p_my-comment {
 	border: 1px solid rgb(204, 204, 204);
 }
 
