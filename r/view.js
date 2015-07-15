@@ -274,9 +274,9 @@ $(function(){
 					com.find('.comment-thumbnail img').attr('src', item.Thumbnail);
 					if (item.Nickname) {
 						if (item.ProfileImageURL) {
-							$('.comment-header img').attr('src', item.ProfileImageURL);
+							com.find('.comment-header img').attr('src', item.ProfileImageURL);
 						} else {
-							$('.comment-header img').attr('src', item.Gender === 'male' ? '/m/icon_m.png' : '/m/icon_w.png');
+							com.find('.comment-header img').attr('src', item.Gender === 'male' ? '/m/icon_m.png' : '/m/icon_w.png');
 						}
 						com.find('.nickname').text(item.Nickname);
 					}
