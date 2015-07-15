@@ -232,7 +232,6 @@ $(function(){
 		var offset = $(this).data('index') - centerIndex;
 		var length = $('.h4p_topic-comment>div').length;
 
-		console.log(offset, length);
 		switch (offset) {
 			case -1:
 			case length - 1:
@@ -356,7 +355,6 @@ $(function(){
 		});
 
 		(function autoMove() {
-			console.log(hoverFlag, $('.h4p_topic-comment>div').length > 0);
 			if (!hoverFlag && $('.h4p_topic-comment>div').length > 0) {
 				moveCommentList('left');
 			}
