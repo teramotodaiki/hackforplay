@@ -19,7 +19,7 @@
 			<div class="col-md-offset-1 col-md-10">
 				<div class="row panel panel-default">
 					<div class="panel-heading">
-						<h4>あなたへのコメント</h4>
+						<h4>あなたへのメッセージ</h4>
 					</div>
 					<div class="h4p_comment-list"></div>
 					<div class="panel-footer text-center">

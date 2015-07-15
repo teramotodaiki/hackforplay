@@ -24,7 +24,23 @@ $(function(){
 		$('<div>').addClass('col-md-9 comment-footer').append(
 			$('<p>').addClass('label pull-right')
 		)
+	).append(
+		$('<div>').addClass('col-md-9').append(
+			$('<button>').attr('type', 'button').addClass('btn btn-link pull-right h4p_comment-trash').append(
+				$('<span>').attr('aria-hidden', 'true').addClass('glyphicon glyphicon-trash')
+			)
+		)
 	);
+
+	$com.find('.h4p_comment-trash').on('click', function(event) {
+
+		var id = $(this).data('id');
+		var message = $(this).data('message');
+
+		if (confirm(message + '\n\nこのメッセージを さくじょ します')) {
+			alert('さくじょ！');
+		}
+	});
 
 	// ユーザー情報取得・表示
 	// length: 取得する最大個数(指定しなかった場合は10)
@@ -33,7 +49,7 @@ $(function(){
 	(function() {
 		var loadedIndex = 0;
 		(loadMoreCommentTask = function(length, callback) {
-			var loadLength = length || 2;
+			var loadLength = length || 10;
 			$.post('../stage/fetchrecentcommentsbyauthor.php', {
 				'start': loadedIndex,
 				'length': loadLength,
@@ -64,7 +80,11 @@ $(function(){
 							if (item.Tags[0]) {
 								com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
 							}
+							com.find('.h4p_comment-trash').data('id', item.ID).data('message', item.Message);
 							$(this).append(com);
+							$(this).append(
+								$('<hr>').css('margin', '0')
+							);
 
 						}, $('.h4p_comment-list'));
 
@@ -84,7 +104,7 @@ $(function(){
 	$('button.h4p_load-more-comment').on('click', function(event) {
 
 		var loading = $(this).button('loading');
-		loadMoreCommentTask(2, function() {
+		loadMoreCommentTask(10, function() {
 			loading.button('reset');
 		});
 
