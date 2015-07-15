@@ -36,9 +36,25 @@ $(function(){
 
 		var id = $(this).data('id');
 		var message = $(this).data('message');
+		var $comment = $(this).parents('.panel-body').first();
 
 		if (confirm(message + '\n\nこのメッセージを さくじょ します')) {
-			alert('さくじょ！');
+			$comment.hide('fast');
+			$.post('../stage/rejectcommentbyid.php', {
+				'comment_id': id,
+				'attendance-token': sessionStorage.getItem('attendance-token')
+			} , function(data, textStatus, xhr) {
+				switch (data) {
+					case 'no-session':
+					case 'not-found':
+					case 'database-error':
+						$('#signinModal').modal('show');
+						break;
+					case 'success':
+						$comment.remove();
+						break;
+				}
+			});
 		}
 	});
 
