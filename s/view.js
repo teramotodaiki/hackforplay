@@ -17,9 +17,11 @@ $(function(){
 	});
 	// ゲームフレームを横幅基本で3:2にする
 	var width = $(".h4p_game").width();
+	// frame.phpを経由して、getParam('src')のページをincludeさせる
+	var gameSrc = encodeURIComponent(getParam('src'));
 	$(".h4p_game").height(width/1.5)
 		.children('iframe').attr({
-			'src': getParam('src')+'?&path='+getParam('path')+'&next='+getParam('next')+'&mode='+getParam('mode'),
+			'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=' + getParam('mode'),
 			'width': width,
 			'height': width/1.5
 		});
@@ -53,6 +55,158 @@ $(function(){
 				var code = sessionStorage.getItem('restaging_code');
 				jsEditor.setValue(code);
 				break;
+		}
+	});
+
+	// tag list view
+	$.post('../stage/getaglist.php', {
+
+	} , function(data, textStatus, xhr) {
+		switch (data) {
+			case '':
+			case 'parse-error':
+				$('.h4p_stage-tag-list').append('Sorry, But load failed // よみこみに しっぱいしました ごめんなさい');
+				break;
+			default:
+				var result = JSON.parse(data);
+
+				// 先頭が偏らないようランダムを加える (swap)
+				var headIndex = Math.random() * result.values.length >> 0;
+				console.log(headIndex);
+				var tmp = result.values[0];
+				result.values[0] = result.values[headIndex];
+				result.values[headIndex] = tmp;
+
+				result.values.forEach(function(item) {
+
+					$(this).append(
+						$('<label>').addClass('radio-inline').append(
+							$('<input>').attr({
+								'type': 'radio',
+								'name': 'comment-tag'
+							}).val(item.IdentifierString)
+						).append(
+							$('<p>').addClass('label').text(item.DisplayString).css('background-color', item.LabelColor)
+						)
+					);
+
+				}, $('.h4p_stage-tag-list'));
+
+				$('.h4p_stage-tag-list input').first().attr('checked', true);
+				console.log($('.h4p_stage-tag-list input').first());
+				break;
+		}
+	});
+
+	// leave comment then take
+	$('#commentModal').on('show.bs.modal', function () {
+		// canvas to image
+		var game = $(".h4p_game>iframe").get(0);
+		var source = "saveImage();";
+		game.contentWindow.postMessage(source, '/');
+
+		$(this).find('#leave-comment').button('reset');
+	});
+
+	$('#commentModal #leave-comment').on('click', function(event) {
+
+		var tag_value = $('#commentModal input[name="comment-tag"]:checked').val();
+		var message_value = $('#commentModal #comment-message').val();
+		var loading = $(this).button('loading');
+		$('#commentModal #comment-alert-message').addClass('hidden');
+
+		// submit
+		var timezone = new Date().getTimezoneString();
+		$.post('../stage/addcommentandtag.php',{
+			'stageid' : getParam('id'),
+			'message': message_value,
+			'tags': tag_value,
+			'thumb': sessionStorage.getItem('image') || null,
+			'timezone': timezone,
+			'attendance-token': sessionStorage.getItem('attendance-token')
+		}, function(data, textStatus, xhr) {
+			console.log(data);
+			switch (data) {
+				case 'missing-message':
+					$('#commentModal #comment-alert-message').removeClass('hidden');
+					loading.button('reset');
+					break;
+				case 'missing-stage':
+				case 'already-comment':
+				case 'database-error':
+				case '':
+					// コメントのリロード
+					getCommentTask(function() {
+						loading.button('reset');
+						$('#commentModal').modal('hide');
+					});
+					break;
+			}
+		});
+
+	});
+
+	// コメントを取得
+	function getCommentTask(callback) {
+
+		$('.h4p_comment-add').addClass('hidden');
+		$('.h4p_my-comment').addClass('hidden');
+
+		$.post('../stage/getmycommentbyid.php', {
+			'stageid' : getParam('id'),
+			'attendance-token' : sessionStorage.getItem('attendance-token')
+		} , function(data, textStatus, xhr) {
+
+			switch(data) {
+				case 'parse-error':
+				case '':
+					break;
+				case 'no-session':
+				case 'not-found':
+					$('.h4p_comment-add').removeClass('hidden');
+					break;
+				default:
+					var result = JSON.parse(data);
+
+					var $comment = $('.h4p_my-comment').removeClass('hidden');
+					$comment.find('.h4p_comment-trash').data('id', result.ID);
+					$comment.find('.comment-tag').text(result.Tags[0].DisplayString).css('background-color', result.Tags[0].LabelColor);
+					$comment.find('.comment-message').text(result.Message);
+					$comment.find('.comment-thumb').attr('src', result.Thumbnail);
+					break;
+			}
+			if (callback)
+				callback();
+		});
+	}
+	getCommentTask();
+
+	$('.h4p_my-comment .h4p_comment-trash').on('click', function(event) {
+
+		// コメントの削除
+		var message = $('.h4p_my-comment .comment-message').text();
+		if (confirm(message + '\n\nこのメッセージを さくじょ します')) {
+
+			// 削除の実行
+			$.post('../stage/removecommentbyid.php', {
+				'comment_id': $('.h4p_my-comment .h4p_comment-trash').data('id'),
+				'attendance-token' : sessionStorage.getItem('attendance-token')
+			} , function(data, textStatus, xhr) {
+				console.log($('.h4p_my-comment .h4p_comment-trash').data('id'), data);
+				switch (data) {
+					case 'no-session':
+						$('#signinModal').modal('show');
+						break;
+					case 'not-found':
+					case 'database-error':
+						alert('エラー\nさくじょ できなかった');
+						break;
+					case 'success':
+						$('.h4p_comment-add').removeClass('hidden');
+						$('.h4p_my-comment').addClass('hidden');
+						break;
+				}
+			});
 		}
 	});
 
@@ -316,6 +470,6 @@ $(function(){
 
 
 	function getParam(key){
-		return sessionStorage.getItem('stage_param_'+key);
+		return sessionStorage.getItem('stage_param_'+key) || '0';
 	}
 });

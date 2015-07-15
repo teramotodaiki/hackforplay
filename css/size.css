@@ -63,6 +63,27 @@
 	height: 36px;
 }
 
+.h4p_topic-comment>div,
+.h4p_topic-comment .panel-body {
+	height: 240px;
+}
+
+.h4p_topic-comment .panel-body .comment-header {
+	height: 60px;
+}
+
+.h4p_topic-comment .panel-body .comment-body {
+	height: 120px;
+}
+
+.h4p_topic-comment .panel-body .comment-footer {
+	height: 30px;
+}
+
+.h4p_topic-comment .panel-body .comment-thumbnail img {
+	height: 210px;
+}
+
 /* 間隔属性 */
 header {
 	padding: 5px 0;
@@ -104,7 +125,8 @@ header {
 }
 
 .h4p_info,
-.h4p_restaging {
+.h4p_restaging,
+.h4p_my-comment {
 	margin-top: 10px;
 	padding-top: 15px;
 	padding-bottom: 20px;
@@ -162,6 +184,21 @@ header {
 
 .page-numbers .btn {
 	margin: 0 8px;
+}
+
+.h4p_topic-comment {
+	min-height: 270px;
+	width: 100%;
+	padding-top: 15px;
+}
+
+.h4p_topic-comment .panel-body {
+	margin: 0;
+}
+
+.comment-item-padding {
+	padding-left: 6px;
+	padding-right: 6px;
 }
 
 input[name="challenge"] {
