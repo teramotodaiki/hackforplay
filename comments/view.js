@@ -11,9 +11,13 @@ $(function(){
 			$('<img>').addClass('img-circle pull-left comment-item-padding')
 		).append(
 			$('<div>').addClass('pull-left').append(
-				$('<div>').addClass('text-muted comment-item-padding nickname')
+				$('<div>').addClass('text-muted comment-item-padding nickname').append(
+					$('<a>')
+				)
 			).append(
-				$('<div>').addClass('comment-item-padding hashtag')
+				$('<div>').addClass('comment-item-padding hashtag').append(
+					$('<a>')
+				)
 			)
 		)
 	).append(
@@ -89,9 +93,9 @@ $(function(){
 								} else {
 									com.find('.comment-header img').attr('src', item.Gender === 'male' ? '/m/icon_m.png' : '/m/icon_w.png');
 								}
-								com.find('.nickname').text(item.Nickname);
+								com.find('.nickname a').text(item.Nickname).attr('href', '/m?id=' + item.UserID);
 							}
-							com.find('.hashtag').text(item.Hashtag);
+							com.find('.hashtag a').text(item.Hashtag).attr('href', '/s?id=' + item.StageID);
 							com.find('.comment-body p').text(item.Message);
 							if (item.Tags[0]) {
 								com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
