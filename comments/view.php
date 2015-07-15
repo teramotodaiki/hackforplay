@@ -15,10 +15,21 @@
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<!-- Content -->
 	<div class="container">
-		<h4>あなたへのコメント</h4>
-		<div class="row h4p_comment-list">
+		<div class="row">
+			<div class="col-md-offset-1 col-md-10">
+				<div class="row panel panel-default">
+					<div class="panel-heading">
+						<h4>あなたへのコメント</h4>
+					</div>
+					<div class="h4p_comment-list"></div>
+					<div class="panel-footer text-center">
+						<button type="button" class="btn btn-link h4p_load-more-comment" data-loding-text="Loading...">More // もっと ひょうじ</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+	<?php require_once '../view/footer.php'; ?>
 </body>
 </html>
 

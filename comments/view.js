@@ -1,12 +1,42 @@
 $(function(){
 
-	// ユーザー情報取得
-	var user_id = sessionStorage.getItem('view_user_id');
-	checkSigninSession(function(result){
-		if (result === 'success') {
+	// コメント
+	var $com =
+	$('<div>').addClass('panel-body row').append(
+		$('<div>').addClass('col-md-3 comment-thumbnail').append(
+			$('<img>').addClass('h4p_thumbnail').height(120)
+		)
+	).append(
+		$('<div>').addClass('col-md-3 comment-header').append(
+			$('<img>').addClass('img-circle pull-left comment-item-padding')
+		).append(
+			$('<div>').addClass('pull-left').append(
+				$('<div>').addClass('text-muted comment-item-padding nickname')
+			).append(
+				$('<div>').addClass('comment-item-padding hashtag')
+			)
+		)
+	).append(
+		$('<div>').addClass('col-md-6 comment-body').append(
+			$('<p>').addClass('comment-item-padding')
+		)
+	).append(
+		$('<div>').addClass('col-md-9 comment-footer').append(
+			$('<p>').addClass('label pull-right')
+		)
+	);
+
+	// ユーザー情報取得・表示
+	// length: 取得する最大個数(指定しなかった場合は10)
+	// callback: 取得・要素追加後、実行する関数(指定しなくてもいい)
+	var loadMoreCommentTask;
+	(function() {
+		var loadedIndex = 0;
+		(loadMoreCommentTask = function(length, callback) {
+			var loadLength = length || 2;
 			$.post('../stage/fetchrecentcommentsbyauthor.php', {
-				'start': 0,
-				'length': 10,
+				'start': loadedIndex,
+				'length': loadLength,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
 				switch(data){
@@ -16,17 +46,48 @@ $(function(){
 						break;
 					default:
 						var result = JSON.parse(data);
-						result.values.forEach(function(item) {
+						result.values.forEach(function(item, index) {
 
-							$(this).append(
-								$('<div>').text(item.Message)
-							);
+							var com = $com.clone(true, true);
+							com.data('stageid', item.StageID);
+							com.find('.comment-thumbnail img').attr('src', item.Thumbnail);
+							if (item.Nickname) {
+								if (item.ProfileImageURL) {
+									com.find('.comment-header img').attr('src', item.ProfileImageURL);
+								} else {
+									com.find('.comment-header img').attr('src', item.Gender === 'male' ? '/m/icon_m.png' : '/m/icon_w.png');
+								}
+								com.find('.nickname').text(item.Nickname);
+							}
+							com.find('.hashtag').text(item.Hashtag);
+							com.find('.comment-body p').text(item.Message);
+							if (item.Tags[0]) {
+								com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
+							}
+							$(this).append(com);
 
 						}, $('.h4p_comment-list'));
+
+						if (callback) {
+							callback();
+						}
+
 						break;
 				}
 			});
-		}
+			// カウント
+			loadedIndex += loadLength;
+		})();
+
+	})();
+
+	$('button.h4p_load-more-comment').on('click', function(event) {
+
+		var loading = $(this).button('loading');
+		loadMoreCommentTask(2, function() {
+			loading.button('reset');
+		});
+
 	});
 
 });
