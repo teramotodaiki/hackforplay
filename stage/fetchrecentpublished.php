@@ -1,7 +1,7 @@
 <?php
 /*
 最大$max_fetch_length件までのリミット値を受け取り、その個数だけの、すでに公開されたステージを、新しいものから順に出力する
-Input:	start , length , (attendance-token)
+Input:	start , length , filter , (attendance-token)
 Output:	JSON:{information_of_stages} , parse-error
 information_of_stages:
 {
@@ -35,14 +35,34 @@ try {
 		$fetch_start	= 0;
 	}
 
-	// ステージ一覧を取得
-	// SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
-	$result = array();
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published ORDER BY "Published" DESC');
-	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
-	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
+	// フィルターを取得
+	$filter = filter_input(INPUT_POST, 'filter');
+	$stmt	= $dbh->prepare('SELECT "ID" FROM "StageTagData" WHERE "IdentifierString"=:filter');
+	$stmt->bindValue(":filter", $filter, PDO::PARAM_STR);
 	$stmt->execute();
+	$filter_tag_id	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
 
+	if (!$filter_tag_id) {
+
+		// ステージ一覧を取得 (フィルターなし)
+		// SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
+		$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published ORDER BY "Published" DESC');
+		$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
+		$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
+		$stmt->execute();
+
+	} else {
+
+		// ステージ一覧を取得 (フィルターあり)
+		$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published AND s."ID" IN (SELECT DISTINCT "StageID" FROM "StageTagMap" WHERE "TagID"=:filter_tag_id) ORDER BY "Published" DESC');
+		$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
+		$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
+		$stmt->bindValue(":filter_tag_id", $filter_tag_id, PDO::PARAM_INT);
+		$stmt->execute();
+
+	}
+
+	$result = array();
 	for ($i=0; $i < $fetch_start; $i++) {
 		$item	= $stmt->fetch();
 	}
