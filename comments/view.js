@@ -9,7 +9,7 @@ $(function(){
 					$('<img>').addClass('h4p_thumbnail').height(120)
 				)
 			).append(
-				$('<div>').addClass('col-md-2').append(
+				$('<div>').addClass('col-md-2 comment-user-icon').append(
 					$('<img>').addClass('img-circle comment-item-padding')
 				)
 			).append(
@@ -95,9 +95,9 @@ $(function(){
 							com.find('.comment-thumbnail img').attr('src', item.Thumbnail);
 							if (item.Nickname) {
 								if (item.ProfileImageURL) {
-									com.find('.comment-header img').attr('src', item.ProfileImageURL);
+									com.find('.comment-user-icon img').attr('src', item.ProfileImageURL);
 								} else {
-									com.find('.comment-header img').attr('src', item.Gender === 'male' ? '/m/icon_m.png' : '/m/icon_w.png');
+									com.find('.comment-user-icon img').attr('src', item.Gender === 'male' ? '/m/icon_m.png' : '/m/icon_w.png');
 								}
 								com.find('.nickname a').text(item.Nickname).attr('href', '/m?id=' + item.UserID);
 							}
