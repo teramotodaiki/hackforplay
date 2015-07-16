@@ -201,6 +201,10 @@ header {
 	padding-right: 6px;
 }
 
+.comment-body p {
+	margin-bottom: 0;
+}
+
 input[name="challenge"] {
 	margin-top: 8px;
 }

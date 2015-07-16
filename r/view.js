@@ -214,9 +214,7 @@ $(function(){
 							$('<div>').addClass('comment-item-padding hashtag')
 						)
 					).append(
-						$('<div>').addClass('col-md-12 comment-body').append(
-							$('<p>').addClass('comment-item-padding')
-						)
+						$('<div>').addClass('col-md-12 comment-body')
 					).append(
 						$('<div>').addClass('col-md-12 comment-footer').append(
 							$('<p>').addClass('label pull-right')
@@ -284,7 +282,11 @@ $(function(){
 						com.find('.nickname').text(item.Nickname);
 					}
 					com.find('.hashtag').text(item.Hashtag);
-					com.find('.comment-body p').text(item.Message);
+					item.Message.split('\n').forEach(function (item) {
+						$(this).append(
+							$('<p>').addClass('comment-item-padding').text(item)
+						);
+					}, com.find('.comment-body'));
 					if (item.Tags[0]) {
 						com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
 					}

@@ -27,9 +27,7 @@ $(function(){
 	).append(
 		$('<div>').addClass('col-md-6').append(
 			$('<div>').addClass('row').append(
-				$('<div>').addClass('col-md-12 comment-body').append(
-					$('<p>').addClass('comment-item-padding')
-				)
+				$('<div>').addClass('col-md-12 comment-body').css('min-height', '60px')
 			).append(
 				$('<div>').addClass('col-md-12 comment-footer').append(
 					$('<p>').addClass('label pull-right')
@@ -104,7 +102,11 @@ $(function(){
 								com.find('.nickname a').text(item.Nickname).attr('href', '/m?id=' + item.UserID);
 							}
 							com.find('.hashtag a').text(item.Hashtag).attr('href', '/s?id=' + item.StageID);
-							com.find('.comment-body p').text(item.Message);
+							item.Message.split('\n').forEach(function (item) {
+								$(this).append(
+									$('<p>').addClass('comment-item-padding').text(item)
+								);
+							}, com.find('.comment-body'));
 							if (item.Tags[0]) {
 								com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
 							}
