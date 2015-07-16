@@ -84,6 +84,14 @@
 	height: 210px;
 }
 
+#frameModal .modal-content {
+	height: 400px;
+}
+
+#codeModal pre {
+	max-height: 400px;
+}
+
 /* 間隔属性 */
 header {
 	padding: 5px 0;
