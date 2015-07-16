@@ -405,13 +405,19 @@ $(function(){
 
 				// さいしょは ALL // すべて
 				$('.h4p_filtering-buttons').append(
-					$fil.clone(true, true).attr('title', 'ALL // すべて').text('ALL // すべて').addClass('active').css('background-color', 'rgba(100,100,100,0.8)')
+					$fil.clone(true, true).attr({
+						'title': 'ALL // すべて',
+						'href': '/r/?start=0#page_anchor'
+					}).text('ALL // すべて').addClass('active').css('background-color', 'rgba(100,100,100,0.8)')
 				);
 
 				result.values.forEach(function(item) {
 
 					var fil = $fil.clone(true, true);
-					fil.attr('title', item.DisplayString).text(item.DisplayString).css({
+					fil.attr({
+						'title': item.DisplayString,
+						'href': '/r/?start=0&filter=' + item.IdentifierString + '#page_anchor'
+					}).text(item.DisplayString).css({
 						'background-color': item.LabelColor
 					});
 
