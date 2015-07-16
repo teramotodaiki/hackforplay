@@ -214,7 +214,7 @@ $(function(){
 							$('<div>').addClass('comment-item-padding hashtag')
 						)
 					).append(
-						$('<div>').addClass('col-md-12 comment-body')
+						$('<div>').addClass('col-md-12 comment-body overflow-auto')
 					).append(
 						$('<div>').addClass('col-md-12 comment-footer').append(
 							$('<p>').addClass('label pull-right')
