@@ -202,22 +202,24 @@ $(function(){
 					$('<img>').addClass('h4p_thumbnail')
 				)
 			).append(
-				$('<div>').addClass('col-md-6 comment-header').append(
-					$('<img>').addClass('img-circle pull-left comment-item-padding')
-				).append(
-					$('<div>').addClass('pull-left').append(
-						$('<div>').addClass('text-muted comment-item-padding nickname')
+				$('<div>').addClass('col-md-6').append(
+					$('<div>').addClass('row').append(
+						$('<div>').addClass('col-md-2 comment-header').append(
+							$('<img>').addClass('img-circle comment-item-padding')
+						)
 					).append(
-						$('<div>').addClass('comment-item-padding hashtag')
+						$('<div>').addClass('col-md-10 comment-header').append(
+							$('<div>').addClass('text-muted comment-item-padding nickname')
+						).append(
+							$('<div>').addClass('comment-item-padding hashtag')
+						)
+					).append(
+						$('<div>').addClass('col-md-12 comment-body')
+					).append(
+						$('<div>').addClass('col-md-12 comment-footer').append(
+							$('<p>').addClass('label pull-right')
+						)
 					)
-				)
-			).append(
-				$('<div>').addClass('col-md-6 comment-body').append(
-					$('<p>').addClass('comment-item-padding')
-				)
-			).append(
-				$('<div>').addClass('col-md-6 comment-footer').append(
-					$('<p>').addClass('label pull-right')
 				)
 			)
 		)
@@ -232,7 +234,6 @@ $(function(){
 		var offset = $(this).data('index') - centerIndex;
 		var length = $('.h4p_topic-comment>div').length;
 
-		console.log(offset, length);
 		switch (offset) {
 			case -1:
 			case length - 1:
@@ -281,7 +282,11 @@ $(function(){
 						com.find('.nickname').text(item.Nickname);
 					}
 					com.find('.hashtag').text(item.Hashtag);
-					com.find('.comment-body p').text(item.Message);
+					item.Message.split('\n').forEach(function (item) {
+						$(this).append(
+							$('<p>').addClass('comment-item-padding').text(item)
+						);
+					}, com.find('.comment-body'));
 					if (item.Tags[0]) {
 						com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
 					}
@@ -356,7 +361,6 @@ $(function(){
 		});
 
 		(function autoMove() {
-			console.log(hoverFlag, $('.h4p_topic-comment>div').length > 0);
 			if (!hoverFlag && $('.h4p_topic-comment>div').length > 0) {
 				moveCommentList('left');
 			}

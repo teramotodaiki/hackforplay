@@ -72,7 +72,6 @@ $(function(){
 
 				// 先頭が偏らないようランダムを加える (swap)
 				var headIndex = Math.random() * result.values.length >> 0;
-				console.log(headIndex);
 				var tmp = result.values[0];
 				result.values[0] = result.values[headIndex];
 				result.values[headIndex] = tmp;
@@ -93,7 +92,6 @@ $(function(){
 				}, $('.h4p_stage-tag-list'));
 
 				$('.h4p_stage-tag-list input').first().attr('checked', true);
-				console.log($('.h4p_stage-tag-list input').first());
 				break;
 		}
 	});
@@ -125,7 +123,6 @@ $(function(){
 			'timezone': timezone,
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
-			console.log(data);
 			switch (data) {
 				case 'missing-message':
 					$('#commentModal #comment-alert-message').removeClass('hidden');
@@ -192,7 +189,6 @@ $(function(){
 				'comment_id': $('.h4p_my-comment .h4p_comment-trash').data('id'),
 				'attendance-token' : sessionStorage.getItem('attendance-token')
 			} , function(data, textStatus, xhr) {
-				console.log($('.h4p_my-comment .h4p_comment-trash').data('id'), data);
 				switch (data) {
 					case 'no-session':
 						$('#signinModal').modal('show');

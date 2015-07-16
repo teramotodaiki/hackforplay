@@ -111,7 +111,7 @@ try {
 	// ハッシュタグを作成 (ハッシュタグに使用できない文字を削る)
 	foreach ($result as $key => $value) {
 
-		$pattern					= '/^(0-9A-Za-z〃々ぁ-ゖ゛-ゞァ-ヺーヽヾ一-龥０-９Ａ-Ｚａ-ｚｦ-ﾟ)/';
+		$pattern					= '/[^0-9A-Za-z〃々ぁ-ゖ゛-ゞァ-ヺーヽヾ一-龥０-９Ａ-Ｚａ-ｚｦ-ﾟ]/';
 		$hashtag					= preg_replace($pattern, '', $value['Title']);
 		if ($hashtag === '') {
 			$hashtag 				= 'hackforplay';
