@@ -50,6 +50,7 @@ $(function(){
 	$.post('../stage/fetchrecentpublished.php', {
 		'start': sessionStorage.getItem('view_param_start'),
 		'length': view_param_length + 1,
+		'filter': sessionStorage.getItem('view_param_filter'),
 		'attendance-token': sessionStorage.getItem('attendance-token')
 	}, function(data, textStatus, xhr) {
 		if (data === 'parse-error') {
@@ -60,7 +61,7 @@ $(function(){
 			if (result.values.length > view_param_length) {
 				// 次のページが存在する
 				var next = view_param_start + view_param_length;
-				$('a.go_page_next').attr('href', location.pathname + '?start=' + next + '#page_anchor');
+				$('a.go_page_next').attr('href', location.pathname + '?start=' + next + '&filter=' + sessionStorage.getItem('view_param_filter') + '#page_anchor');
 				delete result.values[view_param_length];
 			}else{
 				$('a.go_page_next').remove();
@@ -68,7 +69,7 @@ $(function(){
 			if (view_param_start > 0) {
 				// 前のページが存在する
 				var previous = Math.max(view_param_start - view_param_length, 0);
-				$('a.go_page_previous').attr('href', location.pathname + '?start=' + previous + '#page_anchor');
+				$('a.go_page_previous').attr('href', location.pathname + '?start=' + previous + '&filter=' + sessionStorage.getItem('view_param_filter') + '#page_anchor');
 			}else{
 				$('a.go_page_previous').remove();
 			}
@@ -146,7 +147,7 @@ $(function(){
 	for (var i = 0; i < pageNum; i++) {
 		var pageLink = $pageLink.clone(true);
 		var n = i * view_param_length;
-		pageLink.attr('href', location.pathname + '?start=' + n + '#page_anchor').text(i).appendTo('.page-numbers');
+		pageLink.attr('href', location.pathname + '?start=' + n + '&filter=' + sessionStorage.getItem('view_param_filter') + '#page_anchor').text(i).appendTo('.page-numbers');
 
 		var here = parseInt(sessionStorage.getItem('view_param_start'), 10) / view_param_length >> 0;
 		if (i === here) {
@@ -368,5 +369,45 @@ $(function(){
 		})();
 
 	})();
+
+	// フィルター
+	var $fil = $('<a>').addClass('btn btn-lg text-color-white');
+
+	$.post('../stage/getaglist.php', {
+		'attendance-token' : sessionStorage.getItem('attendance-token')
+	} , function(data, textStatus, xhr) {
+		switch (data) {
+			case '':
+			case 'parse-error':
+				$('.h4p_filtering-buttons').append('Sorry, But load failed // よみこみに しっぱいしました ごめんなさい');
+				break;
+			default:
+				var result = JSON.parse(data);
+
+				// さいしょは ALL // すべて
+				$('.h4p_filtering-buttons').append(
+					$fil.clone(true, true).attr({
+						'title': 'ALL // すべて',
+						'href': '/r/?start=0#page_anchor'
+					}).text('ALL // すべて').addClass('active').css('background-color', 'rgb(148,148,148)')
+				);
+
+				result.values.forEach(function(item) {
+
+					var fil = $fil.clone(true, true);
+					fil.attr({
+						'title': item.DisplayString,
+						'href': '/r/?start=0&filter=' + item.IdentifierString + '#page_anchor'
+					}).text(item.DisplayString).css({
+						'background-color': item.LabelColor
+					});
+
+					$(this).append(fil);
+
+				}, $('.h4p_filtering-buttons'));
+
+				break;
+		}
+	});
 
 });
