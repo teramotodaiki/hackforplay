@@ -3,35 +3,43 @@ $(function(){
 	// コメント
 	var $com =
 	$('<div>').addClass('panel-body row').append(
-		$('<div>').addClass('col-md-3 comment-thumbnail').append(
-			$('<img>').addClass('h4p_thumbnail').height(120)
-		)
-	).append(
-		$('<div>').addClass('col-md-3 comment-header').append(
-			$('<img>').addClass('img-circle pull-left comment-item-padding')
-		).append(
-			$('<div>').addClass('pull-left').append(
-				$('<div>').addClass('text-muted comment-item-padding nickname').append(
-					$('<a>')
+		$('<div>').addClass('col-md-6').append(
+			$('<div>').addClass('row').append(
+				$('<div>').addClass('col-md-5 comment-thumbnail').append(
+					$('<img>').addClass('h4p_thumbnail').height(120)
 				)
 			).append(
-				$('<div>').addClass('comment-item-padding hashtag').append(
-					$('<a>')
+				$('<div>').addClass('col-md-2').append(
+					$('<img>').addClass('img-circle comment-item-padding')
+				)
+			).append(
+				$('<div>').addClass('col-md-5').append(
+					$('<div>').addClass('text-muted comment-item-padding nickname').append(
+						$('<a>')
+					)
+				).append(
+					$('<div>').addClass('comment-item-padding hashtag').append(
+						$('<a>')
+					)
 				)
 			)
 		)
 	).append(
-		$('<div>').addClass('col-md-6 comment-body').append(
-			$('<p>').addClass('comment-item-padding')
-		)
-	).append(
-		$('<div>').addClass('col-md-9 comment-footer').append(
-			$('<p>').addClass('label pull-right')
-		)
-	).append(
-		$('<div>').addClass('col-md-9').append(
-			$('<button>').attr('type', 'button').addClass('btn btn-link pull-right h4p_comment-trash').append(
-				$('<span>').attr('aria-hidden', 'true').addClass('glyphicon glyphicon-trash')
+		$('<div>').addClass('col-md-6').append(
+			$('<div>').addClass('row').append(
+				$('<div>').addClass('col-md-12 comment-body').append(
+					$('<p>').addClass('comment-item-padding')
+				)
+			).append(
+				$('<div>').addClass('col-md-12 comment-footer').append(
+					$('<p>').addClass('label pull-right')
+				)
+			).append(
+				$('<div>').addClass('col-md-12').append(
+					$('<button>').attr('type', 'button').addClass('btn btn-link pull-right h4p_comment-trash').append(
+						$('<span>').attr('aria-hidden', 'true').addClass('glyphicon glyphicon-trash')
+					)
+				)
 			)
 		)
 	);
