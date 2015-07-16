@@ -33,6 +33,10 @@
 	position: relative;
 }
 
+.overflow-auto {
+	overflow: auto;
+}
+
 .h4p_stagelist,
 .h4p_bar-left,
 .h4p_bar-right {
@@ -161,20 +165,6 @@ iframe {
 	white-space: normal;
 }
 
-.h4p_info-explain p {
-	overflow-y: scroll;
-}
-
-#codeModal pre {
-	max-height: 400px;
-	overflow-y: scroll;
-}
-
-#frameModal .modal-content {
-	height: 400px;
-	overflow-y: scroll;
-}
-
 #frameModal .frameMap img,
 #frameModal .frameMap table {
 	position: absolute;
@@ -213,10 +203,6 @@ iframe {
 .directly_floating_shadow:hover {
 	z-index: 2;
 	box-shadow: 0px 10px 20px 4px rgba(0,0,0,0.5);
-}
-
-.overflow-auto {
-	overflow: auto;
 }
 
 /* コメントタグ(暫定) */

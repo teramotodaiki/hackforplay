@@ -289,7 +289,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 					</div>
 					<?php if ($explain !== NULL && $explain !== '') : ?>
 					<div class="col-sm-12 h4p_info-explain">
-						<p><?php echo $explain; ?></p>
+						<p class="overflow-auto"><?php echo $explain; ?></p>
 					</div>
 					<?php endif; ?>
 				</div>

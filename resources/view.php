@@ -33,7 +33,7 @@
 	</div>
 	<div class="modal fade" id="frameModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog">
-			<div class="modal-content">
+			<div class="modal-content overflow-auto">
 	    		<div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			        <h4 class="modal-title">Spriteクラスの<var>frame</var>プロパティに数値を指定します</h4>
