@@ -202,22 +202,26 @@ $(function(){
 					$('<img>').addClass('h4p_thumbnail')
 				)
 			).append(
-				$('<div>').addClass('col-md-6 comment-header').append(
-					$('<img>').addClass('img-circle pull-left comment-item-padding')
-				).append(
-					$('<div>').addClass('pull-left').append(
-						$('<div>').addClass('text-muted comment-item-padding nickname')
+				$('<div>').addClass('col-md-6').append(
+					$('<div>').addClass('row').append(
+						$('<div>').addClass('col-md-2 comment-header').append(
+							$('<img>').addClass('img-circle comment-item-padding')
+						)
 					).append(
-						$('<div>').addClass('comment-item-padding hashtag')
+						$('<div>').addClass('col-md-10 comment-header').append(
+							$('<div>').addClass('text-muted comment-item-padding nickname')
+						).append(
+							$('<div>').addClass('comment-item-padding hashtag')
+						)
+					).append(
+						$('<div>').addClass('col-md-12 comment-body').append(
+							$('<p>').addClass('comment-item-padding')
+						)
+					).append(
+						$('<div>').addClass('col-md-12 comment-footer').append(
+							$('<p>').addClass('label pull-right')
+						)
 					)
-				)
-			).append(
-				$('<div>').addClass('col-md-6 comment-body').append(
-					$('<p>').addClass('comment-item-padding')
-				)
-			).append(
-				$('<div>').addClass('col-md-6 comment-footer').append(
-					$('<p>').addClass('label pull-right')
 				)
 			)
 		)
