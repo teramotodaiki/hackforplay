@@ -92,7 +92,19 @@
 	max-height: 400px;
 }
 
+.h4p_filtering-buttons a.btn {
+	min-height: 100px;
+}
+
 /* 間隔属性 */
+.margin-top-lg {
+	margin-top: 40px;
+}
+
+.margin-bottom-lg {
+	margin-bottom: 40px;
+}
+
 header {
 	padding: 5px 0;
 }
