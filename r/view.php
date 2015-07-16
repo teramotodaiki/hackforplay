@@ -28,6 +28,8 @@
 		var num = '<?php echo $stage_num; ?>';
 		num = isNaN(parseInt(num)) ? '0' : num;
 		sessionStorage.setItem('view_param_num', num);
+		var filter = '<?php echo $filter; ?>';
+		sessionStorage.setItem('view_param_filter', filter);
 	})();
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
@@ -73,13 +75,13 @@
 	</div>
 	<div class="h4p_topic-comment overflow-x-hidden">
 	</div>
-	<div class="container-fluid" role="group">
+	<div id="page_anchor" class="container-fluid" role="group">
 		<div class="row">
 			<div class="col-md-12 h4p_filtering-buttons btn-group btn-group-justified" style="height: 120px">
 			</div>
 		</div>
 	</div>
-	<div id="page_anchor" class="container-fluid h4p_stagecontainer">
+	<div class="container-fluid h4p_stagecontainer">
 		<div class="row">
 			<div class="col-md-12 h4p_bar-top"></div>
 			<div class="col-md-12 h4p_bar-bar">

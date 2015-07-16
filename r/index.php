@@ -18,6 +18,7 @@ try {
 	$stmt->execute();
 	$stage_num			= $stmt->fetch(PDO::FETCH_COLUMN, 0);
 
+	$filter				= filter_input(INPUT_GET, 'filter');
 
 	include('view.php');
 
