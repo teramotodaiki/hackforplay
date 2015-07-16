@@ -369,4 +369,60 @@ $(function(){
 
 	})();
 
+	// フィルター
+	var $fil = $('<a>').addClass('btn btn-lg').css('color', 'rgb(255,255,255)').css({
+		'border-top': '16px solid white',
+		'border-bottom': '16px solid white',
+		'border-left': '0px solid white',
+		'border-right': '0px solid white',
+		'min-height': '100px',
+		'box-shadow': '0 0 6px 1px rgba(0,0,0,0.2) inset'
+	});
+
+	$fil.hover(function() {
+		$(this).css({
+			'border-top': '10px solid white',
+			'border-bottom': '10px solid white'
+		});
+	}, function() {
+		$(this).css({
+			'border-top': '16px solid white',
+			'border-bottom': '16px solid white'
+		});
+	});
+
+	$.post('../stage/getaglist.php', {
+		'attendance-token' : sessionStorage.getItem('attendance-token')
+	} , function(data, textStatus, xhr) {
+		switch (data) {
+			case '':
+			case 'parse-error':
+				$('.h4p_filtering-buttons').append('Sorry, But load failed // よみこみに しっぱいしました ごめんなさい');
+				break;
+			default:
+				var result = JSON.parse(data);
+
+				// さいしょは ALL // すべて
+				$('.h4p_filtering-buttons').append(
+					$fil.clone(true, true).attr('title', 'ALL // すべて').text('ALL // すべて').addClass('active').css('background-color', 'rgba(100,100,100,0.8)')
+				);
+
+				result.values.forEach(function(item) {
+
+					var fil = $fil.clone(true, true);
+					fil.attr('title', item.DisplayString).text(item.DisplayString).css({
+						'background-color': item.LabelColor
+					});
+
+					$(this).append(fil);
+
+				}, $('.h4p_filtering-buttons'));
+
+				$('.h4p_filtering-buttons a:first-child').css('border-left', '16px solid white');
+				$('.h4p_filtering-buttons a:last-child').css('border-right', '16px solid white');
+
+				break;
+		}
+	});
+
 });

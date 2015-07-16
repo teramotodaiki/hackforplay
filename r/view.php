@@ -73,6 +73,12 @@
 	</div>
 	<div class="h4p_topic-comment overflow-x-hidden">
 	</div>
+	<div class="container-fluid" role="group">
+		<div class="row">
+			<div class="col-md-12 h4p_filtering-buttons btn-group btn-group-justified" style="height: 120px">
+			</div>
+		</div>
+	</div>
 	<div id="page_anchor" class="container-fluid h4p_stagecontainer">
 		<div class="row">
 			<div class="col-md-12 h4p_bar-top"></div>
