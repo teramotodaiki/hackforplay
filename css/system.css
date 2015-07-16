@@ -240,27 +240,27 @@ iframe {
 
 /* ====> */
 .outerleft-to-left {
-	-webkit-animation: outerleft-to-left 0.3s ease-out 0 1 normal forwards;
-	-o-animation: outerleft-to-left 0.3s ease-out 0 1 normal forwards;
-	animation: outerleft-to-left 0.3s ease-out 0 1 normal forwards;
+	-webkit-animation: outerleft-to-left 0.3s ease-out 0s 1 normal forwards;
+	-o-animation: outerleft-to-left 0.3s ease-out 0s 1 normal forwards;
+	animation: outerleft-to-left 0.3s ease-out 0s 1 normal forwards;
 }
 
 .left-to-center {
-	-webkit-animation: left-to-center 0.3s ease-out 0 1 normal forwards;
-	-o-animation: left-to-center 0.3s ease-out 0 1 normal forwards;
-	animation: left-to-center 0.3s ease-out 0 1 normal forwards;
+	-webkit-animation: left-to-center 0.3s ease-out 0s 1 normal forwards;
+	-o-animation: left-to-center 0.3s ease-out 0s 1 normal forwards;
+	animation: left-to-center 0.3s ease-out 0s 1 normal forwards;
 }
 
 .center-to-right {
-	-webkit-animation: center-to-right 0.3s ease-out 0 1 normal forwards;
-	-o-animation: center-to-right 0.3s ease-out 0 1 normal forwards;
-	animation: center-to-right 0.3s ease-out 0 1 normal forwards;
+	-webkit-animation: center-to-right 0.3s ease-out 0s 1 normal forwards;
+	-o-animation: center-to-right 0.3s ease-out 0s 1 normal forwards;
+	animation: center-to-right 0.3s ease-out 0s 1 normal forwards;
 }
 
 .right-to-outerright {
-	-webkit-animation: right-to-outerright 0.3s ease-out 0 1 normal forwards;
-	-o-animation: right-to-outerright 0.3s ease-out 0 1 normal forwards;
-	animation: right-to-outerright 0.3s ease-out 0 1 normal forwards;
+	-webkit-animation: right-to-outerright 0.3s ease-out 0s 1 normal forwards;
+	-o-animation: right-to-outerright 0.3s ease-out 0s 1 normal forwards;
+	animation: right-to-outerright 0.3s ease-out 0s 1 normal forwards;
 }
 
 @-webkit-keyframes outerleft-to-left {
@@ -325,27 +325,27 @@ iframe {
 
 /* <==== */
 .left-to-outerleft {
-	-webkit-animation: left-to-outerleft 0.3s ease-out 0 1 normal forwards;
-	-o-animation: left-to-outerleft 0.3s ease-out 0 1 normal forwards;
-	animation: left-to-outerleft 0.3s ease-out 0 1 normal forwards;
+	-webkit-animation: left-to-outerleft 0.3s ease-out 0s 1 normal forwards;
+	-o-animation: left-to-outerleft 0.3s ease-out 0s 1 normal forwards;
+	animation: left-to-outerleft 0.3s ease-out 0s 1 normal forwards;
 }
 
 .center-to-left {
-	-webkit-animation: center-to-left 0.3s ease-out 0 1 normal forwards;
-	-o-animation: center-to-left 0.3s ease-out 0 1 normal forwards;
-	animation: center-to-left 0.3s ease-out 0 1 normal forwards;
+	-webkit-animation: center-to-left 0.3s ease-out 0s 1 normal forwards;
+	-o-animation: center-to-left 0.3s ease-out 0s 1 normal forwards;
+	animation: center-to-left 0.3s ease-out 0s 1 normal forwards;
 }
 
 .right-to-center {
-	-webkit-animation: right-to-center 0.3s ease-out 0 1 normal forwards;
-	-o-animation: right-to-center 0.3s ease-out 0 1 normal forwards;
-	animation: right-to-center 0.3s ease-out 0 1 normal forwards;
+	-webkit-animation: right-to-center 0.3s ease-out 0s 1 normal forwards;
+	-o-animation: right-to-center 0.3s ease-out 0s 1 normal forwards;
+	animation: right-to-center 0.3s ease-out 0s 1 normal forwards;
 }
 
 .outerright-to-right {
-	-webkit-animation: outerright-to-right 0.3s ease-out 0 1 normal forwards;
-	-o-animation: outerright-to-right 0.3s ease-out 0 1 normal forwards;
-	animation: outerright-to-right 0.3s ease-out 0 1 normal forwards;
+	-webkit-animation: outerright-to-right 0.3s ease-out 0s 1 normal forwards;
+	-o-animation: outerright-to-right 0.3s ease-out 0s 1 normal forwards;
+	animation: outerright-to-right 0.3s ease-out 0s 1 normal forwards;
 }
 
 @-webkit-keyframes left-to-outerleft {
