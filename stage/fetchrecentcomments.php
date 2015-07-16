@@ -107,7 +107,7 @@ try {
 		$stmt->bindValue(":stage_id", $value['StageID'], PDO::PARAM_INT);
 		$stmt->execute();
 		$stage_title				= $stmt->fetch(PDO::FETCH_COLUMN, 0);
-		$pattern					= '/[^0-9A-Za-z〃々ぁ-ゖ゛-ゞァ-ヺーヽヾ一-龥０-９Ａ-Ｚａ-ｚｦ-ﾟ]/';
+		$pattern					= '/[^0-9A-Za-z〃々ぁ-ゖ゛-ゞァ-ヺーヽヾ一-龥０-９Ａ-Ｚａ-ｚｦ-ﾟ]/u';
 		$hashtag					= preg_replace($pattern, '', $stage_title);
 		if ($hashtag === '') {
 			$hashtag 				= 'hackforplay';
