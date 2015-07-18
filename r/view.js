@@ -414,7 +414,7 @@ $(function(){
 
 				$('.h4p_filtering-buttons a.btn').each(function(index, el) {
 					if ($(el).data('filter') === sessionStorage.getItem('view_param_filter')) {
-						$(el).addClass('disabled');
+						el.classList.add('disabled');
 					}
 				});
 
