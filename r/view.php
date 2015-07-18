@@ -77,7 +77,9 @@
 	</div>
 	<div id="page_anchor" class="container-fluid" role="group">
 		<div class="row">
-			<div class="col-md-12 h4p_filtering-buttons btn-group btn-group-justified margin-top-lg" style="height: 120px">
+			<div class="col-md-12">
+				<div class="h4p_filtering-buttons btn-group btn-group-justified margin-top-lg">
+				</div>
 			</div>
 		</div>
 	</div>

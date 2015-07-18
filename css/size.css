@@ -93,7 +93,7 @@
 }
 
 .h4p_filtering-buttons a.btn {
-	min-height: 100px;
+	height: 100px;
 }
 
 /* 間隔属性 */
@@ -103,6 +103,14 @@
 
 .margin-bottom-lg {
 	margin-bottom: 40px;
+}
+
+.margin-left-lg {
+	margin-left: 40px;
+}
+
+.margin-right-lg {
+	margin-right: 40px;
 }
 
 header {

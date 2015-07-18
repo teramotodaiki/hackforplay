@@ -373,6 +373,12 @@ $(function(){
 	// フィルター
 	var $fil = $('<a>').addClass('btn btn-lg text-color-white');
 
+	$fil.hover(function() {
+		$(this).css('opacity', '1.0');
+	}, function() {
+		$(this).css('opacity', '0.65');
+	});
+
 	$.post('../stage/getaglist.php', {
 		'attendance-token' : sessionStorage.getItem('attendance-token')
 	} , function(data, textStatus, xhr) {
@@ -389,7 +395,7 @@ $(function(){
 					$fil.clone(true, true).attr({
 						'title': 'ALL // すべて',
 						'href': '/r/?start=0#page_anchor'
-					}).text('ALL // すべて').addClass('active').css('background-color', 'rgb(148,148,148)')
+					}).text('ALL // すべて').css('background-color', 'rgb(148,148,148)').data('filter', '')
 				);
 
 				result.values.forEach(function(item) {
@@ -400,11 +406,17 @@ $(function(){
 						'href': '/r/?start=0&filter=' + item.IdentifierString + '#page_anchor'
 					}).text(item.DisplayString).css({
 						'background-color': item.LabelColor
-					});
+					}).data('filter', item.IdentifierString);
 
 					$(this).append(fil);
 
 				}, $('.h4p_filtering-buttons'));
+
+				$('.h4p_filtering-buttons a.btn').each(function(index, el) {
+					if ($(el).data('filter') === sessionStorage.getItem('view_param_filter')) {
+						$(el).addClass('disabled');
+					}
+				});
 
 				break;
 		}
