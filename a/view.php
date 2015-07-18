@@ -50,7 +50,7 @@
 	<!-- contents -->
 	<div class="container panel panel-default">
 		<div class="row panel-body">
-			<ul class="col-md-2 nav nav-pills nav-stacked panel-body" role="tablist">
+			<ul class="col-xs-2 nav nav-pills nav-stacked panel-body" role="tablist">
 			    <li role="presentation">
 			    	<a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">summary</a>
 			    </li>
@@ -70,7 +70,7 @@
 			    	<a href="#judge" aria-controls="judge" role="tab" data-toggle="tab">judge</a>
 			    </li>
 			</ul>
-			<div class="col-md-10 tab-content">
+			<div class="col-xs-10 tab-content">
 			    <div role="tabpanel" class="tab-pane" id="summary">
 			    	<div class="chart text-center">
 			    	</div>

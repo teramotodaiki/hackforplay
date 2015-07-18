@@ -3,17 +3,17 @@ $(function(){
 	// コメント
 	var $com =
 	$('<div>').addClass('panel-body row').append(
-		$('<div>').addClass('col-md-6').append(
+		$('<div>').addClass('col-xs-6').append(
 			$('<div>').addClass('row').append(
-				$('<div>').addClass('col-md-5 comment-thumbnail').append(
+				$('<div>').addClass('col-xs-5 comment-thumbnail').append(
 					$('<img>').addClass('h4p_thumbnail').height(120)
 				)
 			).append(
-				$('<div>').addClass('col-md-2 comment-user-icon').append(
+				$('<div>').addClass('col-xs-2 comment-user-icon').append(
 					$('<img>').addClass('img-circle comment-item-padding')
 				)
 			).append(
-				$('<div>').addClass('col-md-5').append(
+				$('<div>').addClass('col-xs-5').append(
 					$('<div>').addClass('text-muted comment-item-padding nickname').append(
 						$('<a>')
 					)
@@ -25,15 +25,15 @@ $(function(){
 			)
 		)
 	).append(
-		$('<div>').addClass('col-md-6').append(
+		$('<div>').addClass('col-xs-6').append(
 			$('<div>').addClass('row').append(
-				$('<div>').addClass('col-md-12 comment-body').css('min-height', '60px')
+				$('<div>').addClass('col-xs-12 comment-body').css('min-height', '60px')
 			).append(
-				$('<div>').addClass('col-md-12 comment-footer').append(
+				$('<div>').addClass('col-xs-12 comment-footer').append(
 					$('<p>').addClass('label pull-right')
 				)
 			).append(
-				$('<div>').addClass('col-md-12').append(
+				$('<div>').addClass('col-xs-12').append(
 					$('<button>').attr('type', 'button').addClass('btn btn-link pull-right h4p_comment-trash').append(
 						$('<span>').attr('aria-hidden', 'true').addClass('glyphicon glyphicon-trash')
 					)

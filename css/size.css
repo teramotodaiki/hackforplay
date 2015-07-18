@@ -5,7 +5,7 @@
 /* 全体の幅など、デバイスによって変化するサイズ */
 @media(max-width: 767px) {
 	.container {
-		width: 408px;
+		width: 100%;
 	}
 	.h4p_stagelist {
 		width: 384px;
@@ -13,7 +13,7 @@
 }
 @media(min-width: 768px) {
 	.container {
-		width: 792px;
+		width: 768px;
 	}
 	.h4p_stagelist {
 		width: 768px;

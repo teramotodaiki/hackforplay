@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>HackforPlay</title>
 	<?php require_once '../library.php' ?>
 </head>
@@ -16,7 +17,7 @@
 	<!-- Content -->
 	<div class="container">
 		<div class="row">
-			<div class="col-md-offset-1 col-md-10">
+			<div class="col-xs-offset-1 col-xs-10">
 				<div class="row panel panel-default">
 					<div class="panel-heading">
 						<h4>あなたへのメッセージ</h4>
