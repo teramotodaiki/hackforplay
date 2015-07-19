@@ -71,6 +71,7 @@ function run(){
 	"e.tl.scaleTo(0, 1, 3, enchant.Easing.LINEAR);"+
 	"window.focus();";
 	game.postMessage(source, policy);
+	sessionStorage.setItem('editor_visibility', 'false');
 }
 
 function cls(){
@@ -79,6 +80,7 @@ function cls(){
 	"e.tl.scaleTo(0, 1, 7, enchant.Easing.BACK_EASEIN);"+
 	"window.focus();";
 	game.postMessage(source, policy);
+	sessionStorage.setItem('editor_visibility', 'false');
 }
 
 function undo () {

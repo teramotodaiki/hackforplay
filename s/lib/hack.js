@@ -178,6 +178,7 @@ window.addEventListener('load', function() {
 		this.enchantBook.scale(1, 0);
 		this.enchantBook.tl.scaleTo(1, 1, 7, enchant.Easing.BACK_EASEOUT); // うごきあり
 		this.enchantBook.visible = true;
+		sessionStorage.setItem('editor_visibility', 'true');
 	};
 
 	Hack.closeEditor = function(){
@@ -186,6 +187,7 @@ window.addEventListener('load', function() {
 		this.enchantBook.tl.scaleTo(0, 1, 7, enchant.Easing.BACK_EASEIN).then(function() {
 			this.enchantBook.visible = false;
 		});
+		sessionStorage.setItem('editor_visibility', 'false');
 	};
 
 	Hack.createLabel = function(text, prop) {
