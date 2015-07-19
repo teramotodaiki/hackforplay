@@ -18,21 +18,22 @@ var sendToEditor;	// sendToEditorメソッドもグローバルに呼び出せ�
 			editorEntity.height = 320;
 			editorEntity._element =
 			$("<iframe>").attr({
-			        "id" : "editor",
-		            "src" : window.kaizou,
-				    "width" : "480",
-				    "height" : "320"
-				}).get(0);
-				editorEntity._element.type = "iframe";
-			}
-			if(editorEntity.scene !== game.rootScene){
-				editorEntity.scale(1, 0);
-				editorEntity.tl.scaleTo(1, 1, 7, enchant.Easing.BACK_EASEOUT); // うごきあり
-				// editorEntity.tl.scaleTo(1, 1); // うごきなし
-				game.rootScene.addChild(editorEntity);
-			}
-			return editorEntity;
-	}
+		        "id" : "editor",
+	            "src" : window.kaizou,
+			    "width" : "480",
+			    "height" : "320"
+			}).get(0);
+			editorEntity._element.type = "iframe";
+		}
+		if(editorEntity.scene !== game.rootScene){
+			editorEntity.scale(1, 0);
+			editorEntity.tl.scaleTo(1, 1, 7, enchant.Easing.BACK_EASEOUT); // うごきあり
+			// editorEntity.tl.scaleTo(1, 1); // うごきなし
+			game.rootScene.addChild(editorEntity);
+			sessionStorage.setItem('editor_visibility', 'true');
+		}
+		return editorEntity;
+	};
 	// Editorのiframeに対してWeb Messagingを行う。
 	sendToEditor = function(message){
 		if(editorEntity === undefined){
@@ -44,5 +45,5 @@ var sendToEditor;	// sendToEditorメソッドもグローバルに呼び出せ�
 		}else{
 			editorEntity._element.contentWindow.postMessage(message, '/');
 		}
-	}
+	};
 })();
