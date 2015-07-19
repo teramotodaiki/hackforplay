@@ -41,7 +41,7 @@
 					<div class="col-xs-12 panel-heading">
 						<h3>オリジナルステージを作る</h3>
 					</div>
-					<div class="col-md-12 panel-body">
+					<div class="col-xs-12 panel-body">
 						<div class="row">
 							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
 								<a href="/s?id=201" title="ステージをつくろう１" target="_blank">
@@ -74,7 +74,7 @@
 	  		</div>
 		</div>
 	</div>
-	<div class="h4p_topic-comment overflow-x-hidden">
+	<div class="h4p_topic-comment overflow-x-hidden hidden-xs">
 	</div>
 	<div id="page_anchor" class="container-fluid" role="group">
 		<div class="row">

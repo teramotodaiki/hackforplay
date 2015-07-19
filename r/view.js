@@ -199,25 +199,25 @@ $(function(){
 	$('<div>').css('cursor', 'pointer').append(
 		$('<div>').addClass('panel panel-default').append(
 			$('<div>').addClass('panel-body row').append(
-				$('<div>').addClass('col-xs-6 comment-thumbnail').append(
+				$('<div>').addClass('col-sm-6 comment-thumbnail').append(
 					$('<img>').addClass('h4p_thumbnail')
 				)
 			).append(
-				$('<div>').addClass('col-xs-6').append(
+				$('<div>').addClass('col-sm-6').append(
 					$('<div>').addClass('row').append(
-						$('<div>').addClass('col-xs-2 comment-header').append(
+						$('<div>').addClass('col-sm-2 comment-header').append(
 							$('<img>').addClass('img-circle comment-item-padding')
 						)
 					).append(
-						$('<div>').addClass('col-xs-10 comment-header').append(
+						$('<div>').addClass('col-sm-10 comment-header').append(
 							$('<div>').addClass('text-muted comment-item-padding nickname')
 						).append(
 							$('<div>').addClass('comment-item-padding hashtag')
 						)
 					).append(
-						$('<div>').addClass('col-xs-12 comment-body overflow-auto')
+						$('<div>').addClass('col-sm-12 comment-body overflow-auto')
 					).append(
-						$('<div>').addClass('col-xs-12 comment-footer').append(
+						$('<div>').addClass('col-sm-12 comment-footer').append(
 							$('<p>').addClass('label pull-right')
 						)
 					)
