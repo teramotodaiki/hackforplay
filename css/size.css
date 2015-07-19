@@ -10,6 +10,10 @@
 	.h4p_stagelist {
 		width: 384px;
 	}
+	.h4p_bar-left,
+	.h4p_bar-right {
+		display: none;
+	}
 }
 @media(min-width: 768px) {
 	.container {

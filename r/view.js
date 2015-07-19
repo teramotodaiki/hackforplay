@@ -187,6 +187,7 @@ $(function(){
 					$con.find('.h4p_stagelist').append(blank);
 				}
 			}
+
 			// 左右の枠
 			var containerHeight = $con.find('.h4p_stagelist').height();
 			$con.find('.h4p_bar-left').height(containerHeight);
