@@ -18,6 +18,9 @@
 	.h4p_stagelist {
 		width: 768px;
 	}
+	.h4p_filtering-buttons a.btn {
+		height: 100px;
+	}
 }
 @media (min-width: 992px) {
 	.container {
@@ -41,6 +44,10 @@
 
 /* 全てのデバイスに共通したサイズ */
 /* 幅・高さ属性 */
+.width-fit {
+	width: 100%;
+}
+
 .h4p_item {
 	height: 384px;
 }
@@ -90,10 +97,6 @@
 
 #codeModal pre {
 	max-height: 400px;
-}
-
-.h4p_filtering-buttons a.btn {
-	height: 100px;
 }
 
 /* 間隔属性 */

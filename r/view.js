@@ -371,7 +371,7 @@ $(function(){
 	})();
 
 	// フィルター
-	var $fil = $('<a>').addClass('btn btn-lg text-color-white');
+	var $fil = $('<a>').addClass('btn btn-lg');
 
 	$fil.hover(function() {
 		$(this).css('opacity', '1.0');

@@ -34,7 +34,7 @@
 	})();
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
-	<div class="container">
+	<div class="container hidden-xs">
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="row panel panel-default">
@@ -78,8 +78,12 @@
 	</div>
 	<div id="page_anchor" class="container-fluid" role="group">
 		<div class="row">
-			<div class="col-xs-12">
+			<div class="col-sm-12 hidden-xs">
 				<div class="h4p_filtering-buttons btn-group btn-group-justified margin-top-lg">
+				</div>
+			</div>
+			<div class="col-xs-12 visible-xs">
+				<div class="h4p_filtering-buttons btn-group btn-group-vertical width-fit">
 				</div>
 			</div>
 		</div>
