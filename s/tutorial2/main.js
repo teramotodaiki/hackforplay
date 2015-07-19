@@ -173,7 +173,7 @@ window.addEventListener('load', function() {
                 var me = this;
                 this.sprite.tl.moveBy(0, -20, 10).then(function(){
                     me.destroy();
-                    miru("魔道書を手に入れた！");
+                    miru("魔道書(まどうしょ) を てにいれた！");
                     var hand = new Sprite(128, 32);
                     hand.image = game.assets[path+'hand.png'];
                     hand.moveTo(16, 80);
