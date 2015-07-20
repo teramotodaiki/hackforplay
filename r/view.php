@@ -4,6 +4,7 @@
 <head prefix="og: http://ogp.me/ns#">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>あそべるプログラミング hackforplay</title>
 	<?php require_once '../library.php' ?>
 	<!-- Open graph protocol -->
@@ -33,14 +34,14 @@
 	})();
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
-	<div class="container">
+	<div class="container hidden-xs">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-xs-12">
 				<div class="row panel panel-default">
-					<div class="col-md-12 panel-heading">
+					<div class="col-xs-12 panel-heading">
 						<h3>オリジナルステージを作る</h3>
 					</div>
-					<div class="col-md-12 panel-body">
+					<div class="col-xs-12 panel-body">
 						<div class="row">
 							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
 								<a href="/s?id=201" title="ステージをつくろう１" target="_blank">
@@ -73,39 +74,43 @@
 	  		</div>
 		</div>
 	</div>
-	<div class="h4p_topic-comment overflow-x-hidden">
+	<div class="h4p_topic-comment overflow-x-hidden hidden-xs">
 	</div>
 	<div id="page_anchor" class="container-fluid" role="group">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-sm-12 hidden-xs">
 				<div class="h4p_filtering-buttons btn-group btn-group-justified margin-top-lg">
+				</div>
+			</div>
+			<div class="col-xs-12 visible-xs">
+				<div class="h4p_filtering-buttons btn-group btn-group-vertical width-fit">
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="container-fluid h4p_stagecontainer">
 		<div class="row">
-			<div class="col-md-12 h4p_bar-top"></div>
-			<div class="col-md-12 h4p_bar-bar">
+			<div class="col-xs-12 h4p_bar-top"></div>
+			<div class="col-xs-12 h4p_bar-bar">
 				<div class="container">
 					<div class="h4p_bar-left"></div>
 					<div class="row h4p_stagelist list-stage"></div>
 					<div class="h4p_bar-right"></div>
 				</div>
 			</div>
-			<div class="col-md-12 h4p_bar-bottom"></div>
+			<div class="col-xs-12 h4p_bar-bottom"></div>
 		</div>
 	</div>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-4 text-right">
+			<div class="col-xs-4 text-right">
 				<a href="javascript:void(0);" title="previous" class="btn btn-lg btn-default go_page_previous">
 					前へ
 				</a>
 			</div>
-			<div class="col-md-4 text-center page-numbers">
+			<div class="col-xs-4 text-center page-numbers">
 			</div>
-			<div class="col-md-4 text-left">
+			<div class="col-xs-4 text-left">
 				<a href="javascript:void(0);" title="next" class="btn btn-lg btn-default go_page_next">
 					次へ
 				</a>
@@ -114,15 +119,15 @@
 	</div>
 	<div class="container-fluid h4p_stagecontainer">
 		<div class="row">
-			<div class="col-md-12 h4p_bar-top"></div>
-			<div class="col-md-12 h4p_bar-bar">
+			<div class="col-xs-12 h4p_bar-top"></div>
+			<div class="col-xs-12 h4p_bar-bar">
 				<div class="container">
 					<div class="h4p_bar-left"></div>
 					<div class="row h4p_stagelist list-empty"></div>
 					<div class="h4p_bar-right"></div>
 				</div>
 			</div>
-			<div class="col-md-12 h4p_bar-bottom"></div>
+			<div class="col-xs-12 h4p_bar-bottom"></div>
 		</div>
 	</div>
 	<?php require_once '../view/footer.php' ?>

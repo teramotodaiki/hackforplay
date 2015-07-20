@@ -71,6 +71,22 @@ $(function(){
 	     	<a class="navbar-brand" title="ハックフォープレイ" href="/?rewrite=no">
 	        	<img alt="hackforplay" src="/logo.png">
 	     	</a>
+		    <div class="pull-right visible-xs">
+				<div class="dropdown">
+					<a class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" onfocus="this.blur();" >
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="h4p_header-dropdown">
+						<li role="presentation"><a href="/m" title="settings">マイページ</a></li>
+						<li role="presentation"><a href="/p" title="settings">設定</a></li>
+						<li role="presentation"><a href="/comments" title="comments">メッセージ</a></li>
+						<li role="presentation" class="divider"></li>
+						<li role="presentation" class="h4p_signin"><a data-toggle="modal" data-target="#signinModal">ログイン</a></li>
+						<li role="presentation" class="h4p_signin"><a data-toggle="modal" data-target="#authModal">会員登録</a></li>
+						<li role="presentation" class="h4p_signout"><a href="javascript:void(0);" onclick="signout();">ログアウト</a></li>
+					</ul>
+				</div>
+		    </div>
 	    </div>
 	    <nav class="collapse navbar-collapse">
 	    	<ul class="nav navbar-nav">

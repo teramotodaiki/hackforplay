@@ -8,6 +8,7 @@ Preferences のビュー
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 	<title>設定 - あそべるプログラミング hackforplay</title>
 	<?php require_once '../library.php' ?>
 </head>
@@ -24,12 +25,12 @@ Preferences のビュー
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-xs-12">
 				<div class="row panel panel-primary" role="tabpanel">
-					<div class="col-md-12 panel-heading">
+					<div class="col-xs-12 panel-heading">
 						<h3 class="panel-title">設定</h3>
 					</div>
-					<ul class="col-md-3 nav nav-pills nav-stacked panel-body" role="tablist">
+					<ul class="col-xs-12 col-sm-3 nav nav-pills nav-stacked panel-body" role="tablist">
 					    <li role="presentation" class="active">
 					    	<a href="#usersettings" aria-controls="usersettings" role="tab" data-toggle="tab">ユーザー情報</a>
 					    </li>
@@ -40,7 +41,7 @@ Preferences のビュー
 					    	<a href="#twitter" aria-controls="twitter" role="tab" data-toggle="tab">Twitter連携</a>
 					    </li>
 					</ul>
-					<div class="col-md-9 tab-content panel-body">
+					<div class="col-xs-12 col-sm-9 tab-content panel-body">
 					    <div role="tabpanel" class="tab-pane active" id="usersettings">
 					    	<form name="usersettings" class="form-horizontal">
 							  	<div class="form-group has-feedback">
