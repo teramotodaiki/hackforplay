@@ -1,27 +1,27 @@
 /* デバイスによって変化するサイズ */
-@media (min-width: 1px) {
+@media (max-width: 767px) {
 	.h4p_landing-main {	width: 100%; }
-	.l-1 { height: 576px; }
-	.l-2 { height: 819px; }
-	.l-3 { height: 435px; }
-	.l-4 { height: 896px; }
+	.l-1 { height: 432px; }
+	.l-2 { height: 614px; }
+	.l-3 { height: 326px; }
+	.l-4 { height: 672px; }
 }
-@media (max-width: 1680px) {
-	.h4p_landing-main { width: 1024px; }
-	.l-1 { height: 576px; }
-	.l-2 { height: 819px; }
-	.l-3 { height: 435px; }
-	.l-4 { height: 896px; }
-}
-@media (max-width: 1280px) {
+@media (min-width: 768px) {
 	.h4p_landing-main {	width: 768px; }
 	.l-1 { height: 432px; }
 	.l-2 { height: 614px; }
 	.l-3 { height: 326px; }
 	.l-4 { height: 672px; }
 }
-@media (max-width: 768px) {
-	.h4p_landing-main {	width: 768px; }
+@media (min-width: 1280px) {
+	.h4p_landing-main { width: 1024px; }
+	.l-1 { height: 576px; }
+	.l-2 { height: 819px; }
+	.l-3 { height: 435px; }
+	.l-4 { height: 896px; }
+}
+@media (min-width: 1680px) {
+	.h4p_landing-main { width: 1024px; }
 	.l-1 { height: 576px; }
 	.l-2 { height: 819px; }
 	.l-3 { height: 435px; }
