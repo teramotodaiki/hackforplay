@@ -234,7 +234,7 @@ $(function(){
 		if(alert_on_unload){
 			return "せいさくちゅう の ステージ は「マイページ」に ほぞん されています。\nただし「ステージ改造コードを実行」を おしてから  へんこうした ぶぶんは ほぞん されません";
 		}else if(editor_visibility) {
-			return "ゲームは セーブ されて いないかも しれません。\nまえの ページに もどりますか？";
+			return "ゲームは セーブ されて いないかも しれません。\nページを いどう しますか？";
 		}else{
 			event.preventDefault();
 		}
