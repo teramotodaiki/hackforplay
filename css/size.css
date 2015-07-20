@@ -82,6 +82,10 @@
 	height: 30px;
 }
 
+.comment-thumbnail .h4p_thumbnail {
+	max-height: 187px;
+}
+
 #frameModal .modal-content {
 	height: 400px;
 }
