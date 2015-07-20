@@ -70,11 +70,6 @@
 	height: 36px;
 }
 
-.h4p_topic-comment>div,
-.h4p_topic-comment .panel-body {
-	height: 240px;
-}
-
 .h4p_topic-comment .panel-body .comment-header {
 	height: 60px;
 }
@@ -85,10 +80,6 @@
 
 .h4p_topic-comment .panel-body .comment-footer {
 	height: 30px;
-}
-
-.h4p_topic-comment .panel-body .comment-thumbnail img {
-	height: 210px;
 }
 
 #frameModal .modal-content {
