@@ -189,9 +189,21 @@ $(function(){
 			}
 
 			// 左右の枠
-			var containerHeight = $con.find('.h4p_stagelist').height();
-			$con.find('.h4p_bar-left').height(containerHeight);
-			$con.find('.h4p_bar-right').height(containerHeight);
+			// [左バー | 中身 | 右バー]の幅 >= containerの幅 ---> はみだすので非表示に
+			var entity = $con.find('.h4p_bar-left').width() + $con.find('.h4p_stagelist').width() + $con.find('.h4p_bar-right').width();
+			if (entity < $con.width()) {
+
+				// 左右バー表示（高さをentityにあわせる）
+				var containerHeight = $con.find('.h4p_stagelist').height();
+				$con.find('.h4p_bar-left,.h4p_bar-right').removeClass('hidden').height(containerHeight);
+
+			} else {
+
+				// 左右バー非表示
+				$con.find('.h4p_bar-left,.h4p_bar-right').addClass('hidden');
+
+			}
+
 		});
 	}
 
