@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 	<title>HackforPlay</title>
 	<?php require_once '../library.php' ?>
 </head>
@@ -34,7 +35,7 @@
 	<script src="othersview.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12 panel panel-default">
+			<div class="col-xs-12 panel panel-default">
 				<div class="panel-body">
 					<div class="text-center">
 						<img src="tmpthumb.png" class="img-circle h4p_user-thumbnail">
@@ -48,25 +49,25 @@
 	</div>
 	<div class="container-fluid h4p_stagecontainer">
 		<div class="row">
-			<div class="col-md-12 h4p_bar-top"></div>
-			<div class="col-md-12 h4p_bar-bar">
+			<div class="col-xs-12 h4p_bar-top"></div>
+			<div class="col-xs-12 h4p_bar-bar">
 				<div class="container">
 					<div class="h4p_bar-left"></div>
 					<div class="row h4p_stagelist list-stage"></div>
 					<div class="h4p_bar-right"></div>
 				</div>
 			</div>
-			<div class="col-md-12 h4p_bar-bottom"></div>
+			<div class="col-xs-12 h4p_bar-bottom"></div>
 		</div>
 	</div>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-6 text-center">
+			<div class="col-xs-6 text-center">
 				<a href="javascript:void(0);" title="previous" class="btn btn-lg btn-link go_page_previous">
 					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 				</a>
 			</div>
-			<div class="col-md-6 text-center">
+			<div class="col-xs-6 text-center">
 				<a href="javascript:void(0);" title="next" class="btn btn-lg btn-link go_page_next">
 					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 				</a>

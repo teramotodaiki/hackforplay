@@ -3,6 +3,7 @@
 <head prefix="og: http://ogp.me/ns#">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 	<title>リソース hackforplay</title>
 	<?php require_once '../library.php' ?>
 </head>
@@ -53,12 +54,12 @@
 	</div>
 	<div class="container">
 		<div class="row">
-			<div id="anchor-hackforplay" class="col-md-12">
+			<div id="anchor-hackforplay" class="col-xs-12">
 				<h2>HackforPlay</h2>
 				<div class="row">
 				</div>
 			</div>
-			<div id="anchor-enchantjs" class="col-md-12">
+			<div id="anchor-enchantjs" class="col-xs-12">
 				<h2>enchant.js</h2>
 				<div class="row">
 				</div>

@@ -3,6 +3,7 @@
 <head prefix="og: http://ogp.me/ns#">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>リファレンス hackforplay</title>
 	<?php require_once '../library.php' ?>
 </head>
@@ -15,12 +16,12 @@
 	<script src="view.js" type="text/javascript"></script>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-11">
+			<div class="col-xs-12 col-sm-9 col-md-11">
 				<div id="anchor-hack" class="panel panel-default">
 					<div class="panel-heading">
 						<h2>hack.js <small>すべてのステージで共通して使える機能</small></h2>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body table-responsive">
 						<table class="table">
 							<thead>
 								<tr>
@@ -40,7 +41,7 @@
 					<div class="panel-heading">
 						<h2>typing.js <small><a href="../s?id=304" target="_blank" title="タイピングゲーム">タイピングゲーム</a>で使える機能</small></h2>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body table-responsive">
 						<table class="table">
 							<thead>
 								<tr>
@@ -60,7 +61,7 @@
 					<div class="panel-heading">
 						<h2>run.js <small><a href="../s?id=305" target="_blank" title="ランゲーム">ランゲーム</a>で使える機能</small></h2>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body table-responsive">
 						<table class="table">
 							<thead>
 								<tr>
@@ -77,7 +78,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-1">
+			<div class="hidden-xs col-sm-3 col-md-1">
 				<div class="panel panel-default affix">
 					<div class="panel-body">
 						<nav>

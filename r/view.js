@@ -187,10 +187,23 @@ $(function(){
 					$con.find('.h4p_stagelist').append(blank);
 				}
 			}
+
 			// 左右の枠
-			var containerHeight = $con.find('.h4p_stagelist').height();
-			$con.find('.h4p_bar-left').height(containerHeight);
-			$con.find('.h4p_bar-right').height(containerHeight);
+			// [左バー | 中身 | 右バー]の幅 >= containerの幅 ---> はみだすので非表示に
+			var entity = $con.find('.h4p_bar-left').width() + $con.find('.h4p_stagelist').width() + $con.find('.h4p_bar-right').width();
+			if (entity < $con.width()) {
+
+				// 左右バー表示（高さをentityにあわせる）
+				var containerHeight = $con.find('.h4p_stagelist').height();
+				$con.find('.h4p_bar-left,.h4p_bar-right').removeClass('hidden').height(containerHeight);
+
+			} else {
+
+				// 左右バー非表示
+				$con.find('.h4p_bar-left,.h4p_bar-right').addClass('hidden');
+
+			}
+
 		});
 	}
 
@@ -199,25 +212,39 @@ $(function(){
 	$('<div>').css('cursor', 'pointer').append(
 		$('<div>').addClass('panel panel-default').append(
 			$('<div>').addClass('panel-body row').append(
-				$('<div>').addClass('col-md-6 comment-thumbnail').append(
-					$('<img>').addClass('h4p_thumbnail')
-				)
-			).append(
-				$('<div>').addClass('col-md-6').append(
+				$('<div>').addClass('col-sm-6').append(
 					$('<div>').addClass('row').append(
-						$('<div>').addClass('col-md-2 comment-header').append(
+						$('<div>').addClass('col-sm-4 col-md-2 comment-header visible-sm').append(
 							$('<img>').addClass('img-circle comment-item-padding')
 						)
 					).append(
-						$('<div>').addClass('col-md-10 comment-header').append(
+						$('<div>').addClass('col-sm-8 col-md-10 comment-header visible-sm').append(
 							$('<div>').addClass('text-muted comment-item-padding nickname')
 						).append(
 							$('<div>').addClass('comment-item-padding hashtag')
 						)
 					).append(
-						$('<div>').addClass('col-md-12 comment-body overflow-auto')
+						$('<div>').addClass('col-sm-12 comment-thumbnail').append(
+							$('<img>').addClass('h4p_thumbnail img-responsive')
+						)
+					)
+				)
+			).append(
+				$('<div>').addClass('col-sm-6').append(
+					$('<div>').addClass('row').append(
+						$('<div>').addClass('col-sm-4 col-md-2 comment-header hidden-sm').append(
+							$('<img>').addClass('img-circle comment-item-padding')
+						)
 					).append(
-						$('<div>').addClass('col-md-12 comment-footer').append(
+						$('<div>').addClass('col-sm-8 col-md-10 comment-header hidden-sm').append(
+							$('<div>').addClass('text-muted comment-item-padding nickname')
+						).append(
+							$('<div>').addClass('comment-item-padding hashtag')
+						)
+					).append(
+						$('<div>').addClass('col-sm-12 comment-body overflow-auto')
+					).append(
+						$('<div>').addClass('col-sm-12 comment-footer').append(
 							$('<p>').addClass('label pull-right')
 						)
 					)
@@ -371,7 +398,7 @@ $(function(){
 	})();
 
 	// フィルター
-	var $fil = $('<a>').addClass('btn btn-lg text-color-white');
+	var $fil = $('<a>').addClass('btn btn-lg');
 
 	$fil.hover(function() {
 		$(this).css('opacity', '1.0');

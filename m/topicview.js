@@ -1,6 +1,6 @@
 function createTopicView () {
 	// トピックのビューを生成
-	return $('<div>').addClass('col-md-12 panel panel-default').append(
+	return $('<div>').addClass('col-xs-12 panel panel-default').append(
 		$('<div>').addClass('panel-heading').html('<h3>オリジナルステージを作る</h3>')
 	).append(
 		$('<div>').addClass('panel-body').append(

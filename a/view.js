@@ -1,8 +1,8 @@
 $(function(){
 
-	var $item = $('<div>').addClass('col-md-12 panel').append(
+	var $item = $('<div>').addClass('col-xs-12 panel').append(
 		$('<div>').addClass('row panel-body').append(
-			$('<div>').addClass('col-md-4').append(
+			$('<div>').addClass('col-xs-4').append(
 				$('<div>').addClass('h4p_item-thumbnail').css({
 					'margin-left':   'auto',
 					'margin-right':  'auto',
@@ -11,7 +11,7 @@ $(function(){
 				})
 			)
 		).append(
-			$('<div>').addClass('col-md-4').append(
+			$('<div>').addClass('col-xs-4').append(
 				$('<p>').append($('<h4>').addClass('title').html('<a></a>'))
 			).append(
 				$('<p>').append($('<span>').addClass('registered').html('作成日：<b></b>'))
@@ -21,7 +21,7 @@ $(function(){
 				$('<p>').append($('<span>').addClass('source').html('改造元：<b><a></a></b>'))
 			)
 		).append(
-			$('<div>').addClass('col-md-4').append(
+			$('<div>').addClass('col-xs-4').append(
 				$('<button>').addClass('btn btn-success btn-lg btn-block h4p_code-button').attr({
 					'data-toggle': 'modal',
 					'data-target': '#codeModal'
