@@ -30,7 +30,6 @@ var sendToEditor;	// sendToEditorメソッドもグローバルに呼び出せ�
 			editorEntity.tl.scaleTo(1, 1, 7, enchant.Easing.BACK_EASEOUT); // うごきあり
 			// editorEntity.tl.scaleTo(1, 1); // うごきなし
 			game.rootScene.addChild(editorEntity);
-			sessionStorage.setItem('editor_visibility', 'true');
 		}
 		return editorEntity;
 	};

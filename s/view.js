@@ -229,16 +229,13 @@ $(function(){
 	// ステージ改造中、画面遷移するとき注意をうながす
 	var alert_on_unload = false;
 	$(window).on('beforeunload', function(event) {
-		var editor_visibility  = sessionStorage.getItem('editor_visibility') === 'true';
-
 		if(alert_on_unload){
 			return "せいさくちゅう の ステージ は「マイページ」に ほぞん されています。\nただし「ステージ改造コードを実行」を おしてから  へんこうした ぶぶんは ほぞん されません";
-		}else if(editor_visibility) {
-			return "ゲームは セーブ されて いないかも しれません。\nページを いどう しますか？";
 		}else{
 			event.preventDefault();
 		}
 	});
+
 	(function(){
 		var beginRestaging = function(){
 			alert_on_unload = true;
