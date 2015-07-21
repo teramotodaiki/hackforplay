@@ -19,50 +19,90 @@ window.addEventListener('load', function() {
 
 	// ====> 改造コードへ
 	Hack.restagingCode =
-	"Hack.onload = function() {\n"+
-	"\tHack.pressStartKey(' ');\n"+
-	"\tHack.clearLog();\n"+
-	"\tHack.log('Press space key to start the Typing Game!!');\n"+
-	"\tHack.log('スペースキーを押して、タイピングゲームを始めよう!!');\n"+
-	"\n"+
-	"\tHack.started = false;\n"+
-	"};\n"+
-	"\n"+
-	"Hack.onpressstart = function() {\n"+
-	"\tHack.shuffleAndLog('apple grape orange pineapple strawberry banana');\n"+
-	"\n"+
-	"\tHack.started = true;\n"+
-	"\tHack.startTime = enchant.Core.instance.getElapsedTime();\n"+
-	"};\n"+
-	"\n"+
-	"Hack.onkeydown = function() {\n"+
-	"\tif (Hack.started !== true) return;\n"+
-	"\n"+
-	"\tif (Hack.getPreviousKey === Hack.textarea.text[0]) {\n"+
-	"\t\tHack.textarea.text = Hack.textarea.text.substr(1);\n"+
-	"\t}\n"+
-	"\tif (Hack.textarea.text === '') {\n"+
-	"\t\tHack.dispatchEvent(new enchant.Event('endgame'));\n"+
-	"\t}\n"+
-	"};\n"+
-	"\n"+
-	"Hack.onendgame = function() {\n"+
-	"\tHack.endTime = enchant.Core.instance.getElapsedTime();\n"+
-	"\tHack.textarea.hide();\n"+
-	"\n"+
-	"\tHack.clearLabel = Hack.createLabel([\n"+
-	"\t\t'CLEAR!! Your time:',\n"+
-	"\t\tHack.endTime - Hack.startTime,\n"+
-	"\t\t'sec'\n"+
-	"\t].join('<br>'), {\n"+
-	"\t\tx: 140,\n"+
-	"\t\ty: 100,\n"+
-	"\t\twidth: 200,\n"+
-	"\t\tcolor: '#fff',\n"+
-	"\t\tfont: 'bold x-large/150% sans-serif'\n"+
-	"\t});\n"+
-	"\tHack.onendgame = function(){};\n"+
-	"};\n";
+"/**\n"+
+" * ようこそ クリエイターさん！\n"+
+" *\n"+
+" * このせかいでは、あなたがゲームをつくるクリエイターです\n"+
+" * 「#1」や「#2」…をみつけたら、ぜひ かきかえてみてください！\n"+
+" *\n"+
+" * かきかえたら、「ステージ改造コードを実行」ボタンをおしてみましょう\n"+
+" *\n"+
+" * Let's create your game!!\n"+
+" *\n"+
+"*/\n"+
+"\n"+
+"// onload ... さいしょにじっこうされるイベント\n"+
+"Hack.onload = function() {\n"+
+"\tHack.pressStartKey(' ');\n"+
+"\tHack.clearLog();\n"+
+"\n"+
+"\t// #1 はいけい の いろ\n"+
+"\t//   ... 0 みっつで くろいろ をあらわしている\n"+
+"\tHack.overlay('rgb(  0,  0,  0)');\n"+
+"\n"+
+"\t// #2 さいしょに がめんにでてくる もじ\n"+
+"\tHack.log('Press space key to start the Typing Game!!');\n"+
+"\tHack.log('スペースキーを押して、タイピングゲームを始めよう!!');\n"+
+"\n"+
+"\tHack.started = false;\n"+
+"};\n"+
+"\n"+
+"// onpressstart ... スペースキーがおされたら じっこうされるイベント\n"+
+"Hack.onpressstart = function() {\n"+
+"\t\n"+
+"\t// #3 タイピングゲームにつかうもじを スペースキーでくぎって にゅうりょく\n"+
+"\tHack.shuffleAndLog('apple grape orange pineapple strawberry banana');\n"+
+"\n"+
+"\tHack.started = true;\n"+
+"\tHack.startTime = enchant.Core.instance.getElapsedTime();\n"+
+"};\n"+
+"\n"+
+"// onkeydown ... なにかキーがおされたら じっこうされるイベント\n"+
+"Hack.onkeydown = function() {\n"+
+"\tif (Hack.started !== true) return;\n"+
+"\n"+
+"\t// おされたキーが テキストエリアの さいしょのもじとおなじなら\n"+
+"\tif (Hack.getPreviousKey === Hack.textarea.text[0]) {\n"+
+"\t\t// テキストエリアを ひともじ なくす\n"+
+"\t	Hack.textarea.text = Hack.textarea.text.substr(1);\n"+
+"\t}\n"+
+"\t\n"+
+"\tif (Hack.textarea.text === '') {\n"+
+"\t\t// テキストエリアが から になったら、onendgameイベントをよびだす\n"+
+"\t	Hack.dispatchEvent(new enchant.Event('endgame'));\n"+
+"\t}\n"+
+"};\n"+
+"\n"+
+"// onendgame ... すべてのもじを うちおわったら じっこうされるイベント\n"+
+"Hack.onendgame = function() {\n"+
+"\tHack.endTime = enchant.Core.instance.getElapsedTime();\n"+
+"\tHack.textarea.hide();\n"+
+"\n"+
+"\t// #4 さいごに でてくる もじ\n"+
+"\t// \n"+
+"\t// Hack.endTime - Hack.startTime,\n"+
+"\t//   ... おわったじかん - はじまったじかん で、かかったじかんを けいさんする\n"+
+"\t// \n"+
+"\t// color: 'rgb(255,255,255)',\n"+
+"\t//   ... 255 みっつで しろいろ をあらわす\n"+
+"\t//\n"+
+"\t// x: 140,\n"+
+"\t// y: 100,\n"+
+"\t//   ... もじの いち をきめる ひだりから 140 うえから 100\n"+
+"\t//\n"+
+"\tHack.clearLabel = Hack.createLabel([\n"+
+"\t\t'CLEAR!! Your time:',\n"+
+"\t\tHack.endTime - Hack.startTime,\n"+
+"\t\t'sec'\n"+
+"\t].join('<br>'), {\n"+
+"\t\tx: 140,\n"+
+"\t\ty: 100,\n"+
+"\t\twidth: 200,\n"+
+"\t\tcolor: 'rgb(255,255,255)',\n"+
+"\t\tfont: 'bold x-large/150% sans-serif'\n"+
+"\t});\n"+
+"\tHack.onendgame = function(){};\n"+
+"};\n";
 	// <==== 改造コード
 
 	Hack.onpressstart = Hack.onpressstart || function() {
