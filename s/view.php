@@ -271,7 +271,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 			</div>
 			<div class="col-xs-12 h4p_info">
 				<div class="row">
-					<div class="col-xs-12 h4p_info-datail">
+					<div class="col-xs-12 col-sm-6 h4p_info-datail">
 						<p><h3 class="h4p_info-title"><?php echo $title; ?></h3></p>
 						<p><span>プレイ回数：<b><?php echo $count."回"; ?></b></span></p>
 						<?php if ($author_id === NULL) : ?>
