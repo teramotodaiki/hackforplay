@@ -414,6 +414,17 @@ $(function() {
 			  	<hr>
 			  	<div>
 			  		<p class="text-center">
+			  			<span>ペーパーログイン</span>
+			  			<span class="text-muted">メールアドレスのいらない、かんたんなログインです</span>
+			  			<a href="javascript:void(0)" title="Signin with paper" class="login-with-paper btn btn-default btn-lg">
+			  				ペーパーログインではじめる
+			  				<!-- <img src="../img/signin-with-twitter.png" height="28" width="158" alt="signin with twitter"> -->
+			  			</a>
+			  		</p>
+			  	</div>
+			  	<hr>
+			  	<div>
+			  		<p class="text-center">
 			  			<span class="text-muted">または、Twitterでアカウントを作成</span>
 			  			<a href="javascript:void(0)" title="Signin with twitter" class="login-with-twitter">
 			  				<img src="../img/signin-with-twitter.png" height="28" width="158" alt="signin with twitter">
