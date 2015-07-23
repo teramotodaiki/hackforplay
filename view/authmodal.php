@@ -507,8 +507,19 @@ $(function() {
 					    </div>
 				  	</div>
 				  	<div class="text-right">
-						<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#resetModal" >パスワードを忘れました</button>
+						<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#resetModal">パスワードを忘れました</button>
 					  	<button type="submit" class="btn btn-primary">ログイン</button>
+				  	</div>
+				  	<hr>
+				  	<div>
+				  		<h4>ペーパーログイン</h4>
+				  		<p class="text-center">
+				  			<a href="javascript:void(0)" title="Paper login" data-dismiss="modal" data-toggle="modal" data-target="#paperLoginModal" class="btn btn-default btn-lg">
+				  				ペーパーログイン
+				  				<!-- <img src="../img/signin-with-twitter.png" height="28" width="158" alt="signin with twitter"> -->
+				  			</a>
+				  		</p>
+				  		<p class="text-muted text-center">メモを もっているかたは こちらです。</p>
 				  	</div>
 				  	<hr>
 				  	<div>
@@ -524,6 +535,40 @@ $(function() {
 		    </div>
 		    <div class="modal-body signin-page-2 text-center" style="display: none">
 		    	<h4>ログインできました</h4>
+		    </div>
+      		<div class="modal-footer">
+				<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#authModal" >アカウントを持っていません</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+<div class="modal fade" id="paperLoginModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+  	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        	<h4 class="modal-title">ペーパーログイン</h4>
+    		</div>
+		    <div class="modal-body">
+		    	<form id="paper-signin" class="form-horizontal">
+					<p class="alert alert-danger hide" role="alert"></p>
+				  	<div class="form-group">
+				    	<label for="paper-signinID" class="col-sm-3 control-label">ID</label>
+				    	<div class="col-sm-8">
+				    		<input type="text" class="form-control" id="paper-signinID">
+				    	</div>
+				  	</div>
+				  	<div class="form-group">
+				    	<label for="paper-signinPassword" class="col-sm-3 control-label">パスワード</label>
+				    	<div class="col-sm-8">
+					    	<input type="password" class="form-control" id="paper-signinPassword">
+					    </div>
+				  	</div>
+				  	<div class="text-right">
+					  	<button type="submit" class="btn btn-primary">ログイン</button>
+				  	</div>
+				</form>
 		    </div>
       		<div class="modal-footer">
 				<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#authModal" >アカウントを持っていません</button>
