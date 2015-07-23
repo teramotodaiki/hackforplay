@@ -74,7 +74,7 @@
 	  		</div>
 		</div>
 	</div>
-	<div class="h4p_topic-comment overflow-x-hidden hidden-xs">
+	<div class="h4p_topic-comment overflow-hidden hidden-xs">
 	</div>
 	<div id="page_anchor" class="container-fluid" role="group">
 		<div class="row">
