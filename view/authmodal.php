@@ -60,6 +60,37 @@ $(function() {
 		});
 	});
 
+	// ペーパーログインでサインイン
+	$('#paper-signin').submit(function(event) {
+		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
+
+		var id = $("#paper-signinID").val();
+		var password = $("#paper-signinPassword").val();
+		$("#paper-signin .alert").addClass('hide');
+
+		$.post('/auth/signinwithpaper.php',{
+			'id': id,
+			'password': password
+		} , function(data, textStatus, xhr) {
+			submit.button('reset');
+			switch(data){
+				case "success":
+					// サインイン完了画面へ
+					$('#paper-signin').modal('hide');
+					break;
+				case "unregistered":
+					$('#paper-signin .alert').text('とうろく されていません').removeClass('hide');
+					break;
+				case "incorrect-password":
+					$('#paper-signin .alert').text('パスワードが まちがっています').removeClass('hide');
+					break;
+				default:
+					break;
+			}
+		});
+	});
+
 	// メール送信前のValidation（Validationしてボタンをアクティブにする）
 	$('form#signup button[type="submit"]').attr('disabled', true);
 	setInputRoutine('form#signup', function(){
