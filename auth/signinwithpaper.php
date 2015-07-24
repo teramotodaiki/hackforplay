@@ -40,7 +40,7 @@ try {
 	$_SESSION['UserID'] = $confirmed['UserID'];
 	session_commit();
 
-	exit("success" . $confirmed['UserID']);
+	exit("success");
 
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';
