@@ -60,37 +60,6 @@ $(function() {
 		});
 	});
 
-	// ペーパーログインでサインイン
-	$('#paper-signin').submit(function(event) {
-		event.preventDefault();
-		var submit = $(this).find('button[type="submit"]').button('loading');
-
-		var id = $("#paper-signinID").val();
-		var password = $("#paper-signinPassword").val();
-		$("#paper-signin .alert").addClass('hide');
-
-		$.post('/auth/signinwithpaper.php',{
-			'id': id,
-			'password': password
-		} , function(data, textStatus, xhr) {
-			submit.button('reset');
-			switch(data){
-				case "success":
-					// サインイン完了画面へ
-					$('#paper-signin').modal('hide');
-					break;
-				case "unregistered":
-					$('#paper-signin .alert').text('とうろく されていません').removeClass('hide');
-					break;
-				case "incorrect-password":
-					$('#paper-signin .alert').text('パスワードが まちがっています').removeClass('hide');
-					break;
-				default:
-					break;
-			}
-		});
-	});
-
 	// メール送信前のValidation（Validationしてボタンをアクティブにする）
 	$('form#signup button[type="submit"]').attr('disabled', true);
 	setInputRoutine('form#signup', function(){
@@ -341,6 +310,47 @@ $(function() {
 		location.href =
 		'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
 		'&login_successed=' + encodeURIComponent(login_successed);
+	});
+
+	// ペーパーログインでサインイン
+	$('#paper-signin').submit(function(event) {
+		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
+
+		var id = $("#paper-signinID").val();
+		var password = $("#paper-signinPassword").val();
+		$("#paper-signin .alert").addClass('hide');
+
+		$.post('/auth/signinwithpaper.php',{
+			'id': id,
+			'password': password
+		} , function(data, textStatus, xhr) {
+			submit.button('reset');
+			switch(data){
+				case "success":
+					// サインイン完了画面へ
+					$('#paper-signin').modal('hide');
+					break;
+				case "unregistered":
+					$('#paper-signin .alert').text('とうろく されていません').removeClass('hide');
+					break;
+				case "incorrect-password":
+					$('#paper-signin .alert').text('パスワードが まちがっています').removeClass('hide');
+					break;
+				default:
+					break;
+			}
+		});
+	});
+
+	$('#paper-infoModal').on('hide.bs.modal', function(event) {
+		if (confirm('メモ できましたか？\nいちど とじたら もう いっしょう みることは できません')) {
+			// 情報を削除
+			$(this).find('.paper-id').text('');
+			$(this).find('.paper-password').text('');
+		} else {
+			event.preventDefault();
+		}
 	});
 
 	// 'selector' element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
@@ -603,6 +613,29 @@ $(function() {
 		    </div>
       		<div class="modal-footer">
 				<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#authModal" >アカウントを持っていません</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+<div class="modal fade" id="paper-infoModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+  	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        	<h4 class="modal-title"><b>ID</b> と <b>パスワード</b> を 紙(かみ) などに メモしてください</h4>
+    		</div>
+		    <div class="modal-body">
+		    	<div class="alert alert-danger">
+		    		<dl class="dl-horizontal">
+		    			<dt><h2>ID</h2></dt>
+		    			<dd><h2><b><span class="paper-id"></span></b></h2></dd>
+		    			<dt><h2>パスワード</h2></dt>
+		    			<dd><h2><b><span class="paper-password"></span></b></h2></dd>
+		    		</dl>
+		    	</div>
+		    </div>
+      		<div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
       		</div>
     	</div>
