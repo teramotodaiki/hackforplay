@@ -321,7 +321,7 @@ $(function() {
 		var password = $("#paper-signinPassword").val();
 		$("#paper-signin .alert").addClass('hide');
 
-		$.post('/auth/signinwithpaper.php',{
+		$.post('../auth/signinwithpaper.php',{
 			'id': id,
 			'password': password
 		} , function(data, textStatus, xhr) {
@@ -329,7 +329,7 @@ $(function() {
 			switch(data){
 				case "success":
 					// サインイン完了画面へ
-					$('#paper-signin').modal('hide');
+					$('#paperLoginModal').modal('hide');
 					break;
 				case "unregistered":
 					$('#paper-signin .alert').text('とうろく されていません').removeClass('hide');
@@ -343,11 +343,36 @@ $(function() {
 		});
 	});
 
+	$('.login-with-paper').on('click', function() {
+
+		var timezone = new Date().getTimezoneString();
+
+		$.post('../auth/signupwithpaper.php', {
+			'timezone': timezone
+		} , function(data, textStatus, xhr) {
+
+			$('#authModal').modal('hide');
+			console.log(data);
+			switch (data) {
+				case 'parse-error':
+					break;
+				default:
+					var result = JSON.parse(data);
+					$('#paper-infoModal .paper-id').text(result.id);
+					$('#paper-infoModal .paper-password').text(result.password);
+					$('#paper-infoModal').modal('show');
+					break;
+			}
+		});
+	});
+
 	$('#paper-infoModal').on('hide.bs.modal', function(event) {
 		if (confirm('メモ できましたか？\nいちど とじたら もう いっしょう みることは できません')) {
 			// 情報を削除
 			$(this).find('.paper-id').text('');
 			$(this).find('.paper-password').text('');
+			// サインインしてもらう
+			$('#paperLoginModal').modal('show');
 		} else {
 			event.preventDefault();
 		}
@@ -555,10 +580,10 @@ $(function() {
 				  	<div>
 				  		<h4>ペーパーログイン</h4>
 				  		<p class="text-center">
-				  			<a href="javascript:void(0)" title="Paper login" data-dismiss="modal" data-toggle="modal" data-target="#paperLoginModal" class="btn btn-default btn-lg">
+				  			<button data-dismiss="modal" data-toggle="modal" data-target="#paperLoginModal" class="btn btn-default btn-lg">
 				  				ペーパーログイン
 				  				<!-- <img src="../img/signin-with-twitter.png" height="28" width="158" alt="signin with twitter"> -->
-				  			</a>
+				  			</button>
 				  		</p>
 				  		<p class="text-muted text-center">メモを もっているかたは こちらです。</p>
 				  	</div>
@@ -592,6 +617,9 @@ $(function() {
 	        	<h4 class="modal-title">ペーパーログイン</h4>
     		</div>
 		    <div class="modal-body">
+		    	<div class="alert alert-success">
+		    		<p>紙(かみ) に メモした <b>ID</b> と <b>パスワード</b> を にゅうりょく してください</p>
+		    	</div>
 		    	<form id="paper-signin" class="form-horizontal">
 					<p class="alert alert-danger hide" role="alert"></p>
 				  	<div class="form-group">
