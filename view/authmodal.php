@@ -455,6 +455,53 @@ $(function() {
 		$("#paper-emailsignupModal .auth-page-1").removeClass('hidden');
 	});
 
+	// ペーパーログイン　仮パスワード確認・本登録
+	$("#paper-tmp").submit(function(event) {
+		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
+
+		var password = $("#paper-tmpPassword").val();
+		var email = $("#paper-signupEmail").val();
+		$('#paper-tmp .alert').addClass('hide');
+
+		console.log('password', password);
+		console.log('email', email);
+
+		$.post('/auth/confirmpassword.php', {
+			'password' : password,
+			'email' : email
+		}, function(data, textStatus, xhr) {
+			console.log(data);
+			submit.button('reset');
+			switch(data){
+				case "success":
+					// 仮登録状態を解除
+					localStorage.removeItem('unconfirmed_email');
+
+					// パスワード設定画面へ
+					$('#paper-emailsignupModal').modal('hide');
+					$('#authModal').off('shown.bs.modal');
+					$('#authModal').modal('show');
+
+					$('#authModal .modal-body').hide();
+					$('#authModal .auth-page-3').fadeIn();
+					break;
+				case "invalid-email":
+					$('#paper-tmp .alert').text('無効なメールアドレスです ' + email).removeClass('hide');
+					break;
+				case "already-confirmed":
+					$('#paper-tmp .alert').text('すでに登録が完了しています').removeClass('hide');
+					break;
+				case "incorrect-password":
+					$('#paper-tmp .alert').text('パスワードが間違っています').removeClass('hide');
+					break;
+				case "valid-but-failed":
+					$('#paper-tmp .alert').text('エラーにより認証ができませんでした').removeClass('hide');
+					break;
+			}
+		});
+	});
+
 	// 'selector' element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
 	function setInputRoutine (selector, routine) {
 		var _intervalID = null;
@@ -831,13 +878,13 @@ $(function() {
 				</form>
 		    </div>
 		    <div class="modal-body auth-page-2 hidden">
-		    	<form id="tmp" class="form-horizontal">
+		    	<form id="paper-tmp" class="form-horizontal">
 			    	<h4>メールが送信されました。届くまでに数分かかることがありますので、お気をつけください</h4>
 			    	<h5>本文に書かれた「仮パスワード」を入力してください</h5>
 					<p class="alert alert-danger hide" role="alert"></p>
 					<div class="form-group">
 				    	<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
-					    	<input type="password" class="form-control" id="tmpPassword">
+					    	<input type="password" class="form-control" id="paper-tmpPassword">
 					    </div>
 					</div>
 				  	<div class="text-right">
