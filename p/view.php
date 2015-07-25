@@ -122,7 +122,7 @@ Preferences のビュー
 						else : ?>
 					    <div role="tabpanel" class="tab-pane" id="mailaddress">
 						  	<div class="alert alert-success">
-						  		<button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#paper-emailsignup">メールアドレスを設定する</button>
+						  		<button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#paper-emailsignupModal">メールアドレスを設定する</button>
 						  		<h2 class="text-success">メールアドレスを設定すると、パスワードの変更やリセットを行うことができるようになります。</h2>
 						  		<span class="text-muted">ペーパーログインは使用できなくなります。</span>
 						  	</div>

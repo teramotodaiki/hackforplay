@@ -209,9 +209,9 @@ $(function() {
 	});
 
 	// ページ１に戻る
-	$(".auth-modal-back").on('click', function() {
+	$("#authModal .auth-modal-back").on('click', function() {
 		$("#authModal .modal-body").hide();
-		$(".auth-page-1").fadeIn('fast');
+		$("#authModal .auth-page-1").fadeIn('fast');
 	});
 
 	// パスワードのリセット
@@ -378,9 +378,81 @@ $(function() {
 		}
 	});
 
+	// メール送信前のValidation（Validationしてボタンをアクティブにする）
+	$('form#paper-emailsignup button[type="submit"]').attr('disabled', true);
+	setInputRoutine('form#paper-emailsignup', function(){
+		var policy = $(this).find('#paper-policy').is(':checked');
+		var count = 0;
+		$(this).find('input').each(function(index, el) {
+			if($(el).val() === '') count++;
+		});
+		$(this).find('button[type="submit"]').attr('disabled', count > 0 || !policy);
+	});
+
 	// ペーパーログインからメールアドレス会員へ
 	$('#paper-emailsignup').submit(function(event) {
 		event.preventDefault();
+
+		var submit = $(this).find('button[type="submit"]').button('loading');
+
+		var email = $(this).find('#paper-signupEmail').val();
+		var nickname = $(this).find('#paper-nickname').val();
+		var gender = $(this).find('input[name="paper-gender"]:checked').val();
+		var birthday =
+			$(this).find('#paper-birth_year').val() + '-' +
+			$(this).find('#paper-birth_month').val() + '-' +
+			$(this).find('#paper-birth_day').val();
+		var experience_days = $(this).find('#paper-experience_days').val();
+		var timezone = new Date().getTimezoneString();
+
+		$('#paper-emailsignup .alert').addClass('hide');
+
+		$.post('../auth/signupwithemailfrompaper.php', {
+			'email': email,
+			'gender' : gender,
+			'nickname' : nickname,
+			'birthday' : birthday,
+			'experience_days' : experience_days,
+			'timezone': timezone
+		}, function(data, textStatus, xhr) {
+			console.log(data);
+			submit.button('reset');
+			switch(data){
+				case "success":
+					// メールアドレスをローカルストレージに記憶
+					localStorage.setItem('unconfirmed_email', email);
+					$('#paper-emailsignupModal .auth-page-2 #tmpPassword').val('');
+					$('#paper-emailsignupModal .auth-page-2 p.alert').hide();
+
+					// 仮パスワード入力画面へ
+					$("#paper-emailsignupModal .auth-page-1").addClass('hidden');
+					$("#paper-emailsignupModal .auth-page-2").removeClass('hidden');
+					break;
+				case "invalid":
+					$('#paper-emailsignup .alert').text('無効なメールアドレスです').removeClass('hide');
+					break;
+				case "reserved":
+					$('#paper-emailsignup .alert').text('すでに登録されているメールアドレスです').removeClass('hide');
+					break;
+				case "sendmail-error":
+					$('#paper-emailsignup .alert').text('メールの送信に失敗しました').removeClass('hide');
+					break;
+				case "no-session":
+					$('#paper-authModal').modal('show');
+					break;
+				case "unauthorized":
+					$('#paper-emailsignup .alert').text('すでにメールアドレスが登録されています').removeClass('hide');
+					break;
+				default:
+					break;
+			}
+		});
+	});
+
+	// ページ１に戻る
+	$("#paper-emailsignupModal .papersignup-modal-back").on('click', function() {
+		$("#paper-emailsignupModal .modal-body").addClass('hidden');
+		$("#paper-emailsignupModal .auth-page-1").removeClass('hidden');
 	});
 
 	// 'selector' element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
@@ -674,14 +746,14 @@ $(function() {
     	</div>
   	</div>
 </div>
-<div class="modal fade" id="paper-emailsignup" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="paper-emailsignupModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
   	<div class="modal-dialog">
     	<div class="modal-content">
       		<div class="modal-header">
 	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        	<h4 class="modal-title">メールアドレスを設定する</h4>
     		</div>
-		    <div class="modal-body">
+		    <div class="modal-body auth-page-1">
 				<form id="paper-emailsignup" class="form-horizontal">
 					<h4>プロフィールを入力してください</h4>
 					<p class="alert alert-danger hide" role="alert"></p>
@@ -703,8 +775,8 @@ $(function() {
 				  	<div class="form-group has-feedback">
 				  		<label class="col-sm-3 control-label" for="paper-gender">性別</label>
 				    	<div id="paper-gender" class="col-sm-8">
-					    	<label class="radio-inline"><input type="radio" name="gender" value="male" checked>男</label>
-					  		<label class="radio-inline"><input type="radio" name="gender" value="female">女</label>
+					    	<label class="radio-inline"><input type="radio" name="paper-gender" value="male" checked>男</label>
+					  		<label class="radio-inline"><input type="radio" name="paper-gender" value="female">女</label>
 				    	</div>
 				  	</div>
 				  	<div class="form-group has-feedback">
@@ -757,6 +829,22 @@ $(function() {
 						<button type="submit" class="btn btn-primary">メールを送信</button>
 					</div>
 				</form>
+		    </div>
+		    <div class="modal-body auth-page-2 hidden">
+		    	<form id="tmp" class="form-horizontal">
+			    	<h4>メールが送信されました。届くまでに数分かかることがありますので、お気をつけください</h4>
+			    	<h5>本文に書かれた「仮パスワード」を入力してください</h5>
+					<p class="alert alert-danger hide" role="alert"></p>
+					<div class="form-group">
+				    	<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+					    	<input type="password" class="form-control" id="tmpPassword">
+					    </div>
+					</div>
+				  	<div class="text-right">
+						<button type="submit" class="btn btn-primary">確認</button>
+					</div>
+				</form>
+				<p>メールアドレスの入力に<button type="button" class="btn btn-link papersignup-modal-back">もどる</button></p>
 		    </div>
       		<div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
