@@ -352,7 +352,6 @@ $(function() {
 		} , function(data, textStatus, xhr) {
 
 			$('#authModal').modal('hide');
-			console.log(data);
 			switch (data) {
 				case 'parse-error':
 					break;
@@ -415,7 +414,6 @@ $(function() {
 			'experience_days' : experience_days,
 			'timezone': timezone
 		}, function(data, textStatus, xhr) {
-			console.log(data);
 			submit.button('reset');
 			switch(data){
 				case "success":
@@ -464,14 +462,10 @@ $(function() {
 		var email = $("#paper-signupEmail").val();
 		$('#paper-tmp .alert').addClass('hide');
 
-		console.log('password', password);
-		console.log('email', email);
-
 		$.post('/auth/confirmpassword.php', {
 			'password' : password,
 			'email' : email
 		}, function(data, textStatus, xhr) {
-			console.log(data);
 			submit.button('reset');
 			switch(data){
 				case "success":
