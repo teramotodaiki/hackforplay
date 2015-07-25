@@ -57,7 +57,7 @@ $(function(){
 		}
 	}
 	checkSigninSession(function(result){ authtext(result); });
-	$("#authModal,#signinModal").on('hidden.bs.modal', function(){
+	$("#authModal,#signinModal,#paperLoginModal").on('hidden.bs.modal', function(){
 		// 別タブでGET送信認証していてもlocalStorage経由で結果を得る
 		checkSigninSession(function(result){ authtext(result); }, true);
 	});

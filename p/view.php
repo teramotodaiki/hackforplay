@@ -34,12 +34,18 @@ Preferences のビュー
 					    <li role="presentation" class="active">
 					    	<a href="#usersettings" aria-controls="usersettings" role="tab" data-toggle="tab">ユーザー情報</a>
 					    </li>
+					    <?php if ($conneted_hackforplay) : ?>
 					    <li role="presentation">
 					    	<a href="#setpassword" aria-controls="setpassword" role="tab" data-toggle="tab">パスワード</a>
 					    </li>
 					    <li role="presentation">
 					    	<a href="#twitter" aria-controls="twitter" role="tab" data-toggle="tab">Twitter連携</a>
 					    </li>
+						<?php else : ?>
+					    <li role="presentation">
+					    	<a href="#mailaddress" aria-controls="mailaddress" role="tab" data-toggle="tab">メールアドレス設定</a>
+					    </li>
+						<?php endif; ?>
 					</ul>
 					<div class="col-xs-12 col-sm-9 tab-content panel-body">
 					    <div role="tabpanel" class="tab-pane active" id="usersettings">
@@ -58,6 +64,9 @@ Preferences のビュー
 							  	</div>
 					    	</form>
 					    </div>
+					    <?php
+					    // 有効なHackforPlayアカウントをもっている場合
+					    if ($conneted_hackforplay) : ?>
 					    <div role="tabpanel" class="tab-pane" id="setpassword">
 					    	<form name="setpassword" class="form-horizontal">
 					    		<div class="form-group has-feedback">
@@ -108,6 +117,17 @@ Preferences のビュー
 						  	</div>
 							<?php endif; ?>
 					    </div>
+						<?php
+						// ペーパーログインの場合
+						else : ?>
+					    <div role="tabpanel" class="tab-pane" id="mailaddress">
+						  	<div class="alert alert-success">
+						  		<button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#paper-emailsignupModal">メールアドレスを設定する</button>
+						  		<h2 class="text-success">メールアドレスを設定すると、パスワードの変更やリセットを行うことができるようになります。</h2>
+						  		<span class="text-muted">ペーパーログインは使用できなくなります。</span>
+						  	</div>
+					    </div>
+						<?php endif; ?>
 					</div>
 		  		</div>
 			</div>

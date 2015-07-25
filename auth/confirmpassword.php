@@ -65,6 +65,13 @@ try {
 	$stmt->bindValue(":unconfirmed", "unconfirmed");
 	$stmt->execute();
 
+	// ユーザーに関連付けられたペーパーログインアカウントを disconnected に
+	$stmt	= $dbh->prepare('UPDATE "Account" SET "State"=:disconnected WHERE "Type"=:paperlogin AND "UserID"=:userid');
+	$stmt->bindValue(":disconnected", "disconnected", PDO::PARAM_STR);
+	$stmt->bindValue(":paperlogin", "paperlogin", PDO::PARAM_STR);
+	$stmt->bindValue(":userid", $confirmed['UserID'], PDO::PARAM_INT);
+	$stmt->execute();
+
 	exit("success");
 
 } catch (Exception $e) {

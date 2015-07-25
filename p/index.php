@@ -13,16 +13,25 @@ try {
 	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
 	session_commit();
 
-	$conneted_twitter	= FALSE;
+	$conneted_hackforplay	= FALSE;
+	$conneted_twitter		= FALSE;
 	if ($session_userid) {
 
-		// Twitterとの連携情報を確認
-		$stmt	= $dbh->prepare('SELECT "ID" FROM "Account" WHERE "UserID"=:user_id AND "Type"=:twitter AND "State"=:connected');
+		$stmt	= $dbh->prepare('SELECT "ID" FROM "Account" WHERE "UserID"=:user_id AND "Type"=:type AND "State"=:connected');
+
+		// メールアドレスの設定の有無を確認
 		$stmt->bindValue(":user_id", $session_userid, PDO::PARAM_INT);
-		$stmt->bindValue(":twitter", 'twitter', PDO::PARAM_STR);
+		$stmt->bindValue(":type", 'hackforplay', PDO::PARAM_STR);
 		$stmt->bindValue(":connected", 'connected', PDO::PARAM_STR);
 		$stmt->execute();
-		$conneted_twitter	= $stmt->fetch() ? TRUE : FALSE; // 有効なTwitterアカウントがあればTRUE
+		$conneted_hackforplay	= $stmt->fetch() ? TRUE : FALSE; // 有効なHackforPlayアカウントがあればTRUE
+
+		// Twitterとの連携情報を確認
+		$stmt->bindValue(":user_id", $session_userid, PDO::PARAM_INT);
+		$stmt->bindValue(":type", 'twitter', PDO::PARAM_STR);
+		$stmt->bindValue(":connected", 'connected', PDO::PARAM_STR);
+		$stmt->execute();
+		$conneted_twitter		= $stmt->fetch() ? TRUE : FALSE; // 有効なTwitterアカウントがあればTRUE
 	}
 
 	include 'view.php';
