@@ -40,6 +40,9 @@ Preferences のビュー
 					    <li role="presentation">
 					    	<a href="#twitter" aria-controls="twitter" role="tab" data-toggle="tab">Twitter連携</a>
 					    </li>
+					    <li role="presentation">
+					    	<a href="#mailaddress" aria-controls="mailaddress" role="tab" data-toggle="tab">メールアドレス設定</a>
+					    </li>
 					</ul>
 					<div class="col-xs-12 col-sm-9 tab-content panel-body">
 					    <div role="tabpanel" class="tab-pane active" id="usersettings">
@@ -107,6 +110,13 @@ Preferences のビュー
 						  		<span class="text-muted">今までのメールアドレスでのログインも、引き続きご利用いただけます。</span>
 						  	</div>
 							<?php endif; ?>
+					    </div>
+					    <div role="tabpanel" class="tab-pane" id="mailaddress">
+						  	<div class="alert alert-success">
+						  		<button type="button" class="btn btn-success btn-lg">メールアドレスを設定する</button>
+						  		<h2 class="text-success">メールアドレスを設定すると、パスワードの変更やリセットを行うことができるようになります。</h2>
+						  		<span class="text-muted">ペーパーログインは使用できなくなります。</span>
+						  	</div>
 					    </div>
 					</div>
 		  		</div>
