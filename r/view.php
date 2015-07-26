@@ -45,7 +45,7 @@
 						<div class="row">
 							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
 								<a href="/s?id=201" title="ステージをつくろう１" target="_blank">
-									<div class="h4p_item-thumbnail" style="height: 160px; background-image:url(/s/replay_t1/thumb.png)"></div>
+									<img src="../replay/thumbs/rpg-animation.gif" style="height: 160px" class="img-responsive gif-loop-animation" alt="">
 								</a>
 								<div class="h4p_item-title">
 									<h4>ステージをつくろう１</h4>
