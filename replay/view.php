@@ -41,7 +41,7 @@
 			</div>
 			<div class="col-xs-12 col-sm-6 padding-all-sm">
 				<a href="../s/?id=306" title="Action Puzzle">
-					<img src="thumbs/create-actionpuzzle.png" class="img-rounded width-fit" alt="">
+					<img src="thumbs/puzzleaction-animation.gif" class="img-rounded width-fit" alt="">
 				</a>
 			</div>
 			<div class="col-xs-12 col-sm-6 padding-all-sm">
