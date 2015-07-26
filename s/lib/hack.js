@@ -52,8 +52,7 @@ window.addEventListener('message', function (e) {
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
-    game.preload(['hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png',
-		'hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png']);
+    game.preload(['hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png']);
 
     // Hackのクラスを生成 インスタンスはget only
     var HackEnchant = enchant.Class.create(enchant.EventTarget, {
