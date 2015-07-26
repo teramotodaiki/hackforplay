@@ -52,8 +52,7 @@ window.addEventListener('message', function (e) {
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
-    game.preload(['hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png',
-		'hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png']);
+    game.preload(['hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png']);
 
     // Hackのクラスを生成 インスタンスはget only
     var HackEnchant = enchant.Class.create(enchant.EventTarget, {
@@ -250,12 +249,14 @@ window.addEventListener('load', function() {
 		if (__H4PENV__MODE === 'official' && __H4PENV__NEXT > 0) {
 			lay = Hack.overlay('black');
 			lay.opacity = 0;
+			lay.moveTo(-game.rootScene.x, -game.rootScene.y);
 			lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
                 window.parent.postMessage('clear', '/');
 			});
 		}else{
 			lay = Hack.overlay('hackforplay/clear.png');
 			lay.opacity = 0;
+			lay.moveTo(-game.rootScene.x, -game.rootScene.y);
 			lay.tl.fadeIn(30, enchant.Easing.LINEAR);
 		}
 
@@ -266,15 +267,16 @@ window.addEventListener('load', function() {
 	Hack.gameover = function() {
 		var lay = Hack.overlay('rgba(0,0,0,0.4)', 'hackforplay/gameover.png');
 		lay.opacity = 0;
+		lay.moveTo(-game.rootScene.x, -game.rootScene.y);
 		lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
 			Hack.createSprite(128, 32, {
 				image: game.assets['hackforplay/button_retry.png'],
-				x: 176, y: 320, defaultParentNode: lay.parentNode
+				x: 176 - game.rootScene.x, y: 320 - game.rootScene.y, defaultParentNode: lay.parentNode
 			}).tl.then(function() {
 				this.ontouchstart = function() {
 					location.reload();
 				};
-			}).moveTo(176, 270, 10);
+			}).moveTo(176 - game.rootScene.x, 270 - game.rootScene.y, 10);
 		});
 
 		Hack.gameclear = function(){};

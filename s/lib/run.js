@@ -123,20 +123,33 @@ window.addEventListener('load', function() {
 "\n"+
 "\n"+
 "\t// 最初のラベル\n"+
-"\tHack.pressStartLabel = Hack.createLabel('スペースキーを押してスタート<br>↑キーでジャンプ', {\n"+
+"\tHack.pressStartLabel = Hack.createLabel('Press o button to START<br>Press ↑ to JUMP ', {\n"+
 "\t\tx: 120, y: 160, width: 400\n"+
 "\t});\n"+
-"\n"+
-"\t// UI (via ui.enchant.js)\n"+
-"\tvar button_light = new Button('Game Start', 'light');\n"+
-"\tbutton_light.moveTo(190, 190);\n"+
-"\tbutton_light.ontouchstart = function() {\n"+
-"\t\tgame.rootScene.removeChild(this);\n"+
-"\t\tHack.dispatchEvent(new enchant.Event('pressstart'));\n"+
+"\t\n"+
+"\t// Pad UI via ui.enchant.js\n"+
+"\tvar pad = new Pad();\n"+
+"\tpad.moveTo(0, 80);\n"+
+"\tpad.onenterframe = function() {\n"+
+"\t\tgame.rootScene.addChild(this);\n"+
 "\t};\n"+
-"\tgame.rootScene.addChild(button_light);\n"+
-"\n"+
+"\tgame.rootScene.addChild(pad);\n"+
+"\tHack.pad = pad;\n"+
+"\t\n"+
+"\tvar apad = new APad();\n"+
+"\tapad.moveTo(80, 60);\n"+
+"\tapad.outside.scale(0.5, 0.5);\n"+
+"\tapad.inside.visible = false;\n"+
+"\tapad.onenterframe = function() {\n"+
+"\t\tgame.rootScene.addChild(this);\n"+
+"\t};\n"+
+"\tapad.on('touchstart', function(event) {\n"+
+"\t\tgame.dispatchEvent(new Event('abuttondown'));\n"+
+"\t});\n"+
+"\tgame.rootScene.addChild(apad);\n"+
+"\tHack.apad = apad;\n"+
 "};\n"+
+"\n"+
 "\n"+
 "// スタート（スペースキー）を押したときに呼ばれるイベント\n"+
 "Hack.onpressstart = function() {\n"+
@@ -395,9 +408,31 @@ window.addEventListener('load', function() {
 		Hack.hint = 'Hack.player.velocity.x += 1; // 加速!!';
 
 		// 最初のラベル
-		Hack.pressStartLabel = Hack.createLabel('スペースキーを押してスタート<br>↑キーでジャンプ', {
+		Hack.pressStartLabel = Hack.createLabel('Press o button to START<br>Press ↑ to JUMP ', {
 			x: 120, y: 160, width: 400
 		});
+
+		// Pad UI via ui.enchant.js
+		var pad = new Pad();
+		pad.moveTo(0, 80);
+		pad.onenterframe = function() {
+			game.rootScene.addChild(this);
+		};
+		game.rootScene.addChild(pad);
+		Hack.pad = pad;
+
+		var apad = new APad();
+		apad.moveTo(80, 60);
+		apad.outside.scale(0.5, 0.5);
+		apad.inside.visible = false;
+		apad.onenterframe = function() {
+			game.rootScene.addChild(this);
+		};
+		apad.on('touchstart', function(event) {
+			game.dispatchEvent(new Event('abuttondown'));
+		});
+		game.rootScene.addChild(apad);
+		Hack.apad = apad;
 	};
 
 	Hack.onpressstart = Hack.onpressstart || function() {

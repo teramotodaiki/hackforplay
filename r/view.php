@@ -44,11 +44,11 @@
 					<div class="col-xs-12 panel-body">
 						<div class="row">
 							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-								<a href="/s?id=201" title="ステージをつくろう１" target="_blank">
-									<div class="h4p_item-thumbnail" style="height: 160px; background-image:url(/s/replay_t1/thumb.png)"></div>
+								<a href="../replay/" title="HackforPlay RePlay" target="_blank">
+									<img src="../replay/thumbs/rpg-animation.gif" style="height: 160px" class="img-responsive gif-loop-animation" alt="">
 								</a>
 								<div class="h4p_item-title">
-									<h4>ステージをつくろう１</h4>
+									<h4>HackforPlay RePlay</h4>
 								</div>
 								<div class="h4p_item-footer">
 									<span>会員登録が必要です</span>
@@ -61,7 +61,7 @@
 								<div>
 									おめでとう！君はプログラミングの世界に足を踏み出した！<br>
 									このまま勉強を続ければ...自分でゲームを作ることだって、夢ではない!!<br>
-									<a href="/s?id=201" class="btn btn-success btn-block btn-lg" title="今すぐ始める" style="margin-top: 10px; margin-bottom: 10px;"><h3>今すぐ始める</h3></a>
+									<a href="../replay/" class="btn btn-success btn-block btn-lg" title="今すぐ始める" style="margin-top: 10px; margin-bottom: 10px;"><h3>今すぐ始める</h3></a>
 								</div>
 								<div class="h4p_item-footer">
 									対象年齢の目安：<b>10才以上</b><br>
@@ -74,7 +74,7 @@
 	  		</div>
 		</div>
 	</div>
-	<div class="h4p_topic-comment overflow-x-hidden hidden-xs">
+	<div class="h4p_topic-comment overflow-hidden hidden-xs">
 	</div>
 	<div id="page_anchor" class="container-fluid" role="group">
 		<div class="row">

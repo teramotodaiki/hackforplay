@@ -209,9 +209,9 @@ $(function() {
 	});
 
 	// ページ１に戻る
-	$(".auth-modal-back").on('click', function() {
+	$("#authModal .auth-modal-back").on('click', function() {
 		$("#authModal .modal-body").hide();
-		$(".auth-page-1").fadeIn('fast');
+		$("#authModal .auth-page-1").fadeIn('fast');
 	});
 
 	// パスワードのリセット
@@ -312,6 +312,190 @@ $(function() {
 		'&login_successed=' + encodeURIComponent(login_successed);
 	});
 
+	// ペーパーログインでサインイン
+	$('#paper-signin').submit(function(event) {
+		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
+
+		var id = $("#paper-signinID").val();
+		var password = $("#paper-signinPassword").val();
+		$("#paper-signin .alert").addClass('hide');
+
+		$.post('../auth/signinwithpaper.php',{
+			'id': id,
+			'password': password
+		} , function(data, textStatus, xhr) {
+			submit.button('reset');
+			switch(data){
+				case "success":
+					// サインイン完了画面へ
+					$('#paperLoginModal').modal('hide');
+					break;
+				case "unregistered":
+					$('#paper-signin .alert').text('とうろく されていません').removeClass('hide');
+					break;
+				case "incorrect-password":
+					$('#paper-signin .alert').text('パスワードが まちがっています').removeClass('hide');
+					break;
+				default:
+					break;
+			}
+		});
+	});
+
+	$('.login-with-paper').on('click', function() {
+
+		var timezone = new Date().getTimezoneString();
+
+		$.post('../auth/signupwithpaper.php', {
+			'timezone': timezone
+		} , function(data, textStatus, xhr) {
+
+			$('#authModal').modal('hide');
+			switch (data) {
+				case 'parse-error':
+					break;
+				default:
+					var result = JSON.parse(data);
+					$('#paper-infoModal .paper-id').text(result.id);
+					$('#paper-infoModal .paper-password').text(result.password);
+					$('#paper-infoModal').modal('show');
+					break;
+			}
+		});
+	});
+
+	$('#paper-infoModal').on('hide.bs.modal', function(event) {
+		if (confirm('メモ できましたか？\nいちど とじたら もう いっしょう みることは できません')) {
+			// 情報を削除
+			$(this).find('.paper-id').text('');
+			$(this).find('.paper-password').text('');
+			// サインインしてもらう
+			$('#paperLoginModal').modal('show');
+		} else {
+			event.preventDefault();
+		}
+	});
+
+	// メール送信前のValidation（Validationしてボタンをアクティブにする）
+	$('form#paper-emailsignup button[type="submit"]').attr('disabled', true);
+	setInputRoutine('form#paper-emailsignup', function(){
+		var policy = $(this).find('#paper-policy').is(':checked');
+		var count = 0;
+		$(this).find('input').each(function(index, el) {
+			if($(el).val() === '') count++;
+		});
+		$(this).find('button[type="submit"]').attr('disabled', count > 0 || !policy);
+	});
+
+	// ペーパーログインからメールアドレス会員へ
+	$('#paper-emailsignup').submit(function(event) {
+		event.preventDefault();
+
+		var submit = $(this).find('button[type="submit"]').button('loading');
+
+		var email = $(this).find('#paper-signupEmail').val();
+		var nickname = $(this).find('#paper-nickname').val();
+		var gender = $(this).find('input[name="paper-gender"]:checked').val();
+		var birthday =
+			$(this).find('#paper-birth_year').val() + '-' +
+			$(this).find('#paper-birth_month').val() + '-' +
+			$(this).find('#paper-birth_day').val();
+		var experience_days = $(this).find('#paper-experience_days').val();
+		var timezone = new Date().getTimezoneString();
+
+		$('#paper-emailsignup .alert').addClass('hide');
+
+		$.post('../auth/signupwithemailfrompaper.php', {
+			'email': email,
+			'gender' : gender,
+			'nickname' : nickname,
+			'birthday' : birthday,
+			'experience_days' : experience_days,
+			'timezone': timezone
+		}, function(data, textStatus, xhr) {
+			submit.button('reset');
+			switch(data){
+				case "success":
+					// メールアドレスをローカルストレージに記憶
+					localStorage.setItem('unconfirmed_email', email);
+					$('#paper-emailsignupModal .auth-page-2 #tmpPassword').val('');
+					$('#paper-emailsignupModal .auth-page-2 p.alert').hide();
+
+					// 仮パスワード入力画面へ
+					$("#paper-emailsignupModal .auth-page-1").addClass('hidden');
+					$("#paper-emailsignupModal .auth-page-2").removeClass('hidden');
+					break;
+				case "invalid":
+					$('#paper-emailsignup .alert').text('無効なメールアドレスです').removeClass('hide');
+					break;
+				case "reserved":
+					$('#paper-emailsignup .alert').text('すでに登録されているメールアドレスです').removeClass('hide');
+					break;
+				case "sendmail-error":
+					$('#paper-emailsignup .alert').text('メールの送信に失敗しました').removeClass('hide');
+					break;
+				case "no-session":
+					$('#paper-authModal').modal('show');
+					break;
+				case "unauthorized":
+					$('#paper-emailsignup .alert').text('すでにメールアドレスが登録されています').removeClass('hide');
+					break;
+				default:
+					break;
+			}
+		});
+	});
+
+	// ページ１に戻る
+	$("#paper-emailsignupModal .papersignup-modal-back").on('click', function() {
+		$("#paper-emailsignupModal .modal-body").addClass('hidden');
+		$("#paper-emailsignupModal .auth-page-1").removeClass('hidden');
+	});
+
+	// ペーパーログイン　仮パスワード確認・本登録
+	$("#paper-tmp").submit(function(event) {
+		event.preventDefault();
+		var submit = $(this).find('button[type="submit"]').button('loading');
+
+		var password = $("#paper-tmpPassword").val();
+		var email = $("#paper-signupEmail").val();
+		$('#paper-tmp .alert').addClass('hide');
+
+		$.post('/auth/confirmpassword.php', {
+			'password' : password,
+			'email' : email
+		}, function(data, textStatus, xhr) {
+			submit.button('reset');
+			switch(data){
+				case "success":
+					// 仮登録状態を解除
+					localStorage.removeItem('unconfirmed_email');
+
+					// パスワード設定画面へ
+					$('#paper-emailsignupModal').modal('hide');
+					$('#authModal').off('shown.bs.modal');
+					$('#authModal').modal('show');
+
+					$('#authModal .modal-body').hide();
+					$('#authModal .auth-page-3').fadeIn();
+					break;
+				case "invalid-email":
+					$('#paper-tmp .alert').text('無効なメールアドレスです ' + email).removeClass('hide');
+					break;
+				case "already-confirmed":
+					$('#paper-tmp .alert').text('すでに登録が完了しています').removeClass('hide');
+					break;
+				case "incorrect-password":
+					$('#paper-tmp .alert').text('パスワードが間違っています').removeClass('hide');
+					break;
+				case "valid-but-failed":
+					$('#paper-tmp .alert').text('エラーにより認証ができませんでした').removeClass('hide');
+					break;
+			}
+		});
+	});
+
 	// 'selector' element内のinputにfocusされている間のみroutineを実行し続ける処理をセット
 	function setInputRoutine (selector, routine) {
 		var _intervalID = null;
@@ -333,11 +517,21 @@ $(function() {
 		<div class="modal-content">
     		<div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4>会員登録</h4>
+		        <h4>あたらしく はじめる とうろく</h4>
 	    	</div>
 		    <div class="modal-body auth-page-1" style="display: none">
+			  	<div>
+			  		<p class="text-center">
+			  			<a href="javascript:void(0)" title="Signin with paper" class="login-with-paper paper-login-button btn btn-lg">
+			  				ペーパーログインではじめる
+			  			</a>
+			  			<p class="text-muted text-center">メールアドレスのいらない、かんたんなログインです</p>
+			  			<p class="text-muted text-center">ただし IDやパスワードをわすれると、どうにもなりません</p>
+			  		</p>
+			  	</div>
+			  	<hr>
 		    	<form id="signup" class="form-horizontal">
-					<h4>プロフィールを入力してください</h4>
+					<h4 class="text-center">メールアドレスで登録するには、プロフィールを入力してください<br><small>メールアドレスを登録すると、パスワードを忘れてしまった場合でもリセットができます</small></h4>
 					<p class="alert alert-danger hide" role="alert"></p>
 					<div class="form-group has-feedback">
 				    	<label for="signupEmail" class="col-sm-3 control-label">メールアドレス</label>
@@ -496,8 +690,18 @@ $(function() {
 					    </div>
 				  	</div>
 				  	<div class="text-right">
-						<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#resetModal" >パスワードを忘れました</button>
+						<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#resetModal">パスワードを忘れました</button>
 					  	<button type="submit" class="btn btn-primary">ログイン</button>
+				  	</div>
+				  	<hr>
+				  	<div>
+				  		<h4>ペーパーログイン</h4>
+				  		<p class="text-center">
+				  			<button data-dismiss="modal" data-toggle="modal" data-target="#paperLoginModal" class="paper-login-button btn btn-lg">
+				  				ペーパーログイン
+				  			</button>
+				  		</p>
+				  		<p class="text-muted text-center">メモを もっているかたは こちらです。</p>
 				  	</div>
 				  	<hr>
 				  	<div>
@@ -516,6 +720,172 @@ $(function() {
 		    </div>
       		<div class="modal-footer">
 				<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#authModal" >アカウントを持っていません</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+<div class="modal fade" id="paperLoginModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+  	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        	<h4 class="modal-title">ペーパーログイン</h4>
+    		</div>
+		    <div class="modal-body">
+		    	<div class="alert alert-success">
+		    		<p>紙(かみ) に メモした <b>ID</b> と <b>パスワード</b> を にゅうりょく してください</p>
+		    	</div>
+		    	<form id="paper-signin" class="form-horizontal">
+					<p class="alert alert-danger hide" role="alert"></p>
+				  	<div class="form-group">
+				    	<label for="paper-signinID" class="col-sm-3 control-label">ID</label>
+				    	<div class="col-sm-8">
+				    		<input type="text" class="form-control" id="paper-signinID">
+				    	</div>
+				  	</div>
+				  	<div class="form-group">
+				    	<label for="paper-signinPassword" class="col-sm-3 control-label">パスワード</label>
+				    	<div class="col-sm-8">
+					    	<input type="password" class="form-control" id="paper-signinPassword">
+					    </div>
+				  	</div>
+				  	<div class="text-right">
+					  	<button type="submit" class="btn btn-primary">ログイン</button>
+				  	</div>
+				</form>
+		    </div>
+      		<div class="modal-footer">
+				<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#authModal" >アカウントを持っていません</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+<div class="modal fade" id="paper-infoModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+  	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        	<h4 class="modal-title"><b>ID</b> と <b>パスワード</b> を 紙(かみ) などに メモしてください</h4>
+    		</div>
+		    <div class="modal-body">
+		    	<div class="alert alert-danger">
+		    		<dl class="dl-horizontal">
+		    			<dt><h2>ID</h2></dt>
+		    			<dd><h2><b><span class="paper-id"></span></b></h2></dd>
+		    			<dt><h2>パスワード</h2></dt>
+		    			<dd><h2><b><span class="paper-password"></span></b></h2></dd>
+		    		</dl>
+		    	</div>
+		    </div>
+      		<div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+      		</div>
+    	</div>
+  	</div>
+</div>
+<div class="modal fade" id="paper-emailsignupModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+  	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        	<h4 class="modal-title">メールアドレスを設定する</h4>
+    		</div>
+		    <div class="modal-body auth-page-1">
+				<form id="paper-emailsignup" class="form-horizontal">
+					<h4>プロフィールを入力してください</h4>
+					<p class="alert alert-danger hide" role="alert"></p>
+					<div class="form-group has-feedback">
+				    	<label for="paper-signupEmail" class="col-sm-3 control-label">メールアドレス</label>
+				    	<div class="col-sm-8">
+					    	<input type="email" class="form-control" id="paper-signupEmail" placeholder="your@email.com">
+				    	</div>
+					</div>
+				  	<div class="form-group has-feedback">
+				    	<label for="paper-nickname" class="col-sm-3 control-label">ニックネーム</label>
+				    	<div class="col-sm-8">
+				    		<input type="text" class="form-control" id="paper-nickname">
+				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="本名は使用できません">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
+				  	</div>
+				  	<div class="form-group has-feedback">
+				  		<label class="col-sm-3 control-label" for="paper-gender">性別</label>
+				    	<div id="paper-gender" class="col-sm-8">
+					    	<label class="radio-inline"><input type="radio" name="paper-gender" value="male" checked>男</label>
+					  		<label class="radio-inline"><input type="radio" name="paper-gender" value="female">女</label>
+				    	</div>
+				  	</div>
+				  	<div class="form-group has-feedback">
+				  		<label for="paper-birth_year" class="col-sm-3 control-label">生年月日</label>
+				    	<div class="col-sm-4">
+				    		<select id="paper-birth_year" class="col-sm-4 form-control">
+					    		<?php for($y = intval(date('Y')); $y > 1900; $y--): ?>
+				    			<option value="<?php echo $y; ?>"><?php echo $y; ?>年</option>
+						    	<?php endfor; ?>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-2">
+				    		<select id="paper-birth_month" class="col-sm-2 form-control">
+					    		<?php for($m = 1; $m <= 12; $m++): ?>
+				    			<option value="<?php echo $m; ?>"><?php echo $m; ?>月</option>
+						    	<?php endfor; ?>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-2">
+				    		<select id="paper-birth_day" class="col-sm-2 form-control">
+					    		<?php for($d = 1; $d <= 31; $d++): ?>
+				    			<option value="<?php echo $d; ?>"><?php echo $d; ?>日</option>
+						    	<?php endfor; ?>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="あなたが生まれた年月日を選んでください">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
+				  	</div>
+				  	<div class="form-group has-feedback">
+				  		<label for="paper-experience_days" class="col-sm-3 control-label">プログラミングの経験</label>
+				    	<div class="col-sm-8">
+				    		<select id="paper-experience_days" class="form-control">
+				    			<option value="0" selected>はじめて</option>
+				    			<option value="30">およそ１ヶ月</option>
+				    			<option value="180">およそ半年</option>
+				    			<option value="365">およそ１年</option>
+				    			<option value="1095">およそ３年</option>
+				    			<option value="1825">５年以上</option>
+				    		</select>
+				    	</div>
+				    	<div class="col-sm-1" data-toggle="tooltip" data-placement="left" title="これまでにプログラミングをしてきた期間を選んでください">
+				    		<span class="glyphicon glyphicon-question-sign form-control-feedback"></span>
+				    	</div>
+				  	</div>
+				  	<div class="checkbox text-center">
+				  		<label><input type="checkbox" id="paper-policy">ハックフォープレイ株式会社が定める<a href="../policies/#anchor-agreement" title="利用規約" target='_blank'>利用規約</a>に同意します</label>
+				  	</div>
+				  	<div class="text-center">
+						<button type="submit" class="btn btn-primary">メールを送信</button>
+					</div>
+				</form>
+		    </div>
+		    <div class="modal-body auth-page-2 hidden">
+		    	<form id="paper-tmp" class="form-horizontal">
+			    	<h4>メールが送信されました。届くまでに数分かかることがありますので、お気をつけください</h4>
+			    	<h5>本文に書かれた「仮パスワード」を入力してください</h5>
+					<p class="alert alert-danger hide" role="alert"></p>
+					<div class="form-group">
+				    	<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
+					    	<input type="password" class="form-control" id="paper-tmpPassword">
+					    </div>
+					</div>
+				  	<div class="text-right">
+						<button type="submit" class="btn btn-primary">確認</button>
+					</div>
+				</form>
+				<p>メールアドレスの入力に<button type="button" class="btn btn-link papersignup-modal-back">もどる</button></p>
+		    </div>
+      		<div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
       		</div>
     	</div>
