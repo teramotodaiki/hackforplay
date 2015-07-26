@@ -36,7 +36,7 @@
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 padding-all-sm">
 				<a href="../s/?id=201" title="RPG">
-					<img src="thumbs/create-rpg.png" class="img-rounded width-fit" alt="">
+					<img src="thumbs/rpg-animation.gif" class="img-rounded width-fit" alt="">
 				</a>
 			</div>
 			<div class="col-xs-12 col-sm-6 padding-all-sm">
@@ -51,7 +51,7 @@
 			</div>
 			<div class="col-xs-12 col-sm-6 padding-all-sm">
 				<a href="../s/?id=305" title="Run Game">
-					<img src="thumbs/create-rungame.png" class="img-rounded width-fit" alt="">
+					<img src="thumbs/rungame-animation.gif" class="img-rounded width-fit" alt="">
 				</a>
 			</div>
 		</div>
