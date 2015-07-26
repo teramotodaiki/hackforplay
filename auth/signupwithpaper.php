@@ -52,7 +52,8 @@ try {
 	$information_of_account->password = $tmpkey;
 
 	// ユーザーを追加
-	$stmt 	= $dbh->prepare('INSERT INTO "User" ("AcceptLanguage","Registered") VALUES(:accept_language,:gmt)');
+	$stmt 	= $dbh->prepare('INSERT INTO "User" ("Nickname","AcceptLanguage","Registered") VALUES(:undefined,:accept_language,:gmt)');
+	$stmt->bindValue(":undefined", 'undefined', PDO::PARAM_STR);
 	$stmt->bindValue(":accept_language", $accept_language, PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
 	$stmt->execute();
