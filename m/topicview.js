@@ -1,19 +1,20 @@
 function createTopicView () {
 	// トピックのビューを生成
-	return $('<div>').addClass('col-xs-12 panel panel-default').append(
+	var $div = $('<div>').addClass('col-xs-12 panel panel-default').append(
 		$('<div>').addClass('panel-heading').html('<h3>オリジナルステージを作る</h3>')
 	).append(
 		$('<div>').addClass('panel-body').append(
 			$('<div>').addClass('row').append(
 				$('<div>').addClass('col-lg-3 col-md-4 col-sm-4 col-xs-12').append(
 					$('<a>').attr({
-						'href': '/s?id=201',
-						'title': 'ステージをつくろう１',
+						'href': '../replay/',
+						'title': 'HackforPlay RePlay',
 						'target': '_blank'
 					}).append(
-						$('<div>').addClass('h4p_item-thumbnail').css({
-							'height': '160px',
-							'background-image': 'url(../s/replay_t1/thumb.png)'
+						$('<img>').addClass('img-responsive gif-loop-animation').attr({
+							'src': '../replay/thumbs/rpg-animation.gif'
+						}).css({
+							'height': '160px'
 						})
 					)
 				).append(
@@ -31,7 +32,7 @@ function createTopicView () {
 						$('<p>').text('このまま勉強を続ければ...自分でゲームを作ることだって、夢ではない!!')
 					).append(
 						$('<a>').addClass('btn btn-success btn-block btn-lg').attr({
-							'href': '/s?id=201',
+							'href': '../replay/',
 							'title': '今すぐ始める'
 						}).css({
 							'margin-top': '10px',
@@ -48,4 +49,14 @@ function createTopicView () {
 			)
 		)
 	).get(0);
+
+	// トピック
+	var images_index = 0;
+	var images = ['../replay/thumbs/rpg-animation.gif', '../replay/thumbs/rungame-animation.gif', '../replay/thumbs/thesurvive-animation.gif', '../replay/thumbs/puzzleaction-animation.gif'];
+	setInterval(function() {
+		images_index = (images_index + 1) % images.length;
+		$('.container .gif-loop-animation').attr('src', images[images_index]);
+	}, 4000);
+
+	return $div;
 }
