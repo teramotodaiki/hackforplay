@@ -517,11 +517,21 @@ $(function() {
 		<div class="modal-content">
     		<div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4>会員登録</h4>
+		        <h4>あたらしく はじめる とうろく</h4>
 	    	</div>
 		    <div class="modal-body auth-page-1" style="display: none">
+			  	<div>
+			  		<p class="text-center">
+			  			<a href="javascript:void(0)" title="Signin with paper" class="login-with-paper paper-login-button btn btn-lg">
+			  				ペーパーログインではじめる
+			  			</a>
+			  			<p class="text-muted text-center">メールアドレスのいらない、かんたんなログインです</p>
+			  			<p class="text-muted text-center">ただし IDやパスワードをわすれると、どうにもなりません</p>
+			  		</p>
+			  	</div>
+			  	<hr>
 		    	<form id="signup" class="form-horizontal">
-					<h4>プロフィールを入力してください</h4>
+					<h4 class="text-center">メールアドレスで登録するには、プロフィールを入力してください<br><small>メールアドレスを登録すると、パスワードを忘れてしまった場合でもリセットができます</small></h4>
 					<p class="alert alert-danger hide" role="alert"></p>
 					<div class="form-group has-feedback">
 				    	<label for="signupEmail" class="col-sm-3 control-label">メールアドレス</label>
@@ -595,16 +605,6 @@ $(function() {
 						<button type="submit" class="btn btn-primary">メールを送信</button>
 					</div>
 				</form>
-			  	<hr>
-			  	<div>
-			  		<p class="text-center">
-			  			<span>ペーパーログイン</span>
-			  			<span class="text-muted">メールアドレスのいらない、かんたんなログインです</span>
-			  			<a href="javascript:void(0)" title="Signin with paper" class="login-with-paper paper-login-button btn btn-lg">
-			  				ペーパーログインではじめる
-			  			</a>
-			  		</p>
-			  	</div>
 			  	<hr>
 			  	<div>
 			  		<p class="text-center">
