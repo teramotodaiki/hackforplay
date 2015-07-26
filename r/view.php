@@ -44,7 +44,7 @@
 					<div class="col-xs-12 panel-body">
 						<div class="row">
 							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-								<a href="../replay/" title="ステージをつくろう１" target="_blank">
+								<a href="../replay/" title="HackforPlay RePlay" target="_blank">
 									<img src="../replay/thumbs/rpg-animation.gif" style="height: 160px" class="img-responsive gif-loop-animation" alt="">
 								</a>
 								<div class="h4p_item-title">
