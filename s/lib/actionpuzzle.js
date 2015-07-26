@@ -215,25 +215,29 @@ window.addEventListener('load', function() {
 	"\t\ttouchX = e.localX + cam.x;\n"+
 	"\t\ttouchY = e.localY + cam.y;\n"+
 	"\t});\n\n"+
-
-	"\t//ゴールの継続処理\n"+
-	"\tHack.goal.on('enterframe', function(event) {\n"+
-	"\t\t//ゴールした時\n"+
-	"\t\tif(Hack.goal.x + Hack.goal.width/2 >= Hack.player.x + 6 && Hack.goal.x + Hack.goal.width/2 <= Hack.player.x + Hack.player.width - 6 && \n"+
-	"\t\t\tHack.goal.y + Hack.goal.height/2 >= Hack.player.y + Hack.player.headHeight && \n"+
-	"\t\t\tHack.goal.y + Hack.goal.height/2 <= Hack.player.y + Hack.player.footHeight && Hack.player.OnBlocks && Hack.getkey){\n"+
-	"\t\t\tgame.assets[BGM].stop();//BGMを止める\n"+
-	"\t\t\tHack.player.useInput = false;\n"+
-	"\t\t\tHack.player.useInduction = false;\n"+
-	"\t\t\tHack.player.velocity.x = 0;\n"+
-	"\t\t\tHack.player.velocity.y = 0;\n"+
-	"\t\t\tHack.player.x = Hack.goal.x + Hack.goal.width/2 - Hack.player.width/2;\n"+
-	"\t\t\tHack.player.frame = [9,9,9,10,10,10,11,11,11,10,10,10];//ゴール時のアニメーション\n"+
-	"\t\t\tHack.player.tl.fadeOut(20);\n"+
-	"\t\t\tHack.gamestate = 2;//ゲームクリア\n"+
-	"\t\t\tHack.gameclear();\n"+
-	"\t\t}\n"+
-	"\t});\n"+
+	"Hack.goal.on('enterframe', function(event) {\n"+
+	"\tif(	Hack.goal.x + Hack.goal.width/2 >= Hack.player.x + 6 &&\n"+
+	"\t\tHack.goal.x + Hack.goal.width/2 <= Hack.player.x + Hack.player.width - 6 &&\n"+
+	"\t\tHack.goal.y + Hack.goal.height/2 >= Hack.player.y + Hack.player.headHeight &&\n"+
+	"\t\tHack.goal.y + Hack.goal.height/2 <= Hack.player.y + Hack.player.footHeight &&\n"+
+	"\t\tHack.player.OnBlocks &&\n"+
+	"\t\tHack.getkey &&\n"+
+	"\t\tHack.gamestate === 0) {\n"+
+	"\n"+
+	"\t\tgame.assets[BGM].stop();\n"+
+	"\t\tHack.player.useInput = false;\n"+
+	"\t\tHack.player.useInduction = false;\n"+
+	"\t\tHack.player.velocity.x = 0;\n"+
+	"\t\tHack.player.velocity.y = 0;\n"+
+	"\t\tHack.player.x = Hack.goal.x + Hack.goal.width/2 - Hack.player.width/2;\n"+
+	"\t\tHack.player.frame = [9,9,9,10,10,10,11,11,11,10,10,10];\n"+
+	"\t\tHack.player.tl.fadeOut(20);\n"+
+	"\t\tHack.gamestate = 2;\n"+
+	"\t\tHack.gameclear();\n"+
+	"\t}\n"+
+	"\n"+
+	"});\n"+
+	"\n"+
 	"\t//鍵の継続処理\n"+
 	"\tHack.key.on('enterframe', function(event) {\n"+
 	"\t\t//鍵をとったとき\n"+
