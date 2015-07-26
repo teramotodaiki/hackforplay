@@ -28,6 +28,10 @@
 	width: 12px;
 }
 
+.paper-login-button {
+	background: url(../img/Watercolor-Paper.png);
+}
+
 .overflow-hidden {
 	overflow: hidden;
 	position: relative;

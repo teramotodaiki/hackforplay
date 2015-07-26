@@ -600,9 +600,8 @@ $(function() {
 			  		<p class="text-center">
 			  			<span>ペーパーログイン</span>
 			  			<span class="text-muted">メールアドレスのいらない、かんたんなログインです</span>
-			  			<a href="javascript:void(0)" title="Signin with paper" class="login-with-paper btn btn-default btn-lg">
+			  			<a href="javascript:void(0)" title="Signin with paper" class="login-with-paper paper-login-button btn btn-lg">
 			  				ペーパーログインではじめる
-			  				<!-- <img src="../img/signin-with-twitter.png" height="28" width="158" alt="signin with twitter"> -->
 			  			</a>
 			  		</p>
 			  	</div>
@@ -698,9 +697,8 @@ $(function() {
 				  	<div>
 				  		<h4>ペーパーログイン</h4>
 				  		<p class="text-center">
-				  			<button data-dismiss="modal" data-toggle="modal" data-target="#paperLoginModal" class="btn btn-default btn-lg">
+				  			<button data-dismiss="modal" data-toggle="modal" data-target="#paperLoginModal" class="paper-login-button btn btn-lg">
 				  				ペーパーログイン
-				  				<!-- <img src="../img/signin-with-twitter.png" height="28" width="158" alt="signin with twitter"> -->
 				  			</button>
 				  		</p>
 				  		<p class="text-muted text-center">メモを もっているかたは こちらです。</p>
