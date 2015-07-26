@@ -46,7 +46,7 @@
 			</div>
 			<div class="col-xs-12 col-sm-6 padding-all-sm">
 				<a href="../s/?id=307" title="The Survive">
-					<img src="thumbs/create-thesurvive.png" class="img-rounded width-fit" alt="">
+					<img src="thumbs/thesurvive-animation.gif" class="img-rounded width-fit" alt="">
 				</a>
 			</div>
 			<div class="col-xs-12 col-sm-6 padding-all-sm">
