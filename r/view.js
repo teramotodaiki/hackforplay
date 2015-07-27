@@ -110,7 +110,7 @@ $(function(){
 	});
 	// 空のステージ一覧
 	$.post('../stage/fetchofficialbyid.php',{
-		'id': '301,302',
+		'id': '101,301,302',
 		'attendance-token': sessionStorage.getItem('attendance-token')
 	} , function(data, textStatus, xhr) {
 		if (data === 'parse-error') {
