@@ -238,7 +238,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 					<?php elseif($id == 106) : // last stage of tutirial ?>
 						<h3>クリアおめでとうございます！</h3>
 						<p>こんどは、あなたもステージを作ってみましょう</p>
-						<a href="/s?id=201" class="btn btn-success btn-lg" title="今すぐ作る"><h3>今すぐ作る</h3></a>
+						<a href="../replay/" class="btn btn-success btn-lg" title="今すぐ作る"><h3>今すぐ作る</h3></a>
 					<?php endif; ?>
 					</div>
 				</div>
