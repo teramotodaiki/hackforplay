@@ -9,7 +9,7 @@ $(function(){
 		}
 	}, 100);
 	// モーダル表示中は、モーダルにフォーカスする
-	$('.modal').on('show.bs.modal', function() {
+	$('.modal').on('shown.bs.modal', function() {
 		focus_on_game = false;
 	});
 	$('.modal').on('hide.bs.modal', function() {
