@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
 
 	var game = enchant.Core.instance;
-	game.preload(['kurage-koubou/lifeup.mp3','kurage-koubou/speedup.mp3','on-jin/damage.mp3','on-jin/attack.mp3','rengoku-teien/BGM.mp3','enchantjs/font1.png','enchantjs/x2/icon0.png','enchantjs/x2/map1.png','enchantjs/x2/map0.png','enchantjs/chara1.png','enchantjs/bigmonster1.gif','enchantjs/bigmonster2.gif','enchantjs/monster1.gif','enchantjs/monster2.gif','enchantjs/monster3.gif', 'enchantjs/monster4.gif','enchantjs/monster7.gif','hackforplay/enchantbook.png']);
+	game.preload(['kurage-koubou/lifeup.mp3','kurage-koubou/speedup.mp3','kurage-koubou/damage.mp3','kurage-koubou/attack.mp3','rengoku-teien/BGM.mp3','enchantjs/font1.png','enchantjs/x2/icon0.png','enchantjs/x2/map1.png','enchantjs/x2/map0.png','enchantjs/chara1.png','enchantjs/bigmonster1.gif','enchantjs/bigmonster2.gif','enchantjs/monster1.gif','enchantjs/monster2.gif','enchantjs/monster3.gif', 'enchantjs/monster4.gif','enchantjs/monster7.gif','hackforplay/enchantbook.png']);
 
 	var binded_key = ' '.charCodeAt(0);
 	game.keybind(binded_key, 'a'); // aボタンはスペースキー
@@ -1096,8 +1096,8 @@ window.addEventListener('load', function() {
 	beam_late = 20;
 
 	BGM = 'rengoku-teien/BGM.mp3';
-	Attack = ''; // 音人のライセンスにより使用不可
-	Damage = ''; // 音人のライセンスにより使用不可
+	Attack = 'kurage-koubou/attack.mp3';
+	Damage = 'kurage-koubou/damage.mp3';
 	Item_SE1 = 'kurage-koubou/speedup.mp3';
 	Item_SE2 = 'kurage-koubou/lifeup.mp3';
 
