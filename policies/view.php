@@ -36,13 +36,38 @@
 								</tr>
 								<tr>
 									<td>CodeMirror</td>
-									<td>(C) 2015 by Marijn Haverbeke and others</td>
+									<td>(c) 2015 by Marijn Haverbeke and others</td>
 									<td>MIT License</td>
 								</tr>
 								<tr>
 									<td>BootStrap</td>
 									<td>(c) 2015 Twitter.</td>
 									<td>MIT License</td>
+								</tr>
+								<tr>
+									<td>Sound Effects and BGM</td>
+									<td>(c) 2000-2013 煉獄庭園</td>
+									<td>著作権表示 再配布禁止</td>
+								</tr>
+								<tr>
+									<td>Graphics</td>
+									<td>(c) 2012-2014 くらげ工匠</td>
+									<td>再配布禁止</td>
+								</tr>
+								<tr>
+									<td>Graphics</td>
+									<td>(c) エトリエ <small>etolier.webcrow.jp</small></td>
+									<td>再配布禁止</td>
+								</tr>
+								<tr>
+									<td>Graphics</td>
+									<td>(c) 2008 TopeconHeroes with Mr.H <small>DOTS DESIGN</small></td>
+									<td>再配布禁止</td>
+								</tr>
+								<tr>
+									<td>Graphics</td>
+									<td>(c) yms <small>Dot Art World</small></td>
+									<td>著作権表示 再配布禁止</td>
 								</tr>
 							</tbody>
 						</table>
