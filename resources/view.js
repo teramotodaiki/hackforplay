@@ -50,6 +50,7 @@ $(function() {
 		item.find('.image').attr('src', param[0]);
 		item.find('.path').text(path);
 		item.find('.size').text(param[1][0] + 'x' + param[1][1]);
+		item.find('button[data-target="#useModal"]').data('path', path);
 
 		if (param[2]) {
 			item.find('button[data-target="#frameModal"]').css({
@@ -118,6 +119,7 @@ $(function() {
 		item.find('.image').attr('src', param[0]);
 		item.find('.path').text(path);
 		item.find('.size').text(param[1][0] + 'x' + param[1][1]);
+		item.find('button[data-target="#useModal"]').data('path', path);
 
 		if (param[2]) {
 			item.find('button[data-target="#frameModal"]').css({

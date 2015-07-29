@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
 
 	var game = enchant.Core.instance;
-	game.preload(['kurage-koubou/lifeup.mp3','kurage-koubou/speedup.mp3','on-jin/damage.mp3','on-jin/attack.mp3','rengoku-teien/BGM.mp3','enchantjs/font1.png','enchantjs/x2/icon0.png','enchantjs/x2/map1.png','enchantjs/x2/map0.png','enchantjs/chara1.png','enchantjs/bigmonster1.gif','enchantjs/bigmonster2.gif','enchantjs/monster1.gif','enchantjs/monster2.gif','enchantjs/monster3.gif', 'enchantjs/monster4.gif','enchantjs/monster7.gif','hackforplay/enchantbook.png']);
+	game.preload(['kurage-koubou/lifeup.mp3','kurage-koubou/speedup.mp3','kurage-koubou/damage.mp3','kurage-koubou/attack.mp3','rengoku-teien/BGM.mp3','enchantjs/font1.png','enchantjs/x2/icon0.png','enchantjs/x2/map1.png','enchantjs/x2/map0.png','enchantjs/chara1.png','enchantjs/bigmonster1.gif','enchantjs/bigmonster2.gif','enchantjs/monster1.gif','enchantjs/monster2.gif','enchantjs/monster3.gif', 'enchantjs/monster4.gif','enchantjs/monster7.gif','hackforplay/enchantbook.png']);
 
 	var binded_key = ' '.charCodeAt(0);
 	game.keybind(binded_key, 'a'); // aボタンはスペースキー
@@ -1096,8 +1096,8 @@ window.addEventListener('load', function() {
 	beam_late = 20;
 
 	BGM = 'rengoku-teien/BGM.mp3';
-	Attack = 'on-jin/attack.mp3';
-	Damage = 'on-jin/damage.mp3';
+	Attack = 'kurage-koubou/attack.mp3';
+	Damage = 'kurage-koubou/damage.mp3';
 	Item_SE1 = 'kurage-koubou/speedup.mp3';
 	Item_SE2 = 'kurage-koubou/lifeup.mp3';
 
@@ -1105,11 +1105,11 @@ window.addEventListener('load', function() {
 	game.onload = game.onload || function() {
 		Hack.pressStartKey(' ');
 		Hack.defaultParentNode = new enchant.Group(); // prepear to scroll
-		
+
 
 		//-------Map作り----------------------
 		var map = new enchant.Map(32, 32);
-		map.image = game.assets['enchantjs/x2/map1.png'];	
+		map.image = game.assets['enchantjs/x2/map1.png'];
 
 		map.loadData([
 			[20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20],
@@ -1133,7 +1133,7 @@ window.addEventListener('load', function() {
 		Hack.pad = new Pad();
 		Hack.pad.moveTo(350,200);
 		game.rootScene.addChild(Hack.pad);
-	
+
 
 
 
@@ -1195,8 +1195,8 @@ window.addEventListener('load', function() {
 											'くまのサイズが100を超えるとゲームクリアです！！<br>',
 											{
 												x: 70, y: 10, color: 'blue', width:400,
-												defaultParentNode: game.rootScene									
-											});		
+												defaultParentNode: game.rootScene
+											});
 		Hack.PressStartLabel = [];
 		Hack.PressStartLabel[0] = CreateFont(220-16*4,170-16*2,48);//P
 		Hack.PressStartLabel[1] = CreateFont(220-16*2,170-16*2,50);//R
@@ -1239,7 +1239,7 @@ window.addEventListener('load', function() {
 
 		// Hack.beam_label[3] = CreateFont(70,207,43);//K
 		// Hack.beam_label[4] = CreateFont(85,207,37);//E
-		// Hack.beam_label[5] = CreateFont(100,207,57);//Y		
+		// Hack.beam_label[5] = CreateFont(100,207,57);//Y
 
 		//リンゴの絵
 		Hack.apple = Hack.createMovingSprite(32,32, {
@@ -1280,7 +1280,7 @@ window.addEventListener('load', function() {
 			x: 340, y: 70,
 			image: game.assets['enchantjs/x2/icon0.png'],
 			frame: [11],
-		});		
+		});
 
 		Hack.skull_label = [];
 		Hack.skull_label[0] =  CreateFont(343    ,105,40);//H
@@ -1315,7 +1315,7 @@ window.addEventListener('load', function() {
 			x: 120, y: 235,
 			image: game.assets['enchantjs/monster1.gif'],
 			frame: [2,2,2,2,2,2,3,3,3,3,3,3],
-		});				
+		});
 
 		Hack.incect_label = [];
 		Hack.incect_label[0] = CreateFont(128,280,18);//2
@@ -1366,7 +1366,7 @@ window.addEventListener('load', function() {
 
 		Hack.daemon_label = [];
 		Hack.daemon_label[0] = CreateFont(420,280,18);//2
-		Hack.daemon_label[1] = CreateFont(436,280,16);//0	
+		Hack.daemon_label[1] = CreateFont(436,280,16);//0
 
 	};
 
@@ -1381,7 +1381,7 @@ window.addEventListener('load', function() {
 				game.assets[BGM].play();
 				game.assets[BGM].src.loop = true;
 			}
-		}	
+		}
 
 		//--------------最初の説明とかを消す処理----------
 
@@ -1404,7 +1404,7 @@ window.addEventListener('load', function() {
 		for(var i = 0; i < Hack.apple_label.length;i++)
 		{
 			Hack.defaultParentNode.removeChild(Hack.apple_label[i]);
-			game.rootScene.removeChild(Hack.apple_label[i]);	
+			game.rootScene.removeChild(Hack.apple_label[i]);
 		}
 
 		//ハートの絵を消す処理
@@ -1444,8 +1444,8 @@ window.addEventListener('load', function() {
 		for(var i = 0; i < Hack.size_label.length;i++)
 		{
 			Hack.defaultParentNode.removeChild(Hack.size_label[i]);
-			game.rootScene.removeChild(Hack.size_label[i]);			
-		}		
+			game.rootScene.removeChild(Hack.size_label[i]);
+		}
 
 		//スライムの絵を消す処理
 		Hack.defaultParentNode.removeChild(Hack.slime_img);
@@ -1455,65 +1455,65 @@ window.addEventListener('load', function() {
 		for(var i = 0; i < Hack.slime_label.length;i++)
 		{
 			Hack.defaultParentNode.removeChild(Hack.slime_label[i]);
-			game.rootScene.removeChild(Hack.slime_label[i]);			
+			game.rootScene.removeChild(Hack.slime_label[i]);
 		}
 
 		//いもむしの絵を消す処理
 		Hack.defaultParentNode.removeChild(Hack.incect_img);
-		game.rootScene.removeChild(Hack.incect_img);		
+		game.rootScene.removeChild(Hack.incect_img);
 
 		//2.0 を消す処理
 		for(var i = 0; i < Hack.incect_label.length;i++)
 		{
 			Hack.defaultParentNode.removeChild(Hack.incect_label[i]);
-			game.rootScene.removeChild(Hack.incect_label[i]);			
-		}		
+			game.rootScene.removeChild(Hack.incect_label[i]);
+		}
 
 		//くもの絵を消す処理
 		Hack.defaultParentNode.removeChild(Hack.spider_img);
-		game.rootScene.removeChild(Hack.spider_img);		
+		game.rootScene.removeChild(Hack.spider_img);
 
 		//3.5 を消す処理
 		for(var i = 0; i < Hack.spider_label.length;i++)
 		{
 			Hack.defaultParentNode.removeChild(Hack.spider_label[i]);
-			game.rootScene.removeChild(Hack.spider_label[i]);			
-		}	
+			game.rootScene.removeChild(Hack.spider_label[i]);
+		}
 
 		//さそりの絵を消す処理
 		Hack.defaultParentNode.removeChild(Hack.scopion_img);
-		game.rootScene.removeChild(Hack.scopion_img);		
+		game.rootScene.removeChild(Hack.scopion_img);
 
 		//6.5 を消す処理
 		for(var i = 0; i < Hack.scopion_label.length;i++)
 		{
 			Hack.defaultParentNode.removeChild(Hack.scopion_label[i]);
-			game.rootScene.removeChild(Hack.scopion_label[i]);			
-		}	
+			game.rootScene.removeChild(Hack.scopion_label[i]);
+		}
 
 		//ドラゴンの絵を消す処理
 		Hack.defaultParentNode.removeChild(Hack.dragon_img);
-		game.rootScene.removeChild(Hack.dragon_img);		
+		game.rootScene.removeChild(Hack.dragon_img);
 
 		//10 を消す処理
 		for(var i = 0; i < Hack.dragon_label.length;i++)
 		{
 			Hack.defaultParentNode.removeChild(Hack.dragon_label[i]);
-			game.rootScene.removeChild(Hack.dragon_label[i]);			
-		}	
+			game.rootScene.removeChild(Hack.dragon_label[i]);
+		}
 
 		//デーモンの絵を消す処理
 		Hack.defaultParentNode.removeChild(Hack.daemon_img);
-		game.rootScene.removeChild(Hack.daemon_img);		
+		game.rootScene.removeChild(Hack.daemon_img);
 
 		//20 を消す処理
 		for(var i = 0; i < Hack.daemon_label.length;i++)
 		{
 			Hack.defaultParentNode.removeChild(Hack.daemon_label[i]);
-			game.rootScene.removeChild(Hack.daemon_label[i]);			
-		}	
+			game.rootScene.removeChild(Hack.daemon_label[i]);
+		}
 
-		//=========================================		
+		//=========================================
 
 
 		Hack.player.parentNode.addChild(Hack.player); // bring to the front
@@ -1618,11 +1618,11 @@ window.addEventListener('load', function() {
 			// 	if(beam_late < 0)beam_late = 1;
 			// 	if(game.frame%beam_late != 0 || Hack.player.isDamaged)return;
 			// 	var clone = new Beam();
-			// 	clone.direction = Hack.player.direction;				
+			// 	clone.direction = Hack.player.direction;
 			// 	clone.x =Hack.player.x+Hack.player.width/2-Hack.player.width*clone.direction;
 			// 	clone.y = Hack.player.y;
 			// 	Hack.player.beam.push(clone);
-			// }			
+			// }
 		});
 	};
 
@@ -1750,7 +1750,7 @@ window.addEventListener('load', function() {
 		if (!Hack.player.isDamaged) {
 			for(var i = 0; i < Hack.monster.length;i++)
 			{
-				if (Hack.player.within(Hack.monster[i], 20+Hack.player.size+Hack.monster[i].size*Hack.monster[i].scale_hosei))//当たり判定 
+				if (Hack.player.within(Hack.monster[i], 20+Hack.player.size+Hack.monster[i].size*Hack.monster[i].scale_hosei))//当たり判定
 				{
 					if(Hack.player.size >= Hack.monster[i].size)
 					{
@@ -1777,10 +1777,10 @@ window.addEventListener('load', function() {
 					{
 						Hack.defaultParentNode.removeChild(Hack.monster[i]);
 						game.rootScene.removeChild(Hack.monster[i]);
-						Hack.monster.splice(i,1);				
+						Hack.monster.splice(i,1);
 					}
 				}
-				else  
+				else
 				{
 					if(Hack.monster[i].x < -(50+Hack.monster[i].width))//x座標が0を下回った(画面外に出た)モンスターを削除
 					{
@@ -1798,7 +1798,7 @@ window.addEventListener('load', function() {
 					Hack.item[i].Get_Item();
 					Hack.defaultParentNode.removeChild(Hack.item[i]);
 					game.rootScene.removeChild(Hack.item[i]);
-					Hack.item.splice(i,1);					
+					Hack.item.splice(i,1);
 				}
 				else if(Hack.item[i].y > 300+Hack.item[i].width)
 				{
@@ -1824,7 +1824,7 @@ window.addEventListener('load', function() {
 			this.scaleY = this.scale_hosei;
 			this.ran = 0;//乱数発生用
 			Hack.defaultParentNode.addChild(this)
-		},	
+		},
 		onenterframe:function(){
 			if(this.ran%2 == 0)
 			{
@@ -1833,7 +1833,7 @@ window.addEventListener('load', function() {
 				//this.rotation = 360;
 			}
 			else
-			{	
+			{
 				this.x -= this.speed;
 				this.scaleX = this.size*this.scale_hosei;
 			}
@@ -1855,7 +1855,7 @@ window.addEventListener('load', function() {
 			this.scaleY = this.size*this.scale_hosei;
 			this.ran = 0;//乱数発生用
 			Hack.defaultParentNode.addChild(this)
-		},	
+		},
 		onenterframe:function(){
 			if(this.ran%2 == 0)
 			{
@@ -1888,7 +1888,7 @@ window.addEventListener('load', function() {
 			this.ran = 0;//乱数発生用
 			this.ran_y = 0;//角度変えるための乱数
 			Hack.defaultParentNode.addChild(this)
-		},	
+		},
 		onenterframe:function(){
 			if(this.ran%2 == 0)
 			{
@@ -1922,7 +1922,7 @@ window.addEventListener('load', function() {
 			this.scaleY = this.size*this.scale_hosei;
 			this.ran = 0;//乱数発生用
 			Hack.defaultParentNode.addChild(this)
-		},	
+		},
 		onenterframe:function(){
 			if(this.ran%2 == 0)
 			{
@@ -1939,7 +1939,7 @@ window.addEventListener('load', function() {
 				if(Math.random()*10 < 3)
 					this.x -= this.speed+Math.random()*10;
 				if(Math.random()*10 < 1)
-					this.y += Math.random()*50-25;			
+					this.y += Math.random()*50-25;
 				this.scaleX = this.size*this.scale_hosei;
 			}
 
@@ -1960,7 +1960,7 @@ window.addEventListener('load', function() {
 			this.scaleY = this.size*this.scale_hosei;
 			this.ran = 0;//乱数発生用
 			Hack.defaultParentNode.addChild(this)
-		},	
+		},
 		onenterframe:function(){
 			if(this.ran%2 == 0)
 			{
@@ -1991,7 +1991,7 @@ window.addEventListener('load', function() {
 			this.state = 0;//状態
 			this.count = 0;
 			Hack.defaultParentNode.addChild(this);
-		},	
+		},
 		onenterframe:function(){
 			this.count++;
 			if(this.count==1)
@@ -2022,12 +2022,12 @@ window.addEventListener('load', function() {
 			 	 }
 			 	 else
 			 	 {
-			 	 	this.x -= this.speed;			 	 	
+			 	 	this.x -= this.speed;
 			 	 }
 			}
 
 		}
-	});	
+	});
 
 	//=======================================
 
@@ -2044,7 +2044,7 @@ window.addEventListener('load', function() {
 			this.frame = [15];
 			this.speed = 1;//速さ
 			Hack.defaultParentNode.addChild(this);
-		},	
+		},
 		onenterframe:function(){
 			this.y += this.speed;
 		},
@@ -2056,7 +2056,7 @@ window.addEventListener('load', function() {
 							}
 						}
 		}
-	});	
+	});
 
 	var LifeUp = enchant.Class.create(enchant.Sprite,{
 		initialize: function(){
@@ -2068,12 +2068,12 @@ window.addEventListener('load', function() {
 			this.frame = [10];
 			this.speed = 3;//速さ
 			Hack.defaultParentNode.addChild(this);
-		},	
+		},
 		onenterframe:function(){
 			this.y += this.speed;
 		},
 		Get_Item:function(){
-			Hack.player.hp += 1;			
+			Hack.player.hp += 1;
 			var clone = Hack.createMovingSprite(32,32, {
 				x: 25+20*(Hack.player.hp-1), y: 220,
 				image: game.assets['enchantjs/x2/icon0.png'],
@@ -2090,7 +2090,7 @@ window.addEventListener('load', function() {
 				}
 			}
 		}
-	});	
+	});
 
 	var LifeDown = enchant.Class.create(enchant.Sprite,{
 		initialize: function(){
@@ -2104,7 +2104,7 @@ window.addEventListener('load', function() {
 			this.p1 = 0;
 			this.count =0;
 			Hack.defaultParentNode.addChild(this);
-		},	
+		},
 		onenterframe:function(){
 			this.count++;
 			if(this.count < 5)//カウントが5を超えるまでくまを追尾する
@@ -2114,13 +2114,13 @@ window.addEventListener('load', function() {
 			// if(game.frame%50 < 5)
 			// this.tl.moveTo(Hack.player.x,Hack.player.y,50).fadeOut(30).function(){
 			// 	Hack.defaultParentNode.removeChild(Hack.dragon_label[i]);
-			// 	game.rootScene.removeChild(Hack.dragon_label[i]);			
+			// 	game.rootScene.removeChild(Hack.dragon_label[i]);
 			// };
 		},
 		Get_Item:function(){
 			Damage_Me();
 		}
-	});	
+	});
 
 	//==================================================
 
@@ -2137,19 +2137,19 @@ window.addEventListener('load', function() {
 	// 		this.speed = 10;//速さ
 	// 		this.direction = 0;//方向を表している　0で右 1で左
 	// 		Hack.defaultParentNode.addChild(this)
-	// 	},	
+	// 	},
 	// 	onenterframe:function(){
 	// 		if(this.direction == 0)
 	// 		{
 	// 			this.x += this.speed;
-	// 			this.rotation = 180;				
+	// 			this.rotation = 180;
 	// 		}
 	// 		else
 	// 		{
 	// 			this.x -= this.speed;
 	// 		}
 	// 	}
-	// });	
+	// });
 
 	//==============================================
 	//--------------------関数------------------------
@@ -2165,7 +2165,7 @@ window.addEventListener('load', function() {
 	function Damage_Me(){
 		Hack.player.hp--; // ouch!!
 		Hack.defaultParentNode.removeChild(Hack.player.hp_img[Hack.player.hp]);
-		game.rootScene.removeChild(Hack.player.hp_img[Hack.player.hp]);												
+		game.rootScene.removeChild(Hack.player.hp_img[Hack.player.hp]);
 		Hack.player.hp_img.splice(Hack.player.hp,1);
 		Hack.player.isDamaged = true; // damaged (flashing) flag
 
