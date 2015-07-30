@@ -470,8 +470,12 @@ $(function(){
 		return sessionStorage.getItem('stage_param_'+key) || '0';
 	}
 
-	// YouTubeによるキットの説明
+	// YouTube等によるキットの説明
 	(function() {
+		// 説明すべきコンテンツが存在するかどうか
+		var embed_content = getParam('embed') || '';
+		if (embed_content === '') return;
+
 		var dont_show_again = localStorage.getItem('dont_show_again') || '';
 		var currentState = dont_show_again ? dont_show_again.split(',').indexOf(getParam('id')) !== -1 : false;
 		var delimiter = ',';
@@ -482,9 +486,7 @@ $(function(){
 		var frame = $('#youtubeModal iframe.embed-frame');
 		$('#youtubeModal').on('show.bs.modal', function() {
 			if (!frame.attr('src')) {
-				frame.attr({
-					'src': 'https://www.youtube.com/embed/JTGUKEvYFuw'
-				});
+				frame.attr('src', embed_content);
 			}
 		}).on('shown.bs.modal', function() {
 			var width = $(this).find('.modal-body').width();

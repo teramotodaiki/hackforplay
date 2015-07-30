@@ -11,6 +11,7 @@ $author_id	= $stage['UserID'];
 $source_id	= $stage['SourceID'];
 $source_title = $stage['SourceTitle'];
 $src	= $stage['Src'];
+$embed	= $stage['EmbedContent'];
 $origin_id = NULL;
 $mode 	= filter_input(INPUT_GET, "mode");
 if(!isset($mode)){
@@ -96,6 +97,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 		s('retry', "<?php echo $retry; ?>");
 		s('origin_id', "<?php echo $origin_id; ?>");
 		s('src', "<?php echo $src;  ?>");
+		s('embed', "<?php echo $embed;  ?>");
 		<?php if(isset($code)): ?>
 		s('replay_code', "<?php echo $code; ?>");
 		<?php endif; ?>
