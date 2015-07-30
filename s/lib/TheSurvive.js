@@ -1058,7 +1058,7 @@ window.addEventListener('load', function() {
 "\t\t\t}\n"+
 "\t\t}\n"+
 "\n"+
-"\t\t//プレイヤーのHPが0以下の時"+
+"\t\t//プレイヤーのHPが0以下の時\n"+
 "\t\tif (Hack.player.hp <= 0) {\n"+
 "\t\t\tHack.gameover();//ゲームオーバー\n"+
 "\t\t\tHack.started = false;\n"+
