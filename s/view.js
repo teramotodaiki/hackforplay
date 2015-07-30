@@ -498,7 +498,7 @@ $(function(){
 			}
 		}).on('shown.bs.modal', function() {
 			var body_width = $(this).find('.modal-body').width();
-			$('#youtubeModal #embed-content').attr({
+			$('#youtubeModal #embed-content,#youtubeModal iframe').attr({
 				width: body_width,
 				height: 400
 			});
