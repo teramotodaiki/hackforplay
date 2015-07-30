@@ -11,7 +11,7 @@ $author_id	= $stage['UserID'];
 $source_id	= $stage['SourceID'];
 $source_title = $stage['SourceTitle'];
 $src	= $stage['Src'];
-$embed	= $stage['EmbedContent'];
+$youtube	= $stage['YouTubeID'];
 $origin_id = NULL;
 $mode 	= filter_input(INPUT_GET, "mode");
 if(!isset($mode)){
@@ -97,7 +97,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 		s('retry', "<?php echo $retry; ?>");
 		s('origin_id', "<?php echo $origin_id; ?>");
 		s('src', "<?php echo $src;  ?>");
-		s('embed', "<?php echo $embed;  ?>");
+		s('youtube', "<?php echo $youtube;  ?>");
 		<?php if(isset($code)): ?>
 		s('replay_code', "<?php echo $code; ?>");
 		<?php endif; ?>
@@ -207,7 +207,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	    			<h4>Introduction Video // ステージの せつめい</h4>
 				</div>
 			    <div class="modal-body">
-					<iframe class="embed-frame" frameborder="0" allowfullscreen></iframe>
+					<div id="embed-content" src=""></div>
 			    </div>
 	    		<div class="modal-footer">
 		    		<label><input type="checkbox" name="dontshowagain" value="1">Don't show again // こんどから ひょうじ しない</label>

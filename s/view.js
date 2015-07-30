@@ -1,3 +1,4 @@
+var onYouTubeIframeAPIReady = null;
 $(function(){
 	var focus_on_game = true; // focus mode -> game
 	// ゲーム画面にフォーカスする
@@ -483,16 +484,23 @@ $(function(){
 		$('#youtubeModal input[name="dontshowagain"]').prop('checked', currentState); // チェックボックスの状態を設定
 
 		// 開かれたときにまだYouTubeがロードされていない場合、ロードを開始する
-		var frame = $('#youtubeModal iframe.embed-frame');
+		var player;
 		$('#youtubeModal').on('show.bs.modal', function() {
-			if (!frame.attr('src')) {
-				frame.attr('src', embed_content);
+
+			if (!player) {
+				// YouTube Frame API をロード
+				$('<script>').attr('src', 'https://www.youtube.com/iframe_api').prependTo('body');
+				onYouTubeIframeAPIReady = function() {
+					player = new YT.Player('embed-content', {
+						videoId: getParam('youtube')
+					});
+				};
 			}
 		}).on('shown.bs.modal', function() {
-			var width = $(this).find('.modal-body').width();
-			frame.attr({
-				'width': width,
-				'height': 400
+			var body_width = $(this).find('.modal-body').width();
+			$('#youtubeModal #embed-content').attr({
+				width: body_width,
+				height: 400
 			});
 		});
 
@@ -523,6 +531,11 @@ $(function(){
 				}
 				dont_show_again = array.join(delimiter);
 				localStorage.setItem('dont_show_again', dont_show_again);
+			}
+
+			// モーダルを閉じた時、再生をストップする
+			if (player && player.pauseVideo) {
+				player.pauseVideo();
 			}
 		});
 
