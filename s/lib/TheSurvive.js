@@ -1373,7 +1373,6 @@ window.addEventListener('load', function() {
 	//----------↓ボタンを押したらスタート↓--------------
 
 	Hack.onpressstart = Hack.onpressstart || function() {
-		console.log("z");
 		Hack.started = true;
 
 		if(game.assets[BGM] !== undefined){
@@ -1579,7 +1578,6 @@ window.addEventListener('load', function() {
 
 			if (game.input.up) {
 				this.y -= this.speed;
-				console.log("abc");
 			}
 			if(game.input.down)
 			{
@@ -1594,35 +1592,6 @@ window.addEventListener('load', function() {
 				this.x += this.speed;
 				Hack.player.direction = 0;
 			}
-
-			// if (Hack.pad.input.up) {
-			// 	this.y -= this.speed;
-			// 	console.log("abc");
-			// }
-			// if(Hack.pad.input.down)
-			// {
-			// 	this.y += this.speed;
-			// }
-			// if (Hack.pad.input.left) {
-			// 	this.x -= this.speed;
-			// 	Hack.player.direction = 1;
-			// }
-			// if(Hack.pad.input.right)
-			// {
-			// 	this.x += this.speed;
-			// 	Hack.player.direction = 0;
-			// }
-
-			// if(game.input.z)
-			// {
-			// 	if(beam_late < 0)beam_late = 1;
-			// 	if(game.frame%beam_late != 0 || Hack.player.isDamaged)return;
-			// 	var clone = new Beam();
-			// 	clone.direction = Hack.player.direction;
-			// 	clone.x =Hack.player.x+Hack.player.width/2-Hack.player.width*clone.direction;
-			// 	clone.y = Hack.player.y;
-			// 	Hack.player.beam.push(clone);
-			// }
 		});
 	};
 
