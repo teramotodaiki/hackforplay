@@ -205,7 +205,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	    			<h4>Introduction Video // ステージの せつめい</h4>
 				</div>
 			    <div class="modal-body">
-					<iframe width="420" height="315" src="https://www.youtube.com/embed/JTGUKEvYFuw" frameborder="0" allowfullscreen></iframe>
+					<iframe class="embed-frame" frameborder="0" allowfullscreen></iframe>
 			    </div>
 	    		<div class="modal-footer">
 		    		<label><input type="checkbox" name="dontshowagain" value="1">Don't show again // こんどから ひょうじ しない</label>

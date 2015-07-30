@@ -478,6 +478,22 @@ $(function(){
 
 		$('#youtubeModal input[name="dontshowagain"]').prop('checked', currentState); // チェックボックスの状態を設定
 
+		// 開かれたときにまだYouTubeがロードされていない場合、ロードを開始する
+		var frame = $('#youtubeModal iframe.embed-frame');
+		$('#youtubeModal').on('show.bs.modal', function() {
+			if (!frame.attr('src')) {
+				frame.attr({
+					'src': 'https://www.youtube.com/embed/JTGUKEvYFuw'
+				});
+			}
+		}).on('shown.bs.modal', function() {
+			var width = $(this).find('.modal-body').width();
+			frame.attr({
+				'width': width,
+				'height': 400
+			});
+		});
+
 		// Don't show again されていなければ #youtubeModal を表示
 		if (!currentState) {
 			$('#youtubeModal').modal('show');
