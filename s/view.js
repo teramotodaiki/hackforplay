@@ -1,3 +1,4 @@
+var onYouTubeIframeAPIReady = null;
 $(function(){
 	var focus_on_game = true; // focus mode -> game
 	// ゲーム画面にフォーカスする
@@ -469,4 +470,75 @@ $(function(){
 	function getParam(key){
 		return sessionStorage.getItem('stage_param_'+key) || '0';
 	}
+
+	// YouTube等によるキットの説明
+	(function() {
+		// 説明すべきコンテンツが存在するかどうか
+		var embed_content = getParam('embed') || '';
+		if (embed_content === '') return;
+
+		var dont_show_again = localStorage.getItem('dont_show_again') || '';
+		var currentState = dont_show_again ? dont_show_again.split(',').indexOf(getParam('id')) !== -1 : false;
+		var delimiter = ',';
+
+		$('#youtubeModal input[name="dontshowagain"]').prop('checked', currentState); // チェックボックスの状態を設定
+
+		// 開かれたときにまだYouTubeがロードされていない場合、ロードを開始する
+		var player;
+		$('#youtubeModal').on('show.bs.modal', function() {
+
+			if (!player) {
+				// YouTube Frame API をロード
+				$('<script>').attr('src', 'https://www.youtube.com/iframe_api').prependTo('body');
+				onYouTubeIframeAPIReady = function() {
+					player = new YT.Player('embed-content', {
+						videoId: getParam('youtube')
+					});
+				};
+			}
+		}).on('shown.bs.modal', function() {
+			var body_width = $(this).find('.modal-body').width();
+			$('#youtubeModal #embed-content,#youtubeModal iframe').attr({
+				width: body_width,
+				height: 400
+			});
+		});
+
+		// Don't show again されていなければ #youtubeModal を表示
+		if (!currentState) {
+			$('#youtubeModal').modal('show');
+		}
+
+		// 閉じられたときに Don't show again を確認
+		$('#youtubeModal').on('hide.bs.modal', function(event) {
+
+			var state = $(this).find('input[name="dontshowagain"]').prop('checked');
+
+			// 状態が変化したとき localStorage を更新
+			if (state !== currentState) {
+
+				var array = dont_show_again.split(delimiter);
+				if (state) {
+					// 追加
+					array.push(getParam('id'));
+					currentState = true;
+				} else {
+					// 削除
+					array = array.filter(function(value) {
+						return value !== (getParam('id') + '');
+					});
+					currentState = false;
+				}
+				dont_show_again = array.join(delimiter);
+				localStorage.setItem('dont_show_again', dont_show_again);
+			}
+
+			// モーダルを閉じた時、再生をストップする
+			if (player && player.pauseVideo) {
+				player.pauseVideo();
+			}
+		});
+
+	})();
+
 });
