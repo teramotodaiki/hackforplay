@@ -198,6 +198,22 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="youtubeModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+	    			<h4>Introduction Video // ステージの せつめい</h4>
+				</div>
+			    <div class="modal-body">
+					<iframe width="420" height="315" src="https://www.youtube.com/embed/JTGUKEvYFuw" frameborder="0" allowfullscreen></iframe>
+			    </div>
+	    		<div class="modal-footer">
+		    		<label><input type="checkbox" name="dontshowagain" value="1">Don't show again // こんどから ひょうじ しない</label>
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+	    		</div>
+			</div>
+		</div>
+	</div>
 	<!-- contents -->
 	<div class="container container-game">
 		<div class="row">

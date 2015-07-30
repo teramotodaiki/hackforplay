@@ -469,4 +469,8 @@ $(function(){
 	function getParam(key){
 		return sessionStorage.getItem('stage_param_'+key) || '0';
 	}
+
+	// YouTubeによるキットの説明
+	$('#youtubeModal').modal('show');
+
 });
