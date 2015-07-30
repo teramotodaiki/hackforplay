@@ -265,9 +265,12 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 				</button>
 				<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
 			</div>
-			<div class="col-xs-offset-11 col-xs-1 h4p_comment-add hidden">
+			<div class="col-xs-12">
 				<button type="button" class="btn btn-link btn-lg" data-toggle="modal" data-target="#commentModal">
 					<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+				</button>
+				<button type="button" class="btn btn-link btn-lg h4p_comment-add hidden" data-toggle="modal" data-target="#youtubeModal">
+					<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 				</button>
 			</div>
 			<div class="col-xs-12 h4p_my-comment hidden">
