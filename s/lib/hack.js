@@ -32,7 +32,7 @@ function __H4PENV__SENDCODE () {
 window.addEventListener('message', function (e) {
 	if(e.origin === window.location.protocol + '//' + window.location.host){
 		try {
-			var hint = Hack.hint; // 旧RPGとの互換性を維持するための仕様(hintがないとsetHintされた時にエラー)
+			var hint = Hack ? Hack.hint : ''; // 旧RPGとの互換性を維持するための仕様(hintがないとsetHintされた時にエラー)
 			var game = enchant ? enchant.Core.instance : undefined;
 			eval(e.data);
 		} catch (exception) {
