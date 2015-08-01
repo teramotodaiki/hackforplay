@@ -81,6 +81,10 @@ window.addEventListener('load', function() {
 "\t\t//===========================\n"+
 "\n"+
 "\n"+
+"\t\tHack.pad = new Pad();\n"+
+"\t\tHack.pad.moveTo(350,200);\n"+
+"\t\tgame.rootScene.addChild(Hack.pad);\n"+
+"\n"+
 "\n"+
 "\t\t//難易度:★★☆☆☆\n"+
 "\t\t//====STAGE3:プレイヤーの設定====\n"+
