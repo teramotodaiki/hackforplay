@@ -11,6 +11,7 @@ $author_id	= $stage['UserID'];
 $source_id	= $stage['SourceID'];
 $source_title = $stage['SourceTitle'];
 $src	= $stage['Src'];
+$youtube	= $stage['YouTubeID'];
 $origin_id = NULL;
 $mode 	= filter_input(INPUT_GET, "mode");
 if(!isset($mode)){
@@ -96,6 +97,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 		s('retry', "<?php echo $retry; ?>");
 		s('origin_id', "<?php echo $origin_id; ?>");
 		s('src', "<?php echo $src;  ?>");
+		s('youtube', "<?php echo $youtube;  ?>");
 		<?php if(isset($code)): ?>
 		s('replay_code', "<?php echo $code; ?>");
 		<?php endif; ?>
@@ -198,6 +200,22 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="youtubeModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+	    			<h4>Introduction Video // ステージの せつめい</h4>
+				</div>
+			    <div class="modal-body">
+					<div id="embed-content" src=""></div>
+			    </div>
+	    		<div class="modal-footer">
+		    		<label><input type="checkbox" name="dontshowagain" value="1">Don't show again // こんどから ひょうじ しない</label>
+	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+	    		</div>
+			</div>
+		</div>
+	</div>
 	<!-- contents -->
 	<div class="container container-game">
 		<div class="row">
@@ -249,9 +267,12 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 				</button>
 				<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
 			</div>
-			<div class="col-xs-offset-11 col-xs-1 h4p_comment-add hidden">
+			<div class="col-xs-12">
 				<button type="button" class="btn btn-link btn-lg" data-toggle="modal" data-target="#commentModal">
 					<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+				</button>
+				<button type="button" class="btn btn-link btn-lg h4p_comment-add hidden" data-toggle="modal" data-target="#youtubeModal">
+					<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 				</button>
 			</div>
 			<div class="col-xs-12 h4p_my-comment hidden">

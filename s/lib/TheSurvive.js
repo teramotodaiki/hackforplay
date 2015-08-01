@@ -81,6 +81,10 @@ window.addEventListener('load', function() {
 "\t\t//===========================\n"+
 "\n"+
 "\n"+
+"\t\tHack.pad = new Pad();\n"+
+"\t\tHack.pad.moveTo(350,200);\n"+
+"\t\tgame.rootScene.addChild(Hack.pad);\n"+
+"\n"+
 "\n"+
 "\t\t//難易度:★★☆☆☆\n"+
 "\t\t//====STAGE3:プレイヤーの設定====\n"+
@@ -106,7 +110,6 @@ window.addEventListener('load', function() {
 "\n"+
 "\t\tHack.monster = [];//生成されるモンスターをいれる場所\n"+
 "\t\tHack.item = [];//生成されるアイテムをいれる場所\n"+
-"\t\tgame.keybind(90, 'z');//おまじない\n"+
 "\n"+
 "\t\t// 魔道書の画像\n"+
 "\t\tHack.enchantBookIcon = Hack.createSprite(64, 64, {\n"+
@@ -118,16 +121,16 @@ window.addEventListener('load', function() {
 "\t\t});\n"+
 "\t\t// 魔道書の中身\n"+
 "\t\tHack.hint =\n"+
-"\t\t\t\t\t'slime_encounter = 50;//スライムの出現頻度'+\n"+
-"\t\t\t\t\t'insect_encounter = 50;//いもむしの出現頻度'+\n"+
-"\t\t\t\t\t'spider_encounter = 50;//くもの出現頻度'+\n"+
-"\t\t\t\t\t'scopion_encounter = 50;//さそりの出現頻度'+\n"+
-"\t\t\t\t\t'dragon_encounter = 50;//ドラゴンの出現頻度'+\n"+
-"\t\t\t\t\t'daemon_encounter = 50;//デーモンの出現頻度'+\n"+
-"\t\t\t\t\t'speedup_encounter = 300;//リンゴの出現頻度'+\n"+
-"\t\t\t\t\t'lifeup_encounter = 400;//ハートの出現頻度'+\n"+
-"\t\t\t\t\t'lifedown_encounter = 400;//どくろの出現頻度'+\n"+
-"\t\t\t\t\t'//出現頻度は低いほどたくさん出てくるようになるぞ！'+\n"+
+"\t\t\t\t\t'slime_encounter = 50;//スライムの出現頻度\\n'+\n"+
+"\t\t\t\t\t'insect_encounter = 50;//いもむしの出現頻度\\n'+\n"+
+"\t\t\t\t\t'spider_encounter = 50;//くもの出現頻度\\n'+\n"+
+"\t\t\t\t\t'scopion_encounter = 50;//さそりの出現頻度\\n'+\n"+
+"\t\t\t\t\t'dragon_encounter = 50;//ドラゴンの出現頻度\\n'+\n"+
+"\t\t\t\t\t'daemon_encounter = 50;//デーモンの出現頻度\\n'+\n"+
+"\t\t\t\t\t'speedup_encounter = 300;//リンゴの出現頻度\\n'+\n"+
+"\t\t\t\t\t'lifeup_encounter = 400;//ハートの出現頻度\\n'+\n"+
+"\t\t\t\t\t'lifedown_encounter = 400;//どくろの出現頻度\\n'+\n"+
+"\t\t\t\t\t'//出現頻度は低いほどたくさん出てくるようになるぞ！\\n'+\n"+
 "\t\t\t\t\t'//(でも0以下からは効果が変わらないぞ！)';\n"+
 "\n"+
 "\n"+
@@ -1159,7 +1162,6 @@ window.addEventListener('load', function() {
 
 		Hack.monster = [];
 		Hack.item = [];
-		game.keybind(90, "z");
 
 		// 魔道書
 		Hack.enchantBookIcon = Hack.createSprite(64, 64, {
@@ -1373,7 +1375,6 @@ window.addEventListener('load', function() {
 	//----------↓ボタンを押したらスタート↓--------------
 
 	Hack.onpressstart = Hack.onpressstart || function() {
-		console.log("z");
 		Hack.started = true;
 
 		if(game.assets[BGM] !== undefined){
@@ -1579,7 +1580,6 @@ window.addEventListener('load', function() {
 
 			if (game.input.up) {
 				this.y -= this.speed;
-				console.log("abc");
 			}
 			if(game.input.down)
 			{
@@ -1594,35 +1594,6 @@ window.addEventListener('load', function() {
 				this.x += this.speed;
 				Hack.player.direction = 0;
 			}
-
-			// if (Hack.pad.input.up) {
-			// 	this.y -= this.speed;
-			// 	console.log("abc");
-			// }
-			// if(Hack.pad.input.down)
-			// {
-			// 	this.y += this.speed;
-			// }
-			// if (Hack.pad.input.left) {
-			// 	this.x -= this.speed;
-			// 	Hack.player.direction = 1;
-			// }
-			// if(Hack.pad.input.right)
-			// {
-			// 	this.x += this.speed;
-			// 	Hack.player.direction = 0;
-			// }
-
-			// if(game.input.z)
-			// {
-			// 	if(beam_late < 0)beam_late = 1;
-			// 	if(game.frame%beam_late != 0 || Hack.player.isDamaged)return;
-			// 	var clone = new Beam();
-			// 	clone.direction = Hack.player.direction;
-			// 	clone.x =Hack.player.x+Hack.player.width/2-Hack.player.width*clone.direction;
-			// 	clone.y = Hack.player.y;
-			// 	Hack.player.beam.push(clone);
-			// }
 		});
 	};
 
