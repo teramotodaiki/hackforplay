@@ -106,7 +106,6 @@ window.addEventListener('load', function() {
 "\n"+
 "\t\tHack.monster = [];//生成されるモンスターをいれる場所\n"+
 "\t\tHack.item = [];//生成されるアイテムをいれる場所\n"+
-"\t\tgame.keybind(90, 'z');//おまじない\n"+
 "\n"+
 "\t\t// 魔道書の画像\n"+
 "\t\tHack.enchantBookIcon = Hack.createSprite(64, 64, {\n"+
@@ -1159,7 +1158,6 @@ window.addEventListener('load', function() {
 
 		Hack.monster = [];
 		Hack.item = [];
-		game.keybind(90, "z");
 
 		// 魔道書
 		Hack.enchantBookIcon = Hack.createSprite(64, 64, {
