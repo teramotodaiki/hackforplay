@@ -118,16 +118,16 @@ window.addEventListener('load', function() {
 "\t\t});\n"+
 "\t\t// 魔道書の中身\n"+
 "\t\tHack.hint =\n"+
-"\t\t\t\t\t'slime_encounter = 50;//スライムの出現頻度'+\n"+
-"\t\t\t\t\t'insect_encounter = 50;//いもむしの出現頻度'+\n"+
-"\t\t\t\t\t'spider_encounter = 50;//くもの出現頻度'+\n"+
-"\t\t\t\t\t'scopion_encounter = 50;//さそりの出現頻度'+\n"+
-"\t\t\t\t\t'dragon_encounter = 50;//ドラゴンの出現頻度'+\n"+
-"\t\t\t\t\t'daemon_encounter = 50;//デーモンの出現頻度'+\n"+
-"\t\t\t\t\t'speedup_encounter = 300;//リンゴの出現頻度'+\n"+
-"\t\t\t\t\t'lifeup_encounter = 400;//ハートの出現頻度'+\n"+
-"\t\t\t\t\t'lifedown_encounter = 400;//どくろの出現頻度'+\n"+
-"\t\t\t\t\t'//出現頻度は低いほどたくさん出てくるようになるぞ！'+\n"+
+"\t\t\t\t\t'slime_encounter = 50;//スライムの出現頻度\\n'+\n"+
+"\t\t\t\t\t'insect_encounter = 50;//いもむしの出現頻度\\n'+\n"+
+"\t\t\t\t\t'spider_encounter = 50;//くもの出現頻度\\n'+\n"+
+"\t\t\t\t\t'scopion_encounter = 50;//さそりの出現頻度\\n'+\n"+
+"\t\t\t\t\t'dragon_encounter = 50;//ドラゴンの出現頻度\\n'+\n"+
+"\t\t\t\t\t'daemon_encounter = 50;//デーモンの出現頻度\\n'+\n"+
+"\t\t\t\t\t'speedup_encounter = 300;//リンゴの出現頻度\\n'+\n"+
+"\t\t\t\t\t'lifeup_encounter = 400;//ハートの出現頻度\\n'+\n"+
+"\t\t\t\t\t'lifedown_encounter = 400;//どくろの出現頻度\\n'+\n"+
+"\t\t\t\t\t'//出現頻度は低いほどたくさん出てくるようになるぞ！\\n'+\n"+
 "\t\t\t\t\t'//(でも0以下からは効果が変わらないぞ！)';\n"+
 "\n"+
 "\n"+
