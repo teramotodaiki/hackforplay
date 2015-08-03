@@ -485,6 +485,7 @@ $(function(){
 
 		// 開かれたときにまだYouTubeがロードされていない場合、ロードを開始する
 		var player;
+		var body_width = 270; // 仮の幅 実際はモーダルの幅に合わせる
 		$('#youtubeModal').on('show.bs.modal', function() {
 
 			if (!player) {
@@ -492,15 +493,15 @@ $(function(){
 				$('<script>').attr('src', 'https://www.youtube.com/iframe_api').prependTo('body');
 				onYouTubeIframeAPIReady = function() {
 					player = new YT.Player('embed-content', {
-						width: 270,
+						width: body_width,
 						height: 400,
 						videoId: getParam('youtube')
 					});
 				};
 			}
 		}).on('shown.bs.modal', function() {
-			var body_width = $(this).find('.modal-body').width();
-			$('#youtubeModal #embed-content,#youtubeModal iframe').attr({
+			body_width = $(this).find('.modal-body').width();
+			$('#youtubeModal div#embed-content,#youtubeModal iframe#embed-content').attr({
 				width: body_width,
 				height: 400
 			});
