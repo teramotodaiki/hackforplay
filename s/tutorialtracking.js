@@ -17,6 +17,7 @@ $(function () {
 		var storageKey = 'tutorial_logging_key';
 		var key = localStorage.getItem(storageKey); // ユーザの識別キー
 
+		// キーがないとき、キーを新しく生成する
 		if (!key) {
 			var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 			key = '';

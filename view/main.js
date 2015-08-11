@@ -62,14 +62,16 @@ $(function(){
 	};
 	loadAndSetPN(0);
 
-
-
-
 	// スマートフォンの警告
 	var sp_word = ['Mobile', 'iPhone', 'iPod', 'iPad', 'Android', 'Windows Phone', 'BlackBerry', 'Symbian'];
 	sp_word.forEach(function(item){
 		if (navigator.userAgent.indexOf(item) !== -1) {
 			$('#spModal').modal('show');
 		}
+	});
+
+	// チュートリアルのトラッキングにもちいるキーを初期化
+	$('.l-1 a,.l-2 a').on('click', function(event) {
+		localStorage.removeItem('tutorial_logging_key');
 	});
 });
