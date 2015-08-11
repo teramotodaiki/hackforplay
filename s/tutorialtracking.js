@@ -12,8 +12,8 @@ $(function () {
 	// キーの生成
 	// tracking.key === key
 	(function() {
-		var storageKey = 'tutorial_logging_key';
-		var key = localStorage.getItem(storageKey); // ユーザの識別キー
+		var storageKeyIdentifier = 'tutorial_tracking_key';
+		var key = localStorage.getItem(storageKeyIdentifier); // ユーザの識別キー
 
 		// キーがないとき、キーを新しく生成する
 		if (!key) {
@@ -21,7 +21,7 @@ $(function () {
 			key = '';
 			for( var i = 0; i < 32; i++ )
 				key += possible.charAt(Math.floor(Math.random() * possible.length));
-			localStorage.setItem(storageKey, key);
+			localStorage.setItem(storageKeyIdentifier, key);
 		}
 
 		Object.defineProperty(tracking, 'key', {
