@@ -31,9 +31,38 @@ $(function () {
 		});
 	})();
 
+	// ゲームのSTARTとCLEARをキャッチしてログを記録する
+	(function() {
+		var storageLogIdentifier = 'tutorial_tracking_log';
+		var log_json = localStorage.getItem(storageLogIdentifier); // ログのJSON値
+		var log = log_json ? $.parseJSON(log_json) : {}; // ログオブジェクト(localStorageに値がないとき、新しく作る)
+
+		(function() {
+			// トラッキングイベント
+
+			log.values = log.values || [];
+
+			log.values.push({
+				stageid: 101,
+				field: 'test',
+				value: 'test value'
+			});
+
+			log_json = JSON.stringify(log);
+			localStorage.setItem(storageLogIdentifier, log_json);
+
+		})();
+
+		Object.defineProperty(tracking, 'log', {
+			get: function() {
+				return log_json;
+			}
+		});
+	})();
+
 	$.post('../stage/logintutorial.php', {
 		key: tracking.key,
-		log: '{}'
+		log: tracking.log
 	} , function(data, textStatus, xhr) {
 		console.log(data);
 	});

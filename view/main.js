@@ -73,5 +73,6 @@ $(function(){
 	// チュートリアルのトラッキングにもちいるキーを初期化
 	$('.l-1 a,.l-2 a').on('click', function(event) {
 		localStorage.removeItem('tutorial_tracking_key');
+		localStorage.removeItem('tutorial_tracking_log');
 	});
 });
