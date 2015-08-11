@@ -104,6 +104,9 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	})();
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<?php if ($id >= 101 && $id <= 106) : ?>
+	<script src="tutorialtracking.js" type="text/javascript" charset="utf-8"></script>
+	<?php endif; ?>
 	<!-- Modal -->
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
