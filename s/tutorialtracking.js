@@ -11,8 +11,6 @@ $(function () {
 
 	// キーの生成
 	// tracking.key === key
-	console.log('tracking.key', tracking.key);
-	console.log('localStorage key', localStorage.getItem('tutorial_logging_key'));
 	(function() {
 		var storageKey = 'tutorial_logging_key';
 		var key = localStorage.getItem(storageKey); // ユーザの識別キー
@@ -32,8 +30,13 @@ $(function () {
 			}
 		});
 	})();
-	console.log('tracking.key', tracking.key);
-	console.log('localStorage key', localStorage.getItem('tutorial_logging_key'));
+
+	$.post('../stage/logintutorial.php', {
+		key: tracking.key,
+		log: '{}'
+	} , function(data, textStatus, xhr) {
+		console.log(data);
+	});
 
 	//
 });
