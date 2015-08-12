@@ -35,23 +35,32 @@ $(function () {
 	(function() {
 		var storageLogIdentifier = 'tutorial_tracking_log';
 		var log_json = localStorage.getItem(storageLogIdentifier); // ログのJSON値
-		var log = log_json ? $.parseJSON(log_json) : {}; // ログオブジェクト(localStorageに値がないとき、新しく作る)
+		var log = log_json ? $.parseJSON(log_json) : { values: [] }; // ログオブジェクト(localStorageに値がないとき、新しく作る)
 
-		(function() {
-			// トラッキングイベント
+		log.values.push({
+			stageid: getParam('id'),
+			field: 'start',
+			value: (new Date().getTime() / 1000) >> 0
+		});
 
-			log.values = log.values || [];
+		$(window).on('message', function(event) {
+			if (event.originalEvent.data === 'clear') {
+				log.values.push({
+					stageid: getParam('id'),
+					field: 'clear',
+					value: (new Date().getTime() / 1000) >> 0
+				});
+				log_json = JSON.stringify(log);
+				localStorage.setItem(storageLogIdentifier, log_json);
 
-			log.values.push({
-				stageid: 101,
-				field: 'test',
-				value: 'test value'
-			});
-
-			log_json = JSON.stringify(log);
-			localStorage.setItem(storageLogIdentifier, log_json);
-
-		})();
+				$.post('../stage/logintutorial.php', {
+					key: tracking.key,
+					log: tracking.log
+				} , function(data, textStatus, xhr) {
+					console.log(log);
+				});
+			}
+		});
 
 		Object.defineProperty(tracking, 'log', {
 			get: function() {
@@ -60,12 +69,8 @@ $(function () {
 		});
 	})();
 
-	$.post('../stage/logintutorial.php', {
-		key: tracking.key,
-		log: tracking.log
-	} , function(data, textStatus, xhr) {
-		console.log(data);
-	});
-
-	//
+	// ステージパラメータを取得
+	function getParam(key){
+		return sessionStorage.getItem('stage_param_'+key) || '';
+	}
 });
