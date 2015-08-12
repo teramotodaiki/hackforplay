@@ -22,7 +22,7 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
                         exmes = ex.message;
                         textarea.text =
                         "うまく　うごかなかった。\n"+
-                        "まどうしょ の < みたいな ボタン を おすと ひとつ もどすことが できる\n";
+                        "まどうしょ の [<] みたいな ボタン を おすと ひとつ もどすことが できる\n";
                         // ex.line + "ギョウめの　" + ex.column + "モジめふきんに、まちがいがあるようだ。\n" +
                         // ex.message;
                         textarea.show();
