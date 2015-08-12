@@ -7,6 +7,9 @@
 	.container {
 		width: 100%;
 	}
+	.container.container-game {
+		width: 95%;
+	}
 	.h4p_stagelist {
 		width: 384px;
 	}
