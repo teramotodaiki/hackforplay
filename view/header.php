@@ -22,6 +22,9 @@ if(preg_match("/^.*\/s/", $_SERVER["PHP_SELF"])){
 }else if(preg_match("/^.*\/p/", $_SERVER["PHP_SELF"])){
 	$header_pattern = "pref";
 }
+
+// HELP Flag on/off
+$help_button_visibility = true;
 ?>
 <script type="text/javascript" charset="utf-8">
 $(function(){
@@ -63,6 +66,26 @@ $(function(){
 	});
 
 	$('[data-toggle="tooltip"]').tooltip();
+
+	$('.h4p_need-help').on('click', function() {
+		var storageKeyIdentifier = 'tutorial_tracking_key';
+		var storageLogIdentifier = 'tutorial_tracking_log';
+		var log_json = localStorage.getItem(storageLogIdentifier); // ログのJSON値
+		var log = log_json ? $.parseJSON(log_json) : { values: [] }; // ログオブジェクト(localStorageに値がないとき、新しく作る)
+		var help_flag = window.confirm('need help ?');
+		log.values.push({
+			stageid: sessionStorage.getItem('stage_param_id'),
+			field: 'help',
+			value: help_flag >> 0
+		});
+		localStorage.setItem(storageLogIdentifier, JSON.stringify(log));
+
+		$.post('../stage/logintutorial.php', {
+			key: localStorage.getItem(storageKeyIdentifier),
+			log: localStorage.getItem(storageLogIdentifier)
+		});
+		return false;
+	});
 });
 </script>
 <header class="navbar navbar-static-top">
@@ -90,6 +113,9 @@ $(function(){
 	    </div>
 	    <nav class="collapse navbar-collapse">
 	    	<ul class="nav navbar-nav">
+	    	<?php if ($help_button_visibility): ?>
+	    		<li><a class="btn btn-link navbar-btn h4p_need-help" href="javascript:void(0)" title=" "> </a></li>
+		    <?php endif; ?>
 	    	<?php if($header_pattern === 'inGame' && $mode === 'official'): ?>
 	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
 	    	<?php elseif ($header_pattern === 'inGame' && $mode !== 'official'): ?>
