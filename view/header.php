@@ -72,7 +72,14 @@ $(function(){
 		var storageLogIdentifier = 'tutorial_tracking_log';
 		var log_json = localStorage.getItem(storageLogIdentifier); // ログのJSON値
 		var log = log_json ? $.parseJSON(log_json) : { values: [] }; // ログオブジェクト(localStorageに値がないとき、新しく作る)
-		var help_flag = window.confirm('need help ?');
+
+		// 現在の値
+		var helps = log.values.filter(function(element) {
+			return element.field === 'help';
+		});
+		var current_help = helps.length > 0 ? helps.reverse()[0].value : 'undefined';
+
+		var help_flag = window.confirm('need help ? \nnow: ' + current_help);
 		log.values.push({
 			stageid: sessionStorage.getItem('stage_param_id'),
 			field: 'help',
