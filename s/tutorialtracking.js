@@ -42,9 +42,14 @@ $(function () {
 			field: 'start',
 			value: (new Date().getTime() / 1000) >> 0
 		});
+		log_json = JSON.stringify(log);
+		localStorage.setItem(storageLogIdentifier, log_json);
 
 		$(window).on('message', function(event) {
 			if (event.originalEvent.data === 'clear') {
+				log_json = localStorage.getItem(storageLogIdentifier);
+				log = log_json ? $.parseJSON(log_json) : { values: [] };
+
 				log.values.push({
 					stageid: getParam('id'),
 					field: 'clear',
@@ -57,7 +62,7 @@ $(function () {
 					key: tracking.key,
 					log: tracking.log
 				} , function(data, textStatus, xhr) {
-					console.log(log);
+					console.log(data);
 				});
 			}
 		});
