@@ -5,6 +5,7 @@ Input:	key, log:JSON
 Output:
 log :
 {
+	helpFlag : メンターが記入するフラグ(true/false/undefined)
 	values: [
 		{
 			stageid: ステージID,
