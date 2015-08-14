@@ -32,7 +32,7 @@ try {
 	class AnonymousUserData
 	{
 		public $clearTime = NULL;
-		public $useHint = NULL;
+		public $useHint = 0;
 	}
 
 	// Clear Time
