@@ -25,6 +25,15 @@ try {
 	$log		= json_decode($log_json);
 	$data		= array();
 
+	/**
+	* AnonymousUserDataのパラメータリスト
+	*/
+	class AnonymousUserData
+	{
+		public $clearTime = NULL;
+		public $useHint = NULL;
+	}
+
 	// Clear Time
 	$keys_clear	= array();
 	$filt_clear	= array_filter($log->values, function($item) use (&$keys_clear) {
@@ -45,8 +54,19 @@ try {
 				$start_timestamp = max($start_timestamp, $log_item->value);
 			}
 		}
-		$data[$item->stageid] = new stdClass;
+		$data[$item->stageid] = new AnonymousUserData;
 		$data[$item->stageid]->clearTime 	= $item->value - $start_timestamp; // 秒数
+	}
+
+	// Hintをみたかどうか 1/0(プロパティなし)
+	foreach ($log->values as $key => $value) {
+		if ($value->field === 'hint') {
+			// ないばあいはdataを挿入
+			if (!isset($data[$value->stageid])) {
+				$data[$value->stageid] = new AnonymousUserData;
+			}
+			$data[$value->stageid]->useHint = 1;
+		}
 	}
 
 	// HELP Flag
@@ -102,16 +122,21 @@ try {
 		if (!array_key_exists($stageid, $current)) {
 
 			// まだレコードがない 新しく挿入
-			$stmt	= $dbh->prepare('INSERT INTO "AnonymousUserData" ("AUserID","StageID","ClearTime") VALUES(:user_id,:stageid,:cleartime)');
+			$stmt	= $dbh->prepare('INSERT INTO "AnonymousUserData" ("AUserID","StageID","ClearTime","UseHint") VALUES(:user_id,:stageid,:cleartime)');
 			$stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
 			$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 			$stmt->bindValue(":cleartime", $value->clearTime, PDO::PARAM_INT);
+			$stmt->bindValue(":usehint", $value->useHint, PDO::PARAM_INT);
 			$stmt->execute();
-		} elseif ($value->clearTime !== $current[$stageid]['ClearTime']) {
+		} elseif (	$value->clearTime !== $current[$stageid]['ClearTime'] ||
+					$value->useHint !== $current[$stageid]['UseHint']) {
+
+			var_dump($current[$stageid]['ID']);
 
 			// レコードが存在する データが異なれば上書き
-			$stmt	= $dbh->prepare('UPDATE "AnonymousUserData" SET "ClearTime"=:cleartime WHERE "ID"=:current_id');
+			$stmt	= $dbh->prepare('UPDATE "AnonymousUserData" SET "ClearTime"=:cleartime,"UseHint"=:usehint WHERE "ID"=:current_id');
 			$stmt->bindValue(":cleartime", $value->clearTime, PDO::PARAM_INT);
+			$stmt->bindValue(":usehint", $value->useHint, PDO::PARAM_INT);
 			$stmt->bindValue(':current_id', $current[$stageid]['ID'], PDO::PARAM_INT);
 			$stmt->execute();
 		}
