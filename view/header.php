@@ -77,14 +77,9 @@ $(function(){
 		var helps = log.values.filter(function(element) {
 			return element.field === 'help';
 		});
-		var current_help = helps.length > 0 ? helps.reverse()[0].value : 'undefined';
+		var current_help = log.helpFlag;
 
-		var help_flag = window.confirm('need help ? \nnow: ' + current_help);
-		log.values.push({
-			stageid: sessionStorage.getItem('stage_param_id'),
-			field: 'help',
-			value: help_flag >> 0
-		});
+		log.helpFlag = window.confirm('need help ? \nnow: ' + current_help);
 		localStorage.setItem(storageLogIdentifier, JSON.stringify(log));
 
 		$.post('../stage/logintutorial.php', {

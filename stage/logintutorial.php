@@ -70,10 +70,7 @@ try {
 	}
 
 	// HELP Flag
-	$filt_help	= array_filter($log->values, function($item) {
-		return $item->field === 'help';
-	});
-	$help_flag	= count($filt_help) > 0 ? $filt_help[max(array_keys($filt_help))]->value : NULL;
+	$help_flag	= isset($log->helpFlag) ? $log->helpFlag : NULL;
 
 
 	// ユーザーデータの更新
