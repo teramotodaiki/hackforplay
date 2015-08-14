@@ -54,8 +54,55 @@ try {
 	});
 	$help_flag	= count($filt_help) > 0 ? $filt_help[max(array_keys($filt_help))]->value : NULL;
 
-	var_dump($data);
-	var_dump($help_flag);
+
+	// ユーザーデータの更新
+
+	// ユーザーの取得or作成
+	$collationg_key = filter_input(INPUT_POST, 'key');
+	$stmt			= $dbh->prepare('SELECT "ID" FROM "AnonymousUser" WHERE "CollatingKey"=:collationg_key');
+	$stmt->bindValue(":collationg_key", $collationg_key, PDO::PARAM_STR);
+	$stmt->execute();
+
+	$anonymous_user	= $stmt->fetch(PDO::FETCH_ASSOC);
+
+	if ($anonymous_user) {
+
+		$user_id	= $anonymous_user['ID'];
+	} else {
+
+		// ユーザーが存在しない ユーザーを作成
+		$stmt		= $dbh->prepare('INSERT INTO "AnonymousUser" ("CollatingKey") VALUES(:collationg_key)');
+		$stmt->bindValue(":collationg_key", $collationg_key, PDO::PARAM_STR);
+		$stmt->execute();
+		$user_id	= $dbh->lastInsertId('AnonymousUser');
+	}
+
+	// 更新
+	$stmt			= $dbh->prepare('SELECT "StageID","ID","AUserID","ClearTime","UseHint" FROM "AnonymousUserData" WHERE "AUserID"=:user_id');
+	$stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+	$stmt->execute();
+	$current		= $stmt->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_ASSOC | PDO::FETCH_UNIQUE); // StageIDでグループ化
+
+	foreach ($data as $stageid => $value) {
+
+		// 差分を調査
+		if (!array_key_exists($stageid, $current)) {
+
+			// まだレコードがない 新しく挿入
+			$stmt	= $dbh->prepare('INSERT INTO "AnonymousUserData" ("AUserID","StageID","ClearTime") VALUES(:user_id,:stageid,:cleartime)');
+			$stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+			$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
+			$stmt->bindValue(":cleartime", $value->clearTime, PDO::PARAM_INT);
+			$stmt->execute();
+		} elseif ($value->clearTime !== $current[$stageid]['ClearTime']) {
+
+			// レコードが存在する データが異なれば上書き
+			$stmt	= $dbh->prepare('UPDATE "AnonymousUserData" SET "ClearTime"=:cleartime WHERE "ID"=:current_id');
+			$stmt->bindValue(":cleartime", $value->clearTime, PDO::PARAM_INT);
+			$stmt->bindValue(':current_id', $current[$stageid]['ID'], PDO::PARAM_INT);
+			$stmt->execute();
+		}
+	}
 
 } catch (Exception $e) {
 
