@@ -56,6 +56,9 @@ $(function(){
 				var code = sessionStorage.getItem('restaging_code');
 				jsEditor.setValue(code);
 				break;
+			case "hint_popover":
+				$('.h4p_hint-button').popover('show');
+				break;
 		}
 	});
 
@@ -477,7 +480,15 @@ $(function(){
 		var embed_content = getParam('youtube');
 		if (embed_content === '') return;
 
-		$('button.h4p_hint-button').removeClass('hidden'); // ヒントアイコンを表示
+		$('.h4p_hint-button').removeClass('hidden'); // ヒントアイコンを表示
+
+		// アイコンをクリックするとconfirmがひらき、モーダルをひらける
+		$('.h4p_hint-button').on('click', function() {
+			if (confirm('A video description will be opened if you press the [OK]. // OK を クリックすると ヒントの ビデオが ひらかれます')) {
+				$('.h4p_hint-button').popover('hide');
+				$('#youtubeModal').modal('show');
+			}
+		});
 
 		// 開かれたときにまだYouTubeがロードされていない場合、ロードを開始する
 		var player;
