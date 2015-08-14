@@ -60,7 +60,7 @@ try {
 
 	// ユーザーの取得or作成
 	$collationg_key = filter_input(INPUT_POST, 'key');
-	$stmt			= $dbh->prepare('SELECT "ID" FROM "AnonymousUser" WHERE "CollatingKey"=:collationg_key');
+	$stmt			= $dbh->prepare('SELECT "ID","HelpFlag" FROM "AnonymousUser" WHERE "CollatingKey"=:collationg_key');
 	$stmt->bindValue(":collationg_key", $collationg_key, PDO::PARAM_STR);
 	$stmt->execute();
 
@@ -79,6 +79,18 @@ try {
 	}
 
 	// 更新
+
+	// HELPフラグの更新
+	if ($help_flag !== NULL &&
+		!($anonymous_user && $help_flag === $anonymous_user['HelpFlag'])) {
+
+		$stmt		= $dbh->prepare('UPDATE "AnonymousUser" SET "HelpFlag"=:help_flag WHERE "ID"=:user_id');
+		$stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+		$stmt->bindValue(":help_flag", $help_flag, PDO::PARAM_BOOL);
+		$stmt->execute();
+	}
+
+	// トラッキングデータの更新
 	$stmt			= $dbh->prepare('SELECT "StageID","ID","AUserID","ClearTime","UseHint" FROM "AnonymousUserData" WHERE "AUserID"=:user_id');
 	$stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
 	$stmt->execute();
