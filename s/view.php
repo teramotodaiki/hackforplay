@@ -104,6 +104,9 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	})();
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<?php if ($id >= 101 && $id <= 106) : ?>
+	<script src="tutorialtracking.js" type="text/javascript" charset="utf-8"></script>
+	<?php endif; ?>
 	<!-- Modal -->
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -254,9 +257,16 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 							<img src="img/button_next.png" height="48" width="266" alt="">
 						</a>
 					<?php elseif($id == 106) : // last stage of tutirial ?>
-						<h3>クリアおめでとうございます！</h3>
-						<p>こんどは、あなたもステージを作ってみましょう</p>
-						<a href="../replay/" class="btn btn-success btn-lg" title="今すぐ作る"><h3>今すぐ作る</h3></a>
+						<div class="h4p_guide-kit hidden">
+							<h3>クリアおめでとうございます！</h3>
+							<p>こんどは、あなたもステージを作ってみましょう</p>
+							<a href="../replay/" class="btn btn-success btn-lg" title="今すぐ作る"><h3>今すぐ作る</h3></a>
+						</div>
+						<div class="h4p_guide-stage hidden">
+							<h3>クリアおめでとうございます！</h3>
+							<p>もっと たくさんの ステージを あそんでみましょう</p>
+							<a href="../r/#page_anchor" title="ステージを さがす"><h3>ステージを さがす</h3></a>
+						</div>
 					<?php endif; ?>
 					</div>
 				</div>
