@@ -54,6 +54,11 @@ $(function () {
 
 				// ゲームのCLEARをキャッチしてログを記録する
 				addLog('clear', (new Date().getTime() / 1000) >> 0);
+
+				// id=106 (チュートリアルの最終ステージ) をクリアしたとき、仮のガイドを行う
+				if (getParam('id') === '106') {
+					$('.h4p_guide-kit').removeClass('hidden');
+				}
 			}
 		});
 
