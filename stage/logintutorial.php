@@ -122,7 +122,7 @@ try {
 		if (!array_key_exists($stageid, $current)) {
 
 			// まだレコードがない 新しく挿入
-			$stmt	= $dbh->prepare('INSERT INTO "AnonymousUserData" ("AUserID","StageID","ClearTime","UseHint") VALUES(:user_id,:stageid,:cleartime)');
+			$stmt	= $dbh->prepare('INSERT INTO "AnonymousUserData" ("AUserID","StageID","ClearTime","UseHint") VALUES(:user_id,:stageid,:cleartime,:usehint)');
 			$stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
 			$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 			$stmt->bindValue(":cleartime", $value->clearTime, PDO::PARAM_INT);
