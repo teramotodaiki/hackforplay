@@ -94,6 +94,11 @@ try {
 		$stmt->bindValue(":collationg_key", $collationg_key, PDO::PARAM_STR);
 		$stmt->execute();
 		$user_id	= $dbh->lastInsertId('AnonymousUser');
+
+		// セッションを作成 あとでUserと関連付けするため
+		session_start();
+		$_SESSION['AnonymousUserID']	= $user_id;
+		session_commit();
 	}
 
 	// 更新
