@@ -57,7 +57,13 @@ $(function () {
 
 				// id=106 (チュートリアルの最終ステージ) をクリアしたとき、仮のガイドを行う
 				if (getParam('id') === '106') {
-					$('.h4p_guide-kit').removeClass('hidden');
+					// HELPフラグを確認する
+					var log = $.parseJSON(tracking.log);
+					if (log.helpFlag) {
+						$('.h4p_guide-stage').removeClass('hidden');
+					} else {
+						$('.h4p_guide-kit').removeClass('hidden');
+					}
 				}
 			}
 		});
@@ -85,7 +91,7 @@ $(function () {
 			key: tracking.key,
 			log: tracking.log
 		} , function(data, textStatus, xhr) {
-			console.log(data);
+			// console.log(data);
 		});
 	}
 
