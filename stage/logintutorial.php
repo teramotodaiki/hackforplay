@@ -23,6 +23,7 @@ try {
 
 	// ログをパース
 	$log		= json_decode($log_json);
+	$data		= array();
 
 	// Clear Time
 	$keys_clear	= array();
