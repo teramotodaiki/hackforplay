@@ -213,7 +213,6 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 					<div id="embed-content" src=""></div>
 			    </div>
 	    		<div class="modal-footer">
-		    		<label><input type="checkbox" name="dontshowagain" value="1">Don't show again // こんどから ひょうじ しない</label>
 	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
 	    		</div>
 			</div>

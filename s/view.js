@@ -479,12 +479,6 @@ $(function(){
 
 		$('button.h4p_hint-button').removeClass('hidden'); // ヒントアイコンを表示
 
-		var dont_show_again = localStorage.getItem('dont_show_again') || '';
-		var currentState = dont_show_again ? dont_show_again.split(',').indexOf(getParam('id')) !== -1 : false;
-		var delimiter = ',';
-
-		$('#youtubeModal input[name="dontshowagain"]').prop('checked', currentState); // チェックボックスの状態を設定
-
 		// 開かれたときにまだYouTubeがロードされていない場合、ロードを開始する
 		var player;
 		var body_width = 270; // 仮の幅 実際はモーダルの幅に合わせる
@@ -502,6 +496,7 @@ $(function(){
 				};
 			}
 		}).on('shown.bs.modal', function() {
+
 			body_width = $(this).find('.modal-body').width();
 			$('#youtubeModal div#embed-content,#youtubeModal iframe#embed-content').attr({
 				width: body_width,
@@ -509,34 +504,7 @@ $(function(){
 			});
 		});
 
-		// Don't show again されていなければ #youtubeModal を表示
-		if (!currentState) {
-			$('#youtubeModal').modal('show');
-		}
-
-		// 閉じられたときに Don't show again を確認
 		$('#youtubeModal').on('hide.bs.modal', function(event) {
-
-			var state = $(this).find('input[name="dontshowagain"]').prop('checked');
-
-			// 状態が変化したとき localStorage を更新
-			if (state !== currentState) {
-
-				var array = dont_show_again.split(delimiter);
-				if (state) {
-					// 追加
-					array.push(getParam('id'));
-					currentState = true;
-				} else {
-					// 削除
-					array = array.filter(function(value) {
-						return value !== (getParam('id') + '');
-					});
-					currentState = false;
-				}
-				dont_show_again = array.join(delimiter);
-				localStorage.setItem('dont_show_again', dont_show_again);
-			}
 
 			// モーダルを閉じた時、再生をストップする
 			if (player && player.pauseVideo) {
