@@ -477,6 +477,8 @@ $(function(){
 		var embed_content = getParam('youtube');
 		if (embed_content === '') return;
 
+		$('button.h4p_hint-button').removeClass('hidden'); // ヒントアイコンを表示
+
 		var dont_show_again = localStorage.getItem('dont_show_again') || '';
 		var currentState = dont_show_again ? dont_show_again.split(',').indexOf(getParam('id')) !== -1 : false;
 		var delimiter = ',';

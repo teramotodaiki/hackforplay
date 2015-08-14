@@ -281,7 +281,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 				<button type="button" class="btn btn-link btn-lg h4p_comment-add" data-toggle="modal" data-target="#commentModal">
 					<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
 				</button>
-				<button type="button" class="btn btn-link btn-lg hidden" data-toggle="modal" data-target="#youtubeModal">
+				<button type="button" class="btn btn-link btn-lg h4p_hint-button hidden" data-toggle="modal" data-target="#youtubeModal">
 					<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 				</button>
 			</div>
