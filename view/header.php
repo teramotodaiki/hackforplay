@@ -84,7 +84,8 @@ $(function(){
 
 		$.post('../stage/logintutorial.php', {
 			key: localStorage.getItem(storageKeyIdentifier),
-			log: localStorage.getItem(storageLogIdentifier)
+			log: localStorage.getItem(storageLogIdentifier),
+			timezone: new Date().getTimezoneString()
 		});
 		return false;
 	});

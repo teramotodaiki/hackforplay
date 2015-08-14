@@ -89,7 +89,8 @@ $(function () {
 
 		$.post('../stage/logintutorial.php', {
 			key: tracking.key,
-			log: tracking.log
+			log: tracking.log,
+			timezone: new Date().getTimezoneString()
 		} , function(data, textStatus, xhr) {
 			// console.log(data);
 		});

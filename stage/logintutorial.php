@@ -90,8 +90,13 @@ try {
 	} else {
 
 		// ユーザーが存在しない ユーザーを作成
-		$stmt		= $dbh->prepare('INSERT INTO "AnonymousUser" ("CollatingKey") VALUES(:collationg_key)');
+		$timezone		= filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
+		if($timezone === FALSE || $timezone === NULL){
+			$timezone	= '+00:00';
+		}
+		$stmt		= $dbh->prepare('INSERT INTO "AnonymousUser" ("CollatingKey","Registered") VALUES(:collationg_key,:gmt)');
 		$stmt->bindValue(":collationg_key", $collationg_key, PDO::PARAM_STR);
+		$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
 		$stmt->execute();
 		$user_id	= $dbh->lastInsertId('AnonymousUser');
 
