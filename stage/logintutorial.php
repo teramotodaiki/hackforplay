@@ -131,8 +131,6 @@ try {
 		} elseif (	$value->clearTime !== $current[$stageid]['ClearTime'] ||
 					$value->useHint !== $current[$stageid]['UseHint']) {
 
-			var_dump($current[$stageid]['ID']);
-
 			// レコードが存在する データが異なれば上書き
 			$stmt	= $dbh->prepare('UPDATE "AnonymousUserData" SET "ClearTime"=:cleartime,"UseHint"=:usehint WHERE "ID"=:current_id');
 			$stmt->bindValue(":cleartime", $value->clearTime, PDO::PARAM_INT);
