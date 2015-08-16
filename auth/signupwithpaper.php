@@ -25,10 +25,15 @@ try {
 
 	// IDを生成する
 
-	// $minから$maxまでの間でランダムな数値を生成する。あまり大きな数には使用できない
-	function generate_random_number($min, $max)
+	// $digit桁のランダムな数値を生成する。あまり大きな数には使用できない
+	function generate_random_number($digit)
 	{
-		return $min + (intval(base_convert(bin2hex(openssl_random_pseudo_bytes(4)), 16, 10)) % ($max - $min + 1));
+		$gen_random = '';
+		for ($i=0; $i < $digit; $i++) {
+			$gen_random .= $i === 0 ? 1 + base_convert(bin2hex(openssl_random_pseudo_bytes(3)), 16, 10) % 9 :
+							 			base_convert(bin2hex(openssl_random_pseudo_bytes(3)), 16, 10) % 10;
+		}
+		return $gen_random;
 	}
 
 	// 生成
@@ -37,7 +42,7 @@ try {
 
 	while ($gen_id === null) {
 		// 仮IDを生成する
-		$gen_id	= generate_random_number(10000000, 99999999); // 8桁の数字
+		$gen_id	= generate_random_number(8); // 8桁の数字
 
 		// 衝突確認
 		$stmt->bindValue(":paperlogin", 'paperlogin', PDO::PARAM_STR);
@@ -52,7 +57,7 @@ try {
 	$information_of_account->id = $gen_id;
 
 	// 仮パスワードを生成する
-	$tmpkey	= generate_random_number(1000, 9999); // 4桁の数字
+	$tmpkey	= generate_random_number(4); // 4桁の数字
 	$hashed = password_hash($tmpkey, PASSWORD_DEFAULT);
 
 	$information_of_account->password = $tmpkey;
