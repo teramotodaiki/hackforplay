@@ -347,7 +347,7 @@ $(function() {
 
 		var timezone = new Date().getTimezoneString();
 
-		$.post('../auth/signupwithpaper2.php', {
+		$.post('../auth/signupwithpaper.php', {
 			'timezone': timezone
 		} , function(data, textStatus, xhr) {
 
