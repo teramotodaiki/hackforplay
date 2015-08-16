@@ -48,6 +48,32 @@ window.addEventListener('load', function() {
         "// かく ことに きをつけるのだ\n"+
         "// かきかえたら ひだりうえの RUN ボタンを おすのだ！";
 
+        // ヒントを強調する
+        (function () {
+            // env.enchantbookをクリックした(魔道書をひらいた)フラグ
+            var openedBookFlag = false;
+
+            // env.enchantbookを探す
+            (function task () {
+                if (env.enchantbook) {
+                    // touchendイベントを追加する
+                    env.enchantbook.on('touchend', function() {
+                        openedBookFlag = true;
+                    });
+                    return;
+                }
+                setTimeout(task, 100);
+            })();
+
+            // 50秒間、魔道書が開かれなかったとき
+            setTimeout(function() {
+                if (!openedBookFlag) {
+                    window.parent.postMessage('hint_popover', '/');
+                }
+            }, 50000);
+
+        })();
+
         // ここはコピペ
         // Runtime Evaluation
         setEval(function(code){
