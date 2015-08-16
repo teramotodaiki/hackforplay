@@ -21,7 +21,8 @@ var __H4PENV__DEBUGMODE = false; // エラーをハンドルしない
                         error = true;
                         exmes = ex.message;
                         textarea.text =
-                        "うまく　うごかなかった。\n";
+                        "うまく　うごかなかった。\n"+
+                        "まどうしょ の [<] みたいな ボタン を おすと ひとつ もどすことが できる\n";
                         // ex.line + "ギョウめの　" + ex.column + "モジめふきんに、まちがいがあるようだ。\n" +
                         // ex.message;
                         textarea.show();

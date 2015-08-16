@@ -24,13 +24,20 @@ try {
 	$information_of_account	= new stdClass;
 
 	// IDを生成する
+
+	// $minから$maxまでの間でランダムな数値を生成する。あまり大きな数には使用できない
+	function generate_random_number($min, $max)
+	{
+		return $min + (intval(base_convert(bin2hex(openssl_random_pseudo_bytes(4)), 16, 10)) % ($max - $min + 1));
+	}
+
+	// 生成
 	$stmt	= $dbh->prepare('SELECT COUNT(*) FROM "Account" WHERE "Type"=:paperlogin AND "Email"=:gen_id AND "State"=:connected');
 	$gen_id = null;
 
 	while ($gen_id === null) {
 		// 仮IDを生成する
-		$bytes 	= openssl_random_pseudo_bytes(4); // 4bytes (8chars)
-		$gen_id	= bin2hex($bytes); // binaly to hex
+		$gen_id	= generate_random_number(10000000, 99999999); // 8桁の数字
 
 		// 衝突確認
 		$stmt->bindValue(":paperlogin", 'paperlogin', PDO::PARAM_STR);
@@ -45,8 +52,7 @@ try {
 	$information_of_account->id = $gen_id;
 
 	// 仮パスワードを生成する
-	$bytes 	= openssl_random_pseudo_bytes(3); // 3bytes (6chars)
-	$tmpkey	= bin2hex($bytes); // binaly to hex
+	$tmpkey	= generate_random_number(1000, 9999); // 4桁の数字
 	$hashed = password_hash($tmpkey, PASSWORD_DEFAULT);
 
 	$information_of_account->password = $tmpkey;
