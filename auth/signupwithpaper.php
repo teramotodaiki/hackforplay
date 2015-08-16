@@ -31,6 +31,12 @@ try {
 		return $min + (intval(base_convert(bin2hex(openssl_random_pseudo_bytes(4)), 16, 10)) % ($max - $min + 1));
 	}
 
+	for ($i=0; $i < 100; $i++) {
+		$num = generate_random_number(1000, 9999);
+		print($num . '<br>');
+	}
+	exit();
+
 	// 生成
 	$stmt	= $dbh->prepare('SELECT COUNT(*) FROM "Account" WHERE "Type"=:paperlogin AND "Email"=:gen_id AND "State"=:connected');
 	$gen_id = null;
