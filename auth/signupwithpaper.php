@@ -36,19 +36,13 @@ try {
 		return $gen_random;
 	}
 
-	for ($i=0; $i < 100; $i++) {
-		$num = generate_random_number(4);
-		print($num . '<br>');
-	}
-	exit();
-
 	// 生成
 	$stmt	= $dbh->prepare('SELECT COUNT(*) FROM "Account" WHERE "Type"=:paperlogin AND "Email"=:gen_id AND "State"=:connected');
 	$gen_id = null;
 
 	while ($gen_id === null) {
 		// 仮IDを生成する
-		$gen_id	= generate_random_number(10000000, 99999999); // 8桁の数字
+		$gen_id	= generate_random_number(8); // 8桁の数字
 
 		// 衝突確認
 		$stmt->bindValue(":paperlogin", 'paperlogin', PDO::PARAM_STR);
@@ -63,7 +57,7 @@ try {
 	$information_of_account->id = $gen_id;
 
 	// 仮パスワードを生成する
-	$tmpkey	= generate_random_number(1000, 9999); // 4桁の数字
+	$tmpkey	= generate_random_number(4); // 4桁の数字
 	$hashed = password_hash($tmpkey, PASSWORD_DEFAULT);
 
 	$information_of_account->password = $tmpkey;
