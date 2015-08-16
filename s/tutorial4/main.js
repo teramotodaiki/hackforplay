@@ -1,4 +1,4 @@
-var getSapphireFlag = false;
+var getSapphireFlag = false, editorWindowClosed;
 window.addEventListener('load', function() {
     var path = __H4PENV__PATH;
     game.preload(path+'monster3.gif');
@@ -65,6 +65,21 @@ window.addEventListener('load', function() {
                     window.parent.postMessage('hint_popover', '/');
                 }
             };
+
+            // 魔道書をとじた状態が40秒継続したとき
+            var timer;
+            editorWindowClosed = function() {
+                if (timer) clearTimeout(timer);
+                timer = setTimeout(function() {
+                    if (!getSapphireFlag) {
+                        window.parent.postMessage('hint_popover', '/');
+                    }
+                }, 40000);
+            };
+            env.enchantbook.on('touchend', function() {
+                if (timer) clearTimeout(timer);
+            });
+
         })();
 
         // ここはコピペ
