@@ -280,7 +280,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 				<button type="button" class="btn btn-link btn-lg h4p_comment-add" data-toggle="modal" data-target="#commentModal">
 					<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
 				</button>
-				<button type="button" class="btn btn-link btn-lg h4p_hint-button hidden" data-toggle="modal" data-target="#youtubeModal">
+				<button type="button" class="btn btn-link btn-lg h4p_hint-button hidden" data-toggle="popover" data-placement="top" title="Need help?" data-content="See the video description of this stage // せつめいの どうがを みる (YouTube)">
 					<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 				</button>
 			</div>

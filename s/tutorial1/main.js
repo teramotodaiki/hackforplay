@@ -35,6 +35,27 @@ window.addEventListener('load', function() {
 
         hint = "";
 
+        // ヒントを強調する
+        (function() {
+            // 100msごとにgame.inputのいずれかがtrueになっていればFlagをtrueに
+            var inputFlag = false;
+            (function task () {
+                Object.keys(game.input).forEach(function(item) {
+                    inputFlag = inputFlag || game.input[item];
+                });
+                if (!inputFlag) {
+                    setTimeout(task, 100);
+                }
+            })();
+
+            // 30s inputがなければ、ヒントを強調する
+            setTimeout(function() {
+                if (!inputFlag) {
+                    window.parent.postMessage('hint_popover', '/');
+                }
+            }, 30000);
+        })();
+
         // ここはコピペ
         // Runtime Evaluation
         setEval(function(code){
