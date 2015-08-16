@@ -25,14 +25,19 @@ try {
 
 	// IDを生成する
 
-	// $minから$maxまでの間でランダムな数値を生成する。あまり大きな数には使用できない
-	function generate_random_number($min, $max)
+	// $digit桁のランダムな数値を生成する。あまり大きな数には使用できない
+	function generate_random_number($digit)
 	{
-		return ($min + base_convert(bin2hex(openssl_random_pseudo_bytes(4)), 16, 10)) % ($max - $min + 1) ;
+		$gen_random = '';
+		for ($i=0; $i < $digit; $i++) {
+			$gen_random .= $i === 0 ? 1 + base_convert(bin2hex(openssl_random_pseudo_bytes(3)), 16, 10) % 9 :
+							 			base_convert(bin2hex(openssl_random_pseudo_bytes(3)), 16, 10) % 10;
+		}
+		return $gen_random;
 	}
 
 	for ($i=0; $i < 100; $i++) {
-		$num = generate_random_number(1000, 9999);
+		$num = generate_random_number(4);
 		print($num . '<br>');
 	}
 	exit();
