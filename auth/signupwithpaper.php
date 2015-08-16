@@ -28,7 +28,7 @@ try {
 	// $minから$maxまでの間でランダムな数値を生成する。あまり大きな数には使用できない
 	function generate_random_number($min, $max)
 	{
-		return $min + (intval(base_convert(bin2hex(openssl_random_pseudo_bytes(4)), 16, 10)) % ($max - $min + 1));
+		return (intval(base_convert(bin2hex(openssl_random_pseudo_bytes(4)), 16, 10)));
 	}
 
 	for ($i=0; $i < 100; $i++) {
