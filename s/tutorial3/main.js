@@ -1,4 +1,4 @@
-
+var editorTextChanged, editorWindowClosed;
 window.addEventListener('load', function() {
     var path = __H4PENV__PATH;
     game.preload(path+'hand.png');
