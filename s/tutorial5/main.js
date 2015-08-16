@@ -1,4 +1,4 @@
-
+var getDiamondFlag = false, editorWindowClosed;
 window.addEventListener('load', function() {
     var path = __H4PENV__PATH;
     game.preload(path+'monster3.gif');
@@ -64,6 +64,24 @@ window.addEventListener('load', function() {
             "// じぶんじしん すら あやつれる！\n";
             sendToEditor('setHint();'); // ヒントを再セット
         };
+
+        // ヒントを強調する
+        (function () {
+            // 魔道書をとじた状態が40秒継続したとき
+            var timer;
+            editorWindowClosed = function() {
+                if (timer) clearTimeout(timer);
+                timer = setTimeout(function() {
+                    if (!getDiamondFlag) {
+                        window.parent.postMessage('hint_popover', '/');
+                    }
+                }, 40000);
+            };
+            env.enchantbook.on('touchend', function() {
+                if (timer) clearTimeout(timer);
+            });
+
+        })();
 
         // ここはコピペ
         // Runtime Evaluation
@@ -171,6 +189,8 @@ window.addEventListener('load', function() {
                     env.map.scene.insertBefore(stair, env.player);
                     stair.locate(7, 0);
                 });
+                // ダイヤモンドを取得したフラグ
+                getDiamondFlag = true;
             }
         }
     });
