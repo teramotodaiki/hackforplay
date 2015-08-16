@@ -1,4 +1,4 @@
-
+var editorWindowClosed, closingEditorTimer;
 window.addEventListener('load', function() {
     var path = __H4PENV__PATH;
     game.preload(path+'bigmonster1.gif', path+'bar_dragon.png', path+'bar_player.png', path+'monster3.gif');
@@ -74,6 +74,10 @@ window.addEventListener('load', function() {
             "// さあ、じぶんじしん の げんかいを かきかえ\n"+
             "// ドラゴンに いどむのだ！\n";
             sendToEditor('setHint();'); // ヒントを再セット
+
+            // ヒントの強調を無効化
+            if (closingEditorTimer) clearTimeout(closingEditorTimer);
+            editorWindowClosed = function() {};
         };
 
         map = maps['Tutorial7'];
@@ -155,6 +159,18 @@ window.addEventListener('load', function() {
             env.player.__defineSetter__('hp', function(val){
                 _hp = Math.min(9999, val);
             });
+        })();
+
+        // ヒントを強調する
+        (function () {
+            // 魔道書をとじてから次のマップに移動するまでに40秒経過したとき
+            editorWindowClosed = function() {
+                if (closingEditorTimer) clearTimeout(closingEditorTimer);
+                closingEditorTimer = setTimeout(function() {
+                    window.parent.postMessage('hint_popover', '/');
+                }, 40000);
+            };
+
         })();
 
         // ここはコピペ

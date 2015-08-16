@@ -1,4 +1,4 @@
-
+var editorTextChanged, editorWindowClosed;
 window.addEventListener('load', function() {
     var path = __H4PENV__PATH;
     game.preload(path+'hand.png');
@@ -39,6 +39,26 @@ window.addEventListener('load', function() {
                 });
             }
         }, 2000);
+
+        // ヒントを強調する
+        (function () {
+            // 魔道書が開かれたあと、テキストが書き換えられたフラグ
+            var editorTextChangedFlag = false;
+
+            // touchendイベントを追加する
+            env.enchantbook.on('touchend', function() {
+                editorTextChanged = function() {
+                    editorTextChangedFlag = true;
+                };
+            });
+
+            // なにも書き換えずに魔道書が閉じられたとき
+            editorWindowClosed = function() {
+                if (!editorTextChangedFlag) {
+                    window.parent.postMessage('hint_popover', '/');
+                }
+            };
+        })();
 
         hint =
         "// どちらへ いっても いきどまりで さきに すすめない\n"+

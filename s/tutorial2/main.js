@@ -1,4 +1,4 @@
-
+var editorTextChanged, editorWindowClosed;
 window.addEventListener('load', function() {
     var path = __H4PENV__PATH;
     game.preload(path+'monster4.gif', path+'monster1.gif', path+'madosyo_small.png', path+'hand.png');
@@ -47,6 +47,45 @@ window.addEventListener('load', function() {
         "// かきかえよう！かきかえる ときは 半角(はんかく) で\n"+
         "// かく ことに きをつけるのだ\n"+
         "// かきかえたら ひだりうえの RUN ボタンを おすのだ！";
+
+        // ヒントを強調する
+        (function () {
+            // env.enchantbookをクリックした(魔道書をひらいた)フラグ
+            var openedBookFlag = false;
+
+            // 魔道書が開かれたあと、テキストが書き換えられたフラグ
+            var editorTextChangedFlag = false;
+
+            // env.enchantbookを探す
+            (function task () {
+                if (env.enchantbook) {
+                    // touchendイベントを追加する
+                    env.enchantbook.on('touchend', function() {
+                        openedBookFlag = true;
+
+                        editorTextChanged = function() {
+                            editorTextChangedFlag = true;
+                        };
+                    });
+                    return;
+                }
+                setTimeout(task, 100);
+            })();
+
+            // 50秒間、魔道書が開かれなかったとき
+            setTimeout(function() {
+                if (!openedBookFlag) {
+                    window.parent.postMessage('hint_popover', '/');
+                }
+            }, 50000);
+
+            // なにも書き換えずに魔道書が閉じられたとき
+            editorWindowClosed = function() {
+                if (!editorTextChangedFlag) {
+                    window.parent.postMessage('hint_popover', '/');
+                }
+            };
+        })();
 
         // ここはコピペ
         // Runtime Evaluation
