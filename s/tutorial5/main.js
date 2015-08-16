@@ -1,4 +1,4 @@
-var getDiamondFlag = false, editorWindowClosed;
+var getDiamondFlag = false, editorWindowClosed, closingEditorTimer;
 window.addEventListener('load', function() {
     var path = __H4PENV__PATH;
     game.preload(path+'monster3.gif');
@@ -63,24 +63,25 @@ window.addEventListener('load', function() {
             "// この すうじを かきかえる ことで\n"+
             "// じぶんじしん すら あやつれる！\n";
             sendToEditor('setHint();'); // ヒントを再セット
+
+            // マップを移動したとき、タイマーをリセット
+            if (closingEditorTimer) clearTimeout(closingEditorTimer);
         };
 
         // ヒントを強調する
         (function () {
             // 魔道書をとじた状態が40秒継続したとき
-            var timer;
             editorWindowClosed = function() {
-                if (timer) clearTimeout(timer);
-                timer = setTimeout(function() {
+                if (closingEditorTimer) clearTimeout(closingEditorTimer);
+                closingEditorTimer = setTimeout(function() {
                     if (!getDiamondFlag) {
                         window.parent.postMessage('hint_popover', '/');
                     }
                 }, 40000);
             };
             env.enchantbook.on('touchend', function() {
-                if (timer) clearTimeout(timer);
+                if (closingEditorTimer) clearTimeout(closingEditorTimer);
             });
-
         })();
 
         // ここはコピペ
