@@ -56,7 +56,7 @@ window.onload = function(){
 	jsEditor.on('change', function(cm, change) {
 		renderUI();
 		// 魔道書が書き換えられたことをゲーム側に伝える
-		var source = "var e = editorTextChanged; if(e)e();";
+		var source = "if(window.editorTextChanged) editorTextChanged();";
 		game.postMessage(source, policy);
 	});
 };
@@ -76,7 +76,7 @@ function run(){
 	game.postMessage(source, policy);
 
 	// 魔道書が閉じられたことをゲーム側に伝える
-	game.postMessage("var e = editorWindowClosed; if(e)e();", policy);
+	game.postMessage("if(window.editorWindowClosed) editorWindowClosed();", policy);
 }
 
 function cls(){
@@ -87,7 +87,7 @@ function cls(){
 	game.postMessage(source, policy);
 
 	// 魔道書が閉じられたことをゲーム側に伝える
-	game.postMessage("var e = editorWindowClosed; if(e)e();", policy);
+	game.postMessage("if(window.editorWindowClosed) editorWindowClosed();", policy);
 }
 
 function undo () {
