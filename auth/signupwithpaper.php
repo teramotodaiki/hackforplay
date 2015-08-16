@@ -81,6 +81,9 @@ try {
 	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone);
 	$stmt->execute();
 
+	// test
+	$information_of_account->testvar = 'test value';
+
 	$json	= json_encode($information_of_account);
 	if (!$json) {
 		exit('parse-error');
