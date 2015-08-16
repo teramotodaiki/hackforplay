@@ -53,7 +53,7 @@ window.addEventListener('load', function() {
                 if (!inputFlag) {
                     window.parent.postMessage('hint_popover', '/');
                 }
-            }, 30000);
+            }, 20000);
         })();
 
         // ここはコピペ
