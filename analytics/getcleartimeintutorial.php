@@ -44,7 +44,7 @@ try {
 		}
 
 		echo $row['HelpFlag'] . $delimiter; // Need Help flag
-		echo $row['Registered'] . $delimiter; // Registered formated time
+		echo $row['Registered']; // Registered formated time
 
 		echo "\n";
 	}
