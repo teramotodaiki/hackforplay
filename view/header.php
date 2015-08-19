@@ -24,7 +24,7 @@ if(preg_match("/^.*\/s/", $_SERVER["PHP_SELF"])){
 }
 
 // HELP Flag on/off
-$help_button_visibility = true;
+$help_button_visibility = false;
 ?>
 <script type="text/javascript" charset="utf-8">
 $(function(){
