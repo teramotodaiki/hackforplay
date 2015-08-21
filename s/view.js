@@ -246,6 +246,17 @@ $(function(){
 
 	(function(){
 		var beginRestaging = function(){
+
+			$('.container-game').css({
+				'margin-left': '10px',
+				'margin-right': '0px'
+			});
+			var body_width = $(document.body).width();
+			var game_width = $('.container-game').outerWidth(true);
+			$('.container-youtube').removeClass('hidden').outerWidth(body_width - game_width);
+			$('.container-game,.container-youtube').css('float', 'left');
+			$('.container-youtube iframe').height($('.container-youtube').width() * 0.5625);
+
 			alert_on_unload = true;
 			$(".h4p_restaging").fadeIn("fast", function() {
 				var storage_key = getParam('retry') === '1' ? 'retry_code' : 'restaging_code';
