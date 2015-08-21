@@ -59,6 +59,10 @@ $(function(){
 			case "hint_popover":
 				$('.h4p_hint-button').popover('show');
 				break;
+			case "begin_restaging":
+				// ゲーム側からリステージングを開始する
+				$('.begin_restaging').trigger('click');
+				break;
 		}
 	});
 

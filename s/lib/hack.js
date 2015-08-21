@@ -262,13 +262,21 @@ window.addEventListener('load', function() {
 				Hack.createSprite(80, 80, {
 					x: 100, y: 320,
 					image: game.assets['hackforplay/new_button_replay.png'],
-					defaultParentNode: game.rootScene
+					defaultParentNode: game.rootScene,
+					ontouchend: function() {
+						// [RESTAGING] がクリックされたとき
+						window.parent.postMessage('begin_restaging', '/');
+					}
 				}).tl.moveTo(100, 220, 20, enchant.Easing.CUBIC_EASEOUT);
 				// [RETRY]
 				Hack.createSprite(80, 80, {
 					x: 300, y: 320,
 					image: game.assets['hackforplay/new_button_retry.png'],
-					defaultParentNode: game.rootScene
+					defaultParentNode: game.rootScene,
+					ontouchend: function() {
+						// [RETRY] がクリックされたとき
+						location.reload(false);
+					}
 				}).tl.moveTo(300, 220, 20, enchant.Easing.CUBIC_EASEOUT);
 			});
 		}
