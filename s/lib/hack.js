@@ -259,7 +259,7 @@ window.addEventListener('load', function() {
 			lay.moveTo(-game.rootScene.x, -game.rootScene.y);
 			lay.tl.fadeIn(30, enchant.Easing.LINEAR).delay(10).then(function(){
 				// [RESTAGING]
-				Hack.createSprite(80, 80, {
+				Hack.createSprite(116, 48, {
 					x: 100, y: 320,
 					image: game.assets['hackforplay/new_button_replay.png'],
 					defaultParentNode: game.rootScene,
@@ -269,15 +269,15 @@ window.addEventListener('load', function() {
 					}
 				}).tl.moveTo(100, 220, 20, enchant.Easing.CUBIC_EASEOUT);
 				// [RETRY]
-				Hack.createSprite(80, 80, {
-					x: 300, y: 320,
+				Hack.createSprite(116, 48, {
+					x: 264, y: 320,
 					image: game.assets['hackforplay/new_button_retry.png'],
 					defaultParentNode: game.rootScene,
 					ontouchend: function() {
 						// [RETRY] がクリックされたとき
 						location.reload(false);
 					}
-				}).tl.moveTo(300, 220, 20, enchant.Easing.CUBIC_EASEOUT);
+				}).tl.moveTo(264, 220, 20, enchant.Easing.CUBIC_EASEOUT);
 			});
 		}
 
