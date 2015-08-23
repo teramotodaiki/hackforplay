@@ -181,6 +181,10 @@ iframe {
 	table-layout: fixed;
 }
 
+.h4p_alignment-trigger {
+	cursor: pointer;
+}
+
 
 /* アニメーション */
 

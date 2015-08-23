@@ -270,8 +270,16 @@ $(function(){
 
 				// アライメントモードの切り替え
 				$('.h4p_alignment-trigger').on('click', function(event) {
-					alignmentMode = alignmentMode === 'both' ? 'game' : 'both';
-					console.log(alignmentMode);
+					switch (alignmentMode) {
+					case 'both':
+						alignmentMode = 'game';
+						$('.h4p_tab-top img').attr('src', 'img/tab_top_r.png');
+						break;
+					case 'game':
+						alignmentMode = 'both';
+						$('.h4p_tab-top img').attr('src', 'img/tab_top.png');
+						break;
+					}
 					alignment();
 				});
 

@@ -350,10 +350,10 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 					<img src="img/tab_top.png" height="100" width="60" alt="">
 				</div>
 			</div>
-			<div class="col-xs-12 no-padding">
+			<div class="col-xs-12 no-padding h4p_alignment-trigger">
 				<div class="h4p_tab-middle"></div>
 			</div>
-			<div class="col-xs-12 no-padding">
+			<div class="col-xs-12 no-padding h4p_alignment-trigger">
 				<div class="h4p_tab-bottom">
 					<img src="img/tab_bottom.png" height="20" width="70" alt="">
 				</div>
