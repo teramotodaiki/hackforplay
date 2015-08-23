@@ -235,8 +235,8 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 			</div>
 			<div id="scroll-anchor" class="col-xs-12"></div>
 			<div class="col-xs-12 h4p_alerts"></div>
-			<div class="col-xs-12 h4p_game" style="display:block">
-				<iframe src=""></iframe>
+			<div class="col-xs-12 h4p_game no-padding" style="display:block">
+				<iframe src="" frameborder="0"></iframe>
 			</div>
 			<div class="col-xs-12 h4p_clear text-center" style="display:none">
 				<div class="row">
