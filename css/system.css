@@ -32,6 +32,10 @@
 	background: url(../img/Watercolor-Paper.png);
 }
 
+.h4p_tab-middle {
+	background: url(../s/img/tab_middle.png);
+}
+
 .overflow-hidden {
 	overflow: hidden;
 	position: relative;
@@ -107,7 +111,6 @@ iframe {
 .h4p_game {
 	position: relative;
 	margin: 0;
-	padding: 1px;
 }
 
 .h4p_game iframe {

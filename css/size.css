@@ -100,6 +100,11 @@
 	max-height: 400px;
 }
 
+.container-tab {
+	width: 60px;
+	margin-top: -20px;
+}
+
 /* 間隔属性 */
 .margin-top-lg {
 	margin-top: 40px;
@@ -139,6 +144,10 @@
 
 .padding-all-sm {
 	padding: 10px;
+}
+
+.no-padding {
+	padding: 0;
 }
 
 header {
@@ -183,9 +192,15 @@ header {
 .h4p_info,
 .h4p_restaging,
 .h4p_my-comment {
-	margin-top: 10px;
 	padding-top: 15px;
 	padding-bottom: 20px;
+}
+
+.h4p_info,
+.h4p_restaging,
+.h4p_my-comment,
+.h4p_youtube-frame {
+	margin-top: 10px;
 }
 
 .h4p_clear-img {

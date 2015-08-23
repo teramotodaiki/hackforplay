@@ -246,6 +246,102 @@ $(function(){
 
 	(function(){
 		var beginRestaging = function(){
+
+			(function() {
+
+				// タブの描画（画面の高さにレスポンシブ）
+				var old_html_height = 0;
+				setInterval(function() {
+
+					var html_height = $('html').height();
+					if (old_html_height !== html_height) {
+						var header_height = $('header').outerHeight();
+						var top_height = $('.h4p_tab-top').height();
+						var bottom_height = $('.h4p_tab-bottom').height();
+						$('.h4p_tab-middle').height(html_height - header_height - top_height - bottom_height);
+
+						old_html_height = html_height;
+					}
+				}, 100);
+
+				// ２カラムアライメント（ゲームビュー | YouTubeビュー）
+				var alignmentMode = 'both'; // game(ゲーム画面のみ) | both(２カラム)
+				var reload_timer = null;
+
+				// アライメントモードの切り替え
+				$('.h4p_alignment-trigger').on('click', function(event) {
+					alignmentMode = alignmentMode === 'both' ? 'game' : 'both';
+					console.log(alignmentMode);
+					alignment();
+				});
+
+				function alignment() {
+
+					var body_width = $(document.body).width();
+					switch (alignmentMode) {
+					case 'both':
+						// 2カラム およそ50:50
+						$('.container-game').css({
+							'margin-left': '10px',
+							'margin-right': '0px',
+							'width': body_width / 2 >> 0
+						});
+						$('.container-tab').removeClass('hidden');
+						$('.container-youtube').removeClass('hidden').outerWidth(body_width - $('.container-game').outerWidth(true) - $('.container-tab').outerWidth());
+						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
+						$('.container-youtube iframe').height($('.container-youtube').width() * 0.5625);
+						break;
+					case 'game':
+						// 1カラム 100:0 ただし幅には最大値がある
+						var right_space = $('.container-tab').outerWidth() + 20;
+						var content_width = Math.min(800, body_width - right_space * 2);
+						$('.container-game').outerWidth(content_width);
+						$('.container-game').css({
+							'margin-left': (body_width - $('.container-game').outerWidth()) / 2 >> 0,
+							'margin-right': (body_width - $('.container-game').outerWidth()) / 2 - right_space >> 0
+						});
+
+						$('.container-tab').removeClass('hidden');
+						$('.container-youtube').addClass('hidden').width(0);
+						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
+						break;
+					}
+
+					if ($('.h4p_game>iframe').width() !== $('.container-game').outerWidth()) {
+						// ゲームの幅を変更
+						$('.h4p_game,.h4p_game>iframe').width($('.container-game').outerWidth()).height($('.container-game').outerWidth() / 1.5 >> 0);
+
+						// リロード ごまかしのフェードイン
+						if (reload_timer) clearTimeout(reload_timer);
+						reload_timer = setTimeout(function() {
+							$(".h4p_game>iframe").hide().get(0).contentWindow.postMessage('window.location.reload();', '/');
+							$('.h4p_game>iframe').fadeIn('slow');
+						}, 100);
+					}
+
+					// エディタの幅を変更
+					setTimeout(function() {
+						var $div = $("div.h4p_restaging_editor");
+						jsEditor.setSize($div.width(), $div.height());
+					}, 10);
+
+				}
+
+				// リサイズイベント
+				(function() {
+					var old_body_width = 0;
+					$(window).on('resize', function() {
+						// 幅が変わっていないときはスルー
+						if (old_body_width === $(document.body).width()) return;
+						alignment();
+						old_body_width = $(document.body).width();
+					});
+
+				})();
+				alignment();
+
+			})();
+
 			alert_on_unload = true;
 			$(".h4p_restaging").fadeIn("fast", function() {
 				var storage_key = getParam('retry') === '1' ? 'retry_code' : 'restaging_code';

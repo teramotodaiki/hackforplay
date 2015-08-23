@@ -52,6 +52,10 @@ header {
 	opacity: 0.9;
 }
 
+.h4p_game {
+	background-color: black;
+}
+
 /* 線の幅・色 */
 header.navbar {
 	border: none;

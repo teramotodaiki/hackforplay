@@ -92,7 +92,7 @@ $(function(){
 });
 </script>
 <header class="navbar navbar-static-top">
-	<div class="container <?php echo $header_pattern === 'inGame' ? 'container-game' : ''; ?>">
+	<div class="container">
 		<div class="navbar-header">
 	     	<a class="navbar-brand" title="ハックフォープレイ" href="/?rewrite=true">
 	        	<img alt="hackforplay" src="/logo.png">
