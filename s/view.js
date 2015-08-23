@@ -266,13 +266,18 @@ $(function(){
 
 				// ２カラムアライメント（ゲームビュー | YouTubeビュー）
 				var alignmentMode = 'both'; // game(ゲーム画面のみ) | both(２カラム)
-				var old_body_width = 0;
 				var reload_timer = null;
+
+				// アライメントモードの切り替え
+				$('.h4p_alignment-trigger').on('click', function(event) {
+					alignmentMode = alignmentMode === 'both' ? 'game' : 'both';
+					console.log(alignmentMode);
+					alignment();
+				});
 
 				function alignment() {
 
 					var body_width = $(document.body).width();
-					if (old_body_width === body_width) return;
 					switch (alignmentMode) {
 					case 'both':
 						// 2カラム およそ50:50
@@ -299,10 +304,8 @@ $(function(){
 						$('.container-tab').removeClass('hidden');
 						$('.container-youtube').addClass('hidden').width(0);
 						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
-						$('.container-youtube iframe').width(0).height(0);
 						break;
 					}
-					old_body_width = body_width;
 
 					if ($('.h4p_game').width() !== $('.container-game').outerWidth()) {
 						// ゲームの幅を変更
@@ -319,7 +322,18 @@ $(function(){
 					jsEditor.setSize($div.width(), $div.height());
 
 				}
-				$(window).on('resize', alignment);
+
+				// リサイズイベント
+				(function() {
+					var old_body_width = 0;
+					$(window).on('resize', function() {
+						// 幅が変わっていないときはスルー
+						if (old_body_width === $(document.body).width()) return;
+						alignment();
+						old_body_width = $(document.body).width();
+					});
+
+				})();
 				alignment();
 
 			})();
