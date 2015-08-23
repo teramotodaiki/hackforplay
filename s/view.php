@@ -346,8 +346,8 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 	<div class="container container-tab hidden">
 		<div class="row">
 			<div class="col-xs-12 no-padding">
-				<div class="h4p_tab-top">
-					<img src="img/tab_material_top.png" height="100" width="60" alt="">
+				<div class="h4p_tab-top h4p_alignment-trigger">
+					<img src="img/tab_top.png" height="100" width="60" alt="">
 				</div>
 			</div>
 			<div class="col-xs-12 no-padding">
@@ -355,7 +355,7 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 			</div>
 			<div class="col-xs-12 no-padding">
 				<div class="h4p_tab-bottom">
-					<img src="img/tab_material_bottom.png" height="17" width="60" alt="">
+					<img src="img/tab_bottom.png" height="20" width="70" alt="">
 				</div>
 			</div>
 		</div>
