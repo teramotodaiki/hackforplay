@@ -247,15 +247,56 @@ $(function(){
 	(function(){
 		var beginRestaging = function(){
 
-			$('.container-game').css({
-				'margin-left': '10px',
-				'margin-right': '0px'
-			});
-			var body_width = $(document.body).width();
-			var game_width = $('.container-game').outerWidth(true);
-			$('.container-youtube').removeClass('hidden').outerWidth(body_width - game_width);
-			$('.container-game,.container-youtube').css('float', 'left');
-			$('.container-youtube iframe').height($('.container-youtube').width() * 0.5625);
+			(function() {
+
+				// タブの描画（画面の高さにレスポンシブ）
+				var old_html_height = 0;
+				setInterval(function() {
+
+					var html_height = $('html').height();
+					if (old_html_height !== html_height) {
+						var header_height = $('header').outerHeight();
+						var top_height = $('.h4p_tab-top').height();
+						var bottom_height = $('.h4p_tab-bottom').height();
+						console.log(html_height, header_height, top_height, bottom_height);
+						$('.h4p_tab-middle').height(html_height - header_height - top_height - bottom_height);
+
+						old_html_height = html_height;
+					}
+				}, 100);
+
+				// ２カラムアライメント（ゲームビュー | YouTubeビュー）
+				var old_body_width = 0;
+				function alignment() {
+
+					var body_width = $(document.body).width();
+					if (old_body_width === body_width) return;
+					old_body_width = body_width;
+
+					var game_content_width = body_width / 2 >> 0;
+					$('.container-game').css({
+						'margin-left': '10px',
+						'margin-right': '0px',
+						'width': game_content_width
+					});
+					var game_width = $('.container-game').outerWidth(true);
+					var tab_width = $('.container-tab').outerWidth(true);
+					$('.container-tab').removeClass('hidden');
+					$('.container-youtube').removeClass('hidden').outerWidth(body_width - game_width - tab_width);
+					$('.container-game,.container-youtube,.container-tab').css('float', 'left');
+					$('.container-youtube iframe').height($('.container-youtube').width() * 0.5625);
+
+					// Size control
+					$('.h4p_game,.h4p_game>iframe').width(game_content_width).height(game_content_width / 1.5 >> 0);
+					$(".h4p_game>iframe").get(0).contentWindow.postMessage('window.location.reload();', '/');
+
+					var $div = $("div.h4p_restaging_editor");
+					jsEditor.setSize($div.width(), $div.height());
+				}
+				$(window).on('resize', alignment);
+				alignment();
+
+			})();
 
 			alert_on_unload = true;
 			$(".h4p_restaging").fadeIn("fast", function() {

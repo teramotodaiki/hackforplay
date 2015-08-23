@@ -343,6 +343,23 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 			<?php endif; ?>
 		</div>
 	</div>
+	<div class="container container-tab hidden">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="h4p_tab-top">
+					<img src="img/tab_material_top.png" height="100" width="60" alt="">
+				</div>
+			</div>
+			<div class="col-xs-12">
+				<div class="h4p_tab-middle"></div>
+			</div>
+			<div class="col-xs-12">
+				<div class="h4p_tab-bottom">
+					<img src="img/tab_material_bottom.png" height="17" width="60" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="container container-youtube hidden">
 		<div class="row">
 			<div class="col-xs-12 h4p_youtube-frame">

@@ -32,6 +32,10 @@
 	background: url(../img/Watercolor-Paper.png);
 }
 
+.h4p_tab-middle {
+	background: url(../s/img/tab_material_middle.png);
+}
+
 .overflow-hidden {
 	overflow: hidden;
 	position: relative;

@@ -100,6 +100,11 @@
 	max-height: 400px;
 }
 
+.container-tab {
+	width: 60px;
+	margin-top: -20px;
+}
+
 /* 間隔属性 */
 .margin-top-lg {
 	margin-top: 40px;
