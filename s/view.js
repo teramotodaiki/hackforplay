@@ -320,8 +320,10 @@ $(function(){
 					}
 
 					// エディタの幅を変更
-					var $div = $("div.h4p_restaging_editor");
-					jsEditor.setSize($div.width(), $div.height());
+					setTimeout(function() {
+						var $div = $("div.h4p_restaging_editor");
+						jsEditor.setSize($div.width(), $div.height());
+					}, 10);
 
 				}
 
