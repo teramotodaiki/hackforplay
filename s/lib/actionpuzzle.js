@@ -3,7 +3,7 @@ window.addEventListener('load', function() {
 
 	var game = enchant.Core.instance;
 	// New Resourses :
-	game.preload(['enchantjs/x2/map2.png', 'hackforplay/dot_syuj.png', 'enchantjs/x2/icon0.png', 'enchantjs/font2.png', 'enchantjs/monster1.gif', 'dots_design/bg10_3.gif', 'dot_art_world/SC-Door-Entce03.png', 'rengoku-teien/asa_no_komorebi.mp3', 'etolier/01sougen.jpg', 'hackforplay/howtoplay-move.png', 'hackforplay/howtoplay-pop.png']);
+	game.preload(['enchantjs/x2/map2.png', 'hackforplay/dot_syuj.png', 'enchantjs/x2/icon0.png', 'enchantjs/font2.png', 'enchantjs/monster1.gif', 'dots_design/bg10_3.gif', 'dot_art_world/SC-Door-Entce03.png', 'rengoku-teien/asa_no_komorebi.mp3', 'etolier/01sougen.jpg', 'hackforplay/finger1.png', 'hackforplay/finger2.png', 'hackforplay/howtoplay-pop.png']);
 
 	BGM = 'rengoku-teien/asa_no_komorebi.mp3';
 
@@ -317,9 +317,9 @@ window.addEventListener('load', function() {
 		(function() {
 
 			// Lesson: 1
-			var moveTL = Hack.createSprite(40, 40, {
+			var moveTL = Hack.createSprite(40, 48, {
 				usedFlag: false, opacity: 0,
-				image: game.assets['hackforplay/howtoplay-move.png'],
+				image: game.assets['hackforplay/finger1.png'],
 				onenterframe: function() {
 					this.usedFlag = !!Hack.player.velocity.x;
 					if (this.usedFlag) {
@@ -331,6 +331,9 @@ window.addEventListener('load', function() {
 				this.tl.clear().then(function() {
 					this.parentNode.addChild(this);
 					this.moveTo(Hack.player.x, Hack.player.y);
+					this.image = game.assets['hackforplay/finger1.png'];
+				}).delay(20).then(function() {
+					this.image = game.assets['hackforplay/finger2.png'];
 				}).delay(8).moveBy(40, -60, 20, enchant.Easing.BACK_EASEINOUT).delay(20).loop();
 			});
 
