@@ -1,11 +1,11 @@
-function saveImage () {
+function saveImage (callbackText) {
 	var canvas = document.getElementById('enchant-stage').firstChild.firstChild;
 	sessionStorage.setItem('image', canvas ? canvas.toDataURL() : null);
-	window.parent.postMessage('thumbnail', '/');
+	window.parent.postMessage(callbackText, '/');
 }
 function screenShot () {
 	window.parent.postMessage('screenshot', '/');
-	window.saveImage();
+	window.saveImage('thumbnail');
 }
 function refocus () {
     window.document.activeElement.blur();
@@ -52,7 +52,7 @@ window.addEventListener('message', function (e) {
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
-    game.preload(['hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png']);
+    game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png');
 
     // Hackのクラスを生成 インスタンスはget only
     var HackEnchant = enchant.Class.create(enchant.EventTarget, {
@@ -254,10 +254,31 @@ window.addEventListener('load', function() {
                 window.parent.postMessage('clear', '/');
 			});
 		}else{
-			lay = Hack.overlay('hackforplay/clear.png');
+			lay = Hack.overlay('rgba(0,0,0,0.4)', 'hackforplay/clear.png');
 			lay.opacity = 0;
 			lay.moveTo(-game.rootScene.x, -game.rootScene.y);
-			lay.tl.fadeIn(30, enchant.Easing.LINEAR);
+			lay.tl.fadeIn(30, enchant.Easing.LINEAR).delay(10).then(function(){
+				// [RESTAGING]
+				Hack.createSprite(116, 48, {
+					x: 100, y: 320,
+					image: game.assets['hackforplay/new_button_replay.png'],
+					defaultParentNode: game.rootScene,
+					ontouchend: function() {
+						// [RESTAGING] がクリックされたとき
+						window.parent.postMessage('begin_restaging', '/');
+					}
+				}).tl.moveTo(100, 220, 20, enchant.Easing.CUBIC_EASEOUT);
+				// [RETRY]
+				Hack.createSprite(116, 48, {
+					x: 264, y: 320,
+					image: game.assets['hackforplay/new_button_retry.png'],
+					defaultParentNode: game.rootScene,
+					ontouchend: function() {
+						// [RETRY] がクリックされたとき
+						location.reload(false);
+					}
+				}).tl.moveTo(264, 220, 20, enchant.Easing.CUBIC_EASEOUT);
+			});
 		}
 
 		Hack.gameclear = function(){};

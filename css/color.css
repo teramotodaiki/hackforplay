@@ -3,7 +3,8 @@
 /* 要素や線の色、グラデーションを定義しています。 */
 
 /* 背景色　*/
-body {
+body,
+.container-game {
 	background-color: rgb(220, 220, 220);
 }
 
@@ -50,6 +51,10 @@ header {
 
 .h4p_filtering-buttons a.btn.disabled {
 	opacity: 0.9;
+}
+
+.h4p_game {
+	background-color: black;
 }
 
 /* 線の幅・色 */

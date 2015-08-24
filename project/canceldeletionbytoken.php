@@ -8,9 +8,10 @@ information_of_projects:
 	id : プロジェクトのID,
 	source_id : 改造元ステージのID,
 	source_title : 改造元ステージの名前,
-	source_mode : 改造元ステージのMode (official, replay)
-	token : プロジェクトのトークン
-	data : コードなどのデータ
+	source_mode : 改造元ステージのMode (official, replay),
+	token : プロジェクトのトークン,
+	data : コードなどのデータ,
+	thumbnail : サムネイルのURL,
 	registered : 作成された日時
 }
 */
@@ -53,12 +54,19 @@ try {
 		exit('database-error');
 	}
 
+	// 最も新しい(値の大きい)Scriptのサムネイルを取得
+	$stmt	= $dbh->prepare('SELECT "Thumbnail" FROM "Script" WHERE "ProjectID"=:project_id ORDER BY "ID" DESC');
+	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
+	$stmt->execute();
+	$thumb	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
+
 	$item 	= new stdClass();
 	$item->id 			= $project['ID'];
 	$item->source_id 	= $project['SourceStageID'];
 	$item->source_title	= $project['Title'];
 	$item->source_mode	= $project['Mode'];
 	$item->token 		= $project['Token'];
+	$item->thumbnail	= $thumb ? $thumb : '';
 	$item->registered 	= $project['Registered'];
 	// dataを最初の4行だけ抜き出し
 	$data_exploded		= explode("\n", $project['Data'], 5);

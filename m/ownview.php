@@ -34,25 +34,6 @@
 	</script>
 	<script src="topicview.js" type="text/javascript" charset="utf-8"></script>
 	<script src="ownview.js" type="text/javascript" charset="utf-8"></script>
-	<!-- Modal -->
-	<div class="modal fade" id="reasonModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	    			<h4>リジェクトの理由</h4>
-				</div>
-			    <div class="modal-body">
-			    </div>
-	    		<div class="modal-footer">
-	    			<p class="text-muted">
-	    				ご不明な点がありましたら、<a href="http://hackforplay.weebly.com/contact.html" title="お問い合わせ" target="_blank">こちら</a>にお問い合わせください
-	    			</p>
-	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-	    		</div>
-			</div>
-		</div>
-	</div>
 	<!-- Content -->
 	<div class="container">
 		<div class="row">
@@ -93,20 +74,6 @@
 				<a href="javascript:void(0);" title="next" class="btn btn-lg btn-link go_page_next">
 					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 				</a>
-			</div>
-		</div>
-	</div>
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="row panel panel-primary">
-					<div class="col-xs-12 panel-heading">
-						<h4>改造を中断したステージ</h4>
-					</div>
-					<div class="panel-body">
-						<div class="row h4p_projectlist"></div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>

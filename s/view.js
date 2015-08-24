@@ -59,6 +59,10 @@ $(function(){
 			case "hint_popover":
 				$('.h4p_hint-button').popover('show');
 				break;
+			case "begin_restaging":
+				// ゲーム側からリステージングを開始する
+				$('.begin_restaging').trigger('click');
+				break;
 		}
 	});
 
@@ -104,7 +108,7 @@ $(function(){
 	$('#commentModal').on('show.bs.modal', function () {
 		// canvas to image
 		var game = $(".h4p_game>iframe").get(0);
-		var source = "saveImage();";
+		var source = "saveImage('thumbnail');";
 		game.contentWindow.postMessage(source, '/');
 
 		$(this).find('#leave-comment').button('reset');
@@ -242,6 +246,120 @@ $(function(){
 
 	(function(){
 		var beginRestaging = function(){
+
+			// frame.phpを経由して、getParam('src')のページをincludeさせる
+			// モードをRestagingにする
+			var gameSrc = encodeURIComponent(getParam('src'));
+			$(".h4p_game").height(width/1.5).children('iframe').attr({
+				'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=restaging'
+			});
+
+			(function() {
+
+				// タブの描画（画面の高さにレスポンシブ）
+				var old_container_height = 0;
+				setInterval(function() {
+
+					var container_height = $('.container-game').outerHeight();
+					if (old_container_height !== container_height) {
+						var top_height = $('.h4p_tab-top').height();
+						var bottom_height = $('.h4p_tab-bottom').height();
+						$('.h4p_tab-middle').height(container_height - top_height - bottom_height);
+
+						old_container_height = container_height;
+					}
+				}, 100);
+
+				// ２カラムアライメント（ゲームビュー | YouTubeビュー）
+				var alignmentMode = getParam('youtube') ? 'both' : 'game'; // both(２カラム) | game(ゲーム画面のみ)
+				var reload_timer = null;
+
+				// アライメントモードの切り替え
+				$('.h4p_alignment-trigger').on('click', function(event) {
+					switch (alignmentMode) {
+					case 'both':
+						alignmentMode = 'game';
+						$('.h4p_tab-top img').attr('src', 'img/tab_top_r.png');
+						break;
+					case 'game':
+						alignmentMode = 'both';
+						$('.h4p_tab-top img').attr('src', 'img/tab_top.png');
+						break;
+					}
+					alignment();
+				});
+
+				function alignment() {
+
+					var body_width = $(document.body).width();
+					switch (alignmentMode) {
+					case 'both':
+						// 2カラム およそ50:50
+						$('.container-game').css({
+							'padding-left': '25px',
+							'padding-right': '0px',
+							'width': body_width / 2 >> 0
+						});
+						$('.container-tab').removeClass('hidden');
+						var youtube_width = body_width - $('.container-game').outerWidth() - $('.container-tab').outerWidth() - 60;
+						$('.container-youtube').removeClass('hidden').outerWidth(youtube_width);
+						$('.h4p_youtube-frame iframe').attr({
+							'width': youtube_width,
+							'height': youtube_width / 1.5
+						});
+						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
+						break;
+					case 'game':
+						// 1カラム 100:0 ただし幅には最大値がある
+						var right_space = $('.container-tab').outerWidth() + 20;
+						var content_width = Math.min(800, body_width - right_space * 2);
+						$('.container-game').css({
+							'padding-left': (body_width - content_width) / 2 >> 0,
+							'padding-right': (body_width - content_width) / 2 - right_space >> 0
+						});
+						$('.container-game').width(content_width);
+
+						$('.container-tab').removeClass('hidden');
+						$('.container-youtube').addClass('hidden').width(0);
+						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
+						break;
+					}
+
+					if ($('.h4p_game>iframe').width() !== $('.container-game').width()) {
+						// ゲームの幅を変更
+						$('.h4p_game,.h4p_game>iframe').width($('.container-game').width()).height($('.container-game').width() / 1.5 >> 0);
+
+						// リロード ごまかしのフェードイン
+						if (reload_timer) clearTimeout(reload_timer);
+						reload_timer = setTimeout(function() {
+							$(".h4p_game>iframe").hide().get(0).contentWindow.postMessage('window.location.reload();', '/');
+							$('.h4p_game>iframe').fadeIn('slow');
+						}, 100);
+					}
+
+					// エディタの幅を変更
+					setTimeout(function() {
+						var $div = $("div.h4p_restaging_editor");
+						jsEditor.setSize($div.width(), $div.height());
+					}, 10);
+
+				}
+
+				// リサイズイベント
+				(function() {
+					var old_body_width = 0;
+					$(window).on('resize', function() {
+						// 幅が変わっていないときはスルー
+						if (old_body_width === $(document.body).width()) return;
+						alignment();
+						old_body_width = $(document.body).width();
+					});
+
+				})();
+				alignment();
+
+			})();
+
 			alert_on_unload = true;
 			$(".h4p_restaging").fadeIn("fast", function() {
 				var storage_key = getParam('retry') === '1' ? 'retry_code' : 'restaging_code';
@@ -269,59 +387,68 @@ $(function(){
 				location.href = '/s?id='+getParam('id') + '&mode=restaging&retry=true';
 			});
 			$(".h4p_restaging_button").on('click', function() {
-				// RUN (Add &mode=restaging)
-				var loading = $(this).find('button');
+				// RUN
 				jsEditor.save();
 				var code = jsEditor.getTextArea().value;
 				sessionStorage.setItem('restaging_code', code);
-				alert_on_unload = false;
-				var currentTime = new Date().getTime();
-				var updateTask = function(){
-					loading.button('loading');
-					// Update data
-					var token = sessionStorage.getItem('project-token');
-					var timezone = new Date().getTimezoneString();
-					$.post('../project/updatefromtoken.php', {
-						'token': token,
-						'data': code,
-						'source_stage_id': getParam('id'),
-						'timezone': timezone,
-						'attendance-token': sessionStorage.getItem('attendance-token')
-					}, function(data, textStatus, xhr) {
-						loading.button('reset');
-						switch(data){
-							case 'no-session':
-								$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
-								break;
-							case 'invalid-token':
-								showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
-								break;
-							case 'already-published':
-								showAlert('alert-danger', 'すでに投稿されたステージです');
-								break;
-							case 'data-is-null':
-								showAlert('alert-danger', '更新するデータが破損していたため、更新されませんでした');
-								break;
-							case 'database-error':
-								showAlert('alert-danger', 'データベースエラーにより、更新されませんでした');
-								break;
-							case 'no-update':
-							case 'success':
-								location.href = "/s?id=" + getParam('id') + "&mode=restaging";
-								break;
-						}
+
+				// ゲームをリロード
+				$('.h4p_game>iframe').get(0).contentWindow.postMessage('window.location.reload();', '/');
+			});
+			$('.h4p_save_button').on('click', function() {
+				// Save
+				var loading = $(this).find('button');
+
+				// サムネイル生成のコールバックとしてタスクを準備
+				window.addEventListener('message', (function task(e) {
+					console.log(e.data, e);
+					// onmessageのリスナとして登録するので識別をおこなう
+					if (e.data !== 'updateProject') return;
+					// 即座にリスナを解放する
+					window.removeEventListener('message', task);
+
+					if(sessionStorage.getItem('project-token') === null){
+						// プロジェクトが作られていないので、作成
+						loading.button('loading');
+						makeProject(function() {
+							updateTask(function() {
+								loading.button('reset');
+							});
+						});
+					}else{
+						loading.button('loading');
+						updateTask(function() {
+							loading.button('reset');
+						});
+					}
+				}));
+
+				// サムネイルを生成
+				$('.h4p_game>iframe').get(0).contentWindow.postMessage("saveImage('updateProject');", '/');
+
+			});
+
+			// ビューの設定
+			$(".h4p_while-restaging").show(); // UI
+			$(document.body).css('background-color', 'rgb(92, 92, 92)');
+
+			// YouTubeの設定
+			if (getParam('youtube') !== '') {
+
+				// YouTube Frame API をロード
+				$('<script>').attr('src', 'https://www.youtube.com/iframe_api').prependTo('body');
+				onYouTubeIframeAPIReady = function() {
+					var player = new YT.Player('kit-embed-content', {
+						width: $('.h4p_youtube-frame').width(),
+						height: $('.h4p_youtube-frame').width() / 1.5,
+						videoId: getParam('youtube')
 					});
 				};
-				if(sessionStorage.getItem('project-token') === null){
-					// プロジェクトが作られていないので、作成
-					makeProject(updateTask);
-				}else{
-					updateTask();
-				}
-			});
-			$(".h4p_while-restaging").show();
+			}
+
 		};
-		var makeProject = function(callback){
+
+		function makeProject (callback) {
 			// 残っているトークンを破棄
 			sessionStorage.removeItem('project-token');
 			var code = sessionStorage.getItem('restaging_code');
@@ -349,13 +476,54 @@ $(function(){
 						break;
 				}
 			});
-		};
+		}
+		function updateTask (callback) {
+			// Update data
+			var token = sessionStorage.getItem('project-token');
+			var timezone = new Date().getTimezoneString();
+			jsEditor.save();
+			var code = jsEditor.getTextArea().value;
+
+			$.post('../project/updatefromtoken.php', {
+				'token': token,
+				'data': code,
+				'source_stage_id': getParam('id'),
+				'timezone': timezone,
+				'thumb': sessionStorage.getItem('image') || null,
+				'attendance-token': sessionStorage.getItem('attendance-token')
+			}, function(data, textStatus, xhr) {
+				switch(data){
+					case 'no-session':
+						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
+						break;
+					case 'invalid-token':
+						showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
+						break;
+					case 'already-published':
+						showAlert('alert-danger', 'すでに投稿されたステージです');
+						break;
+					case 'data-is-null':
+						showAlert('alert-danger', '更新するデータが破損していたため、更新されませんでした');
+						break;
+					case 'database-error':
+						showAlert('alert-danger', 'データベースエラーにより、更新されませんでした');
+						break;
+					case 'no-update':
+					case 'success':
+						break;
+				}
+				if (callback !== undefined) {
+					callback();
+				}
+			});
+		}
+
 		switch(getParam('mode')){
 			case "official":
 				// official mode (load default code from main.js)
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
-					makeProject();
+					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
 				});
 				break;
 			case "restaging":
@@ -367,7 +535,7 @@ $(function(){
 				$('#inputModal').on('show.bs.modal', function () {
 					// canvas to image
 					var game = $(".h4p_game>iframe").get(0);
-					var source = "saveImage();";
+					var source = "saveImage('thumbnail');";
 					game.contentWindow.postMessage(source, '/');
 				});
 				$("#publish-button").on('click', function() {
@@ -419,7 +587,7 @@ $(function(){
 				sessionStorage.setItem('restaging_code', getParam('replay_code'));
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
-					makeProject();
+					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
 				});
 				break;
 			case "extend":
@@ -483,20 +651,9 @@ $(function(){
 		$('.h4p_hint-button').removeClass('hidden'); // ヒントアイコンを表示
 
 		$('.h4p_hint-button').on('click', function() {
-
-			if (getParam('id') <= 106) {
-				// チュートリアルのとき
-				// アイコンをクリックするとconfirmがひらき、モーダルをひらける
-				if (confirm('A video description will be opened if you press the [OK]. \n // OK を クリックすると ヒントの どうが が ひらかれます')) {
-					$('.h4p_hint-button').popover('hide');
-					$('#youtubeModal').modal('show');
-				}
-			} else {
-				// キットのとき
-				// モーダルがひらく
-				$('.h4p_hint-button').popover('hide');
-				$('#youtubeModal').modal('show');
-			}
+			// モーダルがひらく
+			$('.h4p_hint-button').popover('hide');
+			$('#youtubeModal').modal('show');
 		});
 
 		// 開かれたときにまだYouTubeがロードされていない場合、ロードを開始する

@@ -3,7 +3,7 @@ window.addEventListener('load', function() {
 
 	var game = enchant.Core.instance;
 	// New Resourses :
-	game.preload(['enchantjs/x2/map2.png', 'hackforplay/dot_syuj.png', 'enchantjs/x2/icon0.png', 'enchantjs/font2.png', 'enchantjs/monster1.gif', 'dots_design/bg10_3.gif', 'dot_art_world/SC-Door-Entce03.png', 'rengoku-teien/asa_no_komorebi.mp3', 'etolier/01sougen.jpg']);
+	game.preload(['enchantjs/x2/map2.png', 'hackforplay/dot_syuj.png', 'enchantjs/x2/icon0.png', 'enchantjs/font2.png', 'enchantjs/monster1.gif', 'dots_design/bg10_3.gif', 'dot_art_world/SC-Door-Entce03.png', 'rengoku-teien/asa_no_komorebi.mp3', 'etolier/01sougen.jpg', 'hackforplay/finger1.png', 'hackforplay/finger2.png']);
 
 	BGM = 'rengoku-teien/asa_no_komorebi.mp3';
 
@@ -310,6 +310,60 @@ window.addEventListener('load', function() {
 			frame: [0],
 			useGravity: false, useGround: false, useInput: false, useInduction: false
 		});
+
+
+		// Append 20150821 ====>
+
+		(function() {
+
+			// Lesson: 1
+			var moveTL = Hack.createSprite(40, 48, {
+				x: -100, y: -100,
+				usedFlag: false, opacity: 0,
+				image: game.assets['hackforplay/finger1.png'],
+				onenterframe: function() {
+					this.usedFlag = !!Hack.player.velocity.x;
+					if (this.usedFlag) {
+						this.parentNode.removeChild(this);
+						popTL.delay(30).show().then(function() {
+							this.parentNode.addChild(this);
+							this.tl.clear().delay(20).then(function() {
+								this.image = game.assets['hackforplay/finger2.png'];
+							}).delay(20).then(function() {
+								this.image = game.assets['hackforplay/finger1.png'];
+							}).loop();
+						});
+					}
+				}
+			}).tl.delay(60).show().then(function() {
+				this.tl.clear().then(function() {
+					this.parentNode.addChild(this);
+					this.moveTo(Hack.player.x, Hack.player.y);
+					this.image = game.assets['hackforplay/finger1.png'];
+				}).delay(20).then(function() {
+					this.image = game.assets['hackforplay/finger2.png'];
+				}).delay(8).moveBy(40, -60, 20, enchant.Easing.BACK_EASEINOUT).delay(20).loop();
+			});
+
+			// Lesson: 2
+			var popTL = Hack.createSprite(40, 48, {
+				opacity: 0,
+				usedFlag: false,
+				x: 260, y: 200,
+				image: game.assets['hackforplay/finger1.png'],
+				onenterframe: function() {
+					if (!this.usedFlag && makeCounter) {
+						this.usedFlag = true;
+						this.tl.fadeOut(10).then(function() {
+							this.parentNode.removeChild(this);
+						});
+					}
+				}
+			}).tl;
+
+		})();
+
+		// <==== Append 20150821
 
 		Hack.monster = [];
 		Hack.Blocks = [];

@@ -226,17 +226,22 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 					<div class="col-xs-12 h4p_restaging_editor">
 						<textarea name="restaging_code" value="// ステージ改造コードを書いて、このステージを改造してやろう!!"></textarea>
 					</div>
-					<div class="col-xs-12 h4p_restaging_button">
-						<button type="button" class="btn btn-block btn-lg btn-primary ignore-attendance" data-loading-text="保存中…">
+					<div class="col-xs-10 h4p_restaging_button">
+						<button type="button" class="btn btn-block btn-lg btn-primary">
 							<span>ステージ改造コードを実行</span>
+						</button>
+					</div>
+					<div class="col-xs-2 h4p_save_button">
+						<button type="button" class="btn btn-block btn-lg btn-info" data-loading-text="保存中…">
+							<span>保存</span>
 						</button>
 					</div>
 				</div>
 			</div>
 			<div id="scroll-anchor" class="col-xs-12"></div>
 			<div class="col-xs-12 h4p_alerts"></div>
-			<div class="col-xs-12 h4p_game" style="display:block">
-				<iframe src=""></iframe>
+			<div class="col-xs-12 h4p_game no-padding" style="display:block">
+				<iframe src="" frameborder="0"></iframe>
 			</div>
 			<div class="col-xs-12 h4p_clear text-center" style="display:none">
 				<div class="row">
@@ -343,6 +348,29 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 			<?php endif; ?>
 		</div>
 	</div>
-
+	<div class="container container-tab hidden">
+		<div class="row">
+			<div class="col-xs-12 no-padding">
+				<div class="h4p_tab-top h4p_alignment-trigger">
+					<img src="img/tab_top.png" height="100" width="60" alt="">
+				</div>
+			</div>
+			<div class="col-xs-12 no-padding h4p_alignment-trigger">
+				<div class="h4p_tab-middle"></div>
+			</div>
+			<div class="col-xs-12 no-padding h4p_alignment-trigger">
+				<div class="h4p_tab-bottom">
+					<img src="img/tab_bottom.png" height="20" width="70" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container container-youtube hidden">
+		<div class="row">
+			<div class="col-xs-12 h4p_youtube-frame">
+				<div id="kit-embed-content" src=""></div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
