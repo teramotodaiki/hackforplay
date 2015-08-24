@@ -271,7 +271,7 @@ $(function(){
 				}, 100);
 
 				// ２カラムアライメント（ゲームビュー | YouTubeビュー）
-				var alignmentMode = 'both'; // game(ゲーム画面のみ) | both(２カラム)
+				var alignmentMode = getParam('youtube') ? 'both' : 'game'; // both(２カラム) | game(ゲーム画面のみ)
 				var reload_timer = null;
 
 				// アライメントモードの切り替え
@@ -433,8 +433,7 @@ $(function(){
 			$(document.body).css('background-color', 'rgb(92, 92, 92)');
 
 			// YouTubeの設定
-			var embed_content = getParam('youtube');
-			if (embed_content !== '') {
+			if (getParam('youtube') !== '') {
 
 				// YouTube Frame API をロード
 				$('<script>').attr('src', 'https://www.youtube.com/iframe_api').prependTo('body');
