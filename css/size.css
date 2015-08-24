@@ -308,3 +308,13 @@ footer {
 button.h4p_open-project {
 	margin: -9px 0px 6px 0px;
 }
+
+.container-game {
+	margin-top: -20px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.container-game>.row {
+	margin: 0;
+}

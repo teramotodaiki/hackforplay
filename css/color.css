@@ -3,7 +3,8 @@
 /* 要素や線の色、グラデーションを定義しています。 */
 
 /* 背景色　*/
-body {
+body,
+.container-game {
 	background-color: rgb(220, 220, 220);
 }
 
