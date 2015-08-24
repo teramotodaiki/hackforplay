@@ -384,6 +384,24 @@ $(function(){
 
 				$('.h4p_game>iframe').get(0).contentWindow.postMessage('window.location.reload();', '/');
 			});
+			$('.h4p_save_button').on('click', function() {
+				// Save
+				var loading = $(this).find('button');
+				if(sessionStorage.getItem('project-token') === null){
+					// プロジェクトが作られていないので、作成
+					loading.button('loading');
+					makeProject(function() {
+						updateTask(function() {
+							loading.button('reset');
+						});
+					});
+				}else{
+					loading.button('loading');
+					updateTask(function() {
+						loading.button('reset');
+					});
+				}
+			});
 			$(".h4p_while-restaging").show();
 		};
 
@@ -420,6 +438,9 @@ $(function(){
 			// Update data
 			var token = sessionStorage.getItem('project-token');
 			var timezone = new Date().getTimezoneString();
+			jsEditor.save();
+			var code = jsEditor.getTextArea().value;
+
 			$.post('../project/updatefromtoken.php', {
 				'token': token,
 				'data': code,
@@ -445,8 +466,6 @@ $(function(){
 						break;
 					case 'no-update':
 					case 'success':
-						console.log('update success');
-						// location.href = "/s?id=" + getParam('id') + "&mode=restaging";
 						break;
 				}
 				if (callback !== undefined) {
@@ -460,7 +479,7 @@ $(function(){
 				// official mode (load default code from main.js)
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
-					makeProject();
+					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
 				});
 				break;
 			case "restaging":
@@ -524,7 +543,7 @@ $(function(){
 				sessionStorage.setItem('restaging_code', getParam('replay_code'));
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
-					makeProject();
+					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
 				});
 				break;
 			case "extend":
