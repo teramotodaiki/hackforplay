@@ -247,6 +247,13 @@ $(function(){
 	(function(){
 		var beginRestaging = function(){
 
+			// frame.phpを経由して、getParam('src')のページをincludeさせる
+			// モードをRestagingにする
+			var gameSrc = encodeURIComponent(getParam('src'));
+			$(".h4p_game").height(width/1.5).children('iframe').attr({
+				'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=restaging'
+			});
+
 			(function() {
 
 				// タブの描画（画面の高さにレスポンシブ）
@@ -382,6 +389,7 @@ $(function(){
 				var code = jsEditor.getTextArea().value;
 				sessionStorage.setItem('restaging_code', code);
 
+				// ゲームをリロード
 				$('.h4p_game>iframe').get(0).contentWindow.postMessage('window.location.reload();', '/');
 			});
 			$('.h4p_save_button').on('click', function() {
