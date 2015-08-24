@@ -3,7 +3,7 @@ window.addEventListener('load', function() {
 
 	var game = enchant.Core.instance;
 	// New Resourses :
-	game.preload(['enchantjs/x2/map2.png', 'hackforplay/dot_syuj.png', 'enchantjs/x2/icon0.png', 'enchantjs/font2.png', 'enchantjs/monster1.gif', 'dots_design/bg10_3.gif', 'dot_art_world/SC-Door-Entce03.png', 'rengoku-teien/asa_no_komorebi.mp3', 'etolier/01sougen.jpg', 'hackforplay/finger1.png', 'hackforplay/finger2.png', 'hackforplay/howtoplay-pop.png']);
+	game.preload(['enchantjs/x2/map2.png', 'hackforplay/dot_syuj.png', 'enchantjs/x2/icon0.png', 'enchantjs/font2.png', 'enchantjs/monster1.gif', 'dots_design/bg10_3.gif', 'dot_art_world/SC-Door-Entce03.png', 'rengoku-teien/asa_no_komorebi.mp3', 'etolier/01sougen.jpg', 'hackforplay/finger1.png', 'hackforplay/finger2.png']);
 
 	BGM = 'rengoku-teien/asa_no_komorebi.mp3';
 
@@ -318,16 +318,24 @@ window.addEventListener('load', function() {
 
 			// Lesson: 1
 			var moveTL = Hack.createSprite(40, 48, {
+				x: -100, y: -100,
 				usedFlag: false, opacity: 0,
 				image: game.assets['hackforplay/finger1.png'],
 				onenterframe: function() {
 					this.usedFlag = !!Hack.player.velocity.x;
 					if (this.usedFlag) {
 						this.parentNode.removeChild(this);
-						popTL.delay(60).fadeIn(10);
+						popTL.delay(30).show().then(function() {
+							this.parentNode.addChild(this);
+							this.tl.clear().delay(20).then(function() {
+								this.image = game.assets['hackforplay/finger2.png'];
+							}).delay(20).then(function() {
+								this.image = game.assets['hackforplay/finger1.png'];
+							}).loop();
+						});
 					}
 				}
-			}).tl.delay(40).show().then(function() {
+			}).tl.delay(60).show().then(function() {
 				this.tl.clear().then(function() {
 					this.parentNode.addChild(this);
 					this.moveTo(Hack.player.x, Hack.player.y);
@@ -338,10 +346,11 @@ window.addEventListener('load', function() {
 			});
 
 			// Lesson: 2
-			var popTL = Hack.createSprite(100, 100, {
+			var popTL = Hack.createSprite(40, 48, {
+				opacity: 0,
 				usedFlag: false,
-				x: 220, y: 100,
-				image: game.assets['hackforplay/howtoplay-pop.png'],
+				x: 260, y: 200,
+				image: game.assets['hackforplay/finger1.png'],
 				onenterframe: function() {
 					if (!this.usedFlag && makeCounter) {
 						this.usedFlag = true;
@@ -350,7 +359,7 @@ window.addEventListener('load', function() {
 						});
 					}
 				}
-			}).tl.hide();
+			}).tl;
 
 		})();
 
