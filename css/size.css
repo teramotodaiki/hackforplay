@@ -242,10 +242,25 @@ header {
 	padding-right: 1px;
 }
 
-.h4p_restaging_button button,
-.h4p_publish button{
+.h4p_restaging_button button {
+	border-radius: 0px 0px 0px 6px;
+}
+
+.h4p_save_button button {
+	border-radius: 0px 0px 6px 0px;
+}
+
+.h4p_publish button {
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
+}
+
+.h4p_restaging_button {
+	padding-right: 0px;
+}
+
+.h4p_save_button {
+	padding-left: 0px;
 }
 
 .h4p_mapTip {
