@@ -1,11 +1,11 @@
-function saveImage () {
+function saveImage (callbackText) {
 	var canvas = document.getElementById('enchant-stage').firstChild.firstChild;
 	sessionStorage.setItem('image', canvas ? canvas.toDataURL() : null);
-	window.parent.postMessage('thumbnail', '/');
+	window.parent.postMessage(callbackText, '/');
 }
 function screenShot () {
 	window.parent.postMessage('screenshot', '/');
-	window.saveImage();
+	window.saveImage('thumbnail');
 }
 function refocus () {
     window.document.activeElement.blur();
