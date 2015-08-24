@@ -57,8 +57,8 @@ try {
 	// ThumbnailのURLを取得
 	foreach ($result as $key => $value) {
 		// 最も新しい(値の大きい)ScriptIDを取得
-		$stmt	= $dbh->prepare('SELECT "Thumbnail" FROM "Script" WHERE "ProjectID"=:project_id ORDER BY "ID"');
-		$stmt->bindValue("project_id", $value['ID'], PDO::PARAM_INT);
+		$stmt	= $dbh->prepare('SELECT "Thumbnail" FROM "Script" WHERE "ProjectID"=:project_id ORDER BY "ID" DESC');
+		$stmt->bindValue(":project_id", $value['ID'], PDO::PARAM_INT);
 		$stmt->execute();
 		$thumb	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
 		$result[$key]['Thumbnail']	= $thumb ? $thumb : '';
