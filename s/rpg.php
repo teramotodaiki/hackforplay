@@ -22,14 +22,14 @@ if(!isset($mode)){
 		var __H4PENV__PATH      = "<?php echo $path; ?>";
 		var __H4PENV__NEXT		= "<?php echo $next; ?>";
 		var __H4PENV__MODE		= "<?php echo $mode; ?>";
-		function saveImage(){
+		function saveImage(callbackText){
 			var $canvas = $("#enchant-stage>div").children('canvas');
 			sessionStorage.setItem('image', $canvas ? $canvas.get(0).toDataURL() : null);
-            window.parent.postMessage('thumbnail', '/');
+            window.parent.postMessage(callbackText, '/');
 		}
 		function screenShot(){
 			window.parent.postMessage('screenshot', '/');
-			saveImage();
+			saveImage('thumbnail');
 		}
 		(function(){
 			// Example: +09:00, +00:00, -01:00

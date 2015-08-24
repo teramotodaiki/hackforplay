@@ -108,7 +108,7 @@ $(function(){
 	$('#commentModal').on('show.bs.modal', function () {
 		// canvas to image
 		var game = $(".h4p_game>iframe").get(0);
-		var source = "saveImage();";
+		var source = "saveImage('thumbnail');";
 		game.contentWindow.postMessage(source, '/');
 
 		$(this).find('#leave-comment').button('reset');
@@ -395,20 +395,34 @@ $(function(){
 			$('.h4p_save_button').on('click', function() {
 				// Save
 				var loading = $(this).find('button');
-				if(sessionStorage.getItem('project-token') === null){
-					// プロジェクトが作られていないので、作成
-					loading.button('loading');
-					makeProject(function() {
+
+				// サムネイル生成のコールバックとしてタスクを準備
+				window.addEventListener('message', (function task(e) {
+					console.log(e.data, e);
+					// onmessageのリスナとして登録するので識別をおこなう
+					if (e.data !== 'updateProject') return;
+					// 即座にリスナを解放する
+					window.removeEventListener('message', task);
+
+					if(sessionStorage.getItem('project-token') === null){
+						// プロジェクトが作られていないので、作成
+						loading.button('loading');
+						makeProject(function() {
+							updateTask(function() {
+								loading.button('reset');
+							});
+						});
+					}else{
+						loading.button('loading');
 						updateTask(function() {
 							loading.button('reset');
 						});
-					});
-				}else{
-					loading.button('loading');
-					updateTask(function() {
-						loading.button('reset');
-					});
-				}
+					}
+				}));
+
+				// サムネイルを生成
+				$('.h4p_game>iframe').get(0).contentWindow.postMessage("saveImage('updateProject');", '/');
+
 			});
 			$(".h4p_while-restaging").show();
 		};
@@ -454,6 +468,7 @@ $(function(){
 				'data': code,
 				'source_stage_id': getParam('id'),
 				'timezone': timezone,
+				'thumb': sessionStorage.getItem('image') || null,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
 				switch(data){
@@ -499,7 +514,7 @@ $(function(){
 				$('#inputModal').on('show.bs.modal', function () {
 					// canvas to image
 					var game = $(".h4p_game>iframe").get(0);
-					var source = "saveImage();";
+					var source = "saveImage('thumbnail');";
 					game.contentWindow.postMessage(source, '/');
 				});
 				$("#publish-button").on('click', function() {

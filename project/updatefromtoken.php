@@ -2,7 +2,7 @@
 /*
 トークンからプロジェクト情報を参照し、データを更新する
 ただし、Project.UserIDと一致するUserIDをもつセッションが必要
-Input:	token , data , timezone , (source_stage_id) , (attendance-token)
+Input:	token , data , timezone , thumb , (source_stage_id) , (attendance-token)
 Output:	no-session , invalid-token , already-published , data-is-null , no-update , database-error , success
 */
 
@@ -79,14 +79,32 @@ try {
 		}
 	}
 
+	// サムネイルを作成
+	$thumb	= filter_input(INPUT_POST, 'thumb');
+
+	if ($thumb) {
+		$thumb = preg_replace('/data:[^,]+,/i', '', $thumb); //ヘッダに「data:image/png;base64,」が付いているので、それは外す
+		$thumb = base64_decode($thumb); //残りのデータはbase64エンコードされているので、デコードする
+		$image = imagecreatefromstring($thumb); //まだ文字列の状態なので、画像リソース化
+		imagesavealpha($image, TRUE); // 透明色の有効
+
+		// random name
+		$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
+		$thumb_url	= '/s/thumbs/'.bin2hex($bytes).'.png'; // binaly to hex
+		imagepng($image, '..' . $thumb_url); // 相対パス
+	}else{
+		$thumb_url = NULL;
+	}
+
 	// データを格納
 	$timezone		= filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
 	if($timezone === FALSE || $timezone === NULL){
 		$timezone	= '+00:00';
 	}
-	$stmt	= $dbh->prepare('INSERT INTO "Script" ("ProjectID","LineNum","Registered") VALUES(:project_id,:line,:gmt)');
+	$stmt	= $dbh->prepare('INSERT INTO "Script" ("ProjectID","LineNum","Thumbnail","Registered") VALUES(:project_id,:line,:thumb_url,:gmt)');
 	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
 	$stmt->bindValue(":line", count($new_code), PDO::PARAM_INT);
+	$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
 	$stmt->execute();
 	$difference	= array('ID' => $dbh->lastInsertId('Script'));

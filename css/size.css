@@ -58,7 +58,7 @@
 	height: 384px;
 }
 
-.h4p_projectlist .panel-heading pre {
+.h4p_projectlist .caption pre {
 	height: 117px;
 }
 
@@ -250,7 +250,8 @@ header {
 	border-radius: 0px 0px 6px 0px;
 }
 
-.h4p_publish button {
+.h4p_publish button,
+button.h4p_open-project {
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
 }
@@ -300,3 +301,10 @@ footer {
 	padding-bottom: 25px;
 }
 
+.h4p_projectlist img {
+	padding: 9px 9px 0px 9px;
+}
+
+button.h4p_open-project {
+	margin: -9px 0px 6px 0px;
+}
