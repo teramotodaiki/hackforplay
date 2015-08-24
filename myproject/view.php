@@ -37,11 +37,15 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
-				<div class="row panel panel-primary">
-					<div class="col-xs-12 panel-heading">
-						<h4>あなたのプロジェクト</h4>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="panel panel-default">
+							<div class="panel-body text-center">
+								<h3>あなたのプロジェクト</h3>
+							</div>
+						</div>
 					</div>
-					<div class="panel-body">
+					<div class="col-xs-12">
 						<div class="row h4p_projectlist"></div>
 					</div>
 				</div>

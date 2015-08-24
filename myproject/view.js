@@ -18,23 +18,17 @@ $(function(){
 	});
 
 	var $projectItem = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12').append(
-		$('<div>').addClass('panel panel-default').append(
-			$('<div>').addClass('panel-heading').append(
-				$('<div>').addClass('thumbnail').append(
-					$('<img>')
-				).append(
-					$('<div>').addClass('caption').append(
-						$('<pre>').addClass('panel-title')
-					)
-				)
-			)
+		$('<div>').addClass('thumbnail').append(
+			$('<img>')
 		).append(
-			$('<div>').addClass('panel-body').append(
+			$('<div>').addClass('caption').append(
+				$('<button>').addClass('btn btn-lg btn-block btn-default h4p_open-project').text('開く').attr('data-loading-text', 'データの取得中…')
+			).append(
+				$('<pre>').addClass('panel-title')
+			).append(
 				$('<p>').append($('<span>').addClass('registered').html('作成日時：<b></b>'))
 			).append(
 				$('<p>').append($('<span>').addClass('source').html('改造元：<b></b>'))
-			).append(
-				$('<button>').addClass('btn btn-lg btn-block btn-default h4p_open-project').text('開く').attr('data-loading-text', 'データの取得中…')
 			).append(
 				$('<button>').addClass('btn btn-link btn-block h4p_delete-project').text('このプロジェクトを削除').attr('data-loading-text', 'お待ちください…')
 			)
@@ -70,30 +64,30 @@ $(function(){
 	$projectItem.find('.h4p_delete-project').on('click', function() {
 		var loading = $(this).button('loading');
 		var token = $(this).attr('project-token');
-		var panel = $(this).parents('.panel').first();
+		var panel = $(this).parents('.thumbnail');
 		$.post('../project/deletebytoken.php', {
 			'token': token,
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		} , function(data, textStatus, xhr) {
 			loading.button('reset');
 			if (data === 'success') {
-				panel.find('.panel-heading').remove();
-				panel.find('.panel-body').fadeOut('fast', function() {
-					panel.append($('<div>').addClass('panel-body').append(
+				panel.find('img').remove();
+				panel.find('.caption').fadeOut('fast', function() {
+					panel.append(
 						bsAlert('alert-success', '削除できました')
 					).append(
 						$projectItem_fixButton.clone(true).attr('project-token', token)
-					));
+					);
 				});
 			}else{
-				panel.find('.panel-body').append(bsAlert('alert-danger', '削除に失敗しました'));
+				panel.append(bsAlert('alert-danger', '削除に失敗しました'));
 			}
 		});
 	});
 	$projectItem_fixButton.on('click', function() {
 		var loading = $(this).button('loading');
 		var token = $(this).attr('project-token');
-		var panel = $(this).parents('.panel').first();
+		var panel = $(this).parents('.thumbnail');
 		panel.find('.alert').remove();
 		$.post('../project/canceldeletionbytoken.php',{
 			'token': token,
@@ -101,15 +95,16 @@ $(function(){
 		}, function(data, textStatus, xhr) {
 			loading.button('reset');
 			if (data === 'failed'){
-				panel.find('.panel-body').prepend(bsAlert('alert-danger', '削除に失敗しました'));
+				panel.prepend(bsAlert('alert-danger', '削除に失敗しました'));
 			}else{
 				var project = jQuery.parseJSON(data);
 				var item = $projectItem.clone(true);
+				item.find('.thumbnail img').attr('src', project.thumbnail || 'img/noimage.png');
 				item.find('.panel-title').text(project.data);
 				var title = project.source_title;
 				item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
 				item.find('.registered b').text(project.registered);
-				item.find('.panel-body button').attr('project-token', project.token);
+				item.find('.caption button').attr('project-token', project.token);
 				panel.parent().after(item);
 				panel.parent().remove();
 			}
@@ -133,14 +128,12 @@ $(function(){
 				var $list = $('.h4p_projectlist');
 				result.values.forEach(function(project){
 					var item = $projectItem.clone(true);
-					if (project.thumbnail !== '') {
-						item.find('.thumbnail img').attr('src', project.thumbnail);
-					}
+					item.find('.thumbnail img').attr('src', project.thumbnail || 'img/noimage.png');
 					item.find('.panel-title').text(project.data);
 					var title = project.source_title;
 					item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
 					item.find('.registered b').text(convertLocaleTimeString(project.registered));
-					item.find('.panel-body button').attr('project-token', project.token);
+					item.find('.caption button').attr('project-token', project.token);
 
 					item.appendTo($list);
 				});
