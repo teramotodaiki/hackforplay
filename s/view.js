@@ -382,11 +382,12 @@ $(function(){
 				var code = jsEditor.getTextArea().value;
 				sessionStorage.setItem('restaging_code', code);
 
-				var game = $('.h4p_game>iframe').get(0).contentWindow.postMessage('window.location.reload();', '/');
+				$('.h4p_game>iframe').get(0).contentWindow.postMessage('window.location.reload();', '/');
 			});
 			$(".h4p_while-restaging").show();
 		};
-		var makeProject = function(callback){
+
+		function makeProject (callback) {
 			// 残っているトークンを破棄
 			sessionStorage.removeItem('project-token');
 			var code = sessionStorage.getItem('restaging_code');
@@ -414,7 +415,46 @@ $(function(){
 						break;
 				}
 			});
-		};
+		}
+		function updateTask (callback) {
+			// Update data
+			var token = sessionStorage.getItem('project-token');
+			var timezone = new Date().getTimezoneString();
+			$.post('../project/updatefromtoken.php', {
+				'token': token,
+				'data': code,
+				'source_stage_id': getParam('id'),
+				'timezone': timezone,
+				'attendance-token': sessionStorage.getItem('attendance-token')
+			}, function(data, textStatus, xhr) {
+				switch(data){
+					case 'no-session':
+						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
+						break;
+					case 'invalid-token':
+						showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
+						break;
+					case 'already-published':
+						showAlert('alert-danger', 'すでに投稿されたステージです');
+						break;
+					case 'data-is-null':
+						showAlert('alert-danger', '更新するデータが破損していたため、更新されませんでした');
+						break;
+					case 'database-error':
+						showAlert('alert-danger', 'データベースエラーにより、更新されませんでした');
+						break;
+					case 'no-update':
+					case 'success':
+						console.log('update success');
+						// location.href = "/s?id=" + getParam('id') + "&mode=restaging";
+						break;
+				}
+				if (callback !== undefined) {
+					callback();
+				}
+			});
+		}
+
 		switch(getParam('mode')){
 			case "official":
 				// official mode (load default code from main.js)
