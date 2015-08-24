@@ -20,7 +20,13 @@ $(function(){
 	var $projectItem = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12').append(
 		$('<div>').addClass('panel panel-default').append(
 			$('<div>').addClass('panel-heading').append(
-				$('<pre>').addClass('panel-title')
+				$('<div>').addClass('thumbnail').append(
+					$('<img>')
+				).append(
+					$('<div>').addClass('caption').append(
+						$('<pre>').addClass('panel-title')
+					)
+				)
 			)
 		).append(
 			$('<div>').addClass('panel-body').append(
@@ -127,6 +133,9 @@ $(function(){
 				var $list = $('.h4p_projectlist');
 				result.values.forEach(function(project){
 					var item = $projectItem.clone(true);
+					if (project.thumbnail !== '') {
+						item.find('.thumbnail img').attr('src', project.thumbnail);
+					}
 					item.find('.panel-title').text(project.data);
 					var title = project.source_title;
 					item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);

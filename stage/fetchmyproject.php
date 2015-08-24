@@ -8,9 +8,10 @@ information_of_projects:
 		id : プロジェクトのID,
 		source_id : 改造元ステージのID,
 		source_title : 改造元ステージの名前,
-		source_mode : 改造元ステージのMode (official, replay)
-		token : プロジェクトのトークン
-		data : コードなどのデータ
+		source_mode : 改造元ステージのMode (official, replay),
+		token : プロジェクトのトークン,
+		data : コードなどのデータ,
+		thumbnail : サムネイルのURL,
 		registered : 作成された日時
 	](,,,[])
 }
@@ -53,6 +54,16 @@ try {
 		}
 	}
 
+	// ThumbnailのURLを取得
+	foreach ($result as $key => $value) {
+		// 最も新しい(値の大きい)ScriptIDを取得
+		$stmt	= $dbh->prepare('SELECT "Thumbnail" FROM "Script" WHERE "ProjectID"=:project_id ORDER BY "ID"');
+		$stmt->bindValue("project_id", $value['ID'], PDO::PARAM_INT);
+		$stmt->execute();
+		$thumb	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
+		$result[$key]['Thumbnail']	= $thumb ? $thumb : '';
+	}
+
 	// 配列のvalueを生成し、データを格納
 	require_once '../project/getcurrentcode.php';
 	$values = array();
@@ -65,6 +76,7 @@ try {
 		$item->token 		= $value['Token'];
 		$item->registered 	= $value['Registered'];
 		$item->data			= getCurrentCode($value['ID']);
+		$item->thumbnail	= $value['Thumbnail'];
 
 		array_push($values, $item);
 	}
