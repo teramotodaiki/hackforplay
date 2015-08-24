@@ -377,55 +377,12 @@ $(function(){
 				location.href = '/s?id='+getParam('id') + '&mode=restaging&retry=true';
 			});
 			$(".h4p_restaging_button").on('click', function() {
-				// RUN (Add &mode=restaging)
-				var loading = $(this).find('button');
+				// RUN
 				jsEditor.save();
 				var code = jsEditor.getTextArea().value;
 				sessionStorage.setItem('restaging_code', code);
-				alert_on_unload = false;
-				var currentTime = new Date().getTime();
-				var updateTask = function(){
-					loading.button('loading');
-					// Update data
-					var token = sessionStorage.getItem('project-token');
-					var timezone = new Date().getTimezoneString();
-					$.post('../project/updatefromtoken.php', {
-						'token': token,
-						'data': code,
-						'source_stage_id': getParam('id'),
-						'timezone': timezone,
-						'attendance-token': sessionStorage.getItem('attendance-token')
-					}, function(data, textStatus, xhr) {
-						loading.button('reset');
-						switch(data){
-							case 'no-session':
-								$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
-								break;
-							case 'invalid-token':
-								showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
-								break;
-							case 'already-published':
-								showAlert('alert-danger', 'すでに投稿されたステージです');
-								break;
-							case 'data-is-null':
-								showAlert('alert-danger', '更新するデータが破損していたため、更新されませんでした');
-								break;
-							case 'database-error':
-								showAlert('alert-danger', 'データベースエラーにより、更新されませんでした');
-								break;
-							case 'no-update':
-							case 'success':
-								location.href = "/s?id=" + getParam('id') + "&mode=restaging";
-								break;
-						}
-					});
-				};
-				if(sessionStorage.getItem('project-token') === null){
-					// プロジェクトが作られていないので、作成
-					makeProject(updateTask);
-				}else{
-					updateTask();
-				}
+
+				var game = $('.h4p_game>iframe').get(0).contentWindow.postMessage('window.location.reload();', '/');
 			});
 			$(".h4p_while-restaging").show();
 		};
