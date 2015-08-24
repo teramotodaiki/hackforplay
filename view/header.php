@@ -13,6 +13,8 @@ if(preg_match("/^.*\/s/", $_SERVER["PHP_SELF"])){
 	$header_pattern = "resources";
 }else if(preg_match("/^.*\/reference/", $_SERVER["PHP_SELF"])){
 	$header_pattern = "reference";
+}else if(preg_match("/^.*\/myproject/", $_SERVER["PHP_SELF"])){
+	$header_pattern = "myproject";
 }else if(preg_match("/^.*\/m/", $_SERVER["PHP_SELF"])){
 	$header_pattern = "mypage";
 }else if(preg_match("/^.*\/a/", $_SERVER["PHP_SELF"])){
@@ -145,6 +147,7 @@ $(function(){
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="h4p_header-dropdown">
 							<li role="presentation"><a href="/m" title="settings">マイページ</a></li>
+							<li role="presentation"><a href="/myproject" title="settings">プロジェクト</a></li>
 							<li role="presentation"><a href="/p" title="settings">せってい</a></li>
 							<li role="presentation"><a href="/comments" title="comments">メッセージ</a></li>
 							<li role="presentation" class="divider"></li>
