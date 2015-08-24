@@ -301,9 +301,13 @@ $(function(){
 							'width': body_width / 2 >> 0
 						});
 						$('.container-tab').removeClass('hidden');
-						$('.container-youtube').removeClass('hidden').outerWidth(body_width - $('.container-game').outerWidth(true) - $('.container-tab').outerWidth());
+						var youtube_width = body_width - $('.container-game').outerWidth() - $('.container-tab').outerWidth() - 60;
+						$('.container-youtube').removeClass('hidden').outerWidth(youtube_width);
+						$('.h4p_youtube-frame iframe').attr({
+							'width': youtube_width,
+							'height': youtube_width / 1.5
+						});
 						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
-						$('.container-youtube iframe').height($('.container-youtube').width() * 0.5625);
 						break;
 					case 'game':
 						// 1カラム 100:0 ただし幅には最大値がある
@@ -427,6 +431,22 @@ $(function(){
 			// ビューの設定
 			$(".h4p_while-restaging").show(); // UI
 			$(document.body).css('background-color', 'rgb(92, 92, 92)');
+
+			// YouTubeの設定
+			var embed_content = getParam('youtube');
+			if (embed_content !== '') {
+
+				// YouTube Frame API をロード
+				$('<script>').attr('src', 'https://www.youtube.com/iframe_api').prependTo('body');
+				onYouTubeIframeAPIReady = function() {
+					var player = new YT.Player('kit-embed-content', {
+						width: $('.h4p_youtube-frame').width(),
+						height: $('.h4p_youtube-frame').width() / 1.5,
+						videoId: getParam('youtube')
+					});
+				};
+			}
+
 		};
 
 		function makeProject (callback) {
