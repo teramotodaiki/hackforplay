@@ -9,12 +9,11 @@ var game, maps = [], env = {};
 window.addEventListener('load', function(){
 	game = new Core(480, 320);
 	game.fps = 15;
-    game.preload ('img/map_lizzy.png', 'img/chara0.png', 'img/pc.gif', 'img/close.png', 'img/clear.png', 'img/dot_syuj.png','img/chara5.png', 'img/map1.gif', 'img/gameover.png', 'img/enchantbook.png', 'img/icon0.png', 'img/button_retry.png');
+    game.preload ('img/map_lizzy.png', 'img/chara0.png', 'img/pc.gif', 'img/close.png', 'img/clear.png', 'img/dot_syuj.png','img/chara5.png', 'img/map1.gif', 'img/gameover.png', 'img/enchantbook.png', 'img/icon0.png', 'img/button_retry.png', 'hackforplay/menu-button-menu.png', 'hackforplay/menu-button-restage.png', 'hackforplay/menu-button-hint.png', 'hackforplay/menu-button-comment.png', 'hackforplay/menu-button-retry.png');
     // game.keybind(" ".charCodeAt(0), 'b'); // bボタンはスペースキー
     game.keybind(" ".charCodeAt(0), 'a'); // aボタンはスペースキー
 
     loadMap();
-
 });
 
 // IE9-10対応

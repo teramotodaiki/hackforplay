@@ -62,7 +62,7 @@ window.addEventListener('load', function() {
             maps['Floor'].callback = function() {
                 comeBackCount++;
                 if (comeBackCount === 2 && !getSapphireFlag) {
-                    window.parent.postMessage('hint_popover', '/');
+                    emphasizeHint();
                 }
             };
 
@@ -72,7 +72,7 @@ window.addEventListener('load', function() {
                 if (timer) clearTimeout(timer);
                 timer = setTimeout(function() {
                     if (!getSapphireFlag) {
-                        window.parent.postMessage('hint_popover', '/');
+                        emphasizeHint();
                     }
                 }, 40000);
             };

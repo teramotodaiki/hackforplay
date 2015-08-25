@@ -32,7 +32,8 @@ window.addEventListener('load', function() {
 	"\t}\n"+
 	"\tHack.defaultParentNode = new enchant.Group();\n"+
 	"\tHack.width = 32 * 15;//ステージの横幅\n"+
-	"\tHack.height = 32 * 10;//ステージの縦幅\n\n"+
+	"\tHack.height = 32 * 10;//ステージの縦幅\n"+
+	"\tHack.menuOpener.y = 54; // メニューの位置\n\n"+
 
 	"\t/* ☆　  のこりじかんをかえてみよう　　      　　//\n"+
 	"\t/ Hack.limitTimeは　のこり　の　びょうすう　/\n"+
@@ -295,6 +296,7 @@ window.addEventListener('load', function() {
 
 		Hack.width = 32 * 15;
 		Hack.height = 32 * 10;
+		Hack.menuOpener.y = 54; // メニューの位置
 		Hack.limitTime = 120;
 		Hack.defaultParentNode = new enchant.Group(); // prepear to scroll
 		if(game.assets[BGM] !== undefined){

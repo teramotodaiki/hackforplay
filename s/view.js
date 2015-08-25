@@ -56,12 +56,17 @@ $(function(){
 				var code = sessionStorage.getItem('restaging_code');
 				jsEditor.setValue(code);
 				break;
-			case "hint_popover":
-				$('.h4p_hint-button').popover('show');
-				break;
 			case "begin_restaging":
 				// ゲーム側からリステージングを開始する
 				$('.begin_restaging').trigger('click');
+				break;
+			case "show_hint":
+				// ゲーム側からヒントを表示する
+				$('.h4p_hint-button').trigger('click');
+				break;
+			case "show_comment":
+				// ゲーム側からコメントの入力画面を表示する
+				$('#commentModal').modal('show');
 				break;
 		}
 	});
@@ -169,6 +174,8 @@ $(function(){
 				case 'no-session':
 				case 'not-found':
 					$('.h4p_comment-add').removeClass('hidden');
+
+					sessionStorage.setItem('stage_param_comment', ''); // no-comment
 					break;
 				default:
 					var result = JSON.parse(data);
@@ -178,6 +185,8 @@ $(function(){
 					$comment.find('.comment-tag').text(result.Tags[0].DisplayString).css('background-color', result.Tags[0].LabelColor);
 					$comment.find('.comment-message').text(result.Message);
 					$comment.find('.comment-thumb').attr('src', result.Thumbnail);
+
+					sessionStorage.setItem('stage_param_comment', 'true'); // exist-comment
 					break;
 			}
 			if (callback)
@@ -204,10 +213,14 @@ $(function(){
 					case 'not-found':
 					case 'database-error':
 						alert('エラー\nさくじょ できなかった');
+
+						sessionStorage.setItem('stage_param_comment', 'true');
 						break;
 					case 'success':
 						$('.h4p_comment-add').removeClass('hidden');
 						$('.h4p_my-comment').addClass('hidden');
+
+						sessionStorage.setItem('stage_param_comment', '');
 						break;
 				}
 			});
@@ -652,7 +665,6 @@ $(function(){
 
 		$('.h4p_hint-button').on('click', function() {
 			// モーダルがひらく
-			$('.h4p_hint-button').popover('hide');
 			$('#youtubeModal').modal('show');
 		});
 
