@@ -51,7 +51,7 @@ window.addEventListener('load', function() {
             // 30s inputがなければ、ヒントを強調する
             setTimeout(function() {
                 if (!inputFlag) {
-                    window.parent.postMessage('hint_popover', '/');
+                    emphasizeHint();
                 }
             }, 20000);
         })();

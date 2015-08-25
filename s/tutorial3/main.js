@@ -55,7 +55,7 @@ window.addEventListener('load', function() {
             // なにも書き換えずに魔道書が閉じられたとき
             editorWindowClosed = function() {
                 if (!editorTextChangedFlag) {
-                    window.parent.postMessage('hint_popover', '/');
+                    emphasizeHint();
                 }
             };
         })();

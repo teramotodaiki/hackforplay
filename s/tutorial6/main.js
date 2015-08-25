@@ -167,7 +167,7 @@ window.addEventListener('load', function() {
             editorWindowClosed = function() {
                 if (closingEditorTimer) clearTimeout(closingEditorTimer);
                 closingEditorTimer = setTimeout(function() {
-                    window.parent.postMessage('hint_popover', '/');
+                    emphasizeHint();
                 }, 40000);
             };
 
