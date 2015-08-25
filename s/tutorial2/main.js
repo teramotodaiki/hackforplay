@@ -75,14 +75,14 @@ window.addEventListener('load', function() {
             // 50秒間、魔道書が開かれなかったとき
             setTimeout(function() {
                 if (!openedBookFlag) {
-                    window.parent.postMessage('hint_popover', '/');
+                    emphasizeHint();
                 }
             }, 50000);
 
             // なにも書き換えずに魔道書が閉じられたとき
             editorWindowClosed = function() {
                 if (!editorTextChangedFlag) {
-                    window.parent.postMessage('hint_popover', '/');
+                    emphasizeHint();
                 }
             };
         })();

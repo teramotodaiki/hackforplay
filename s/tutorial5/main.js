@@ -75,7 +75,7 @@ window.addEventListener('load', function() {
                 if (closingEditorTimer) clearTimeout(closingEditorTimer);
                 closingEditorTimer = setTimeout(function() {
                     if (!getDiamondFlag) {
-                        window.parent.postMessage('hint_popover', '/');
+                        emphasizeHint();
                     }
                 }, 40000);
             };

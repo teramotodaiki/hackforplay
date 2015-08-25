@@ -1,3 +1,4 @@
+var emphasizeHint = function(){};
 (function(){
 	var Hack = {};
 	Object.defineProperty(window, 'Hack', {
@@ -115,6 +116,26 @@
 
 			GUIParts.forEach(function(item, index) {
 				item.tl.fadeOut(8, enchant.Easing.BACK_EASEIN).and().moveTo(opener.x, opener.y, 8, enchant.Easing.BACK_EASEIN);
+			});
+		};
+		// ヒントの強調
+		emphasizeHint = function() {
+			// ヒントのスプライトを取得
+			GUIParts.filter(function(item) {
+				return item._image._css.indexOf('hackforplay/menu-button-hint') !== -1;
+			}).forEach(function(item) {
+				var endFlag = false;
+				item.on('enterframe', function() {
+					if (endFlag) this.scale(1, 1);
+					else {
+						var s = Math.sin(game.getElapsedTime() * 8) / 4 + 1.25;
+						this.scaleX = this.scaleY = s;
+					}
+				});
+				item.on('touchstart', function() {
+					endFlag = true;
+					this.scaleX = this.scaleY = 1;
+				});
 			});
 		};
 
