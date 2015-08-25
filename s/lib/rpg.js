@@ -65,7 +65,7 @@ var emphasizeHint = function(){};
 	// ゲームメニュー
 	coreGeneratedEvents.push(function() {
 
-		var visible, overlay, opener;
+		var visible, overlay;
 
 		var GUIParts = [];
 
@@ -91,6 +91,17 @@ var emphasizeHint = function(){};
 				return visible;
 			}
 		});
+
+		// Hack.menuOpener Sprite 読み取り専用プロパティ
+		var opener = new Sprite(32, 32);
+		opener.moveTo(438, 10);
+		menuGroup.addChild(opener);
+		Object.defineProperty(Hack, 'menuOpener', {
+			get: function() {
+				return opener;
+			}
+		});
+
 
 		Hack.openMenu = function() {
 			if (visible) return;
@@ -153,8 +164,6 @@ var emphasizeHint = function(){};
 			menuGroup.addChild(overlay);
 
 			// メニューを開くボタン
-			opener = new Sprite(32, 32);
-			opener.moveTo(438, 10);
 			opener.image = game.assets['hackforplay/menu-button-menu.png'];
 			opener.onenterframe = function() {
 				this.parentNode.addChild(this); // つねに手前に表示

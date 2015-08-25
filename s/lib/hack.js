@@ -307,7 +307,7 @@ window.addEventListener('load', function() {
 	// ゲームメニュー
 	(function() {
 
-		var visible, overlay, opener;
+		var visible, overlay;
 
 		var GUIParts = [];
 
@@ -331,6 +331,17 @@ window.addEventListener('load', function() {
 		Object.defineProperty(Hack, 'menuOpenedFlag', {
 			get: function() {
 				return visible;
+			}
+		});
+
+		// Hack.menuOpener Sprite 読み取り専用プロパティ
+		var opener = Hack.createSprite(32, 32, {
+			x: 438, y: 10,
+			defaultParentNode: menuGroup
+		});
+		Object.defineProperty(Hack, 'menuOpener', {
+			get: function() {
+				return opener;
 			}
 		});
 
@@ -379,18 +390,14 @@ window.addEventListener('load', function() {
 			menuGroup.addChild(overlay);
 
 			// メニューを開くボタン
-			opener = Hack.createSprite(32, 32, {
-				x: 438, y: 10,
-				image: game.assets['hackforplay/menu-button-menu.png'],
-				onenterframe: function() {
-					this.parentNode.addChild(this); // つねに手前に表示
-				},
-				ontouchend: function() {
-					if (visible) Hack.closeMenu();
-					else Hack.openMenu();
-				},
-				defaultParentNode: menuGroup
-			});
+			opener.image = game.assets['hackforplay/menu-button-menu.png'];
+			opener.onenterframe = function() {
+				this.parentNode.addChild(this); // つねに手前に表示
+			};
+			opener.ontouchend = function() {
+				if (visible) Hack.closeMenu();
+				else Hack.openMenu();
+			};
 
 			// 改造を始めるボタン
 			addGUIParts(game.assets['hackforplay/menu-button-restage.png'], function() {
