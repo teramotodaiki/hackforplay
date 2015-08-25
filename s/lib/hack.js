@@ -52,7 +52,7 @@ window.addEventListener('message', function (e) {
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
-    game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png');
+    game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png', 'hackforplay/menu-button-menu.png', 'hackforplay/menu-button-restage.png', 'hackforplay/menu-button-hint.png', 'hackforplay/menu-button-comment.png', 'hackforplay/menu-button-retry.png');
 
     // Hackのクラスを生成 インスタンスはget only
     var HackEnchant = enchant.Class.create(enchant.EventTarget, {
@@ -303,6 +303,86 @@ window.addEventListener('load', function() {
 		Hack.gameclear = function(){};
 		Hack.gameover = function(){};
 	};
+
+	// ゲームメニュー
+	(function() {
+
+		var visible, overlay, opener;
+
+		// var GUIParts = [];
+		// GUIParts.push();
+
+		// メニュー全体を包括するグループ つねに手前に描画される
+		// Hack.menuGroup でアクセスできる
+		var menuGroup = new Group();
+		game.rootScene.addChild(menuGroup);
+		menuGroup.on('enterframe', function() {
+			if (game.rootScene.lastChild !== menuGroup) {
+				game.rootScene.addChild(menuGroup);
+			}
+			menuGroup.moveTo(-game.rootScene.x, -game.rootScene.y); // 位置合わせ
+		});
+		Object.defineProperty(Hack, 'menuGroup', {
+			get: function() {
+				return menuGroup;
+			}
+		});
+
+		// Hack.menuOpenedFlag 読み取り専用プロパティ
+		Object.defineProperty(Hack, 'menuOpenedFlag', {
+			get: function() {
+				return visible;
+			}
+		});
+
+		// イベント Hack.onmenuopend が dispatch される
+		Hack.openMenu = function() {
+			if (visible) return;
+			visible = true;
+			Hack.dispatchEvent(new Event('onmenuopened'));
+
+			// アニメーション
+			overlay.tl.fadeIn(6);
+		};
+
+		// イベント Hack.onmenuclosed が dispatch される
+		Hack.closeMenu = function() {
+			if (!visible) return;
+			visible = false;
+			Hack.dispatchEvent(new Event('onmenuclosed'));
+
+			overlay.tl.fadeOut(6);
+		};
+
+		// スプライトの初期化
+		game.on('load', function() {
+
+			// 暗めのオーバーレイ
+			overlay = new Sprite(game.width, game.height);
+			overlay.image =  new Surface(overlay.width, overlay.height);
+			overlay.image.context.fillStyle = 'rgba(0,0,0,0.4)';
+			overlay.image.context.fillRect(0, 0, overlay.width, overlay.height);
+			overlay.touchEnabled = false;
+			overlay.opacity = 0;
+			overlay.scale(2, 2); // 動いた時に端が見えないように
+			menuGroup.addChild(overlay);
+
+			// メニューを開くボタン
+			opener = Hack.createSprite(32, 32, {
+				x: 438, y: 10,
+				image: game.assets['hackforplay/menu-button-menu.png'],
+				onenterframe: function() {
+					this.parentNode.addChild(this); // つねに手前に表示
+				},
+				ontouchend: function() {
+					if (visible) Hack.closeMenu();
+					else Hack.openMenu();
+				},
+				defaultParentNode: menuGroup
+			});
+		});
+
+	})();
 
 	Object.defineProperty(Hack, 'restagingCode', {
 		configurable: true,
