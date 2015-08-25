@@ -216,10 +216,14 @@ $(function(){
 					case 'not-found':
 					case 'database-error':
 						alert('エラー\nさくじょ できなかった');
+
+						sessionStorage.setItem('stage_param_comment', 'true');
 						break;
 					case 'success':
 						$('.h4p_comment-add').removeClass('hidden');
 						$('.h4p_my-comment').addClass('hidden');
+
+						sessionStorage.setItem('stage_param_comment', '');
 						break;
 				}
 			});
