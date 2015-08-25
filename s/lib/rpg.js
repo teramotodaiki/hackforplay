@@ -5,7 +5,7 @@ var emphasizeHint = function(){};
 		configurable: true,
 		enumerable: true,
 		get: function(){
-			return window;
+			return Hack;
 		}
 	});
 
