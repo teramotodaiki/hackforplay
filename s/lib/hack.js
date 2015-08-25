@@ -309,8 +309,7 @@ window.addEventListener('load', function() {
 
 		var visible, overlay, opener;
 
-		// var GUIParts = [];
-		// GUIParts.push();
+		var GUIParts = [];
 
 		// メニュー全体を包括するグループ つねに手前に描画される
 		// Hack.menuGroup でアクセスできる
@@ -343,6 +342,11 @@ window.addEventListener('load', function() {
 
 			// アニメーション
 			overlay.tl.fadeIn(6);
+
+			GUIParts.forEach(function(item, index) {
+				item.moveTo(opener.x, opener.y);
+				item.tl.hide().fadeIn(8).and().moveBy(0, 40 * index + 60, 8, enchant.Easing.BACK_EASEOUT);
+			});
 		};
 
 		// イベント Hack.onmenuclosed が dispatch される
@@ -352,6 +356,10 @@ window.addEventListener('load', function() {
 			Hack.dispatchEvent(new Event('onmenuclosed'));
 
 			overlay.tl.fadeOut(6);
+
+			GUIParts.forEach(function(item, index) {
+				item.tl.fadeOut(8, enchant.Easing.BACK_EASEIN).and().moveTo(opener.x, opener.y, 8, enchant.Easing.BACK_EASEIN);
+			});
 		};
 
 		// スプライトの初期化
@@ -380,6 +388,32 @@ window.addEventListener('load', function() {
 				},
 				defaultParentNode: menuGroup
 			});
+
+			// 改造を始めるボタン
+			addGUIParts(game.assets['hackforplay/menu-button-restage.png'], function() {
+
+			});
+			// ヒントを表示するボタン
+			addGUIParts(game.assets['hackforplay/menu-button-hint.png'], function() {
+
+			});
+			// コメント入力画面を表示するボタン
+			addGUIParts(game.assets['hackforplay/menu-button-comment.png'], function() {
+
+			});
+			// ゲームを再スタートするボタン
+			addGUIParts(game.assets['hackforplay/menu-button-retry.png'], function() {
+
+			});
+
+			function addGUIParts (_image, _touchEvent) {
+				GUIParts.push(Hack.createSprite(32, 32, {
+					opacity: 0, image: _image,
+					defaultParentNode: menuGroup,
+					ontouchend: _touchEvent
+				}));
+			}
+
 		});
 
 	})();
