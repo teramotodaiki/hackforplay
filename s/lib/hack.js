@@ -396,18 +396,37 @@ window.addEventListener('load', function() {
 			addGUIParts(game.assets['hackforplay/menu-button-restage.png'], function() {
 				var id = sessionStorage.getItem('stage_param_id') >> 0;
 				return __H4PENV__MODE !== 'restaging' && !(101 <= id && id <= 106);
+			}, function() {
+				window.parent.postMessage('begin_restaging', '/');
 			});
 			// ヒントを表示するボタン
 			addGUIParts(game.assets['hackforplay/menu-button-hint.png'], function() {
 				return sessionStorage.getItem('stage_param_youtube');
+			}, function() {
+				window.parent.postMessage('show_hint', '/');
 			});
 			// コメント入力画面を表示するボタン
 			addGUIParts(game.assets['hackforplay/menu-button-comment.png'], function() {
 				return !sessionStorage.getItem('stage_param_comment'); // 存在しない場合は !'' === true
+			}, function() {
+				// menuGroupを100ミリ秒間非表示にする
+				menuGroup.childNodes.forEach(function(item) {
+					var visibility = item.visible;
+					item.visible = false;
+					setTimeout(function() {
+						item.visible = visibility;
+					}, 100);
+				});
+				window.parent.postMessage('show_comment', '/');
+				setTimeout(function() {
+					Hack.closeMenu();
+				}, 500);
 			});
 			// ゲームを再スタートするボタン
 			addGUIParts(game.assets['hackforplay/menu-button-retry.png'], function() {
 				return true;
+			}, function() {
+				location.reload(false);
 			});
 
 			function addGUIParts (_image, _condition, _touchEvent) {
@@ -416,7 +435,11 @@ window.addEventListener('load', function() {
 					defaultParentNode: menuGroup,
 					visible: _condition(),
 					condition: _condition,
-					ontouchend: _touchEvent
+					ontouchend: function() {
+						this.tl.scaleTo(1.1, 1.1, 3).scaleTo(1, 1, 3).then(function() {
+							_touchEvent();
+						});
+					}
 				}));
 			}
 

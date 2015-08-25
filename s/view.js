@@ -63,6 +63,14 @@ $(function(){
 				// ゲーム側からリステージングを開始する
 				$('.begin_restaging').trigger('click');
 				break;
+			case "show_hint":
+				// ゲーム側からヒントを表示する
+				$('.h4p_hint-button').trigger('click');
+				break;
+			case "show_comment":
+				// ゲーム側からコメントの入力画面を表示する
+				$('#commentModal').modal('show');
+				break;
 		}
 	});
 
