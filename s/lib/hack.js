@@ -343,7 +343,10 @@ window.addEventListener('load', function() {
 			// アニメーション
 			overlay.tl.fadeIn(6);
 
-			GUIParts.forEach(function(item, index) {
+			GUIParts.filter(function(item, index) {
+				GUIParts[index].visible = GUIParts[index].condition();
+				return GUIParts[index].visible;
+			}).forEach(function(item, index) {
 				item.moveTo(opener.x, opener.y);
 				item.tl.hide().fadeIn(8).and().moveBy(0, 40 * index + 60, 8, enchant.Easing.BACK_EASEOUT);
 			});
@@ -391,25 +394,28 @@ window.addEventListener('load', function() {
 
 			// 改造を始めるボタン
 			addGUIParts(game.assets['hackforplay/menu-button-restage.png'], function() {
-
+				var id = sessionStorage.getItem('stage_param_id') >> 0;
+				return __H4PENV__MODE !== 'restaging' && !(101 <= id && id <= 106);
 			});
 			// ヒントを表示するボタン
 			addGUIParts(game.assets['hackforplay/menu-button-hint.png'], function() {
-
+				return sessionStorage.getItem('stage_param_youtube');
 			});
 			// コメント入力画面を表示するボタン
 			addGUIParts(game.assets['hackforplay/menu-button-comment.png'], function() {
-
+				return !sessionStorage.getItem('stage_param_comment'); // 存在しない場合は !'' === true
 			});
 			// ゲームを再スタートするボタン
 			addGUIParts(game.assets['hackforplay/menu-button-retry.png'], function() {
-
+				return true;
 			});
 
-			function addGUIParts (_image, _touchEvent) {
+			function addGUIParts (_image, _condition, _touchEvent) {
 				GUIParts.push(Hack.createSprite(32, 32, {
 					opacity: 0, image: _image,
 					defaultParentNode: menuGroup,
+					visible: _condition(),
+					condition: _condition,
 					ontouchend: _touchEvent
 				}));
 			}

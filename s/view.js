@@ -169,6 +169,8 @@ $(function(){
 				case 'no-session':
 				case 'not-found':
 					$('.h4p_comment-add').removeClass('hidden');
+
+					sessionStorage.setItem('stage_param_comment', ''); // no-comment
 					break;
 				default:
 					var result = JSON.parse(data);
@@ -178,6 +180,8 @@ $(function(){
 					$comment.find('.comment-tag').text(result.Tags[0].DisplayString).css('background-color', result.Tags[0].LabelColor);
 					$comment.find('.comment-message').text(result.Message);
 					$comment.find('.comment-thumb').attr('src', result.Thumbnail);
+
+					sessionStorage.setItem('stage_param_comment', 'true'); // exist-comment
 					break;
 			}
 			if (callback)
