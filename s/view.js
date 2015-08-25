@@ -56,9 +56,6 @@ $(function(){
 				var code = sessionStorage.getItem('restaging_code');
 				jsEditor.setValue(code);
 				break;
-			case "hint_popover":
-				$('.h4p_hint-button').popover('show');
-				break;
 			case "begin_restaging":
 				// ゲーム側からリステージングを開始する
 				$('.begin_restaging').trigger('click');
@@ -668,7 +665,6 @@ $(function(){
 
 		$('.h4p_hint-button').on('click', function() {
 			// モーダルがひらく
-			$('.h4p_hint-button').popover('hide');
 			$('#youtubeModal').modal('show');
 		});
 
