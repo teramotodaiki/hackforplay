@@ -111,57 +111,57 @@ $(function(){
 			if (!$session_userid) :
 			// Before Login
 		?>
-	<form class="navbar-form navbar-left">
-		<div class="form-group">
-			<label class="written-in-ja" for="navbarLoginEmail"><small>メールまたはID</small></label>
-			<input class="form-control" id="navbarLoginEmail" type="text">
-		</div>
-		<div class="form-group">
-			<label class="written-in-ja" for="navbarLoginPassword"><small>パスワード</small></label>
-			<input class="form-control" id="navbarLoginPassword" type="password">
-		</div>
-		<button class="written-in-ja btn btn-default" type="submit"><small>ログイン</small></button>
-	</form>
-	<ul class="nav navbar-nav navbar-left">
-		<li>
-			<a id="button-loginwithtwitter" href="#" title="Login with Twitter">
-  				<img src="../img/signin-with-twitter.png" alt="Signin with twitter">
-			</a>
-		</li>
-		<li>
-			<a class="btn btn-link" href="#" title="Register">
-				<span class="written-in-ja"><small>新規登録</small></span>
-			</a>
-		</li>
-	</ul>
+			<form class="navbar-form navbar-left">
+				<div class="form-group">
+					<label class="written-in-ja" for="navbarLoginEmail"><small>メールまたはID</small></label>
+					<input class="form-control" id="navbarLoginEmail" type="text">
+				</div>
+				<div class="form-group">
+					<label class="written-in-ja" for="navbarLoginPassword"><small>パスワード</small></label>
+					<input class="form-control" id="navbarLoginPassword" type="password">
+				</div>
+				<button class="written-in-ja btn btn-default" type="submit"><small>ログイン</small></button>
+			</form>
+			<ul class="nav navbar-nav navbar-left">
+				<li>
+					<a id="button-loginwithtwitter" href="#" title="Login with Twitter">
+		  				<img src="../img/signin-with-twitter.png" alt="Signin with twitter">
+					</a>
+				</li>
+				<li>
+					<a href="#" class="btn btn-link" title="Register">
+						<span class="written-in-ja"><small>新規登録</small></span>
+					</a>
+				</li>
+			</ul>
 		<?php
 			else :
 			// Have Logged
 		?>
-	<ul class="nav navbar-nav navbar-left">
-		<li>
-			<a href="/r" title="New stages">
-				<span class="written-in-ja">改造ステージ一覧</span>
-			</a>
-		</li>
-		<li>
-			<a href="/m" title="My page">
-				<span class="written-in-ja">マイページ</span>
-			</a>
-		</li>
-		<li>
-			<a href="/myproject" title="My project">
-				<span class="written-in-ja">プロジェクト</span>
-			</a>
-		</li>
-		<?php if (isset($author_id)) : ?>
-		<li>
-			<a href="/m?id=<?php echo $author_id; ?>" title="Other stages made by this user">
-				<span class="written-in-ja">この人が作った他のステージ</span>
-			</a>
-		</li>
-		<?php endif; ?>
-	</ul>
+			<ul class="nav navbar-nav navbar-left">
+				<li>
+					<a href="/r" title="New stages">
+						<span class="written-in-ja">改造ステージ一覧</span>
+					</a>
+				</li>
+				<li>
+					<a href="/m" title="My page">
+						<span class="written-in-ja">マイページ</span>
+					</a>
+				</li>
+				<li>
+					<a href="/myproject" title="My project">
+						<span class="written-in-ja">プロジェクト</span>
+					</a>
+				</li>
+				<?php if (isset($author_id)) : ?>
+				<li>
+					<a href="/m?id=<?php echo $author_id; ?>" title="Other stages made by this user">
+						<span class="written-in-ja">この人が作った他のステージ</span>
+					</a>
+				</li>
+				<?php endif; ?>
+			</ul>
 		<?php
 			endif;
 		?>
