@@ -151,6 +151,10 @@ nav .navbar-brand img {
 	margin-top: -15px;
 }
 
+nav #button-loginwithtwitter {
+	padding: 11px 0px;
+}
+
 .h4p_stagecontainer {
 	margin: 15px 0px;
 }

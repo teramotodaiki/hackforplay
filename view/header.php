@@ -106,5 +106,41 @@ $(function(){
 	        	<img alt="hackforplay" src="/logo.png">
 	     	</a>
 		</div>
+		<div class="collapse navbar-collapse" id="header-nav-collapse">
+		<?php
+			if (!$session_userid) :
+			// Before Login
+		?>
+	<form class="navbar-form navbar-left">
+		<div class="form-group">
+			<label class="written-in-ja" for="navbarLoginEmail"><small>メールまたはID</small></label>
+			<input class="form-control" id="navbarLoginEmail" type="text">
+		</div>
+		<div class="form-group">
+			<label class="written-in-ja" for="navbarLoginPassword"><small>パスワード</small></label>
+			<input class="form-control" id="navbarLoginPassword" type="password">
+		</div>
+		<button class="written-in-ja btn btn-default" type="submit"><small>ログイン</small></button>
+	</form>
+	<ul class="nav navbar-nav navbar-left">
+		<li>
+			<a id="button-loginwithtwitter" href="#" title="Login with Twitter">
+  				<img src="../img/signin-with-twitter.png" alt="Signin with twitter">
+			</a>
+		</li>
+		<li>
+			<a class="btn btn-link" href="#" title="Register">
+				<span class="written-in-ja"><small>新規登録</small></span>
+			</a>
+		</li>
+	</ul>
+		<?php
+			else :
+			// Have Logged
+		?>
+		<?php
+			endif;
+		?>
+		</div>
 	</div>
 </nav>
