@@ -120,15 +120,16 @@ $(function(){
 			if (!$session_userid) :
 			// Before Login
 		?>
-			<form class="navbar-form navbar-left">
+			<form class="navbar-form navbar-left" action="../auth/signin.php" method="post" accept-charset="utf-8">
 				<div class="form-group">
 					<label class="written-in-ja" for="navbarLoginEmail"><small>メールまたはID</small></label>
-					<input class="form-control" id="navbarLoginEmail" type="text">
+					<input class="form-control" name="email" id="navbarLoginEmail" type="text">
 				</div>
 				<div class="form-group">
 					<label class="written-in-ja" for="navbarLoginPassword"><small>パスワード</small></label>
-					<input class="form-control" id="navbarLoginPassword" type="password">
+					<input class="form-control" name="password" id="navbarLoginPassword" type="password">
 				</div>
+				<input type="hidden" name="ref" value="<?php echo $_SERVER['PHP_SELF'] ?>"></input>
 				<button class="written-in-ja btn btn-default" type="submit"><small>ログイン</small></button>
 			</form>
 			<ul class="nav navbar-nav navbar-left">
