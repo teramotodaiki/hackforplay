@@ -51,6 +51,11 @@
 	width: 100%;
 }
 
+nav #img-usericon {
+	max-height: 40px;
+	margin: -10px 0px;
+}
+
 .h4p_item {
 	height: 384px;
 }

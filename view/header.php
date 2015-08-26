@@ -165,8 +165,8 @@ $(function(){
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<!-- User Icon -->
-						<!-- User Nickname -->
+						<img src="../m/tmpthumb.png" class="img-circle" id="img-usericon">
+						Nickname
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
