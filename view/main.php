@@ -23,6 +23,7 @@
 	<?php require_once 'sendattendance.php'; ?>
 	<script src="view/main.js" type="text/javascript" charset="utf-8"></script>
 	<?php require_once 'modals.php'; ?>
+	<?php include 'header.php'; ?>
 	<div class="landingpage">
 		<div class="h4p_landing l-1">
 			<div class="h4p_landing-main">

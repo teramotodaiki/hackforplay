@@ -1,3 +1,8 @@
+
+.landingpage {
+	margin-top: -20px;
+}
+
 /* デバイスによって変化するサイズ */
 @media (max-width: 767px) {
 	.h4p_landing-main {	width: 100%; }
