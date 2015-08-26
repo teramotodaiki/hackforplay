@@ -162,6 +162,43 @@ $(function(){
 				</li>
 				<?php endif; ?>
 			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<!-- User Icon -->
+						<!-- User Nickname -->
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="/m" title="My page">
+								<span class="written-in-ja">マイページ</span>
+							</a>
+						</li>
+						<li>
+							<a href="/myproject" title="My project">
+								<span class="written-in-ja">プロジェクト</span>
+							</a>
+						</li>
+						<li>
+							<a href="/p" title="Preference">
+								<span class="written-in-ja">せってい</span>
+							</a>
+						</li>
+						<li>
+							<a href="/comments" title="Message">
+								<span class="written-in-ja">メッセージ</span>
+							</a>
+						</li>
+						<li role="separator" class="divider"></li>
+						<li>
+							<a href="#" title="Logout">
+								<span class="written-in-ja">ログアウト</span>
+							</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
 		<?php
 			endif;
 		?>
