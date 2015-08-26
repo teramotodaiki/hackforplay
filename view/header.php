@@ -93,69 +93,18 @@ $(function(){
 	});
 });
 </script>
-<header class="navbar navbar-static-top">
+<nav class="navbar navbar-default">
 	<div class="container">
 		<div class="navbar-header">
-	     	<a class="navbar-brand" title="ハックフォープレイ" href="/?rewrite=true">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav-collapse" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" title="ハックフォープレイ" href="/?rewrite=true">
 	        	<img alt="hackforplay" src="/logo.png">
 	     	</a>
-		    <div class="pull-right visible-xs">
-				<div class="dropdown">
-					<a class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" onfocus="this.blur();" >
-						<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="h4p_header-dropdown">
-						<li role="presentation"><a href="/m" title="settings">マイページ</a></li>
-						<li role="presentation"><a href="/p" title="settings">せってい</a></li>
-						<li role="presentation"><a href="/comments" title="comments">メッセージ</a></li>
-						<li role="presentation" class="divider"></li>
-						<li role="presentation" class="h4p_signin"><a data-toggle="modal" data-target="#signinModal">ログイン</a></li>
-						<li role="presentation" class="h4p_signin"><a data-toggle="modal" data-target="#authModal">とうろく</a></li>
-						<li role="presentation" class="h4p_signout"><a href="javascript:void(0);" onclick="signout();">ログアウト</a></li>
-					</ul>
-				</div>
-		    </div>
-	    </div>
-	    <nav class="collapse navbar-collapse">
-	    	<ul class="nav navbar-nav">
-	    	<?php if ($help_button_visibility): ?>
-	    		<li><a class="btn btn-link navbar-btn h4p_need-help" href="javascript:void(0)" title=" "> </a></li>
-		    <?php endif; ?>
-	    	<?php if($header_pattern === 'inGame' && $mode === 'official'): ?>
-	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
-	    	<?php elseif ($header_pattern === 'inGame' && $mode !== 'official'): ?>
-	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
-	    		<?php if ($author_id !== NULL) : ?>
-		    		<li><a class="btn btn-link navbar-btn" href="/m?id=<?php echo $author_id; ?>" target="_blank" title="この人が作った他のステージ">この人が作った他のステージ</a></li>
-	    		<?php endif; ?>
-	    	<?php else: ?>
-	    		<li><a class="btn btn-link navbar-btn" href="/r" title="新着ステージ">新着ステージ</a></li>
-	    		<li><a class="btn btn-link navbar-btn" href="/resources" title="リソース">リソース</a></li>
-	    		<li><a class="btn btn-link navbar-btn" href="/reference" title="リファレンス">リファレンス</a></li>
-			<?php endif; ?>
-	    	</ul>
-	    	<ul class="nav navbar-nav navbar-right">
-	    		<li class="h4p_signin"><button type="button" class="btn btn-link navbar-btn" data-toggle="modal" data-target="#signinModal">ログイン</button></li>
-				<li class="h4p_signin"><button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#authModal">とうろく</button></li>
-				<li class="h4p_signout">
-					<div class="dropdown">
-						<a id="h4p_header-dropdown" class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" onfocus="this.blur();" >
-							<div data-toggle="tooltip" data-placement="bottom" title="マイページと設定">
-								<span class="h4p_own-nickname btn btn-link"></span>
-								<img class="img-circle h4p_own-thumbnail">
-							</div>
-						</a>
-						<ul class="dropdown-menu" role="menu" aria-labelledby="h4p_header-dropdown">
-							<li role="presentation"><a href="/m" title="settings">マイページ</a></li>
-							<li role="presentation"><a href="/myproject" title="settings">プロジェクト</a></li>
-							<li role="presentation"><a href="/p" title="settings">せってい</a></li>
-							<li role="presentation"><a href="/comments" title="comments">メッセージ</a></li>
-							<li role="presentation" class="divider"></li>
-							<li role="presentation" class="h4p_signout"><a href="javascript:void(0);" onclick="signout();">ログアウト</a></li>
-						</ul>
-					</div>
-				</li>
-	    	</ul>
-	    </nav>
+		</div>
 	</div>
-</header>
+</nav>

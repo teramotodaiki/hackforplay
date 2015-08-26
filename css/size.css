@@ -13,9 +13,6 @@
 	.h4p_stagelist {
 		width: 384px;
 	}
-	header .pull-right ul.dropdown-menu {
-		left: -130px;
-	}
 }
 @media(min-width: 768px) {
 	.container {
@@ -150,12 +147,8 @@
 	padding: 0;
 }
 
-header {
-	padding: 5px 0;
-}
-
-.nav .btn-link {
-	padding: 6px 12px;
+nav .navbar-brand img {
+	margin-top: -15px;
 }
 
 .h4p_stagecontainer {
@@ -174,13 +167,8 @@ header {
 	padding: 0;
 }
 
-.navbar-brand {
-	padding: 0;
-}
-
 .h4p_item p,
-.h4p_info-datail p,
-#h4p_header-dropdown {
+.h4p_info-datail p {
 	margin: 0;
 	padding: 0;
 }
