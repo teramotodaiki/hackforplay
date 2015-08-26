@@ -1,4 +1,13 @@
 <?php
+
+// SESSION User Info
+if (isset($session_userid)) {
+	$stmt 		= $dbh->prepare('SELECT "Gender","Nickname","ProfileImageURL" FROM "User" WHERE "ID"=:userid');
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+	$stmt->execute();
+	$user_info	= $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 // topPage or inGame
 $header_pattern = "topPage";
 if(preg_match("/^.*\/s/", $_SERVER["PHP_SELF"])){
@@ -137,6 +146,8 @@ $(function(){
 		<?php
 			else :
 			// Have Logged
+			$icon_url = $user_info['ProfileImageURL'] ? $user_info['ProfileImageURL'] :
+				$user_info['Gender'] === 'male' ? '../m/icon_m.png' : '../m/icon_w.png';
 		?>
 			<ul class="nav navbar-nav navbar-left">
 				<li>
@@ -165,8 +176,8 @@ $(function(){
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<img src="../m/tmpthumb.png" class="img-circle" id="img-usericon">
-						Nickname
+						<img src="<?php echo $icon_url; ?>" class="img-circle" id="img-usericon">
+						<?php echo $user_info['Nickname']; ?>
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
