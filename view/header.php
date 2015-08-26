@@ -204,7 +204,7 @@ $(function(){
 						</li>
 						<li role="separator" class="divider"></li>
 						<li>
-							<a href="#" title="Logout">
+							<a href="../auth/signout_and_gotolandingpage.php" title="Logout">
 								<span class="written-in-ja">ログアウト</span>
 							</a>
 						</li>
