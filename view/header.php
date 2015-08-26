@@ -138,6 +138,30 @@ $(function(){
 			else :
 			// Have Logged
 		?>
+	<ul class="nav navbar-nav navbar-left">
+		<li>
+			<a href="/r" title="New stages">
+				<span class="written-in-ja">改造ステージ一覧</span>
+			</a>
+		</li>
+		<li>
+			<a href="/m" title="My page">
+				<span class="written-in-ja">マイページ</span>
+			</a>
+		</li>
+		<li>
+			<a href="/myproject" title="My project">
+				<span class="written-in-ja">プロジェクト</span>
+			</a>
+		</li>
+		<?php if (isset($author_id)) : ?>
+		<li>
+			<a href="/m?id=<?php echo $author_id; ?>" title="Other stages made by this user">
+				<span class="written-in-ja">この人が作った他のステージ</span>
+			</a>
+		</li>
+		<?php endif; ?>
+	</ul>
 		<?php
 			endif;
 		?>
