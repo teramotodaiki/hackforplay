@@ -7,37 +7,22 @@
 @media (max-width: 767px) {
 	.h4p_landing-main {	width: 100%; }
 	.l-1 { height: 432px; }
-	.l-2 { height: 614px; }
-	.l-3 { height: 326px; }
-	.l-4 { height: 672px; }
 }
 @media (min-width: 768px) {
 	.h4p_landing-main {	width: 768px; }
 	.l-1 { height: 432px; }
-	.l-2 { height: 614px; }
-	.l-3 { height: 326px; }
-	.l-4 { height: 672px; }
 }
 @media (min-width: 1280px) {
 	.h4p_landing-main { width: 1024px; }
 	.l-1 { height: 576px; }
-	.l-2 { height: 819px; }
-	.l-3 { height: 435px; }
-	.l-4 { height: 896px; }
 }
 @media (min-width: 1680px) {
 	.h4p_landing-main { width: 1024px; }
 	.l-1 { height: 576px; }
-	.l-2 { height: 819px; }
-	.l-3 { height: 435px; }
-	.l-4 { height: 896px; }
 }
 @media (min-width: 1681px) {
 	.h4p_landing-main {	width: 1440px; }
 	.l-1 { height: 810px; }
-	.l-2 { height: 1152px; }
-	.l-3 { height: 612px; }
-	.l-4 { height: 1260px; }
 }
 
 .bg {
@@ -48,16 +33,9 @@
 	top: 0px;
 }
 
-.l-1>.bg,
-.l-3>.bg {
+.l-1>.bg　{
 	background-size: cover;
 	background-position: center center;
-}
-
-.l-2>.bg,
-.l-4>.bg {
-	background-repeat: repeat;
-	background-size: 128px 128px;
 }
 
 .h4p_landing {
@@ -94,9 +72,3 @@
 
 .l-1 .h4p_landing-header { height: 56%; }
 .l-1 .h4p_landing-footer { height: 44%; }
-.l-2 .h4p_landing-header { height: 84%; }
-.l-2 .h4p_landing-footer { height: 16%; }
-.l-3 .h4p_landing-header { height: 60%; }
-.l-3 .h4p_landing-footer { height: 40%; }
-.l-4 .h4p_landing-header { height: 78%; }
-.l-4 .h4p_landing-footer { height: 22%; }

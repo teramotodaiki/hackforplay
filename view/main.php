@@ -33,28 +33,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="h4p_landing l-2">
-			<div class="h4p_landing-main">
-				<div class="h4p_landing-header"></div>
-				<div class="h4p_landing-footer">
-					<a href="s?id=101" title="Play Now"></a>
-				</div>
-			</div>
-		</div>
-		<div class="h4p_landing l-3">
-			<div class="h4p_landing-main">
-				<div class="h4p_landing-header"></div>
-				<div class="h4p_landing-footer"></div>
-			</div>
-		</div>
-		<div class="h4p_landing l-4">
-			<div class="h4p_landing-main">
-				<div class="h4p_landing-header"></div>
-				<div class="h4p_landing-footer">
-					<a href="/r" title="Try RePlay"></a>
-				</div>
-			</div>
-		</div>
 	</div>
 	<?php require_once 'footer.php' ?>
 </body>
