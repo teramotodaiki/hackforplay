@@ -160,7 +160,7 @@ $(function(){
 			else :
 			// Have Logged
 			$icon_url = $user_info['ProfileImageURL'] ? $user_info['ProfileImageURL'] :
-				$user_info['Gender'] === 'male' ? '../m/icon_m.png' : '../m/icon_w.png';
+				($user_info['Gender'] === 'male' ? '../m/icon_m.png' : '../m/icon_w.png');
 		?>
 			<ul class="nav navbar-nav navbar-left">
 				<li>
