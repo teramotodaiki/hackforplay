@@ -3,7 +3,7 @@
 ペーパーログインIDまたはメールアドレス とパスワードをPOSTで取得し、サインインを行う
 Input:
 {
-	id: ペーパーログインIDまたはメールアドレス,
+	email: ペーパーログインIDまたはメールアドレス,
 	password: パスワード,
 	// ref: もといたページのURL
 }
@@ -15,16 +15,16 @@ try {
 
 	require_once '../preload.php';
 
+	// ペーパーログインIDまたはメールアドレス, trueと評価できる値ならEmailとして、falseならIDとして扱う
 	$email 	= filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-	if($email === FALSE || $email === NULL){
-		exit('invalid-email');
-	}
 	$password = filter_input(INPUT_POST, 'password');
 
-	// Emailよりアカウントを確認
+	$type	= $email ? 'hackforplay' : 'paperlogin';
+
+	// アカウントを確認
 	$stmt 	= $dbh->prepare('SELECT "ID","UserID","Hashed" FROM "Account" WHERE "Email"=:email AND "Type"=:hackforplay AND "State"=:connected');
-	$stmt->bindValue(":email", $email);
-	$stmt->bindValue(":hackforplay", "hackforplay");
+	$stmt->bindValue(":email", filter_input(INPUT_POST, 'email'));
+	$stmt->bindValue(":hackforplay", $type);
 	$stmt->bindValue(":connected", "connected");
 	$stmt->execute();
 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);

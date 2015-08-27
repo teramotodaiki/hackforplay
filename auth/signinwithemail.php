@@ -1,5 +1,8 @@
 <?php
 /*
+
+/// 旧仕様 削除対象 ///
+
 HackforPlayアカウントでサインインを行う。新しくセッションをつくる
 Input:	email , password
 Output:	invalid-email , unregistered , incorrect-password , success
