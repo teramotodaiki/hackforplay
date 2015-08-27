@@ -1,7 +1,5 @@
 <?php
 
-var_dump($session_userid);
-
 // SESSION User Info
 if (isset($session_userid)) {
 	$stmt 		= $dbh->prepare('SELECT "Gender","Nickname","ProfileImageURL" FROM "User" WHERE "ID"=:userid');
@@ -107,9 +105,6 @@ $(function(){
 	(function() {
 		var authed = '/loginsuccess.php';
 		var login_successed = window.location.pathname + window.location.search; // 今いるページに帰還
-		console.log(
-			'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
-			'&login_successed=' + encodeURIComponent(login_successed));
 		$('nav a#button-loginwithtwitter').attr('href',
 			'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
 			'&login_successed=' + encodeURIComponent(login_successed));
