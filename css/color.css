@@ -8,12 +8,11 @@ body,
 	background-color: rgb(220, 220, 220);
 }
 
-header,
 footer {
 	background-color: rgb(245, 245, 245);
 }
 
-header {
+nav.navbar {
 	background-color: rgb(255, 255, 255);
 	background: -webkit-linear-gradient(to bottom, rgb(255, 255, 255), rgb(255, 255, 255) 80%, rgb(245, 245, 245) 100%);
 	background: -moz-linear-gradient(to bottom, rgb(255, 255, 255), rgb(255, 255, 255) 80%, rgb(245, 245, 245) 100%);
@@ -29,10 +28,6 @@ header {
 
 .h4p_clear {
 	background-color: rgb(196, 196, 191);;
-}
-
-#h4p_header-dropdown {
-	background-color: rgba(0,0,0,0);
 }
 
 .page-numbers .btn[disabled] {
@@ -58,7 +53,7 @@ header {
 }
 
 /* 線の幅・色 */
-header.navbar {
+nav.navbar {
 	border: none;
 }
 

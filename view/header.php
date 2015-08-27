@@ -1,4 +1,13 @@
 <?php
+
+// SESSION User Info
+if (isset($session_userid)) {
+	$stmt 		= $dbh->prepare('SELECT "Gender","Nickname","ProfileImageURL" FROM "User" WHERE "ID"=:userid');
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+	$stmt->execute();
+	$user_info	= $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 // topPage or inGame
 $header_pattern = "topPage";
 if(preg_match("/^.*\/s/", $_SERVER["PHP_SELF"])){
@@ -91,71 +100,131 @@ $(function(){
 		});
 		return false;
 	});
+
+	// ヘッダナビ用のTwitter OAuth認証
+	(function() {
+		var authed = '/loginsuccess.php';
+		var login_successed = window.location.pathname + window.location.search; // 今いるページに帰還
+		console.log(
+			'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
+			'&login_successed=' + encodeURIComponent(login_successed));
+		$('nav a#button-loginwithtwitter').attr('href',
+			'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
+			'&login_successed=' + encodeURIComponent(login_successed));
+	})();
 });
 </script>
-<header class="navbar navbar-static-top">
+<nav class="navbar navbar-default">
 	<div class="container">
 		<div class="navbar-header">
-	     	<a class="navbar-brand" title="ハックフォープレイ" href="/?rewrite=true">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav-collapse" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" title="ハックフォープレイ" href="/?rewrite=true">
 	        	<img alt="hackforplay" src="/logo.png">
 	     	</a>
-		    <div class="pull-right visible-xs">
-				<div class="dropdown">
-					<a class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" onfocus="this.blur();" >
+		</div>
+		<div class="collapse navbar-collapse" id="header-nav-collapse">
+		<?php
+			if (!$session_userid) :
+			// Before Login
+		?>
+			<form class="navbar-form navbar-left" action="../auth/signin.php" method="post" accept-charset="utf-8">
+				<div class="form-group">
+					<label class="written-in-ja" for="navbarLoginEmail"><small>メールまたはID</small></label>
+					<input class="form-control" name="email" id="navbarLoginEmail" type="text">
+				</div>
+				<div class="form-group">
+					<label class="written-in-ja" for="navbarLoginPassword"><small>パスワード</small></label>
+					<input class="form-control" name="password" id="navbarLoginPassword" type="password">
+				</div>
+				<button class="written-in-ja btn btn-default" type="submit"><small>ログイン</small></button>
+			</form>
+			<ul class="nav navbar-nav navbar-left">
+				<li>
+					<a href="#" id="button-loginwithtwitter" title="Login with Twitter">
+		  				<img src="../img/signin-with-twitter.png" alt="Signin with twitter">
+					</a>
+				</li>
+				<li>
+					<a href="#" class="btn btn-link" title="Register">
+						<span class="written-in-ja"><small>新規登録</small></span>
+					</a>
+				</li>
+			</ul>
+		<?php
+			else :
+			// Have Logged
+			$icon_url = $user_info['ProfileImageURL'] ? $user_info['ProfileImageURL'] :
+				($user_info['Gender'] === 'male' ? '../m/icon_m.png' : '../m/icon_w.png');
+		?>
+			<ul class="nav navbar-nav navbar-left">
+				<li>
+					<a href="/r" title="New stages">
+						<span class="written-in-ja">改造ステージ一覧</span>
+					</a>
+				</li>
+				<li>
+					<a href="/m" title="My page">
+						<span class="written-in-ja">マイページ</span>
+					</a>
+				</li>
+				<li>
+					<a href="/myproject" title="My project">
+						<span class="written-in-ja">プロジェクト</span>
+					</a>
+				</li>
+				<?php if (isset($author_id)) : ?>
+				<li>
+					<a href="/m?id=<?php echo $author_id; ?>" title="Other stages made by this user">
+						<span class="written-in-ja">この人が作った他のステージ</span>
+					</a>
+				</li>
+				<?php endif; ?>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<img src="<?php echo $icon_url; ?>" class="img-circle" id="img-usericon">
+						<?php echo $user_info['Nickname']; ?>
 						<span class="caret"></span>
 					</a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="h4p_header-dropdown">
-						<li role="presentation"><a href="/m" title="settings">マイページ</a></li>
-						<li role="presentation"><a href="/p" title="settings">せってい</a></li>
-						<li role="presentation"><a href="/comments" title="comments">メッセージ</a></li>
-						<li role="presentation" class="divider"></li>
-						<li role="presentation" class="h4p_signin"><a data-toggle="modal" data-target="#signinModal">ログイン</a></li>
-						<li role="presentation" class="h4p_signin"><a data-toggle="modal" data-target="#authModal">とうろく</a></li>
-						<li role="presentation" class="h4p_signout"><a href="javascript:void(0);" onclick="signout();">ログアウト</a></li>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="/m" title="My page">
+								<span class="written-in-ja">マイページ</span>
+							</a>
+						</li>
+						<li>
+							<a href="/myproject" title="My project">
+								<span class="written-in-ja">プロジェクト</span>
+							</a>
+						</li>
+						<li>
+							<a href="/p" title="Preference">
+								<span class="written-in-ja">せってい</span>
+							</a>
+						</li>
+						<li>
+							<a href="/comments" title="Message">
+								<span class="written-in-ja">メッセージ</span>
+							</a>
+						</li>
+						<li role="separator" class="divider"></li>
+						<li>
+							<a href="../auth/signout_and_gotolandingpage.php" title="Logout">
+								<span class="written-in-ja">ログアウト</span>
+							</a>
+						</li>
 					</ul>
-				</div>
-		    </div>
-	    </div>
-	    <nav class="collapse navbar-collapse">
-	    	<ul class="nav navbar-nav">
-	    	<?php if ($help_button_visibility): ?>
-	    		<li><a class="btn btn-link navbar-btn h4p_need-help" href="javascript:void(0)" title=" "> </a></li>
-		    <?php endif; ?>
-	    	<?php if($header_pattern === 'inGame' && $mode === 'official'): ?>
-	    		<li><a class="btn btn-link navbar-btn" href="../" title="トップに戻る">トップに戻る</a></li>
-	    	<?php elseif ($header_pattern === 'inGame' && $mode !== 'official'): ?>
-	    		<li><a class="btn btn-link navbar-btn" href="/r" title="改造ステージ一覧へ">改造ステージ一覧へ</a></li>
-	    		<?php if ($author_id !== NULL) : ?>
-		    		<li><a class="btn btn-link navbar-btn" href="/m?id=<?php echo $author_id; ?>" target="_blank" title="この人が作った他のステージ">この人が作った他のステージ</a></li>
-	    		<?php endif; ?>
-	    	<?php else: ?>
-	    		<li><a class="btn btn-link navbar-btn" href="/r" title="新着ステージ">新着ステージ</a></li>
-	    		<li><a class="btn btn-link navbar-btn" href="/resources" title="リソース">リソース</a></li>
-	    		<li><a class="btn btn-link navbar-btn" href="/reference" title="リファレンス">リファレンス</a></li>
-			<?php endif; ?>
-	    	</ul>
-	    	<ul class="nav navbar-nav navbar-right">
-	    		<li class="h4p_signin"><button type="button" class="btn btn-link navbar-btn" data-toggle="modal" data-target="#signinModal">ログイン</button></li>
-				<li class="h4p_signin"><button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#authModal">とうろく</button></li>
-				<li class="h4p_signout">
-					<div class="dropdown">
-						<a id="h4p_header-dropdown" class="btn navbar-btn" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" onfocus="this.blur();" >
-							<div data-toggle="tooltip" data-placement="bottom" title="マイページと設定">
-								<span class="h4p_own-nickname btn btn-link"></span>
-								<img class="img-circle h4p_own-thumbnail">
-							</div>
-						</a>
-						<ul class="dropdown-menu" role="menu" aria-labelledby="h4p_header-dropdown">
-							<li role="presentation"><a href="/m" title="settings">マイページ</a></li>
-							<li role="presentation"><a href="/myproject" title="settings">プロジェクト</a></li>
-							<li role="presentation"><a href="/p" title="settings">せってい</a></li>
-							<li role="presentation"><a href="/comments" title="comments">メッセージ</a></li>
-							<li role="presentation" class="divider"></li>
-							<li role="presentation" class="h4p_signout"><a href="javascript:void(0);" onclick="signout();">ログアウト</a></li>
-						</ul>
-					</div>
 				</li>
-	    	</ul>
-	    </nav>
+			</ul>
+		<?php
+			endif;
+		?>
+		</div>
 	</div>
-</header>
+</nav>

@@ -8,7 +8,12 @@ try {
 	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
 	session_commit();
 
-	include 'view.php';
+	// セッションがある場合は / に遷移する
+	if ($session_userid) {
+		header('Location: /');
+	} else {
+		include 'view.php';
+	}
 
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';

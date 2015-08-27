@@ -1,14 +1,19 @@
 <?php
+/*
+サインアウトしてランディングページにリダイレクトする
+*/
 
 try {
 
 	require_once '../preload.php';
 
 	session_start();
-	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
+	setcookie(session_name(), '', time() - 1);
+
+	session_destroy();
 	session_commit();
 
-	include 'view.php';
+	header('Location: /');
 
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';
@@ -16,5 +21,6 @@ try {
 
 	header('Location: ../e');
 }
+
 
 ?>

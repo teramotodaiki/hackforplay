@@ -1,5 +1,8 @@
 <?php
 /*
+
+/// 旧仕様 削除対象 ///
+
 ペーパーログインアカウントでサインインを行う。新しくセッションをつくる
 Input:	id , password
 Output:	unregistered , incorrect-password , success

@@ -55,7 +55,7 @@ try {
 
 	// 認証後のコールバックURL
 	$callback_url = $_SESSION['loginsuccessed_callback_url'];
-	header('Location: ' . $callback_url); // 認証前にいたページにジャンプ
+	session_commit();
 
 } catch (Exception $e) {
 	require_once 'exception/tracedata.php';
@@ -63,5 +63,22 @@ try {
 
 	header('Location: e');
 }
-
- ?>
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Back to page</title>
+	<script type="text/javascript" charset="utf-8">
+	window.newLocation = function( location ) {
+	    var newLocation = ( typeof location === "string" ) ? location : '/',
+	    	appendType = ( newLocation.indexOf("?") < 0 ) ? "?" : "&";
+	    window.location = newLocation + appendType + "_t=" + (new Date()).getTime();
+	};
+	newLocation('<?php echo $callback_url; ?>');
+	</script>
+</head>
+<body>
+</body>
+</html>
