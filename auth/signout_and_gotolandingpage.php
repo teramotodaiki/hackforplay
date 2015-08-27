@@ -13,14 +13,23 @@ try {
 	session_destroy();
 	session_commit();
 
-	header('Location: /');
-
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';
 	traceData($e);
 
 	header('Location: ../e');
 }
-
-
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<script type="text/javascript" charset="utf-8">
+	window.location.href = '/';
+	</script>
+</head>
+<body>
+</body>
+</html>
