@@ -5,7 +5,7 @@ Input:
 {
 	id: ペーパーログインIDまたはメールアドレス,
 	password: パスワード,
-	ref: もといたページのURL
+	// ref: もといたページのURL
 }
 Successed:	もといたページに遷移する
 Failed:		ログイン専用ページに移動する
@@ -50,11 +50,7 @@ try {
 	session_commit();
 
 	// サインイン成功
-	$ref 		= filter_input(INPUT_POST, 'ref');
-	if (!$ref) {
-		$ref	= '/'; // デフォルトはランディングページ
-	}
-	header('Location: ' . $ref);
+	header('Location: ' . $_SERVER['HTTP_REFERER']);
 
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';

@@ -129,7 +129,7 @@ $(function(){
 					<label class="written-in-ja" for="navbarLoginPassword"><small>パスワード</small></label>
 					<input class="form-control" name="password" id="navbarLoginPassword" type="password">
 				</div>
-				<input type="hidden" name="ref" value="<?php echo $_SERVER['PHP_SELF'] ?>"></input>
+				<!-- <input type="hidden" name="ref" value="<?php // echo $_SERVER['PHP_SELF'] ?>"></input> -->
 				<button class="written-in-ja btn btn-default" type="submit"><small>ログイン</small></button>
 			</form>
 			<ul class="nav navbar-nav navbar-left">
