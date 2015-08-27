@@ -28,8 +28,10 @@ try {
 	$stmt->bindValue(":connected", "connected");
 	$stmt->execute();
 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	if($result === NULL){
-		exit("unregistered");
+
+	if(!$result){
+		header('Location: ../login/?state=unregistered');
+		exit;
 	}
 
 	// パスワードを照会する
@@ -40,8 +42,10 @@ try {
 			break;
 		}
 	}
+
 	if($confirmed === NULL){
-		exit("incorrect-password");
+		header('Location: ../login/?state=incorrect');
+		exit;
 	}
 
 	// セッションをつくる

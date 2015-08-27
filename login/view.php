@@ -25,6 +25,29 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
+			<?php
+			switch (filter_input(INPUT_GET, 'state')) {
+				case 'unregistered': ?>
+
+				<p class="alert alert-danger">
+					<span class="glyphicon glyphicon-user"></span>
+					<span class="written-in-ja">アカウントが見つかりませんでした</span>
+				</p>
+
+					<?php
+					break;
+				case 'incorrect': ?>
+
+				<p class="alert alert-danger">
+					<span class="glyphicon glyphicon-remove-circle"></span>
+					<span class="written-in-ja">パスワードがまちがっています</span>
+				</p>
+
+				<?php
+				default:
+					break;
+			}
+			?>
 			</div>
 			<div class="col-xs-12">
 				<div class="panel panel-default panel-login">
