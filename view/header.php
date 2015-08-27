@@ -100,6 +100,18 @@ $(function(){
 		});
 		return false;
 	});
+
+	// ヘッダナビ用のTwitter OAuth認証
+	(function() {
+		var authed = '/loginsuccess.php';
+		var login_successed = window.location.pathname + window.location.search; // 今いるページに帰還
+		console.log(
+			'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
+			'&login_successed=' + encodeURIComponent(login_successed));
+		$('nav a#button-loginwithtwitter').attr('href',
+			'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
+			'&login_successed=' + encodeURIComponent(login_successed));
+	})();
 });
 </script>
 <nav class="navbar navbar-default">
@@ -134,7 +146,7 @@ $(function(){
 			</form>
 			<ul class="nav navbar-nav navbar-left">
 				<li>
-					<a id="button-loginwithtwitter" href="#" title="Login with Twitter">
+					<a href="#" id="button-loginwithtwitter" title="Login with Twitter">
 		  				<img src="../img/signin-with-twitter.png" alt="Signin with twitter">
 					</a>
 				</li>
