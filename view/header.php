@@ -1,5 +1,7 @@
 <?php
 
+var_dump($session_userid);
+
 // SESSION User Info
 if (isset($session_userid)) {
 	$stmt 		= $dbh->prepare('SELECT "Gender","Nickname","ProfileImageURL" FROM "User" WHERE "ID"=:userid');
