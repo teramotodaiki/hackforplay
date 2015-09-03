@@ -10,7 +10,16 @@
 
 try {
 
-	$fileName = "pref_" . date("YmdHis") . ".csv";
+	$offset		= filter_input(INPUT_GET, 'offset', FILTER_VALIDATE_INT);
+	if (!$offset) {
+		$offset	= 0;
+	}
+	$length		= filter_input(INPUT_GET, 'length', FILTER_VALIDATE_INT);
+	if (!$length) {
+		$length	= 1;
+	}
+
+	$fileName = "attendance_" . $offset . ".csv";
 	header('Content-Type: application/octet-stream');
 	header('Content-Disposition: attachment; filename=' . $fileName);
 
@@ -34,11 +43,14 @@ try {
 	$stmt_att	= $dbh->prepare('SELECT "ID","UserID","Begin","End" FROM "Attendance"');
 	$stmt_att->execute();
 
-
+	// Skip
+	for ($i=0; $i < $offset; $i++) {
+		$stmt_att->fetch();
+	}
 
 	echo ",Begin,End,SelfPath,QueryString\n";
 
-	while ($row = $stmt_att->fetch(PDO::FETCH_ASSOC)) {
+	while (($row = $stmt_att->fetch(PDO::FETCH_ASSOC)) && ($length-- > 0)) {
 
 		echo $row['UserID'] . ","; // UserID
 		echo date_create_from_format('Y-m-d H:i:sP', $row['Begin'])->getTimeStamp() . ","; // Begin
