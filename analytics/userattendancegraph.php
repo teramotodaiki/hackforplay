@@ -36,13 +36,13 @@ try {
 
 
 
-	$buffer = ",Begin,End,SelfPath,QueryString\n";
+	echo ",Begin,End,SelfPath,QueryString\n";
 
 	while ($row = $stmt_att->fetch(PDO::FETCH_ASSOC)) {
 
-		$buffer .= $row['UserID'] . ","; // UserID
-		$buffer .= date_create_from_format('Y-m-d H:i:sP', $row['Begin'])->getTimeStamp() . ","; // Begin
-		$buffer .= ($row['End'] ? date_create_from_format('Y-m-d H:i:sP', $row['End'])->getTimeStamp() : '') . ","; // End
+		echo $row['UserID'] . ","; // UserID
+		echo date_create_from_format('Y-m-d H:i:sP', $row['Begin'])->getTimeStamp() . ","; // Begin
+		echo ($row['End'] ? date_create_from_format('Y-m-d H:i:sP', $row['End'])->getTimeStamp() : '') . ","; // End
 
 		$stmt_map->bindValue(":att_id", $row['ID'], PDO::PARAM_INT);
 		$stmt_map->execute();
@@ -64,13 +64,11 @@ try {
 			}
 		}
 
-		$buffer .= ($selfPath ? $selfPath : '') . ",";
-		$buffer .= ($queryString ? $queryString : '') . ",";
+		echo ($selfPath ? $selfPath : '') . ",";
+		echo ($queryString ? $queryString : '') . ",";
 
-		$buffer .= "\n";
+		echo "\n";
 	}
-
-	echo $buffer;
 
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';
