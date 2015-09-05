@@ -261,15 +261,10 @@ $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 							<img src="img/button_next.png" height="48" width="266" alt="">
 						</a>
 					<?php elseif($id == 106) : // last stage of tutirial ?>
-						<div class="h4p_guide-kit hidden">
+						<div class="">
 							<h3>クリアおめでとうございます！</h3>
-							<p>こんどは、あなたもステージを作ってみましょう</p>
-							<a href="../replay/" class="btn btn-success btn-lg" title="今すぐ作る"><h3>今すぐ作る</h3></a>
-						</div>
-						<div class="h4p_guide-stage hidden">
-							<h3>クリアおめでとうございます！</h3>
-							<p>もっと たくさんの ステージを あそんでみましょう</p>
-							<a href="../r/#page_anchor" title="ステージを さがす"><h3>ステージを さがす</h3></a>
+							<p>とっておきの ほうしゅう が とどきました</p>
+							<a href="../getaccount/" class="btn btn-success btn-lg" title="Get"><h3>うけとる</h3></a>
 						</div>
 					<?php endif; ?>
 					</div>
