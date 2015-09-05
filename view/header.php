@@ -147,7 +147,7 @@ $(function(){
 					</a>
 				</li>
 				<li>
-					<a href="#" class="btn btn-link" title="Register">
+					<a href="../getaccount/" class="btn btn-link" title="Register">
 						<span class="written-in-ja"><small>新規登録</small></span>
 					</a>
 				</li>
