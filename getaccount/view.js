@@ -17,8 +17,6 @@ $(function () {
 				// 情報を削除
 				$(this).find('.paper-id').text('');
 				$(this).find('.paper-password').text('');
-				// サインインしてもらう
-				$('#paperLoginModal').modal('show');
 			} else {
 				event.preventDefault();
 			}
