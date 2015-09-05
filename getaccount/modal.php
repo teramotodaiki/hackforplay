@@ -40,7 +40,7 @@
 		    <div class="modal-body modal-page-1 hidden">
 			  	<form id="signup" class="form-horizontal">
 					<h4 class="text-center">プロフィールを入力してください<br><small>メールアドレスをとうろくすると、パスワードを忘れてしまったときでもリセットができます</small></h4>
-					<p class="alert alert-danger hide" role="alert"></p>
+					<p class="alert alert-danger hidden" role="alert"></p>
 					<div class="form-group has-feedback">
 				    	<label for="signupEmail" class="col-sm-3 control-label">メールアドレス</label>
 				    	<div class="col-sm-8">
@@ -118,7 +118,7 @@
 		    	<form id="tmp" class="form-horizontal">
 			    	<h4>メールが送信されました。届くまでに数分かかることがありますので、お気をつけください</h4>
 			    	<h5>本文に書かれた「仮パスワード」を入力してください</h5>
-					<p class="alert alert-danger hide" role="alert"></p>
+					<p class="alert alert-danger hidden" role="alert"></p>
 					<div class="form-group">
 				    	<div class="col-sm-offset-1 col-sm-10 col-sm-offset-1">
 					    	<input type="password" class="form-control" id="tmpPassword">
@@ -133,7 +133,7 @@
 		    <div class="modal-body modal-page-3 hidden">
 		    	<form id="setPassword" class="form-horizontal">
 			    	<h4>パスワードを設定してください</h4>
-					<p class="alert alert-danger hide" role="alert"></p>
+					<p class="alert alert-danger hidden" role="alert"></p>
 				  	<div class="form-group has-feedback">
 				    	<label for="password" class="col-sm-3 control-label">パスワード</label>
 				    	<div class="col-sm-8">
