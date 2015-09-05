@@ -7,10 +7,11 @@
 	<?php require_once '../library.php' ?>
 </head>
 <body class="">
-	<?php require_once '../analyticstracking.php' ?>
-	<?php require_once '../fb-root.php' ?>
+	<?php require_once '../analyticstracking.php'; ?>
+	<?php require_once '../fb-root.php'; ?>
 	<?php require_once '../sendattendance.php'; ?>
-	<?php require_once '../view/authmodal.php'; ?>
+	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<?php require_once 'modal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<script type="text/javascript" charset="utf-8">
 	// ログインページ用のTwitter OAuth認証
@@ -38,11 +39,11 @@
 			<div class="col-xs-12 col-sm-4">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h3>かんたん とうろく</h3>
+						<h3>ペーパーログイン <span class="label label-success">かんたん</span></h3>
 					</div>
 					<div class="panel-body">
 						<p>texttexttexttexttexttexttexttexttexttext</p>
-						<button type="button" class="btn btn-lg btn-primary">けってい</button>
+						<button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#modal-signup-paper">けってい</button>
 					</div>
 				</div>
 			</div>
@@ -65,6 +66,14 @@
 					<div class="panel-body">
 						<p>texttexttexttexttexttexttexttexttexttext</p>
 						<button type="button" class="btn btn-lg btn-primary">けってい</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-lg-offset-3 col-lg-6">
+				<div class="panel panel-default margin-top-lg margin-bottom-lg panel-after-signup hidden">
+					<div class="panel-body text-center">
+						<h3><b>アカウントができたら つぎにすすもう</b></h3>
+			    		<a href="../login/" class="btn btn-primary btn-lg" title="Next">ログイン</a>
 					</div>
 				</div>
 			</div>
