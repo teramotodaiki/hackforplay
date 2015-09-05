@@ -17,8 +17,8 @@
 	// ログインページ用のTwitter OAuth認証
 	$(function() {
 		var authed = '/loginsuccess.php';
-		var login_successed = '/?debug=fromgetaccount'; // トップページに移動
-		$('.panel-login a#button-loginwithtwitter').attr('href',
+		var login_successed = '/'; // トップページに移動
+		$('.panel a.signup-with-twitter').attr('href',
 			'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
 			'&login_successed=' + encodeURIComponent(login_successed));
 	});
@@ -42,7 +42,7 @@
 						<h3>ペーパーログイン <span class="label label-success">かんたん</span></h3>
 					</div>
 					<div class="panel-body">
-						<p>texttexttexttexttexttexttexttexttexttext</p>
+						<p><ruby>ID<rt>あいでぃー</rt></ruby>とパスワードをメモするだけで アカウントをつくることができます。かんたんなので、小学生でもできます。ただし パスワードを なくしてしまうと、どうにもなりません</p>
 						<button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#modal-signup-paper">けってい</button>
 					</div>
 				</div>
@@ -53,7 +53,7 @@
 						<h3>メールアドレスで とうろく</h3>
 					</div>
 					<div class="panel-body">
-						<p>texttexttexttexttexttexttexttexttexttext</p>
+						<p>メールアドレスがひつようです。じぶんで パスワードを きめられたり パスワードを なくしたとき リセットできたり するので、ペーパーログインよりもあんしんです。あとから ツイッターのアカウントを ついかすることも できます</p>
 						<button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#modal-signup-email">けってい</button>
 						<button type="button" class="btn btn-link" data-toggle="modal" data-target="#modal-signup-email" data-openpage=".modal-page-2">仮パスワードを入力</button>
 					</div>
@@ -65,8 +65,8 @@
 						<h3>ツイッターで とうろく</h3>
 					</div>
 					<div class="panel-body">
-						<p>texttexttexttexttexttexttexttexttexttext</p>
-						<button type="button" class="btn btn-lg btn-primary">けってい</button>
+						<p>ツイッターのアカウントがひつようです。いちいち 入力しなくていいので ログインするのが らくです。あとから メールアドレスを ついかすることも できます</p>
+						<a href="#" class="btn btn-lg btn-primary signup-with-twitter">けってい</a>
 					</div>
 				</div>
 			</div>
