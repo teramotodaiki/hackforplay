@@ -160,7 +160,7 @@
 		    <div class="modal-body modal-page-4 hidden">
 		    	<div class="text-center">
 			    	<h4>ログインできました！</h4>
-			    	<a href="/" class="btn btn-link btn-lg" title="Next">つぎのページへ</a>
+			    	<a href="/r" class="btn btn-link btn-lg" title="Next">つぎのページへ</a>
 		    	</div>
 		    </div>
       		<div class="modal-footer">
