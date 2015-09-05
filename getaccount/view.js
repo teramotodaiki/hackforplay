@@ -54,7 +54,6 @@ $(function () {
 
 		var button = $(event.relatedTarget);
 		var open_page_class = button.data('openpage') || '.modal-page-1';
-		console.log(button, open_page_class);
 
 		// 任意のページを表示
 		$(this).find('.modal-body').addClass('hidden');
@@ -89,8 +88,6 @@ $(function () {
 		var timezone = new Date().getTimezoneString();
 
 		$('#signup .alert').addClass('hidden');
-
-		console.log('signup', email, gender, nickname, birthday, experience_days, timezone);
 
 		$.post('/auth/signupwithemail.php', {
 			'email': email,
@@ -140,8 +137,6 @@ $(function () {
 		var password = $(this).find("#tmpPassword").val();
 		var email = $("#signup #signupEmail").val();
 		$('#tmp .alert').addClass('hidden');
-
-		console.log('tmp', password, email);
 
 		$.post('/auth/confirmpassword.php', {
 			'password' : password,
@@ -195,8 +190,6 @@ $(function () {
 			$(this).find('#confirm').parents('.has-feedback').addClass('has-error');
 			return;
 		}
-
-		console.log(password);
 
 		$.post('/auth/updateuserinfoimmediately.php', {
 			'password' : password
