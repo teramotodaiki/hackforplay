@@ -9,13 +9,13 @@ $(function(){
 			game.contentWindow.postMessage(source, '/');
 		}
 	}, 100);
-	// モーダル表示中は、モーダルにフォーカスする
-	$('.modal').on('shown.bs.modal', function() {
+	// テキストボックスにフォーカスがあるときはゲームにフォーカスしない
+	$('input,textarea').focus(function(event) {
 		focus_on_game = false;
-	});
-	$('.modal').on('hide.bs.modal', function() {
+	}).blur(function(event) {
 		focus_on_game = true;
 	});
+
 	// ゲームフレームを横幅基本で3:2にする
 	var width = $(".h4p_game").width();
 	// frame.phpを経由して、getParam('src')のページをincludeさせる

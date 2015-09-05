@@ -34,6 +34,8 @@ try {
 	foreach ($result as $key => $value) {
 		if ($value["State"] === 'connected') {
 			// セッションがあるなら、immediatelyにプロフィールを更新してもらう
+			session_start();
+			$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
 			require_once 'inputview.php';
 			exit();
 		}
@@ -55,6 +57,7 @@ try {
 	session_start();
 	$_SESSION['UserID'] = $confirmed['UserID'];
 	$_SESSION['SignupImmediately'] = 'immediately';
+	$session_userid	= $confirmed['UserID'];
 
 	session_commit();
 

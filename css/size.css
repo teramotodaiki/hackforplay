@@ -13,9 +13,6 @@
 	.h4p_stagelist {
 		width: 384px;
 	}
-	header .pull-right ul.dropdown-menu {
-		left: -130px;
-	}
 }
 @media(min-width: 768px) {
 	.container {
@@ -52,6 +49,11 @@
 /* 幅・高さ属性 */
 .width-fit {
 	width: 100%;
+}
+
+nav #img-usericon {
+	max-height: 40px;
+	margin: -10px 0px;
 }
 
 .h4p_item {
@@ -150,12 +152,12 @@
 	padding: 0;
 }
 
-header {
-	padding: 5px 0;
+nav .navbar-brand img {
+	margin-top: -15px;
 }
 
-.nav .btn-link {
-	padding: 6px 12px;
+nav #button-loginwithtwitter {
+	padding: 11px 0px;
 }
 
 .h4p_stagecontainer {
@@ -174,13 +176,8 @@ header {
 	padding: 0;
 }
 
-.navbar-brand {
-	padding: 0;
-}
-
 .h4p_item p,
-.h4p_info-datail p,
-#h4p_header-dropdown {
+.h4p_info-datail p {
 	margin: 0;
 	padding: 0;
 }

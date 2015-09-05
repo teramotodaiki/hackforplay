@@ -7,13 +7,7 @@ $(function(){
 	// background-image
 	var bgImageList = [
 		['.l-1', 'img/'+mainSize+'/topback.jpg'],
-		['.l-2', 'img/lp-back-2.png'],
-		['.l-1 .h4p_landing-header', 'img/'+mainSize+'/logoh4p.png'],
-		['.l-3', 'img/'+mainSize+'/topreback.png'],
-		['.l-4', 'img/lp-back-4.png'],
-		['.l-2 .h4p_landing-header', 'img/'+mainSize+'/whats1.png'],
-		['.l-3 .h4p_landing-header', 'img/'+mainSize+'/logore.png'],
-		['.l-4 .h4p_landing-header', 'img/'+mainSize+'/whats2.png']
+		['.l-1 .h4p_landing-header', 'img/'+mainSize+'/logoh4p.png']
 	];
 	var loadAndFadein = function(index){
 		if (bgImageList.length <= index) return;
@@ -33,9 +27,7 @@ $(function(){
 
 	// button
 	var btnImageList = [
-		[".l-1", 'img/'+mainSize+'/playbutton'],
-		[".l-2", 'img/'+mainSize+'/playbutton2'],
-		[".l-4", 'img/'+mainSize+'/playbutton3']
+		[".l-1", 'img/'+mainSize+'/playbutton']
 	];
 
 	var loadAndSetPN = function(index){
@@ -61,18 +53,4 @@ $(function(){
 		});
 	};
 	loadAndSetPN(0);
-
-	// スマートフォンの警告
-	var sp_word = ['Mobile', 'iPhone', 'iPod', 'iPad', 'Android', 'Windows Phone', 'BlackBerry', 'Symbian'];
-	sp_word.forEach(function(item){
-		if (navigator.userAgent.indexOf(item) !== -1) {
-			$('#spModal').modal('show');
-		}
-	});
-
-	// チュートリアルのトラッキングにもちいるキーを初期化
-	$('.l-1 a,.l-2 a').on('click', function(event) {
-		localStorage.removeItem('tutorial_tracking_key');
-		localStorage.removeItem('tutorial_tracking_log');
-	});
 });
