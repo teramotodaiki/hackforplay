@@ -50,4 +50,44 @@ $(function () {
 			}
 		});
 	});
+
+	// メールアドレス
+	$('#modal-signup-email').on('show.bs.modal', function() {
+		// ページ１を表示
+		$(this).find('.modal-body').addClass('hidden');
+		$(this).find('.modal-page-1').removeClass('hidden');
+
+	}).on('hide.bs.modal', function(event) {
+
+	});
+
+	// メールアドレス 仮登録
+	$('#modal-signup-email form#signup').submit(function(event) {
+		event.preventDefault();
+
+		// ページ２を表示
+		var $modal = $('#modal-signup-email');
+		$modal.find('.modal-body').addClass('hidden');
+		$modal.find('.modal-page-2').removeClass('hidden');
+	});
+
+	// メールアドレス 仮パスワード送信
+	$('#modal-signup-email form#tmp').submit(function(event) {
+		event.preventDefault();
+
+		// ページ３を表示
+		var $modal = $('#modal-signup-email');
+		$modal.find('.modal-body').addClass('hidden');
+		$modal.find('.modal-page-3').removeClass('hidden');
+	});
+
+	// メールアドレス 本パスワード設定
+	$('#modal-signup-email form#setPassword').submit(function(event) {
+		event.preventDefault();
+
+		// ページ４を表示
+		var $modal = $('#modal-signup-email');
+		$modal.find('.modal-body').addClass('hidden');
+		$modal.find('.modal-page-4').removeClass('hidden');
+	});
 });

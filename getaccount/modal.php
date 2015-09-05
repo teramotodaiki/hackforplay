@@ -158,8 +158,10 @@
 				</form>
 			</div>
 		    <div class="modal-body modal-page-4 hidden">
-		    	<h4>ログインできました！</h4>
-		    	<a href="/" class="btn btn-link btn-lg" title="Next">つぎへ</a>
+		    	<div class="text-center">
+			    	<h4>ログインできました！</h4>
+			    	<a href="/" class="btn btn-link btn-lg" title="Next">つぎのページへ</a>
+		    	</div>
 		    </div>
       		<div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
