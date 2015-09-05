@@ -54,7 +54,8 @@
 					</div>
 					<div class="panel-body">
 						<p>texttexttexttexttexttexttexttexttexttext</p>
-						<button type="button" class="btn btn-lg btn-primary">けってい</button>
+						<button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#modal-signup-email">けってい</button>
+						<button type="button" class="btn btn-link">仮パスワードを入力</button>
 					</div>
 				</div>
 			</div>
