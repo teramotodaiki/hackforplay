@@ -419,7 +419,6 @@ $(function(){
 
 				// サムネイル生成のコールバックとしてタスクを準備
 				window.addEventListener('message', (function task(e) {
-					console.log(e.data, e);
 					// onmessageのリスナとして登録するので識別をおこなう
 					if (e.data !== 'updateProject') return;
 					// 即座にリスナを解放する
@@ -492,6 +491,9 @@ $(function(){
 				'timezone': timezone,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
+
+				console.log('makeProject', data);
+
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
@@ -526,6 +528,9 @@ $(function(){
 				'thumb': sessionStorage.getItem('image') || null,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
+
+				console.log('updateTask', data);
+
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
