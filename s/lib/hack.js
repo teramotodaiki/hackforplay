@@ -349,7 +349,7 @@ window.addEventListener('load', function() {
 		Hack.openMenu = function() {
 			if (visible) return;
 			visible = true;
-			Hack.dispatchEvent(new Event('onmenuopened'));
+			Hack.dispatchEvent(new Event('menuopened'));
 
 			// アニメーション
 			overlay.tl.fadeIn(6);
@@ -360,6 +360,7 @@ window.addEventListener('load', function() {
 			}).forEach(function(item, index) {
 				item.moveTo(opener.x, opener.y);
 				item.tl.hide().fadeIn(8).and().moveBy(0, 40 * index + 60, 8, enchant.Easing.BACK_EASEOUT);
+				item.touchEnabled = true;
 			});
 		};
 
@@ -367,12 +368,13 @@ window.addEventListener('load', function() {
 		Hack.closeMenu = function() {
 			if (!visible) return;
 			visible = false;
-			Hack.dispatchEvent(new Event('onmenuclosed'));
+			Hack.dispatchEvent(new Event('menuclosed'));
 
 			overlay.tl.fadeOut(6);
 
 			GUIParts.forEach(function(item, index) {
 				item.tl.fadeOut(8, enchant.Easing.BACK_EASEIN).and().moveTo(opener.x, opener.y, 8, enchant.Easing.BACK_EASEIN);
+				item.touchEnabled = false;
 			});
 		};
 
@@ -442,6 +444,7 @@ window.addEventListener('load', function() {
 					defaultParentNode: menuGroup,
 					visible: _condition(),
 					condition: _condition,
+					touchEnabled: false,
 					ontouchend: function() {
 						this.tl.scaleTo(1.1, 1.1, 3).scaleTo(1, 1, 3).then(function() {
 							_touchEvent();
