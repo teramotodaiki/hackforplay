@@ -311,7 +311,7 @@ $(function(){
 				});
 
 				// 定期送信
-				var lastJsonString = '';
+				var lastJsonString = JSON.stringify(log);
 				var currentInterval = updateInterval;
 				(function task () {
 					var current = JSON.stringify(log);
