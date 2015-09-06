@@ -547,12 +547,13 @@ $(function(){
 			});
 		}
 		function publishTask (callback) {
+
 			var title = $("#stage-name").val();
 			var explain = $('#stage-explain').val();
 			if(title === ""){ $("#stage-name_alert").show('fast'); }
 			if(title !== ""){
 				$("#inputModal").modal('hide');
-				$("#publish-button button").button('loading');
+				$("#h4p_publish button").button('loading');
 				jsEditor.save();
 				var code = jsEditor.getTextArea().value;
 				var timezone = new Date().getTimezoneString();
@@ -566,14 +567,22 @@ $(function(){
 					'attendance-token': sessionStorage.getItem('attendance-token')
 				} , function(data, textStatus, xhr) {
 
-					$('#publish-button button').button('reset');
+					$('#h4p_publish button').button('reset');
 
 					switch(data){
 						case 'no-session':
 							$('#signinModal').modal('show').find('.modal-title').text('ステージを投稿するには、ログインしてください');
 							break;
 						case 'invalid-token':
-							showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
+							// project-tokenがない、またはサーバー側と照合できないとき
+							showAlert('alert-danger', 'プロジェクトが見つかりません。新規に作成を行いますので、しばらくお待ちください…');
+							$('.h4p_save_button button').button('loading');
+							makeProject(function() {
+								updateTask(function() {
+									$('.h4p_save_button button').button('reset');
+									showAlert('alert-success', 'プロジェクトが作成されました！もう一度投稿してください');
+								});
+							});
 							break;
 						case 'already-published':
 							showAlert('alert-danger', 'すでに投稿されたステージです');
