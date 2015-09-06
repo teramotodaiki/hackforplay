@@ -458,7 +458,12 @@ $(function(){
 
 			// 投稿
 			$("#publish-button").on('click', function() {
-				publishTask();
+				// 必ず保存してから投稿
+				$('.h4p_save_button button').button('loading');
+				updateTask(function() {
+					$('.h4p_save_button button').button('reset');
+					publishTask();
+				});
 			});
 
 			// YouTubeの設定
@@ -526,7 +531,19 @@ $(function(){
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
 						break;
 					case 'invalid-token':
-						showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
+						// project-tokenがない、またはサーバー側と照合できないとき
+						showAlert('alert-danger', 'プロジェクトが保存されていません。新規に作成を行いますので、しばらくお待ちください…');
+						$('.h4p_save_button button').button('loading');
+						var tmpCallback = callback; // callbackの発動を遅らせる
+						callback = undefined; // callbackの発動を遅らせる
+						makeProject(function() {
+							updateTask(function() {
+								showAlert('alert-success', 'プロジェクトが作成されました！');
+								if (tmpCallback !== undefined) {
+									tmpCallback();
+								}
+							});
+						});
 						break;
 					case 'already-published':
 						showAlert('alert-danger', 'すでに投稿されたステージです');
