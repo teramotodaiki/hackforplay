@@ -317,6 +317,8 @@ $(function(){
 					if (lastJsonString !== current) {
 						updateLog(function() {
 							lastJsonString = current;
+						}, function() {
+							updateInterval *= 2; // 失敗時の対処
 						});
 					}
 				}, updateInterval);
