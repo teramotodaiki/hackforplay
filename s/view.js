@@ -492,8 +492,6 @@ $(function(){
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
 
-				console.log('makeProject', data);
-
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
@@ -528,8 +526,6 @@ $(function(){
 				'thumb': sessionStorage.getItem('image') || null,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
-
-				console.log('updateTask', data);
 
 				switch(data){
 					case 'no-session':
