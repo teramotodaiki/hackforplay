@@ -431,6 +431,8 @@ $(function(){
 							updateTask(function() {
 								loading.button('reset');
 							});
+						}, function() {
+							loading.button('reset');
 						});
 					}else{
 						loading.button('loading');
@@ -483,7 +485,7 @@ $(function(){
 
 		};
 
-		function makeProject (callback) {
+		function makeProject (successed, failed) {
 			// 残っているトークンを破棄
 			sessionStorage.removeItem('project-token');
 			var code = sessionStorage.getItem('restaging_code');
@@ -497,6 +499,9 @@ $(function(){
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
+						if (failed !== undefined) {
+							failed();
+						}
 						break;
 					case 'invalid-stageid':
 						showAlert('alert-danger', 'このステージは改造できません');
@@ -506,8 +511,8 @@ $(function(){
 						break;
 					default:
 						sessionStorage.setItem('project-token', data);
-						if(callback !== undefined){
-							callback();
+						if(successed !== undefined){
+							successed();
 						}
 						break;
 				}
@@ -600,6 +605,8 @@ $(function(){
 								updateTask(function() {
 									$('.h4p_save_button button').button('reset');
 									showAlert('alert-success', 'プロジェクトが作成されました！もう一度投稿してください');
+								}, function() {
+									$('.h4p_save_button button').button('reset');
 								});
 							});
 							break;
