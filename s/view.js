@@ -405,6 +405,11 @@ $(function(){
 				var code = jsEditor.getTextArea().value;
 				sessionStorage.setItem('restaging_code', code);
 
+				// 投稿可能状態に
+				$(".h4p_publish").show();
+				$("#stage-name_alert").hide();
+				$("#author_alert").hide();
+
 				// ゲームをリロード
 				$('.h4p_game>iframe').get(0).contentWindow.postMessage('window.location.reload();', '/');
 			});
@@ -444,6 +449,17 @@ $(function(){
 			// ビューの設定
 			$(".h4p_while-restaging").show(); // UI
 			$(document.body).css('background-color', 'rgb(92, 92, 92)');
+
+			// 投稿時の設定
+			$('#inputModal').on('show.bs.modal', function () {
+				// サムネイルを生成
+				$(".h4p_game>iframe").get(0).contentWindow.postMessage("saveImage('thumbnail');", '/');
+			});
+
+			// 投稿
+			$("#publish-button").on('click', function() {
+				publishTask();
+			});
 
 			// YouTubeの設定
 			if (getParam('youtube') !== '') {
@@ -530,6 +546,50 @@ $(function(){
 				}
 			});
 		}
+		function publishTask (callback) {
+			var title = $("#stage-name").val();
+			var explain = $('#stage-explain').val();
+			if(title === ""){ $("#stage-name_alert").show('fast'); }
+			if(title !== ""){
+				$("#inputModal").modal('hide');
+				$("#publish-button button").button('loading');
+				jsEditor.save();
+				var code = jsEditor.getTextArea().value;
+				var timezone = new Date().getTimezoneString();
+				$.post('../project/publishreplaystage.php', {
+					'token': sessionStorage.getItem('project-token'),
+					'thumb': sessionStorage.getItem('image') || null,
+					'path': getParam('path'),
+					'title': title,
+					'explain': explain,
+					'timezone': timezone,
+					'attendance-token': sessionStorage.getItem('attendance-token')
+				} , function(data, textStatus, xhr) {
+
+					$('#publish-button button').button('reset');
+
+					switch(data){
+						case 'no-session':
+							$('#signinModal').modal('show').find('.modal-title').text('ステージを投稿するには、ログインしてください');
+							break;
+						case 'invalid-token':
+							showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
+							break;
+						case 'already-published':
+							showAlert('alert-danger', 'すでに投稿されたステージです');
+							break;
+						case 'database-error':
+							showAlert('alert-danger', 'エラーにより投稿できませんでした');
+							break;
+						case 'success':
+							$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled').append($('<p>').text('ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。'));
+							$(".h4p_publish-return").show();
+							alert_on_unload = false; // 遷移時の警告を非表示
+							break;
+					}
+				});
+			}
+		}
 
 		switch(getParam('mode')){
 			case "official":
@@ -542,57 +602,11 @@ $(function(){
 			case "restaging":
 				// restaging mode (load javascript-code from sessionStorage)
 				beginRestaging();
+				// 投稿可能状態に
 				$(".h4p_publish").show();
 				$("#stage-name_alert").hide();
 				$("#author_alert").hide();
-				$('#inputModal').on('show.bs.modal', function () {
-					// canvas to image
-					var game = $(".h4p_game>iframe").get(0);
-					var source = "saveImage('thumbnail');";
-					game.contentWindow.postMessage(source, '/');
-				});
-				$("#publish-button").on('click', function() {
-					var title = $("#stage-name").val();
-					var explain = $('#stage-explain').val();
-					if(title === ""){ $("#stage-name_alert").show('fast'); }
-					if(title !== ""){
-						$("#inputModal").modal('hide');
-						$(this).button('loading');
-						jsEditor.save();
-						var code = jsEditor.getTextArea().value;
-						var timezone = new Date().getTimezoneString();
-						$.post('../project/publishreplaystage.php', {
-							'token': sessionStorage.getItem('project-token'),
-							'thumb': sessionStorage.getItem('image') || null,
-							'path': getParam('path'),
-							'title': title,
-							'explain': explain,
-							'timezone': timezone,
-							'attendance-token': sessionStorage.getItem('attendance-token')
-						} , function(data, textStatus, xhr) {
-							$('#publish-button').button('reset');
-							switch(data){
-								case 'no-session':
-									$('#signinModal').modal('show').find('.modal-title').text('ステージを投稿するには、ログインしてください');
-									break;
-								case 'invalid-token':
-									showAlert('alert-danger', 'セッションストレージの情報が破損しています。もう一度ステージを作成し直してください');
-									break;
-								case 'already-published':
-									showAlert('alert-danger', 'すでに投稿されたステージです');
-									break;
-								case 'database-error':
-									showAlert('alert-danger', 'エラーにより投稿できませんでした');
-									break;
-								case 'success':
-									$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled').append($('<p>').text('ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。'));
-									$(".h4p_publish-return").show();
-									alert_on_unload = false; // 遷移時の警告を非表示
-									break;
-							}
-						});
-					}
-				});
+
 				scrollToAnchor();
 				break;
 			case "replay":
