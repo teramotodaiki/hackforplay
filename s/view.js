@@ -457,6 +457,8 @@ $(function(){
 
 			// 投稿
 			$("#publish-button").on('click', function() {
+
+				$("#inputModal").modal('hide');
 				// 必ず保存してから投稿
 				$('.h4p_save_button button').button('loading');
 				updateTask(function() {
@@ -570,7 +572,6 @@ $(function(){
 			var explain = $('#stage-explain').val();
 			if(title === ""){ $("#stage-name_alert").show('fast'); }
 			if(title !== ""){
-				$("#inputModal").modal('hide');
 				$("#h4p_publish button").button('loading');
 				jsEditor.save();
 				var code = jsEditor.getTextArea().value;
