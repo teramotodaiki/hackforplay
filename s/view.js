@@ -312,16 +312,19 @@ $(function(){
 
 				// 定期送信
 				var lastJsonString = '';
-				setInterval(function() {
+				var currentInterval = updateInterval;
+				(function task () {
 					var current = JSON.stringify(log);
 					if (lastJsonString !== current) {
 						updateLog(function() {
 							lastJsonString = current;
+							currentInterval = updateInterval;
 						}, function() {
-							updateInterval *= 2; // 失敗時の対処
+							currentInterval *= 2; // 失敗時の対処
 						});
 					}
-				}, updateInterval);
+					setTimeout(task, currentInterval);
+				})();
 
 				// 最終送信
 				window.addEventListener('beforeunload', function(event) {
