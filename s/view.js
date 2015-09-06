@@ -269,20 +269,56 @@ $(function(){
 				beginLog();
 
 				var log = {}; // 初期化
-				var updateInterval = 6 * 1000; // [ms]
+				var updateInterval = 10 * 1000; // [ms]
 
 				// ロギング
-				log.ExecuteCount = log.ExecuteCount || 0;
-				log.SaveCount = log.SaveCount || 0;
-				log.InputNumberCount = log.InputNumberCount || 0;
-				log.InputAlphabetCount = log.InputAlphabetCount || 0;
-				log.InputOtherCount = log.InputOtherCount || 0;
-				log.PasteCount = log.PasteCount || 0;
-				log.DeleteCount = log.DeleteCount || 0;
+				$('.h4p_restaging_button').on('click', function() {
+					log.ExecuteCount = log.ExecuteCount || 0;
+					log.ExecuteCount ++;
+				});
+				$('.h4p_save_button').on('click', function() {
+					log.SaveCount = log.SaveCount || 0;
+					log.SaveCount ++;
+				});
+				jsEditor.on('beforeChange', function(cm, change) {
+					switch (change.origin) {
+					case '+input':
+						change.text.forEach(function(input){
+							Array.prototype.forEach.call(input, function(key) {
+								if (key.match(/[0-9]/g)) {
+									log.InputNumberCount = log.InputNumberCount || 0;
+									log.InputNumberCount ++;
+								} else if (key.match(/[a-zA-Z]/g)){
+									log.InputAlphabetCount = log.InputAlphabetCount || 0;
+									log.InputAlphabetCount ++;
+								} else {
+									log.InputOtherCount = log.InputOtherCount || 0;
+									log.InputOtherCount ++;
+								}
+							});
+						});
+						break;
+					case 'paste':
+						log.PasteCount = log.PasteCount || 0;
+						log.PasteCount ++;
+						break;
+					case '+delete':
+					case 'cut':
+						log.DeleteCount = log.DeleteCount || 0;
+						log.DeleteCount ++;
+						break;
+					}
+				});
 
 				// 定期送信
+				var lastJsonString = '';
 				setInterval(function() {
-					updateLog();
+					var current = JSON.stringify(log);
+					if (lastJsonString !== current) {
+						updateLog(function() {
+							lastJsonString = current;
+						});
+					}
 				}, updateInterval);
 
 				// 最終送信
