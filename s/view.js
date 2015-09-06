@@ -360,7 +360,9 @@ $(function(){
 							case 'invalid-token':
 								// もういちどbeginLogをこころみる
 								beginLog(function() {
-									updateLog();
+									setTimeout(function() {
+										updateLog();
+									}, 1000);
 								}, function() {
 									if (failed) failed();
 								});
