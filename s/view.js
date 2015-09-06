@@ -247,15 +247,8 @@ $(function(){
 		$(".h4p_restaging").hide();
 		$(".h4p_while-restaging").hide();
 	}
-	// ステージ改造中、画面遷移するとき注意をうながす
+	// ステージ改造中、画面遷移するとき注意をうながすフラグ
 	var alert_on_unload = false;
-	$(window).on('beforeunload', function(event) {
-		if(alert_on_unload){
-			return "せいさくちゅう の ステージ は「マイページ」に ほぞん されています。\nただし「ステージ改造コードを実行」を おしてから  へんこうした ぶぶんは ほぞん されません";
-		}else{
-			event.preventDefault();
-		}
-	});
 
 	(function(){
 		var beginRestaging = function(){
@@ -266,6 +259,90 @@ $(function(){
 			$(".h4p_game").height(width/1.5).children('iframe').attr({
 				'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=restaging'
 			});
+
+			// ロギングを開始
+			(function() {
+				// 前のトークンを削除
+				sessionStorage.removeItem('restaginglog-token');
+
+				// ロギングをサーバーで開始
+				beginLog();
+
+				var log = {}; // 初期化
+				var updateInterval = 6 * 1000; // [ms]
+
+				// ロギング
+				log.ExecuteCount = log.ExecuteCount || 0;
+				log.SaveCount = log.SaveCount || 0;
+				log.InputNumberCount = log.InputNumberCount || 0;
+				log.InputAlphabetCount = log.InputAlphabetCount || 0;
+				log.InputOtherCount = log.InputOtherCount || 0;
+				log.PasteCount = log.PasteCount || 0;
+				log.DeleteCount = log.DeleteCount || 0;
+
+				// 定期送信
+				setInterval(function() {
+					updateLog();
+				}, updateInterval);
+
+				// 最終送信
+				window.addEventListener('beforeunload', function(event) {
+					updateLog();
+					if (alert_on_unload) {
+						event.returnValue = "せいさくちゅう の ステージ は「マイページ」に ほぞん されています。";
+					} else {
+						event.preventDefault();
+					}
+				});
+
+				function beginLog (successed, failed) {
+					// ロギングの開始をサーバーに伝え、トークンを取得する
+					$.post('../analytics/beginrestaginglog.php', {
+						'stage_id': getParam('id'),
+						'mode': getParam('mode')
+					}, function(data, textStatus, xhr) {
+						switch (data) {
+							case 'error':
+								if (failed) failed();
+								break;
+							default:
+								sessionStorage.setItem('restaginglog-token', data);
+								if (successed) successed();
+								break;
+						}
+					});
+				}
+				function updateLog (successed, failed) {
+					// ログをアップデートする
+					$.post('../analytics/updaterestaginglog.php', {
+						'token': sessionStorage.getItem('restaginglog-token'),
+						'log': JSON.stringify(log)
+					}, function(data, textStatus, xhr) {
+						switch (data) {
+							case 'parse-error':
+								break;
+							case 'invalid-token':
+								// もういちどbeginLogをこころみる
+								beginLog(function() {
+									updateLog();
+								}, function() {
+									if (failed) failed();
+								});
+								break;
+							case 'error':
+								if (failed) failed();
+								break;
+							case 'success':
+								if (successed) successed();
+								break;
+							default:
+								if (failed) failed();
+								break;
+						}
+					});
+				}
+
+			})();
 
 			(function() {
 
