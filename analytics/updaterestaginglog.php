@@ -44,8 +44,13 @@ try {
 		exit('parse-error');
 	}
 
+	// 現在時刻の取得
+	date_default_timezone_set('GMT');
+	$gmtime	= time();
+
 	// データの更新
-	$stmt	= $dbh->prepare('UPDATE "RestagingLog" SET "ExecuteCount"=:ExecuteCount,"SaveCount"=:SaveCount,"InputNumberCount"=:InputNumberCount,"InputAlphabetCount"=:InputAlphabetCount,"InputOtherCount"=:InputOtherCount,"PasteCount"=:PasteCount,"DeleteCount"=:DeleteCount WHERE "ID"=:current_id');
+	$stmt	= $dbh->prepare('UPDATE "RestagingLog" SET "LastUnixTime"=:LastUnixTime,"ExecuteCount"=:ExecuteCount,"SaveCount"=:SaveCount,"InputNumberCount"=:InputNumberCount,"InputAlphabetCount"=:InputAlphabetCount,"InputOtherCount"=:InputOtherCount,"PasteCount"=:PasteCount,"DeleteCount"=:DeleteCount WHERE "ID"=:current_id');
+	$stmt->bindValue(":LastUnixTime", $gmtime, PDO::PARAM_INT);
 	$stmt->bindValue(":ExecuteCount", isset($data->ExecuteCount) ? $data->ExecuteCount : 0, PDO::PARAM_INT);
 	$stmt->bindValue(":SaveCount", isset($data->SaveCount) ? $data->SaveCount : 0, PDO::PARAM_INT);
 	$stmt->bindValue(":InputNumberCount", isset($data->InputNumberCount) ? $data->InputNumberCount : 0, PDO::PARAM_INT);
