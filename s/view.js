@@ -251,13 +251,13 @@ $(function(){
 	var alert_on_unload = false;
 
 	(function(){
-		var beginRestaging = function(){
+		var beginRestaging = function(isExtendMode){
 
 			// frame.phpを経由して、getParam('src')のページをincludeさせる
 			// モードをRestagingにする
 			var gameSrc = encodeURIComponent(getParam('src'));
 			$(".h4p_game").height(width/1.5).children('iframe').attr({
-				'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=restaging'
+				'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=' + (isExtendMode ? 'extend' : 'restaging')
 			});
 
 			// ロギングを開始
@@ -531,7 +531,16 @@ $(function(){
 				$("#author_alert").hide();
 
 				// ゲームをリロード
-				$('.h4p_game>iframe').get(0).contentWindow.postMessage('window.location.reload();', '/');
+				if (!isExtendMode) {
+					// リロード
+					$('.h4p_game>iframe').get(0).contentWindow.postMessage('window.location.reload();', '/');
+				} else {
+					// Extendモード時はmode=restagingにしてリロード
+					var gameSrc = encodeURIComponent(getParam('src'));
+					$('.h4p_game>iframe').attr({
+						'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=restaging'
+					});
+				}
 			});
 			$('.h4p_save_button').on('click', function() {
 				// Save
@@ -774,7 +783,7 @@ $(function(){
 				break;
 			case "extend":
 				// extend mode (extends restaging-code in tutorial)
-				beginRestaging();
+				beginRestaging(true);
 				scrollToAnchor('.h4p_restaging');
 				break;
 			case "quest":
