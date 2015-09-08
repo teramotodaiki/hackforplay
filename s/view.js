@@ -68,6 +68,27 @@ $(function(){
 				// ゲーム側からコメントの入力画面を表示する
 				$('#commentModal').modal('show');
 				break;
+			case "quest_clear_level":
+				(function (callback) {
+					// このレベルをクリアしたことがあったか？
+
+						// 実績を送信
+
+					callback();
+
+				})(function() {
+					// 次のレベルが存在するか
+					if (getParam('next') >> 0 > 0) {
+						// 次のレベルに遷移
+						location.href = '/s/?mode=quest&level=' + getParam('next');
+					} else {
+						// (クエストコンプリート後の動線.クエスト一覧に遷移？)
+						if (confirm('これでおわりです。クエスト一覧に戻りますか？')) {
+							alert('工事中です');
+						}
+					}
+				});
+				break;
 		}
 	});
 
@@ -785,6 +806,14 @@ $(function(){
 				// extend mode (extends restaging-code in tutorial)
 				beginRestaging(true);
 				scrollToAnchor('.h4p_restaging');
+				break;
+			case "quest":
+				// quest mode (load javascript-code and run it)
+				sessionStorage.setItem('restaging_code', getParam('replay_code'));
+				$(".begin_restaging").on('click', function() {
+					beginRestaging();
+					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
+				});
 				break;
 		}
 	})();
