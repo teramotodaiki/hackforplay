@@ -55,7 +55,12 @@ try {
 
 					// 解放されていた場合、クリア後に実績を報告するようフラグをセット
 
-		// 次のPlayOrderのLevelを取得
+		// 次のPlayOrderのLevelを取得 (falseと評価できる場合は最後のステージ)
+		$stmt		= $dbh->prepare('SELECT "ID" FROM "_Level" WHERE "QuestID"=:quest_id AND "PlayOrder"=:next');
+		$stmt->bindValue(":quest_id", $level['QuestID'], PDO::PARAM_INT);
+		$stmt->bindValue(":next", $level['PlayOrder'] + 1, PDO::PARAM_INT);
+		$stmt->execute();
+		$level_next = $stmt->fetch(PDO::FETCH_ASSOC);
 
 	} else {
 		// IDをパラメータで取得

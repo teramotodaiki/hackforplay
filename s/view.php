@@ -24,6 +24,11 @@ if($stage['Mode'] === "replay"){
 	$code = preg_replace("/\"/", "\\\"", $code);
 }
 $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
+// Questモードの場合、$nextは次のLevel.IDをあらわす
+if ($mode === 'quest') {
+	// 1以上ならつづきをあらわす。0以下なら最後のステージであることをあらわす
+	$next	= $level_next ? $level_next['ID'] : 0;
+}
 ?>
 <!DOCTYPE html>
 <html>
