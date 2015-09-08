@@ -64,6 +64,37 @@ var gameover; // gameoverメソッドも
                 game.rootScene.addChild(retrySprite);
                 retrySprite.tl.moveTo(330, 226, 20, enchant.Easing.CUBIC_EASEOUT);
             });
+        } else if (__H4PENV__MODE === 'replay') {
+            var darklay = overlay('color', 'rgba(0,0,0,0.4)');
+            game.rootScene.addChild(darklay);
+            darklay.tl.fadeIn(30, enchant.Easing.LINEAR);
+
+            var clearlay = overlay('image', 'img/clear.png', 267, 48);
+            clearlay.moveTo(106, 136);
+            game.rootScene.addChild(clearlay);
+            clearlay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
+                // [RESTAGING]
+                var relaySprite = new Sprite(116, 48);
+                relaySprite.moveTo(100, 320);
+                relaySprite.image = game.assets['hackforplay/new_button_replay.png'];
+                relaySprite.ontouchend = function() {
+                    // [RESTAGING] がクリックされたとき
+                    window.parent.postMessage('begin_restaging', '/');
+                };
+                game.rootScene.addChild(relaySprite);
+                relaySprite.tl.moveTo(100, 220, 20, enchant.Easing.CUBIC_EASEOUT);
+
+                // [RETRY]
+                var retrySprite = new Sprite(116, 48);
+                retrySprite.moveTo(264, 320);
+                retrySprite.image = game.assets['hackforplay/new_button_retry.png'];
+                retrySprite.ontouchend = function() {
+                    // [RETRY] がクリックされたとき
+                    location.reload(false);
+                };
+                game.rootScene.addChild(retrySprite);
+                retrySprite.tl.moveTo(264, 220, 20, enchant.Easing.CUBIC_EASEOUT);
+            });
         } else {
             var lay = new Overlay('black'); // rgba(0,0,0,1)や#000000でも可能
             game.rootScene.addChild(lay);
