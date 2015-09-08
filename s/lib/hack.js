@@ -74,6 +74,7 @@ window.addEventListener('load', function() {
 		case 'restaging':
 		case 'replay':
 		case 'extend':
+		case 'quest':
 			window.postMessage(sessionStorage.getItem('restaging_code'), "/");
 			break;
 	}

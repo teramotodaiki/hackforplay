@@ -777,6 +777,14 @@ $(function(){
 				beginRestaging();
 				scrollToAnchor('.h4p_restaging');
 				break;
+			case "quest":
+				// quest mode (load javascript-code and run it)
+				sessionStorage.setItem('restaging_code', getParam('replay_code'));
+				$(".begin_restaging").on('click', function() {
+					beginRestaging();
+					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
+				});
+				break;
 		}
 	})();
 	(function(){
