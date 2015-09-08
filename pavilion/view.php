@@ -25,9 +25,12 @@
 	</div>
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-12 col-sm-6 padding-all-sm">
-				<a href="../s/?level=2&mode=quest">
-					First Quest
+			<!-- Sample Item -->
+			<div class="col-xs-12 col-sm-4 quest-item-sample hidden">
+				<p class="item-ID"></p>
+				<img alt="" class="img-responsive item-QuestThumbnail">
+				<a href="#" class="btn btn-link btn-block item-Link">
+					Link
 				</a>
 			</div>
 		</div>
