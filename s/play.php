@@ -30,6 +30,12 @@ try {
 		$level		= $stmt->fetch(PDO::FETCH_ASSOC);
 		$stageid	= $level['StageID'];
 
+		// QuestIDからPavilionの情報を取得
+		$stmt		= $dbh->prepare('SELECT "ID" FROM "_Pavilion" WHERE "ID"=(SELECT "PavilionID" FROM "_Quest" WHERE "ID"=:quest_id)');
+		$stmt->bindValue(":quest_id", $level['QuestID'], PDO::PARAM_INT);
+		$stmt->execute();
+		$pavilion	= $stmt->fetch(PDO::FETCH_ASSOC);
+
 		// このQuestをクリアした実績があるか
 		$stmt	= $dbh->prepare('SELECT "ID","Cleared" FROM "QuestUserMap" WHERE "UserID"=:userid AND "QuestID"=:quest_id');
 		$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
@@ -47,7 +53,6 @@ try {
 		}
 		if (!$quest_map || !$quest_map['Cleared']) {
 			// まだクリアしていない
-			// QuestからPavilionを取得
 
 			// Pavilionが解放されているか
 			if (!$session_userid) {

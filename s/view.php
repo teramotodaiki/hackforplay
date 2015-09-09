@@ -106,6 +106,9 @@ if ($mode === 'quest') {
 <?php if(isset($level)): ?>
 		s('level', "<?php echo $level['ID']; ?>");
 <?php endif; ?>
+<?php if(isset($pavilion)): ?>
+		s('pavilion', "<?php echo $pavilion['ID']; ?>");
+<?php endif; ?>
 <?php if (isset($reporting_requirements)) : ?>
 		s('reporting_requirements', "<?php echo $reporting_requirements; ?>");
 <?php endif; ?>
