@@ -32,7 +32,7 @@
 			        	</p>
 			        </div>
 			        <div class="body-part-2">
-			        	<p>クエスト 1 - <span class="ID"></span></p>
+			        	<p>クエスト 1 - <span class="Number"></span></p>
 			        	<p><span class="Challengers"></span>人<ruby>挑戦<rt>ちょうせん</rt></ruby>し、<span class="Winners"></span>人クリアしました</p>
 			        	<p><ruby>主<rt>おも</rt></ruby>なクリエイター</p>
 			        	<p class="Authors">...</p>
@@ -55,7 +55,7 @@
 			<!-- Sample Item -->
 			<div class="col-xs-12 col-sm-4 quest-item-sample hidden">
 				<div>
-					<p>クエスト　1 - <span class="ID"></span></p>
+					<p>クエスト　1 - <span class="Number"></span></p>
 				</div>
 				<div>
 					<p><span class="Challengers"></span>人<ruby>が挑戦<rt>ちょうせん</rt></ruby>し、</p>

@@ -7,7 +7,7 @@ $(function () {
 	result.Quests.forEach(function(item, index) {
 		var current = $item.clone(true, true);
 		current.removeClass('hidden');
-		current.find('.ID').text(item.ID);
+		current.find('.Number').text(index + 1);
 		current.find('.Challengers').text(item.Challengers);
 		current.find('.Winners').text(item.Winners);
 		current.find('.Authors').text(item.Authors);
@@ -33,7 +33,7 @@ $(function () {
 			$('#questModal .Restaged .' + quest.Restaged + '-text').removeClass('hidden');
 			$('#questModal .Restaged .' + (!quest.Restaged) + '-text').addClass('hidden');
 
-			$('#questModal .ID').text(quest.ID);
+			$('#questModal .Number').text(index + 1);
 
 			$('#questModal .Challengers').text(quest.Challengers);
 			$('#questModal .Winners').text(quest.Winners);
