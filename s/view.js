@@ -70,11 +70,18 @@ $(function(){
 				break;
 			case "quest_clear_level":
 				(function (callback) {
-					// このレベルをクリアしたことがあったか？
+					// 報告義務はあるか？ (クエスト|レベル) に, 初挑戦した or まだクリアしていない とき true
+					if (getParam('reporting_requirements')) {
 
 						// 実績を送信
-
-					callback();
+						$.post('../stage/sendlevelstate.php', {
+							'level': getParam('level')
+						} , function(data, textStatus, xhr) {
+							if (confirm('移動します')) {
+								callback();
+							}
+						});
+					}
 
 				})(function() {
 					// 次のレベルが存在するか

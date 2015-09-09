@@ -106,6 +106,12 @@ if ($mode === 'quest') {
 		<?php if(isset($code)): ?>
 		s('replay_code', "<?php echo $code; ?>");
 		<?php endif; ?>
+		<?php if(isset($level)): ?>
+		s('level', "<?php echo $level['ID']; ?>");
+		<?php endif; ?>
+		<?php if ($reporting_requirements) : ?>
+		s('reporting_requirements', "<?php echo $reporting_requirements; ?>");
+		<?php endif; ?>
 	})();
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>

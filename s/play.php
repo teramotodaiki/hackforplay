@@ -18,20 +18,35 @@ try {
 	$mode	= filter_input(INPUT_GET, 'mode');
 	if ($mode === 'quest') {
 		// levelをパラメータの取得
-		$level		= filter_input(INPUT_GET, 'level', FILTER_VALIDATE_INT);
-		if (!$level) {
+		$input		= filter_input(INPUT_GET, 'level', FILTER_VALIDATE_INT);
+		if (!$input) {
 			header('Location: ' . $missing_page);
 			exit();
 		}
 		// IDをlevelから取得
-		$stmt		= $dbh->prepare('SELECT "StageID","QuestID","PlayOrder" FROM "_Level" WHERE "ID"=:level');
-		$stmt->bindValue(":level", $level, PDO::PARAM_INT);
+		$stmt		= $dbh->prepare('SELECT "ID","StageID","QuestID","PlayOrder" FROM "_Level" WHERE "ID"=:input');
+		$stmt->bindValue(":input", $input, PDO::PARAM_INT);
 		$stmt->execute();
 		$level		= $stmt->fetch(PDO::FETCH_ASSOC);
 		$stageid	= $level['StageID'];
 
 		// このQuestをクリアした実績があるか
+		$stmt	= $dbh->prepare('SELECT "ID","Cleared" FROM "QuestUserMap" WHERE "UserID"=:userid AND "QuestID"=:quest_id');
+		$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+		$stmt->bindValue(":quest_id", $level['QuestID'], PDO::PARAM_INT);
+		$stmt->execute();
+		$quest_map	= $stmt->fetch(PDO::FETCH_ASSOC);
+		if (!$quest_map) {
+			// フラグがない (初挑戦)
 
+			// フラグを用意 (初期値はFALSE)
+			$stmt	= $dbh->prepare('INSERT INTO "QuestUserMap" ("UserID","QuestID") VALUES (:userid,:quest_id)');
+			$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+			$stmt->bindValue(":quest_id", $level['QuestID'], PDO::PARAM_INT);
+			$stmt->execute();
+		}
+		if (!$quest_map || !$quest_map['Cleared']) {
+			// まだクリアしていない
 			// QuestからPavilionを取得
 
 			// Pavilionが解放されているか
@@ -45,6 +60,21 @@ try {
 			}
 
 			// このLevelをクリアした実績があるか
+			$stmt	= $dbh->prepare('SELECT "ID","Cleared" FROM "LevelUserMap" WHERE "UserID"=:userid AND "LevelID"=:level_id');
+			$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+			$stmt->bindValue(":level_id", $level['ID'], PDO::PARAM_INT);
+			$stmt->execute();
+			$level_map	= $stmt->fetch(PDO::FETCH_ASSOC);
+			if (!$level_map) {
+				// フラグがない (初挑戦)
+				// フラグを用意 (初期値はFALSE)
+				$stmt	= $dbh->prepare('INSERT INTO "LevelUserMap" ("UserID","LevelID") VALUES (:userid,:level_id)');
+				$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+				$stmt->bindValue(":level_id", $level['ID'], PDO::PARAM_INT);
+				$stmt->execute();
+			}
+			if (!$level_map || !$level_map['Cleared']) {
+				// まだクリアしていない
 
 				// このQuest内の他の実績を調査
 
@@ -54,6 +84,14 @@ try {
 					// 解放されていない場合、mode=replayでリロード
 
 					// 解放されていた場合、クリア後に実績を報告するようフラグをセット
+
+			}
+		}
+
+		// クリア時の報告義務
+		// (クエスト|レベル)に, 初めて挑戦した or クリアしていない => 報告義務を与える
+		$reporting_requirements = 	(!isset($quest_map) || !$quest_map || !$quest_map['Cleared']) ||
+									(!isset($level_map) || !$level_map || !$level_map['Cleared']);
 
 		// 次のPlayOrderのLevelを取得 (falseと評価できる場合は最後のステージ)
 		$stmt		= $dbh->prepare('SELECT "ID" FROM "_Level" WHERE "QuestID"=:quest_id AND "PlayOrder"=:next');
