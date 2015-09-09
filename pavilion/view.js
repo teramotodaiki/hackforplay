@@ -7,8 +7,11 @@ $(function () {
 	result.Quests.forEach(function(item, index) {
 		var current = $item.clone(true, true);
 		current.removeClass('hidden');
-		current.find('.item-ID').text(item.ID);
-		current.find('.item-QuestThumbnail').attr('src', item.Levels[0].Thumbnail);
+		current.find('.ID').text(item.ID);
+		current.find('.Challengers').text(item.Challengers);
+		current.find('.Winners').text(item.Winners);
+		current.find('.Authors').text(item.Authors);
+		current.find('.QuestThumbnail').attr('src', item.Levels[0].Thumbnail);
 		current.find('.item-Modal').data('index', index);
 
 		this.append(current);

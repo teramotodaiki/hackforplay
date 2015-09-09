@@ -54,8 +54,18 @@
 		<div class="row">
 			<!-- Sample Item -->
 			<div class="col-xs-12 col-sm-4 quest-item-sample hidden">
-				<p class="item-ID"></p>
-				<img alt="" class="img-responsive item-QuestThumbnail">
+				<div>
+					<p>クエスト　1 - <span class="ID"></span></p>
+				</div>
+				<div>
+					<p><span class="Challengers"></span>人<ruby>が挑戦<rt>ちょうせん</rt></ruby>し、</p>
+					<p><span class="Winners"></span>人がクリアした</p>
+				</div>
+				<div>
+					<p><ruby>主<rt>おも</rt></ruby>なクリエイター</p>
+		        	<p class="Authors">...</p>
+				</div>
+				<img alt="" class="img-responsive QuestThumbnail">
 				<a href="#" class="btn btn-link btn-block item-Modal" data-toggle="modal" data-target="#questModal">
 					Modal
 				</a>
