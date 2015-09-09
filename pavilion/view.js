@@ -4,14 +4,14 @@ $(function () {
 	$item = $('.quest-item-sample');
 
 	// レイアウト
-	result.Quests.forEach(function(item, index) {
+	result.Quests.forEach(function(quest, index) {
 		var current = $item.clone(true, true);
 		current.removeClass('hidden');
 		current.find('.Number').text(index + 1);
-		current.find('.Challengers').text(item.Challengers);
-		current.find('.Winners').text(item.Winners);
-		current.find('.Authors').text(item.Authors);
-		current.find('.QuestThumbnail').attr('src', item.Levels[0].Thumbnail);
+		current.find('.Challengers').text(quest.Challengers);
+		current.find('.Winners').text(quest.Winners);
+		current.find('.Authors').text(quest.Authors.join(', '));
+		current.find('.QuestThumbnail').attr('src', quest.Levels[0].Thumbnail);
 		current.find('.item-Modal').data('index', index);
 
 		this.append(current);
@@ -38,8 +38,7 @@ $(function () {
 			$('#questModal .Challengers').text(quest.Challengers);
 			$('#questModal .Winners').text(quest.Winners);
 
-			console.log(quest.Authors);
-			$('#questModal .Authors').text(quest.Authors);
+			$('#questModal .Authors').text(quest.Authors.join(', '));
 
 			$('#questModal .row').children().remove();
 			result.Quests[index].Levels.forEach(function(level) {
