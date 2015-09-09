@@ -103,15 +103,15 @@ if ($mode === 'quest') {
 		s('origin_id', "<?php echo $origin_id; ?>");
 		s('src', "<?php echo $src;  ?>");
 		s('youtube', "<?php echo $youtube;  ?>");
-		<?php if(isset($code)): ?>
-		s('replay_code', "<?php echo $code; ?>");
-		<?php endif; ?>
-		<?php if(isset($level)): ?>
+<?php if(isset($level)): ?>
 		s('level', "<?php echo $level['ID']; ?>");
-		<?php endif; ?>
-		<?php if ($reporting_requirements) : ?>
+<?php endif; ?>
+<?php if (isset($reporting_requirements)) : ?>
 		s('reporting_requirements', "<?php echo $reporting_requirements; ?>");
-		<?php endif; ?>
+<?php endif; ?>
+<?php if(isset($code)): ?>
+		s('replay_code', "<?php echo $code; ?>");
+<?php endif; ?>
 	})();
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
