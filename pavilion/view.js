@@ -20,18 +20,39 @@ $(function () {
 
 		var index = $(event.relatedTarget).data('index');
 
-		if (result.Quests[index]) {
+		(function (quest) {
+
+			if (!quest) return;
+
+			$('#questModal .Cleared .' + quest.Cleared + '-text').removeClass('hidden');
+			$('#questModal .Cleared .' + (!quest.Cleared) + '-text').addClass('hidden');
+
+			$('#questModal .Restaged .' + quest.Restaged + '-text').removeClass('hidden');
+			$('#questModal .Restaged .' + (!quest.Restaged) + '-text').addClass('hidden');
+
+			$('#questModal .ID').text(quest.ID);
+
+			$('#questModal .Challengers').text(quest.Challengers);
+			$('#questModal .Winners').text(quest.Winners);
+
+			console.log(quest.Authors);
+			$('#questModal .Authors').text(quest.Authors);
 
 			$('#questModal .row').children().remove();
-			result.Quests[index].Levels.forEach(function(item) {
+			result.Quests[index].Levels.forEach(function(level) {
 				var $div = $('<div>').addClass('col-xs-4');
-				var $img = $('<img>').addClass('img-responsive').attr('src', item.Thumbnail);
+				var $img = $('<img>').addClass('img-responsive').attr('src', level.Thumbnail);
+				var $p = $('<p>').addClass('text-center').text(level.Title);
+				var $a = $('<a>').attr('href', '/s/?mode=quest&level=' + level.ID);
+				if (!level.Allowed) $a.css('opacity', '0.5').attr('href', '#');
 
 				$div.append($img);
-				$('#questModal .row').append($div);
-
+				$div.append($p);
+				$a.append($div);
+				$('#questModal .row').append($a);
 			});
-		}
+
+		})(result.Quests[index]);
 
 	});
 });
