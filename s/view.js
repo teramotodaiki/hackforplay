@@ -84,7 +84,7 @@ $(function(){
 					} else {
 						// (クエストコンプリート後の動線.クエスト一覧に遷移？)
 						if (confirm('これでおわりです。クエスト一覧に戻りますか？')) {
-							alert('工事中です');
+							location.href = '/pavilion/?id=1';
 						}
 					}
 				});
