@@ -33,8 +33,12 @@ try {
 	$stmt_qu->execute();
 
 	// 各クエストの詳細情報を取得
-	$stmt_lv	= $dbh->prepare('SELECT "ID","StageID" FROM "_Level" WHERE "QuestID"=:quest_id ORDER BY "PlayOrder"');
-	$stmt_st	= $dbh->prepare('SELECT "Thumbnail" FROM "Stage" WHERE "ID"=:stage_id');
+	$stmt_lv	= $dbh->prepare('SELECT "ID","StageID","PlayOrder" FROM "_Level" WHERE "QuestID"=:quest_id ORDER BY "PlayOrder"');
+	$stmt_st	= $dbh->prepare('SELECT s."Thumbnail",s."Title",u."Nickname" FROM "Stage" AS s INNER JOIN "User" AS u ON s."UserID"=u."ID" WHERE s."ID"=:stage_id');
+	$stmt_map_l	= $dbh->prepare('SELECT "Cleared" FROM "LevelUserMap" WHERE "LevelID"=:level_id AND "UserID"=:userid');
+	$stmt_map_q	= $dbh->prepare('SELECT "Cleared","Restaged" FROM "QuestUserMap" WHERE "QuestID"=:quest_id AND "UserID"=:userid');
+	$stmt_num	= $dbh->prepare('SELECT COUNT(*) FROM "QuestUserMap" WHERE "QuestID"=:quest_id');
+	$stmt_num_w	= $dbh->prepare('SELECT COUNT(*) FROM "QuestUserMap" WHERE "QuestID"=:quest_id AND "Cleared"=:clear');
 	$result 		= new stdClass;
 	$result->Quests	= array();
 	while ($quest = $stmt_qu->fetch(PDO::FETCH_ASSOC)) {
@@ -44,20 +48,49 @@ try {
 		$stmt_lv->execute();
 
 		$quest['Levels'] = array();
+		$quest['Authors'] = array();
 		while ($level = $stmt_lv->fetch(PDO::FETCH_ASSOC)) {
 			// レベルのサムネイルを取得
 			$stmt_st->bindValue(":stage_id", $level['StageID'], PDO::PARAM_INT);
 			$stmt_st->execute();
-			$stage	= $stmt_st->fetch(PDO::FETCH_ASSOC);
+			$stage				= $stmt_st->fetch(PDO::FETCH_ASSOC);
 			$level['Thumbnail']	= $stage['Thumbnail'];
+			$level['Title']		= $stage['Title'];
+			$level['PlayOrder']	= intval($level['PlayOrder']);
+
+			// ステージの作者情報
+			if (array_search($stage['Nickname'], $quest['Authors']) === FALSE) {
+				// ユニークな値をプッシュ
+				array_push($quest['Authors'], $stage['Nickname']);
+			}
 
 			// レベルの実績を取得 (クリア実績があるか,挑戦可能か)
+			$stmt_map_l->bindValue(":level_id", $level['ID'], PDO::PARAM_INT);
+			$stmt_map_l->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+			$stmt_map_l->execute();
+			$level['Cleared']	= (bool)$stmt_map_l->fetchColumn(0);
+			$level['Allowed']	= !$quest['Levels'] || end($quest['Levels'])['Cleared'];
 
 			// 要素をプッシュ
 			array_push($quest['Levels'], $level);
 		}
 
 		// クエストの実績を取得
+		$stmt_map_q->bindValue(":quest_id", $quest['ID'], PDO::PARAM_INT);
+		$stmt_map_q->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+		$stmt_map_q->execute();
+		$quest_map			= $stmt_map_q->fetch(PDO::FETCH_ASSOC);
+		$quest['Cleared'] 	= $quest_map && $quest_map['Cleared'];
+		$quest['Restaged'] 	= $quest_map && $quest_map['Restaged'];
+
+		// クエストの挑戦者数/達成者数を取得
+		$stmt_num->bindValue(":quest_id", $quest['ID'], PDO::PARAM_INT);
+		$stmt_num->execute();
+		$quest['Challengers'] 	= (int)$stmt_num->fetchColumn(0);
+		$stmt_num_w->bindValue(":quest_id", $quest['ID'], PDO::PARAM_INT);
+		$stmt_num_w->bindValue(":clear", TRUE, PDO::PARAM_BOOL);
+		$stmt_num_w->execute();
+		$quest['Winners'] 		= (int)$stmt_num_w->fetchColumn(0);
 
 		// 要素をプッシュ
 		array_push($result->Quests, $quest);

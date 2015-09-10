@@ -4,11 +4,14 @@ $(function () {
 	$item = $('.quest-item-sample');
 
 	// レイアウト
-	result.Quests.forEach(function(item, index) {
+	result.Quests.forEach(function(quest, index) {
 		var current = $item.clone(true, true);
 		current.removeClass('hidden');
-		current.find('.item-ID').text(item.ID);
-		current.find('.item-QuestThumbnail').attr('src', item.Levels[0].Thumbnail);
+		current.find('.Number').text(index + 1);
+		current.find('.Challengers').text(quest.Challengers);
+		current.find('.Winners').text(quest.Winners);
+		current.find('.Authors').text(quest.Authors.join(', '));
+		current.find('.QuestThumbnail').attr('src', quest.Levels[0].Thumbnail);
 		current.find('.item-Modal').data('index', index);
 
 		this.append(current);
@@ -20,18 +23,38 @@ $(function () {
 
 		var index = $(event.relatedTarget).data('index');
 
-		if (result.Quests[index]) {
+		(function (quest) {
+
+			if (!quest) return;
+
+			$('#questModal .Cleared .' + quest.Cleared + '-text').removeClass('hidden');
+			$('#questModal .Cleared .' + (!quest.Cleared) + '-text').addClass('hidden');
+
+			$('#questModal .Restaged .' + quest.Restaged + '-text').removeClass('hidden');
+			$('#questModal .Restaged .' + (!quest.Restaged) + '-text').addClass('hidden');
+
+			$('#questModal .Number').text(index + 1);
+
+			$('#questModal .Challengers').text(quest.Challengers);
+			$('#questModal .Winners').text(quest.Winners);
+
+			$('#questModal .Authors').text(quest.Authors.join(', '));
 
 			$('#questModal .row').children().remove();
-			result.Quests[index].Levels.forEach(function(item) {
+			result.Quests[index].Levels.forEach(function(level) {
 				var $div = $('<div>').addClass('col-xs-4');
-				var $img = $('<img>').addClass('img-responsive').attr('src', item.Thumbnail);
+				var $img = $('<img>').addClass('img-responsive').attr('src', level.Thumbnail);
+				var $p = $('<p>').addClass('text-center').text(level.Title);
+				var $a = $('<a>').attr('href', '/s/?mode=quest&level=' + level.ID);
+				if (!level.Allowed) $a.css('opacity', '0.5').attr('href', '#');
 
 				$div.append($img);
-				$('#questModal .row').append($div);
-
+				$div.append($p);
+				$a.append($div);
+				$('#questModal .row').append($a);
 			});
-		}
+
+		})(result.Quests[index]);
 
 	});
 });

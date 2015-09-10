@@ -70,12 +70,19 @@ $(function(){
 				break;
 			case "quest_clear_level":
 				(function (callback) {
-					// このレベルをクリアしたことがあったか？
-
+					// 報告義務はあるか？ (クエスト|レベル) に, 初挑戦した or まだクリアしていない とき true
+					if (getParam('reporting_requirements')) {
 						// 実績を送信
-
-					callback();
-
+						$.post('../stage/sendlevelstate.php', {
+							'level': getParam('level')
+						} , function(data, textStatus, xhr) {
+							if (confirm('移動します')) {
+								callback();
+							}
+						});
+					} else {
+						callback();
+					}
 				})(function() {
 					// 次のレベルが存在するか
 					if (getParam('next') >> 0 > 0) {
@@ -84,7 +91,7 @@ $(function(){
 					} else {
 						// (クエストコンプリート後の動線.クエスト一覧に遷移？)
 						if (confirm('これでおわりです。クエスト一覧に戻りますか？')) {
-							location.href = '/pavilion/?id=1';
+							location.href = '/pavilion/?id=' + getParam('pavilion');
 						}
 					}
 				});
