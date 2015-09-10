@@ -41,7 +41,20 @@ $(function () {
 
 		}, $item.parent());
 	}
+
+	// クエストを並べる
 	alignmentQuests();
+
+	// キットを並べる
+	if (result.Kit) {
+		var current = $('.kit-item-sample').clone(true, true);
+		current.removeClass('hidden kit-item-sample').addClass('kit-item-entity');
+		current.find('.Restagers').text('NaN');
+		current.find('.Explain').text(result.Kit.Explain);
+		current.find('.Thumbnail').attr('src', result.Kit.Thumbnail);
+
+		$('.kit-item-sample').parent().append(current);
+	}
 
 	// クエストモーダル
 	$('#questModal').on('show.bs.modal', function(event) {
@@ -80,6 +93,17 @@ $(function () {
 			});
 
 		})(result.Quests[index]);
+
+	});
+
+	// キットモーダル
+	$('#kitModal').on('show.bs.modal', function(event) {
+
+		$(this).find('.Restagers').text('NaN');
+		$(this).find('.Explain').text(result.Kit.Explain);
+		$(this).find('.Thumbnail').attr('src', result.Kit.Thumbnail);
+		$(this).find('.Title').text(result.Kit.Title);
+		$(this).find('.link-restage').attr('href', '/s/?mode=restaging&id=' + result.Kit.ID);
 
 	});
 });
