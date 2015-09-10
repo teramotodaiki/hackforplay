@@ -16,7 +16,11 @@ $(function () {
 
 		// ボタンを押下状態にする
 		$('.change-type-button').each(function(index, el) {
-			$(el).attr('disabled', $(el).data('type') === showingType);
+			var availability = $(el).data('type') !== showingType;
+			$(el).attr({
+				'disabled': !availability,
+				'src': availability ? $(el).data('psrc') : $(el).data('nsrc')
+			});
 		});
 	});
 

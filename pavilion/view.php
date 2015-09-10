@@ -23,13 +23,13 @@
 				<h1>A pavilion</h1>
 			</div>
 			<div class="col-xs-4">
-				<input type="image" src="" alt="やさしい" class="change-type-button" data-type="easy" disabled="disabled">
+				<input type="image" src="img/jp/btn_type_easy_n.png" alt="やさしい" class="change-type-button" data-type="easy" disabled="disabled" data-psrc="img/jp/btn_type_easy_p.png" data-nsrc="img/jp/btn_type_easy_n.png">
 			</div>
 			<div class="col-xs-4">
-				<input type="image" src="" alt="ふつう" class="change-type-button" data-type="normal">
+				<input type="image" src="img/jp/btn_type_normal_p.png" alt="ふつう" class="change-type-button" data-type="normal" data-psrc="img/jp/btn_type_normal_p.png" data-nsrc="img/jp/btn_type_normal_n.png">
 			</div>
 			<div class="col-xs-4">
-				<input type="image" src="" alt="むずかしい" class="change-type-button" data-type="hard">
+				<input type="image" src="img/jp/btn_type_hard_p.png" alt="むずかしい" class="change-type-button" data-type="hard" data-psrc="img/jp/btn_type_hard_p.png" data-nsrc="img/jp/btn_type_hard_n.png">
 			</div>
 		</div>
 	</div>
