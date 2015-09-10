@@ -1,22 +1,47 @@
 $(function () {
 
-	// サンプルの取得
-	$item = $('.quest-item-sample');
 
 	// レイアウト
-	result.Quests.forEach(function(quest, index) {
-		var current = $item.clone(true, true);
-		current.removeClass('hidden');
-		current.find('.Number').text(index + 1);
-		current.find('.Challengers').text(quest.Challengers);
-		current.find('.Winners').text(quest.Winners);
-		current.find('.Authors').text(quest.Authors.join(', '));
-		current.find('.QuestThumbnail').attr('src', quest.Levels[0].Thumbnail);
-		current.find('.item-Modal').data('index', index);
+	var currentShowingType = 'easy';
 
-		this.append(current);
+	$('.change-type-button').on('click', function() {
+		var showingType = $(this).data('type');
 
-	}, $item.parent());
+		if (showingType === currentShowingType) return;
+		currentShowingType = showingType;
+
+		// クエストを並べ直す
+		$('.row .quest-item-entity').remove();
+		alignmentQuests();
+
+		// ボタンを押下状態にする
+		$('.change-type-button').each(function(index, el) {
+			$(el).attr('disabled', $(el).data('type') === showingType);
+		});
+	});
+
+	function alignmentQuests () {
+		// サンプルの取得
+		$item = $('.quest-item-sample');
+
+		result.Quests.forEach(function(quest, index) {
+
+			if (quest.Type !== currentShowingType) return;
+
+			var current = $item.clone(true, true);
+			current.removeClass('hidden quest-item-sample').addClass('quest-item-entity');
+			current.find('.Number').text(index + 1);
+			current.find('.Challengers').text(quest.Challengers);
+			current.find('.Winners').text(quest.Winners);
+			current.find('.Authors').text(quest.Authors.join(', '));
+			current.find('.QuestThumbnail').attr('src', quest.Levels[0].Thumbnail);
+			current.find('.item-Modal').data('index', index);
+
+			this.append(current);
+
+		}, $item.parent());
+	}
+	alignmentQuests();
 
 	// クエストモーダル
 	$('#questModal').on('show.bs.modal', function(event) {

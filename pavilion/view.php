@@ -48,6 +48,15 @@
 			<div class="col-xs-12">
 				<h1>A pavilion</h1>
 			</div>
+			<div class="col-xs-4">
+				<input type="image" src="" alt="やさしい" class="change-type-button" data-type="easy" disabled="disabled">
+			</div>
+			<div class="col-xs-4">
+				<input type="image" src="" alt="ふつう" class="change-type-button" data-type="normal">
+			</div>
+			<div class="col-xs-4">
+				<input type="image" src="" alt="むずかしい" class="change-type-button" data-type="hard">
+			</div>
 		</div>
 	</div>
 	<div class="container">
