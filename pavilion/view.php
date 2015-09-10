@@ -38,6 +38,10 @@
 			<!-- Sample Item -->
 			<div class="quest-item-sample pull-left hidden">
 				<div>
+					<img src="" class="achivement achivement-cleared" alt="">
+					<img src="" class="achivement achivement-restaged" alt="">
+				</div>
+				<div>
 					<p>クエスト　1 - <span class="Number"></span></p>
 				</div>
 				<div>
@@ -57,6 +61,9 @@
 				</a>
 			</div>
 			<div class="kit-item-sample pull-left hidden" style="background-image: url(img/frame_old_kit.png)">
+				<div>
+					<img src="" class="achivement achivement-restaged" alt="">
+				</div>
 				<div>
 					<p>オリジナルステージ作成</p>
 				</div>
