@@ -7,7 +7,7 @@
 	<title>RePlay - hackforplay</title>
 	<?php require_once '../library.php' ?>
 </head>
-<body class="">
+<body class="" style="background-image: url('img/bg_rpg.png')">
 	<?php require_once '../analyticstracking.php' ?>
 	<?php require_once '../fb-root.php' ?>
 	<?php require_once '../sendattendance.php'; ?>
@@ -36,7 +36,7 @@
 	<div class="container">
 		<div class="row">
 			<!-- Sample Item -->
-			<div class="col-xs-12 col-sm-4 quest-item-sample hidden">
+			<div class="quest-item-sample pull-left hidden">
 				<div>
 					<p>クエスト　1 - <span class="Number"></span></p>
 				</div>
@@ -48,12 +48,15 @@
 					<p><ruby>主<rt>おも</rt></ruby>なクリエイター</p>
 		        	<p class="Authors">...</p>
 				</div>
-				<img alt="" class="img-responsive QuestThumbnail">
+				<div class="stage-frame-wrapper">
+					<img alt="" class="stage-thumbnail QuestThumbnail">
+					<img src="img/stage_flame.png" class="stage-frame" alt="">
+				</div>
 				<a href="#" class="btn btn-link btn-block item-Modal" data-toggle="modal" data-target="#questModal">
 					Modal
 				</a>
 			</div>
-			<div class="col-xs-12 col-sm-4 kit-item-sample hidden">
+			<div class="kit-item-sample pull-left hidden" style="background-image: url(img/frame_old_kit.png)">
 				<div>
 					<p>オリジナルステージ作成</p>
 				</div>

@@ -185,6 +185,25 @@ iframe {
 	cursor: pointer;
 }
 
+.stage-frame-wrapper {
+	position: relative;
+	width: 100%;
+}
+
+.stage-frame-wrapper img {
+	position: absolute;
+	width: 100%;
+	height: auto;
+}
+
+.stage-frame-wrapper .stage-thumbnail {
+	z-index: 1;
+	padding: 23px 4px 0px 4px;
+}
+
+.stage-frame-wrapper .stage-frame {
+	z-index: 2;
+}
 
 /* アニメーション */
 

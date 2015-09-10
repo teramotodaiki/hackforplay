@@ -107,6 +107,18 @@ nav #img-usericon {
 	margin-top: -20px;
 }
 
+.quest-item-entity,
+.kit-item-entity {
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	width: 320px;
+	height: 420px;
+
+	/*仮のマージン*/
+	margin-left: 60px;
+	margin-top: 20px;
+}
+
 /* 間隔属性 */
 .margin-top-lg {
 	margin-top: 40px;
@@ -314,4 +326,9 @@ button.h4p_open-project {
 
 .container-game>.row {
 	margin: 0;
+}
+
+.quest-item-entity,
+.kit-item-entity {
+	padding: 40px 40px;
 }

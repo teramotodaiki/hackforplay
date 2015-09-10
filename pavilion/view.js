@@ -36,6 +36,7 @@ $(function () {
 			current.find('.Authors').text(quest.Authors.join(', '));
 			current.find('.QuestThumbnail').attr('src', quest.Levels[0].Thumbnail);
 			current.find('.item-Modal').data('index', index);
+			current.css('background-image', 'url(img/frame_old_easy.png)');
 
 			this.append(current);
 
