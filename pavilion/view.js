@@ -1,22 +1,60 @@
 $(function () {
 
-	// サンプルの取得
-	$item = $('.quest-item-sample');
 
 	// レイアウト
-	result.Quests.forEach(function(quest, index) {
-		var current = $item.clone(true, true);
-		current.removeClass('hidden');
-		current.find('.Number').text(index + 1);
-		current.find('.Challengers').text(quest.Challengers);
-		current.find('.Winners').text(quest.Winners);
-		current.find('.Authors').text(quest.Authors.join(', '));
-		current.find('.QuestThumbnail').attr('src', quest.Levels[0].Thumbnail);
-		current.find('.item-Modal').data('index', index);
+	var currentShowingType = 'easy';
 
-		this.append(current);
+	$('.change-type-button').on('click', function() {
+		var showingType = $(this).data('type');
 
-	}, $item.parent());
+		if (showingType === currentShowingType) return;
+		currentShowingType = showingType;
+
+		// クエストを並べ直す
+		$('.row .quest-item-entity').remove();
+		alignmentQuests();
+
+		// ボタンを押下状態にする
+		$('.change-type-button').each(function(index, el) {
+			$(el).attr('disabled', $(el).data('type') === showingType);
+		});
+	});
+
+	function alignmentQuests () {
+		// サンプルの取得
+		$item = $('.quest-item-sample');
+
+		result.Quests.forEach(function(quest, index) {
+
+			if (quest.Type !== currentShowingType) return;
+
+			var current = $item.clone(true, true);
+			current.removeClass('hidden quest-item-sample').addClass('quest-item-entity');
+			current.find('.Number').text(index + 1);
+			current.find('.Challengers').text(quest.Challengers);
+			current.find('.Winners').text(quest.Winners);
+			current.find('.Authors').text(quest.Authors.join(', '));
+			current.find('.QuestThumbnail').attr('src', quest.Levels[0].Thumbnail);
+			current.find('.item-Modal').data('index', index);
+
+			this.append(current);
+
+		}, $item.parent());
+	}
+
+	// クエストを並べる
+	alignmentQuests();
+
+	// キットを並べる
+	if (result.Kit) {
+		var current = $('.kit-item-sample').clone(true, true);
+		current.removeClass('hidden kit-item-sample').addClass('kit-item-entity');
+		current.find('.Restagers').text('NaN');
+		current.find('.Explain').text(result.Kit.Explain);
+		current.find('.Thumbnail').attr('src', result.Kit.Thumbnail);
+
+		$('.kit-item-sample').parent().append(current);
+	}
 
 	// クエストモーダル
 	$('#questModal').on('show.bs.modal', function(event) {
@@ -55,6 +93,17 @@ $(function () {
 			});
 
 		})(result.Quests[index]);
+
+	});
+
+	// キットモーダル
+	$('#kitModal').on('show.bs.modal', function(event) {
+
+		$(this).find('.Restagers').text('NaN');
+		$(this).find('.Explain').text(result.Kit.Explain);
+		$(this).find('.Thumbnail').attr('src', result.Kit.Thumbnail);
+		$(this).find('.Title').text(result.Kit.Title);
+		$(this).find('.link-restage').attr('href', '/s/?mode=restaging&id=' + result.Kit.ID);
 
 	});
 });

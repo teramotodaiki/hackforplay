@@ -43,10 +43,47 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="kitModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			    <div class="modal-body">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <div class="body-part-1">
+			        	<p class="Restaged">
+			        		<span class="true-text hidden">ステージを作成した！</span>
+			        		<span class="false-text hidden"><ruby>条件<rt>じょうけん</rt></ruby>：ステージを作成する</span>
+			        	</p>
+			        </div>
+			        <div class="body-part-2">
+						<p>オリジナルステージ作成</p>
+						<p>今までに<span class="Restagers"></span>人<ruby>があたらしいステージを作成した
+						<p><span class="Explain"></span></p>
+			        </div>
+			        <div class="row">
+			        	<div class="col-xs-4">
+			        		<a href="#" class="link-restage" title="">
+			        			<img src="" class="img-responsive Thumbnail" alt="">
+			        		</a>
+			        		<p class="text-center Title"></p>
+			        	</div>
+			        </div>
+			    </div>
+			</div>
+		</div>
+	</div>
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
 				<h1>A pavilion</h1>
+			</div>
+			<div class="col-xs-4">
+				<input type="image" src="" alt="やさしい" class="change-type-button" data-type="easy" disabled="disabled">
+			</div>
+			<div class="col-xs-4">
+				<input type="image" src="" alt="ふつう" class="change-type-button" data-type="normal">
+			</div>
+			<div class="col-xs-4">
+				<input type="image" src="" alt="むずかしい" class="change-type-button" data-type="hard">
 			</div>
 		</div>
 	</div>
@@ -67,6 +104,21 @@
 				</div>
 				<img alt="" class="img-responsive QuestThumbnail">
 				<a href="#" class="btn btn-link btn-block item-Modal" data-toggle="modal" data-target="#questModal">
+					Modal
+				</a>
+			</div>
+			<div class="col-xs-12 col-sm-4 kit-item-sample hidden">
+				<div>
+					<p>オリジナルステージ作成</p>
+				</div>
+				<div>
+					<p>今までに<span class="Restagers"></span>人<ruby>があたらしいステージを作成した
+				</div>
+				<div>
+					<p><span class="Explain"></span></p>
+				</div>
+				<img alt="" class="img-responsive Thumbnail">
+				<a href="#" class="btn btn-link btn-block" data-toggle="modal" data-target="#kitModal">
 					Modal
 				</a>
 			</div>
