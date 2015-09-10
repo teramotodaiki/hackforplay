@@ -14,7 +14,7 @@ try {
 		header('Location: ../town/'); // タウンにもどる
 		exit();
 	}
-	$stmt		= $dbh->prepare('SELECT "ID" FROM "_Pavilion" WHERE "ID"=:pavilion_id');
+	$stmt		= $dbh->prepare('SELECT "ID","KitStageID" FROM "_Pavilion" WHERE "ID"=:pavilion_id');
 	$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
 	$stmt->execute();
 	$pavilion	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -94,6 +94,16 @@ try {
 
 		// 要素をプッシュ
 		array_push($result->Quests, $quest);
+	}
+
+	// このパビリオンのキットの情報を取得
+	$stmt				= $dbh->prepare('SELECT "ID","Title","Thumbnail","Explain" FROM "Stage" WHERE "ID"=:kit_stage_id AND "State"=:published');
+	$stmt->bindValue(":kit_stage_id", $pavilion['KitStageID'], PDO::PARAM_INT);
+	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
+	$stmt->execute();
+	$kit_stage			= $stmt->fetch(PDO::FETCH_ASSOC);
+	if ($kit_stage) {
+		$result->Kit	= $kit_stage;
 	}
 
 	// JSON形式にパース
