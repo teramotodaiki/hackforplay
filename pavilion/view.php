@@ -7,13 +7,15 @@
 	<title>RePlay - hackforplay</title>
 	<?php require_once '../library.php' ?>
 </head>
-<body class="" style="background-image: url('img/bg_rpg.png')">
+<body class=""<?php if (isset($pavilionBg)) : ?>
+	style="background-image: url(<?php echo $pavilionBg; ?>)"
+<?php endif; ?>>
 	<?php require_once '../analyticstracking.php' ?>
 	<?php require_once '../fb-root.php' ?>
 	<?php require_once '../sendattendance.php'; ?>
 	<script src="view.js" type="text/javascript"></script>
 	<script type="text/javascript" charset="utf-8">
-	var result = JSON.parse('<?php echo $result_json; ?>');
+	var result = JSON.parse('<?php echo $pavilion_json; ?>');
 	</script>
 	<?php include '../view/header.php'; ?>
 	<?php include 'modal.php'; ?>
@@ -60,7 +62,7 @@
 					Modal
 				</a>
 			</div>
-			<div class="kit-item-sample pull-left hidden" style="background-image: url(img/frame_old_kit.png)">
+			<div class="kit-item-sample pull-left hidden">
 				<div>
 					<img src="" class="achivement achivement-restaged" alt="">
 				</div>

@@ -14,7 +14,7 @@ try {
 		header('Location: ../town/'); // タウンにもどる
 		exit();
 	}
-	$stmt		= $dbh->prepare('SELECT "ID","KitStageID" FROM "_Pavilion" WHERE "ID"=:pavilion_id');
+	$stmt		= $dbh->prepare('SELECT p."KitStageID",r.* FROM "_Pavilion" AS p INNER JOIN "PavilionResourcePath" AS r ON p."ID"=r."PavilionID" WHERE p."ID"=:pavilion_id');
 	$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
 	$stmt->execute();
 	$pavilion	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -39,8 +39,8 @@ try {
 	$stmt_map_q	= $dbh->prepare('SELECT "Cleared","Restaged" FROM "QuestUserMap" WHERE "QuestID"=:quest_id AND "UserID"=:userid');
 	$stmt_num	= $dbh->prepare('SELECT COUNT(*) FROM "QuestUserMap" WHERE "QuestID"=:quest_id');
 	$stmt_num_w	= $dbh->prepare('SELECT COUNT(*) FROM "QuestUserMap" WHERE "QuestID"=:quest_id AND "Cleared"=:clear');
-	$result 		= new stdClass;
-	$result->Quests	= array();
+
+	$pavilion['Quests']	= array();
 	while ($quest = $stmt_qu->fetch(PDO::FETCH_ASSOC)) {
 
 		// レベルのリストを取得
@@ -93,7 +93,7 @@ try {
 		$quest['Winners'] 		= (int)$stmt_num_w->fetchColumn(0);
 
 		// 要素をプッシュ
-		array_push($result->Quests, $quest);
+		array_push($pavilion['Quests'], $quest);
 	}
 
 	// このパビリオンのキットの情報を取得
@@ -103,11 +103,14 @@ try {
 	$stmt->execute();
 	$kit_stage			= $stmt->fetch(PDO::FETCH_ASSOC);
 	if ($kit_stage) {
-		$result->Kit	= $kit_stage;
+		$pavilion['Kit']= $kit_stage;
 	}
 
 	// JSON形式にパース
-	$result_json	= json_encode($result);
+	$pavilion_json	= json_encode($pavilion);
+
+	// BodyのBackgroundだけ個別に取得
+	$pavilionBg = $pavilion['BodyBg'];
 
 	include 'view.php';
 

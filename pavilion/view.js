@@ -40,9 +40,14 @@ $(function () {
 			current.find('.Authors').text(quest.Authors.join(', '));
 			current.find('.QuestThumbnail').attr('src', quest.Levels[0].Thumbnail);
 			current.find('.item-Modal').data('index', index);
-			current.css('background-image', 'url(img/frame_old_easy.png)');
 			current.find('.achivement-cleared').attr('src', quest.Cleared ? 'img/achivement_p.png' : 'img/achivement_n.png');
 			current.find('.achivement-restaged').attr('src', quest.Restaged ? 'img/achivement_p.png' : 'img/achivement_n.png');
+
+			switch (quest.Type) {
+				case 'easy':	current.css('background-image', 'url(' + result.EasyBg + ')'); break;
+				case 'normal':	current.css('background-image', 'url(' + result.NormalBg + ')'); break;
+				case 'hard':	current.css('background-image', 'url(' + result.HardBg + ')'); break;
+			}
 
 			this.append(current);
 
@@ -60,6 +65,7 @@ $(function () {
 		current.find('.Explain').text(result.Kit.Explain);
 		current.find('.Thumbnail').attr('src', result.Kit.Thumbnail);
 		current.find('.achivement-restaged').attr('src', result.Kit.Restaged ? 'img/achivement_p.png' : 'img/achivement_n.png');
+		current.css('background-image', 'url(' + result.KitBg + ')');
 
 		$('.kit-item-sample').parent().append(current);
 	}
