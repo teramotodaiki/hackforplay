@@ -27,7 +27,7 @@
 							<img alt="" class="stage-thumbnail Thumbnail">
 							<img src="" class="stage-frame" alt="">
 						</div>
-						<p class="text-center"><span class="Tilte"></span></p>
+						<p class="text-center"><span class="Title"></span></p>
 		        	</div>
 		        	<div class="modal-arrow-sample pull-left hidden">
 		        		<img src="" alt=">" class="ModalArrow">

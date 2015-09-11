@@ -189,6 +189,7 @@ iframe {
 	position: relative;
 	width: 242px;
 	height: 180px;
+	margin-bottom: 4px;
 }
 
 .stage-frame-wrapper img {
