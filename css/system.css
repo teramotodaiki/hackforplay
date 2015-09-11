@@ -208,7 +208,8 @@ iframe {
 
 .quest-item-entity,
 .kit-item-entity,
-.modal-thumbnail-entity {
+.modal-thumbnail-entity,
+.modal-kit-entity {
 	cursor: pointer;
 }
 
