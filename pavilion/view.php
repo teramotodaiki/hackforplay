@@ -58,7 +58,7 @@
 				</div>
 				<div class="stage-frame-wrapper">
 					<img alt="" class="stage-thumbnail QuestThumbnail">
-					<img src="img/stage_frame.png" class="stage-frame" alt="">
+					<img src="" class="stage-frame" alt="">
 				</div>
 			</div>
 			<div class="kit-item-sample pull-left hidden" data-toggle="modal" data-target="#kitModal">
@@ -78,7 +78,7 @@
 				</div>
 				<div class="stage-frame-wrapper">
 					<img alt="" class="stage-thumbnail Thumbnail">
-					<img src="img/stage_frame.png" class="stage-frame" alt="">
+					<img src="" class="stage-frame" alt="">
 				</div>
 			</div>
 		</div>
