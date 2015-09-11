@@ -107,6 +107,33 @@ nav #img-usericon {
 	margin-top: -20px;
 }
 
+.quest-item-entity,
+.kit-item-entity {
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	width: 320px;
+	height: 420px;
+
+	/*仮のマージン*/
+	margin-left: 60px;
+	margin-top: 20px;
+}
+
+.modal-arrow-entity img {
+	height: 50px;
+	width: auto;
+	margin: 70px 0px;
+}
+
+#questModal .ModalClose,
+#kitModal .ModalClose {
+	position: absolute;
+	width: 68px;
+	height: 68px;
+	right: 0px;
+	top: 0px;
+}
+
 /* 間隔属性 */
 .margin-top-lg {
 	margin-top: 40px;
@@ -314,4 +341,21 @@ button.h4p_open-project {
 
 .container-game>.row {
 	margin: 0;
+}
+
+.quest-item-entity,
+.kit-item-entity {
+	padding: 32px 40px;
+}
+
+.quest-item-entity .item-achievement,
+.kit-item-entity .item-achievement {
+	margin-left: -14px;
+}
+
+.quest-item-entity .item-article {
+	margin: -64px 0px 0px 32px;
+}
+.kit-item-entity .item-article {
+	margin: -32px 0px 0px 32px;
 }

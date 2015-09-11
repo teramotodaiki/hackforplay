@@ -185,6 +185,55 @@ iframe {
 	cursor: pointer;
 }
 
+.stage-frame-wrapper {
+	position: relative;
+	width: 242px;
+	height: 180px;
+	margin-bottom: 4px;
+}
+
+.stage-frame-wrapper img {
+	position: absolute;
+	width: 100%;
+	height: auto;
+}
+
+.stage-frame-wrapper .stage-thumbnail {
+	z-index: 1;
+	padding: 23px 4px 0px 4px;
+}
+
+.stage-frame-wrapper .stage-frame {
+	z-index: 2;
+}
+
+.quest-item-entity,
+.kit-item-entity,
+.modal-thumbnail-entity .stage-frame-wrapper,
+.modal-kit-entity .stage-frame-wrapper {
+	cursor: pointer;
+}
+
+#questModal .modal-content,
+#kitModal .modal-content {
+	background-color: transparent;
+	background-size: 100% 100%;
+	padding: 40px 40px;
+	border: none;
+	box-shadow: none;
+}
+
+.item-achievement .achievement {
+	display: block;
+}
+
+.quest-item-entity .item-underscore,
+.kit-item-entity .item-underscore,
+#questModal .item-underscore,
+#kitModal .item-underscore {
+	border-bottom: 1px solid rgb(0,0,0);
+	margin-bottom: 4px;
+}
 
 /* アニメーション */
 
