@@ -52,12 +52,16 @@ $(function () {
 			this.append(current);
 
 		}, $item.parent());
+
+		// 3番目にキットを差し込む
+		if (result.Kit) {
+			var kit = $('.kit-item-entity');
+			if (kit) {
+				kit.insertAfter('.row .quest-item-entity:eq(1)');
+			}
+		}
 	}
 
-	// クエストを並べる
-	alignmentQuests();
-
-	// キットを並べる
 	if (result.Kit) {
 		var current = $('.kit-item-sample').clone(true, true);
 		current.removeClass('hidden kit-item-sample').addClass('kit-item-entity');
@@ -69,6 +73,9 @@ $(function () {
 
 		$('.kit-item-sample').parent().append(current);
 	}
+
+	// クエストを並べる
+	alignmentQuests();
 
 	// クエストモーダル
 	$('#questModal .ModalClose,#kitModal .ModalClose').attr('src', result.ModalClose);
