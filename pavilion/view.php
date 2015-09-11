@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>RePlay - hackforplay</title>
+	<title>hackforplay</title>
 	<?php require_once '../library.php' ?>
 </head>
 <body class=""<?php if (isset($pavilionBg)) : ?>
@@ -22,7 +22,6 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
-				<h1>A pavilion</h1>
 			</div>
 			<div class="col-xs-4">
 				<input type="image" src="img/jp/btn_type_easy_n.png" alt="やさしい" class="change-type-button" data-type="easy" disabled="disabled" data-psrc="img/jp/btn_type_easy_p.png" data-nsrc="img/jp/btn_type_easy_n.png">
