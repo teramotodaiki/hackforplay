@@ -54,7 +54,7 @@
 				</div>
 				<div class="stage-frame-wrapper">
 					<img alt="" class="stage-thumbnail QuestThumbnail">
-					<img src="img/stage_flame.png" class="stage-frame" alt="">
+					<img src="img/stage_frame.png" class="stage-frame" alt="">
 				</div>
 				<a href="#" class="btn btn-link btn-block item-Modal" data-toggle="modal" data-target="#questModal">
 					Modal
