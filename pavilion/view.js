@@ -108,7 +108,8 @@ $(function () {
 
 			$('.modal-thumbnail-entity,.modal-arrow-entity').remove();
 
-			var $thumbnail = $('#questModal .row .modal-thumbnail-sample').on('click', function() {
+			var $thumbnail = $('#questModal .row .modal-thumbnail-sample');
+			$thumbnail.find('.stage-frame-wrapper').on('click', function() {
 				var id = $(this).data('ID');
 				if (id) location.href = '/s/?mode=quest&level=' + id;
 			});
@@ -120,7 +121,7 @@ $(function () {
 				current.find('.Title').text(level.Title);
 
 				if (level.Allowed) {
-					current.data('ID', level.ID);
+					current.find('.stage-frame-wrapper').data('ID', level.ID);
 					current.find('.btn-restage').attr('href', '/s/?mode=restaging&id=' + level.StageID);
 				} else {
 					current.css({
@@ -151,7 +152,7 @@ $(function () {
 		$(this).find('.Thumbnail').attr('src', result.Kit.Thumbnail);
 		$(this).find('.Title').text(result.Kit.Title);
 		$(this).find('.modal-content').css('background-image', 'url(' + result.KitBg + ')');
-		$(this).find('.modal-kit-entity').on('click', function() {
+		$(this).find('.modal-kit-entity .stage-frame-wrapper').on('click', function() {
 			location.href = '/s/?mode=restaging&id=' + result.Kit.ID;
 		});
 
