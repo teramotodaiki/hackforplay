@@ -91,9 +91,11 @@ $(function () {
 
 			$('#questModal .Cleared .' + quest.Cleared + '-text').removeClass('hidden');
 			$('#questModal .Cleared .' + (!quest.Cleared) + '-text').addClass('hidden');
+			$('#questModal .achievement-cleared').attr('src', quest.Cleared ? 'img/achievement_p.png' : 'img/achievement_n.png');
 
 			$('#questModal .Restaged .' + quest.Restaged + '-text').removeClass('hidden');
 			$('#questModal .Restaged .' + (!quest.Restaged) + '-text').addClass('hidden');
+			$('#questModal .achievement-restaged').attr('src', quest.Restaged ? 'img/achievement_p.png' : 'img/achievement_n.png');
 
 			$('#questModal .Number').text(index + 1);
 

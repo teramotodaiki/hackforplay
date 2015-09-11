@@ -3,19 +3,21 @@
 		<div class="modal-content">
 		    <div class="modal-body">
 		        <input type="image" src="" class="ModalClose" alt="&times" data-dismiss="modal" aria-label="Close"></input>
-		        <div class="body-part-1">
+		        <div class="body-part-1 item-underscore">
 		        	<p class="Cleared">
+						<img src="" class="achievement achievement-cleared" alt="">
 		        		<span class="true-text hidden">クエストクリア！</span>
 		        		<span class="false-text hidden"><ruby>条件<rt>じょうけん</rt></ruby>：すべてのステージをクリアする</span>
 		        	</p>
 		        	<p class="Restaged">
+						<img src="" class="achievement achievement-restaged" alt="">
 		        		<span class="true-text hidden">ステージを改造した！</span>
 		        		<span class="false-text hidden"><ruby>条件<rt>じょうけん</rt></ruby>：いずれかのステージを改造する</span>
 		        	</p>
 		        </div>
 		        <div class="body-part-2">
-		        	<p>クエスト 1 - <span class="Number"></span></p>
-		        	<p><span class="Challengers"></span>人<ruby>挑戦<rt>ちょうせん</rt></ruby>し、<span class="Winners"></span>人クリアしました</p>
+		        	<p class="item-underscore">クエスト 1 - <span class="Number"></span></p>
+		        	<p class="item-underscore"><span class="Challengers"></span>人<ruby>挑戦<rt>ちょうせん</rt></ruby>し、<span class="Winners"></span>人クリアしました</p>
 		        	<p><ruby>主<rt>おも</rt></ruby>なクリエイター</p>
 		        	<p class="Authors">...</p>
 		        </div>

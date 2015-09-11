@@ -225,8 +225,10 @@ iframe {
 	display: block;
 }
 
+.quest-item-entity .item-underscore,
 .kit-item-entity .item-underscore,
-.quest-item-entity .item-underscore {
+#questModal .item-underscore,
+#kitModal .item-underscore {
 	border-bottom: 1px solid rgb(0,0,0);
 	margin-bottom: 4px;
 }
