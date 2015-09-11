@@ -39,7 +39,7 @@ $(function () {
 			current.find('.Winners').text(quest.Winners);
 			current.find('.Authors').text(quest.Authors.join(', '));
 			current.find('.QuestThumbnail').attr('src', quest.Levels[0].Thumbnail);
-			current.find('.item-Modal').data('index', index);
+			current.data('index', index);
 			current.find('.achivement-cleared').attr('src', quest.Cleared ? 'img/achivement_p.png' : 'img/achivement_n.png');
 			current.find('.achivement-restaged').attr('src', quest.Restaged ? 'img/achivement_p.png' : 'img/achivement_n.png');
 

@@ -205,6 +205,11 @@ iframe {
 	z-index: 2;
 }
 
+.quest-item-entity,
+.kit-item-entity {
+	cursor: pointer;
+}
+
 /* アニメーション */
 
 .h4p_item-transform {

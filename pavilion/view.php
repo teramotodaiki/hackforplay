@@ -38,7 +38,7 @@
 	<div class="container">
 		<div class="row">
 			<!-- Sample Item -->
-			<div class="quest-item-sample pull-left hidden">
+			<div class="quest-item-sample pull-left hidden" data-toggle="modal" data-target="#questModal">
 				<div>
 					<img src="" class="achivement achivement-cleared" alt="">
 					<img src="" class="achivement achivement-restaged" alt="">
@@ -58,11 +58,8 @@
 					<img alt="" class="stage-thumbnail QuestThumbnail">
 					<img src="img/stage_frame.png" class="stage-frame" alt="">
 				</div>
-				<a href="#" class="btn btn-link btn-block item-Modal" data-toggle="modal" data-target="#questModal">
-					Modal
-				</a>
 			</div>
-			<div class="kit-item-sample pull-left hidden">
+			<div class="kit-item-sample pull-left hidden" data-toggle="modal" data-target="#kitModal">
 				<div>
 					<img src="" class="achivement achivement-restaged" alt="">
 				</div>
@@ -76,9 +73,6 @@
 					<p><span class="Explain"></span></p>
 				</div>
 				<img alt="" class="img-responsive Thumbnail">
-				<a href="#" class="btn btn-link btn-block" data-toggle="modal" data-target="#kitModal">
-					Modal
-				</a>
 			</div>
 		</div>
 	</div>
