@@ -112,7 +112,7 @@ nav #img-usericon {
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	width: 320px;
-	height: 460px;
+	height: 420px;
 
 	/*仮のマージン*/
 	margin-left: 60px;
@@ -345,5 +345,17 @@ button.h4p_open-project {
 
 .quest-item-entity,
 .kit-item-entity {
-	padding: 40px 40px;
+	padding: 32px 40px;
+}
+
+.quest-item-entity .item-achievement,
+.kit-item-entity .item-achievement {
+	margin-left: -14px;
+}
+
+.quest-item-entity .item-article {
+	margin: -64px 0px 0px 32px;
+}
+.kit-item-entity .item-article {
+	margin: -32px 0px 0px 32px;
 }

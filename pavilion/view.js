@@ -40,8 +40,8 @@ $(function () {
 			current.find('.Authors').text(quest.Authors.join(', '));
 			current.find('.QuestThumbnail').attr('src', quest.Levels[0].Thumbnail);
 			current.data('index', index);
-			current.find('.achivement-cleared').attr('src', quest.Cleared ? 'img/achivement_p.png' : 'img/achivement_n.png');
-			current.find('.achivement-restaged').attr('src', quest.Restaged ? 'img/achivement_p.png' : 'img/achivement_n.png');
+			current.find('.achievement-cleared').attr('src', quest.Cleared ? 'img/achievement_p.png' : 'img/achievement_n.png');
+			current.find('.achievement-restaged').attr('src', quest.Restaged ? 'img/achievement_p.png' : 'img/achievement_n.png');
 
 			switch (quest.Type) {
 				case 'easy':	current.css('background-image', 'url(' + result.EasyBg + ')'); break;
@@ -68,7 +68,7 @@ $(function () {
 		current.find('.Restagers').text('NaN');
 		current.find('.Explain').text(result.Kit.Explain);
 		current.find('.Thumbnail').attr('src', result.Kit.Thumbnail);
-		current.find('.achivement-restaged').attr('src', result.Kit.Restaged ? 'img/achivement_p.png' : 'img/achivement_n.png');
+		current.find('.achievement-restaged').attr('src', result.Kit.Restaged ? 'img/achievement_p.png' : 'img/achievement_n.png');
 		current.css('background-image', 'url(' + result.KitBg + ')');
 
 		$('.kit-item-sample').parent().append(current);

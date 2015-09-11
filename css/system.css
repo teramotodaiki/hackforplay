@@ -221,6 +221,16 @@ iframe {
 	box-shadow: none;
 }
 
+.item-achievement .achievement {
+	display: block;
+}
+
+.kit-item-entity .item-underscore,
+.quest-item-entity .item-underscore {
+	border-bottom: 1px solid rgb(0,0,0);
+	margin-bottom: 4px;
+}
+
 /* アニメーション */
 
 .h4p_item-transform {

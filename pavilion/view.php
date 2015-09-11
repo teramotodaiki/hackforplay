@@ -39,20 +39,22 @@
 		<div class="row">
 			<!-- Sample Item -->
 			<div class="quest-item-sample pull-left hidden" data-toggle="modal" data-target="#questModal">
-				<div>
-					<img src="" class="achivement achivement-cleared" alt="">
-					<img src="" class="achivement achivement-restaged" alt="">
+				<div class="item-achievement">
+					<img src="" class="achievement achievement-cleared" alt="">
+					<img src="" class="achievement achievement-restaged" alt="">
 				</div>
-				<div>
-					<p>クエスト　1 - <span class="Number"></span></p>
-				</div>
-				<div>
-					<p><span class="Challengers"></span>人<ruby>が挑戦<rt>ちょうせん</rt></ruby>し、</p>
-					<p><span class="Winners"></span>人がクリアした</p>
-				</div>
-				<div>
-					<p><ruby>主<rt>おも</rt></ruby>なクリエイター</p>
-		        	<p class="Authors">...</p>
+				<div class="item-article">
+					<div class="item-underscore">
+						<p>クエスト　1 - <span class="Number"></span></p>
+					</div>
+					<div class="item-underscore">
+						<p><span class="Challengers"></span>人<ruby>が挑戦<rt>ちょうせん</rt></ruby>し、</p>
+						<p><span class="Winners"></span>人がクリアした</p>
+					</div>
+					<div>
+						<p><ruby>主<rt>おも</rt></ruby>なクリエイター</p>
+			        	<p class="Authors">...</p>
+					</div>
 				</div>
 				<div class="stage-frame-wrapper">
 					<img alt="" class="stage-thumbnail QuestThumbnail">
@@ -60,19 +62,24 @@
 				</div>
 			</div>
 			<div class="kit-item-sample pull-left hidden" data-toggle="modal" data-target="#kitModal">
-				<div>
-					<img src="" class="achivement achivement-restaged" alt="">
+				<div class="item-achievement">
+					<img src="" class="achievement achievement-restaged" alt="">
 				</div>
-				<div>
-					<p>オリジナルステージ作成</p>
+				<div class="item-article">
+					<div class="item-underscore">
+						<p>オリジナルステージ作成</p>
+					</div>
+					<div class="item-underscore">
+						<p>今までに<span class="Restagers"></span>人<ruby>があたらしいステージを作成した
+					</div>
+					<div>
+						<p><span class="Explain"></span></p>
+					</div>
 				</div>
-				<div>
-					<p>今までに<span class="Restagers"></span>人<ruby>があたらしいステージを作成した
+				<div class="stage-frame-wrapper">
+					<img alt="" class="stage-thumbnail Thumbnail">
+					<img src="img/stage_frame.png" class="stage-frame" alt="">
 				</div>
-				<div>
-					<p><span class="Explain"></span></p>
-				</div>
-				<img alt="" class="img-responsive Thumbnail">
 			</div>
 		</div>
 	</div>
