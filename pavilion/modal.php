@@ -28,6 +28,12 @@
 							<img src="" class="stage-frame" alt="">
 						</div>
 						<p class="text-center"><span class="Title"></span></p>
+						<p>
+							<a href="#" class="btn btn-restage btn-block" title="Restaging">
+								<span class="glyphicon glyphicon-wrench"></span>
+								<span>ステージを改造</span>
+							</a>
+						</p>
 		        	</div>
 		        	<div class="modal-arrow-sample pull-left hidden">
 		        		<img src="" alt=">" class="ModalArrow">

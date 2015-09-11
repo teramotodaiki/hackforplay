@@ -119,11 +119,16 @@ $(function () {
 				current.find('.Thumbnail').attr('src', level.Thumbnail);
 				current.find('.Title').text(level.Title);
 
-				if (level.Allowed) current.data('ID', level.ID);
-				else current.css({
-					'opacity': '0.5',
-					'cursor': 'default'
-				});
+				if (level.Allowed) {
+					current.data('ID', level.ID);
+					current.find('.btn-restage').attr('href', '/s/?mode=restaging&id=' + level.StageID);
+				} else {
+					current.css({
+						'opacity': '0.5',
+						'cursor': 'default'
+					});
+					current.find('.btn-restage').addClass('disabled');
+				}
 
 				if (levelIndex > 0) {
 					var arrow = $arrow.clone(true, true);
