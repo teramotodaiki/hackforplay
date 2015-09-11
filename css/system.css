@@ -187,7 +187,8 @@ iframe {
 
 .stage-frame-wrapper {
 	position: relative;
-	width: 100%;
+	width: 242px;
+	height: 180px;
 }
 
 .stage-frame-wrapper img {
@@ -206,8 +207,18 @@ iframe {
 }
 
 .quest-item-entity,
-.kit-item-entity {
+.kit-item-entity,
+.modal-thumbnail-entity {
 	cursor: pointer;
+}
+
+#questModal .modal-content,
+#kitModal .modal-content {
+	background-color: transparent;
+	background-size: 100% 100%;
+	padding: 40px 40px;
+	border: none;
+	box-shadow: none;
 }
 
 /* アニメーション */

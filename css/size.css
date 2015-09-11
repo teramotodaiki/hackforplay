@@ -119,6 +119,21 @@ nav #img-usericon {
 	margin-top: 20px;
 }
 
+.modal-arrow-entity img {
+	height: 50px;
+	width: auto;
+	margin: 70px 0px;
+}
+
+#questModal .ModalClose,
+#kitModal .ModalClose {
+	position: absolute;
+	width: 68px;
+	height: 68px;
+	right: 0px;
+	top: 0px;
+}
+
 /* 間隔属性 */
 .margin-top-lg {
 	margin-top: 40px;

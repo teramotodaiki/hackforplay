@@ -1,8 +1,8 @@
 <div class="modal fade" id="questModal" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 		    <div class="modal-body">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <input type="image" src="" class="ModalClose" alt="&times" data-dismiss="modal" aria-label="Close"></input>
 		        <div class="body-part-1">
 		        	<p class="Cleared">
 		        		<span class="true-text hidden">クエストクリア！</span>
@@ -20,6 +20,16 @@
 		        	<p class="Authors">...</p>
 		        </div>
 		        <div class="row">
+		        	<div class="modal-thumbnail-sample pull-left hidden">
+						<div class="stage-frame-wrapper">
+							<img alt="" class="stage-thumbnail Thumbnail">
+							<img src="" class="stage-frame" alt="">
+						</div>
+						<p class="text-center"><span class="Tilte"></span></p>
+		        	</div>
+		        	<div class="modal-arrow-sample pull-left hidden">
+		        		<img src="" alt=">" class="ModalArrow">
+		        	</div>
 		        </div>
 		    </div>
 		</div>
@@ -29,7 +39,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 		    <div class="modal-body">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <input type="image" src="" class="ModalClose" alt="&times" data-dismiss="modal" aria-label="Close"></input>
 		        <div class="body-part-1">
 		        	<p class="Restaged">
 		        		<span class="true-text hidden">ステージを作成した！</span>
@@ -42,11 +52,12 @@
 					<p><span class="Explain"></span></p>
 		        </div>
 		        <div class="row">
-		        	<div class="col-xs-4">
-		        		<a href="#" class="link-restage" title="">
-		        			<img src="" class="img-responsive Thumbnail" alt="">
-		        		</a>
-		        		<p class="text-center Title"></p>
+		        	<div class="modal-kit-entity">
+						<div class="stage-frame-wrapper">
+							<img alt="" class="stage-thumbnail Thumbnail">
+							<img src="" class="stage-frame" alt="">
+						</div>
+						<p class="text-center"><span class="Tilte"></span></p>
 		        	</div>
 		        </div>
 		    </div>

@@ -71,6 +71,9 @@ $(function () {
 	}
 
 	// クエストモーダル
+	$('#questModal .ModalClose,#kitModal .ModalClose').attr('src', result.ModalClose);
+	$('#questModal .ModalArrow').attr('src', result.ModalArrow);
+	$('.stage-frame-wrapper .stage-frame').attr('src', result.StageFrame);
 	$('#questModal').on('show.bs.modal', function(event) {
 
 		var index = $(event.relatedTarget).data('index');
@@ -92,19 +95,35 @@ $(function () {
 
 			$('#questModal .Authors').text(quest.Authors.join(', '));
 
-			$('#questModal .row').children().remove();
-			result.Quests[index].Levels.forEach(function(level) {
-				var $div = $('<div>').addClass('col-xs-4');
-				var $img = $('<img>').addClass('img-responsive').attr('src', level.Thumbnail);
-				var $p = $('<p>').addClass('text-center').text(level.Title);
-				var $a = $('<a>').attr('href', '/s/?mode=quest&level=' + level.ID);
-				if (!level.Allowed) $a.css('opacity', '0.5').attr('href', '#');
+			$('#questModal .modal-content').css('background-image', $(event.relatedTarget).css('background-image'));
 
-				$div.append($img);
-				$div.append($p);
-				$a.append($div);
-				$('#questModal .row').append($a);
+			$('.modal-thumbnail-entity,.modal-arrow-entity').remove();
+
+			var $thumbnail = $('#questModal .row .modal-thumbnail-sample').on('click', function() {
+				var id = $(this).data('ID');
+				if (id) location.href = '/s/?mode=quest&level=' + id;
 			});
+			var $arrow = $('#questModal .row .modal-arrow-sample');
+			result.Quests[index].Levels.forEach(function(level, levelIndex) {
+				var current = $thumbnail.clone(true, true);
+				current.removeClass('hidden modal-thumbnail-sample').addClass('modal-thumbnail-entity');
+				current.find('.Thumbnail').attr('src', level.Thumbnail);
+				current.find('.Title').text(level.Title);
+
+				if (level.Allowed) current.data('ID', level.ID);
+				else current.css({
+					'opacity': '0.5',
+					'cursor': 'default'
+				});
+
+				if (levelIndex > 0) {
+					var arrow = $arrow.clone(true, true);
+					arrow.removeClass('hidden modal-arrow-sample').addClass('modal-arrow-entity');
+					this.append(arrow);
+				}
+				this.append(current);
+
+			}, $('#questModal .row'));
 
 		})(result.Quests[index]);
 
@@ -117,7 +136,10 @@ $(function () {
 		$(this).find('.Explain').text(result.Kit.Explain);
 		$(this).find('.Thumbnail').attr('src', result.Kit.Thumbnail);
 		$(this).find('.Title').text(result.Kit.Title);
-		$(this).find('.link-restage').attr('href', '/s/?mode=restaging&id=' + result.Kit.ID);
+		$(this).find('.modal-content').css('background-image', 'url(' + result.KitBg + ')');
+		$(this).find('.modal-kit-entity').on('click', function() {
+			location.href = '/s/?mode=restaging&id=' + result.Kit.ID;
+		});
 
 	});
 });
