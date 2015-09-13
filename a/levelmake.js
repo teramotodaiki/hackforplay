@@ -4,27 +4,35 @@ $(function () {
 		var id = $(this).data('id');
 
 		$('.pavilion-info .quest-info-entity').remove();
-		// $('.pavilion-info .level-wrapper-entity').remove();
 
 		// クエストリストのロード
-		(function(sampleQuest) {
+		$.post('../levelmake/getquestlist.php', {
+			'id': id
+		}, function(data, textStatus, xhr) {
 
-			// クエストの生成
-			var quest = sampleQuest.clone(true, true);
-			quest.removeClass('hidden').addClass('quest-info-entity');
+			(data ? $.parseJSON(data).quests : []).forEach(function(quest, index) {
 
-			(function(sampleLevel) {
+				var questEntity = $('.pavilion-info .quest-info-sample').clone(true, true);
 
-				// レベルの生成
-				var level = sampleLevel.clone(true, true);
-				level.removeClass('hidden').addClass('level-wrapper-entity');
+				// クエストの生成
+				questEntity.removeClass('quest-info-sample hidden').addClass('quest-info-entity');
+				questEntity.find('#QuestInfo').val(quest.Type);
 
-				sampleLevel.parent().append(level);
+				quest.levels.forEach(function(level) {
 
-			})(quest.find('.level-wrapper-sample'));
+					var levelEntity = questEntity.find('.level-wrapper-sample').clone(true, true);
+					levelEntity.removeClass('hidden level-wrapper-sample').addClass('level-wrapper-entity');
+					levelEntity.find('.PlayOrder').text(level.PlayOrder);
+					levelEntity.find('#LevelInfo').val(level.StageID);
+					questEntity.find('.quest-body-2').append(levelEntity);
 
-			sampleQuest.parent().append(quest);
+				});
 
-		})($('.pavilion-info .quest-info-sample'));
+				questEntity.appendTo('.pavilion-info .pavilion-body-1');
+
+			});
+
+		});
 	});
+
 });
