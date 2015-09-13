@@ -121,7 +121,7 @@
 			    		<div class="pavilion-body-1 col-xs-12">
 				    		<div class="quest-info-sample row hidden">
 				    			<div class="quest-body-1 col-xs-12">
-				    				<form class="form-inline">
+				    				<form class="form-inline" data-query="updateQuest">
 				    					<div class="form-group">
 				    						<label for="QuestInfo">QuestStatus</label>
 				    						<input type="text" class="form-control" id="QuestInfo" value="">
