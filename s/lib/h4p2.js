@@ -13,6 +13,10 @@ window.addEventListener('load', function(){
     // game.keybind(" ".charCodeAt(0), 'b'); // bボタンはスペースキー
     game.keybind(" ".charCodeAt(0), 'a'); // aボタンはスペースキー
 
+    game.on('load', function() {
+        window.parent.postMessage('game_loaded', '/'); // ロードのタイミングを伝える
+    });
+
     loadMap();
 });
 

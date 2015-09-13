@@ -827,10 +827,22 @@ $(function(){
 				$('.container-game .h4p_credit').removeClass('hidden');
 				$('.container-game .h4p_credit .Title').text(getParam('title'));
 				$('.container-game .h4p_credit .Author').text(getParam('author'));
+				// ロードされた瞬間、ゲームを一時停止する
+				var paused = false, creditVisibility = true;
+				window.addEventListener('message', function(event) {
+					if (event.data === 'game_loaded' && creditVisibility) {
+						$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.pause()', '/');
+						paused = true;
+					}
+				});
 				// 2秒後、ゲームをフェードインする
 				setTimeout(function() {
 					$('.container-game .h4p_credit').addClass('hidden');
 					$('.container-game .h4p_game iframe').css('opacity', 1);
+					creditVisibility = false;
+					if (paused) {
+						$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.resume()', '/');
+					}
 				}, 2000);
 				break;
 		}
