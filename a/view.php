@@ -12,6 +12,7 @@
 	<?php require_once '../view/header.php'; ?>
 	<script src="../chartjs/Chart.js" type="text/javascript" charset="utf-8"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<script src="levelmake.js" type="text/javascript" charset="utf-8"></script>
 	<script src="exmap.js" type="text/javascript" charset="utf-8"></script>
 	<script src="judge.js" type="text/javascript" charset="utf-8"></script>
 	<script src="chart.js" type="text/javascript" charset="utf-8"></script>
@@ -71,6 +72,9 @@
 			    <li role="presentation">
 			    	<a href="#judge" aria-controls="judge" role="tab" data-toggle="tab">judge</a>
 			    </li>
+			    <li role="presentation">
+			    	<a href="#levelmake" aria-controls="levelmake" role="tab" data-toggle="tab">Level Make</a>
+			    </li>
 			</ul>
 			<div class="col-xs-10 tab-content">
 			    <div role="tabpanel" class="tab-pane" id="summary">
@@ -106,6 +110,45 @@
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="judge">
 			    	<div class="row list-judging"></div>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="levelmake">
+		    		<?php foreach ($pavilion as $key => $value) : ?>
+		    		<button type="button" class="btn btn-default load-pavilion" data-id="<?php echo $value['ID']; ?>">
+		    			<?php echo $value['DisplayName']; ?>
+		    		</button>
+		    		<?php endforeach; ?>
+			    	<div class="pavilion-info row">
+			    		<div class="pavilion-body-1 col-xs-12">
+				    		<div class="quest-info-sample row hidden">
+				    			<div class="quest-body-1 col-xs-12">
+				    				<form class="form-inline">
+				    					<div class="form-group">
+				    						<label for="QuestInfo">QuestStatus</label>
+				    						<input type="text" class="form-control" id="QuestInfo" value="">
+				    					</div>
+			    						<button type="submit" class="btn btn-default">Update</button>
+				    				</form>
+				    			</div>
+				    			<div class="quest-body-2">
+					    			<div class="level-wrapper-sample col-xs-3 hidden">
+					    				<form class="form-inline">
+					    					<div class="form-group form-group-sm">
+					    						<label for="LevelInfo">Lv.<span class="PlayOrder"></span></label>
+					    						<input type="text" class="form-control" id="LevelInfo" size="6" value="">
+					    					</div>
+				    						<button type="submit" class="btn btn-default btn-sm">Update</button>
+					    				</form>
+					    			</div>
+				    			</div>
+				    			<div class="quest-body-3 col-xs-4 clearfix">
+				    				<button type="button" class="btn btn-link">Add Level</button>
+				    			</div>
+				    		</div>
+			    		</div>
+			    		<div class="pavilion-body-2">
+			    			<button type="button" class="btn btn-link">Add Quest</button>
+			    		</div>
+			    	</div>
 			    </div>
 			</div>
 		</div>
