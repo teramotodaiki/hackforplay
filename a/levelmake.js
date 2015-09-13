@@ -2,6 +2,7 @@ $(function () {
 
 	$('.load-pavilion').on('click', function() {
 		var id = $(this).data('id');
+		var loading = $(this).button('loading');
 
 		$('.pavilion-info .quest-info-entity').remove();
 
@@ -9,6 +10,7 @@ $(function () {
 		$.post('../levelmake/getquestlist.php', {
 			'id': id
 		}, function(data, textStatus, xhr) {
+			loading.button('reset');
 
 			(data ? $.parseJSON(data).quests : []).forEach(function(quest, index) {
 
@@ -40,13 +42,31 @@ $(function () {
 	$('.pavilion-info form[data-query="updateQuest"]').submit(function(event) {
 		event.preventDefault();
 
-		var loading = $(event.relatedTarget).button('loading');
+		var loading = $(this).find('button[type="submit"]').button('loading');
+		var form = $(this);
+		form.find('.form-group').removeClass('has-success has-error');
+		form.find('.form-control-feedback').removeClass('glyphicon-ok glyphicon-remove');
 
 		$.post('../levelmake/updatequest.php', {
 			'id': $(this).data('id'),
 			'type': $(this).find('#QuestInfo').val()
 		}, function(data, textStatus, xhr) {
 			loading.button('reset');
+
+			switch (data) {
+				case "success":
+					form.find('.form-group').addClass('has-success has-feedback');
+					form.find('.form-control-feedback').addClass('glyphicon-ok');
+					break;
+				case "invalid-id":
+					alert('Error: Invalid ID');
+				case "invalid-type":
+				default:
+					console.log('error', data);
+					form.find('.form-group').addClass('has-error has-feedback');
+					form.find('.form-control-feedback').addClass('glyphicon-remove');
+					break;
+			}
 		});
 	});
 

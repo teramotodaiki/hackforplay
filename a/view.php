@@ -124,9 +124,14 @@
 				    				<form class="form-inline" data-query="updateQuest">
 				    					<div class="form-group">
 				    						<label for="QuestInfo">QuestStatus</label>
-				    						<input type="text" class="form-control" id="QuestInfo" value="">
+				    						<div class="input-group">
+					    						<input type="text" class="form-control" id="QuestInfo" value="">
+					    						<span class="input-group-btn">
+						    						<button type="submit" class="btn btn-default">Update</button>
+					    						</span>
+				    						</div>
+				    						<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 				    					</div>
-			    						<button type="submit" class="btn btn-default">Update</button>
 				    				</form>
 				    			</div>
 				    			<div class="quest-body-2">
