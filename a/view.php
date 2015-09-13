@@ -124,14 +124,10 @@
 				    				<form class="form-inline" data-query="updateQuest">
 				    					<div class="form-group">
 				    						<label class="control-label" for="QuestInfo">QuestStatus</label>
-				    						<div class="input-group">
-					    						<input type="text" class="form-control" id="QuestInfo" value="">
-					    						<span class="input-group-btn">
-						    						<button type="submit" class="btn btn-default">Update</button>
-					    						</span>
-				    						</div>
+				    						<input type="text" class="form-control" id="QuestInfo" value="">
 				    						<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 				    					</div>
+			    						<button type="submit" class="btn btn-default">Update</button>
 				    				</form>
 				    			</div>
 				    			<div class="quest-body-2">
@@ -139,14 +135,10 @@
 					    				<form class="form-inline" data-query="updateLevel">
 					    					<div class="form-group form-group-sm">
 					    						<label class="control-label" for="LevelInfo">Lv.<span class="PlayOrder"></span></label>
-					    						<div class="input-group">
-						    						<input type="text" class="form-control" id="LevelInfo" size="6" value="">
-						    						<span class="input-group-btn">
-							    						<button type="submit" class="btn btn-default btn-sm">Update</button>
-						    						</span>
-					    						</div>
+					    						<input type="text" class="form-control" id="LevelInfo" size="5" value="">
 					    						<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 					    					</div>
+				    						<button type="submit" class="btn btn-default btn-sm">Update</button>
 					    				</form>
 					    			</div>
 				    			</div>
