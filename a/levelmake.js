@@ -27,6 +27,7 @@ $(function () {
 					levelEntity.removeClass('hidden level-wrapper-sample').addClass('level-wrapper-entity');
 					levelEntity.find('.PlayOrder').text(level.PlayOrder);
 					levelEntity.find('#LevelInfo').val(level.StageID);
+					levelEntity.find('form[data-query="updateLevel"]').data('id', level.ID);
 					questEntity.find('.quest-body-2').append(levelEntity);
 
 				});
@@ -61,6 +62,37 @@ $(function () {
 				case "invalid-id":
 					alert('Error: Invalid ID');
 				case "invalid-type":
+				default:
+					form.find('.form-group').addClass('has-error has-feedback');
+					form.find('.form-control-feedback').addClass('glyphicon-remove');
+					break;
+			}
+		});
+	});
+
+	// Update level
+	$('.pavilion-info form[data-query="updateLevel"]').submit(function(event) {
+		event.preventDefault();
+
+		var loading = $(this).find('button[type="submit"]').button('loading');
+		var form = $(this);
+		form.find('.form-group').removeClass('has-success has-error');
+		form.find('.form-control-feedback').removeClass('glyphicon-ok glyphicon-remove');
+
+		$.post('../levelmake/updatelevel.php', {
+			'id': $(this).data('id'),
+			'stageid': $(this).find('#LevelInfo').val()
+		}, function(data, textStatus, xhr) {
+			loading.button('reset');
+
+			switch (data) {
+				case "success":
+					form.find('.form-group').addClass('has-success has-feedback');
+					form.find('.form-control-feedback').addClass('glyphicon-ok');
+					break;
+				case "invalid-id":
+					alert('Error: Invalid ID');
+				case "invalid-stageid":
 				default:
 					console.log('error', data);
 					form.find('.form-group').addClass('has-error has-feedback');
