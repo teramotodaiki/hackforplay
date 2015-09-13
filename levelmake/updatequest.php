@@ -15,7 +15,7 @@ try {
 		exit('invalid-id');
 	}
 	$type	= filter_input(INPUT_POST, 'type');
-	if (array_search($type, ['easy', 'normal', 'hard']) < 0) {
+	if (array_search($type, ['easy', 'normal', 'hard']) === FALSE) {
 		exit('invalid-type');
 	}
 
