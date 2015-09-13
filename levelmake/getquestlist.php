@@ -36,7 +36,7 @@ try {
 		exit;
 	}
 
-	$stmt	= $dbh->prepare('SELECT "StageID","PlayOrder" FROM "_Level" WHERE "QuestID"=:quest_id ORDER BY "PlayOrder"');
+	$stmt	= $dbh->prepare('SELECT "ID","StageID","PlayOrder" FROM "_Level" WHERE "QuestID"=:quest_id ORDER BY "PlayOrder"');
 
 	foreach ($result['quests'] as $key => $value) {
 
