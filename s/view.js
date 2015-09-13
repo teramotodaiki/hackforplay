@@ -27,6 +27,7 @@ $(function(){
 			'height': width/1.5
 		});
 	$(".h4p_clear").height(width/1.5);
+	$(".h4p_credit").height(width/1.5);
 	// ゲームクリアの処理
 	window.addEventListener('message', function(e){
 		switch(e.data){
@@ -821,6 +822,16 @@ $(function(){
 					beginRestaging();
 					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
 				});
+				// Show credit
+				$('.container-game .h4p_game iframe').css('opacity', 0);
+				$('.container-game .h4p_credit').removeClass('hidden');
+				$('.container-game .h4p_credit .Title').text(getParam('title'));
+				$('.container-game .h4p_credit .Author').text(getParam('author'));
+				// 2秒後、ゲームをフェードインする
+				setTimeout(function() {
+					$('.container-game .h4p_credit').addClass('hidden');
+					$('.container-game .h4p_game iframe').css('opacity', 1);
+				}, 2000);
 				break;
 		}
 	})();

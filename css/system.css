@@ -235,6 +235,21 @@ iframe {
 	margin-bottom: 4px;
 }
 
+.h4p_credit .box-half-top,
+.h4p_credit .box-half-bottom {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+}
+
+.h4p_credit .box-half-top {
+	bottom: 50%;
+}
+
+.h4p_credit .box-half-bottom {
+	top: 50%;
+}
+
 /* アニメーション */
 
 .h4p_item-transform {
