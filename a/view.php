@@ -12,6 +12,8 @@
 	<?php require_once '../view/header.php'; ?>
 	<script src="../chartjs/Chart.js" type="text/javascript" charset="utf-8"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<script src="exmap.js" type="text/javascript" charset="utf-8"></script>
+	<script src="judge.js" type="text/javascript" charset="utf-8"></script>
 	<script src="chart.js" type="text/javascript" charset="utf-8"></script>
 	<!-- Modal -->
 	<div class="modal fade" id="codeModal" tabindex="-1" role="dialog">
