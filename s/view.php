@@ -103,6 +103,8 @@ if ($mode === 'quest') {
 		s('origin_id', "<?php echo $origin_id; ?>");
 		s('src', "<?php echo $src;  ?>");
 		s('youtube', "<?php echo $youtube;  ?>");
+		s('title', "<?php echo $title;  ?>");
+		s('author', "<?php echo $author;  ?>");
 <?php if(isset($level)): ?>
 		s('level', "<?php echo $level['ID']; ?>");
 <?php endif; ?>
@@ -255,6 +257,14 @@ if ($mode === 'quest') {
 			<div id="scroll-anchor" class="col-xs-12"></div>
 			<div class="col-xs-12 h4p_alerts"></div>
 			<div class="col-xs-12 h4p_game no-padding" style="display:block">
+				<div class="h4p_credit hidden">
+					<div class="box-half-top">
+						<h1>「<span class="Title"></span>」</h1>
+					</div>
+					<div class="box-half-bottom">
+						<h2>by <span class="Author"></span></h2>
+					</div>
+				</div>
 				<iframe src="" frameborder="0"></iframe>
 			</div>
 			<div class="col-xs-12 h4p_clear text-center" style="display:none">

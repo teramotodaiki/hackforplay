@@ -504,7 +504,8 @@ window.addEventListener('load', function() {
 	window.postMessage("Hack.dispatchEvent(new Event('load'));", "/"); // Hack.onloadのコール
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
-    game.addEventListener('load', function(){
+	game.addEventListener('load', function(){
+		window.parent.postMessage('game_loaded', '/'); // ロードのタイミングを伝える
 		if (Hack.defaultParentNode) {
 			game.rootScene.addChild(Hack.defaultParentNode);
 		} else {

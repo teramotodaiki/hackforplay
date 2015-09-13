@@ -48,8 +48,10 @@ nav.navbar {
 	opacity: 0.9;
 }
 
-.h4p_game {
+.h4p_game,
+.h4p_credit {
 	background-color: black;
+	color: white;
 }
 
 /* 線の幅・色 */
