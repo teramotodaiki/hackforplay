@@ -28,8 +28,9 @@ try {
 		// タウンにもどる
 
 	// クエストのリストを取得
-	$stmt_qu		= $dbh->prepare('SELECT "ID","Type" FROM "_Quest" WHERE "PavilionID"=:pavilion_id');
+	$stmt_qu		= $dbh->prepare('SELECT "ID","Type" FROM "_Quest" WHERE "PavilionID"=:pavilion_id AND "Published"=:published');
 	$stmt_qu->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
+	$stmt_qu->bindValue(":published", TRUE, PDO::PARAM_BOOL);
 	$stmt_qu->execute();
 
 	// 各クエストの詳細情報を取得
