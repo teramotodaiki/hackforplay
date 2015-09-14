@@ -21,7 +21,7 @@ try {
 	$published	= filter_input(INPUT_POST, 'published', FILTER_VALIDATE_BOOLEAN);
 
 	// 更新
-	$stmt	= $dbh->prepare('UPDATE "_Quest" SET "Type"=:type,"Published"=:published WHERE "ID"=:id');
+	$stmt	= $dbh->prepare('UPDATE "Quest" SET "Type"=:type,"Published"=:published WHERE "ID"=:id');
 	$stmt->bindValue(":id", $id, PDO::PARAM_INT);
 	$stmt->bindValue(":type", $type, PDO::PARAM_STR);
 	$stmt->bindValue(":published", $published, PDO::PARAM_BOOL);

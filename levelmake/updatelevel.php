@@ -20,7 +20,7 @@ try {
 	}
 
 	// 更新
-	$stmt	= $dbh->prepare('UPDATE "_Level" SET "StageID"=:stageid WHERE "ID"=:id');
+	$stmt	= $dbh->prepare('UPDATE "Level" SET "StageID"=:stageid WHERE "ID"=:id');
 	$stmt->bindValue(":id", $id, PDO::PARAM_INT);
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_STR);
 	$stmt->execute();

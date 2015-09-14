@@ -16,15 +16,15 @@ try {
 
 	$pavilion_id	= filter_input(INPUT_POST, 'pavilion_id', FILTER_VALIDATE_INT);
 
-	$stmt	= $dbh->prepare('INSERT INTO "_Quest" ("PavilionID") VALUES(:pavilion_id)');
+	$stmt	= $dbh->prepare('INSERT INTO "Quest" ("PavilionID") VALUES(:pavilion_id)');
 	$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
 	$flag	= $stmt->execute();
 	if (!$flag) {
 		exit('failed');
 	}
 
-	$stmt		= $dbh->prepare('SELECT "ID","Type" FROM "_Quest" WHERE "ID"=:quest_id');
-	$stmt->bindValue(":quest_id", $dbh->lastInsertId('_Quest'), PDO::PARAM_INT);
+	$stmt		= $dbh->prepare('SELECT "ID","Type" FROM "Quest" WHERE "ID"=:quest_id');
+	$stmt->bindValue(":quest_id", $dbh->lastInsertId('Quest'), PDO::PARAM_INT);
 	$stmt->execute();
 
 	$quest				= $stmt->fetch(PDO::FETCH_ASSOC);

@@ -28,7 +28,7 @@ try {
 
 	$result	= array();
 
-	$stmt				= $dbh->prepare('SELECT "ID","Type","Published" FROM "_Quest" WHERE "PavilionID"=:id');
+	$stmt				= $dbh->prepare('SELECT "ID","Type","Published" FROM "Quest" WHERE "PavilionID"=:id');
 	$stmt->bindValue(":id", $id, PDO::PARAM_INT);
 	$stmt->execute();
 	$result['quests']	= $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -37,7 +37,7 @@ try {
 		exit;
 	}
 
-	$stmt	= $dbh->prepare('SELECT "ID","StageID","PlayOrder" FROM "_Level" WHERE "QuestID"=:quest_id ORDER BY "PlayOrder"');
+	$stmt	= $dbh->prepare('SELECT "ID","StageID","PlayOrder" FROM "Level" WHERE "QuestID"=:quest_id ORDER BY "PlayOrder"');
 
 	foreach ($result['quests'] as $key => $value) {
 
