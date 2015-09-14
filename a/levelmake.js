@@ -44,7 +44,8 @@ $(function () {
 
 			// クエストの生成
 			questEntity.removeClass('quest-info-sample hidden').addClass('quest-info-entity');
-			questEntity.find('#QuestInfo').val(quest.Type);
+			questEntity.find('#Type').val(quest.Type);
+			questEntity.find('#Published').prop('checked', quest.Published >> 0);
 			questEntity.find('form[data-query="updateQuest"]').data('id', quest.ID);
 
 			quest.levels.forEach(function(level) {
@@ -75,7 +76,8 @@ $(function () {
 
 		$.post('../levelmake/updatequest.php', {
 			'id': $(this).data('id'),
-			'type': $(this).find('#QuestInfo').val()
+			'type': $(this).find('#Type').val(),
+			'published': $(this).find('#Published').prop('checked')
 		}, function(data, textStatus, xhr) {
 			loading.button('reset');
 

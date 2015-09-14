@@ -8,6 +8,7 @@
 	[{
 		ID:INT,
 		Type:String,
+		Published:Bool,
 		levels:
 		[{
 			StageID:INT,
@@ -27,7 +28,7 @@ try {
 
 	$result	= array();
 
-	$stmt				= $dbh->prepare('SELECT "ID","Type" FROM "_Quest" WHERE "PavilionID"=:id');
+	$stmt				= $dbh->prepare('SELECT "ID","Type","Published" FROM "_Quest" WHERE "PavilionID"=:id');
 	$stmt->bindValue(":id", $id, PDO::PARAM_INT);
 	$stmt->execute();
 	$result['quests']	= $stmt->fetchAll(PDO::FETCH_ASSOC);

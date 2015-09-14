@@ -122,10 +122,15 @@
 				    		<div class="quest-info-sample row hidden">
 				    			<div class="quest-body-1 col-xs-12">
 				    				<form class="form-inline" data-query="updateQuest">
+			    						<label class="control-label">Quest:</label>
 				    					<div class="form-group">
-				    						<label class="control-label" for="QuestInfo">QuestStatus</label>
-				    						<input type="text" class="form-control" id="QuestInfo" value="">
+				    						<label class="control-label" for="Type">Type</label>
+				    						<input type="text" class="form-control" id="Type" value="">
 				    						<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				    					</div>
+				    					<div class="checkbox">
+				    						<label class="control-label" for="Published">Published</label>
+				    						<input type="checkbox" id="Published" value="">
 				    					</div>
 			    						<button type="submit" class="btn btn-default">Update</button>
 				    				</form>
