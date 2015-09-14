@@ -122,7 +122,7 @@
 				    		<div class="quest-info-sample row hidden">
 				    			<div class="quest-body-1 col-xs-12">
 				    				<form class="form-inline" data-query="updateQuest">
-			    						<label class="control-label">Quest:</label>
+				    					<label class="control-label"><a href="#" class="Debug" title="debug">Quest</a>:</label>
 				    					<div class="form-group">
 				    						<label class="control-label" for="Type">Type</label>
 				    						<input type="text" class="form-control" id="Type" value="">

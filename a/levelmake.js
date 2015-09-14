@@ -68,11 +68,12 @@ $(function () {
 			questEntity.find('#Published').prop('checked', quest.Published >> 0);
 			questEntity.find('form[data-query="updateQuest"]').data('id', quest.ID);
 			questEntity.find('.query-add-level').data('id', quest.ID);
+			if (quest.levels.length > 0) {
+				questEntity.find('.Debug').attr('href', '/s/?mode=quest&level=' + quest.levels[0].ID);
+			}
 
 			quest.levels.forEach(addLevel, questEntity);
-
 			questEntity.appendTo('.pavilion-info .pavilion-body-1');
-
 		}
 
 		function addLevel (level) {
