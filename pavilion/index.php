@@ -14,7 +14,7 @@ try {
 		header('Location: ../town/'); // タウンにもどる
 		exit();
 	}
-	$stmt		= $dbh->prepare('SELECT p."KitStageID",r.* FROM "Pavilion" AS p INNER JOIN "PavilionResourcePath" AS r ON p."ID"=r."PavilionID" WHERE p."ID"=:pavilion_id');
+	$stmt		= $dbh->prepare('SELECT p."KitStageID",p."RequiredAchievements",r.* FROM "Pavilion" AS p INNER JOIN "PavilionResourcePath" AS r ON p."ID"=r."PavilionID" WHERE p."ID"=:pavilion_id');
 	$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
 	$stmt->execute();
 	$pavilion	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -24,8 +24,22 @@ try {
 	}
 
 	// パビリオンが解放されているか
+	$stmt			= $dbh->prepare('SELECT COUNT(*) FROM "QuestUserMap" WHERE "Cleared"=:true AND "UserID"=:userid');
+	$stmt->bindValue(":true", TRUE, PDO::PARAM_BOOL);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+	$stmt->execute();
+	$quest_cleared	= $stmt->fetch(PDO::FETCH_COLUMN);
 
-		// タウンにもどる
+	$stmt			= $dbh->prepare('SELECT COUNT(*) FROM "QuestUserMap" WHERE "Restaged"=:true AND "UserID"=:userid');
+	$stmt->bindValue(":true", TRUE, PDO::PARAM_BOOL);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+	$stmt->execute();
+	$quest_restaged	= $stmt->fetch(PDO::FETCH_COLUMN);
+
+	if ($pavilion['RequiredAchievements'] > ($quest_cleared + $quest_restaged)) {
+		header('Location: ../town/'); // タウンにもどる
+		exit();
+	}
 
 	// クエストのリストを取得
 	$stmt_qu		= $dbh->prepare('SELECT "ID","Type" FROM "Quest" WHERE "PavilionID"=:pavilion_id AND "Published"=:published');
