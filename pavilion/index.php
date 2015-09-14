@@ -35,7 +35,7 @@ try {
 
 	// 各クエストの詳細情報を取得
 	$stmt_lv	= $dbh->prepare('SELECT "ID","StageID","PlayOrder" FROM "Level" WHERE "QuestID"=:quest_id ORDER BY "PlayOrder"');
-	$stmt_st	= $dbh->prepare('SELECT s."Thumbnail",s."Title",u."Nickname" FROM "Stage" AS s INNER JOIN "User" AS u ON s."UserID"=u."ID" WHERE s."ID"=:stage_id');
+	$stmt_st	= $dbh->prepare('SELECT s."Thumbnail",s."Title",u."Nickname" FROM "Stage" AS s LEFT OUTER JOIN "User" AS u ON s."UserID"=u."ID" WHERE s."ID"=:stage_id');
 	$stmt_map_l	= $dbh->prepare('SELECT "Cleared" FROM "LevelUserMap" WHERE "LevelID"=:level_id AND "UserID"=:userid');
 	$stmt_map_q	= $dbh->prepare('SELECT "Cleared","Restaged" FROM "QuestUserMap" WHERE "QuestID"=:quest_id AND "UserID"=:userid');
 	$stmt_num	= $dbh->prepare('SELECT COUNT(*) FROM "QuestUserMap" WHERE "QuestID"=:quest_id');
@@ -60,7 +60,7 @@ try {
 			$level['PlayOrder']	= intval($level['PlayOrder']);
 
 			// ステージの作者情報
-			if (array_search($stage['Nickname'], $quest['Authors']) === FALSE) {
+			if ($stage['Nickname'] !== NULL && array_search($stage['Nickname'], $quest['Authors']) === FALSE) {
 				// ユニークな値をプッシュ
 				array_push($quest['Authors'], $stage['Nickname']);
 			}
