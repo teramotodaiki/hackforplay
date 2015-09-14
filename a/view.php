@@ -148,7 +148,7 @@
 				    		</div>
 			    		</div>
 			    		<div class="pavilion-body-2">
-			    			<button type="button" class="btn btn-link">Add Quest</button>
+			    			<button type="button" class="btn btn-link query-add-quest">Add Quest</button>
 			    		</div>
 			    	</div>
 			    </div>

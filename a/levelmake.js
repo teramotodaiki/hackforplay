@@ -1,43 +1,68 @@
 $(function () {
 
-	$('.load-pavilion').on('click', function() {
-		var id = $(this).data('id');
-		var loading = $(this).button('loading');
+	// Quest
+	(function () {
 
-		$('.pavilion-info .quest-info-entity').remove();
+		// Load Quest
+		$('.load-pavilion').on('click', function() {
+			var id = $(this).data('id');
+			var loading = $(this).button('loading');
+			$('.pavilion-info .query-add-quest').data('id', id);
 
-		// クエストリストのロード
-		$.post('../levelmake/getquestlist.php', {
-			'id': id
-		}, function(data, textStatus, xhr) {
-			loading.button('reset');
+			$('.pavilion-info .quest-info-entity').remove();
 
-			(data ? $.parseJSON(data).quests : []).forEach(function(quest, index) {
+			// クエストリストのロード
+			$.post('../levelmake/getquestlist.php', {
+				'id': id
+			}, function(data, textStatus, xhr) {
+				loading.button('reset');
+				(data ? $.parseJSON(data).quests : []).forEach(task);
+			});
+		});
 
-				var questEntity = $('.pavilion-info .quest-info-sample').clone(true, true);
+		// Add Quest
+		$('.pavilion-info .query-add-quest').on('click', function() {
+			var loading = $(this).button('loading');
 
-				// クエストの生成
-				questEntity.removeClass('quest-info-sample hidden').addClass('quest-info-entity');
-				questEntity.find('#QuestInfo').val(quest.Type);
-				questEntity.find('form[data-query="updateQuest"]').data('id', quest.ID);
+			$.post('../levelmake/addquest.php', {
+				'pavilion_id': $(this).data('id')
+			}, function(data, textStatus, xhr) {
+				loading.button('reset');
 
-				quest.levels.forEach(function(level) {
+				switch (data) {
+					case 'failed': loading.text('FAILED').attr('disabled', true); break;
+					default:
+						task($.parseJSON(data));
+						break;
+				}
+			});
+		});
 
-					var levelEntity = questEntity.find('.level-wrapper-sample').clone(true, true);
-					levelEntity.removeClass('hidden level-wrapper-sample').addClass('level-wrapper-entity');
-					levelEntity.find('.PlayOrder').text(level.PlayOrder);
-					levelEntity.find('#LevelInfo').val(level.StageID);
-					levelEntity.find('form[data-query="updateLevel"]').data('id', level.ID);
-					questEntity.find('.quest-body-2').append(levelEntity);
+		function task(quest) {
 
-				});
+			var questEntity = $('.pavilion-info .quest-info-sample').clone(true, true);
 
-				questEntity.appendTo('.pavilion-info .pavilion-body-1');
+			// クエストの生成
+			questEntity.removeClass('quest-info-sample hidden').addClass('quest-info-entity');
+			questEntity.find('#QuestInfo').val(quest.Type);
+			questEntity.find('form[data-query="updateQuest"]').data('id', quest.ID);
+
+			quest.levels.forEach(function(level) {
+
+				var levelEntity = questEntity.find('.level-wrapper-sample').clone(true, true);
+				levelEntity.removeClass('hidden level-wrapper-sample').addClass('level-wrapper-entity');
+				levelEntity.find('.PlayOrder').text(level.PlayOrder);
+				levelEntity.find('#LevelInfo').val(level.StageID);
+				levelEntity.find('form[data-query="updateLevel"]').data('id', level.ID);
+				questEntity.find('.quest-body-2').append(levelEntity);
 
 			});
 
-		});
-	});
+			questEntity.appendTo('.pavilion-info .pavilion-body-1');
+
+		}
+
+	})();
 
 	// Update quest
 	$('.pavilion-info form[data-query="updateQuest"]').submit(function(event) {
