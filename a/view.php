@@ -119,7 +119,7 @@
 		    		<?php endforeach; ?>
 			    	<div class="pavilion-info row">
 			    		<div class="pavilion-body-1 col-xs-12">
-				    		<div class="quest-info-sample row hidden">
+				    		<div class="quest-info-sample margin-top-lg row hidden">
 				    			<div class="quest-body-1 col-xs-12">
 				    				<form class="form-inline" data-query="updateQuest">
 				    					<label class="control-label"><a href="#" class="Debug" title="debug">Quest</a>:</label>
@@ -136,7 +136,7 @@
 				    				</form>
 				    			</div>
 				    			<div class="quest-body-2">
-					    			<div class="level-wrapper-sample col-xs-3 hidden">
+					    			<div class="level-wrapper-sample col-xs-3 margin-top-sm hidden">
 					    				<form class="form-inline" data-query="updateLevel">
 					    					<div class="form-group form-group-sm">
 					    						<label class="control-label" for="LevelInfo">Lv.<span class="PlayOrder"></span></label>
@@ -147,12 +147,12 @@
 					    				</form>
 					    			</div>
 				    			</div>
-				    			<div class="quest-body-3 col-xs-3 clearfix">
+				    			<div class="quest-body-3 col-xs-3 margin-top-sm">
 				    				<button type="button" class="btn btn-link query-add-level">Add Level</button>
 				    			</div>
 				    		</div>
 			    		</div>
-			    		<div class="pavilion-body-2">
+			    		<div class="pavilion-body-2 col-xs-12 margin-top-lg">
 			    			<button type="button" class="btn btn-link query-add-quest">Add Quest</button>
 			    		</div>
 			    	</div>
