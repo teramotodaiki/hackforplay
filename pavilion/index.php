@@ -14,7 +14,7 @@ try {
 		header('Location: ../town/'); // タウンにもどる
 		exit();
 	}
-	$stmt		= $dbh->prepare('SELECT p."KitStageID",r.* FROM "_Pavilion" AS p INNER JOIN "PavilionResourcePath" AS r ON p."ID"=r."PavilionID" WHERE p."ID"=:pavilion_id');
+	$stmt		= $dbh->prepare('SELECT p."KitStageID",r.* FROM "Pavilion" AS p INNER JOIN "PavilionResourcePath" AS r ON p."ID"=r."PavilionID" WHERE p."ID"=:pavilion_id');
 	$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
 	$stmt->execute();
 	$pavilion	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -28,12 +28,12 @@ try {
 		// タウンにもどる
 
 	// クエストのリストを取得
-	$stmt_qu		= $dbh->prepare('SELECT "ID","Type" FROM "_Quest" WHERE "PavilionID"=:pavilion_id');
+	$stmt_qu		= $dbh->prepare('SELECT "ID","Type" FROM "Quest" WHERE "PavilionID"=:pavilion_id');
 	$stmt_qu->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
 	$stmt_qu->execute();
 
 	// 各クエストの詳細情報を取得
-	$stmt_lv	= $dbh->prepare('SELECT "ID","StageID","PlayOrder" FROM "_Level" WHERE "QuestID"=:quest_id ORDER BY "PlayOrder"');
+	$stmt_lv	= $dbh->prepare('SELECT "ID","StageID","PlayOrder" FROM "Level" WHERE "QuestID"=:quest_id ORDER BY "PlayOrder"');
 	$stmt_st	= $dbh->prepare('SELECT s."Thumbnail",s."Title",u."Nickname" FROM "Stage" AS s INNER JOIN "User" AS u ON s."UserID"=u."ID" WHERE s."ID"=:stage_id');
 	$stmt_map_l	= $dbh->prepare('SELECT "Cleared" FROM "LevelUserMap" WHERE "LevelID"=:level_id AND "UserID"=:userid');
 	$stmt_map_q	= $dbh->prepare('SELECT "Cleared","Restaged" FROM "QuestUserMap" WHERE "QuestID"=:quest_id AND "UserID"=:userid');

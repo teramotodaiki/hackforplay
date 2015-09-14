@@ -24,14 +24,14 @@ try {
 			exit();
 		}
 		// IDをlevelから取得
-		$stmt		= $dbh->prepare('SELECT "ID","StageID","QuestID","PlayOrder" FROM "_Level" WHERE "ID"=:input');
+		$stmt		= $dbh->prepare('SELECT "ID","StageID","QuestID","PlayOrder" FROM "Level" WHERE "ID"=:input');
 		$stmt->bindValue(":input", $input, PDO::PARAM_INT);
 		$stmt->execute();
 		$level		= $stmt->fetch(PDO::FETCH_ASSOC);
 		$stageid	= $level['StageID'];
 
 		// QuestIDからPavilionの情報を取得
-		$stmt		= $dbh->prepare('SELECT "ID" FROM "_Pavilion" WHERE "ID"=(SELECT "PavilionID" FROM "_Quest" WHERE "ID"=:quest_id)');
+		$stmt		= $dbh->prepare('SELECT "ID" FROM "Pavilion" WHERE "ID"=(SELECT "PavilionID" FROM "Quest" WHERE "ID"=:quest_id)');
 		$stmt->bindValue(":quest_id", $level['QuestID'], PDO::PARAM_INT);
 		$stmt->execute();
 		$pavilion	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -99,7 +99,7 @@ try {
 									(isset($level_map) && (!$level_map || !$level_map || !$level_map['Cleared']));
 
 		// 次のPlayOrderのLevelを取得 (falseと評価できる場合は最後のステージ)
-		$stmt		= $dbh->prepare('SELECT "ID" FROM "_Level" WHERE "QuestID"=:quest_id AND "PlayOrder"=:next');
+		$stmt		= $dbh->prepare('SELECT "ID" FROM "Level" WHERE "QuestID"=:quest_id AND "PlayOrder"=:next');
 		$stmt->bindValue(":quest_id", $level['QuestID'], PDO::PARAM_INT);
 		$stmt->bindValue(":next", $level['PlayOrder'] + 1, PDO::PARAM_INT);
 		$stmt->execute();
