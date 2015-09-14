@@ -14,7 +14,7 @@ try {
 		header('Location: ../town/'); // タウンにもどる
 		exit();
 	}
-	$stmt		= $dbh->prepare('SELECT p."KitStageID",r.* FROM "Pavilion" AS p INNER JOIN "PavilionResourcePath" AS r ON p."ID"=r."PavilionID" WHERE p."ID"=:pavilion_id');
+	$stmt		= $dbh->prepare('SELECT p."KitStageID",p."RequiredAchievements",r.* FROM "Pavilion" AS p INNER JOIN "PavilionResourcePath" AS r ON p."ID"=r."PavilionID" WHERE p."ID"=:pavilion_id');
 	$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
 	$stmt->execute();
 	$pavilion	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -24,8 +24,15 @@ try {
 	}
 
 	// パビリオンが解放されているか
-
-		// タウンにもどる
+	$stmt		= $dbh->prepare('SELECT "Certified" FROM "PavilionUserMap" WHERE "PavilionID"=:pavilion_id AND "UserID"=:userid');
+	$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+	$stmt->execute();
+	$certified	= $stmt->fetch(PDO::FETCH_COLUMN);
+	if (!$certified) {
+		header('Location: ../town/'); // タウンにもどる
+		exit();
+	}
 
 	// クエストのリストを取得
 	$stmt_qu		= $dbh->prepare('SELECT "ID","Type" FROM "Quest" WHERE "PavilionID"=:pavilion_id AND "Published"=:published');

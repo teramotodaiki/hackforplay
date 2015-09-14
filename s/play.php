@@ -17,6 +17,12 @@ try {
 	// 他:		idからステージ情報を取得
 	$mode	= filter_input(INPUT_GET, 'mode');
 	if ($mode === 'quest') {
+		if (!$session_userid) {
+			// ログインされていない
+			header('Location: ../login/');
+			exit();
+		}
+
 		// levelをパラメータの取得
 		$input		= filter_input(INPUT_GET, 'level', FILTER_VALIDATE_INT);
 		if (!$input) {
@@ -55,13 +61,14 @@ try {
 			// まだクリアしていない
 
 			// Pavilionが解放されているか
-			if (!$session_userid) {
-				// ログインされていない
-				header('Location: ../login/');
-				exit();
-			} else {
+			$stmt		= $dbh->prepare('SELECT "Certified" FROM "PavilionUserMap" WHERE "PavilionID"=:pavilion_id AND "UserID"=:userid');
+			$stmt->bindValue(":pavilion_id", $pavilion['ID'], PDO::PARAM_INT);
+			$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+			$stmt->execute();
+			$certified	= $stmt->fetch(PDO::FETCH_COLUMN);
+			if (!$certified) {
 				// 解放されていない場合、mode=replayでリロード
-
+				header('Location: ../s/?mode=replay&id=' . $level['StageID']);
 			}
 
 			// このLevelをクリアした実績があるか

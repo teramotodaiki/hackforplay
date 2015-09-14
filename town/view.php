@@ -23,26 +23,17 @@
 	</div>
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-12 col-sm-6 padding-all-sm">
-				<a href="../s/?id=201" title="RPG">
-					RPG
-				</a>
+			<div class="col-xs-12">
+				<h4>所持ダイヤ：<span><?php echo $quest_cleared + $quest_restaged + $kit_restaged; ?></span></h4>
 			</div>
+			<?php foreach ($pavilions as $key => $value) : ?>
 			<div class="col-xs-12 col-sm-6 padding-all-sm">
-				<a href="../s/?id=306" title="Action Puzzle">
-					Action Puzzle
+				<a href="../pavilion/?id=<?php echo $value['ID']; ?>" class="btn btn-lg btn-link <?php if (!$value['Certified']) echo 'disabled'; ?>">
+					<?php echo $value['DisplayName']; ?>
 				</a>
+				<h4>必要なダイヤ：<span><?php echo $value['RequiredAchievements']; ?></span></h4>
 			</div>
-			<div class="col-xs-12 col-sm-6 padding-all-sm">
-				<a href="../s/?id=307" title="The Survive">
-					The Survive
-				</a>
-			</div>
-			<div class="col-xs-12 col-sm-6 padding-all-sm">
-				<a href="../s/?id=305" title="Run Game">
-					Run Game
-				</a>
-			</div>
+			<?php endforeach; ?>
 		</div>
 	</div>
 
