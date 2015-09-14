@@ -147,8 +147,8 @@
 					    				</form>
 					    			</div>
 				    			</div>
-				    			<div class="quest-body-3 col-xs-4 clearfix">
-				    				<button type="button" class="btn btn-link">Add Level</button>
+				    			<div class="quest-body-3 col-xs-3 clearfix">
+				    				<button type="button" class="btn btn-link query-add-level">Add Level</button>
 				    			</div>
 				    		</div>
 			    		</div>

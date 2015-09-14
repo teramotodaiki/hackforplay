@@ -1,6 +1,6 @@
 $(function () {
 
-	// Quest
+	// Load/Add
 	(function () {
 
 		// Load Quest
@@ -16,7 +16,7 @@ $(function () {
 				'id': id
 			}, function(data, textStatus, xhr) {
 				loading.button('reset');
-				(data ? $.parseJSON(data).quests : []).forEach(task);
+				(data ? $.parseJSON(data).quests : []).forEach(addQuest);
 			});
 		});
 
@@ -32,13 +32,33 @@ $(function () {
 				switch (data) {
 					case 'failed': loading.text('FAILED').attr('disabled', true); break;
 					default:
-						task($.parseJSON(data));
+						addQuest($.parseJSON(data));
 						break;
 				}
 			});
 		});
 
-		function task(quest) {
+		// Add Level
+		$('.pavilion-info .query-add-level').on('click', function() {
+			var loading = $(this).button('loading');
+			var container = $(this).parents('.quest-info-entity');
+
+			$.post('../levelmake/addlevel.php', {
+				'quest_id': $(this).data('id')
+			}, function(data, textStatus, xhr) {
+				console.log(data);
+				loading.button('reset');
+
+				switch (data) {
+					case 'failed': loading.text('FAILED').attr('disabled', true); break;
+					default:
+						addLevel.call(container, $.parseJSON(data));
+						break;
+				}
+			});
+		});
+
+		function addQuest(quest) {
 
 			var questEntity = $('.pavilion-info .quest-info-sample').clone(true, true);
 
@@ -47,25 +67,26 @@ $(function () {
 			questEntity.find('#Type').val(quest.Type);
 			questEntity.find('#Published').prop('checked', quest.Published >> 0);
 			questEntity.find('form[data-query="updateQuest"]').data('id', quest.ID);
+			questEntity.find('.query-add-level').data('id', quest.ID);
 
-			quest.levels.forEach(function(level) {
-
-				var levelEntity = questEntity.find('.level-wrapper-sample').clone(true, true);
-				levelEntity.removeClass('hidden level-wrapper-sample').addClass('level-wrapper-entity');
-				levelEntity.find('.PlayOrder').text(level.PlayOrder);
-				levelEntity.find('#LevelInfo').val(level.StageID);
-				levelEntity.find('form[data-query="updateLevel"]').data('id', level.ID);
-				questEntity.find('.quest-body-2').append(levelEntity);
-
-			});
+			quest.levels.forEach(addLevel, questEntity);
 
 			questEntity.appendTo('.pavilion-info .pavilion-body-1');
 
 		}
 
+		function addLevel (level) {
+			var levelEntity = this.find('.level-wrapper-sample').clone(true, true);
+			levelEntity.removeClass('hidden level-wrapper-sample').addClass('level-wrapper-entity');
+			levelEntity.find('.PlayOrder').text(level.PlayOrder);
+			levelEntity.find('#LevelInfo').val(level.StageID);
+			levelEntity.find('form[data-query="updateLevel"]').data('id', level.ID);
+			this.find('.quest-body-2').append(levelEntity);
+		}
+
 	})();
 
-	// Update quest
+	// Update Quest
 	$('.pavilion-info form[data-query="updateQuest"]').submit(function(event) {
 		event.preventDefault();
 
