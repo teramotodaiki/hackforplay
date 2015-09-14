@@ -143,7 +143,6 @@ $(function () {
 					alert('Error: Invalid ID');
 				case "invalid-stageid":
 				default:
-					console.log('error', data);
 					form.find('.form-group').addClass('has-error has-feedback');
 					form.find('.form-control-feedback').addClass('glyphicon-remove');
 					break;
