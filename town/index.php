@@ -61,6 +61,12 @@ try {
 		}
 	}
 
+	// パビリオンの情報を取得 (とりあえず　すべて) (Certificationと合同にすれば最適化できる)
+	$stmt	= $dbh->prepare('SELECT p."ID",p."DisplayName",p."RequiredAchievements",m."Certified" FROM "Pavilion" AS p LEFT OUTER JOIN "PavilionUserMap" AS m ON p."ID"=m."PavilionID" WHERE m."ID" IS NULL OR m."UserID"=:userid');
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+	$stmt->execute();
+	$pavilions	= $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 	include 'view.php';
 
 } catch (Exception $e) {
