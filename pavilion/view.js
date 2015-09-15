@@ -122,7 +122,7 @@ $(function () {
 
 				if (level.Allowed) {
 					current.find('.stage-frame-wrapper').data('ID', level.ID);
-					current.find('.btn-restage').attr('href', '/s/?mode=restaging&id=' + level.StageID);
+					current.find('.btn-restage').attr('href', '/s/?mode=quest&directly_restaging=true&level=' + level.ID);
 				} else {
 					current.css({
 						'opacity': '0.5',
@@ -153,7 +153,7 @@ $(function () {
 		$(this).find('.Title').text(result.Kit.Title);
 		$(this).find('.modal-content').css('background-image', 'url(' + result.KitBg + ')');
 		$(this).find('.modal-kit-entity .stage-frame-wrapper').on('click', function() {
-			location.href = '/s/?mode=restaging&id=' + result.Kit.ID;
+			location.href = '/s/?mode=official&directly_restaging=true&id=' + result.Kit.ID;
 		});
 
 	});

@@ -846,6 +846,27 @@ $(function(){
 				}, 2000);
 				break;
 		}
+
+		// Directly restaging
+		// 任意のステージをmode=restaging以外で読み込んだ直後にbeginRestagingするモード
+		if (getParam('directly_restaging')) {
+			switch (getParam('mode')) {
+			case 'official':
+				// replace_code を受けたのち, beginRestaging
+				window.addEventListener('message', function task(event) {
+					if (event.data === 'replace_code') {
+						beginRestaging();
+						window.removeEventListener('message', task);
+					}
+				});
+				break;
+			case 'replay':
+			case 'quest':
+				// 直後にbeginRestaging
+				beginRestaging();
+				break;
+			}
+		}
 	})();
 	(function(){
 		// チュートリアル
