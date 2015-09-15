@@ -334,10 +334,13 @@ if ($mode === 'quest') {
 						<?php endif; ?>
 					</div>
 					<div class="col-xs-6 col-sm-3 h4p_info-restaging">
-						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">改造する</button>
+						<button type="button" class="btn btn-restage btn-lg btn-block begin_restaging" title="改造する">
+							<span class="glyphicon glyphicon-wrench"></span>
+							改造する
+						</button>
 					</div>
 					<div class="col-xs-6 col-sm-3 h4p_info-retry">
-						<button class="btn btn-primary btn-lg btn-block" role="button" href="#" title="もういちど">
+						<button class="btn btn-retry btn-lg btn-block" role="button" href="#" title="もういちど">
 							<span class="glyphicon glyphicon-repeat"></span>
 							もういちど
 						</button>
