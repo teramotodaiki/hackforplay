@@ -53,9 +53,9 @@ var gameover; // gameoverメソッドも
                 break;
                 case 'official':
                 case 'replay':
-                if (__H4PENV__NEXT) {
-                    console.log('has next');
-                    // window.parent.postMessage('clear', '/');
+                // チュートリアル時　例外的にこの処置
+                if (__H4PENV__MODE === 'official' &&  __H4PENV__NEXT) {
+                    window.parent.postMessage('clear', '/');
                     return;
                 }
                 // [RESTAGING]
