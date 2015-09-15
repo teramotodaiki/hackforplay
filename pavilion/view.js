@@ -123,7 +123,7 @@ $(function () {
 					current.find('.stage-frame-wrapper').data('ID', level.ID);
 					current.find('.btn-restage').attr('href', '/s/?mode=quest&directly_restaging=true&level=' + level.ID);
 				} else {
-					current.css({
+					current.find('.stage-frame-wrapper').css({
 						'opacity': '0.5',
 						'cursor': 'default'
 					});
