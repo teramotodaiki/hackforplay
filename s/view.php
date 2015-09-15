@@ -24,6 +24,7 @@ if($stage['Mode'] === "replay"){
 	$code = preg_replace("/\"/", "\\\"", $code);
 }
 $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
+$directly_restaging	= filter_input(INPUT_GET, 'directly_restaging', FILTER_VALIDATE_BOOLEAN);
 // Questモードの場合、$nextは次のLevel.IDをあらわす
 if ($mode === 'quest') {
 	// 1以上ならつづきをあらわす。0以下なら最後のステージであることをあらわす
@@ -105,6 +106,7 @@ if ($mode === 'quest') {
 		s('youtube', "<?php echo $youtube;  ?>");
 		s('title', "<?php echo $title;  ?>");
 		s('author', "<?php echo $author;  ?>");
+		s('directly_restaging', "<?php echo $directly_restaging;  ?>");
 <?php if(isset($level)): ?>
 		s('level', "<?php echo $level['ID']; ?>");
 <?php endif; ?>
