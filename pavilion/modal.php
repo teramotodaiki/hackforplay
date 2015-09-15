@@ -27,7 +27,7 @@
 							<img alt="" class="stage-thumbnail Thumbnail">
 							<img src="" class="stage-frame" alt="">
 						</div>
-						<p class="text-center"><span class="Title"></span></p>
+						<p class="text-center text-overflow-ellipsis"><span class="Title"></span></p>
 						<p>
 							<a href="#" class="btn btn-restage btn-block" title="Restaging">
 								<span class="glyphicon glyphicon-wrench"></span>
@@ -65,7 +65,7 @@
 							<img alt="" class="stage-thumbnail Thumbnail">
 							<img src="" class="stage-frame" alt="">
 						</div>
-						<p class="text-center"><span class="Tilte"></span></p>
+						<p class="text-center text-overflow-ellipsis"><span class="Title"></span></p>
 		        	</div>
 		        </div>
 		    </div>

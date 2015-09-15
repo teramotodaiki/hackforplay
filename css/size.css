@@ -134,7 +134,8 @@ nav #img-usericon {
 	top: 0px;
 }
 
-.modal-thumbnail-entity {
+.modal-thumbnail-entity,
+.modal-kit-entity {
 	max-width: 242px;
 }
 
