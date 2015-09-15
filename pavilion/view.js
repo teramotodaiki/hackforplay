@@ -123,7 +123,7 @@ $(function () {
 					current.find('.stage-frame-wrapper').data('ID', level.ID);
 					current.find('.btn-restage').attr('href', '/s/?mode=quest&directly_restaging=true&level=' + level.ID);
 				} else {
-					current.css({
+					current.find('.stage-frame-wrapper').css({
 						'opacity': '0.5',
 						'cursor': 'default'
 					});
@@ -146,7 +146,11 @@ $(function () {
 	// キットモーダル
 	$('#kitModal').on('show.bs.modal', function(event) {
 
-		$(this).find('.Restagers').text('NaN');
+		$('#kitModal .Restaged .' + result.Kit.Restaged + '-text').removeClass('hidden');
+		$('#kitModal .Restaged .' + (!result.Kit.Restaged) + '-text').addClass('hidden');
+		$('#kitModal .achievement-restaged').attr('src', result.Kit.Restaged ? 'img/achievement_p.png' : 'img/achievement_n.png');
+
+		$(this).find('.Makers').text(result.Kit.Makers);
 		$(this).find('.Explain').text(result.Kit.Explain);
 		$(this).find('.Thumbnail').attr('src', result.Kit.Thumbnail);
 		$(this).find('.Title').text(result.Kit.Title);

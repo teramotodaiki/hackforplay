@@ -77,7 +77,12 @@ nav.navbar {
 
 .btn-restage {
 	color: #fff;
-	background-color: #28222e;
+	background-color: #362f3c;
+}
+
+.btn-retry {
+	color: #fff;
+	background-color: #ff837b;
 }
 
 /* 影の色 */

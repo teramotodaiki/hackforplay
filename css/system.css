@@ -157,7 +157,8 @@ iframe {
 .h4p_projectlist .panel-body p,
 .h4p_info-datail p,
 .comment-header .nickname,
-.comment-header .hashtag {
+.comment-header .hashtag,
+.text-overflow-ellipsis {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

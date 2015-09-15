@@ -278,14 +278,7 @@ if ($mode === 'quest') {
 						<img class="h4p_clear-img" src="img/clear.png" alt="">
 					</div>
 					<div class="col-xs-12 h4p_clear-next">
-					<?php if($mode === "replay") : ?>
-						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">このステージを改造する</button>
-						<a href="/r" class="btn btn-success btn-lg btn-block" title="改造ステージ一覧へ">
-							改造ステージ一覧へ
-						</a>
-					<?php elseif($mode === "restaging") : ?>
-						<button class="btn btn-primary btn-lg btn-block h4p_info-retry-button ignore-attendance" role="button" title="改造コードを保存してゲームを再スタート">改造コードを保存してゲームを再スタート</button>
-					<?php elseif($next !== NULL) : // exist next stage ?>
+					<?php if($next !== NULL) : // exist next stage ?>
 						<a href="/s?id=<?php echo $next; ?>" style="display: block;" title="つぎのステージへ">
 							<img src="img/button_next.png" height="48" width="266" alt="">
 						</a>
@@ -341,11 +334,16 @@ if ($mode === 'quest') {
 						<?php endif; ?>
 					</div>
 					<div class="col-xs-6 col-sm-3 h4p_info-restaging">
-						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">改造する</button>
+						<button type="button" class="btn btn-restage btn-lg btn-block begin_restaging" title="改造する">
+							<span class="glyphicon glyphicon-wrench"></span>
+							改造する
+						</button>
 					</div>
 					<div class="col-xs-6 col-sm-3 h4p_info-retry">
-						<a class="btn btn-primary btn-lg btn-block ignore-attendance" role="button" href="/s?id=<?php echo $id; ?>" title="はじめから">はじめから</a>
-						<button style="display: none;" class="btn btn-primary btn-lg btn-block h4p_info-retry-button ignore-attendance" role="button" title="もう一度実行">もう一度実行</button>
+						<button class="btn btn-retry btn-lg btn-block" role="button" href="#" title="もういちど">
+							<span class="glyphicon glyphicon-repeat"></span>
+							もういちど
+						</button>
 					</div>
 					<?php if ($explain !== NULL && $explain !== '') : ?>
 					<div class="col-xs-12 h4p_info-explain">
