@@ -134,15 +134,44 @@ var gameover; // gameoverメソッドも
         game.rootScene.addChild(lay);
         lay.opacity = 0;
         lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function(){
-            if(__H4PENV__MODE === "official" || __H4PENV__MODE === "replay"){
-                var retry = new Sprite(128, 32);
-                retry.image = game.assets['img/button_retry.png'];
-                retry.moveTo(176, 320);
-                retry.tl.moveTo(176, 270, 10);
-                retry.on('touchstart', function() {
-                    location.reload();
-                });
-                game.rootScene.addChild(retry);
+            console.log(__H4PENV__MODE);
+            switch (__H4PENV__MODE) {
+
+                case 'quest':
+                // [RETRY]
+                (function (sprite) {
+                    sprite.image = game.assets['hackforplay/new_button_retry.png'];
+                    sprite.moveTo(182, 320);
+                    sprite.tl.moveTo(182, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.on('touchstart', function() {
+                        location.reload();
+                    });
+                    game.rootScene.addChild(sprite);
+                })(new Sprite(116, 48));
+                break;
+                case 'official':
+                case 'replay':
+                // [RESTAGING]
+                (function (sprite) {
+                    sprite.image = game.assets['hackforplay/new_button_replay.png'];
+                    sprite.moveTo(100, 320);
+                    sprite.tl.moveTo(100, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.on('touchstart', function() {
+                        window.parent.postMessage('begin_restaging', '/');
+                    });
+                    game.rootScene.addChild(sprite);
+                })(new Sprite(116, 48));
+                // [RETRY]
+                (function (sprite) {
+                    sprite.image = game.assets['hackforplay/new_button_retry.png'];
+                    sprite.moveTo(264, 320);
+                    sprite.tl.moveTo(264, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.on('touchstart', function() {
+                        location.reload();
+                    });
+                    game.rootScene.addChild(sprite);
+                })(new Sprite(116, 48));
+                break;
             }
         });
         var gameoverlay = new Overlay(game.assets['img/gameover.png']);
