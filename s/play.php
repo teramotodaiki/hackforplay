@@ -43,7 +43,7 @@ try {
 		$pavilion	= $stmt->fetch(PDO::FETCH_ASSOC);
 
 		// このQuestをクリアした実績があるか
-		$stmt	= $dbh->prepare('SELECT "ID","Cleared" FROM "QuestUserMap" WHERE "UserID"=:userid AND "QuestID"=:quest_id');
+		$stmt	= $dbh->prepare('SELECT "ID","Cleared","Restaged" FROM "QuestUserMap" WHERE "UserID"=:userid AND "QuestID"=:quest_id');
 		$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 		$stmt->bindValue(":quest_id", $level['QuestID'], PDO::PARAM_INT);
 		$stmt->execute();
@@ -104,6 +104,10 @@ try {
 		// (クエスト|レベル)に, 初めて挑戦した or クリアしていない => 報告義務を与える
 		$reporting_requirements = 	(isset($quest_map) && (!$quest_map || !$quest_map || !$quest_map['Cleared'])) ||
 									(isset($level_map) && (!$level_map || !$level_map || !$level_map['Cleared']));
+
+		// 改造時の報告義務
+		// クエストに初めて挑戦した or まだ改造していない => 報告義務を与える
+		$reporting_restaged	= !$quest_map || !$quest_map['Restaged'];
 
 		// 次のPlayOrderのLevelを取得 (falseと評価できる場合は最後のステージ)
 		$stmt		= $dbh->prepare('SELECT "ID" FROM "Level" WHERE "QuestID"=:quest_id AND "PlayOrder"=:next');
