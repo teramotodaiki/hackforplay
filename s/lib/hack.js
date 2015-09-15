@@ -317,14 +317,21 @@ window.addEventListener('load', function() {
 		lay.opacity = 0;
 		lay.moveTo(-game.rootScene.x, -game.rootScene.y);
 		lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
-			Hack.createSprite(128, 32, {
-				image: game.assets['hackforplay/button_retry.png'],
-				x: 176 - game.rootScene.x, y: 320 - game.rootScene.y, defaultParentNode: lay.parentNode
-			}).tl.then(function() {
-				this.ontouchstart = function() {
-					location.reload();
-				};
-			}).moveTo(176 - game.rootScene.x, 270 - game.rootScene.y, 10);
+
+			switch (__H4PENV__MODE) {
+				case 'quest':
+				// [RETRY]
+				Hack.createSprite(116, 48, {
+					x: 182, y: 320,
+					image: game.assets['hackforplay/new_button_retry.png'],
+					defaultParentNode: game.rootScene,
+					ontouchend: function() {
+						// [RETRY] がクリックされたとき
+						location.reload(false);
+					}
+				}).tl.moveTo(182, 260, 20, enchant.Easing.CUBIC_EASEOUT);
+				break;
+			}
 		});
 
 		Hack.gameclear = function(){};
