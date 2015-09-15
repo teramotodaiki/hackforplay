@@ -123,6 +123,8 @@ try {
 			header('Location:' . $missing_page);
 			exit();
 		}
+		// 改造することを報告するかどうかのフラグ
+		$reporting_restaged = filter_input(INPUT_GET, 'report', FILTER_VALIDATE_BOOLEAN);
 	}
 
 	// ステージの情報/制作者の情報/改造元ステージの情報を取得
