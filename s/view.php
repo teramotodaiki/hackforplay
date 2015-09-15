@@ -344,8 +344,10 @@ if ($mode === 'quest') {
 						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">改造する</button>
 					</div>
 					<div class="col-xs-6 col-sm-3 h4p_info-retry">
-						<a class="btn btn-primary btn-lg btn-block ignore-attendance" role="button" href="/s?id=<?php echo $id; ?>" title="はじめから">はじめから</a>
-						<button style="display: none;" class="btn btn-primary btn-lg btn-block h4p_info-retry-button ignore-attendance" role="button" title="もう一度実行">もう一度実行</button>
+						<button class="btn btn-primary btn-lg btn-block" role="button" href="#" title="もういちど">
+							<span class="glyphicon glyphicon-repeat"></span>
+							もういちど
+						</button>
 					</div>
 					<?php if ($explain !== NULL && $explain !== '') : ?>
 					<div class="col-xs-12 h4p_info-explain">

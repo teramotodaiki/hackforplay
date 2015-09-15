@@ -541,15 +541,6 @@ $(function(){
 			});
 			$(".h4p_info-footer").text("（リステージング中）");
 			$(".h4p_info-restaging>button").hide();
-			$(".h4p_info-retry>a").hide();
-			$(".h4p_info-retry-button").show();
-			$(".h4p_info-retry-button").on('click', function() {
-				jsEditor.save();
-				var code = jsEditor.getTextArea().value;
-				sessionStorage.setItem('retry_code', code);
-				alert_on_unload = false;
-				location.href = '/s?id='+getParam('id') + '&mode=restaging&retry=true';
-			});
 			$(".h4p_restaging_button").on('click', function() {
 				// RUN
 				jsEditor.save();
@@ -910,6 +901,10 @@ $(function(){
 		}
 	});
 
+	// ゲームフレームのリロード
+	$('.h4p_info-retry button').on('click', function() {
+		$(".h4p_game>iframe").get(0).contentWindow.postMessage('window.location.reload();', '/');
+	});
 
 	function getParam(key){
 		return sessionStorage.getItem('stage_param_'+key) || '';
