@@ -52,7 +52,7 @@
 					</div>
 					<div>
 						<p><ruby>主<rt>おも</rt></ruby>なクリエイター</p>
-			        	<p class="Authors">...</p>
+			        	<p class="Authors text-overflow-ellipsis">...</p>
 					</div>
 				</div>
 				<div class="stage-frame-wrapper">
