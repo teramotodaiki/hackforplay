@@ -255,47 +255,47 @@ window.addEventListener('load', function() {
 				case 'quest':
 				// [NEXT]
 				Hack.createSprite(165, 69, {
-					x: 65, y: 320,
+					x: 65-game.rootScene.x, y: 320-game.rootScene.y,
 					image: game.assets['hackforplay/new_button_next.png'],
 					defaultParentNode: game.rootScene,
 					ontouchend: function() {
 						// [NEXT] がクリックされたとき
 						window.parent.postMessage('quest_clear_level', '/');
 					}
-				}).tl.moveTo(65, 240, 20, enchant.Easing.CUBIC_EASEOUT);
+				}).tl.moveTo(65-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 				// [RETRY]
 				Hack.createSprite(116, 48, {
-					x: 278, y: 320,
+					x: 278-game.rootScene.x, y: 320-game.rootScene.y,
 					image: game.assets['hackforplay/new_button_retry.png'],
 					defaultParentNode: game.rootScene,
 					ontouchend: function() {
 						// [RETRY] がクリックされたとき
 						location.reload(false);
 					}
-				}).tl.moveTo(278, 250, 20, enchant.Easing.CUBIC_EASEOUT);
+				}).tl.moveTo(278-game.rootScene.x, 250-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 				break;
 				case 'official':
 				case 'replay':
 				// [RESTAGING]
 				Hack.createSprite(116, 48, {
-					x: 100, y: 320,
+					x: 100-game.rootScene.x, y: 320-game.rootScene.y,
 					image: game.assets['hackforplay/new_button_replay.png'],
 					defaultParentNode: game.rootScene,
 					ontouchend: function() {
 						// [RESTAGING] がクリックされたとき
 						window.parent.postMessage('begin_restaging', '/');
 					}
-				}).tl.moveTo(100, 260, 20, enchant.Easing.CUBIC_EASEOUT);
+				}).tl.moveTo(100-game.rootScene.x, 260-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 				// [RETRY]
 				Hack.createSprite(116, 48, {
-					x: 264, y: 320,
+					x: 264-game.rootScene.x, y: 320-game.rootScene.y,
 					image: game.assets['hackforplay/new_button_retry.png'],
 					defaultParentNode: game.rootScene,
 					ontouchend: function() {
 						// [RETRY] がクリックされたとき
 						location.reload(false);
 					}
-				}).tl.moveTo(264, 260, 20, enchant.Easing.CUBIC_EASEOUT);
+				}).tl.moveTo(264-game.rootScene.x, 260-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 			}
 		});
 
@@ -313,37 +313,37 @@ window.addEventListener('load', function() {
 				case 'quest':
 				// [RETRY]
 				Hack.createSprite(116, 48, {
-					x: 182, y: 320,
+					x: 182-game.rootScene.x, y: 320-game.rootScene.y,
 					image: game.assets['hackforplay/new_button_retry.png'],
 					defaultParentNode: game.rootScene,
 					ontouchend: function() {
 						// [RETRY] がクリックされたとき
 						location.reload(false);
 					}
-				}).tl.moveTo(182, 260, 20, enchant.Easing.CUBIC_EASEOUT);
+				}).tl.moveTo(182-game.rootScene.x, 260-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 				break;
 				case 'official':
 				case 'replay':
 				// [RESTAGING]
 				Hack.createSprite(116, 48, {
-					x: 100, y: 320,
+					x: 100-game.rootScene.x, y: 320-game.rootScene.y,
 					image: game.assets['hackforplay/new_button_replay.png'],
 					defaultParentNode: game.rootScene,
 					ontouchend: function() {
 						// [RESTAGING] がクリックされたとき
 						window.parent.postMessage('begin_restaging', '/');
 					}
-				}).tl.moveTo(100, 260, 20, enchant.Easing.CUBIC_EASEOUT);
+				}).tl.moveTo(100-game.rootScene.x, 260-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 				// [RETRY]
 				Hack.createSprite(116, 48, {
-					x: 264, y: 320,
+					x: 264-game.rootScene.x, y: 320-game.rootScene.y,
 					image: game.assets['hackforplay/new_button_retry.png'],
 					defaultParentNode: game.rootScene,
 					ontouchend: function() {
 						// [RETRY] がクリックされたとき
 						location.reload(false);
 					}
-				}).tl.moveTo(264, 260, 20, enchant.Easing.CUBIC_EASEOUT);
+				}).tl.moveTo(264-game.rootScene.x, 260-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 			}
 		});
 
