@@ -49,7 +49,13 @@ try {
 
 		} elseif ($mode === 'official') {
 			// キットのRestage
-
+			// StageID-Pavilion-PavilionUserMap => Update (Mapがなければ or Certifyされていなければ,無視)
+			$stmt	= $dbh->prepare('UPDATE "PavilionUserMap" SET "Restaged"=:true1 WHERE "UserID"=:userid AND "Certified"=:true2 AND "PavilionID"=(SELECT "ID" FROM "Pavilion" WHERE "KitStageID"=:stage_id)');
+			$stmt->bindValue(":true1", TRUE, PDO::PARAM_BOOL);
+			$stmt->bindValue(":true2", TRUE, PDO::PARAM_BOOL);
+			$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+			$stmt->bindValue(":stage_id", $stage_id, PDO::PARAM_INT);
+			$stmt->execute();
 		}
 	}
 
