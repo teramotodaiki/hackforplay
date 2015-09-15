@@ -134,7 +134,6 @@ var gameover; // gameoverメソッドも
         game.rootScene.addChild(lay);
         lay.opacity = 0;
         lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function(){
-            console.log(__H4PENV__MODE);
             switch (__H4PENV__MODE) {
 
                 case 'quest':
