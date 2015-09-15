@@ -331,6 +331,28 @@ window.addEventListener('load', function() {
 					}
 				}).tl.moveTo(182, 260, 20, enchant.Easing.CUBIC_EASEOUT);
 				break;
+				case 'official':
+				case 'replay':
+				// [RESTAGING]
+				Hack.createSprite(116, 48, {
+					x: 100, y: 320,
+					image: game.assets['hackforplay/new_button_replay.png'],
+					defaultParentNode: game.rootScene,
+					ontouchend: function() {
+						// [RESTAGING] がクリックされたとき
+						window.parent.postMessage('begin_restaging', '/');
+					}
+				}).tl.moveTo(100, 260, 20, enchant.Easing.CUBIC_EASEOUT);
+				// [RETRY]
+				Hack.createSprite(116, 48, {
+					x: 264, y: 320,
+					image: game.assets['hackforplay/new_button_retry.png'],
+					defaultParentNode: game.rootScene,
+					ontouchend: function() {
+						// [RETRY] がクリックされたとき
+						location.reload(false);
+					}
+				}).tl.moveTo(264, 260, 20, enchant.Easing.CUBIC_EASEOUT);
 			}
 		});
 
