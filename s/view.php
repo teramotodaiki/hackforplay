@@ -116,6 +116,9 @@ if ($mode === 'quest') {
 <?php if (isset($reporting_requirements)) : ?>
 		s('reporting_requirements', "<?php echo $reporting_requirements; ?>");
 <?php endif; ?>
+<?php if (isset($reporting_restaged)) : ?>
+		s('reporting_restaged', "<?php echo $reporting_restaged; ?>");
+<?php endif; ?>
 <?php if(isset($code)): ?>
 		s('replay_code', "<?php echo $code; ?>");
 <?php endif; ?>

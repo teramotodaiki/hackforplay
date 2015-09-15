@@ -369,7 +369,9 @@ $(function(){
 					// ロギングの開始をサーバーに伝え、トークンを取得する
 					$.post('../analytics/beginrestaginglog.php', {
 						'stage_id': getParam('id'),
-						'mode': getParam('mode')
+						'mode': getParam('mode'),
+						'level': getParam('level'),
+						'report': getParam('reporting_restaged')
 					}, function(data, textStatus, xhr) {
 						switch (data) {
 							case 'error':

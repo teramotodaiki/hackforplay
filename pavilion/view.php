@@ -69,7 +69,7 @@
 						<p>オリジナルステージ作成</p>
 					</div>
 					<div class="item-underscore">
-						<p>今までに<span class="Restagers"></span>人<ruby>があたらしいステージを作成した
+						<p>今までに<span class="Makers"></span>人があたらしいステージを作成した
 					</div>
 					<div>
 						<p><span class="Explain"></span></p>

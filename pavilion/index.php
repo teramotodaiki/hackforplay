@@ -24,12 +24,12 @@ try {
 	}
 
 	// パビリオンが解放されているか
-	$stmt		= $dbh->prepare('SELECT "Certified" FROM "PavilionUserMap" WHERE "PavilionID"=:pavilion_id AND "UserID"=:userid');
+	$stmt		= $dbh->prepare('SELECT "Certified","Restaged" FROM "PavilionUserMap" WHERE "PavilionID"=:pavilion_id AND "UserID"=:userid');
 	$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
-	$certified	= $stmt->fetch(PDO::FETCH_COLUMN);
-	if (!$certified) {
+	$certified	= $stmt->fetch(PDO::FETCH_ASSOC);
+	if (!$certified || !$certified['Certified']) {
 		header('Location: ../town/'); // タウンにもどる
 		exit();
 	}
@@ -111,7 +111,17 @@ try {
 	$stmt->execute();
 	$kit_stage			= $stmt->fetch(PDO::FETCH_ASSOC);
 	if ($kit_stage) {
-		$pavilion['Kit']= $kit_stage;
+		// キットの実績を付与
+		$kit_stage['Restaged']	= $certified && $certified['Restaged'];
+
+		// キットを改造したことのある人数を取得
+		$stmt					= $dbh->prepare('SELECT COUNT(*) FROM "PavilionUserMap" WHERE "PavilionID"=:pavilion_id AND "Restaged"=:true');
+		$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_BOOL);
+		$stmt->bindValue(":true", TRUE, PDO::PARAM_BOOL);
+		$stmt->execute();
+		$kit_stage['Makers']	= (int)$stmt->fetch(PDO::FETCH_COLUMN);
+
+		$pavilion['Kit'] = $kit_stage;
 	}
 
 	// JSON形式にパース

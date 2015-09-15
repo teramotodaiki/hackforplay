@@ -1,6 +1,5 @@
 $(function () {
 
-
 	// レイアウト
 	var currentShowingType = 'easy';
 
@@ -65,7 +64,7 @@ $(function () {
 	if (result.Kit) {
 		var current = $('.kit-item-sample').clone(true, true);
 		current.removeClass('hidden kit-item-sample').addClass('kit-item-entity');
-		current.find('.Restagers').text('NaN');
+		current.find('.Makers').text(result.Kit.Makers);
 		current.find('.Explain').text(result.Kit.Explain);
 		current.find('.Thumbnail').attr('src', result.Kit.Thumbnail);
 		current.find('.achievement-restaged').attr('src', result.Kit.Restaged ? 'img/achievement_p.png' : 'img/achievement_n.png');
@@ -153,7 +152,7 @@ $(function () {
 		$(this).find('.Title').text(result.Kit.Title);
 		$(this).find('.modal-content').css('background-image', 'url(' + result.KitBg + ')');
 		$(this).find('.modal-kit-entity .stage-frame-wrapper').on('click', function() {
-			location.href = '/s/?mode=official&directly_restaging=true&id=' + result.Kit.ID;
+			location.href = '/s/?mode=official&directly_restaging=true&id=' + result.Kit.ID + '&report=' + !result.Kit.Restaged;
 		});
 
 	});
