@@ -73,28 +73,31 @@ $(function(){
 				(function (callback) {
 					// 報告義務はあるか？ (クエスト|レベル) に, 初挑戦した or まだクリアしていない とき true
 					if (getParam('reporting_requirements')) {
-						// 実績を送信
+
 						$.post('../stage/sendlevelstate.php', {
 							'level': getParam('level')
 						} , function(data, textStatus, xhr) {
-							if (confirm('移動します')) {
-								callback();
-							}
+							callback();
 						});
 					} else {
 						callback();
 					}
 				})(function() {
-					// 次のレベルが存在するか
-					if (getParam('next') >> 0 > 0) {
-						// 次のレベルに遷移
-						location.href = '/s/?mode=quest&level=' + getParam('next');
-					} else {
-						// (クエストコンプリート後の動線.クエスト一覧に遷移？)
-						if (confirm('これでおわりです。クエスト一覧に戻りますか？')) {
-							location.href = '/pavilion/?id=' + getParam('pavilion');
+					// 次のレベルに移動する処理を準備しておく (トリガーはゲーム側に引かせる)
+					window.addEventListener('message', function (event) {
+						if (event.data === 'quest_move_next') {
+							// 次のレベルが存在するか
+							if (getParam('next') >> 0 > 0) {
+								// 次のレベルに遷移
+								location.href = '/s/?mode=quest&level=' + getParam('next');
+							} else {
+								// (クエストコンプリート後の動線.クエスト一覧に遷移？)
+								if (confirm('これでおわりです。クエスト一覧に戻りますか？')) {
+									location.href = '/pavilion/?id=' + getParam('pavilion');
+								}
+							}
 						}
-					}
+					});
 				});
 				break;
 		}

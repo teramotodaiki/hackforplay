@@ -21,6 +21,11 @@ var gameover; // gameoverメソッドも
         }, function(data, textStatus, xhr) {
         });
 
+        // Questの実績を報告
+        if (__H4PENV__MODE === 'quest') {
+            window.parent.postMessage('quest_clear_level', '/');
+        }
+
         // 演出
         var game = enchant.Game.instance;
         var lay = new Overlay('rgba(0,0,0,0.4)'); // rgba(0,0,0,1)や#000000でも可能
@@ -36,7 +41,7 @@ var gameover; // gameoverメソッドも
                     sprite.moveTo(65, 320);
                     sprite.tl.moveTo(65, 240, 10, enchant.Easing.CUBIC_EASEOUT);
                     sprite.on('touchstart', function() {
-                        window.parent.postMessage('quest_clear_level', '/');
+                        window.parent.postMessage('quest_move_next', '/');
                     });
                     game.rootScene.addChild(sprite);
                 })(new Sprite(165, 69));

@@ -246,6 +246,12 @@ window.addEventListener('load', function() {
 	};
 
 	Hack.gameclear = function() {
+		// Questの実績を報告
+		if (__H4PENV__MODE === 'quest') {
+			window.parent.postMessage('quest_clear_level', '/');
+		}
+
+		// 演出
 		var lay = Hack.overlay('rgba(0,0,0,0.4)', 'hackforplay/clear.png');
 		lay.opacity = 0;
 		lay.moveTo(-game.rootScene.x, -game.rootScene.y);
@@ -260,7 +266,7 @@ window.addEventListener('load', function() {
 					defaultParentNode: game.rootScene,
 					ontouchend: function() {
 						// [NEXT] がクリックされたとき
-						window.parent.postMessage('quest_clear_level', '/');
+						window.parent.postMessage('quest_move_next', '/');
 					}
 				}).tl.moveTo(65-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 				// [RETRY]
