@@ -14,6 +14,9 @@
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<script src="view.js" type="text/javascript"></script>
+	<script type="text/javascript" charset="utf-8">
+	console.log($.parseJSON('<?php echo json_encode($pavilions); ?>'));
+	</script>
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
