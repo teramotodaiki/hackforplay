@@ -23,17 +23,26 @@ $(function () {
 		});
 	});
 
+	var NumberOfQuest;
 	function alignmentQuests () {
 		// サンプルの取得
 		$item = $('.quest-item-sample');
+		var TypeString;
+		switch (currentShowingType) {
+			case 'easy': TypeString = '1'; break;
+			case 'normal': TypeString = '2'; break;
+			case 'hard': TypeString = '3'; break;
+		}
 
+		NumberOfQuest = 1;
 		result.Quests.forEach(function(quest, index) {
 
 			if (quest.Type !== currentShowingType) return;
 
 			var current = $item.clone(true, true);
 			current.removeClass('hidden quest-item-sample').addClass('quest-item-entity');
-			current.find('.Number').text(index + 1);
+			current.find('.TypeString').text(TypeString);
+			current.find('.Number').text(NumberOfQuest++);
 			current.find('.Challengers').text(quest.Challengers);
 			current.find('.Winners').text(quest.Winners);
 			current.find('.Authors').text(quest.Authors.join(', '));
@@ -48,6 +57,9 @@ $(function () {
 				case 'hard':	current.css('background-image', 'url(' + result.HardBg + ')'); break;
 			}
 
+			current.hide();
+			current.fadeIn('fast');
+
 			this.append(current);
 
 		}, $item.parent());
@@ -56,7 +68,8 @@ $(function () {
 		if (result.Kit) {
 			var kit = $('.kit-item-entity');
 			if (kit) {
-				kit.insertAfter('.row .quest-item-entity:eq(1)');
+				kit.hide();
+				kit.fadeIn('fast').insertAfter('.row .quest-item-entity:eq(1)');
 			}
 		}
 	}
