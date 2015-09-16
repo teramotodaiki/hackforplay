@@ -14,6 +14,7 @@
 	<?php require_once '../fb-root.php' ?>
 	<?php require_once '../sendattendance.php'; ?>
 	<script src="view.js" type="text/javascript"></script>
+	<script src="randomize.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 	var result = JSON.parse('<?php echo $pavilion_json; ?>');
 	</script>
@@ -21,12 +22,12 @@
 	<?php include 'modal.php'; ?>
 	<div class="container">
 		<div class="center-block" style="max-width: 682px;">
-			<input type="image" src="img/jp/btn_type_easy_n.png" alt="やさしい" class="change-type-button" data-type="easy" disabled="disabled" data-psrc="img/jp/btn_type_easy_p.png" data-nsrc="img/jp/btn_type_easy_n.png">
-			<input type="image" src="img/jp/btn_type_normal_p.png" alt="ふつう" class="change-type-button" data-type="normal" data-psrc="img/jp/btn_type_normal_p.png" data-nsrc="img/jp/btn_type_normal_n.png">
-			<input type="image" src="img/jp/btn_type_hard_p.png" alt="むずかしい" class="change-type-button" data-type="hard" data-psrc="img/jp/btn_type_hard_p.png" data-nsrc="img/jp/btn_type_hard_n.png">
+			<input type="image" src="img/jp/btn_type_easy_n.png" alt="やさしい" class="change-type-button" data-type="easy" disabled="disabled" data-psrc="img/jp/btn_type_easy_p.png" data-nsrc="img/jp/btn_type_easy_n.png" data-number="1">
+			<input type="image" src="img/jp/btn_type_normal_p.png" alt="ふつう" class="change-type-button" data-type="normal" data-psrc="img/jp/btn_type_normal_p.png" data-nsrc="img/jp/btn_type_normal_n.png" data-number="2">
+			<input type="image" src="img/jp/btn_type_hard_p.png" alt="むずかしい" class="change-type-button" data-type="hard" data-psrc="img/jp/btn_type_hard_p.png" data-nsrc="img/jp/btn_type_hard_n.png" data-number="3">
 		</div>
 	</div>
-	<div class="container">
+	<div class="container-fluid container-pavilion">
 		<div class="row">
 			<!-- Sample Item -->
 			<div class="quest-item-sample pull-left hidden" data-toggle="modal" data-target="#questModal">
