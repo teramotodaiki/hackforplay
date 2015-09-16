@@ -27,6 +27,7 @@ $(function(){
 			'height': width/1.5
 		});
 	$(".h4p_clear").height(width/1.5);
+	$(".h4p_credit").height(width/1.5);
 	// ゲームクリアの処理
 	window.addEventListener('message', function(e){
 		switch(e.data){
@@ -72,28 +73,31 @@ $(function(){
 				(function (callback) {
 					// 報告義務はあるか？ (クエスト|レベル) に, 初挑戦した or まだクリアしていない とき true
 					if (getParam('reporting_requirements')) {
-						// 実績を送信
+
 						$.post('../stage/sendlevelstate.php', {
 							'level': getParam('level')
 						} , function(data, textStatus, xhr) {
-							if (confirm('移動します')) {
-								callback();
-							}
+							callback();
 						});
 					} else {
 						callback();
 					}
 				})(function() {
-					// 次のレベルが存在するか
-					if (getParam('next') >> 0 > 0) {
-						// 次のレベルに遷移
-						location.href = '/s/?mode=quest&level=' + getParam('next');
-					} else {
-						// (クエストコンプリート後の動線.クエスト一覧に遷移？)
-						if (confirm('これでおわりです。クエスト一覧に戻りますか？')) {
-							location.href = '/pavilion/?id=' + getParam('pavilion');
+					// 次のレベルに移動する処理を準備しておく (トリガーはゲーム側に引かせる)
+					window.addEventListener('message', function (event) {
+						if (event.data === 'quest_move_next') {
+							// 次のレベルが存在するか
+							if (getParam('next') >> 0 > 0) {
+								// 次のレベルに遷移
+								location.href = '/s/?mode=quest&level=' + getParam('next');
+							} else {
+								// (クエストコンプリート後の動線.クエスト一覧に遷移？)
+								if (confirm('これでおわりです。クエスト一覧に戻りますか？')) {
+									location.href = '/pavilion/?id=' + getParam('pavilion');
+								}
+							}
 						}
-					}
+					});
 				});
 				break;
 		}
@@ -368,7 +372,9 @@ $(function(){
 					// ロギングの開始をサーバーに伝え、トークンを取得する
 					$.post('../analytics/beginrestaginglog.php', {
 						'stage_id': getParam('id'),
-						'mode': getParam('mode')
+						'mode': getParam('mode'),
+						'level': getParam('level'),
+						'report': getParam('reporting_restaged')
 					}, function(data, textStatus, xhr) {
 						switch (data) {
 							case 'error':
@@ -538,15 +544,6 @@ $(function(){
 			});
 			$(".h4p_info-footer").text("（リステージング中）");
 			$(".h4p_info-restaging>button").hide();
-			$(".h4p_info-retry>a").hide();
-			$(".h4p_info-retry-button").show();
-			$(".h4p_info-retry-button").on('click', function() {
-				jsEditor.save();
-				var code = jsEditor.getTextArea().value;
-				sessionStorage.setItem('retry_code', code);
-				alert_on_unload = false;
-				location.href = '/s?id='+getParam('id') + '&mode=restaging&retry=true';
-			});
 			$(".h4p_restaging_button").on('click', function() {
 				// RUN
 				jsEditor.save();
@@ -821,7 +818,50 @@ $(function(){
 					beginRestaging();
 					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
 				});
+				// Show credit
+				$('.container-game .h4p_game iframe').css('opacity', 0);
+				$('.container-game .h4p_credit').removeClass('hidden');
+				$('.container-game .h4p_credit .Title').text(getParam('title'));
+				$('.container-game .h4p_credit .Author').text(getParam('author'));
+				// ロードされた瞬間、ゲームを一時停止する
+				var paused = false, creditVisibility = true;
+				window.addEventListener('message', function(event) {
+					if (event.data === 'game_loaded' && creditVisibility) {
+						$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.pause()', '/');
+						paused = true;
+					}
+				});
+				// 2秒後、ゲームをフェードインする
+				setTimeout(function() {
+					$('.container-game .h4p_credit').addClass('hidden');
+					$('.container-game .h4p_game iframe').css('opacity', 1);
+					creditVisibility = false;
+					if (paused) {
+						$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.resume()', '/');
+					}
+				}, 2000);
 				break;
+		}
+
+		// Directly restaging
+		// 任意のステージをmode=restaging以外で読み込んだ直後にbeginRestagingするモード
+		if (getParam('directly_restaging')) {
+			switch (getParam('mode')) {
+			case 'official':
+				// replace_code を受けたのち, beginRestaging
+				window.addEventListener('message', function task(event) {
+					if (event.data === 'replace_code') {
+						beginRestaging();
+						window.removeEventListener('message', task);
+					}
+				});
+				break;
+			case 'replay':
+			case 'quest':
+				// 直後にbeginRestaging
+				beginRestaging();
+				break;
+			}
 		}
 	})();
 	(function(){
@@ -864,6 +904,10 @@ $(function(){
 		}
 	});
 
+	// ゲームフレームのリロード
+	$('.h4p_info-retry button').on('click', function() {
+		$(".h4p_game>iframe").get(0).contentWindow.postMessage('window.location.reload();', '/');
+	});
 
 	function getParam(key){
 		return sessionStorage.getItem('stage_param_'+key) || '';

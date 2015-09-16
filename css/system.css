@@ -157,7 +157,8 @@ iframe {
 .h4p_projectlist .panel-body p,
 .h4p_info-datail p,
 .comment-header .nickname,
-.comment-header .hashtag {
+.comment-header .hashtag,
+.text-overflow-ellipsis {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -233,6 +234,21 @@ iframe {
 #kitModal .item-underscore {
 	border-bottom: 1px solid rgb(0,0,0);
 	margin-bottom: 4px;
+}
+
+.h4p_credit .box-half-top,
+.h4p_credit .box-half-bottom {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+}
+
+.h4p_credit .box-half-top {
+	bottom: 50%;
+}
+
+.h4p_credit .box-half-bottom {
+	top: 50%;
 }
 
 /* アニメーション */

@@ -131,14 +131,14 @@ $(function(){
 		?>
 			<form class="navbar-form navbar-left" action="../auth/signin.php" method="post" accept-charset="utf-8">
 				<div class="form-group">
-					<label class="written-in-ja" for="navbarLoginEmail"><small>メールまたはID</small></label>
+					<label for="navbarLoginEmail"><small>メールまたはID</small></label>
 					<input class="form-control" name="email" id="navbarLoginEmail" type="text">
 				</div>
 				<div class="form-group">
-					<label class="written-in-ja" for="navbarLoginPassword"><small>パスワード</small></label>
+					<label for="navbarLoginPassword"><small>パスワード</small></label>
 					<input class="form-control" name="password" id="navbarLoginPassword" type="password">
 				</div>
-				<button class="written-in-ja btn btn-default" type="submit"><small>ログイン</small></button>
+				<button class="btn btn-default" type="submit"><small>ログイン</small></button>
 			</form>
 			<ul class="nav navbar-nav navbar-left">
 				<li>
@@ -148,7 +148,7 @@ $(function(){
 				</li>
 				<li>
 					<a href="../getaccount/" class="btn btn-link" title="Register">
-						<span class="written-in-ja"><small>新規登録</small></span>
+						<small>新規登録</small>
 					</a>
 				</li>
 			</ul>
@@ -160,24 +160,18 @@ $(function(){
 		?>
 			<ul class="nav navbar-nav navbar-left">
 				<li>
-					<a href="/r" title="New stages">
-						<span class="written-in-ja">改造ステージ一覧</span>
-					</a>
+					<a href="/town/" title="Town">タウン</a>
 				</li>
 				<li>
-					<a href="/m" title="My page">
-						<span class="written-in-ja">マイページ</span>
-					</a>
+					<a href="/m" title="My page">マイページ</a>
 				</li>
 				<li>
-					<a href="/myproject" title="My project">
-						<span class="written-in-ja">プロジェクト</span>
-					</a>
+					<a href="/myproject" title="My project">プロジェクト</a>
 				</li>
 				<?php if (isset($author_id)) : ?>
 				<li>
 					<a href="/m?id=<?php echo $author_id; ?>" title="Other stages made by this user">
-						<span class="written-in-ja">この人が作った他のステージ</span>
+						この人が作った他のステージ
 					</a>
 				</li>
 				<?php endif; ?>
@@ -191,30 +185,20 @@ $(function(){
 					</a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="/m" title="My page">
-								<span class="written-in-ja">マイページ</span>
-							</a>
+							<a href="/m" title="My page">マイページ</a>
 						</li>
 						<li>
-							<a href="/myproject" title="My project">
-								<span class="written-in-ja">プロジェクト</span>
-							</a>
+							<a href="/myproject" title="My project">プロジェクト</a>
 						</li>
 						<li>
-							<a href="/p" title="Preference">
-								<span class="written-in-ja">せってい</span>
-							</a>
+							<a href="/p" title="Preference">せってい</a>
 						</li>
 						<li>
-							<a href="/comments" title="Message">
-								<span class="written-in-ja">メッセージ</span>
-							</a>
+							<a href="/comments" title="Message">メッセージ</a>
 						</li>
 						<li role="separator" class="divider"></li>
 						<li>
-							<a href="../auth/signout_and_gotolandingpage.php" title="Logout">
-								<span class="written-in-ja">ログアウト</span>
-							</a>
+							<a href="../auth/signout_and_gotolandingpage.php" title="Logout">ログアウト</a>
 						</li>
 					</ul>
 				</li>

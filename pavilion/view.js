@@ -1,6 +1,5 @@
 $(function () {
 
-
 	// レイアウト
 	var currentShowingType = 'easy';
 
@@ -65,7 +64,7 @@ $(function () {
 	if (result.Kit) {
 		var current = $('.kit-item-sample').clone(true, true);
 		current.removeClass('hidden kit-item-sample').addClass('kit-item-entity');
-		current.find('.Restagers').text('NaN');
+		current.find('.Makers').text(result.Kit.Makers);
 		current.find('.Explain').text(result.Kit.Explain);
 		current.find('.Thumbnail').attr('src', result.Kit.Thumbnail);
 		current.find('.achievement-restaged').attr('src', result.Kit.Restaged ? 'img/achievement_p.png' : 'img/achievement_n.png');
@@ -122,9 +121,9 @@ $(function () {
 
 				if (level.Allowed) {
 					current.find('.stage-frame-wrapper').data('ID', level.ID);
-					current.find('.btn-restage').attr('href', '/s/?mode=restaging&id=' + level.StageID);
+					current.find('.btn-restage').attr('href', '/s/?mode=quest&directly_restaging=true&level=' + level.ID);
 				} else {
-					current.css({
+					current.find('.stage-frame-wrapper').css({
 						'opacity': '0.5',
 						'cursor': 'default'
 					});
@@ -147,13 +146,17 @@ $(function () {
 	// キットモーダル
 	$('#kitModal').on('show.bs.modal', function(event) {
 
-		$(this).find('.Restagers').text('NaN');
+		$('#kitModal .Restaged .' + result.Kit.Restaged + '-text').removeClass('hidden');
+		$('#kitModal .Restaged .' + (!result.Kit.Restaged) + '-text').addClass('hidden');
+		$('#kitModal .achievement-restaged').attr('src', result.Kit.Restaged ? 'img/achievement_p.png' : 'img/achievement_n.png');
+
+		$(this).find('.Makers').text(result.Kit.Makers);
 		$(this).find('.Explain').text(result.Kit.Explain);
 		$(this).find('.Thumbnail').attr('src', result.Kit.Thumbnail);
 		$(this).find('.Title').text(result.Kit.Title);
 		$(this).find('.modal-content').css('background-image', 'url(' + result.KitBg + ')');
 		$(this).find('.modal-kit-entity .stage-frame-wrapper').on('click', function() {
-			location.href = '/s/?mode=restaging&id=' + result.Kit.ID;
+			location.href = '/s/?mode=official&directly_restaging=true&id=' + result.Kit.ID + '&report=' + !result.Kit.Restaged;
 		});
 
 	});

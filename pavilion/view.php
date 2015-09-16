@@ -20,18 +20,10 @@
 	<?php include '../view/header.php'; ?>
 	<?php include 'modal.php'; ?>
 	<div class="container">
-		<div class="row">
-			<div class="col-xs-12">
-			</div>
-			<div class="col-xs-4">
-				<input type="image" src="img/jp/btn_type_easy_n.png" alt="やさしい" class="change-type-button" data-type="easy" disabled="disabled" data-psrc="img/jp/btn_type_easy_p.png" data-nsrc="img/jp/btn_type_easy_n.png">
-			</div>
-			<div class="col-xs-4">
-				<input type="image" src="img/jp/btn_type_normal_p.png" alt="ふつう" class="change-type-button" data-type="normal" data-psrc="img/jp/btn_type_normal_p.png" data-nsrc="img/jp/btn_type_normal_n.png">
-			</div>
-			<div class="col-xs-4">
-				<input type="image" src="img/jp/btn_type_hard_p.png" alt="むずかしい" class="change-type-button" data-type="hard" data-psrc="img/jp/btn_type_hard_p.png" data-nsrc="img/jp/btn_type_hard_n.png">
-			</div>
+		<div class="center-block" style="max-width: 682px;">
+			<input type="image" src="img/jp/btn_type_easy_n.png" alt="やさしい" class="change-type-button" data-type="easy" disabled="disabled" data-psrc="img/jp/btn_type_easy_p.png" data-nsrc="img/jp/btn_type_easy_n.png">
+			<input type="image" src="img/jp/btn_type_normal_p.png" alt="ふつう" class="change-type-button" data-type="normal" data-psrc="img/jp/btn_type_normal_p.png" data-nsrc="img/jp/btn_type_normal_n.png">
+			<input type="image" src="img/jp/btn_type_hard_p.png" alt="むずかしい" class="change-type-button" data-type="hard" data-psrc="img/jp/btn_type_hard_p.png" data-nsrc="img/jp/btn_type_hard_n.png">
 		</div>
 	</div>
 	<div class="container">
@@ -52,7 +44,7 @@
 					</div>
 					<div>
 						<p><ruby>主<rt>おも</rt></ruby>なクリエイター</p>
-			        	<p class="Authors">...</p>
+			        	<p class="Authors text-overflow-ellipsis">...</p>
 					</div>
 				</div>
 				<div class="stage-frame-wrapper">
@@ -69,7 +61,7 @@
 						<p>オリジナルステージ作成</p>
 					</div>
 					<div class="item-underscore">
-						<p>今までに<span class="Restagers"></span>人<ruby>があたらしいステージを作成した
+						<p>今までに<span class="Makers"></span>人があたらしいステージを作成した
 					</div>
 					<div>
 						<p><span class="Explain"></span></p>

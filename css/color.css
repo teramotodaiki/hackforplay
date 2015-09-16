@@ -48,8 +48,10 @@ nav.navbar {
 	opacity: 0.9;
 }
 
-.h4p_game {
+.h4p_game,
+.h4p_credit {
 	background-color: black;
+	color: white;
 }
 
 /* 線の幅・色 */
@@ -75,7 +77,12 @@ nav.navbar {
 
 .btn-restage {
 	color: #fff;
-	background-color: #28222e;
+	background-color: #362f3c;
+}
+
+.btn-retry {
+	color: #fff;
+	background-color: #ff837b;
 }
 
 /* 影の色 */

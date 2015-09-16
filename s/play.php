@@ -17,6 +17,12 @@ try {
 	// 他:		idからステージ情報を取得
 	$mode	= filter_input(INPUT_GET, 'mode');
 	if ($mode === 'quest') {
+		if (!$session_userid) {
+			// ログインされていない
+			header('Location: ../login/');
+			exit();
+		}
+
 		// levelをパラメータの取得
 		$input		= filter_input(INPUT_GET, 'level', FILTER_VALIDATE_INT);
 		if (!$input) {
@@ -24,20 +30,20 @@ try {
 			exit();
 		}
 		// IDをlevelから取得
-		$stmt		= $dbh->prepare('SELECT "ID","StageID","QuestID","PlayOrder" FROM "_Level" WHERE "ID"=:input');
+		$stmt		= $dbh->prepare('SELECT "ID","StageID","QuestID","PlayOrder" FROM "Level" WHERE "ID"=:input');
 		$stmt->bindValue(":input", $input, PDO::PARAM_INT);
 		$stmt->execute();
 		$level		= $stmt->fetch(PDO::FETCH_ASSOC);
 		$stageid	= $level['StageID'];
 
 		// QuestIDからPavilionの情報を取得
-		$stmt		= $dbh->prepare('SELECT "ID" FROM "_Pavilion" WHERE "ID"=(SELECT "PavilionID" FROM "_Quest" WHERE "ID"=:quest_id)');
+		$stmt		= $dbh->prepare('SELECT "ID" FROM "Pavilion" WHERE "ID"=(SELECT "PavilionID" FROM "Quest" WHERE "ID"=:quest_id)');
 		$stmt->bindValue(":quest_id", $level['QuestID'], PDO::PARAM_INT);
 		$stmt->execute();
 		$pavilion	= $stmt->fetch(PDO::FETCH_ASSOC);
 
 		// このQuestをクリアした実績があるか
-		$stmt	= $dbh->prepare('SELECT "ID","Cleared" FROM "QuestUserMap" WHERE "UserID"=:userid AND "QuestID"=:quest_id');
+		$stmt	= $dbh->prepare('SELECT "ID","Cleared","Restaged" FROM "QuestUserMap" WHERE "UserID"=:userid AND "QuestID"=:quest_id');
 		$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 		$stmt->bindValue(":quest_id", $level['QuestID'], PDO::PARAM_INT);
 		$stmt->execute();
@@ -55,13 +61,14 @@ try {
 			// まだクリアしていない
 
 			// Pavilionが解放されているか
-			if (!$session_userid) {
-				// ログインされていない
-				header('Location: ../login/');
-				exit();
-			} else {
+			$stmt		= $dbh->prepare('SELECT "Certified" FROM "PavilionUserMap" WHERE "PavilionID"=:pavilion_id AND "UserID"=:userid');
+			$stmt->bindValue(":pavilion_id", $pavilion['ID'], PDO::PARAM_INT);
+			$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+			$stmt->execute();
+			$certified	= $stmt->fetch(PDO::FETCH_COLUMN);
+			if (!$certified) {
 				// 解放されていない場合、mode=replayでリロード
-
+				header('Location: ../s/?mode=replay&id=' . $level['StageID']);
 			}
 
 			// このLevelをクリアした実績があるか
@@ -98,8 +105,12 @@ try {
 		$reporting_requirements = 	(isset($quest_map) && (!$quest_map || !$quest_map || !$quest_map['Cleared'])) ||
 									(isset($level_map) && (!$level_map || !$level_map || !$level_map['Cleared']));
 
+		// 改造時の報告義務
+		// クエストに初めて挑戦した or まだ改造していない => 報告義務を与える
+		$reporting_restaged	= !$quest_map || !$quest_map['Restaged'];
+
 		// 次のPlayOrderのLevelを取得 (falseと評価できる場合は最後のステージ)
-		$stmt		= $dbh->prepare('SELECT "ID" FROM "_Level" WHERE "QuestID"=:quest_id AND "PlayOrder"=:next');
+		$stmt		= $dbh->prepare('SELECT "ID" FROM "Level" WHERE "QuestID"=:quest_id AND "PlayOrder"=:next');
 		$stmt->bindValue(":quest_id", $level['QuestID'], PDO::PARAM_INT);
 		$stmt->bindValue(":next", $level['PlayOrder'] + 1, PDO::PARAM_INT);
 		$stmt->execute();
@@ -112,6 +123,8 @@ try {
 			header('Location:' . $missing_page);
 			exit();
 		}
+		// 改造することを報告するかどうかのフラグ
+		$reporting_restaged = filter_input(INPUT_GET, 'report', FILTER_VALIDATE_BOOLEAN);
 	}
 
 	// ステージの情報/制作者の情報/改造元ステージの情報を取得

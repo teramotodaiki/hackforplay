@@ -14,7 +14,7 @@ try {
 	if (!$input) {
 		exit('invalid-input');
 	}
-	$stmt	= $dbh->prepare('SELECT "ID","QuestID","PlayOrder" FROM "_Level" WHERE "ID"=:input');
+	$stmt	= $dbh->prepare('SELECT "ID","QuestID","PlayOrder" FROM "Level" WHERE "ID"=:input');
 	$stmt->bindValue(":input", $input, PDO::PARAM_INT);
 	$stmt->execute();
 	$level	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -63,7 +63,7 @@ try {
 	} elseif (!$quest_map['Cleared']) {
 		// フラグが立っていない
 		// このLevelが,Questに含まれるLevelの中で最後のLevelかどうか
-		$stmt		= $dbh->prepare('SELECT "ID" FROM "_Level" WHERE "QuestID"=:quest_id AND "PlayOrder">:level_playorder');
+		$stmt		= $dbh->prepare('SELECT "ID" FROM "Level" WHERE "QuestID"=:quest_id AND "PlayOrder">:level_playorder');
 		$stmt->bindValue(":quest_id", $level['QuestID'], PDO::PARAM_INT);
 		$stmt->bindValue(":level_playorder", $level['PlayOrder'], PDO::PARAM_INT);
 		$stmt->execute();

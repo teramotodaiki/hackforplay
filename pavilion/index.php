@@ -14,7 +14,7 @@ try {
 		header('Location: ../town/'); // タウンにもどる
 		exit();
 	}
-	$stmt		= $dbh->prepare('SELECT p."KitStageID",r.* FROM "_Pavilion" AS p INNER JOIN "PavilionResourcePath" AS r ON p."ID"=r."PavilionID" WHERE p."ID"=:pavilion_id');
+	$stmt		= $dbh->prepare('SELECT p."KitStageID",p."RequiredAchievements",r.* FROM "Pavilion" AS p INNER JOIN "PavilionResourcePath" AS r ON p."ID"=r."PavilionID" WHERE p."ID"=:pavilion_id');
 	$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
 	$stmt->execute();
 	$pavilion	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -24,17 +24,25 @@ try {
 	}
 
 	// パビリオンが解放されているか
-
-		// タウンにもどる
+	$stmt		= $dbh->prepare('SELECT "Certified","Restaged" FROM "PavilionUserMap" WHERE "PavilionID"=:pavilion_id AND "UserID"=:userid');
+	$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+	$stmt->execute();
+	$certified	= $stmt->fetch(PDO::FETCH_ASSOC);
+	if (!$certified || !$certified['Certified']) {
+		header('Location: ../town/'); // タウンにもどる
+		exit();
+	}
 
 	// クエストのリストを取得
-	$stmt_qu		= $dbh->prepare('SELECT "ID","Type" FROM "_Quest" WHERE "PavilionID"=:pavilion_id');
+	$stmt_qu		= $dbh->prepare('SELECT "ID","Type" FROM "Quest" WHERE "PavilionID"=:pavilion_id AND "Published"=:published');
 	$stmt_qu->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
+	$stmt_qu->bindValue(":published", TRUE, PDO::PARAM_BOOL);
 	$stmt_qu->execute();
 
 	// 各クエストの詳細情報を取得
-	$stmt_lv	= $dbh->prepare('SELECT "ID","StageID","PlayOrder" FROM "_Level" WHERE "QuestID"=:quest_id ORDER BY "PlayOrder"');
-	$stmt_st	= $dbh->prepare('SELECT s."Thumbnail",s."Title",u."Nickname" FROM "Stage" AS s INNER JOIN "User" AS u ON s."UserID"=u."ID" WHERE s."ID"=:stage_id');
+	$stmt_lv	= $dbh->prepare('SELECT "ID","StageID","PlayOrder" FROM "Level" WHERE "QuestID"=:quest_id ORDER BY "PlayOrder"');
+	$stmt_st	= $dbh->prepare('SELECT s."Thumbnail",s."Title",u."Nickname" FROM "Stage" AS s LEFT OUTER JOIN "User" AS u ON s."UserID"=u."ID" WHERE s."ID"=:stage_id');
 	$stmt_map_l	= $dbh->prepare('SELECT "Cleared" FROM "LevelUserMap" WHERE "LevelID"=:level_id AND "UserID"=:userid');
 	$stmt_map_q	= $dbh->prepare('SELECT "Cleared","Restaged" FROM "QuestUserMap" WHERE "QuestID"=:quest_id AND "UserID"=:userid');
 	$stmt_num	= $dbh->prepare('SELECT COUNT(*) FROM "QuestUserMap" WHERE "QuestID"=:quest_id');
@@ -59,7 +67,7 @@ try {
 			$level['PlayOrder']	= intval($level['PlayOrder']);
 
 			// ステージの作者情報
-			if (array_search($stage['Nickname'], $quest['Authors']) === FALSE) {
+			if ($stage['Nickname'] !== NULL && array_search($stage['Nickname'], $quest['Authors']) === FALSE) {
 				// ユニークな値をプッシュ
 				array_push($quest['Authors'], $stage['Nickname']);
 			}
@@ -103,7 +111,17 @@ try {
 	$stmt->execute();
 	$kit_stage			= $stmt->fetch(PDO::FETCH_ASSOC);
 	if ($kit_stage) {
-		$pavilion['Kit']= $kit_stage;
+		// キットの実績を付与
+		$kit_stage['Restaged']	= $certified && $certified['Restaged'];
+
+		// キットを改造したことのある人数を取得
+		$stmt					= $dbh->prepare('SELECT COUNT(*) FROM "PavilionUserMap" WHERE "PavilionID"=:pavilion_id AND "Restaged"=:true');
+		$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_BOOL);
+		$stmt->bindValue(":true", TRUE, PDO::PARAM_BOOL);
+		$stmt->execute();
+		$kit_stage['Makers']	= (int)$stmt->fetch(PDO::FETCH_COLUMN);
+
+		$pavilion['Kit'] = $kit_stage;
 	}
 
 	// JSON形式にパース

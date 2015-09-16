@@ -24,6 +24,7 @@ if($stage['Mode'] === "replay"){
 	$code = preg_replace("/\"/", "\\\"", $code);
 }
 $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
+$directly_restaging	= filter_input(INPUT_GET, 'directly_restaging', FILTER_VALIDATE_BOOLEAN);
 // Questモードの場合、$nextは次のLevel.IDをあらわす
 if ($mode === 'quest') {
 	// 1以上ならつづきをあらわす。0以下なら最後のステージであることをあらわす
@@ -103,6 +104,9 @@ if ($mode === 'quest') {
 		s('origin_id', "<?php echo $origin_id; ?>");
 		s('src', "<?php echo $src;  ?>");
 		s('youtube', "<?php echo $youtube;  ?>");
+		s('title', "<?php echo $title;  ?>");
+		s('author', "<?php echo $author;  ?>");
+		s('directly_restaging', "<?php echo $directly_restaging;  ?>");
 <?php if(isset($level)): ?>
 		s('level', "<?php echo $level['ID']; ?>");
 <?php endif; ?>
@@ -111,6 +115,9 @@ if ($mode === 'quest') {
 <?php endif; ?>
 <?php if (isset($reporting_requirements)) : ?>
 		s('reporting_requirements', "<?php echo $reporting_requirements; ?>");
+<?php endif; ?>
+<?php if (isset($reporting_restaged)) : ?>
+		s('reporting_restaged', "<?php echo $reporting_restaged; ?>");
 <?php endif; ?>
 <?php if(isset($code)): ?>
 		s('replay_code', "<?php echo $code; ?>");
@@ -255,6 +262,14 @@ if ($mode === 'quest') {
 			<div id="scroll-anchor" class="col-xs-12"></div>
 			<div class="col-xs-12 h4p_alerts"></div>
 			<div class="col-xs-12 h4p_game no-padding" style="display:block">
+				<div class="h4p_credit hidden">
+					<div class="box-half-top">
+						<h1>「<span class="Title"></span>」</h1>
+					</div>
+					<div class="box-half-bottom">
+						<h2>by <span class="Author"></span></h2>
+					</div>
+				</div>
 				<iframe src="" frameborder="0"></iframe>
 			</div>
 			<div class="col-xs-12 h4p_clear text-center" style="display:none">
@@ -263,14 +278,7 @@ if ($mode === 'quest') {
 						<img class="h4p_clear-img" src="img/clear.png" alt="">
 					</div>
 					<div class="col-xs-12 h4p_clear-next">
-					<?php if($mode === "replay") : ?>
-						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">このステージを改造する</button>
-						<a href="/r" class="btn btn-success btn-lg btn-block" title="改造ステージ一覧へ">
-							改造ステージ一覧へ
-						</a>
-					<?php elseif($mode === "restaging") : ?>
-						<button class="btn btn-primary btn-lg btn-block h4p_info-retry-button ignore-attendance" role="button" title="改造コードを保存してゲームを再スタート">改造コードを保存してゲームを再スタート</button>
-					<?php elseif($next !== NULL) : // exist next stage ?>
+					<?php if($next !== NULL) : // exist next stage ?>
 						<a href="/s?id=<?php echo $next; ?>" style="display: block;" title="つぎのステージへ">
 							<img src="img/button_next.png" height="48" width="266" alt="">
 						</a>
@@ -326,11 +334,16 @@ if ($mode === 'quest') {
 						<?php endif; ?>
 					</div>
 					<div class="col-xs-6 col-sm-3 h4p_info-restaging">
-						<button type="button" class="btn btn-success btn-lg btn-block begin_restaging" title="改造する">改造する</button>
+						<button type="button" class="btn btn-restage btn-lg btn-block begin_restaging" title="改造する">
+							<span class="glyphicon glyphicon-wrench"></span>
+							改造する
+						</button>
 					</div>
 					<div class="col-xs-6 col-sm-3 h4p_info-retry">
-						<a class="btn btn-primary btn-lg btn-block ignore-attendance" role="button" href="/s?id=<?php echo $id; ?>" title="はじめから">はじめから</a>
-						<button style="display: none;" class="btn btn-primary btn-lg btn-block h4p_info-retry-button ignore-attendance" role="button" title="もう一度実行">もう一度実行</button>
+						<button class="btn btn-retry btn-lg btn-block" role="button" href="#" title="もういちど">
+							<span class="glyphicon glyphicon-repeat"></span>
+							もういちど
+						</button>
 					</div>
 					<?php if ($explain !== NULL && $explain !== '') : ?>
 					<div class="col-xs-12 h4p_info-explain">

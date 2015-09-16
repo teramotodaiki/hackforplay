@@ -27,7 +27,7 @@
 							<img alt="" class="stage-thumbnail Thumbnail">
 							<img src="" class="stage-frame" alt="">
 						</div>
-						<p class="text-center"><span class="Title"></span></p>
+						<p class="text-center text-overflow-ellipsis"><span class="Title"></span></p>
 						<p>
 							<a href="#" class="btn btn-restage btn-block" title="Restaging">
 								<span class="glyphicon glyphicon-wrench"></span>
@@ -48,16 +48,17 @@
 		<div class="modal-content">
 		    <div class="modal-body">
 		        <input type="image" src="" class="ModalClose" alt="&times" data-dismiss="modal" aria-label="Close"></input>
-		        <div class="body-part-1">
+		        <div class="body-part-1 item-underscore">
 		        	<p class="Restaged">
-		        		<span class="true-text hidden">ステージを作成した！</span>
+						<img src="" class="achievement achievement-restaged" alt="">
+		        		<span class="true-text hidden">ステージを改造した！</span>
 		        		<span class="false-text hidden"><ruby>条件<rt>じょうけん</rt></ruby>：ステージを作成する</span>
 		        	</p>
 		        </div>
 		        <div class="body-part-2">
-					<p>オリジナルステージ作成</p>
-					<p>今までに<span class="Restagers"></span>人<ruby>があたらしいステージを作成した
-					<p><span class="Explain"></span></p>
+					<p class="item-underscore">オリジナルステージ作成</p>
+					<p class="item-underscore">今までに<span class="Makers"></span>人<ruby>があたらしいステージを作成した
+					<p class="item-underscore"><span class="Explain"></span></p>
 		        </div>
 		        <div class="row">
 		        	<div class="modal-kit-entity">
@@ -65,7 +66,7 @@
 							<img alt="" class="stage-thumbnail Thumbnail">
 							<img src="" class="stage-frame" alt="">
 						</div>
-						<p class="text-center"><span class="Tilte"></span></p>
+						<p class="text-center text-overflow-ellipsis"><span class="Title"></span></p>
 		        	</div>
 		        </div>
 		    </div>
