@@ -30,7 +30,7 @@ $(function () {
 			var margin = body_width - entityWidth * columnNum;
 
 			$(el).css({
-				'margin-left': margin * constRandoms(columnNum, current_row, pavilion_id, type_number)[current_column],
+				'margin-left': margin * constRandom(columnNum, current_row, pavilion_id, type_number, current_column),
 				'margin-right': 0
 			});
 
@@ -38,7 +38,7 @@ $(function () {
 			current_column ++;
 			if (current_column >= columnNum) {
 				// 右辺を埋める
-				$(el).css('margin-right',  margin * constRandoms(columnNum, current_row, pavilion_id, type_number)[current_column]);
+				$(el).css('margin-right',  margin * constRandom(columnNum, current_row, pavilion_id, type_number, current_column));
 				current_column = 0;
 				current_row ++;
 			}
@@ -47,16 +47,13 @@ $(function () {
 	}
 
 	// あとTypeも含める
-	function constRandoms (columnNum, current_row, pavilion_id, type_number) {
+	function constRandom (columnNum, current_row, pavilion_id, type_number, current_column) {
 		var buffer = [];
 		var sum = 0;
 		for (var i = 0; i < columnNum + 1; i++) {
 			buffer[i] = Math.sin(current_row + current_row + pavilion_id + type_number + i) + 1;
 			sum += buffer[i];
 		}
-		for (var i = 0; i < buffer.length; i++) {
-			buffer[i] /= sum;
-		}
-		return buffer;
+		return buffer[current_column] /= sum;
 	}
 });
