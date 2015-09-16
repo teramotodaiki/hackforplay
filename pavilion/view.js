@@ -27,12 +27,7 @@ $(function () {
 	function alignmentQuests () {
 		// サンプルの取得
 		$item = $('.quest-item-sample');
-		var TypeString;
-		switch (currentShowingType) {
-			case 'easy': TypeString = '1'; break;
-			case 'normal': TypeString = '2'; break;
-			case 'hard': TypeString = '3'; break;
-		}
+		var TypeString = $('.change-type-button[disabled="disabled"]').data('number');
 
 		NumberOfQuest = 1;
 		result.Quests.forEach(function(quest, index) {
