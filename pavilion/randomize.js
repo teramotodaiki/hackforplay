@@ -5,9 +5,10 @@ $(function () {
 	var minHorizontalMargin = 100; // 少なくとも１行にこれだけのマージンをとる
 	var entityWidth = $('.quest-item-entity').outerWidth(false); // CSSで指定されたEntityの固定幅
 
-	// ロード時, リサイズ時に設定
+	// ロード時, リサイズ時, 難易度変更時に設定
 	task();
 	$(window).on('resize', task);
+	$('.change-type-button').on('click', task);
 
 	// カラム数を取得
 	function getColumn () {
