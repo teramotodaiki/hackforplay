@@ -57,6 +57,9 @@ $(function () {
 				case 'hard':	current.css('background-image', 'url(' + result.HardBg + ')'); break;
 			}
 
+			current.hide();
+			current.fadeIn('fast');
+
 			this.append(current);
 
 		}, $item.parent());
@@ -65,7 +68,8 @@ $(function () {
 		if (result.Kit) {
 			var kit = $('.kit-item-entity');
 			if (kit) {
-				kit.insertAfter('.row .quest-item-entity:eq(1)');
+				kit.hide();
+				kit.fadeIn('fast').insertAfter('.row .quest-item-entity:eq(1)');
 			}
 		}
 	}
