@@ -3,6 +3,7 @@ $(function () {
 
 	// プロパティ
 	var minHorizontalMargin = 100; // 少なくとも１行にこれだけのマージンをとる
+	var maxVerticalMargin = 100; // 上部のマージンの最大値
 	var entityWidth = $('.quest-item-entity').outerWidth(false); // CSSで指定されたEntityの固定幅
 
 	// ロード時, リサイズ時, 難易度変更時に設定
@@ -29,8 +30,11 @@ $(function () {
 			var columnNum = Math.max(getColumn() - (current_row % 2), 1);
 			var margin = body_width - entityWidth * columnNum;
 
+			var rand = constRandom(columnNum, current_row, pavilion_id, type_number, current_column);
 			$(el).css({
-				'margin-left': margin * constRandom(columnNum, current_row, pavilion_id, type_number, current_column),
+				'margin-top': maxVerticalMargin * rand.y,
+				'margin-bottom': maxVerticalMargin * (1 - rand.y),
+				'margin-left': margin * rand.x,
 				'margin-right': 0
 			});
 
@@ -38,7 +42,7 @@ $(function () {
 			current_column ++;
 			if (current_column >= columnNum) {
 				// 右辺を埋める
-				$(el).css('margin-right',  margin * constRandom(columnNum, current_row, pavilion_id, type_number, current_column));
+				$(el).css('margin-right',  margin * constRandom(columnNum, current_row, pavilion_id, type_number, current_column).x);
 				current_column = 0;
 				current_row ++;
 			}
@@ -54,6 +58,10 @@ $(function () {
 			buffer[i] = Math.sin(current_row + current_row + pavilion_id + type_number + i) + 1;
 			sum += buffer[i];
 		}
-		return buffer[current_column] /= sum;
+		var rand = (Math.cos(current_row + current_row + pavilion_id + type_number + current_column) + 1) % 1;
+		return {
+			x: buffer[current_column] /= sum,
+			y: rand
+		};
 	}
 });
