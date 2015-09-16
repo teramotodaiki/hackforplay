@@ -6,37 +6,27 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>RePlay - hackforplay</title>
 	<?php require_once '../library.php' ?>
+	<link rel="stylesheet" type="text/css" href="../css/town.css">
 </head>
 <body class="">
 	<?php require_once '../analyticstracking.php' ?>
 	<?php require_once '../fb-root.php' ?>
 	<?php require_once '../sendattendance.php'; ?>
-	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<script src="view.js" type="text/javascript"></script>
-	<div class="container">
+	<div class="container container-town">
 		<div class="row">
-			<div class="col-xs-12">
-				<h1>Town</h1>
+			<div class="town-parent">
+				<img class="town-content content-image content-ground">
+				<img class="town-content content-button content-pavilion content-pavilion-0">
+				<img class="town-content content-button content-pavilion content-pavilion-1">
+				<img class="town-content content-button content-pavilion content-pavilion-2">
+				<img class="town-content content-button content-pavilion content-pavilion-3">
+				<img class="town-content content-button content-restage-frame">
+				<img class="town-content content-button content-restage-thumbnail">
 			</div>
 		</div>
 	</div>
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12">
-				<h4>所持ダイヤ：<span><?php echo $has_achievements; ?></span></h4>
-			</div>
-			<?php foreach ($pavilions as $key => $value) : ?>
-			<div class="col-xs-12 col-sm-6 padding-all-sm">
-				<a href="../pavilion/?id=<?php echo $value['ID']; ?>" class="btn btn-lg btn-link <?php if (!$value['Certified']) echo 'disabled'; ?>">
-					<?php echo $value['DisplayName']; ?>
-				</a>
-				<h4>必要なダイヤ：<span><?php echo $value['RequiredAchievements']; ?></span></h4>
-			</div>
-			<?php endforeach; ?>
-		</div>
-	</div>
-
 	<?php require_once '../view/footer.php' ?>
 </body>
 </html>
