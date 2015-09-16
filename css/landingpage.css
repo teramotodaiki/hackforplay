@@ -12,6 +12,10 @@
 	.h4p_landing-main {	width: 768px; }
 	.l-1 { height: 432px; }
 }
+@media (min-width: 768px) {
+	.h4p_landing-main {	width: 768px; }
+	.l-1 { height: 504px; }
+}
 @media (min-width: 1280px) {
 	.h4p_landing-main { width: 1024px; }
 	.l-1 { height: 576px; }
@@ -33,9 +37,8 @@
 	top: 0px;
 }
 
-.l-1>.bg　{
+.l-1>div {
 	background-size: cover;
-	background-position: center center;
 }
 
 .h4p_landing {
