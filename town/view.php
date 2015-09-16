@@ -24,7 +24,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
-				<h4>所持ダイヤ：<span><?php echo $quest_cleared + $quest_restaged + $kit_restaged; ?></span></h4>
+				<h4>所持ダイヤ：<span><?php echo $has_achievements; ?></span></h4>
 			</div>
 			<?php foreach ($pavilions as $key => $value) : ?>
 			<div class="col-xs-12 col-sm-6 padding-all-sm">
