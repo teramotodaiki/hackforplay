@@ -160,7 +160,7 @@ $(function(){
 		?>
 			<ul class="nav navbar-nav navbar-left">
 				<li>
-					<a href="/r" title="New stages">改造ステージ一覧</a>
+					<a href="/town/" title="Town">タウン</a>
 				</li>
 				<li>
 					<a href="/m" title="My page">マイページ</a>
