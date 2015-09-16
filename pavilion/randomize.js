@@ -55,10 +55,10 @@ $(function () {
 		var buffer = [];
 		var sum = 0;
 		for (var i = 0; i < columnNum + 1; i++) {
-			buffer[i] = Math.sin((current_row + current_row + pavilion_id + type_number + i) * 1000) + 1;
+			buffer[i] = Math.sin((current_row + current_row + pavilion_id + type_number + i) * 1000) + 2;
 			sum += buffer[i];
 		}
-		var rand = (Math.cos((current_row + current_row + pavilion_id + type_number + current_column) * 1000) + 1) % 1;
+		var rand = (Math.cos((current_row + type_number + current_column + current_column)) + 1) / 2;
 		return {
 			x: buffer[current_column] /= sum,
 			y: rand
