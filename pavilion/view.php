@@ -27,7 +27,7 @@
 			<input type="image" src="img/jp/btn_type_hard_p.png" alt="むずかしい" class="change-type-button" data-type="hard" data-psrc="img/jp/btn_type_hard_p.png" data-nsrc="img/jp/btn_type_hard_n.png" data-number="3">
 		</div>
 	</div>
-	<div class="container-fluid container-pavilion">
+	<div class="container container-pavilion">
 		<div class="row">
 			<!-- Sample Item -->
 			<div class="quest-item-sample pull-left hidden" data-toggle="modal" data-target="#questModal">
