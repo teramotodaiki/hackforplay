@@ -36,7 +36,7 @@
 				</div>
 				<div class="item-article">
 					<div class="item-underscore">
-						<p>クエスト　1 - <span class="Number"></span></p>
+						<p>クエスト　<span class="TypeString"></span> - <span class="Number"></span></p>
 					</div>
 					<div class="item-underscore">
 						<p><span class="Challengers"></span>人<ruby>が挑戦<rt>ちょうせん</rt></ruby>し、</p>
