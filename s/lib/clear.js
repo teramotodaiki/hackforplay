@@ -21,106 +21,76 @@ var gameover; // gameoverメソッドも
         }, function(data, textStatus, xhr) {
         });
 
+        // Questの実績を報告
+        if (__H4PENV__MODE === 'quest') {
+            window.parent.postMessage('quest_clear_level', '/');
+        }
+
         // 演出
         var game = enchant.Game.instance;
+        var lay = new Overlay('rgba(0,0,0,0.4)'); // rgba(0,0,0,1)や#000000でも可能
+        game.rootScene.addChild(lay);
+        lay.opacity = 0;
+        lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function(){
+            switch (__H4PENV__MODE) {
 
-        if(__H4PENV__MODE === "restaging"){
-            var darklay = overlay('color', 'rgba(0,0,0,0.4)');
-            game.rootScene.addChild(darklay);
-            darklay.tl.fadeIn(30, enchant.Easing.LINEAR);
-
-            var clearlay = overlay('image', 'img/clear.png', 267, 48);
-            clearlay.moveTo(106, 136);
-            game.rootScene.addChild(clearlay);
-            clearlay.tl.fadeIn(30, enchant.Easing.LINEAR);
-        } else if (__H4PENV__MODE === 'quest') {
-            var darklay = overlay('color', 'rgba(0,0,0,0.4)');
-            game.rootScene.addChild(darklay);
-            darklay.tl.fadeIn(30, enchant.Easing.LINEAR);
-
-            var clearlay = overlay('image', 'img/clear.png', 267, 48);
-            clearlay.moveTo(106, 136);
-            game.rootScene.addChild(clearlay);
-            clearlay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
+                case 'quest':
                 // [NEXT]
-                var nextSprite = new Sprite(266, 48);
-                nextSprite.moveTo(32, 320);
-                nextSprite.image = game.assets['img/button_next.png'];
-                nextSprite.ontouchend = function() {
-                    // [NEXT] がクリックされたとき
-                    window.parent.postMessage('quest_clear_level', '/');
-                };
-                game.rootScene.addChild(nextSprite);
-                nextSprite.tl.moveTo(32, 220, 20, enchant.Easing.CUBIC_EASEOUT);
-
+                (function (sprite) {
+                    sprite.image = game.assets['hackforplay/new_button_next.png'];
+                    sprite.moveTo(65, 320);
+                    sprite.tl.moveTo(65, 240, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.on('touchstart', function() {
+                        window.parent.postMessage('quest_move_next', '/');
+                    });
+                    game.rootScene.addChild(sprite);
+                })(new Sprite(165, 69));
                 // [RETRY]
-                var retrySprite = new Sprite(128, 32);
-                retrySprite.moveTo(330, 320);
-                retrySprite.image = game.assets['img/button_retry.png'];
-                retrySprite.ontouchend = function() {
-                    // [RETRY] がクリックされたとき
-                    location.reload(false);
-                };
-                game.rootScene.addChild(retrySprite);
-                retrySprite.tl.moveTo(330, 226, 20, enchant.Easing.CUBIC_EASEOUT);
-            });
-        } else if (__H4PENV__MODE === 'replay') {
-            var darklay = overlay('color', 'rgba(0,0,0,0.4)');
-            game.rootScene.addChild(darklay);
-            darklay.tl.fadeIn(30, enchant.Easing.LINEAR);
-
-            var clearlay = overlay('image', 'img/clear.png', 267, 48);
-            clearlay.moveTo(106, 136);
-            game.rootScene.addChild(clearlay);
-            clearlay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
+                (function (sprite) {
+                    sprite.image = game.assets['hackforplay/new_button_retry.png'];
+                    sprite.moveTo(278, 320);
+                    sprite.tl.moveTo(278, 250, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.on('touchstart', function() {
+                        location.reload();
+                    });
+                    game.rootScene.addChild(sprite);
+                })(new Sprite(116, 48));
+                break;
+                case 'official':
+                case 'replay':
+                // チュートリアル時　例外的にこの処置
+                if (__H4PENV__MODE === 'official' &&  __H4PENV__NEXT) {
+                    window.parent.postMessage('clear', '/');
+                    return;
+                }
                 // [RESTAGING]
-                var relaySprite = new Sprite(116, 48);
-                relaySprite.moveTo(100, 320);
-                relaySprite.image = game.assets['hackforplay/new_button_replay.png'];
-                relaySprite.ontouchend = function() {
-                    // [RESTAGING] がクリックされたとき
-                    window.parent.postMessage('begin_restaging', '/');
-                };
-                game.rootScene.addChild(relaySprite);
-                relaySprite.tl.moveTo(100, 220, 20, enchant.Easing.CUBIC_EASEOUT);
-
+                (function (sprite) {
+                    sprite.image = game.assets['hackforplay/new_button_replay.png'];
+                    sprite.moveTo(100, 320);
+                    sprite.tl.moveTo(100, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.on('touchstart', function() {
+                        window.parent.postMessage('begin_restaging', '/');
+                    });
+                    game.rootScene.addChild(sprite);
+                })(new Sprite(116, 48));
                 // [RETRY]
-                var retrySprite = new Sprite(116, 48);
-                retrySprite.moveTo(264, 320);
-                retrySprite.image = game.assets['hackforplay/new_button_retry.png'];
-                retrySprite.ontouchend = function() {
-                    // [RETRY] がクリックされたとき
-                    location.reload(false);
-                };
-                game.rootScene.addChild(retrySprite);
-                retrySprite.tl.moveTo(264, 220, 20, enchant.Easing.CUBIC_EASEOUT);
-            });
-        } else {
-            var lay = new Overlay('black'); // rgba(0,0,0,1)や#000000でも可能
-            game.rootScene.addChild(lay);
-            lay.opacity = 0;
-            lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function(){
-                window.parent.postMessage('clear', '/');
-            });
-        }
-
-        function overlay (type, style, w, h) {
-            // 暗めのオーバーレイ
-            var _lay = new Sprite(w || game.width, h || game.height);
-            switch (type) {
-                case 'image':
-                    _lay.image = game.assets[style];
-                    break;
-                case 'color':
-                    _lay.image = new Surface(_lay.width, _lay.height);
-                    _lay.image.context.fillStyle = style;
-                    _lay.image.context.fillRect(0, 0, _lay.width, _lay.height);
-                    break;
+                (function (sprite) {
+                    sprite.image = game.assets['hackforplay/new_button_retry.png'];
+                    sprite.moveTo(264, 320);
+                    sprite.tl.moveTo(264, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.on('touchstart', function() {
+                        location.reload();
+                    });
+                    game.rootScene.addChild(sprite);
+                })(new Sprite(116, 48));
+                break;
             }
-            _lay.touchEnabled = false;
-            _lay.opacity = 0;
-            return _lay;
-        }
+        });
+
+        var clearlay = new Overlay(game.assets['hackforplay/clear.png']);
+        game.rootScene.addChild(clearlay);
+        clearlay.opacity = 0;
+        clearlay.tl.fadeIn(30, enchant.Easing.LINEAR);
     };
 
     gameover = function(){
@@ -134,18 +104,46 @@ var gameover; // gameoverメソッドも
         game.rootScene.addChild(lay);
         lay.opacity = 0;
         lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function(){
-            if(__H4PENV__MODE === "official" || __H4PENV__MODE === "replay"){
-                var retry = new Sprite(128, 32);
-                retry.image = game.assets['img/button_retry.png'];
-                retry.moveTo(176, 320);
-                retry.tl.moveTo(176, 270, 10);
-                retry.on('touchstart', function() {
-                    location.reload();
-                });
-                game.rootScene.addChild(retry);
+            switch (__H4PENV__MODE) {
+
+                case 'quest':
+                // [RETRY]
+                (function (sprite) {
+                    sprite.image = game.assets['hackforplay/new_button_retry.png'];
+                    sprite.moveTo(182, 320);
+                    sprite.tl.moveTo(182, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.on('touchstart', function() {
+                        location.reload();
+                    });
+                    game.rootScene.addChild(sprite);
+                })(new Sprite(116, 48));
+                break;
+                case 'official':
+                case 'replay':
+                // [RESTAGING]
+                (function (sprite) {
+                    sprite.image = game.assets['hackforplay/new_button_replay.png'];
+                    sprite.moveTo(100, 320);
+                    sprite.tl.moveTo(100, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.on('touchstart', function() {
+                        window.parent.postMessage('begin_restaging', '/');
+                    });
+                    game.rootScene.addChild(sprite);
+                })(new Sprite(116, 48));
+                // [RETRY]
+                (function (sprite) {
+                    sprite.image = game.assets['hackforplay/new_button_retry.png'];
+                    sprite.moveTo(264, 320);
+                    sprite.tl.moveTo(264, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.on('touchstart', function() {
+                        location.reload();
+                    });
+                    game.rootScene.addChild(sprite);
+                })(new Sprite(116, 48));
+                break;
             }
         });
-        var gameoverlay = new Overlay(game.assets['img/gameover.png']);
+        var gameoverlay = new Overlay(game.assets['hackforplay/gameover.png']);
         game.rootScene.addChild(gameoverlay);
         gameoverlay.opacity = 0;
         gameoverlay.tl.fadeIn(30, enchant.Easing.LINEAR);

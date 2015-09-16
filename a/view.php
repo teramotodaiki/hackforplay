@@ -12,6 +12,9 @@
 	<?php require_once '../view/header.php'; ?>
 	<script src="../chartjs/Chart.js" type="text/javascript" charset="utf-8"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<script src="levelmake.js" type="text/javascript" charset="utf-8"></script>
+	<script src="exmap.js" type="text/javascript" charset="utf-8"></script>
+	<script src="judge.js" type="text/javascript" charset="utf-8"></script>
 	<script src="chart.js" type="text/javascript" charset="utf-8"></script>
 	<!-- Modal -->
 	<div class="modal fade" id="codeModal" tabindex="-1" role="dialog">
@@ -69,6 +72,9 @@
 			    <li role="presentation">
 			    	<a href="#judge" aria-controls="judge" role="tab" data-toggle="tab">judge</a>
 			    </li>
+			    <li role="presentation">
+			    	<a href="#levelmake" aria-controls="levelmake" role="tab" data-toggle="tab">Level Make</a>
+			    </li>
 			</ul>
 			<div class="col-xs-10 tab-content">
 			    <div role="tabpanel" class="tab-pane" id="summary">
@@ -104,6 +110,52 @@
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="judge">
 			    	<div class="row list-judging"></div>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="levelmake">
+		    		<?php foreach ($pavilion as $key => $value) : ?>
+		    		<button type="button" class="btn btn-default load-pavilion" data-id="<?php echo $value['ID']; ?>">
+		    			<?php echo $value['DisplayName']; ?>
+		    		</button>
+		    		<?php endforeach; ?>
+			    	<div class="pavilion-info row">
+			    		<div class="pavilion-body-1 col-xs-12">
+				    		<div class="quest-info-sample margin-top-lg row hidden">
+				    			<div class="quest-body-1 col-xs-12">
+				    				<form class="form-inline" data-query="updateQuest">
+				    					<label class="control-label"><a href="#" class="Debug" title="debug">Quest</a>:</label>
+				    					<div class="form-group">
+				    						<label class="control-label" for="Type">Type</label>
+				    						<input type="text" class="form-control" id="Type" value="">
+				    						<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				    					</div>
+				    					<div class="checkbox">
+				    						<label class="control-label" for="Published">Published</label>
+				    						<input type="checkbox" id="Published" value="">
+				    					</div>
+			    						<button type="submit" class="btn btn-default">Update</button>
+				    				</form>
+				    			</div>
+				    			<div class="quest-body-2">
+					    			<div class="level-wrapper-sample col-xs-3 margin-top-sm hidden">
+					    				<form class="form-inline" data-query="updateLevel">
+					    					<div class="form-group form-group-sm">
+					    						<label class="control-label" for="LevelInfo">Lv.<span class="PlayOrder"></span></label>
+					    						<input type="text" class="form-control" id="LevelInfo" size="5" value="">
+					    						<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+					    					</div>
+				    						<button type="submit" class="btn btn-default btn-sm">Update</button>
+					    				</form>
+					    			</div>
+				    			</div>
+				    			<div class="quest-body-3 col-xs-3 margin-top-sm">
+				    				<button type="button" class="btn btn-link query-add-level">Add Level</button>
+				    			</div>
+				    		</div>
+			    		</div>
+			    		<div class="pavilion-body-2 col-xs-12 margin-top-lg">
+			    			<button type="button" class="btn btn-link query-add-quest">Add Quest</button>
+			    		</div>
+			    	</div>
 			    </div>
 			</div>
 		</div>
