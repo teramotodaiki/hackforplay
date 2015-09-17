@@ -56,16 +56,6 @@
 			</div>
 		</div>
 	</div>
-	<div class="container-fuluid container-shortcut">
-		<div class="row">
-			<div class="container margin-top-lg">
-				<div class="row">
-					<ul class="list-inline">
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
 	<?php require_once '../view/footer.php' ?>
 </body>
 </html>
