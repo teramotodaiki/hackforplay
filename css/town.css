@@ -18,6 +18,12 @@
 	display: block;
 }
 
+.content-parent {
+	/*相対値指定できるように*/
+	width: 1%;
+	height: 1%;
+}
+
 .content-ground {
 	z-index: 1;
 	width: 100%;
@@ -25,23 +31,21 @@
 	left: 0;
 }
 
-.content-restage-frame {
-	z-index: 101;
-	width: 18.9393939%;
+.content-restage {
 	top: 40%;
 	left: 69%;
 }
-
+.content-restage-frame {
+	z-index: 101;
+	width: 1894%;
+}
 .content-restage-thumbnail {
 	z-index: 100;
-	width: 17.5%;
-	top: 41%;
-	left: 69.7%;
+	width: 1740%;
+	top: 100%;
+	left: 78%;
 }
 
-.content-pavilion {
-	width: 14.619883%;
-}
 .content-pavilion-0 {
 	z-index: 10;
 	top: 8%;
@@ -61,4 +65,7 @@
 	z-index: 13;
 	top: 45%;
 	left: 8%;
+}
+.content-icon {
+	width: 1461.9883%;
 }

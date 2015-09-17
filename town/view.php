@@ -18,12 +18,22 @@
 		<div class="row">
 			<div class="town-parent">
 				<img class="town-content content-image content-ground">
-				<img class="town-content content-button content-pavilion content-pavilion-0">
-				<img class="town-content content-button content-pavilion content-pavilion-1">
-				<img class="town-content content-button content-pavilion content-pavilion-2">
-				<img class="town-content content-button content-pavilion content-pavilion-3">
-				<img class="town-content content-button content-restage-frame">
-				<img class="town-content content-button content-restage-thumbnail">
+				<div class="town-content content-button content-parent content-pavilion-0">
+					<img class="content-icon">
+				</div>
+				<div class="town-content content-button content-parent content-pavilion-1">
+					<img class="content-icon">
+				</div>
+				<div class="town-content content-button content-parent content-pavilion-2">
+					<img class="content-icon">
+				</div>
+				<div class="town-content content-button content-parent content-pavilion-3">
+					<img class="content-icon">
+				</div>
+				<div class="town-content content-button content-parent content-restage">
+					<img class="town-content content-image content-restage-frame">
+					<img class="town-content content-image content-restage-thumbnail">
+				</div>
 			</div>
 		</div>
 	</div>

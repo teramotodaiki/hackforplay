@@ -13,10 +13,10 @@ $(function () {
 
 	// content-imageのロード
 	$('.content-ground').attr('src', 'img/ground.png');
-	$('.content-pavilion-0').attr('src', 'img/icon/pavilion_rpg.png');
-	$('.content-pavilion-1').attr('src', 'img/icon/pavilion_rpg.png');
-	$('.content-pavilion-2').attr('src', 'img/icon/pavilion_rpg.png');
-	$('.content-pavilion-3').attr('src', 'img/icon/pavilion_rpg.png');
+	$('.content-pavilion-0 .content-icon').attr('src', 'img/icon/pavilion_rpg.png');
+	$('.content-pavilion-1 .content-icon').attr('src', 'img/icon/pavilion_rpg.png');
+	$('.content-pavilion-2 .content-icon').attr('src', 'img/icon/pavilion_rpg.png');
+	$('.content-pavilion-3 .content-icon').attr('src', 'img/icon/pavilion_rpg.png');
 	$('.content-restage-frame').attr('src', 'img/recent_restage_frame.png');
 	$('.content-restage-thumbnail').attr('src', '../s/thumbs/016f2d2dccc042097085b7b6b8b10659.png');
 
