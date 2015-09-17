@@ -4,7 +4,7 @@ $(function () {
 	// プロパティ
 	var minHorizontalMargin = 100; // 少なくとも１行にこれだけのマージンをとる
 	var maxVerticalMargin = 100; // 上部のマージンの最大値
-	var entityWidth = $('.quest-item-entity').outerWidth(false); // CSSで指定されたEntityの固定幅
+	var entityWidth = $('.quest-item-entity').outerWidth(false) || 320; // CSSで指定されたEntityの固定幅
 
 	// ロード時, リサイズ時, 難易度変更時に設定
 	task();
