@@ -120,9 +120,9 @@ nav #img-usericon {
 }
 
 .modal-arrow-entity img {
-	height: 50px;
+	height: 39px;
 	width: auto;
-	margin: 70px 0px;
+	margin: 84px 4px;
 }
 
 #questModal .ModalClose,
@@ -137,6 +137,15 @@ nav #img-usericon {
 .modal-thumbnail-entity,
 .modal-kit-entity {
 	max-width: 242px;
+}
+
+.type-button-wrapper {
+	max-width: 800px;
+}
+
+.type-button-wrapper .change-type-button {
+	max-width: 28%;
+	margin: 0 2%;
 }
 
 /* 間隔属性 */
@@ -363,4 +372,9 @@ button.h4p_open-project {
 }
 .kit-item-entity .item-article {
 	margin: -32px 0px 0px 32px;
+}
+
+#questModal .body-part-1 p,
+#kitModal .body-part-1 p {
+	margin: 5px 0;
 }

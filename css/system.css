@@ -281,6 +281,18 @@ iframe {
 	box-shadow: 0px 10px 20px 4px rgba(0,0,0,0.5);
 }
 
+.animation-hover-expand {
+	z-index: 1;
+	transition: transform 0.2s;
+	-webkit-transition: -webkit-transform 0.2s;
+}
+
+.animation-hover-expand:hover {
+	z-index: 2;
+	-webkit-transform: scale(1.08, 1.08);
+	transform: scale(1.08, 1.08);
+}
+
 /* コメントタグ(暫定) */
 
 .comment-tag-basic {

@@ -116,6 +116,7 @@ var emphasizeHint = function(){};
 			}).forEach(function(item, index) {
 				item.moveTo(opener.x, opener.y);
 				item.tl.hide().fadeIn(8).and().moveBy(0, 40 * index + 60, 8, enchant.Easing.BACK_EASEOUT);
+				item.touchEnabled = true;
 			});
 		};
 
@@ -127,6 +128,7 @@ var emphasizeHint = function(){};
 
 			GUIParts.forEach(function(item, index) {
 				item.tl.fadeOut(8, enchant.Easing.BACK_EASEIN).and().moveTo(opener.x, opener.y, 8, enchant.Easing.BACK_EASEIN);
+				item.touchEnabled = false;
 			});
 		};
 		// ヒントの強調
@@ -217,6 +219,7 @@ var emphasizeHint = function(){};
 				item.opacity = 0;
 				item.visible = _condition();
 				item.condition = _condition;
+				item.touchEnabled = false;
 				item.ontouchend = function() {
 					this.tl.scaleTo(1.1, 1.1, 3).scaleTo(1, 1, 3).then(function() {
 						_touchEvent();
