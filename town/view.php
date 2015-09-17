@@ -19,16 +19,24 @@
 			<div class="town-parent">
 				<img class="town-content content-image content-ground">
 				<div class="town-content content-button content-parent content-pavilion-0">
-					<img class="content-icon">
+					<img class="town-content content-image content-icon">
+					<img class="town-content content-image content-achievement">
+					<img class="town-content content-image content-locked">
 				</div>
 				<div class="town-content content-button content-parent content-pavilion-1">
-					<img class="content-icon">
+					<img class="town-content content-image content-icon">
+					<img class="town-content content-image content-achievement">
+					<img class="town-content content-image content-locked">
 				</div>
 				<div class="town-content content-button content-parent content-pavilion-2">
-					<img class="content-icon">
+					<img class="town-content content-image content-icon">
+					<img class="town-content content-image content-achievement">
+					<img class="town-content content-image content-locked">
 				</div>
 				<div class="town-content content-button content-parent content-pavilion-3">
-					<img class="content-icon">
+					<img class="town-content content-image content-icon">
+					<img class="town-content content-image content-achievement">
+					<img class="town-content content-image content-locked">
 				</div>
 				<div class="town-content content-button content-parent content-restage">
 					<img class="town-content content-image content-restage-frame">

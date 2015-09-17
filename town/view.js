@@ -19,5 +19,7 @@ $(function () {
 	$('.content-pavilion-3 .content-icon').attr('src', 'img/icon/pavilion_rpg.png');
 	$('.content-restage-frame').attr('src', 'img/recent_restage_frame.png');
 	$('.content-restage-thumbnail').attr('src', '../s/thumbs/016f2d2dccc042097085b7b6b8b10659.png');
+	$('.content-achievement').attr('src', 'img/pavilion_achievements.png');
+	$('.content-locked').attr('src', 'img/pavilion_locked.png');
 
 });
