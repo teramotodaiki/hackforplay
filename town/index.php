@@ -19,27 +19,31 @@ try {
 	$stmt->execute();
 	$pavilions	= $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	// クエストごとの実績を取得
-	$stmt			= $dbh->prepare('SELECT COUNT(*) FROM "QuestUserMap" WHERE "Cleared"=:true AND "UserID"=:userid');
-	$stmt->bindValue(":true", TRUE, PDO::PARAM_BOOL);
-	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
-	$stmt->execute();
-	$quest_cleared	= $stmt->fetch(PDO::FETCH_COLUMN);
-
-	$stmt			= $dbh->prepare('SELECT COUNT(*) FROM "QuestUserMap" WHERE "Restaged"=:true AND "UserID"=:userid');
-	$stmt->bindValue(":true", TRUE, PDO::PARAM_BOOL);
-	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
-	$stmt->execute();
-	$quest_restaged	= $stmt->fetch(PDO::FETCH_COLUMN);
-
 	// パビリオンごとの実績を取得
-	$kit_restaged	= 0;
 	foreach ($pavilions as $key => $value) {
-		if ($value['Restaged']) $kit_restaged ++;
+		$pavilions[$key]['Achievements'] = intval($value['Restaged']); // 0 or 1
+	}
+
+	// パビリオンごとにクエストの実績を取得
+	$stmt	= $dbh->prepare('SELECT m."Cleared",m."Restaged",q."PavilionID" FROM "QuestUserMap" AS m INNER JOIN "Quest" AS q ON m."QuestID"=q."ID" WHERE m."UserID"=:userid AND (m."Cleared"=:true OR m."Restaged"=:true)');
+	$stmt->bindValue(":true", TRUE, PDO::PARAM_BOOL);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+	$stmt->execute();
+	while ($quest = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		// 該当するパビリオンを見つける
+		foreach ($pavilions as $key => $value) {
+			if ($value['ID'] === $quest['PavilionID']) {
+				$pavilions[$key]['Achievements'] = $value['Achievements'] + $quest['Cleared'] + $quest['Restaged'];
+				continue;
+			}
+		}
 	}
 
 	// 合計実績数
-	$has_achievements	= $quest_cleared + $quest_restaged + $kit_restaged;
+	$has_achievements	= 0;
+	foreach ($pavilions as $key => $value) {
+		$has_achievements += $value['Achievements'];
+	}
 
 	// パビリオンの中に、新たにCertifyするべきものがあれば、更新または追加する
 	$stmt_update	= $dbh->prepare('UPDATE "PavilionUserMap" SET "Certified"=:true WHERE "ID"=:map_id');
