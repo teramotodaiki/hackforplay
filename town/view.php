@@ -49,7 +49,7 @@
 					<img class="town-content content-image content-locked-frame hidden">
 					<span class="town-content content-text content-locked-text hidden"></span>
 				</div>
-				<div class="town-content content-button content-parent content-restage hidden">
+				<div class="town-content content-button content-parent content-restage hidden" data-query="project">
 					<img class="town-content content-image content-restage-frame">
 					<img class="town-content content-image content-restage-thumbnail">
 				</div>

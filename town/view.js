@@ -17,6 +17,24 @@ $(function () {
 		case 'pavilion':
 			location.href = '../pavilion/?id=' + args;
 			break;
+		case 'project':
+			$.post('../stage/fetchprojectbytoken.php', {
+				'token': args
+			} , function(data, textStatus, xhr) {
+				switch(data){
+				case 'no-session':
+				case 'missing-project':
+				case 'parse-error':
+					break;
+				default:
+					var value = $.parseJSON(data);
+					sessionStorage.setItem('project-token', args);
+					sessionStorage.setItem('restaging_code', value.data);
+					location.href = '/s?mode=restaging&id=' + town.recent_project.SourceStageID;
+					break;
+				}
+			});
+			break;
 		}
 	});
 
@@ -40,6 +58,13 @@ $(function () {
 			wrapper.find('.content-locked-text').removeClass('hidden').text(town.has_achievements + '/' + pavilion.RequiredAchievements);
 		}
 	});
+
+	// 最後に保存したプロジェクト
+	if (town.recent_project) {
+		$('.content-restage').removeClass('hidden').addClass('button-available');
+		$('.content-restage-thumbnail').attr('src', town.recent_project.Thumbnail);
+		$('.content-restage').data('args', town.recent_project.Token);
+	}
 
 	// containerの高さは、横幅に応じて決める
 	function render () {

@@ -67,9 +67,26 @@ try {
 		}
 	}
 
+	// もっとも保存時刻のあたらしいプロジェクトの情報を取得
+	$stmt	= $dbh->prepare('SELECT "ProjectID","Thumbnail" FROM "Script" WHERE "ProjectID" IN (SELECT "ID" FROM "Project" WHERE "UserID"=:userid AND "State"=:enabled) ORDER BY "Registered" DESC');
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+	$stmt->bindValue(":enabled", 'enabled', PDO::PARAM_STR);
+	$stmt->execute();
+	$recent_project	= $stmt->fetch(PDO::FETCH_ASSOC);
+	if ($recent_project) {
+		$stmt		= $dbh->prepare('SELECT "SourceStageID","Token" FROM "Project" WHERE "ID"=:project_id');
+		$stmt->bindValue(":project_id", $recent_project['ProjectID'], PDO::PARAM_INT);
+		$stmt->execute();
+		$project	= $stmt->fetch(PDO::FETCH_ASSOC);
+
+		$recent_project['SourceStageID']	= $project['SourceStageID'];
+		$recent_project['Token']			= $project['Token'];
+	}
+
 	$town					= new stdClass;
 	$town->pavilions		= $pavilions;
 	$town->has_achievements = $has_achievements;
+	$town->recent_project	= $recent_project;
 
 	include 'view.php';
 
