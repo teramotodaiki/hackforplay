@@ -14,7 +14,7 @@ try {
 	}
 
 	// すべてのパビリオン/パビリオンに関する自分の実績情報を取得
-	$stmt		= $dbh->prepare('SELECT p."ID",p."DisplayName",p."RequiredAchievements",m."ID" AS mID,m."Certified",m."Restaged" FROM "Pavilion" AS p LEFT OUTER JOIN "PavilionUserMap" AS m ON p."ID"=m."PavilionID" AND m."UserID"=:userid');
+	$stmt		= $dbh->prepare('SELECT p."ID",p."DisplayName",p."RequiredAchievements",p."LocationNumber",m."ID" AS mID,m."Certified",m."Restaged",r."Icon" FROM "Pavilion" AS p LEFT OUTER JOIN "PavilionUserMap" AS m ON p."ID"=m."PavilionID"  AND m."UserID"=:userid LEFT OUTER JOIN "PavilionResourcePath" AS r ON p."ID"=r."PavilionID"');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$pavilions	= $stmt->fetchAll(PDO::FETCH_ASSOC);
