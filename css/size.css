@@ -364,3 +364,8 @@ button.h4p_open-project {
 .kit-item-entity .item-article {
 	margin: -32px 0px 0px 32px;
 }
+
+#questModal .body-part-1 p,
+#kitModal .body-part-1 p {
+	margin: 5px 0;
+}
