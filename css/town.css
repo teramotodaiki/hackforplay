@@ -19,10 +19,6 @@
 	vertical-align: middle;
 }
 
-.container-town {
-	background-color: black;
-}
-
 .container-town>.row {
 	height: 100%;
 }
