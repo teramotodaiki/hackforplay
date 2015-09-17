@@ -14,6 +14,9 @@
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<script src="view.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	var town = $.parseJSON('<?php echo json_encode($town); ?>');
+	</script>
 	<div class="container container-town">
 		<div class="row">
 			<div class="town-parent">

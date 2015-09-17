@@ -67,6 +67,10 @@ try {
 		}
 	}
 
+	$town					= new stdClass;
+	$town->pavilions		= $pavilions;
+	$town->has_achievements = $has_achievements;
+
 	include 'view.php';
 
 } catch (Exception $e) {
