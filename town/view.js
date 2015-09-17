@@ -19,6 +19,11 @@ $(function () {
 		if (pavilion.Certified) {
 			wrapper.find('.content-achievement-frame').removeClass('hidden');
 			wrapper.find('.content-achievement-text').removeClass('hidden').text(0);
+
+			// ショートカットにリンクを追加
+			$('.container-shortcut ul').append($('<li>').append($('<a>').attr({
+				'href': '../pavilion/?id=' + pavilion
+			}).text(pavilion.DisplayName).addClass('btn btn-link')));
 		} else {
 			wrapper.find('.content-locked-frame').removeClass('hidden');
 			wrapper.find('.content-locked-text').removeClass('hidden').text(town.has_achievements + '/' + pavilion.RequiredAchievements);

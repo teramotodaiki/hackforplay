@@ -8,7 +8,8 @@ body,
 	background-color: rgb(220, 220, 220);
 }
 
-footer {
+footer,
+.container-shortcut {
 	background-color: rgb(245, 245, 245);
 }
 
