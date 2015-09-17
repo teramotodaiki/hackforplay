@@ -7,10 +7,6 @@ $(function () {
 	$('.content-achievement-frame').attr('src', 'img/pavilion_achievements.png');
 	$('.content-locked-frame').attr('src', 'img/pavilion_locked.png');
 
-	// 動的なテキスト
-	$('.content-achievement-text').text("99");
-	$('.content-locked-text').text("99/99");
-
 	// パビリオンの表示・解放実績
 	town.pavilions.forEach(function (pavilion, index) {
 		var wrapper = $('.content-pavilion-' + pavilion.LocationNumber);
