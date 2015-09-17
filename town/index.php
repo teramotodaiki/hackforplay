@@ -25,8 +25,9 @@ try {
 	}
 
 	// パビリオンごとにクエストの実績を取得
-	$stmt	= $dbh->prepare('SELECT m."Cleared",m."Restaged",q."PavilionID" FROM "QuestUserMap" AS m INNER JOIN "Quest" AS q ON m."QuestID"=q."ID" WHERE m."UserID"=:userid AND (m."Cleared"=:true OR m."Restaged"=:true)');
-	$stmt->bindValue(":true", TRUE, PDO::PARAM_BOOL);
+	$stmt	= $dbh->prepare('SELECT m."Cleared",m."Restaged",q."PavilionID" FROM "QuestUserMap" AS m INNER JOIN "Quest" AS q ON m."QuestID"=q."ID" WHERE m."UserID"=:userid AND (m."Cleared"=:true1 OR m."Restaged"=:true2)');
+	$stmt->bindValue(":true1", TRUE, PDO::PARAM_BOOL);
+	$stmt->bindValue(":true2", TRUE, PDO::PARAM_BOOL);
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	while ($quest = $stmt->fetch(PDO::FETCH_ASSOC)) {
