@@ -43,7 +43,7 @@ $(function () {
 		var wrapper = $('.content-pavilion-' + pavilion.LocationNumber);
 		wrapper.removeClass('hidden');
 		wrapper.find('.content-icon').attr('src', pavilion.Icon);
-		if (pavilion.Certified) {
+		if (pavilion.Certified >> 0) {
 			wrapper.find('.content-achievement-frame').removeClass('hidden');
 			wrapper.find('.content-achievement-text').removeClass('hidden').text(0);
 			wrapper.data('args', pavilion.ID);
