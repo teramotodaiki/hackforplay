@@ -139,6 +139,15 @@ nav #img-usericon {
 	max-width: 242px;
 }
 
+.type-button-wrapper {
+	max-width: 800px;
+}
+
+.type-button-wrapper .change-type-button {
+	max-width: 28%;
+	margin: 0 2%;
+}
+
 /* 間隔属性 */
 .margin-top-lg {
 	margin-top: 40px;

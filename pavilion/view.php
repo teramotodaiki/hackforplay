@@ -20,15 +20,13 @@
 	</script>
 	<?php include '../view/header.php'; ?>
 	<?php include 'modal.php'; ?>
-	<div class="container">
-		<div class="center-block" style="max-width: 682px;">
-			<input type="image" src="img/jp/btn_type_easy_n.png" alt="やさしい" class="change-type-button" data-type="easy" disabled="disabled" data-psrc="img/jp/btn_type_easy_p.png" data-nsrc="img/jp/btn_type_easy_n.png" data-number="1">
-			<input type="image" src="img/jp/btn_type_normal_p.png" alt="ふつう" class="change-type-button" data-type="normal" data-psrc="img/jp/btn_type_normal_p.png" data-nsrc="img/jp/btn_type_normal_n.png" data-number="2">
-			<input type="image" src="img/jp/btn_type_hard_p.png" alt="むずかしい" class="change-type-button" data-type="hard" data-psrc="img/jp/btn_type_hard_p.png" data-nsrc="img/jp/btn_type_hard_n.png" data-number="3">
-		</div>
-	</div>
 	<div class="container container-pavilion">
 		<div class="row">
+			<div class="center-block type-button-wrapper">
+				<input type="image" src="img/jp/btn_type_easy_n.png" alt="やさしい" class="change-type-button" data-type="easy" disabled="disabled" data-psrc="img/jp/btn_type_easy_p.png" data-nsrc="img/jp/btn_type_easy_n.png" data-number="1">
+				<input type="image" src="img/jp/btn_type_normal_p.png" alt="ふつう" class="change-type-button" data-type="normal" data-psrc="img/jp/btn_type_normal_p.png" data-nsrc="img/jp/btn_type_normal_n.png" data-number="2">
+				<input type="image" src="img/jp/btn_type_hard_p.png" alt="むずかしい" class="change-type-button" data-type="hard" data-psrc="img/jp/btn_type_hard_p.png" data-nsrc="img/jp/btn_type_hard_n.png" data-number="3">
+			</div>
 			<!-- Sample Item -->
 			<div class="quest-item-sample pull-left animation-hover-expand hidden" data-toggle="modal" data-target="#questModal">
 				<div class="item-achievement">
