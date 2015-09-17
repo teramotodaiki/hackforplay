@@ -30,7 +30,7 @@
 	<div class="container container-pavilion">
 		<div class="row">
 			<!-- Sample Item -->
-			<div class="quest-item-sample pull-left hidden" data-toggle="modal" data-target="#questModal">
+			<div class="quest-item-sample pull-left animation-hover-expand hidden" data-toggle="modal" data-target="#questModal">
 				<div class="item-achievement">
 					<img src="" class="achievement achievement-cleared" alt="">
 					<img src="" class="achievement achievement-restaged" alt="">
@@ -53,7 +53,7 @@
 					<img src="" class="stage-frame" alt="">
 				</div>
 			</div>
-			<div class="kit-item-sample pull-left hidden" data-toggle="modal" data-target="#kitModal">
+			<div class="kit-item-sample pull-left animation-hover-expand hidden" data-toggle="modal" data-target="#kitModal">
 				<div class="item-achievement">
 					<img src="" class="achievement achievement-restaged" alt="">
 				</div>
