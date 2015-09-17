@@ -21,28 +21,28 @@
 		<div class="row">
 			<div class="town-parent">
 				<img class="town-content content-image content-ground">
-				<div class="town-content content-button content-parent content-pavilion-0 hidden">
+				<div class="town-content content-button content-parent content-pavilion-0 hidden" data-query="pavilion">
 					<img class="town-content content-image content-icon">
 					<img class="town-content content-image content-achievement-frame hidden">
 					<span class="town-content content-text content-achievement-text hidden"></span>
 					<img class="town-content content-image content-locked-frame hidden">
 					<span class="town-content content-text content-locked-text hidden"></span>
 				</div>
-				<div class="town-content content-button content-parent content-pavilion-1 hidden">
+				<div class="town-content content-button content-parent content-pavilion-1 hidden" data-query="pavilion">
 					<img class="town-content content-image content-icon">
 					<img class="town-content content-image content-achievement-frame hidden">
 					<span class="town-content content-text content-achievement-text hidden"></span>
 					<img class="town-content content-image content-locked-frame hidden">
 					<span class="town-content content-text content-locked-text hidden"></span>
 				</div>
-				<div class="town-content content-button content-parent content-pavilion-2 hidden">
+				<div class="town-content content-button content-parent content-pavilion-2 hidden" data-query="pavilion">
 					<img class="town-content content-image content-icon">
 					<img class="town-content content-image content-achievement-frame hidden">
 					<span class="town-content content-text content-achievement-text hidden"></span>
 					<img class="town-content content-image content-locked-frame hidden">
 					<span class="town-content content-text content-locked-text hidden"></span>
 				</div>
-				<div class="town-content content-button content-parent content-pavilion-3 hidden">
+				<div class="town-content content-button content-parent content-pavilion-3 hidden" data-query="pavilion">
 					<img class="town-content content-image content-icon">
 					<img class="town-content content-image content-achievement-frame hidden">
 					<span class="town-content content-text content-achievement-text hidden"></span>

@@ -7,6 +7,19 @@ $(function () {
 	$('.content-achievement-frame').attr('src', 'img/pavilion_achievements.png');
 	$('.content-locked-frame').attr('src', 'img/pavilion_locked.png');
 
+	// ボタンイベントの実装
+	$('.content-button').on('click', function() {
+		if (!$(this).hasClass('button-available')) return;
+		var query = $(this).data('query');
+		var args = $(this).data('args');
+
+		switch (query) {
+		case 'pavilion':
+			location.href = '../pavilion/?id=' + args;
+			break;
+		}
+	});
+
 	// パビリオンの表示・解放実績
 	town.pavilions.forEach(function (pavilion, index) {
 		var wrapper = $('.content-pavilion-' + pavilion.LocationNumber);
@@ -15,6 +28,8 @@ $(function () {
 		if (pavilion.Certified) {
 			wrapper.find('.content-achievement-frame').removeClass('hidden');
 			wrapper.find('.content-achievement-text').removeClass('hidden').text(0);
+			wrapper.data('args', pavilion.ID);
+			wrapper.addClass('button-available');
 
 			// ショートカットにリンクを追加
 			$('.container-shortcut ul').append($('<li>').append($('<a>').attr({

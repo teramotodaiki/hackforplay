@@ -44,6 +44,10 @@
 	height: 1%;
 }
 
+.content-button.button-available {
+	cursor: pointer;
+}
+
 .content-ground {
 	z-index: 1;
 	width: 100%;
