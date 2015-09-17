@@ -98,7 +98,7 @@ try {
 	require_once '../exception/tracedata.php';
 	traceData($e);
 
-	header('Location: ../e');
+	// header('Location: ../e');
 }
 
 ?>
