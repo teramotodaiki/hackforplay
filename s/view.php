@@ -265,12 +265,12 @@ if ($mode === 'quest') {
 			<div class="col-xs-12 h4p_game no-padding" style="display:block">
 				<div class="h4p_credit hidden">
 					<div class="box-half-top">
-						<h4 class="hasnext-true hidden">STAGE <span class="PlayOrder"></span></h4>
-						<h3 class="hasnext-false hidden">FINAL STAGE</h3>
-						<h1>「<span class="Title"></span>」</h1>
+						<h4 class="hasnext-true credit-timeline credit-timeline-0 hidden">STAGE <span class="PlayOrder"></span></h4>
+						<h3 class="hasnext-false credit-timeline credit-timeline-0 hidden">FINAL STAGE</h3>
 					</div>
 					<div class="box-half-bottom">
-						<h2>by <span class="Author"></span></h2>
+						<h1 class="credit-timeline credit-timeline-1">「<span class="Title"></span>」</h1>
+						<h2 class="credit-timeline credit-timeline-2">by <span class="Author"></span></h2>
 					</div>
 				</div>
 				<iframe src="" frameborder="0"></iframe>

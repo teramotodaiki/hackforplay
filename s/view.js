@@ -819,6 +819,17 @@ $(function(){
 				$('.container-game .h4p_credit .Author').text(getParam('author'));
 				$('.container-game .h4p_credit .hasnext-' + !!(getParam('next') >> 0)).removeClass('hidden');
 				$('.container-game .h4p_credit .PlayOrder').text(getParam('playorder'));
+
+				// 順番にフェードイン
+				$('.credit-timeline').hide();
+				(function task (index) {
+					var $element = $('.credit-timeline.credit-timeline-' + index);
+					if ($element === undefined) return;
+					$element.fadeIn(1000, function() {
+						task(index + 1);
+					});
+				})(0);
+
 				// ロードされた瞬間、ゲームを一時停止する
 				var paused = false, creditVisibility = true;
 				window.addEventListener('message', function(event) {
@@ -835,7 +846,7 @@ $(function(){
 					if (paused) {
 						$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.resume()', '/');
 					}
-				}, 2000);
+				}, 4400);
 				break;
 		}
 
