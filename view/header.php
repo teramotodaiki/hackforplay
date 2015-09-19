@@ -163,9 +163,6 @@ $(function(){
 					<a href="/town/" title="Town">トップページ</a>
 				</li>
 				<li>
-					<a href="/m" title="My page">マイページ</a>
-				</li>
-				<li>
 					<a href="/myproject" title="My project">
 						<ruby>保存<rt>ほぞん</rt></ruby>した
 						<ruby>改造<rt>かいぞう</rt></ruby>ステージ
