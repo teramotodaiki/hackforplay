@@ -66,6 +66,7 @@
 }
 
 .content-restage {
+	z-index: 100;
 	top: 40%;
 	left: 69%;
 }
@@ -74,7 +75,6 @@
 	width: 1894%;
 }
 .content-restage-thumbnail {
-	z-index: 100;
 	width: 1740%;
 	top: 100%;
 	left: 78%;
