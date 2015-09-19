@@ -57,12 +57,64 @@ var gameover; // gameoverメソッドも
                 })(new Sprite(116, 48));
                 break;
                 case 'official':
-                case 'replay':
-                // チュートリアル時　例外的にこの処置
-                if (__H4PENV__MODE === 'official' &&  __H4PENV__NEXT) {
-                    window.parent.postMessage('clear', '/');
-                    return;
+                if (__H4PENV__PATH.indexOf('tutorial') === 0) {
+                    // チュートリアルステージをクリアしたとき
+                    if (__H4PENV__NEXT) {
+                        // [NEXT]
+                        (function (sprite) {
+                            sprite.image = game.assets['hackforplay/new_button_next.png'];
+                            sprite.moveTo(157, 320);
+                            sprite.tl.moveTo(157, 240, 10, enchant.Easing.CUBIC_EASEOUT);
+                            sprite.on('touchstart', function() {
+                                window.parent.postMessage('tutorial_next_page', '/');
+                            });
+                            game.rootScene.addChild(sprite);
+                        })(new Sprite(165, 69));
+                    } else {
+                        // さらに暗く
+                        var dark = new Overlay('rgb(0,0,0,1)');
+                        dark.opacity = 0;
+                        game.rootScene.addChild(dark);
+                        dark.tl.fadeIn(60, enchant.Easing.CUBIC_EASEOUT).then(function () {
+                            var label = new Label('OPEN THE BOX');
+                            label.width = 480;
+                            label.moveTo(0, 100);
+                            label.color = 'white';
+                            label.textAlign = 'center';
+                            label.opacity = 0;
+                            label.tl.fadeIn(15);
+                            game.rootScene.addChild(label);
+                            var treasure = new Sprite(32, 32);
+                            treasure.image = game.assets['img/map1.gif'];
+                            treasure.moveTo(224, 150);
+                            treasure.frame = 420;
+                            treasure.opacity = 0;
+                            treasure.tl.delay(30).fadeIn(15);
+                            treasure.ontouchstart = function () {
+                                game.rootScene.removeChild(cursor);
+                                this.tl.fadeOut(20).and().scaleTo(6, 6, 20);
+                                setTimeout(function () {
+                                    // アニメーション中に移動
+                                    window.parent.postMessage('tutorial_next_page', '/');
+                                }, 1000);
+                            };
+                            game.rootScene.addChild(treasure);
+                            var cursor = new Sprite(32, 32);
+                            cursor.image = game.assets['img/icon0.png'];
+                            cursor.frame = 43;
+                            cursor.moveTo(224, 190);
+                            setTimeout(function () {
+                                game.rootScene.addChild(cursor);
+                                cursor.tl.delay(15).moveBy(0, -8, 1).delay(15).moveBy(0, 8, 1).loop();
+                            }, 8000);
+                        });
+                    }
+
+                } else {
+                    // そうでないステージをクリアしたとき => 何もしない
                 }
+                break;
+                case 'replay':
                 // [RESTAGING]
                 (function (sprite) {
                     sprite.image = game.assets['hackforplay/new_button_replay.png'];
@@ -148,4 +200,5 @@ var gameover; // gameoverメソッドも
         gameoverlay.opacity = 0;
         gameoverlay.tl.fadeIn(30, enchant.Easing.LINEAR);
     };
+
 })();
