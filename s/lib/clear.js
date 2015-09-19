@@ -45,16 +45,16 @@ var gameover; // gameoverメソッドも
                     });
                     game.rootScene.addChild(sprite);
                 })(new Sprite(165, 69));
-                // [RETRY]
+                // [COMMENT]
                 (function (sprite) {
-                    sprite.image = game.assets['hackforplay/new_button_retry.png'];
-                    sprite.moveTo(278, 320);
-                    sprite.tl.moveTo(278, 250, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.image = game.assets['hackforplay/new_button_comment.png'];
+                    sprite.moveTo(250, 320);
+                    sprite.tl.moveTo(250, 240, 10, enchant.Easing.CUBIC_EASEOUT);
                     sprite.on('touchstart', function() {
-                        location.reload();
+                        window.parent.postMessage('show_comment', '/');
                     });
                     game.rootScene.addChild(sprite);
-                })(new Sprite(116, 48));
+                })(new Sprite(165, 69));
                 break;
                 case 'official':
                 if (__H4PENV__PATH.indexOf('tutorial') === 0) {
@@ -117,24 +117,24 @@ var gameover; // gameoverメソッドも
                 case 'replay':
                 // [RESTAGING]
                 (function (sprite) {
-                    sprite.image = game.assets['hackforplay/new_button_replay.png'];
-                    sprite.moveTo(100, 320);
-                    sprite.tl.moveTo(100, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.image = game.assets['hackforplay/new_button_restage.png'];
+                    sprite.moveTo(65, 320);
+                    sprite.tl.moveTo(65, 240, 10, enchant.Easing.CUBIC_EASEOUT);
                     sprite.on('touchstart', function() {
                         window.parent.postMessage('begin_restaging', '/');
                     });
                     game.rootScene.addChild(sprite);
-                })(new Sprite(116, 48));
+                })(new Sprite(165, 69));
                 // [RETRY]
                 (function (sprite) {
                     sprite.image = game.assets['hackforplay/new_button_retry.png'];
-                    sprite.moveTo(264, 320);
-                    sprite.tl.moveTo(264, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.moveTo(250, 320);
+                    sprite.tl.moveTo(250, 240, 10, enchant.Easing.CUBIC_EASEOUT);
                     sprite.on('touchstart', function() {
                         location.reload();
                     });
                     game.rootScene.addChild(sprite);
-                })(new Sprite(116, 48));
+                })(new Sprite(165, 69));
                 break;
             }
         });
@@ -162,36 +162,36 @@ var gameover; // gameoverメソッドも
                 // [RETRY]
                 (function (sprite) {
                     sprite.image = game.assets['hackforplay/new_button_retry.png'];
-                    sprite.moveTo(182, 320);
-                    sprite.tl.moveTo(182, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.moveTo(157, 320);
+                    sprite.tl.moveTo(157, 240, 10, enchant.Easing.CUBIC_EASEOUT);
                     sprite.on('touchstart', function() {
                         location.reload();
                     });
                     game.rootScene.addChild(sprite);
-                })(new Sprite(116, 48));
+                })(new Sprite(165, 69));
                 break;
                 case 'official':
                 case 'replay':
                 // [RESTAGING]
                 (function (sprite) {
-                    sprite.image = game.assets['hackforplay/new_button_replay.png'];
-                    sprite.moveTo(100, 320);
-                    sprite.tl.moveTo(100, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.image = game.assets['hackforplay/new_button_restage.png'];
+                    sprite.moveTo(65, 320);
+                    sprite.tl.moveTo(65, 240, 10, enchant.Easing.CUBIC_EASEOUT);
                     sprite.on('touchstart', function() {
                         window.parent.postMessage('begin_restaging', '/');
                     });
                     game.rootScene.addChild(sprite);
-                })(new Sprite(116, 48));
+                })(new Sprite(165, 69));
                 // [RETRY]
                 (function (sprite) {
                     sprite.image = game.assets['hackforplay/new_button_retry.png'];
-                    sprite.moveTo(264, 320);
-                    sprite.tl.moveTo(264, 264, 10, enchant.Easing.CUBIC_EASEOUT);
+                    sprite.moveTo(250, 320);
+                    sprite.tl.moveTo(250, 240, 10, enchant.Easing.CUBIC_EASEOUT);
                     sprite.on('touchstart', function() {
                         location.reload();
                     });
                     game.rootScene.addChild(sprite);
-                })(new Sprite(116, 48));
+                })(new Sprite(165, 69));
                 break;
             }
         });
