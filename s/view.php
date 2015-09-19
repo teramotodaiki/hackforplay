@@ -270,7 +270,7 @@ if ($mode === 'quest') {
 					</div>
 					<div class="box-half-bottom">
 						<h1 class="credit-timeline credit-timeline-1">「<span class="Title"></span>」</h1>
-						<h2 class="credit-timeline credit-timeline-2">by <span class="Author"></span></h2>
+						<h2 class="credit-timeline credit-timeline-1">by <span class="Author"></span></h2>
 					</div>
 				</div>
 				<iframe src="" frameborder="0"></iframe>

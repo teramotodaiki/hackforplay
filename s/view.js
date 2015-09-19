@@ -847,7 +847,7 @@ $(function(){
 						if (paused) {
 							$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.resume()', '/');
 						}
-					}, 4400);
+					}, 4000);
 				}
 				break;
 		}
