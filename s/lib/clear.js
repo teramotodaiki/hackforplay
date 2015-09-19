@@ -171,6 +171,19 @@ var gameover; // gameoverメソッドも
                 })(new Sprite(165, 69));
                 break;
                 case 'official':
+                if (__H4PENV__PATH.indexOf('tutorial') === 0) {
+                    // [RETRY]
+                    (function (sprite) {
+                        sprite.image = game.assets['hackforplay/new_button_retry.png'];
+                        sprite.moveTo(158, 320);
+                        sprite.tl.moveTo(158, 240, 10, enchant.Easing.CUBIC_EASEOUT);
+                        sprite.on('touchstart', function() {
+                            location.reload();
+                        });
+                        game.rootScene.addChild(sprite);
+                    })(new Sprite(165, 69));
+                }
+                break;
                 case 'replay':
                 // [RESTAGING]
                 (function (sprite) {
