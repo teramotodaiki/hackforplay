@@ -42,6 +42,14 @@
 
 .content-button.button-available {
 	cursor: pointer;
+	-webkit-transition: -webkit-transform 0.2s;
+	-webkit-transform-origin: 731% 731%;
+	transition: transform 0.2s;
+	transform-origin: 731% 731%;
+}
+.content-button.button-available:hover {
+	-webkit-transform: scale(1.08, 1.08);
+	transform: scale(1.08, 1.08);
 }
 
 .content-ground {
