@@ -817,6 +817,8 @@ $(function(){
 				$('.container-game .h4p_credit').removeClass('hidden');
 				$('.container-game .h4p_credit .Title').text(getParam('title'));
 				$('.container-game .h4p_credit .Author').text(getParam('author'));
+				$('.container-game .h4p_credit .hasnext-' + !!(getParam('next') >> 0)).removeClass('hidden');
+				$('.container-game .h4p_credit .PlayOrder').text(getParam('playorder'));
 				// ロードされた瞬間、ゲームを一時停止する
 				var paused = false, creditVisibility = true;
 				window.addEventListener('message', function(event) {
