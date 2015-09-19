@@ -43,13 +43,9 @@
 .content-button.button-available {
 	cursor: pointer;
 	-webkit-transition: -webkit-transform 0.2s;
-	-webkit-transform-origin: 731% 731%;
 	-moz-transition: -moz-transform 0.2s;
-	-moz-transform-origin: 731% 731%;
 	-o-transition: -o-transform 0.2s;
-	-o-transform-origin: 731% 731%;
 	transition: transform 0.2s;
-	transform-origin: 731% 731%;
 }
 .content-button.button-available:hover {
 	-webkit-transform: scale(1.08, 1.08);
@@ -69,6 +65,11 @@
 	z-index: 100;
 	top: 40%;
 	left: 69%;
+	-webkit-transform-origin: 947% 4045%;
+	-moz-transform-origin: 947% 4045%;
+	-o-transform-origin: 947% 4045%;
+	transform-origin: 947% 4045%;
+
 }
 .content-restage-frame {
 	z-index: 101;
@@ -80,6 +81,12 @@
 	left: 78%;
 }
 
+.content-pavilion {
+	-webkit-transform-origin: 731% 731%;
+	-moz-transform-origin: 731% 731%;
+	-o-transform-origin: 731% 731%;
+	transform-origin: 731% 731%;
+}
 .content-pavilion-0 {
 	z-index: 10;
 	top: 8%;
