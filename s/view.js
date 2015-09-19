@@ -812,41 +812,43 @@ $(function(){
 					beginRestaging();
 					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
 				});
-				// Show credit
-				$('.container-game .h4p_game iframe').css('opacity', 0);
-				$('.container-game .h4p_credit').removeClass('hidden');
-				$('.container-game .h4p_credit .Title').text(getParam('title'));
-				$('.container-game .h4p_credit .Author').text(getParam('author'));
-				$('.container-game .h4p_credit .hasnext-' + !!(getParam('next') >> 0)).removeClass('hidden');
-				$('.container-game .h4p_credit .PlayOrder').text(getParam('playorder'));
+				if (!getParam('directly_restaging')) {
+					// Show credit
+					$('.container-game .h4p_game iframe').css('opacity', 0);
+					$('.container-game .h4p_credit').removeClass('hidden');
+					$('.container-game .h4p_credit .Title').text(getParam('title'));
+					$('.container-game .h4p_credit .Author').text(getParam('author'));
+					$('.container-game .h4p_credit .hasnext-' + !!(getParam('next') >> 0)).removeClass('hidden');
+					$('.container-game .h4p_credit .PlayOrder').text(getParam('playorder'));
 
-				// 順番にフェードイン
-				$('.credit-timeline').hide();
-				(function task (index) {
-					var $element = $('.credit-timeline.credit-timeline-' + index);
-					if ($element === undefined) return;
-					$element.fadeIn(1000, function() {
-						task(index + 1);
+					// 順番にフェードイン
+					$('.credit-timeline').hide();
+					(function task (index) {
+						var $element = $('.credit-timeline.credit-timeline-' + index);
+						if ($element === undefined) return;
+						$element.fadeIn(1000, function() {
+							task(index + 1);
+						});
+					})(0);
+
+					// ロードされた瞬間、ゲームを一時停止する
+					var paused = false, creditVisibility = true;
+					window.addEventListener('message', function(event) {
+						if (event.data === 'game_loaded' && creditVisibility) {
+							$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.pause()', '/');
+							paused = true;
+						}
 					});
-				})(0);
-
-				// ロードされた瞬間、ゲームを一時停止する
-				var paused = false, creditVisibility = true;
-				window.addEventListener('message', function(event) {
-					if (event.data === 'game_loaded' && creditVisibility) {
-						$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.pause()', '/');
-						paused = true;
-					}
-				});
-				// 2秒後、ゲームをフェードインする
-				setTimeout(function() {
-					$('.container-game .h4p_credit').addClass('hidden');
-					$('.container-game .h4p_game iframe').css('opacity', 1);
-					creditVisibility = false;
-					if (paused) {
-						$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.resume()', '/');
-					}
-				}, 4400);
+					// 2秒後、ゲームをフェードインする
+					setTimeout(function() {
+						$('.container-game .h4p_credit').addClass('hidden');
+						$('.container-game .h4p_game iframe').css('opacity', 1);
+						creditVisibility = false;
+						if (paused) {
+							$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.resume()', '/');
+						}
+					}, 4400);
+				}
 				break;
 		}
 
