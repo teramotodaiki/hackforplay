@@ -9,6 +9,9 @@ $(function () {
 		if (showingType === currentShowingType) return;
 		currentShowingType = showingType;
 
+		// 状態を保存する
+		localStorage.setItem('quest-board-showing-type_' + result.PavilionID, showingType);
+
 		// クエストを並べ直す
 		$('.row .quest-item-entity').remove();
 		alignmentQuests();
@@ -22,6 +25,14 @@ $(function () {
 			});
 		});
 	});
+
+	// 保存された状態があれば再開する
+	(function () {
+		var type = localStorage.getItem('quest-board-showing-type_' + result.PavilionID);
+		if (type) {
+			$('.change-type-button[data-type="' + type + '"]').trigger('click');
+		}
+	})();
 
 	var NumberOfQuest;
 	function alignmentQuests () {
