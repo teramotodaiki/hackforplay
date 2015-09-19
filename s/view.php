@@ -109,6 +109,7 @@ if ($mode === 'quest') {
 		s('directly_restaging', "<?php echo $directly_restaging;  ?>");
 <?php if(isset($level)): ?>
 		s('level', "<?php echo $level['ID']; ?>");
+		s('playorder', "<?php echo $level['PlayOrder']; ?>");
 <?php endif; ?>
 <?php if(isset($pavilion)): ?>
 		s('pavilion', "<?php echo $pavilion['ID']; ?>");
@@ -264,10 +265,12 @@ if ($mode === 'quest') {
 			<div class="col-xs-12 h4p_game no-padding" style="display:block">
 				<div class="h4p_credit hidden">
 					<div class="box-half-top">
-						<h1>「<span class="Title"></span>」</h1>
+						<h4 class="hasnext-true credit-timeline credit-timeline-0 hidden">STAGE <span class="PlayOrder"></span></h4>
+						<h3 class="hasnext-false credit-timeline credit-timeline-0 hidden">FINAL STAGE</h3>
 					</div>
 					<div class="box-half-bottom">
-						<h2>by <span class="Author"></span></h2>
+						<h1 class="credit-timeline credit-timeline-1">「<span class="Title"></span>」</h1>
+						<h2 class="credit-timeline credit-timeline-2">by <span class="Author"></span></h2>
 					</div>
 				</div>
 				<iframe src="" frameborder="0"></iframe>

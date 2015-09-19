@@ -138,6 +138,14 @@ try {
 		exit();
 	}
 
+	// もしYouTube IDがない場合, SourceIDのYouTubeIDで上書きする (仮の処理.いずれ複数対応)
+	if (!$stage['YouTubeID']) {
+		$stmt	= $dbh->prepare('SELECT "YouTubeID" FROM "Stage" WHERE "ID"=:source_id');
+		$stmt->bindValue(":source_id", $stage['SourceID'], PDO::PARAM_INT);
+		$stmt->execute();
+		$stage['YouTubeID'] = $stmt->fetch(PDO::FETCH_COLUMN);
+	}
+
 	// リプレイの場合は改造コードを取得
 	if ($stage['Mode'] === 'replay') {
 		require_once '../project/getcurrentcode.php';

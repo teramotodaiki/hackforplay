@@ -31,19 +31,13 @@ $(function(){
 	// ゲームクリアの処理
 	window.addEventListener('message', function(e){
 		switch(e.data){
-			case "clear":
-				$(".h4p_game").hide();
-				// 一旦全部隠す
-				$(".h4p_clear-img").hide();
-				$(".h4p_clear-next").hide();
-				// フェードイン
-				$(".h4p_clear").fadeIn('slow', 'linear', function(){
-					var width = $(".h4p_clear-img").css('width');
-					$(".h4p_clear-img").css({'width':'100%', 'opacity':'0'})
-					.animate({'width':width, 'opacity':'1'}, 'slow', function() {
-						$(".h4p_clear-next").fadeIn('slow');
-					});
-				});
+			case "tutorial_next_page":
+				// 1~5のときは次のページへ / 6のときは getaccount へ
+				if (getParam('next')) {
+					location.href = '/s/?id=' + getParam('next');
+				} else {
+					location.href = '/getaccount/';
+				}
 				break;
 			case "thumbnail":
 				var data = sessionStorage.getItem('image');
@@ -818,28 +812,43 @@ $(function(){
 					beginRestaging();
 					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
 				});
-				// Show credit
-				$('.container-game .h4p_game iframe').css('opacity', 0);
-				$('.container-game .h4p_credit').removeClass('hidden');
-				$('.container-game .h4p_credit .Title').text(getParam('title'));
-				$('.container-game .h4p_credit .Author').text(getParam('author'));
-				// ロードされた瞬間、ゲームを一時停止する
-				var paused = false, creditVisibility = true;
-				window.addEventListener('message', function(event) {
-					if (event.data === 'game_loaded' && creditVisibility) {
-						$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.pause()', '/');
-						paused = true;
-					}
-				});
-				// 2秒後、ゲームをフェードインする
-				setTimeout(function() {
-					$('.container-game .h4p_credit').addClass('hidden');
-					$('.container-game .h4p_game iframe').css('opacity', 1);
-					creditVisibility = false;
-					if (paused) {
-						$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.resume()', '/');
-					}
-				}, 2000);
+				if (!getParam('directly_restaging')) {
+					// Show credit
+					$('.container-game .h4p_game iframe').css('opacity', 0);
+					$('.container-game .h4p_credit').removeClass('hidden');
+					$('.container-game .h4p_credit .Title').text(getParam('title'));
+					$('.container-game .h4p_credit .Author').text(getParam('author'));
+					$('.container-game .h4p_credit .hasnext-' + !!(getParam('next') >> 0)).removeClass('hidden');
+					$('.container-game .h4p_credit .PlayOrder').text(getParam('playorder'));
+
+					// 順番にフェードイン
+					$('.credit-timeline').hide();
+					(function task (index) {
+						var $element = $('.credit-timeline.credit-timeline-' + index);
+						if ($element === undefined) return;
+						$element.fadeIn(1000, function() {
+							task(index + 1);
+						});
+					})(0);
+
+					// ロードされた瞬間、ゲームを一時停止する
+					var paused = false, creditVisibility = true;
+					window.addEventListener('message', function(event) {
+						if (event.data === 'game_loaded' && creditVisibility) {
+							$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.pause()', '/');
+							paused = true;
+						}
+					});
+					// 2秒後、ゲームをフェードインする
+					setTimeout(function() {
+						$('.container-game .h4p_credit').addClass('hidden');
+						$('.container-game .h4p_game iframe').css('opacity', 1);
+						creditVisibility = false;
+						if (paused) {
+							$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.resume()', '/');
+						}
+					}, 4400);
+				}
 				break;
 		}
 
