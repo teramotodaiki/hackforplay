@@ -31,21 +31,6 @@ $(function(){
 	// ゲームクリアの処理
 	window.addEventListener('message', function(e){
 		switch(e.data){
-			case "clear":
-				/* 廃止 */
-				$(".h4p_game").hide();
-				// 一旦全部隠す
-				$(".h4p_clear-img").hide();
-				$(".h4p_clear-next").hide();
-				// フェードイン
-				$(".h4p_clear").fadeIn('slow', 'linear', function(){
-					var width = $(".h4p_clear-img").css('width');
-					$(".h4p_clear-img").css({'width':'100%', 'opacity':'0'})
-					.animate({'width':width, 'opacity':'1'}, 'slow', function() {
-						$(".h4p_clear-next").fadeIn('slow');
-					});
-				});
-				break;
 			case "tutorial_next_page":
 				// 1~5のときは次のページへ / 6のときは getaccount へ
 				if (getParam('next')) {
