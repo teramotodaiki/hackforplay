@@ -76,13 +76,18 @@ nav.navbar {
 }
 
 .btn-restage {
-	color: #fff;
+	color: #fff !important;
 	background-color: #362f3c;
 }
-
 .btn-retry {
-	color: #fff;
+	color: #fff !important;
 	background-color: #ff837b;
+}
+.btn-restage:hover {
+	background-color: #28232d;
+}
+.btn-retry:hover {
+	background-color: #d26c66;
 }
 
 /* 影の色 */
