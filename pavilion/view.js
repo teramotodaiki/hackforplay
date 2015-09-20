@@ -115,11 +115,6 @@ $(function () {
 			$('#questModal .Restaged .' + (!quest.Restaged) + '-text').addClass('hidden');
 			$('#questModal .achievement-restaged').attr('src', quest.Restaged ? 'img/achievement_p.png' : 'img/achievement_n.png');
 
-			$('#questModal .Number').text(index + 1);
-
-			$('#questModal .Challengers').text(quest.Challengers);
-			$('#questModal .Winners').text(quest.Winners);
-
 			$('#questModal .Authors').text(quest.Authors.join(', '));
 
 			$('#questModal .modal-content').css('background-image', $(event.relatedTarget).css('background-image'));
@@ -173,7 +168,6 @@ $(function () {
 		$('#kitModal .Restaged .' + (!result.Kit.Restaged) + '-text').addClass('hidden');
 		$('#kitModal .achievement-restaged').attr('src', result.Kit.Restaged ? 'img/achievement_p.png' : 'img/achievement_n.png');
 
-		$(this).find('.Makers').text(result.Kit.Makers);
 		$(this).find('.Explain').text(result.Kit.Explain);
 		$(this).find('.Thumbnail').attr('src', result.Kit.Thumbnail);
 		$(this).find('.Title').text(result.Kit.Title);
