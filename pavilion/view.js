@@ -1,7 +1,7 @@
 $(function () {
 
 	// レイアウト
-	var currentShowingType = 'easy';
+	var currentShowingType;
 
 	$('.change-type-button').on('click', function() {
 		var showingType = $(this).data('type');
@@ -92,6 +92,7 @@ $(function () {
 			$('.change-type-button[data-type="' + type + '"]').trigger('click');
 		} else {
 			// デフォルト(easy)でクエストを並べる
+			currentShowingType = 'easy';
 			alignmentQuests();
 		}
 	})();
