@@ -29,7 +29,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="col-md-6 col-xs-12">
+			<div class="col-md-6 col-xs-12 hidden-xs">
 				<div class="fb-like" data-href="https://www.facebook.com/hackforplay" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
 			</div>
 		</div>
