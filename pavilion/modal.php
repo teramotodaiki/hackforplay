@@ -16,8 +16,6 @@
 		        	</p>
 		        </div>
 		        <div class="body-part-2">
-		        	<p class="item-underscore">クエスト 1 - <span class="Number"></span></p>
-		        	<p class="item-underscore"><span class="Challengers"></span>人<ruby>挑戦<rt>ちょうせん</rt></ruby>し、<span class="Winners"></span>人クリアしました</p>
 		        	<p><ruby>主<rt>おも</rt></ruby>なクリエイター</p>
 		        	<p class="Authors">...</p>
 		        </div>
@@ -57,7 +55,6 @@
 		        </div>
 		        <div class="body-part-2">
 					<p class="item-underscore">オリジナルステージ作成</p>
-					<p class="item-underscore">今までに<span class="Makers"></span>人<ruby>があたらしいステージを作成した
 					<p class="item-underscore"><span class="Explain"></span></p>
 		        </div>
 		        <div class="row">

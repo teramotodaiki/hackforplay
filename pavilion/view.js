@@ -9,9 +9,8 @@ $(function () {
 		if (showingType === currentShowingType) return;
 		currentShowingType = showingType;
 
-		// クエストを並べ直す
-		$('.row .quest-item-entity').remove();
-		alignmentQuests();
+		// 状態を保存する
+		localStorage.setItem('quest-board-showing-type_' + result.PavilionID, showingType);
 
 		// ボタンを押下状態にする
 		$('.change-type-button').each(function(index, el) {
@@ -21,6 +20,10 @@ $(function () {
 				'src': availability ? $(el).data('psrc') : $(el).data('nsrc')
 			});
 		});
+
+		// クエストを並べ直す
+		$('.row .quest-item-entity').remove();
+		alignmentQuests();
 	});
 
 	var NumberOfQuest;
@@ -64,7 +67,8 @@ $(function () {
 			var kit = $('.kit-item-entity');
 			if (kit) {
 				kit.hide();
-				kit.fadeIn('fast').insertAfter('.row .quest-item-entity:eq(1)');
+				// クエストが２つ未満のとき（NumberOfQuestが3未満のとき）、３番目に差し込むことはできないので、２番目に差し込む
+				kit.fadeIn('fast').insertAfter(NumberOfQuest < 3 ? '.row .quest-item-entity:eq(0)':'.row .quest-item-entity:eq(1)');
 			}
 		}
 	}
@@ -81,8 +85,16 @@ $(function () {
 		$('.kit-item-sample').parent().append(current);
 	}
 
-	// クエストを並べる
-	alignmentQuests();
+	// 保存された状態があれば再開する
+	(function () {
+		var type = localStorage.getItem('quest-board-showing-type_' + result.PavilionID);
+		if (type) {
+			$('.change-type-button[data-type="' + type + '"]').trigger('click');
+		} else {
+			// デフォルト(easy)でクエストを並べる
+			alignmentQuests();
+		}
+	})();
 
 	// クエストモーダル
 	$('#questModal .ModalClose,#kitModal .ModalClose').attr('src', result.ModalClose);
@@ -104,11 +116,6 @@ $(function () {
 			$('#questModal .Restaged .' + (!quest.Restaged) + '-text').addClass('hidden');
 			$('#questModal .achievement-restaged').attr('src', quest.Restaged ? 'img/achievement_p.png' : 'img/achievement_n.png');
 
-			$('#questModal .Number').text(index + 1);
-
-			$('#questModal .Challengers').text(quest.Challengers);
-			$('#questModal .Winners').text(quest.Winners);
-
 			$('#questModal .Authors').text(quest.Authors.join(', '));
 
 			$('#questModal .modal-content').css('background-image', $(event.relatedTarget).css('background-image'));
@@ -129,12 +136,16 @@ $(function () {
 
 				if (level.Allowed) {
 					current.find('.stage-frame-wrapper').data('ID', level.ID);
-					current.find('.btn-restage').attr('href', '/s/?mode=quest&directly_restaging=true&level=' + level.ID);
 				} else {
 					current.find('.stage-frame-wrapper').css({
 						'opacity': '0.5',
 						'cursor': 'default'
 					});
+				}
+
+				if (level.Cleared) {
+					current.find('.btn-restage').attr('href', '/s/?mode=quest&directly_restaging=true&level=' + level.ID);
+				} else {
 					current.find('.btn-restage').addClass('disabled');
 				}
 
@@ -158,7 +169,6 @@ $(function () {
 		$('#kitModal .Restaged .' + (!result.Kit.Restaged) + '-text').addClass('hidden');
 		$('#kitModal .achievement-restaged').attr('src', result.Kit.Restaged ? 'img/achievement_p.png' : 'img/achievement_n.png');
 
-		$(this).find('.Makers').text(result.Kit.Makers);
 		$(this).find('.Explain').text(result.Kit.Explain);
 		$(this).find('.Thumbnail').attr('src', result.Kit.Thumbnail);
 		$(this).find('.Title').text(result.Kit.Title);

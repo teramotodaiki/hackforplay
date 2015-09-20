@@ -56,8 +56,8 @@ $(function(){
 				$('.begin_restaging').trigger('click');
 				break;
 			case "show_hint":
-				// ゲーム側からヒントを表示する
-				$('.h4p_hint-button').trigger('click');
+				// ゲーム側からヒントを表示すると、モーダルがひらく
+				$('#youtubeModal').modal('show');
 				break;
 			case "show_comment":
 				// ゲーム側からコメントの入力画面を表示する
@@ -185,7 +185,6 @@ $(function(){
 	// コメントを取得
 	function getCommentTask(callback) {
 
-		$('.h4p_comment-add').addClass('hidden');
 		$('.h4p_my-comment').addClass('hidden');
 
 		$.post('../stage/getmycommentbyid.php', {
@@ -199,7 +198,6 @@ $(function(){
 					break;
 				case 'no-session':
 				case 'not-found':
-					$('.h4p_comment-add').removeClass('hidden');
 
 					sessionStorage.setItem('stage_param_comment', ''); // no-comment
 					break;
@@ -226,7 +224,6 @@ $(function(){
 		// コメントの削除
 		var message = $('.h4p_my-comment .comment-message').text();
 		if (confirm(message + '\n\nこのメッセージを さくじょ します')) {
-
 			// 削除の実行
 			$.post('../stage/removecommentbyid.php', {
 				'comment_id': $('.h4p_my-comment .h4p_comment-trash').data('id'),
@@ -239,13 +236,10 @@ $(function(){
 					case 'not-found':
 					case 'database-error':
 						alert('エラー\nさくじょ できなかった');
-
 						sessionStorage.setItem('stage_param_comment', 'true');
 						break;
 					case 'success':
-						$('.h4p_comment-add').removeClass('hidden');
 						$('.h4p_my-comment').addClass('hidden');
-
 						sessionStorage.setItem('stage_param_comment', '');
 						break;
 				}
@@ -847,7 +841,7 @@ $(function(){
 						if (paused) {
 							$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.resume()', '/');
 						}
-					}, 4400);
+					}, 4000);
 				}
 				break;
 		}
@@ -927,13 +921,6 @@ $(function(){
 		// 説明すべきコンテンツが存在するかどうか
 		var embed_content = getParam('youtube');
 		if (embed_content === '') return;
-
-		$('.h4p_hint-button').removeClass('hidden'); // ヒントアイコンを表示
-
-		$('.h4p_hint-button').on('click', function() {
-			// モーダルがひらく
-			$('#youtubeModal').modal('show');
-		});
 
 		// 開かれたときにまだYouTubeがロードされていない場合、ロードを開始する
 		var player;

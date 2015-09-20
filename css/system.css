@@ -283,13 +283,17 @@ iframe {
 
 .animation-hover-expand {
 	z-index: 1;
-	transition: transform 0.2s;
 	-webkit-transition: -webkit-transform 0.2s;
+	-moz-transition: -moz-transform 0.2s;
+	-o-transition: -o-transform 0.2s;
+	transition: transform 0.2s;
 }
 
 .animation-hover-expand:hover {
 	z-index: 2;
 	-webkit-transform: scale(1.08, 1.08);
+	-moz-transform: scale(1.08, 1.08);
+	-o-transform: scale(1.08, 1.08);
 	transform: scale(1.08, 1.08);
 }
 

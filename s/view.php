@@ -270,7 +270,7 @@ if ($mode === 'quest') {
 					</div>
 					<div class="box-half-bottom">
 						<h1 class="credit-timeline credit-timeline-1">「<span class="Title"></span>」</h1>
-						<h2 class="credit-timeline credit-timeline-2">by <span class="Author"></span></h2>
+						<h2 class="credit-timeline credit-timeline-1">by <span class="Author"></span></h2>
 					</div>
 				</div>
 				<iframe src="" frameborder="0"></iframe>
@@ -300,14 +300,6 @@ if ($mode === 'quest') {
 					この改造ステージを投稿する
 				</button>
 				<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
-			</div>
-			<div class="col-xs-12">
-				<button type="button" class="btn btn-link btn-lg h4p_comment-add" data-toggle="modal" data-target="#commentModal">
-					<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-				</button>
-				<button type="button" class="btn btn-link btn-lg h4p_hint-button hidden">
-					<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-				</button>
 			</div>
 			<div class="col-xs-12 h4p_my-comment hidden">
 				<h4>おくったメッセージ</h4>

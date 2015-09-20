@@ -160,15 +160,18 @@ $(function(){
 		?>
 			<ul class="nav navbar-nav navbar-left">
 				<li>
-					<a href="/town/" title="Town">トップページ</a>
-				</li>
-				<li>
-					<a href="/m" title="My page">マイページ</a>
+					<a href="/town/" title="Town">ひろば</a>
 				</li>
 				<li>
 					<a href="/myproject" title="My project">
 						<ruby>保存<rt>ほぞん</rt></ruby>した
 						<ruby>改造<rt>かいぞう</rt></ruby>ステージ
+						<ruby>一覧<rt>いちらん</rt></ruby>
+					</a>
+				</li>
+				<li>
+					<a href="/r" title="New games">
+						<ruby>最新<rt>さいしん</rt></ruby>のステージ
 						<ruby>一覧<rt>いちらん</rt></ruby>
 					</a>
 				</li>
