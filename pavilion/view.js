@@ -12,10 +12,6 @@ $(function () {
 		// 状態を保存する
 		localStorage.setItem('quest-board-showing-type_' + result.PavilionID, showingType);
 
-		// クエストを並べ直す
-		$('.row .quest-item-entity').remove();
-		alignmentQuests();
-
 		// ボタンを押下状態にする
 		$('.change-type-button').each(function(index, el) {
 			var availability = $(el).data('type') !== showingType;
@@ -24,6 +20,10 @@ $(function () {
 				'src': availability ? $(el).data('psrc') : $(el).data('nsrc')
 			});
 		});
+
+		// クエストを並べ直す
+		$('.row .quest-item-entity').remove();
+		alignmentQuests();
 	});
 
 	var NumberOfQuest;
