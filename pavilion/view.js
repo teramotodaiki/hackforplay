@@ -26,14 +26,6 @@ $(function () {
 		});
 	});
 
-	// 保存された状態があれば再開する
-	(function () {
-		var type = localStorage.getItem('quest-board-showing-type_' + result.PavilionID);
-		if (type) {
-			$('.change-type-button[data-type="' + type + '"]').trigger('click');
-		}
-	})();
-
 	var NumberOfQuest;
 	function alignmentQuests () {
 		// サンプルの取得
@@ -75,7 +67,8 @@ $(function () {
 			var kit = $('.kit-item-entity');
 			if (kit) {
 				kit.hide();
-				kit.fadeIn('fast').insertAfter('.row .quest-item-entity:eq(1)');
+				// クエストが２つ未満のとき（NumberOfQuestが3未満のとき）、３番目に差し込むことはできないので、２番目に差し込む
+				kit.fadeIn('fast').insertAfter(NumberOfQuest < 3 ? '.row .quest-item-entity:eq(0)':'.row .quest-item-entity:eq(1)');
 			}
 		}
 	}
@@ -92,8 +85,16 @@ $(function () {
 		$('.kit-item-sample').parent().append(current);
 	}
 
-	// クエストを並べる
-	alignmentQuests();
+	// 保存された状態があれば再開する
+	(function () {
+		var type = localStorage.getItem('quest-board-showing-type_' + result.PavilionID);
+		if (type) {
+			$('.change-type-button[data-type="' + type + '"]').trigger('click');
+		} else {
+			// デフォルト(easy)でクエストを並べる
+			alignmentQuests();
+		}
+	})();
 
 	// クエストモーダル
 	$('#questModal .ModalClose,#kitModal .ModalClose').attr('src', result.ModalClose);
