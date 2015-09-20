@@ -1,11 +1,32 @@
 $(function () {
 
 	// content-imageのロード
-	$('.content-ground').attr('src', 'img/ground.png');
-	$('.content-restage-frame').attr('src', 'img/recent_restage_frame.png');
-	$('.content-restage-thumbnail').attr('src', '../s/thumbs/016f2d2dccc042097085b7b6b8b10659.png');
-	$('.content-achievement-frame').attr('src', 'img/pavilion_achievements.png');
-	$('.content-locked-frame').attr('src', 'img/pavilion_locked.png');
+	(function loadAndTimelineStart () {
+		var stackNum = arguments.length;
+		for (var i = 0; i < arguments.length; i++) {
+			arguments[i].on('load', function() {
+				stackNum--;
+				if (stackNum === 0) {
+					// .timeline-0sから.timeline-10sまでに.timeline-activeをくわえる
+					showTimeline(0);
+				}
+			});
+		}
+		function showTimeline (index) {
+			$('.timeline.timeline-' + index + 's').addClass('timeline-active');
+			if (index < 10) {
+				setTimeout(function () {
+					showTimeline(index + 1);
+				}, 1000);
+			}
+		}
+	})(
+		$('.content-ground').attr('src', 'img/ground.png'),
+		$('.content-restage-frame').attr('src', 'img/recent_restage_frame.png'),
+		$('.content-restage-thumbnail').attr('src', '../s/thumbs/016f2d2dccc042097085b7b6b8b10659.png'),
+		$('.content-achievement-frame').attr('src', 'img/pavilion_achievements.png'),
+		$('.content-locked-frame').attr('src', 'img/pavilion_locked.png')
+	);
 
 	// ボタンイベントの実装
 	$('.content-button').on('click', function() {
