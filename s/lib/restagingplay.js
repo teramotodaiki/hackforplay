@@ -35,9 +35,6 @@
 			window.parent.postMessage('replace_code', '/');
 		}
 	});
-	__H4PENV__DEFAULTCODE =
-	"// ステージ改造コードを書いて、このステージを改造してやろう!!\n"+
-	"// デフォルトのコードが取得できませんでした。再読み込みするか、お好きなコードから始めてください\n";
 
 	// Set extend code
 	if(__H4PENV__MODE === "extend"){
