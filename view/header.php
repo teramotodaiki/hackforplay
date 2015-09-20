@@ -160,7 +160,7 @@ $(function(){
 		?>
 			<ul class="nav navbar-nav navbar-left">
 				<li>
-					<a href="/town/" title="Town">トップページ</a>
+					<a href="/town/" title="Town">ひろば</a>
 				</li>
 				<li>
 					<a href="/myproject" title="My project">
