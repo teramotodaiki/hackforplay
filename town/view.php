@@ -20,38 +20,38 @@
 	<div class="container container-town">
 		<div class="row">
 			<div class="town-parent">
-				<img class="town-content content-image content-ground">
+				<img class="town-content content-image timeline timeline-1s content-ground">
 				<div class="town-content content-button content-parent content-pavilion content-pavilion-0 hidden" data-query="pavilion">
-					<img class="town-content content-image content-icon">
-					<img class="town-content content-image content-achievement-frame hidden">
-					<span class="town-content content-text content-achievement-text hidden"></span>
-					<img class="town-content content-image content-locked-frame hidden">
-					<span class="town-content content-text content-locked-text hidden"></span>
+					<img class="town-content content-image timeline timeline-2s content-icon">
+					<img class="town-content content-image timeline timeline-2s content-achievement-frame hidden">
+					<span class="town-content content-text timeline timeline-2s content-achievement-text hidden"></span>
+					<img class="town-content content-image timeline timeline-2s content-locked-frame hidden">
+					<span class="town-content content-text timeline timeline-2s content-locked-text hidden"></span>
 				</div>
 				<div class="town-content content-button content-parent content-pavilion content-pavilion-1 hidden" data-query="pavilion">
-					<img class="town-content content-image content-icon">
-					<img class="town-content content-image content-achievement-frame hidden">
-					<span class="town-content content-text content-achievement-text hidden"></span>
-					<img class="town-content content-image content-locked-frame hidden">
-					<span class="town-content content-text content-locked-text hidden"></span>
+					<img class="town-content content-image timeline timeline-2s content-icon">
+					<img class="town-content content-image timeline timeline-2s content-achievement-frame hidden">
+					<span class="town-content content-text timeline timeline-2s content-achievement-text hidden"></span>
+					<img class="town-content content-image timeline timeline-2s content-locked-frame hidden">
+					<span class="town-content content-text timeline timeline-2s content-locked-text hidden"></span>
 				</div>
 				<div class="town-content content-button content-parent content-pavilion content-pavilion-2 hidden" data-query="pavilion">
-					<img class="town-content content-image content-icon">
-					<img class="town-content content-image content-achievement-frame hidden">
-					<span class="town-content content-text content-achievement-text hidden"></span>
-					<img class="town-content content-image content-locked-frame hidden">
-					<span class="town-content content-text content-locked-text hidden"></span>
+					<img class="town-content content-image timeline timeline-2s content-icon">
+					<img class="town-content content-image timeline timeline-2s content-achievement-frame hidden">
+					<span class="town-content content-text timeline timeline-2s content-achievement-text hidden"></span>
+					<img class="town-content content-image timeline timeline-2s content-locked-frame hidden">
+					<span class="town-content content-text timeline timeline-2s content-locked-text hidden"></span>
 				</div>
 				<div class="town-content content-button content-parent content-pavilion content-pavilion-3 hidden" data-query="pavilion">
-					<img class="town-content content-image content-icon">
-					<img class="town-content content-image content-achievement-frame hidden">
-					<span class="town-content content-text content-achievement-text hidden"></span>
-					<img class="town-content content-image content-locked-frame hidden">
-					<span class="town-content content-text content-locked-text hidden"></span>
+					<img class="town-content content-image timeline timeline-2s content-icon">
+					<img class="town-content content-image timeline timeline-2s content-achievement-frame hidden">
+					<span class="town-content content-text timeline timeline-2s content-achievement-text hidden"></span>
+					<img class="town-content content-image timeline timeline-2s content-locked-frame hidden">
+					<span class="town-content content-text timeline timeline-2s content-locked-text hidden"></span>
 				</div>
 				<div class="town-content content-button content-parent content-restage hidden" data-query="project">
-					<img class="town-content content-image content-restage-frame">
-					<img class="town-content content-image content-restage-thumbnail">
+					<img class="town-content content-image timeline timeline-2s content-restage-frame">
+					<img class="town-content content-image timeline timeline-2s content-restage-thumbnail">
 				</div>
 			</div>
 		</div>

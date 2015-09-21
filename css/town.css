@@ -132,4 +132,31 @@
 	left: 620%;
 }
 
+/* Timeline animation */
+.timeline {
+	-webkit-transition-property: opacity -webkit-filter;
+	-moz-transition-property: opacity -moz-filter;
+	-o-transition-property: opacity -o-filter;
+	transition-property: opacity filter;
 
+	-webkit-transition-duration: 0.6s;
+	-moz-transition-duration: 0.6s;
+	-o-transition-duration: 0.6s;
+	transition-duration: 0.6s;
+
+	-webkit-filter: blur(4px);
+	-moz-filter: blur(4px);
+	-o-filter: blur(4px);
+	filter: blur(4px);
+
+	opacity: 0;
+}
+
+.timeline.timeline-active {
+	-webkit-filter: blur(0px);
+	-moz-filter: blur(0px);
+	-o-filter: blur(0px);
+	filter: blur(0px);
+
+	opacity: 1;
+}
