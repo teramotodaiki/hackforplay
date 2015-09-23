@@ -116,7 +116,7 @@ try {
 
 		// キットを改造したことのある人数を取得
 		$stmt					= $dbh->prepare('SELECT COUNT(*) FROM "PavilionUserMap" WHERE "PavilionID"=:pavilion_id AND "Restaged"=:true');
-		$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_BOOL);
+		$stmt->bindValue(":pavilion_id", $pavilion_id, PDO::PARAM_INT);
 		$stmt->bindValue(":true", TRUE, PDO::PARAM_BOOL);
 		$stmt->execute();
 		$kit_stage['Makers']	= (int)$stmt->fetch(PDO::FETCH_COLUMN);
