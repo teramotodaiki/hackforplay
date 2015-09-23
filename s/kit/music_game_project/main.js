@@ -2,6 +2,9 @@ window.addEventListener('load', function () {
 
 	var game = enchant.Core.instance;
 
+	// settings
+	Hack.ringTime = 0.2;
+
 	game.onload = game.onload || function () {
 
 		var commetSprite = new Sprite(game.width, game.height);
@@ -53,6 +56,12 @@ window.addEventListener('load', function () {
 				this.y = game.height - (this.y - game.height);
 				this.veloctiy.y *= -1;
 			}
+
+			// Ringを吐き出す
+			if (game.frame % 15 === 0) {
+				var ring = new Ring(this.x, this.y);
+				game.rootScene.addChild(ring);
+			}
 		},
 		draw: function (context) {
 			// draw commet
@@ -63,6 +72,36 @@ window.addEventListener('load', function () {
 		}
 	});
 
+	var Ring = Class(Sprite, {
+		initialize: function (x, y) {
+			Sprite.call(this, 80, 80);
+			this.moveBy(x - 40, y - 40);
+			this.image = new Surface(this.width, this.height);
+		},
+		onenterframe: function () {
+			var ctx = this.image.context;
+			var r = this.width / 2;
+			var t = (this.age / game.fps) / Hack.ringTime;
 
+			if (t < 1) {
+				ctx.beginPath();
+				ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
+				ctx.fillStyle = 'rgba(0,200,255,1)';
+				ctx.fill();
+				ctx.closePath();
+			} else if (t <= 4) {
+				// Ok
+				var end_t = 4 - t;
+				ctx.clearRect(0, 0, this.width, this.height);
+				ctx.beginPath();
+				ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
+				ctx.fillStyle = 'rgba(0,200,255,' + end_t + ')';
+				ctx.fill();
+				ctx.closePath();
+			} else if (this.scene) {
+				game.rootScene.removeChild(this);
+			}
+		}
+	});
 
 });
