@@ -163,11 +163,19 @@ window.addEventListener('load', function () {
 			var t = (this.age / game.fps) / Hack.ringTime;
 
 			if (t < 1) {
+				ctx.clearRect(0, 0, this.width, this.height);
+				// target circle
+				ctx.beginPath();
+				ctx.arc(r, r, r - 1, 0, Math.PI * 2, true);
+				ctx.strokeStyle = 'rgba(255,255,255,1)';
+				ctx.closePath();
+				ctx.stroke();
+				// time circle
 				ctx.beginPath();
 				ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
-				ctx.fillStyle = 'rgba(0,200,255,1)';
-				ctx.fill();
+				ctx.strokeStyle = 'rgba(0,200,255,1)';
 				ctx.closePath();
+				ctx.stroke();
 			} else if (t <= 4) {
 				if (this.state === 0) {
 					this.judge();
