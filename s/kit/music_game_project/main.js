@@ -1,6 +1,9 @@
 window.addEventListener('load', function () {
 
+	Hack.music = 'tail_of_comet/testmusic.mp3';
+
 	var game = enchant.Core.instance;
+	game.preload(Hack.music);
 
 	// settings
 	Hack.ringTime = 0.2;
@@ -11,64 +14,119 @@ window.addEventListener('load', function () {
 		cometSprite.image = new Surface(game.width, game.height);
 		game.rootScene.addChild(cometSprite);
 
-		Hack.comet = new Comet();
-		Hack.comet.on('enterframe', function  () {
-			// Draw Comet
-			if (this.draw) {
-				this.draw(cometSprite.image.context);
-			}
-		});
+		Hack.comet = new Comet(cometSprite.image.context);
 		game.rootScene.addChild(Hack.comet);
+
+		Hack.ui = new Label('start');
+		Hack.ui.moveTo(40, 300);
+		Hack.ui.color = 'rgb(100,100,100)';
+		Hack.ui.ontouchend = function () {
+			if (Hack.isMusicStarted) {
+				Hack.dispatchEvent(new Event('presspause'));
+				this.text = 'start';
+			} else {
+				Hack.dispatchEvent(new Event('pressstart'));
+				this.text = 'pause';
+			}
+		};
+		game.rootScene.addChild(Hack.ui);
 
 	};
 
+	Hack.isMusicStarted = false;
+	Hack.isCometMoving = true;
+
+	Hack.onpressstart = Hack.onpressstart || function () {
+		var sound = game.assets[Hack.music];
+		if (sound) {
+			// Comet move to initialized point
+			if (Hack.isCometMoving) {
+				Hack.comet.setup();
+			}
+			Hack.isCometMoving = true;
+			Hack.isMusicStarted = true;
+			sound.play();
+		}
+	};
+
+	Hack.onpresspause = Hack.onpresspause || function () {
+		var sound = game.assets[Hack.music];
+		if (sound) {
+			sound.pause();
+			Hack.isMusicStarted = false;
+			Hack.isCometMoving = false;
+		}
+	};
+
 	var Comet = Class(Entity, {
-
-		initialize: function () {
+		initialize: function (context) {
 			Entity.call(this);
-
+			this.context = context;
+			this.setup();
+		},
+		setup: function () {
+			// ====> Coded by user
 			this.moveTo(100, 100);
-			this.veloctiy = { x: 200, y: -200 };
+			this.velocity = { x: 200, y: -200 };
 
-			this.lastTime = new Date().getTime();
+			this.setupTime = this.lastTime = new Date().getTime();
 		},
 		onenterframe: function () {
 			var currentTime = new Date().getTime();
 			var t = (currentTime - this.lastTime) / 1000;
 			this.lastTime = currentTime;
 
-			this.x += this.veloctiy.x * t;
-			this.y += this.veloctiy.y * t;
+			if (!Hack.isCometMoving) return;
+
+			this.lastX = this.x;
+			this.lastY = this.y;
+
+			if (this.update) this.update(currentTime - this.setupTime, enchant.Core.instance);
+
+			this.x += this.velocity.x * t;
+			this.y += this.velocity.y * t;
 
 			if (this.x < 0) {
 				this.x = -this.x;
-				this.veloctiy.x *= -1;
+				this.velocity.x *= -1;
 			}
 			if (this.x > game.width) {
 				this.x = game.width - (this.x - game.width);
-				this.veloctiy.x *= -1;
+				this.velocity.x *= -1;
 			}
 			if (this.y < 0) {
 				this.y = -this.y;
-				this.veloctiy.y *= -1;
+				this.velocity.y *= -1;
 			}
 			if (this.y > game.height) {
 				this.y = game.height - (this.y - game.height);
-				this.veloctiy.y *= -1;
+				this.velocity.y *= -1;
+			}
+
+			if (this.draw) {
+				this.draw(this.context, enchant.Core.instance);
 			}
 
 			// Ringを吐き出す
-			if (game.frame % 15 === 0) {
+			if (game.frame % 15 === 0 && Hack.isMusicStarted) {
 				var ring = new Ring(this.x, this.y);
 				game.rootScene.addChild(ring);
 			}
 		},
-		draw: function (context) {
+		update: function (time, game) {
+
+		},
+		draw: function (context, game) {
+			// ====> Coded by user
 			// draw comet
 			context.fillStyle = 'rgba(0,0,0,0.1)';
 			context.fillRect(0, 0, game.width, game.height);
-			context.fillStyle = 'rgba(0,100,255,1)';
-			context.fillRect(this.x - 1, this.y - 1, 2, 2);
+			context.strokeStyle = 'rgba(0,100,255,1)';
+			context.beginPath();
+			context.moveTo(this.lastX, this.lastY);
+			context.lineTo(this.x, this.y);
+			context.closePath();
+			context.stroke();
 		}
 	});
 
