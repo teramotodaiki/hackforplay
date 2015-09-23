@@ -3,7 +3,7 @@ window.addEventListener('load', function () {
 	Hack.music = {
 		name: 'tail_of_comet/testmusic.mp3',
 		BPM: 171,
-		delayTime: 1.4,
+		delayTime: 1.5,
 		length: 4
 	};
 
@@ -220,8 +220,11 @@ window.addEventListener('load', function () {
 					ctx.beginPath();
 					ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
 					ctx.fillStyle = 'rgba(0,200,255,' + end_t + ')';
-					ctx.fill();
 					ctx.closePath();
+					ctx.fill();
+					ctx.fillStyle = 'rgba(255,255,255,' + end_t + ')';
+					ctx.textAlign = 'center';
+					ctx.fillText('OK', this.width / 2, this.height / 2);
 				} else {
 					// Ng
 					var end_t = 4 - t;
@@ -229,8 +232,11 @@ window.addEventListener('load', function () {
 					ctx.beginPath();
 					ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
 					ctx.fillStyle = 'rgba(255,100,100,' + end_t + ')';
-					ctx.fill();
 					ctx.closePath();
+					ctx.fill();
+					ctx.fillStyle = 'rgba(255,255,255,' + end_t + ')';
+					ctx.textAlign = 'center';
+					ctx.fillText('NG', this.width / 2, this.height / 2);
 				}
 			} else if (this.scene) {
 				game.rootScene.removeChild(this);
