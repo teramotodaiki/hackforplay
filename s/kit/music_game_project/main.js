@@ -154,6 +154,8 @@ window.addEventListener('load', function () {
 			Sprite.call(this, 80, 80);
 			this.moveBy(x - 40, y - 40);
 			this.image = new Surface(this.width, this.height);
+			this.state = 0; // Prepare: 0, Ok: 1, Ng: 2
+			this.touchEnabled = false;
 		},
 		onenterframe: function () {
 			var ctx = this.image.context;
@@ -167,18 +169,48 @@ window.addEventListener('load', function () {
 				ctx.fill();
 				ctx.closePath();
 			} else if (t <= 4) {
-				// Ok
-				var end_t = 4 - t;
-				ctx.clearRect(0, 0, this.width, this.height);
-				ctx.beginPath();
-				ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
-				ctx.fillStyle = 'rgba(0,200,255,' + end_t + ')';
-				ctx.fill();
-				ctx.closePath();
+				if (this.state === 0) {
+					this.judge();
+				}
+				if (this.state === 1) {
+					// Ok
+					var end_t = 4 - t;
+					ctx.clearRect(0, 0, this.width, this.height);
+					ctx.beginPath();
+					ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
+					ctx.fillStyle = 'rgba(0,200,255,' + end_t + ')';
+					ctx.fill();
+					ctx.closePath();
+				} else {
+					// Ng
+					var end_t = 4 - t;
+					ctx.clearRect(0, 0, this.width, this.height);
+					ctx.beginPath();
+					ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
+					ctx.fillStyle = 'rgba(255,100,100,' + end_t + ')';
+					ctx.fill();
+					ctx.closePath();
+				}
 			} else if (this.scene) {
 				game.rootScene.removeChild(this);
 			}
+		},
+		judge: function () {
+			// Hack.ringTime[sec] 経過した瞬間、カーソルがRingの中にあるか
+			if(	this.x <= Hack.mouseX && Hack.mouseX <= this.x + this.width &&
+				this.y <= Hack.mouseY && Hack.mouseY <= this.y + this.height) {
+				this.state = 1;
+			} else {
+				this.state = 2;
+			}
 		}
 	});
+
+	// Input
+    var stage = document.getElementById('enchant-stage');
+    stage.addEventListener('mousemove', function (event) {
+		Hack.mouseX = event.clientX / game.scale;
+		Hack.mouseY = event.clientY / game.scale;
+    });
 
 });
