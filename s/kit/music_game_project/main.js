@@ -7,6 +7,12 @@ window.addEventListener('load', function () {
 
 	// settings
 	Hack.ringTime = 0.2;
+	Hack.delayTime = 4;
+	Hack.BPM = 171;
+	Hack.note8Millisecons = 30000 / Hack.BPM;
+	Hack.notes = [1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0];
+	Hack.nextNote = 0;
+	Hack.nextBar = 0;
 
 	game.onload = game.onload || function () {
 
@@ -81,7 +87,7 @@ window.addEventListener('load', function () {
 			this.lastX = this.x;
 			this.lastY = this.y;
 
-			if (this.update) this.update(currentTime - this.setupTime, enchant.Core.instance);
+			if (this.update) this.update((currentTime - this.setupTime) / 1000, enchant.Core.instance);
 
 			this.x += this.velocity.x * t;
 			this.y += this.velocity.y * t;
@@ -107,10 +113,23 @@ window.addEventListener('load', function () {
 				this.draw(this.context, enchant.Core.instance);
 			}
 
+			if (!Hack.isMusicStarted) return;
+
 			// Ringを吐き出す
-			if (game.frame % 15 === 0 && Hack.isMusicStarted) {
-				var ring = new Ring(this.x, this.y);
-				game.rootScene.addChild(ring);
+			var spend = currentTime - this.setupTime - (Hack.nextBar * Hack.note8Millisecons * 16);
+			spend += (Hack.ringTime - Hack.delayTime) * 1000;
+			if (spend >= Hack.note8Millisecons * Hack.nextNote) {
+				if (Hack.notes[Hack.nextNote]) {
+					// 鳴らす
+					var ring = new Ring(this.x, this.y);
+					game.rootScene.addChild(ring);
+				}
+				// ひとつ進む
+				Hack.nextNote ++;
+				if (Hack.nextNote >= Hack.notes.length){
+					Hack.nextNote = 0;
+					Hack.nextBar ++;
+				}
 			}
 		},
 		update: function (time, game) {
