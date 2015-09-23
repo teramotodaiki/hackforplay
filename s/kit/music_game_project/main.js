@@ -3,7 +3,8 @@ window.addEventListener('load', function () {
 	Hack.music = {
 		name: 'tail_of_comet/testmusic.mp3',
 		BPM: 171,
-		delayTime: 4
+		delayTime: 1.4,
+		length: 4
 	};
 
 	var game = enchant.Core.instance;
@@ -12,8 +13,12 @@ window.addEventListener('load', function () {
 	// settings
 	Hack.ringTime = 0.5;
 	Hack.notes = [1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0];
+	Hack.clearPoint = 1;
+
+
 	Hack.nextNote = 0;
 	Hack.nextBar = 0;
+	Hack.point = 0;
 
 	game.onload = game.onload || function () {
 
@@ -63,6 +68,27 @@ window.addEventListener('load', function () {
 			Hack.isMusicStarted = false;
 			Hack.isCometMoving = false;
 		}
+	};
+
+	Hack.onmusicend = Hack.onmusicend || function () {
+		// musicをフェードアウト
+		var sound = game.assets[Hack.music.name];
+		if (sound) {
+			game.on('enterframe', function task () {
+				sound.volume -= 0.02;
+				if (sound.volume <= 0) {
+					game.removeEventListener('enterframe', task);
+					sound.stop();
+					Hack.isCometMoving = true;
+					if (Hack.point > Hack.clearPoint) {
+						Hack.gameclear();
+					} else {
+						Hack.gameover();
+					}
+				}
+			});
+		}
+		Hack.isMusicStarted = false;
 	};
 
 	var Comet = Class(Entity, {
@@ -115,6 +141,11 @@ window.addEventListener('load', function () {
 			}
 
 			if (!Hack.isMusicStarted) return;
+
+			// 曲の長さを調べる
+			if ((currentTime - this.setupTime) / 1000 > Hack.music.length) {
+				Hack.dispatchEvent(new Event('musicend'));
+			}
 
 			// Ringを吐き出す
 			var note8Millisecons = 30000 / Hack.music.BPM;
@@ -210,6 +241,7 @@ window.addEventListener('load', function () {
 			if(	this.x <= Hack.mouseX && Hack.mouseX <= this.x + this.width &&
 				this.y <= Hack.mouseY && Hack.mouseY <= this.y + this.height) {
 				this.state = 1;
+				Hack.point += 1;
 			} else {
 				this.state = 2;
 			}
