@@ -19,6 +19,7 @@ window.addEventListener('load', function () {
 	Hack.nextNote = 0;
 	Hack.nextBar = 0;
 	Hack.point = 0;
+	Hack.noteNum = 0;
 
 	game.onload = game.onload || function () {
 
@@ -80,11 +81,15 @@ window.addEventListener('load', function () {
 					game.removeEventListener('enterframe', task);
 					sound.stop();
 					Hack.isCometMoving = true;
-					if (Hack.point > Hack.clearPoint) {
-						Hack.gameclear();
-					} else {
-						Hack.gameover();
-					}
+					Hack.score = new ScoreLabelUI(Hack.point, Hack.noteNum);
+					game.rootScene.addChild(Hack.score);
+					setTimeout(function () {
+						if (Hack.point > Hack.clearPoint) {
+							Hack.gameclear();
+						} else {
+							Hack.gameover();
+						}
+					}, 4000);
 				}
 			});
 		}
@@ -185,6 +190,7 @@ window.addEventListener('load', function () {
 	var Ring = Class(Sprite, {
 		initialize: function (x, y) {
 			Sprite.call(this, 80, 80);
+			Hack.noteNum ++;
 			this.moveBy(x - 40, y - 40);
 			this.image = new Surface(this.width, this.height);
 			this.state = 0; // Prepare: 0, Ok: 1, Ng: 2
@@ -250,6 +256,30 @@ window.addEventListener('load', function () {
 				Hack.point += 1;
 			} else {
 				this.state = 2;
+			}
+		}
+	});
+
+	var ScoreLabelUI = Class(Label, {
+		initialize: function (score, notes) {
+			Label.call(this, '');
+			this.color = 'rgb(255,255,255)';
+			this.font = '32px fantasy';
+			this.textAlign = 'center';
+			this.width = 200;
+			this.moveTo(140, 40);
+			this.prefix = ['OK ', '/', ''];
+			this.score = score;
+			this.notes = notes;
+			this.current = 0;
+			this.animFrame = 40;
+		},
+		onenterframe: function () {
+			if (this.age < this.animFrame) {
+				this.current += (this.score / this.animFrame) >> 0;
+				this.text = this.prefix[0] + this.current + this.prefix[1] + this.notes + this.prefix[2];
+			} else {
+				this.text = this.prefix[0] + this.score + this.prefix[1] + this.notes + this.prefix[2];
 			}
 		}
 	});
