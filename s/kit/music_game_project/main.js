@@ -6,7 +6,7 @@ window.addEventListener('load', function () {
 	game.preload(Hack.music);
 
 	// settings
-	Hack.ringTime = 0.2;
+	Hack.ringTime = 0.5;
 	Hack.delayTime = 4;
 	Hack.BPM = 171;
 	Hack.note8Millisecons = 30000 / Hack.BPM;
