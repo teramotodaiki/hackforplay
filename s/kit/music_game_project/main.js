@@ -31,19 +31,18 @@ window.addEventListener('load', function () {
 		game.rootScene.addChild(Hack.comet);
 
 		Hack.ui = new Label('start');
-		Hack.ui.moveTo(40, 300);
-		Hack.ui.color = 'rgb(100,100,100)';
+		Hack.ui.color = 'rgb(255,255,255)';
+		Hack.ui.font = '32px fantasy';
+		Hack.ui.textAlign = 'center';
+		Hack.ui.width = 200;
+		Hack.ui.moveTo(140, 144);
 		Hack.ui.ontouchend = function () {
-			if (Hack.isMusicStarted) {
-				Hack.dispatchEvent(new Event('presspause'));
-				this.text = 'start';
-			} else {
+			if (!Hack.isMusicStarted) {
 				Hack.dispatchEvent(new Event('pressstart'));
-				this.text = 'pause';
+				game.rootScene.removeChild(this);
 			}
 		};
 		game.rootScene.addChild(Hack.ui);
-
 	};
 
 	Hack.isMusicStarted = false;
@@ -59,15 +58,6 @@ window.addEventListener('load', function () {
 			Hack.isCometMoving = true;
 			Hack.isMusicStarted = true;
 			sound.play();
-		}
-	};
-
-	Hack.onpresspause = Hack.onpresspause || function () {
-		var sound = game.assets[Hack.music.name];
-		if (sound) {
-			sound.pause();
-			Hack.isMusicStarted = false;
-			Hack.isCometMoving = false;
 		}
 	};
 
