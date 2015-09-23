@@ -93,11 +93,14 @@ window.addEventListener('load', function () {
 			this.setup();
 		},
 		setup: function () {
-			// ====> Coded by user
-			this.moveTo(100, 100);
-			this.velocity = { x: 200, y: -200 };
-
 			this.setupTime = this.lastTime = new Date().getTime();
+
+			if (Hack.setup) {
+				Hack.setup();
+			} else {
+				this.moveTo(240, 160);
+				this.velocity = { x: 200, y: -200 };
+			}
 		},
 		onenterframe: function () {
 			var currentTime = new Date().getTime();
@@ -161,19 +164,22 @@ window.addEventListener('load', function () {
 			}
 		},
 		update: function (time, game) {
-
+			if (Hack.update) Hack.update(time, game);
 		},
 		draw: function (context, game) {
-			// ====> Coded by user
-			// draw comet
-			context.fillStyle = 'rgba(0,0,0,0.1)';
-			context.fillRect(0, 0, game.width, game.height);
-			context.strokeStyle = 'rgba(0,100,255,1)';
-			context.beginPath();
-			context.moveTo(this.lastX, this.lastY);
-			context.lineTo(this.x, this.y);
-			context.closePath();
-			context.stroke();
+			if (Hack.draw) {
+				Hack.draw();
+			} else {
+				// draw comet
+				context.fillStyle = 'rgba(0,0,0,0.1)';
+				context.fillRect(0, 0, game.width, game.height);
+				context.strokeStyle = 'rgba(0,100,255,1)';
+				context.beginPath();
+				context.moveTo(this.lastX, this.lastY);
+				context.lineTo(this.x, this.y);
+				context.closePath();
+				context.stroke();
+			}
 		}
 	});
 
