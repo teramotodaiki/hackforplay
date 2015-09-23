@@ -1,15 +1,16 @@
 window.addEventListener('load', function () {
 
-	Hack.music = 'tail_of_comet/testmusic.mp3';
+	Hack.music = {
+		name: 'tail_of_comet/testmusic.mp3',
+		BPM: 171,
+		delayTime: 4
+	};
 
 	var game = enchant.Core.instance;
-	game.preload(Hack.music);
+	game.preload(Hack.music.name);
 
 	// settings
 	Hack.ringTime = 0.5;
-	Hack.delayTime = 4;
-	Hack.BPM = 171;
-	Hack.note8Millisecons = 30000 / Hack.BPM;
 	Hack.notes = [1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0];
 	Hack.nextNote = 0;
 	Hack.nextBar = 0;
@@ -43,7 +44,7 @@ window.addEventListener('load', function () {
 	Hack.isCometMoving = true;
 
 	Hack.onpressstart = Hack.onpressstart || function () {
-		var sound = game.assets[Hack.music];
+		var sound = game.assets[Hack.music.name];
 		if (sound) {
 			// Comet move to initialized point
 			if (Hack.isCometMoving) {
@@ -56,7 +57,7 @@ window.addEventListener('load', function () {
 	};
 
 	Hack.onpresspause = Hack.onpresspause || function () {
-		var sound = game.assets[Hack.music];
+		var sound = game.assets[Hack.music.name];
 		if (sound) {
 			sound.pause();
 			Hack.isMusicStarted = false;
@@ -116,9 +117,10 @@ window.addEventListener('load', function () {
 			if (!Hack.isMusicStarted) return;
 
 			// Ringを吐き出す
-			var spend = currentTime - this.setupTime - (Hack.nextBar * Hack.note8Millisecons * 16);
-			spend += (Hack.ringTime - Hack.delayTime) * 1000;
-			if (spend >= Hack.note8Millisecons * Hack.nextNote) {
+			var note8Millisecons = 30000 / Hack.music.BPM;
+			var spend = currentTime - this.setupTime - (Hack.nextBar * note8Millisecons * 16);
+			spend += (Hack.ringTime - Hack.music.delayTime) * 1000;
+			if (spend >= note8Millisecons * Hack.nextNote) {
 				if (Hack.notes[Hack.nextNote]) {
 					// 鳴らす
 					var ring = new Ring(this.x, this.y);
