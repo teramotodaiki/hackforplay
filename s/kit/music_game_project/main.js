@@ -7,22 +7,22 @@ window.addEventListener('load', function () {
 
 	game.onload = game.onload || function () {
 
-		var commetSprite = new Sprite(game.width, game.height);
-		commetSprite.image = new Surface(game.width, game.height);
-		game.rootScene.addChild(commetSprite);
+		var cometSprite = new Sprite(game.width, game.height);
+		cometSprite.image = new Surface(game.width, game.height);
+		game.rootScene.addChild(cometSprite);
 
-		Hack.commet = new Commet();
-		Hack.commet.on('enterframe', function  () {
-			// Draw Commet
+		Hack.comet = new Comet();
+		Hack.comet.on('enterframe', function  () {
+			// Draw Comet
 			if (this.draw) {
-				this.draw(commetSprite.image.context);
+				this.draw(cometSprite.image.context);
 			}
 		});
-		game.rootScene.addChild(Hack.commet);
+		game.rootScene.addChild(Hack.comet);
 
 	};
 
-	var Commet = Class(Entity, {
+	var Comet = Class(Entity, {
 
 		initialize: function () {
 			Entity.call(this);
@@ -64,7 +64,7 @@ window.addEventListener('load', function () {
 			}
 		},
 		draw: function (context) {
-			// draw commet
+			// draw comet
 			context.fillStyle = 'rgba(0,0,0,0.1)';
 			context.fillRect(0, 0, game.width, game.height);
 			context.fillStyle = 'rgba(0,100,255,1)';
