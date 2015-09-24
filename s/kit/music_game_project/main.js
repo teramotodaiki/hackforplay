@@ -1,25 +1,29 @@
 window.addEventListener('load', function () {
 
+	// Default
 	Hack.music = {
-		name: 'tail_of_comet/testmusic.mp3',
+		name: 'testmusic.mp3',
 		BPM: 171,
 		delayTime: 1.5,
 		length: 4
 	};
 
 	var game = enchant.Core.instance;
-	game.preload(Hack.music.name);
 
 	// settings
 	Hack.ringTime = 0.5;
 	Hack.notes = [1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0];
 	Hack.clearPoint = 1;
 
-
 	Hack.nextNote = 0;
 	Hack.nextBar = 0;
 	Hack.point = 0;
 	Hack.noteNum = 0;
+
+	Hack.onload = function () {
+		Hack.music.path = 'tail_of_comet/' + Hack.music.name + '.mp3';
+		game.preload(Hack.music.path);
+	};
 
 	game.onload = game.onload || function () {
 
@@ -59,7 +63,7 @@ window.addEventListener('load', function () {
 	Hack.isCometMoving = true;
 
 	Hack.onpressstart = Hack.onpressstart || function () {
-		var sound = game.assets[Hack.music.name];
+		var sound = game.assets[Hack.music.path];
 		if (sound) {
 			// Comet move to initialized point
 			if (Hack.isCometMoving) {
@@ -73,7 +77,7 @@ window.addEventListener('load', function () {
 
 	Hack.onmusicend = Hack.onmusicend || function () {
 		// musicをフェードアウト
-		var sound = game.assets[Hack.music.name];
+		var sound = game.assets[Hack.music.path];
 		if (sound) {
 			game.on('enterframe', function task () {
 				sound.volume -= 0.02;
@@ -95,17 +99,71 @@ window.addEventListener('load', function () {
 		Hack.isMusicStarted = false;
 	};
 
-	var Comet = Class(Entity, {
+	var ProcessingObject = Class(Sprite, {
+		initialize: function (width, height, context) {
+			Sprite.call(this, width, height);
+			this.context = context || (this.image = new Surface(width, height)).context;
+			this.params = {
+				noStroke: false, noFill: false
+			};
+		},
+		strokeWeight: function (weight) {
+			this.context.lineWidth = weight;
+		},
+		noStroke: function () {
+			this.params.noStroke = true;
+		},
+		stroke: function () {
+			this.params.noStroke = false;
+			this.context.strokeStyle = this.args2cssColor(arguments);
+		},
+		line: function (x1, y1, x2, y2) {
+			this.context.beginPath();
+			this.context.moveTo(x1, y1);
+			this.context.lineTo(x2, y2);
+			this.context.closePath();
+			if (!this.params.noStroke) this.context.stroke();
+		},
+		noFill: function () {
+			this.params.noFill = true;
+		},
+		fill: function () {
+			this.params.noFill = false;
+			this.context.fillStyle = this.args2cssColor(arguments);
+		},
+		rect: function (x, y, width, height) {
+			this.context.beginPath();
+			this.context.rect(x, y, width, height);
+			this.context.closePath();
+			if (!this.params.noFill) this.context.fill();
+			if (!this.params.noStroke) this.context.stroke();
+		},
+		args2cssColor: function (args) {
+			var array = Array.prototype.slice.call(args);
+			var c = [ 0, 0, 0, 1 ]; // RGBA
+			switch (array.length) {
+			case 0: break;
+			case 1: c[0] = array[0]; c[1] = array[0]; c[2] = array[0]; break;
+			case 2: c[0] = array[0]; c[1] = array[0]; c[2] = array[0]; c[3] = array[1]; break;
+			case 3: c[0] = array[0]; c[1] = array[1]; c[2] = array[2]; break;
+			case 4: c[0] = array[0]; c[1] = array[1]; c[2] = array[2]; c[3] = array[3]; break;
+			default: break;
+			}
+			return ['rgba(', c.join(','), ')' ].join('');
+		}
+	});
+
+	var Comet = Class(ProcessingObject, {
 		initialize: function (context) {
-			Entity.call(this);
-			this.context = context;
+			ProcessingObject.call(this, 0, 0, context);
+			this.velocity = { x: 0, y: 0 };
 			this.setup();
 		},
 		setup: function () {
 			this.setupTime = this.lastTime = new Date().getTime();
 
 			if (Hack.setup) {
-				Hack.setup();
+				Hack.setup(this);
 			} else {
 				this.moveTo(240, 160);
 				this.velocity = { x: 200, y: -200 };
@@ -118,8 +176,8 @@ window.addEventListener('load', function () {
 
 			if (!Hack.isCometMoving) return;
 
-			this.lastX = this.x;
-			this.lastY = this.y;
+			this.px = this.x;
+			this.py = this.y;
 
 			if (this.update) this.update((currentTime - this.setupTime) / 1000, enchant.Core.instance);
 
@@ -144,7 +202,7 @@ window.addEventListener('load', function () {
 			}
 
 			if (this.draw) {
-				this.draw(this.context, enchant.Core.instance);
+				this.draw();
 			}
 
 			if (!Hack.isMusicStarted) return;
@@ -174,19 +232,19 @@ window.addEventListener('load', function () {
 		update: function (time) {
 			if (Hack.update) Hack.update(time);
 		},
-		draw: function (context) {
+		draw: function () {
 			if (Hack.draw) {
-				Hack.draw();
+				Hack.draw(this);
 			} else {
 				// draw comet
-				context.fillStyle = 'rgba(0,0,0,0.1)';
-				context.fillRect(0, 0, 480, 320);
-				context.strokeStyle = 'rgba(0,100,255,1)';
-				context.beginPath();
-				context.moveTo(this.lastX, this.lastY);
-				context.lineTo(this.x, this.y);
-				context.closePath();
-				context.stroke();
+				this.context.fillStyle = 'rgba(0,0,0,0.1)';
+				this.context.fillRect(0, 0, 480, 320);
+				this.context.strokeStyle = 'rgba(0,100,255,1)';
+				this.context.beginPath();
+				this.context.moveTo(this.px, this.py);
+				this.context.lineTo(this.x, this.y);
+				this.context.closePath();
+				this.context.stroke();
 			}
 		}
 	});
