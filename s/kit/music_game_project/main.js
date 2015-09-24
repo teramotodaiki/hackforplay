@@ -171,16 +171,16 @@ window.addEventListener('load', function () {
 				}
 			}
 		},
-		update: function (time, game) {
-			if (Hack.update) Hack.update(time, game);
+		update: function (time) {
+			if (Hack.update) Hack.update(time);
 		},
-		draw: function (context, game) {
+		draw: function (context) {
 			if (Hack.draw) {
 				Hack.draw();
 			} else {
 				// draw comet
 				context.fillStyle = 'rgba(0,0,0,0.1)';
-				context.fillRect(0, 0, game.width, game.height);
+				context.fillRect(0, 0, 480, 320);
 				context.strokeStyle = 'rgba(0,100,255,1)';
 				context.beginPath();
 				context.moveTo(this.lastX, this.lastY);
