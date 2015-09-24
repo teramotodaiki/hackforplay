@@ -2,7 +2,7 @@ window.addEventListener('load', function () {
 
 	// Default
 	Hack.music = {
-		name: 'testmusic.mp3',
+		name: 'testmusic',
 		BPM: 171,
 		delayTime: 1.5,
 		length: 4
