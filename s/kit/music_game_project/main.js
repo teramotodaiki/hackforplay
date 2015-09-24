@@ -1,55 +1,69 @@
 window.addEventListener('load', function () {
 
+	// Default
 	Hack.music = {
-		name: 'tail_of_comet/testmusic.mp3',
+		name: 'testmusic.mp3',
 		BPM: 171,
 		delayTime: 1.5,
 		length: 4
 	};
 
 	var game = enchant.Core.instance;
-	game.preload(Hack.music.name);
 
 	// settings
 	Hack.ringTime = 0.5;
 	Hack.notes = [1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0];
 	Hack.clearPoint = 1;
 
-
 	Hack.nextNote = 0;
 	Hack.nextBar = 0;
 	Hack.point = 0;
 	Hack.noteNum = 0;
 
+	Hack.onload = function () {
+		Hack.music.path = 'tail_of_comet/' + Hack.music.name + '.mp3';
+		game.preload(Hack.music.path);
+	};
+
 	game.onload = game.onload || function () {
+
+		/**
+		 * Layer
+		 * 0: cometSprite
+		 * 1: ringParent
+		 * 2: UI (defaultParentNode)
+		 */
 
 		var cometSprite = new Sprite(game.width, game.height);
 		cometSprite.image = new Surface(game.width, game.height);
-		game.rootScene.addChild(cometSprite);
+		game.rootScene.addChild(cometSprite); // layer 0
 
 		Hack.comet = new Comet(cometSprite.image.context);
 		game.rootScene.addChild(Hack.comet);
 
-		Hack.ui = new Label('start');
-		Hack.ui.color = 'rgb(255,255,255)';
-		Hack.ui.font = '32px fantasy';
-		Hack.ui.textAlign = 'center';
-		Hack.ui.width = 200;
-		Hack.ui.moveTo(140, 144);
-		Hack.ui.ontouchend = function () {
-			if (!Hack.isMusicStarted) {
-				Hack.dispatchEvent(new Event('pressstart'));
-				game.rootScene.removeChild(this);
+		Hack.ringParent = new Group();
+		game.rootScene.addChild(Hack.ringParent); // layer 1
+
+		Hack.defaultParentNode = Hack.defaultParentNode || new Group();
+		Hack.createLabel('start', {
+			x: 140, y: 144, width: 200,
+			color: 'rgb(255,255,255)',
+			font: '32px fantasy',
+			textAlign: 'center',
+			ontouchend: function () {
+				if (!Hack.isMusicStarted) {
+					Hack.dispatchEvent(new Event('pressstart'));
+					this.parentNode.removeChild(this);
+				}
 			}
-		};
-		game.rootScene.addChild(Hack.ui);
+		});
 	};
 
 	Hack.isMusicStarted = false;
 	Hack.isCometMoving = true;
 
 	Hack.onpressstart = Hack.onpressstart || function () {
-		var sound = game.assets[Hack.music.name];
+		var sound = game.assets[Hack.music.path];
 		if (sound) {
 			// Comet move to initialized point
 			if (Hack.isCometMoving) {
@@ -63,7 +77,7 @@ window.addEventListener('load', function () {
 
 	Hack.onmusicend = Hack.onmusicend || function () {
 		// musicをフェードアウト
-		var sound = game.assets[Hack.music.name];
+		var sound = game.assets[Hack.music.path];
 		if (sound) {
 			game.on('enterframe', function task () {
 				sound.volume -= 0.02;
@@ -71,8 +85,7 @@ window.addEventListener('load', function () {
 					game.removeEventListener('enterframe', task);
 					sound.stop();
 					Hack.isCometMoving = true;
-					Hack.score = new ScoreLabelUI(Hack.point, Hack.noteNum);
-					game.rootScene.addChild(Hack.score);
+					new ScoreLabelUI(Hack.point, Hack.noteNum);
 					setTimeout(function () {
 						if (Hack.point > Hack.clearPoint) {
 							Hack.gameclear();
@@ -86,18 +99,75 @@ window.addEventListener('load', function () {
 		Hack.isMusicStarted = false;
 	};
 
-	var Comet = Class(Entity, {
+	var ProcessingObject = Class(Sprite, {
+		initialize: function (width, height, context) {
+			Sprite.call(this, width, height);
+			this.context = context || (this.image = new Surface(width, height)).context;
+			this.params = {
+				noStroke: false, noFill: false
+			};
+		},
+		strokeWeight: function (weight) {
+			this.context.lineWidth = weight;
+		},
+		noStroke: function () {
+			this.params.noStroke = true;
+		},
+		stroke: function () {
+			this.params.noStroke = false;
+			this.context.strokeStyle = this.args2cssColor(arguments);
+		},
+		line: function (x1, y1, x2, y2) {
+			this.context.beginPath();
+			this.context.moveTo(x1, y1);
+			this.context.lineTo(x2, y2);
+			this.context.closePath();
+			if (!this.params.noStroke) this.context.stroke();
+		},
+		noFill: function () {
+			this.params.noFill = true;
+		},
+		fill: function () {
+			this.params.noFill = false;
+			this.context.fillStyle = this.args2cssColor(arguments);
+		},
+		rect: function (x, y, width, height) {
+			this.context.beginPath();
+			this.context.rect(x, y, width, height);
+			this.context.closePath();
+			if (!this.params.noFill) this.context.fill();
+			if (!this.params.noStroke) this.context.stroke();
+		},
+		args2cssColor: function (args) {
+			var array = Array.prototype.slice.call(args);
+			var c = [ 0, 0, 0, 1 ]; // RGBA
+			switch (array.length) {
+			case 0: break;
+			case 1: c[0] = array[0]; c[1] = array[0]; c[2] = array[0]; break;
+			case 2: c[0] = array[0]; c[1] = array[0]; c[2] = array[0]; c[3] = array[1]; break;
+			case 3: c[0] = array[0]; c[1] = array[1]; c[2] = array[2]; break;
+			case 4: c[0] = array[0]; c[1] = array[1]; c[2] = array[2]; c[3] = array[3]; break;
+			default: break;
+			}
+			return ['rgba(', c.join(','), ')' ].join('');
+		}
+	});
+
+	var Comet = Class(ProcessingObject, {
 		initialize: function (context) {
-			Entity.call(this);
-			this.context = context;
+			ProcessingObject.call(this, 0, 0, context);
+			this.velocity = { x: 0, y: 0 };
 			this.setup();
 		},
 		setup: function () {
-			// ====> Coded by user
-			this.moveTo(100, 100);
-			this.velocity = { x: 200, y: -200 };
-
 			this.setupTime = this.lastTime = new Date().getTime();
+
+			if (Hack.setup) {
+				Hack.setup(this);
+			} else {
+				this.moveTo(240, 160);
+				this.velocity = { x: 200, y: -200 };
+			}
 		},
 		onenterframe: function () {
 			var currentTime = new Date().getTime();
@@ -106,8 +176,8 @@ window.addEventListener('load', function () {
 
 			if (!Hack.isCometMoving) return;
 
-			this.lastX = this.x;
-			this.lastY = this.y;
+			this.px = this.x;
+			this.py = this.y;
 
 			if (this.update) this.update((currentTime - this.setupTime) / 1000, enchant.Core.instance);
 
@@ -132,7 +202,7 @@ window.addEventListener('load', function () {
 			}
 
 			if (this.draw) {
-				this.draw(this.context, enchant.Core.instance);
+				this.draw();
 			}
 
 			if (!Hack.isMusicStarted) return;
@@ -150,7 +220,6 @@ window.addEventListener('load', function () {
 				if (Hack.notes[Hack.nextNote]) {
 					// 鳴らす
 					var ring = new Ring(this.x, this.y);
-					game.rootScene.addChild(ring);
 				}
 				// ひとつ進む
 				Hack.nextNote ++;
@@ -160,20 +229,23 @@ window.addEventListener('load', function () {
 				}
 			}
 		},
-		update: function (time, game) {
-
+		update: function (time) {
+			if (Hack.update) Hack.update(time);
 		},
-		draw: function (context, game) {
-			// ====> Coded by user
-			// draw comet
-			context.fillStyle = 'rgba(0,0,0,0.1)';
-			context.fillRect(0, 0, game.width, game.height);
-			context.strokeStyle = 'rgba(0,100,255,1)';
-			context.beginPath();
-			context.moveTo(this.lastX, this.lastY);
-			context.lineTo(this.x, this.y);
-			context.closePath();
-			context.stroke();
+		draw: function () {
+			if (Hack.draw) {
+				Hack.draw(this);
+			} else {
+				// draw comet
+				this.context.fillStyle = 'rgba(0,0,0,0.1)';
+				this.context.fillRect(0, 0, 480, 320);
+				this.context.strokeStyle = 'rgba(0,100,255,1)';
+				this.context.beginPath();
+				this.context.moveTo(this.px, this.py);
+				this.context.lineTo(this.x, this.y);
+				this.context.closePath();
+				this.context.stroke();
+			}
 		}
 	});
 
@@ -185,6 +257,7 @@ window.addEventListener('load', function () {
 			this.image = new Surface(this.width, this.height);
 			this.state = 0; // Prepare: 0, Ok: 1, Ng: 2
 			this.touchEnabled = false;
+			Hack.ringParent.addChild(this);
 		},
 		onenterframe: function () {
 			var ctx = this.image.context;
@@ -234,8 +307,8 @@ window.addEventListener('load', function () {
 					ctx.textAlign = 'center';
 					ctx.fillText('NG', this.width / 2, this.height / 2);
 				}
-			} else if (this.scene) {
-				game.rootScene.removeChild(this);
+			} else if (this.parentNode) {
+				this.parentNode.removeChild(this);
 			}
 		},
 		judge: function () {
@@ -263,6 +336,7 @@ window.addEventListener('load', function () {
 			this.notes = notes;
 			this.current = 0;
 			this.animFrame = 40;
+			Hack.defaultParentNode.addChild(this);
 		},
 		onenterframe: function () {
 			if (this.age < this.animFrame) {
