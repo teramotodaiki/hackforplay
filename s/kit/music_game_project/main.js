@@ -23,26 +23,36 @@ window.addEventListener('load', function () {
 
 	game.onload = game.onload || function () {
 
+		/**
+		 * Layer
+		 * 0: cometSprite
+		 * 1: ringParent
+		 * 2: UI (defaultParentNode)
+		 */
+
 		var cometSprite = new Sprite(game.width, game.height);
 		cometSprite.image = new Surface(game.width, game.height);
-		game.rootScene.addChild(cometSprite);
+		game.rootScene.addChild(cometSprite); // layer 0
 
 		Hack.comet = new Comet(cometSprite.image.context);
 		game.rootScene.addChild(Hack.comet);
 
-		Hack.ui = new Label('start');
-		Hack.ui.color = 'rgb(255,255,255)';
-		Hack.ui.font = '32px fantasy';
-		Hack.ui.textAlign = 'center';
-		Hack.ui.width = 200;
-		Hack.ui.moveTo(140, 144);
-		Hack.ui.ontouchend = function () {
-			if (!Hack.isMusicStarted) {
-				Hack.dispatchEvent(new Event('pressstart'));
-				game.rootScene.removeChild(this);
+		Hack.ringParent = new Group();
+		game.rootScene.addChild(Hack.ringParent); // layer 1
+
+		Hack.defaultParentNode = Hack.defaultParentNode || new Group();
+		Hack.createLabel('start', {
+			x: 140, y: 144, width: 200,
+			color: 'rgb(255,255,255)',
+			font: '32px fantasy',
+			textAlign: 'center',
+			ontouchend: function () {
+				if (!Hack.isMusicStarted) {
+					Hack.dispatchEvent(new Event('pressstart'));
+					this.parentNode.removeChild(this);
+				}
 			}
-		};
-		game.rootScene.addChild(Hack.ui);
+		});
 	};
 
 	Hack.isMusicStarted = false;
@@ -71,8 +81,7 @@ window.addEventListener('load', function () {
 					game.removeEventListener('enterframe', task);
 					sound.stop();
 					Hack.isCometMoving = true;
-					Hack.score = new ScoreLabelUI(Hack.point, Hack.noteNum);
-					game.rootScene.addChild(Hack.score);
+					new ScoreLabelUI(Hack.point, Hack.noteNum);
 					setTimeout(function () {
 						if (Hack.point > Hack.clearPoint) {
 							Hack.gameclear();
@@ -153,7 +162,6 @@ window.addEventListener('load', function () {
 				if (Hack.notes[Hack.nextNote]) {
 					// 鳴らす
 					var ring = new Ring(this.x, this.y);
-					game.rootScene.addChild(ring);
 				}
 				// ひとつ進む
 				Hack.nextNote ++;
@@ -191,6 +199,7 @@ window.addEventListener('load', function () {
 			this.image = new Surface(this.width, this.height);
 			this.state = 0; // Prepare: 0, Ok: 1, Ng: 2
 			this.touchEnabled = false;
+			Hack.ringParent.addChild(this);
 		},
 		onenterframe: function () {
 			var ctx = this.image.context;
@@ -240,8 +249,8 @@ window.addEventListener('load', function () {
 					ctx.textAlign = 'center';
 					ctx.fillText('NG', this.width / 2, this.height / 2);
 				}
-			} else if (this.scene) {
-				game.rootScene.removeChild(this);
+			} else if (this.parentNode) {
+				this.parentNode.removeChild(this);
 			}
 		},
 		judge: function () {
@@ -269,6 +278,7 @@ window.addEventListener('load', function () {
 			this.notes = notes;
 			this.current = 0;
 			this.animFrame = 40;
+			Hack.defaultParentNode.addChild(this);
 		},
 		onenterframe: function () {
 			if (this.age < this.animFrame) {
