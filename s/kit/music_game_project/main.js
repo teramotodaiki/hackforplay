@@ -268,6 +268,21 @@ window.addEventListener('load', function () {
 			if (!this.params.noFill) this.context.fill();
 			if (!this.params.noStroke) this.context.stroke();
 		},
+		ellipse: function (x, y, width, height) {
+			this.context.beginPath();
+			this.context.setTransform(width, 0, 0, height, 0, 0);
+			this.context.arc(x/width + 0.5, y/height + 0.5, 0.5, 0, Math.PI * 2, false);
+			this.context.setTransform(1, 0, 0, 1, 0, 0);
+			this.context.closePath();
+			if (!this.params.noFill) this.context.fill();
+			if (!this.params.noStroke) this.context.stroke();
+		},
+		bezier: function (x1, y1, x2, y2, x3, y3, x4, y4) {
+			this.context.beginPath();
+			this.context.moveTo(x1, y1);
+			this.context.bezierCurveTo(x2, y2, x3, y3, x4, y4);
+			if (!this.params.noStroke) this.context.stroke();
+		},
 		args2cssColor: function (args) {
 			var array = Array.prototype.slice.call(args);
 			var c = [ 0, 0, 0, 1 ]; // RGBA
