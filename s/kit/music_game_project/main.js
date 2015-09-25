@@ -1,5 +1,117 @@
 window.addEventListener('load', function () {
 
+	Hack.restagingCode =
+	"/**\n"+
+	" * Introduction;\n"+
+	" *\n"+
+	" * このゲームは、すいせい（コメット）を おいかけて\n"+
+	" * わっか（リング）をあつめる ゲームです\n"+
+	" *\n"+
+	" * おんがくの リズムにあわせて コメットをうごかし\n"+
+	" * メディアアートを たいけん してみましょう\n"+
+	" *\n"+
+	" *\n"+
+	" * Musics;\n"+
+	" *\n"+
+	" *      Name    |  BPM  | intro | length short (full)\n"+
+	" *   testmusic  |  171  |  1.5  |          140 (258)\n"+
+	" *\n"+
+	" */\n"+
+	"Hack.music = {\n"+
+	"\tname: 'testmusic',\n"+
+	"\tBPM: 171,\n"+
+	"\tdelayTime: 1.5,\n"+
+	"\tlength: 8\n"+
+	"};\n"+
+	"\n"+
+	"/**\n"+
+	" * setup;\n"+
+	" *\n"+
+	" * ゲームが はじまったときに コールされる\n"+
+	" * さいしょの 位置（いち）や 速度（そくど）を きめる\n"+
+	" *\n"+
+	" */\n"+
+	"Hack.setup = function (comet) {\n"+
+	"\n"+
+	"\t// ひだりから 240px, うえから 160px の いち\n"+
+	"\tcomet.x = 240;\n"+
+	"\tcomet.y = 160;\n"+
+	"\n"+
+	"\n"+
+	"\t// みぎにむかって 100 [px/sec],\n"+
+	"\t// したにむかって -100 [px/sec] の はやさ\n"+
+	"\tcomet.velocity.x = 100;\n"+
+	"\tcomet.velocity.y = -100;\n"+
+	"\n"+
+	"};\n"+
+	"\n"+
+	"/**\n"+
+	" * update;\n"+
+	" *\n"+
+	" * ゲームが つづいているあいだ つねに コールされる\n"+
+	" * time（タイム）には けいかじかんが はいっている\n"+
+	" *\n"+
+	" */\n"+
+	"Hack.update = function (comet,time) {\n"+
+	"\n"+
+	"\t// 0秒〜10秒までのあいだのこと\n"+
+	"\tif (time < 10) {\n"+
+	"\t\tcomet.force.y = 10;\n"+
+	"\n"+
+	"\t}\n"+
+	"\n"+
+	"\t// 10秒〜40秒までのあいだのこと\n"+
+	"\tif (10 < time && time < 40) {\n"+
+	"\t\tcomet.force.y = 0;\n"+
+	"\t\tcomet.setSpeed(200, 100);\n"+
+	"\t}\n"+
+	"\n"+
+	"};\n"+
+	"\n"+
+	"/**\n"+
+	" * draw;\n"+
+	" *\n"+
+	" * コメットの 軌跡（きせき）について かかれている\n"+
+	" * いろ や ふとさ などを かえられる\n"+
+	" *\n"+
+	" */\n"+
+	"Hack.draw = function (comet,time) {\n"+
+	"\n"+
+	"\t/**\n"+
+	"\t * COLORS(色の作り方);\n"+
+	"\t *\n"+
+	"\t * white(白):    (255,255,255)\n"+
+	"\t * gray(灰):     (127,127,127)\n"+
+	"\t * black(黒):    (  0,  0,  0)\n"+
+	"\t * red(赤):      (255,  0,  0)\n"+
+	"\t * green(緑):    (  0,255,  0)\n"+
+	"\t * blue(青):     (  0,  0,255)\n"+
+	"\t *\n"+
+	"\t * Transparent colors(透明色);\n"+
+	"\t *\n"+
+	"\t * light blue(明るい青):    (  0,  0,255,0.9);\n"+
+	"\t * dark blue(くらい青):     (  0,  0,255,0.4);\n"+
+	"\t *\n"+
+	"\t * ... もっと知りたい人は、「光の三原色」について しらべよう！\n"+
+	"\t * ... The three primary colors.\n"+
+	"\t *\n"+
+	"\t */\n"+
+	"\tcomet.stroke(  0,  0,255);\n"+
+	"\n"+
+	"\n"+
+	"\t// 線を引く\n"+
+	"\tcomet.strokeWeight(1);\n"+
+	"\tcomet.line(comet.x, comet.y, comet.px, comet.py);\n"+
+	"\n"+
+	"\n"+
+	"\n"+
+	"\t// 全体をぼかす\n"+
+	"\tcomet.noStroke();\n"+
+	"\tcomet.fill(  0,  0,  0,0.1);\n"+
+	"\tcomet.rect(0, 0, 480, 320);\n"+
+	"\n"+
+	"};\n";
+
 	// Default
 	Hack.music = {
 		name: 'testmusic',
@@ -180,7 +292,7 @@ window.addEventListener('load', function () {
 			this.px = this.x;
 			this.py = this.y;
 
-			if (this.update) this.update((currentTime - this.setupTime) / 1000);
+			this.update((currentTime - this.setupTime) / 1000);
 
 			this.velocity.x += this.force.x * t;
 			this.velocity.y += this.force.y * t;
@@ -205,9 +317,7 @@ window.addEventListener('load', function () {
 				this.velocity.y *= -1;
 			}
 
-			if (this.draw) {
-				this.draw();
-			}
+			this.draw((currentTime - this.setupTime) / 1000);
 
 			if (!Hack.isMusicStarted) return;
 
@@ -236,9 +346,9 @@ window.addEventListener('load', function () {
 		update: function (time) {
 			if (Hack.update) Hack.update(this, time);
 		},
-		draw: function () {
+		draw: function (time) {
 			if (Hack.draw) {
-				Hack.draw(this);
+				Hack.draw(this, time);
 			} else {
 				// draw comet
 				this.context.fillStyle = 'rgba(0,0,0,0.1)';
