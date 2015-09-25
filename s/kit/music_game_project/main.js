@@ -208,7 +208,8 @@ window.addEventListener('load', function () {
 			Sprite.call(this, width, height);
 			this.context = context || (this.image = new Surface(width, height)).context;
 			this.params = {
-				noStroke: false, noFill: false
+				noStroke: false, noFill: false,
+				fontSize: 10, fontFamily: 'sans-selif'
 			};
 		},
 		point: function (x, y) {
@@ -287,6 +288,22 @@ window.addEventListener('load', function () {
 			default: break;
 			}
 			return ['rgba(', c.join(','), ')' ].join('');
+		},
+		loadFont: function (text) {
+			/* BFont is not exist. This method returns input text */
+			return text;
+		},
+		textFont: function (font, size) {
+			this.params.fontFamily = font;
+			this.params.fontSize = size || this.params.fontSize;
+			this.context.font = this.params.fontSize + 'px ' + this.params.fontFamily;
+		},
+		textSize: function (size) {
+			this.params.fontSize = size;
+			this.context.font = this.params.fontSize + 'px ' + this.params.fontFamily;
+		},
+		text: function (data, x, y) {
+			if (!this.params.noFill) this.context.fillText(data, x, y);
 		}
 	});
 
