@@ -289,6 +289,9 @@ window.addEventListener('load', function () {
 			case 4: c[0] = array[0]; c[1] = array[1]; c[2] = array[2]; c[3] = array[3]; break;
 			default: break;
 			}
+			c[0] = c[0] >> 0;
+			c[1] = c[1] >> 0;
+			c[2] = c[2] >> 0;
 			return ['rgba(', c.join(','), ')' ].join('');
 		},
 		loadFont: function (text) {
