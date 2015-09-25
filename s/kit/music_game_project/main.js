@@ -219,6 +219,12 @@ window.addEventListener('load', function () {
 				noStroke: false, noFill: false
 			};
 		},
+		point: function (x, y) {
+			this.context.beginPath();
+			this.context.rect(x, y, 1, 1);
+			this.context.closePath();
+			this.context.fill();
+		},
 		strokeWeight: function (weight) {
 			this.context.lineWidth = weight;
 		},
@@ -228,13 +234,6 @@ window.addEventListener('load', function () {
 		stroke: function () {
 			this.params.noStroke = false;
 			this.context.strokeStyle = this.args2cssColor(arguments);
-		},
-		line: function (x1, y1, x2, y2) {
-			this.context.beginPath();
-			this.context.moveTo(x1, y1);
-			this.context.lineTo(x2, y2);
-			this.context.closePath();
-			if (!this.params.noStroke) this.context.stroke();
 		},
 		noFill: function () {
 			this.params.noFill = true;
@@ -246,6 +245,25 @@ window.addEventListener('load', function () {
 		rect: function (x, y, width, height) {
 			this.context.beginPath();
 			this.context.rect(x, y, width, height);
+			this.context.closePath();
+			if (!this.params.noFill) this.context.fill();
+			if (!this.params.noStroke) this.context.stroke();
+		},
+		line: function (x1, y1, x2, y2) {
+			this.polygon(2, arguments);
+		},
+		triangle: function (x1, y1, x2, y2, x3, y3) {
+			this.polygon(3, arguments);
+		},
+		quad: function (x1, y1, x2, y2, x3, y3, x4, y4) {
+			this.polygon(4, arguments);
+		},
+		polygon: function (corner, args) {
+			this.context.beginPath();
+			this.context.moveTo(args[corner * 2 - 2], args[corner * 2 - 1]);
+			for (var i = 0; i < corner; i++) {
+				this.context.lineTo(args[i * 2], args[i * 2 + 1]);
+			}
 			this.context.closePath();
 			if (!this.params.noFill) this.context.fill();
 			if (!this.params.noStroke) this.context.stroke();
