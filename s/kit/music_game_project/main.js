@@ -157,6 +157,7 @@ window.addEventListener('load', function () {
 		initialize: function (context) {
 			ProcessingObject.call(this, 0, 0, context);
 			this.velocity = { x: 0, y: 0 };
+			this.force = { x: 0, y: 0 };
 			this.setup();
 		},
 		setup: function () {
@@ -179,7 +180,10 @@ window.addEventListener('load', function () {
 			this.px = this.x;
 			this.py = this.y;
 
-			if (this.update) this.update((currentTime - this.setupTime) / 1000, enchant.Core.instance);
+			if (this.update) this.update((currentTime - this.setupTime) / 1000);
+
+			this.velocity.x += this.force.x * t;
+			this.velocity.y += this.force.y * t;
 
 			this.x += this.velocity.x * t;
 			this.y += this.velocity.y * t;
@@ -230,7 +234,7 @@ window.addEventListener('load', function () {
 			}
 		},
 		update: function (time) {
-			if (Hack.update) Hack.update(time);
+			if (Hack.update) Hack.update(this, time);
 		},
 		draw: function () {
 			if (Hack.draw) {
@@ -245,6 +249,21 @@ window.addEventListener('load', function () {
 				this.context.lineTo(this.x, this.y);
 				this.context.closePath();
 				this.context.stroke();
+			}
+		},
+		setSpeed: function () {
+			switch (arguments.length) {
+			case 1:
+				var speed = arguments[0];
+				var abs = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y);
+				var norm = abs > 0 ? { x: this.velocity.x / abs, y: this.velocity.y / abs } : { x: 1, y: 1 };
+				this.velocity = { x: norm.x * speed, y: norm.y * speed };
+				break;
+			case 2:
+				var sign = { x: this.velocity.x >= 0 ? 1 : -1, y: this.velocity.y >= 0 ? 1 : -1 };
+				this.velocity = { x: sign.x * arguments[0], y: sign.y * arguments[1] };
+				break;
+			default: break;
 			}
 		}
 	});
