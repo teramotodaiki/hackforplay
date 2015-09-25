@@ -306,6 +306,10 @@ window.addEventListener('load', function () {
 		},
 		text: function (data, x, y) {
 			if (!this.params.noFill) this.context.fillText(data, x, y);
+		},
+		clearRect: function (x, y, width, height) {
+			/* Clear the surface. This is the HTML5 Canvas method */
+			this.context.clearRect(x, y, width, height);
 		}
 	});
 
@@ -422,66 +426,58 @@ window.addEventListener('load', function () {
 		}
 	});
 
-	var Ring = Class(Sprite, {
+	var Ring = Class(ProcessingObject, {
 		initialize: function (x, y) {
-			Sprite.call(this, 80, 80);
+			ProcessingObject.call(this, 80, 80);
 			Hack.noteNum ++;
 			this.moveBy(x - 40, y - 40);
-			this.image = new Surface(this.width, this.height);
 			this.state = 0; // Prepare: 0, Ok: 1, Ng: 2
 			this.touchEnabled = false;
 			Hack.ringParent.addChild(this);
+			this.bornTime = new Date().getTime();
 		},
 		onenterframe: function () {
-			var ctx = this.image.context;
-			var r = this.width / 2;
-			var t = (this.age / game.fps) / Hack.ringTime;
+			var currentTime = new Date().getTime();
+			var spend = (currentTime - this.bornTime) / 1000;
 
-			if (t < 1) {
-				ctx.clearRect(0, 0, this.width, this.height);
-				// target circle
-				ctx.beginPath();
-				ctx.arc(r, r, r - 1, 0, Math.PI * 2, true);
-				ctx.strokeStyle = 'rgba(255,255,255,1)';
-				ctx.closePath();
-				ctx.stroke();
-				// time circle
-				ctx.beginPath();
-				ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
-				ctx.strokeStyle = 'rgba(0,200,255,1)';
-				ctx.closePath();
-				ctx.stroke();
-			} else if (t <= 4) {
-				if (this.state === 0) {
-					this.judge();
-				}
-				if (this.state === 1) {
-					// Ok
-					var end_t = 4 - t;
-					ctx.clearRect(0, 0, this.width, this.height);
-					ctx.beginPath();
-					ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
-					ctx.fillStyle = 'rgba(0,200,255,' + end_t + ')';
-					ctx.closePath();
-					ctx.fill();
-					ctx.fillStyle = 'rgba(255,255,255,' + end_t + ')';
-					ctx.textAlign = 'center';
-					ctx.fillText('OK', this.width / 2, this.height / 2);
-				} else {
-					// Ng
-					var end_t = 4 - t;
-					ctx.clearRect(0, 0, this.width, this.height);
-					ctx.beginPath();
-					ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
-					ctx.fillStyle = 'rgba(255,100,100,' + end_t + ')';
-					ctx.closePath();
-					ctx.fill();
-					ctx.fillStyle = 'rgba(255,255,255,' + end_t + ')';
-					ctx.textAlign = 'center';
-					ctx.fillText('NG', this.width / 2, this.height / 2);
-				}
-			} else if (this.parentNode) {
+			if (spend >= Hack.ringTime && this.state === 0) {
+				this.judge();
+			}
+			if (spend > 4 && this.parentNode) {
 				this.parentNode.removeChild(this);
+			} else {
+				this.draw(spend);
+			}
+		},
+		draw: function (time) {
+			var t = Hack.ringTime > 0 ? time / Hack.ringTime : 1;
+			var w = this.width, h = this.height;
+			this.clearRect(0, 0, w, h);
+			switch (this.state) {
+			case 0:
+				this.noFill();
+				this.stroke(255);
+				this.ellipse(1, 1, w - 2, h - 2);
+				this.stroke(0,200,255);
+				this.ellipse(w/2 - t * w/2 + 1, h/2 - t * h/2 + 1, t * w - 2, t * h - 2);
+				break;
+			case 1:
+				var _t = Math.max((4 - t) / 3, 0);
+				this.stroke(0, 0, 255);
+				this.fill(255 * _t, 255 * _t, 255, _t);
+				console.log(255 * _t, 255 * _t, 255, _t);
+				this.ellipse(1, 1, w - 2, h - 2);
+				this.fill(255);
+				this.text('OK', 20, 20);
+				break;
+			case 2:
+				var _t = (4 - t) / 3;
+				this.stroke(255, 0, 0);
+				this.fill(255, 255 * _t, 255 * _t, _t);
+				this.ellipse(1, 1, w - 2, h - 2);
+				this.fill(255);
+				this.text('NG', 20, 20);
+				break;
 			}
 		},
 		judge: function () {
