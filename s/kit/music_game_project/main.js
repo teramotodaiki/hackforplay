@@ -211,6 +211,8 @@ window.addEventListener('load', function () {
 				noStroke: false, noFill: false,
 				fontSize: 10, fontFamily: 'sans-selif'
 			};
+			this.stroke(0);
+			this.fill(255);
 		},
 		point: function (x, y) {
 			this.context.beginPath();
