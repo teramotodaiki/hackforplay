@@ -132,11 +132,6 @@ window.addEventListener('load', function () {
 	Hack.point = 0;
 	Hack.noteNum = 0;
 
-	Hack.onload = function () {
-		Hack.music.path = 'tail_of_comet/' + Hack.music.name + '.mp3';
-		game.preload(Hack.music.path);
-	};
-
 	game.onload = game.onload || function () {
 
 		/**
@@ -157,17 +152,16 @@ window.addEventListener('load', function () {
 		game.rootScene.addChild(Hack.ringParent); // layer 1
 
 		Hack.defaultParentNode = Hack.defaultParentNode || new Group();
-		Hack.createLabel('start', {
-			x: 140, y: 144, width: 200,
-			color: 'rgb(255,255,255)',
-			font: '32px fantasy',
-			textAlign: 'center',
-			ontouchend: function () {
-				if (!Hack.isMusicStarted) {
-					Hack.dispatchEvent(new Event('pressstart'));
-					this.parentNode.removeChild(this);
-				}
-			}
+		var startLabel = new StartLabelUI();
+
+		// Begin loading music
+		Hack.music.path = 'tail_of_comet/' + Hack.music.name + '.mp3';
+		WebAudioSound.load(Hack.music.path, 'audio/mpeg', function () {
+			Hack.sound = this;
+			startLabel.loadSuccessed();
+		}, function (exeption) {
+			console.log(exeption);
+			startLabel.loadFailed();
 		});
 	};
 
@@ -175,27 +169,25 @@ window.addEventListener('load', function () {
 	Hack.isCometMoving = true;
 
 	Hack.onpressstart = Hack.onpressstart || function () {
-		var sound = game.assets[Hack.music.path];
-		if (sound) {
+		if (Hack.sound) {
 			// Comet move to initialized point
 			if (Hack.isCometMoving) {
 				Hack.comet.setup();
 			}
 			Hack.isCometMoving = true;
 			Hack.isMusicStarted = true;
-			sound.play();
+			Hack.sound.play();
 		}
 	};
 
 	Hack.onmusicend = Hack.onmusicend || function () {
 		// musicをフェードアウト
-		var sound = game.assets[Hack.music.path];
-		if (sound) {
+		if (Hack.sound) {
 			game.on('enterframe', function task () {
-				sound.volume -= 0.02;
-				if (sound.volume <= 0) {
+				Hack.sound.volume -= 0.02;
+				if (Hack.sound.volume <= 0) {
 					game.removeEventListener('enterframe', task);
-					sound.stop();
+					Hack.sound.stop();
 					Hack.isCometMoving = true;
 					new ScoreLabelUI(Hack.point, Hack.noteNum);
 					setTimeout(function () {
@@ -482,6 +474,34 @@ window.addEventListener('load', function () {
 			} else {
 				this.state = 2;
 			}
+		}
+	});
+
+	var StartLabelUI = Class(Label, {
+		initialize: function () {
+			Label.call(this, 'Loading');
+			this.color = 'rgb(255,255,255)';
+			this.font = '32px fantasy';
+			this.textAlign = 'center';
+			this.width = 200;
+			this.moveTo(140, 140);
+			this.tl.fadeIn(30).fadeOut(30).loop();
+			Hack.defaultParentNode.addChild(this);
+		},
+		loadSuccessed: function () {
+			this.tl.clear().fadeIn(30);
+			this.text = 'Start';
+			this.ontouchend = function () {
+				if (!Hack.isMusicStarted) {
+					Hack.dispatchEvent(new Event('pressstart'));
+					this.parentNode.removeChild(this);
+				}
+			};
+		},
+		loadFailed: function () {
+			this.tl.clear().fadeIn(30);
+			this.text = 'Load Failed';
+			this.color = 'rgb(255,0,0)';
 		}
 	});
 
