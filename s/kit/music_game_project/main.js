@@ -431,9 +431,9 @@ window.addEventListener('load', function () {
 
 	var Ring = Class(ProcessingObject, {
 		initialize: function (x, y) {
-			ProcessingObject.call(this, 80, 80);
+			ProcessingObject.call(this, 100, 100);
 			Hack.noteNum ++;
-			this.moveBy(x - 40, y - 40);
+			this.moveBy(x - 50, y - 50);
 			this.state = 0; // Prepare: 0, Ok: 1, Ng: 2
 			this.touchEnabled = false;
 			Hack.ringParent.addChild(this);
@@ -460,26 +460,31 @@ window.addEventListener('load', function () {
 			case 0:
 				this.noFill();
 				this.stroke(255);
-				this.ellipse(1, 1, w - 2, h - 2);
-				this.stroke(0,200,255);
-				this.ellipse(w/2 - t * w/2 + 1, h/2 - t * h/2 + 1, t * w - 2, t * h - 2);
+				this.ellipse(10, 10, 80, 80);
+				this.stroke(0,160,255);
+				this.ellipse(50 - t * 40, 50 - t * 40, t * 80, t * 80);
 				break;
 			case 1:
-				var _t = Math.max((4 - t) / 3, 0);
-				this.stroke(0, 0, 255);
-				this.fill(255 * _t, 255 * _t, 255, _t);
-				console.log(255 * _t, 255 * _t, 255, _t);
-				this.ellipse(1, 1, w - 2, h - 2);
-				this.fill(255);
-				this.text('OK', 20, 20);
+				var _t = Math.max((3 - t) / 2, 0);
+				if (_t > 0) {
+					this.stroke(255 * _t, 95 * _t + 160, 255, _t);
+					this.strokeWeight(_t * 8);
+					this.noFill();
+					this.ellipse(4, 4, 92, 92);
+				}
+				this.fill(255, 255, 255, _t);
+				this.text('OK', 43, 53);
 				break;
 			case 2:
-				var _t = (4 - t) / 3;
-				this.stroke(255, 0, 0);
-				this.fill(255, 255 * _t, 255 * _t, _t);
-				this.ellipse(1, 1, w - 2, h - 2);
-				this.fill(255);
-				this.text('NG', 20, 20);
+				var _t = Math.max((3 - t) / 2, 0);
+				if (_t > 0) {
+					this.stroke(200 - 55 * _t, 45 * _t, 0, _t);
+					this.strokeWeight(_t * 4);
+					this.noFill();
+					this.ellipse(12, 12, 76, 76);
+				}
+				this.fill(255, 255, 255, _t);
+				this.text('NG', 43, 53);
 				break;
 			}
 		},
