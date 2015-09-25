@@ -490,8 +490,9 @@ window.addEventListener('load', function () {
 		},
 		judge: function () {
 			// Hack.ringTime[sec] 経過した瞬間、カーソルがRingの中にあるか
-			if(	this.x <= Hack.mouseX && Hack.mouseX <= this.x + this.width &&
-				this.y <= Hack.mouseY && Hack.mouseY <= this.y + this.height) {
+			var dx = this.x + this.width / 2 - Hack.mouseX;
+			var dy = this.y + this.height / 2 - Hack.mouseY;
+			if (dx * dx + dy * dy <= 40 * 40) {
 				this.state = 1;
 				Hack.point += 1;
 			} else {
