@@ -357,25 +357,7 @@ window.addEventListener('load', function () {
 			// set-On method call
 			this.commandStack.forEach(function (item) {
 				if (item.enabled && item.time <= spend) {
-					switch (item.type) {
-					case 'position':
-						this.x = item.data[0];
-						this.y = item.data[1];
-						break;
-					case 'velocity':
-						this.velocity = { x: item.data[0], y: item.data[1] };
-						break;
-					case 'speed':
-						if (item.data.length === 1) {
-							this.setSpeed(item.data[0]);
-						} else if (item.data.length === 2) {
-							this.setSpeed(item.data[0], item.data[1]);
-						}
-						break;
-					case 'force':
-						this.force = { x: item.data[0], y: item.data[1] };
-						break;
-					}
+					this['set' + item.type](item.data);
 					item.enabled = false;
 				}
 			}, this);
@@ -431,11 +413,18 @@ window.addEventListener('load', function () {
 			}
 		},
 		update: function (time) {
-			if (Hack.update) Hack.update(this, time);
+			var speed = Math.sqrt(Math.pow(this.velocity.x, 2) + Math.pow(this.velocity.y, 2));
+			if (Hack.update) {
+				Hack.update(this, time, this.x, this.y, this.px, this.py, speed, this.velocity.x, this.velocity.y,
+					this.setPosition.bind(this), this.setSpeed.bind(this), this.setVelocity.bind(this), this.setForce.bind(this),
+					this.setPositionOn.bind(this), this.setSpeedOn.bind(this), this.setVelocityOn.bind(this), this.setForceOn.bind(this));
+			}
 		},
 		draw: function (time) {
+			var speed = Math.sqrt(Math.pow(this.velocity.x, 2) + Math.pow(this.velocity.y, 2));
 			if (Hack.draw) {
-				Hack.draw(this, time);
+				Hack.draw(this, time, this.x, this.y, this.px, this.py, speed, this.velocity.x, this.velocity.y,
+					this.line.bind(this), this.rect.bind(this), this.triangle.bind(this), this.quad.bind(this), this.point.bind(this), this.ellipse.bind(this), this.bezier.bind(this), this.stroke.bind(this), this.noStroke.bind(this), this.strokeWeight.bind(this), this.fill.bind(this), this.noFill.bind(this), this.text.bind(this), this.textFont.bind(this), this.textSize.bind(this), this.clearRect.bind(this));
 			} else {
 				// draw comet
 				this.context.fillStyle = 'rgba(0,0,0,0.1)';
@@ -448,32 +437,48 @@ window.addEventListener('load', function () {
 				this.context.stroke();
 			}
 		},
+		setPosition: function (x, y) {
+			if (x.length > 0) this.setPosition(x[0], x[1]);
+			else this.moveTo(x, y);
+		},
 		setSpeed: function () {
-			switch (arguments.length) {
-			case 1:
-				var speed = arguments[0];
-				var abs = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y);
-				var norm = abs > 0 ? { x: this.velocity.x / abs, y: this.velocity.y / abs } : { x: 1, y: 1 };
-				this.velocity = { x: norm.x * speed, y: norm.y * speed };
-				break;
-			case 2:
-				var sign = { x: this.velocity.x >= 0 ? 1 : -1, y: this.velocity.y >= 0 ? 1 : -1 };
-				this.velocity = { x: sign.x * arguments[0], y: sign.y * arguments[1] };
-				break;
-			default: break;
+			if (arguments[0].length === 2) this.setSpeed(arguments[0][0], arguments[0][1]);
+			else if(arguments[0].length > 0) this.setSpeed(arguments[0][0]);
+			else {
+				switch (arguments.length) {
+				case 1:
+					var speed = arguments[0];
+					var abs = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y);
+					var norm = abs > 0 ? { x: this.velocity.x / abs, y: this.velocity.y / abs } : { x: 1, y: 1 };
+					this.velocity = { x: norm.x * speed, y: norm.y * speed };
+					break;
+				case 2:
+					var sign = { x: this.velocity.x >= 0 ? 1 : -1, y: this.velocity.y >= 0 ? 1 : -1 };
+					this.velocity = { x: sign.x * arguments[0], y: sign.y * arguments[1] };
+					break;
+				default: break;
+				}
 			}
 		},
+		setVelocity: function (x, y) {
+			if (x.length > 0) this.setVelocity(x[0], x[1]);
+			else this.velocity = { x: x, y: y };
+		},
+		setForce: function (x, y) {
+			if (x.length > 0) this.setForce(x[0], x[1]);
+			else this.force = { x: x, y: y };
+		},
 		setPositionOn: function () {
-			this.setOn(arguments, 'position');
+			this.setOn(arguments, 'Position');
 		},
 		setVelocityOn: function (time, args) {
-			this.setOn(arguments, 'velocity');
+			this.setOn(arguments, 'Velocity');
 		},
 		setSpeedOn: function (time, args) {
-			this.setOn(arguments, 'speed');
+			this.setOn(arguments, 'Speed');
 		},
 		setForceOn: function (time, args) {
-			this.setOn(arguments, 'force');
+			this.setOn(arguments, 'Force');
 		},
 		setOn: function (args, type) {
 			var item = {
