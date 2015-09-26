@@ -77,7 +77,6 @@ window.addEventListener('load', function() {
 		case 'extend':
 		case 'quest':
 			window.postMessage(sessionStorage.getItem('restaging_code'), "/");
-			console.log('hack.js evaluated code');
 			break;
 	}
 
@@ -523,7 +522,6 @@ window.addEventListener('load', function() {
 				case 'official':
 				case 'extend':
 					sessionStorage.setItem('restaging_code', code);
-					console.log('hack.js restaging_code set');
 					window.parent.postMessage('replace_code', '/');
 					break;
 			}

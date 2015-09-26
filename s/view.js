@@ -277,6 +277,8 @@ $(function(){
 			// frame.phpを経由して、getParam('src')のページをincludeさせる
 			// モードをRestagingにする
 			var gameSrc = encodeURIComponent(getParam('src'));
+			// hack系統のみ、GETパラメータではmodeを渡せないことがあるので、modeはsessionStorageで渡すようにする.
+			sessionStorage.setItem('stage_param_game_mode', (isExtendMode ? 'extend' : 'restaging'));
 			$(".h4p_game").height(width/1.5).children('iframe').attr({
 				'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=' + (isExtendMode ? 'extend' : 'restaging')
 			});
@@ -551,6 +553,7 @@ $(function(){
 				} else {
 					// Extendモード時はmode=restagingにしてリロード
 					var gameSrc = encodeURIComponent(getParam('src'));
+					sessionStorage.setItem('stage_param_game_mode', 'restaging');
 					$('.h4p_game>iframe').attr({
 						'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=restaging'
 					});

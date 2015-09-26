@@ -100,6 +100,7 @@ if ($mode === 'quest') {
 		s('path', "<?php echo $path; ?>" || '0');
 		s('next', "<?php echo $next; ?>" || '0');
 		s('mode', "<?php echo $mode; ?>");
+		s('game_mode', "<?php echo $mode; ?>");
 		s('retry', "<?php echo $retry; ?>");
 		s('origin_id', "<?php echo $origin_id; ?>");
 		s('src', "<?php echo $src;  ?>");

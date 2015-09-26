@@ -18,7 +18,7 @@ if(!isset($mode)){
 	</head>
 	<body style="margin: 0; background-color: #000;">
 		<script type="text/javascript" charset="utf-8">
-		var __H4PENV__MODE		= "<?php echo $mode; ?>";
+		var __H4PENV__MODE		= sessionStorage.getItem('stage_param_game_mode');
 		var __H4PENV__NEXT		= "<?php echo $next; ?>";
 		</script>
 		<script src="lib/enchant.js" type="text/javascript" charset="utf-8"></script>
