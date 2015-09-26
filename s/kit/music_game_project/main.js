@@ -14,15 +14,30 @@ window.addEventListener('load', function () {
 " * Musics;\n"+
 " *\n"+
 " *      Name    |  BPM  | intro | length short (full)\n"+
-" *   testmusic  |  171  |  1.5  |          140 (258)\n"+
+" *   testmusic  |  170  | 1.63  |           89 (258)\n"+
 " *\n"+
 " */\n"+
 "Hack.music = {\n"+
 "\tname: 'testmusic',\n"+
-"\tBPM: 171,\n"+
-"\tdelayTime: 1.5,\n"+
-"\tlength: 8\n"+
+"\tBPM: 170,\n"+
+"\tintro: 1.63,\n"+
+"\tlength: 89\n"+
 "};\n"+
+"\n"+
+"/**\n"+
+" * Settings;\n"+
+" * \n"+
+" * ringTime:    リングがでてから はじけるまでの じかん\n"+
+" * quota:       クリアするために ひつような OK の かず\n"+
+" * hitSE:       OK のときの こうかおん（SE ... サウンドエフェクト）\n"+
+" *\n"+
+" * ringTime を おおきくすると、OK が でやすくなります\n"+
+" * quota を おおきくすると、クリアが むずかしく なります\n"+
+" */\n"+
+"Hack.ringTime = 0.5;\n"+
+"Hack.quota = 100;\n"+
+"Hack.hitSE = 0;\n"+
+"\n"+
 "\n"+
 "/**\n"+
 " * setup;\n"+
@@ -33,15 +48,15 @@ window.addEventListener('load', function () {
 " */\n"+
 "Hack.setup = function (comet) {\n"+
 "\n"+
-"\t// ひだりから 240px, うえから 160px の いち\n"+
-"\tcomet.x = 240;\n"+
+"\t// ひだりから 0px, うえから 160px の いち\n"+
+"\tcomet.x = 0;\n"+
 "\tcomet.y = 160;\n"+
 "\n"+
 "\n"+
-"\t// みぎにむかって 100 [px/sec],\n"+
-"\t// うえにむかって 100 [px/sec] の はやさ\n"+
-"\tcomet.velocity.x = 100;\n"+
-"\tcomet.velocity.y = -100;\n"+
+"\t// みぎにむかって 80 [px/sec],\n"+
+"\t// うえにむかって  0 [px/sec] の はやさ\n"+
+"\tcomet.velocity.x = 80;\n"+
+"\tcomet.velocity.y = 0;\n"+
 "\n"+
 "};\n"+
 "\n"+
@@ -58,19 +73,36 @@ window.addEventListener('load', function () {
 "\tsetPositionOn, setSpeedOn, setVelocityOn, setForceOn, setNotesOn) {\n"+
 "\n"+
 "\n"+
-"\t// 2秒のとき、ひだりから 200 うえから 80 に、いどうする\n"+
-"\tsetPositionOn(  2, 200, 80);\n"+
+"\t// さいしょの テンポを せってい\n"+
+"\tsetNotesOn(0, 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);\n"+
 "\n"+
-"\tsetNotesOn(4, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1);\n"+
 "\n"+
-"\tif (4 < time && time < 10) {\n"+
-"\t\tsetSpeed(400, 100);\n"+
+"\t// 13秒のとき、ひだりから 0 うえから 200 に、いどう\n"+
+"\t// よこむきに 50 たてむきに 100 のはやさ\n"+
+"\tsetPositionOn(12,   0, 160);\n"+
+"\tsetSpeedOn(   12,  50, 100);\n"+
+"\tsetNotesOn(   12,   1,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0);\n"+
+"\n"+
+"\n"+
+"\t// 24秒のとき、はずむような うごき\n"+
+"\tsetPositionOn(24, 320, 160);\n"+
+"\tsetVelocityOn(24,-100,   0);\n"+
+"\tsetForceOn(   24,   0, 400);\n"+
+"\tsetNotesOn(   24,   1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0);\n"+
+"\n"+
+"\t// 46秒のとき、うえで はずむ うごき\n"+
+"\t//setPositionOn(46,  20, 260);\n"+
+"\tsetVelocityOn(46,-100,   0);\n"+
+"\tsetForceOn(   46,   0,-200);\n"+
+"\tsetNotesOn(   46,   0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0);\n"+
+"\n"+
+"\t// 60秒から 89秒（さいご）まで ずっと、なみのような うごき\n"+
+"\tsetNotesOn(   60,   1,0,0,1,1,0,0,0,1,0,0,0,1,0,0,0);\n"+
+"\tsetPositionOn(60, 480, 250);\n"+
+"\tsetVelocityOn(60,-160,   0);\n"+
+"\tif (60 < time && time < 89) {\n"+
+"\t\tsetForce(0, (200 - y) * 20);\n"+
 "\t}\n"+
-"\n"+
-"\tsetPositionOn( 10, 100,  0);\n"+
-"\n"+
-"\tsetForceOn( 16,   0,   0);\n"+
-"\tsetSpeedOn( 16, 300, 100);\n"+
 "\n"+
 "};\n"+
 "\n"+
@@ -113,33 +145,52 @@ window.addEventListener('load', function () {
 "\tstrokeWeight(1);\n"+
 "\tline(x, y, px, py);\n"+
 "\n"+
-"\t// 16秒よりあとのこと\n"+
-"\tif (time > 16) {\n"+
-"\t\t// 三角形の もようを えがく\n"+
-"\t\ttriangle(0, 0, x, y, px, py);\n"+
+"\n"+
+"\t// 24秒よりあとで、46秒までのあいだ\n"+
+"\tif (24 < time && time < 46) {\n"+
+"\n"+
+"\t\t// あしもとに しろい てん\n"+
+"\t\tfill(255,255,255);\n"+
+"\t\tpoint(x, 300);\n"+
+"\n"+
+"\t}\n"+
+"\n"+
+"\t// 46秒よりあとで、60秒までのあいだ\n"+
+"\tif (46 < time && time < 60) {\n"+
+"\n"+
+"\t\t// たてながの うすいみずいろの だえん\n"+
+"\t\tnoStroke();\n"+
+"\t\tfill(  0,255,255, 0.5);\n"+
+"\t\tellipse(x, 0, x - px, 320);\n"+
+"\n"+
+"\t}\n"+
+"\n"+
+"\t// 60秒よりあとで、89秒までのあいだ\n"+
+"\tif (60 < time && time < 89) {\n"+
+"\n"+
+"\t\t// 中心から さんかく ... (240, 160) = 中心\n"+
+"\t\ttriangle(240,   0, x, y, px, py);\n"+
+"\t\ttriangle(240, 320, x, y, px, py);\n"+
+"\n"+
 "\t}\n"+
 "\n"+
 "\t// 全体をぼかす\n"+
 "\tnoStroke();\n"+
-"\tfill(  0,  0,  0,0.02);\n"+
+"\tfill(  0,  0,  0,0.08);\n"+
 "\trect(0, 0, 480, 320);\n"+
 "\n"+
 "};\n";
 
-	// Default
-	Hack.music = {
-		name: 'testmusic',
-		BPM: 171,
-		delayTime: 1.5,
-		length: 4
-	};
+	Hack.music = {};
 
 	var game = enchant.Core.instance;
+	game.preload('osa/bosu10_a.wav','osa/bosu19.wav', 'osa/clap00.wav', 'osa/coin03.wav', 'osa/kachi04.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav');
 
 	// settings
 	Hack.ringTime = 0.5;
-	Hack.notes = [1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0];
-	Hack.clearPoint = 1;
+	Hack.notes = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	Hack.quota = 1;
+	Hack.hitSE = -1;
 
 	Hack.nextNote = 0;
 	Hack.nextBar = 0;
@@ -177,6 +228,19 @@ window.addEventListener('load', function () {
 			console.log(exeption);
 			startLabel.loadFailed();
 		});
+
+		Hack.soundEffects = [
+			game.assets['osa/bosu10_a.wav'],
+			game.assets['osa/bosu19.wav'],
+			game.assets['osa/clap00.wav'],
+			game.assets['osa/coin03.wav'],
+			game.assets['osa/kachi04.wav'],
+			game.assets['osa/metal03.wav'],
+			game.assets['osa/metal05.wav'],
+			game.assets['osa/on06.wav'],
+			game.assets['osa/pi06.wav'],
+			game.assets['osa/wood05.wav']
+		];
 	};
 
 	Hack.isMusicStarted = false;
@@ -205,7 +269,7 @@ window.addEventListener('load', function () {
 					Hack.isCometMoving = true;
 					new ScoreLabelUI(Hack.point, Hack.noteNum);
 					setTimeout(function () {
-						if (Hack.point > Hack.clearPoint) {
+						if (Hack.point > Hack.quota) {
 							Hack.gameclear();
 						} else {
 							Hack.gameover();
@@ -407,7 +471,7 @@ window.addEventListener('load', function () {
 			// Ringを吐き出す
 			var note8Millisecons = 30000 / Hack.music.BPM;
 			var millisec = currentTime - this.setupTime - (Hack.nextBar * note8Millisecons * 16);
-			millisec += (Hack.ringTime - Hack.music.delayTime) * 1000;
+			millisec += (Hack.ringTime - Hack.music.intro) * 1000;
 			if (millisec >= note8Millisecons * Hack.nextNote) {
 				if (Hack.notes[Hack.nextNote]) {
 					// 鳴らす
@@ -586,6 +650,9 @@ window.addEventListener('load', function () {
 			if (dx * dx + dy * dy <= 40 * 40) {
 				this.state = 1;
 				Hack.point += 1;
+				if (Hack.soundEffects[Hack.hitSE]) {
+					Hack.soundEffects[Hack.hitSE].play(true);
+				}
 			} else {
 				this.state = 2;
 			}
