@@ -135,11 +135,13 @@ window.addEventListener('load', function () {
 	};
 
 	var game = enchant.Core.instance;
+	game.preload('osa/bosu10_a.wav','osa/bosu19.wav', 'osa/clap00.wav', 'osa/coin03.wav', 'osa/kachi04.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav');
 
 	// settings
 	Hack.ringTime = 0.5;
 	Hack.notes = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	Hack.clearPoint = 1;
+	Hack.hitSE = -1;
 
 	Hack.nextNote = 0;
 	Hack.nextBar = 0;
@@ -177,6 +179,19 @@ window.addEventListener('load', function () {
 			console.log(exeption);
 			startLabel.loadFailed();
 		});
+
+		Hack.soundEffects = [
+			game.assets['osa/bosu10_a.wav'],
+			game.assets['osa/bosu19.wav'],
+			game.assets['osa/clap00.wav'],
+			game.assets['osa/coin03.wav'],
+			game.assets['osa/kachi04.wav'],
+			game.assets['osa/metal03.wav'],
+			game.assets['osa/metal05.wav'],
+			game.assets['osa/on06.wav'],
+			game.assets['osa/pi06.wav'],
+			game.assets['osa/wood05.wav']
+		];
 	};
 
 	Hack.isMusicStarted = false;
@@ -586,6 +601,9 @@ window.addEventListener('load', function () {
 			if (dx * dx + dy * dy <= 40 * 40) {
 				this.state = 1;
 				Hack.point += 1;
+				if (Hack.soundEffects[Hack.hitSE]) {
+					Hack.soundEffects[Hack.hitSE].play(true);
+				}
 			} else {
 				this.state = 2;
 			}
