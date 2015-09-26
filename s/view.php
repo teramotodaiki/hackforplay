@@ -97,8 +97,8 @@ if ($mode === 'quest') {
 			sessionStorage.setItem('stage_param_'+key, value);
 		};
 		s('id', "<?php echo $id; ?>");
-		s('path', "<?php echo $path; ?>");
-		s('next', "<?php echo $next; ?>");
+		s('path', "<?php echo $path; ?>" || '0');
+		s('next', "<?php echo $next; ?>" || '0');
 		s('mode', "<?php echo $mode; ?>");
 		s('retry', "<?php echo $retry; ?>");
 		s('origin_id', "<?php echo $origin_id; ?>");
