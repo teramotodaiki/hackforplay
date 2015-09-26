@@ -39,9 +39,11 @@ window.addEventListener('load', function () {
 	"\n"+
 	"\n"+
 	"\t// みぎにむかって 100 [px/sec],\n"+
-	"\t// したにむかって -100 [px/sec] の はやさ\n"+
-	"\tcomet.velocity.x = 100;\n"+
-	"\tcomet.velocity.y = -100;\n"+
+	"\t// うえにむかって 100 [px/sec] の はやさ\n"+
+	"\tcomet.setSpeed(100, 100);\n"+
+	"\t\n"+
+	"\tcomet.fill(0);\n"+
+	"\tcomet.rect(0, 0, 480, 320);\n"+
 	"\n"+
 	"};\n"+
 	"\n"+
@@ -54,16 +56,15 @@ window.addEventListener('load', function () {
 	" */\n"+
 	"Hack.update = function (comet,time) {\n"+
 	"\n"+
-	"\t// 0秒〜10秒までのあいだのこと\n"+
-	"\tif (time < 10) {\n"+
-	"\t\tcomet.force.y = 10;\n"+
-	"\n"+
+	"\t// 0秒〜16秒までのあいだのこと\n"+
+	"\tif (time < 16) {\n"+
+	"\t\tcomet.force.y = 60;\n"+
 	"\t}\n"+
 	"\n"+
-	"\t// 10秒〜40秒までのあいだのこと\n"+
-	"\tif (10 < time && time < 40) {\n"+
+	"\t// 16秒〜40秒までのあいだのこと\n"+
+	"\tif (16 < time && time < 40) {\n"+
 	"\t\tcomet.force.y = 0;\n"+
-	"\t\tcomet.setSpeed(200, 100);\n"+
+	"\t\tcomet.setSpeed(300, 100);\n"+
 	"\t}\n"+
 	"\n"+
 	"};\n"+
@@ -103,11 +104,15 @@ window.addEventListener('load', function () {
 	"\tcomet.strokeWeight(1);\n"+
 	"\tcomet.line(comet.x, comet.y, comet.px, comet.py);\n"+
 	"\n"+
-	"\n"+
-	"\n"+
+	"\t// 16秒よりあとのこと\n"+
+	"\tif (time > 16) {\n"+
+	"\t\t// 三角形の もようを えがく\n"+
+	"\t\tcomet.triangle(0, 0, comet.x, comet.y, comet.px, comet.py);\n"+
+	"\t}\n"+
+	"\t\n"+
 	"\t// 全体をぼかす\n"+
 	"\tcomet.noStroke();\n"+
-	"\tcomet.fill(  0,  0,  0,0.1);\n"+
+	"\tcomet.fill(  0,  0,  0,0.02);\n"+
 	"\tcomet.rect(0, 0, 480, 320);\n"+
 	"\n"+
 	"};\n";
