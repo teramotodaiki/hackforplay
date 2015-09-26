@@ -20,7 +20,7 @@ window.addEventListener('load', function () {
 "Hack.music = {\n"+
 "\tname: 'testmusic',\n"+
 "\tBPM: 171,\n"+
-"\tdelayTime: 1.5,\n"+
+"\tintro: 1.5,\n"+
 "\tlength: 8\n"+
 "};\n"+
 "\n"+
@@ -126,13 +126,7 @@ window.addEventListener('load', function () {
 "\n"+
 "};\n";
 
-	// Default
-	Hack.music = {
-		name: 'testmusic',
-		BPM: 171,
-		delayTime: 1.5,
-		length: 4
-	};
+	Hack.music = {};
 
 	var game = enchant.Core.instance;
 	game.preload('osa/bosu10_a.wav','osa/bosu19.wav', 'osa/clap00.wav', 'osa/coin03.wav', 'osa/kachi04.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav');
@@ -140,7 +134,7 @@ window.addEventListener('load', function () {
 	// settings
 	Hack.ringTime = 0.5;
 	Hack.notes = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-	Hack.clearPoint = 1;
+	Hack.quota = 1;
 	Hack.hitSE = -1;
 
 	Hack.nextNote = 0;
@@ -220,7 +214,7 @@ window.addEventListener('load', function () {
 					Hack.isCometMoving = true;
 					new ScoreLabelUI(Hack.point, Hack.noteNum);
 					setTimeout(function () {
-						if (Hack.point > Hack.clearPoint) {
+						if (Hack.point > Hack.quota) {
 							Hack.gameclear();
 						} else {
 							Hack.gameover();
@@ -422,7 +416,7 @@ window.addEventListener('load', function () {
 			// Ringを吐き出す
 			var note8Millisecons = 30000 / Hack.music.BPM;
 			var millisec = currentTime - this.setupTime - (Hack.nextBar * note8Millisecons * 16);
-			millisec += (Hack.ringTime - Hack.music.delayTime) * 1000;
+			millisec += (Hack.ringTime - Hack.music.intro) * 1000;
 			if (millisec >= note8Millisecons * Hack.nextNote) {
 				if (Hack.notes[Hack.nextNote]) {
 					// 鳴らす
