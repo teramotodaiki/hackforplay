@@ -18,7 +18,8 @@ if(!isset($mode)){
 	</head>
 	<body style="margin: 0; background-color: #000;">
 		<script type="text/javascript" charset="utf-8">
-		// "<?php var_dump(filter_input(INPUT_GET, "mode")); ?>"
+		// <?php var_dump(filter_input(INPUT_GET, "mode")); ?>
+
 		var __H4PENV__MODE		= "<?php echo $mode; ?>";
 		var __H4PENV__NEXT		= "<?php echo $next; ?>";
 		</script>
