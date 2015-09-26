@@ -138,7 +138,7 @@ window.addEventListener('load', function () {
 
 	// settings
 	Hack.ringTime = 0.5;
-	Hack.notes = [1,0,0,0,1,0,0,0,1,0,1,0,1,0,0,0];
+	Hack.notes = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	Hack.clearPoint = 1;
 
 	Hack.nextNote = 0;
