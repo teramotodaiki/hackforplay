@@ -182,6 +182,8 @@ window.addEventListener('load', function () {
 "};\n";
 
     Hack.music = Hack.music || {};
+    console.log('main.js Hack.music set', Hack.music);
+
 
     var game = enchant.Core.instance;
     game.preload('osa/bosu10_a.wav','osa/bosu19.wav', 'osa/clap00.wav', 'osa/coin03.wav', 'osa/kachi04.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav');

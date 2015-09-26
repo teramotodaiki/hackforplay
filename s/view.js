@@ -50,6 +50,7 @@ $(function(){
 			case "replace_code":
 				var code = sessionStorage.getItem('restaging_code');
 				jsEditor.setValue(code);
+				console.log('view.js', 'replace_code');
 				break;
 			case "begin_restaging":
 				// ゲーム側からリステージングを開始する
