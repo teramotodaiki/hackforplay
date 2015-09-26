@@ -70,7 +70,6 @@ window.addEventListener('load', function() {
 	});
 
 	// evaluate restaging code
-	console.log('mode ' + __H4PENV__MODE);
 	switch (__H4PENV__MODE) {
 		case 'restaging':
 		case 'replay':
