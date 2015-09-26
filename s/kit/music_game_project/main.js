@@ -1,5 +1,122 @@
 window.addEventListener('load', function () {
 
+	Hack.restagingCode =
+	"/**\n"+
+	" * Introduction;\n"+
+	" *\n"+
+	" * このゲームは、すいせい（コメット）を おいかけて\n"+
+	" * わっか（リング）をあつめる ゲームです\n"+
+	" *\n"+
+	" * おんがくの リズムにあわせて コメットをうごかし\n"+
+	" * メディアアートを たいけん してみましょう\n"+
+	" *\n"+
+	" *\n"+
+	" * Musics;\n"+
+	" *\n"+
+	" *      Name    |  BPM  | intro | length short (full)\n"+
+	" *   testmusic  |  171  |  1.5  |          140 (258)\n"+
+	" *\n"+
+	" */\n"+
+	"Hack.music = {\n"+
+	"\tname: 'testmusic',\n"+
+	"\tBPM: 171,\n"+
+	"\tdelayTime: 1.5,\n"+
+	"\tlength: 8\n"+
+	"};\n"+
+	"\n"+
+	"/**\n"+
+	" * setup;\n"+
+	" *\n"+
+	" * ゲームが はじまったときに コールされる\n"+
+	" * さいしょの 位置（いち）や 速度（そくど）を きめる\n"+
+	" *\n"+
+	" */\n"+
+	"Hack.setup = function (comet) {\n"+
+	"\n"+
+	"\t// ひだりから 240px, うえから 160px の いち\n"+
+	"\tcomet.x = 240;\n"+
+	"\tcomet.y = 160;\n"+
+	"\n"+
+	"\n"+
+	"\t// みぎにむかって 100 [px/sec],\n"+
+	"\t// うえにむかって 100 [px/sec] の はやさ\n"+
+	"\tcomet.setSpeed(100, 100);\n"+
+	"\t\n"+
+	"\tcomet.fill(0);\n"+
+	"\tcomet.rect(0, 0, 480, 320);\n"+
+	"\n"+
+	"};\n"+
+	"\n"+
+	"/**\n"+
+	" * update;\n"+
+	" *\n"+
+	" * ゲームが つづいているあいだ つねに コールされる\n"+
+	" * time（タイム）には けいかじかんが はいっている\n"+
+	" *\n"+
+	" */\n"+
+	"Hack.update = function (comet,time) {\n"+
+	"\n"+
+	"\t// 0秒〜16秒までのあいだのこと\n"+
+	"\tif (time < 16) {\n"+
+	"\t\tcomet.force.y = 60;\n"+
+	"\t}\n"+
+	"\n"+
+	"\t// 16秒〜40秒までのあいだのこと\n"+
+	"\tif (16 < time && time < 40) {\n"+
+	"\t\tcomet.force.y = 0;\n"+
+	"\t\tcomet.setSpeed(300, 100);\n"+
+	"\t}\n"+
+	"\n"+
+	"};\n"+
+	"\n"+
+	"/**\n"+
+	" * draw;\n"+
+	" *\n"+
+	" * コメットの 軌跡（きせき）について かかれている\n"+
+	" * いろ や ふとさ などを かえられる\n"+
+	" *\n"+
+	" */\n"+
+	"Hack.draw = function (comet,time) {\n"+
+	"\n"+
+	"\t/**\n"+
+	"\t * COLORS(色の作り方);\n"+
+	"\t *\n"+
+	"\t * white(白):    (255,255,255)\n"+
+	"\t * gray(灰):     (127,127,127)\n"+
+	"\t * black(黒):    (  0,  0,  0)\n"+
+	"\t * red(赤):      (255,  0,  0)\n"+
+	"\t * green(緑):    (  0,255,  0)\n"+
+	"\t * blue(青):     (  0,  0,255)\n"+
+	"\t *\n"+
+	"\t * Transparent colors(透明色);\n"+
+	"\t *\n"+
+	"\t * light blue(明るい青):    (  0,  0,255,0.9);\n"+
+	"\t * dark blue(くらい青):     (  0,  0,255,0.4);\n"+
+	"\t *\n"+
+	"\t * ... もっと知りたい人は、「光の三原色」について しらべよう！\n"+
+	"\t * ... The three primary colors.\n"+
+	"\t *\n"+
+	"\t */\n"+
+	"\tcomet.stroke(  0,  0,255);\n"+
+	"\n"+
+	"\n"+
+	"\t// 線を引く\n"+
+	"\tcomet.strokeWeight(1);\n"+
+	"\tcomet.line(comet.x, comet.y, comet.px, comet.py);\n"+
+	"\n"+
+	"\t// 16秒よりあとのこと\n"+
+	"\tif (time > 16) {\n"+
+	"\t\t// 三角形の もようを えがく\n"+
+	"\t\tcomet.triangle(0, 0, comet.x, comet.y, comet.px, comet.py);\n"+
+	"\t}\n"+
+	"\t\n"+
+	"\t// 全体をぼかす\n"+
+	"\tcomet.noStroke();\n"+
+	"\tcomet.fill(  0,  0,  0,0.02);\n"+
+	"\tcomet.rect(0, 0, 480, 320);\n"+
+	"\n"+
+	"};\n";
+
 	// Default
 	Hack.music = {
 		name: 'testmusic',
@@ -19,11 +136,6 @@ window.addEventListener('load', function () {
 	Hack.nextBar = 0;
 	Hack.point = 0;
 	Hack.noteNum = 0;
-
-	Hack.onload = function () {
-		Hack.music.path = 'tail_of_comet/' + Hack.music.name + '.mp3';
-		game.preload(Hack.music.path);
-	};
 
 	game.onload = game.onload || function () {
 
@@ -45,17 +157,16 @@ window.addEventListener('load', function () {
 		game.rootScene.addChild(Hack.ringParent); // layer 1
 
 		Hack.defaultParentNode = Hack.defaultParentNode || new Group();
-		Hack.createLabel('start', {
-			x: 140, y: 144, width: 200,
-			color: 'rgb(255,255,255)',
-			font: '32px fantasy',
-			textAlign: 'center',
-			ontouchend: function () {
-				if (!Hack.isMusicStarted) {
-					Hack.dispatchEvent(new Event('pressstart'));
-					this.parentNode.removeChild(this);
-				}
-			}
+		var startLabel = new StartLabelUI();
+
+		// Begin loading music
+		Hack.music.path = 'tail_of_comet/' + Hack.music.name + '.mp3';
+		WebAudioSound.load(Hack.music.path, 'audio/mpeg', function () {
+			Hack.sound = this;
+			startLabel.loadSuccessed();
+		}, function (exeption) {
+			console.log(exeption);
+			startLabel.loadFailed();
 		});
 	};
 
@@ -63,27 +174,25 @@ window.addEventListener('load', function () {
 	Hack.isCometMoving = true;
 
 	Hack.onpressstart = Hack.onpressstart || function () {
-		var sound = game.assets[Hack.music.path];
-		if (sound) {
+		if (Hack.sound) {
 			// Comet move to initialized point
 			if (Hack.isCometMoving) {
 				Hack.comet.setup();
 			}
 			Hack.isCometMoving = true;
 			Hack.isMusicStarted = true;
-			sound.play();
+			Hack.sound.play();
 		}
 	};
 
 	Hack.onmusicend = Hack.onmusicend || function () {
 		// musicをフェードアウト
-		var sound = game.assets[Hack.music.path];
-		if (sound) {
+		if (Hack.sound) {
 			game.on('enterframe', function task () {
-				sound.volume -= 0.02;
-				if (sound.volume <= 0) {
+				Hack.sound.volume -= 0.02;
+				if (Hack.sound.volume <= 0) {
 					game.removeEventListener('enterframe', task);
-					sound.stop();
+					Hack.sound.stop();
 					Hack.isCometMoving = true;
 					new ScoreLabelUI(Hack.point, Hack.noteNum);
 					setTimeout(function () {
@@ -104,8 +213,17 @@ window.addEventListener('load', function () {
 			Sprite.call(this, width, height);
 			this.context = context || (this.image = new Surface(width, height)).context;
 			this.params = {
-				noStroke: false, noFill: false
+				noStroke: false, noFill: false,
+				fontSize: 10, fontFamily: 'sans-selif'
 			};
+			this.stroke(0);
+			this.fill(255);
+		},
+		point: function (x, y) {
+			this.context.beginPath();
+			this.context.rect(x, y, 1, 1);
+			this.context.closePath();
+			this.context.fill();
 		},
 		strokeWeight: function (weight) {
 			this.context.lineWidth = weight;
@@ -116,13 +234,6 @@ window.addEventListener('load', function () {
 		stroke: function () {
 			this.params.noStroke = false;
 			this.context.strokeStyle = this.args2cssColor(arguments);
-		},
-		line: function (x1, y1, x2, y2) {
-			this.context.beginPath();
-			this.context.moveTo(x1, y1);
-			this.context.lineTo(x2, y2);
-			this.context.closePath();
-			if (!this.params.noStroke) this.context.stroke();
 		},
 		noFill: function () {
 			this.params.noFill = true;
@@ -138,6 +249,40 @@ window.addEventListener('load', function () {
 			if (!this.params.noFill) this.context.fill();
 			if (!this.params.noStroke) this.context.stroke();
 		},
+		line: function (x1, y1, x2, y2) {
+			this.polygon(2, arguments);
+		},
+		triangle: function (x1, y1, x2, y2, x3, y3) {
+			this.polygon(3, arguments);
+		},
+		quad: function (x1, y1, x2, y2, x3, y3, x4, y4) {
+			this.polygon(4, arguments);
+		},
+		polygon: function (corner, args) {
+			this.context.beginPath();
+			this.context.moveTo(args[corner * 2 - 2], args[corner * 2 - 1]);
+			for (var i = 0; i < corner; i++) {
+				this.context.lineTo(args[i * 2], args[i * 2 + 1]);
+			}
+			this.context.closePath();
+			if (!this.params.noFill) this.context.fill();
+			if (!this.params.noStroke) this.context.stroke();
+		},
+		ellipse: function (x, y, width, height) {
+			this.context.beginPath();
+			this.context.setTransform(width, 0, 0, height, 0, 0);
+			this.context.arc(x/width + 0.5, y/height + 0.5, 0.5, 0, Math.PI * 2, false);
+			this.context.setTransform(1, 0, 0, 1, 0, 0);
+			this.context.closePath();
+			if (!this.params.noFill) this.context.fill();
+			if (!this.params.noStroke) this.context.stroke();
+		},
+		bezier: function (x1, y1, x2, y2, x3, y3, x4, y4) {
+			this.context.beginPath();
+			this.context.moveTo(x1, y1);
+			this.context.bezierCurveTo(x2, y2, x3, y3, x4, y4);
+			if (!this.params.noStroke) this.context.stroke();
+		},
 		args2cssColor: function (args) {
 			var array = Array.prototype.slice.call(args);
 			var c = [ 0, 0, 0, 1 ]; // RGBA
@@ -149,7 +294,30 @@ window.addEventListener('load', function () {
 			case 4: c[0] = array[0]; c[1] = array[1]; c[2] = array[2]; c[3] = array[3]; break;
 			default: break;
 			}
+			c[0] = c[0] >> 0;
+			c[1] = c[1] >> 0;
+			c[2] = c[2] >> 0;
 			return ['rgba(', c.join(','), ')' ].join('');
+		},
+		loadFont: function (text) {
+			/* BFont is not exist. This method returns input text */
+			return text;
+		},
+		textFont: function (font, size) {
+			this.params.fontFamily = font;
+			this.params.fontSize = size || this.params.fontSize;
+			this.context.font = this.params.fontSize + 'px ' + this.params.fontFamily;
+		},
+		textSize: function (size) {
+			this.params.fontSize = size;
+			this.context.font = this.params.fontSize + 'px ' + this.params.fontFamily;
+		},
+		text: function (data, x, y) {
+			if (!this.params.noFill) this.context.fillText(data, x, y);
+		},
+		clearRect: function (x, y, width, height) {
+			/* Clear the surface. This is the HTML5 Canvas method */
+			this.context.clearRect(x, y, width, height);
 		}
 	});
 
@@ -157,10 +325,14 @@ window.addEventListener('load', function () {
 		initialize: function (context) {
 			ProcessingObject.call(this, 0, 0, context);
 			this.velocity = { x: 0, y: 0 };
+			this.force = { x: 0, y: 0 };
+			this.commandStack = [];
+			this.commandStackSeek = 0;
 			this.setup();
 		},
 		setup: function () {
 			this.setupTime = this.lastTime = new Date().getTime();
+			this.commandStackSeek = 0;
 
 			if (Hack.setup) {
 				Hack.setup(this);
@@ -172,6 +344,7 @@ window.addEventListener('load', function () {
 		onenterframe: function () {
 			var currentTime = new Date().getTime();
 			var t = (currentTime - this.lastTime) / 1000;
+			var spend = (currentTime - this.setupTime) / 1000;
 			this.lastTime = currentTime;
 
 			if (!Hack.isCometMoving) return;
@@ -179,7 +352,19 @@ window.addEventListener('load', function () {
 			this.px = this.x;
 			this.py = this.y;
 
-			if (this.update) this.update((currentTime - this.setupTime) / 1000, enchant.Core.instance);
+			this.update(spend);
+
+			// set-On method call
+			this.commandStack.forEach(function (item) {
+				if (item.enabled && item.time <= spend) {
+					this['set' + item.type](item.data);
+					item.enabled = false;
+				}
+			}, this);
+			this.commandStackSeek = spend;
+
+			this.velocity.x += this.force.x * t;
+			this.velocity.y += this.force.y * t;
 
 			this.x += this.velocity.x * t;
 			this.y += this.velocity.y * t;
@@ -201,22 +386,20 @@ window.addEventListener('load', function () {
 				this.velocity.y *= -1;
 			}
 
-			if (this.draw) {
-				this.draw();
-			}
+			this.draw(spend);
 
 			if (!Hack.isMusicStarted) return;
 
 			// 曲の長さを調べる
-			if ((currentTime - this.setupTime) / 1000 > Hack.music.length) {
+			if (spend > Hack.music.length) {
 				Hack.dispatchEvent(new Event('musicend'));
 			}
 
 			// Ringを吐き出す
 			var note8Millisecons = 30000 / Hack.music.BPM;
-			var spend = currentTime - this.setupTime - (Hack.nextBar * note8Millisecons * 16);
-			spend += (Hack.ringTime - Hack.music.delayTime) * 1000;
-			if (spend >= note8Millisecons * Hack.nextNote) {
+			var millisec = currentTime - this.setupTime - (Hack.nextBar * note8Millisecons * 16);
+			millisec += (Hack.ringTime - Hack.music.delayTime) * 1000;
+			if (millisec >= note8Millisecons * Hack.nextNote) {
 				if (Hack.notes[Hack.nextNote]) {
 					// 鳴らす
 					var ring = new Ring(this.x, this.y);
@@ -230,11 +413,18 @@ window.addEventListener('load', function () {
 			}
 		},
 		update: function (time) {
-			if (Hack.update) Hack.update(time);
+			var speed = Math.sqrt(Math.pow(this.velocity.x, 2) + Math.pow(this.velocity.y, 2));
+			if (Hack.update) {
+				Hack.update(this, time, this.x, this.y, this.px, this.py, speed, this.velocity.x, this.velocity.y,
+					this.setPosition.bind(this), this.setSpeed.bind(this), this.setVelocity.bind(this), this.setForce.bind(this), this.setNotes.bind(this),
+					this.setPositionOn.bind(this), this.setSpeedOn.bind(this), this.setVelocityOn.bind(this), this.setForceOn.bind(this), this.setNotesOn.bind(this));
+			}
 		},
-		draw: function () {
+		draw: function (time) {
+			var speed = Math.sqrt(Math.pow(this.velocity.x, 2) + Math.pow(this.velocity.y, 2));
 			if (Hack.draw) {
-				Hack.draw(this);
+				Hack.draw(this, time, this.x, this.y, this.px, this.py, speed, this.velocity.x, this.velocity.y,
+					this.line.bind(this), this.rect.bind(this), this.triangle.bind(this), this.quad.bind(this), this.point.bind(this), this.ellipse.bind(this), this.bezier.bind(this), this.stroke.bind(this), this.noStroke.bind(this), this.strokeWeight.bind(this), this.fill.bind(this), this.noFill.bind(this), this.text.bind(this), this.textFont.bind(this), this.textSize.bind(this), this.clearRect.bind(this));
 			} else {
 				// draw comet
 				this.context.fillStyle = 'rgba(0,0,0,0.1)';
@@ -246,80 +436,178 @@ window.addEventListener('load', function () {
 				this.context.closePath();
 				this.context.stroke();
 			}
+		},
+		setPosition: function (x, y) {
+			if (x.length > 0) this.setPosition(x[0], x[1]);
+			else this.moveTo(x, y);
+		},
+		setSpeed: function () {
+			if (arguments[0].length === 2) this.setSpeed(arguments[0][0], arguments[0][1]);
+			else if(arguments[0].length > 0) this.setSpeed(arguments[0][0]);
+			else {
+				switch (arguments.length) {
+				case 1:
+					var speed = arguments[0];
+					var abs = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y);
+					var norm = abs > 0 ? { x: this.velocity.x / abs, y: this.velocity.y / abs } : { x: 1, y: 1 };
+					this.velocity = { x: norm.x * speed, y: norm.y * speed };
+					break;
+				case 2:
+					var sign = { x: this.velocity.x >= 0 ? 1 : -1, y: this.velocity.y >= 0 ? 1 : -1 };
+					this.velocity = { x: sign.x * arguments[0], y: sign.y * arguments[1] };
+					break;
+				default: break;
+				}
+			}
+		},
+		setVelocity: function (x, y) {
+			if (x.length > 0) this.setVelocity(x[0], x[1]);
+			else this.velocity = { x: x, y: y };
+		},
+		setForce: function (x, y) {
+			if (x.length > 0) this.setForce(x[0], x[1]);
+			else this.force = { x: x, y: y };
+		},
+		setNotes: function () {
+			if (arguments[0].length > 0) {
+				Hack.notes = arguments[0];
+			} else {
+				this.setNotes(Array.prototype.slice.call(arguments));
+			}
+		},
+		setPositionOn: function (time, args) {
+			this.setOn(arguments, 'Position');
+		},
+		setVelocityOn: function (time, args) {
+			this.setOn(arguments, 'Velocity');
+		},
+		setSpeedOn: function (time, args) {
+			this.setOn(arguments, 'Speed');
+		},
+		setForceOn: function (time, args) {
+			this.setOn(arguments, 'Force');
+		},
+		setNotesOn: function (time, args) {
+			this.setOn(arguments, 'Notes');
+		},
+		setOn: function (mixed, type) {
+			var array = mixed[1] instanceof Array ? mixed[1] : Array.prototype.slice.call(mixed, 1);
+			var item = {
+				time: mixed[0], data: array, type: type, enabled: true
+			};
+			// もう時間が過ぎていないか
+			if (item.time > this.commandStackSeek) return;
+
+			// 同じデータがないか
+			var isUnique = this.commandStack.every(function (element) {
+				return item.time !== element.time || item.type !== element.type ||
+						element.data.every(function (number, index) {
+							return item.data[index] !== number;
+						});
+			});
+			if (isUnique) {
+				this.commandStack.push(item);
+			}
 		}
 	});
 
-	var Ring = Class(Sprite, {
+	var Ring = Class(ProcessingObject, {
 		initialize: function (x, y) {
-			Sprite.call(this, 80, 80);
+			ProcessingObject.call(this, 100, 100);
 			Hack.noteNum ++;
-			this.moveBy(x - 40, y - 40);
-			this.image = new Surface(this.width, this.height);
+			this.moveBy(x - 50, y - 50);
 			this.state = 0; // Prepare: 0, Ok: 1, Ng: 2
 			this.touchEnabled = false;
 			Hack.ringParent.addChild(this);
+			this.bornTime = new Date().getTime();
 		},
 		onenterframe: function () {
-			var ctx = this.image.context;
-			var r = this.width / 2;
-			var t = (this.age / game.fps) / Hack.ringTime;
+			var currentTime = new Date().getTime();
+			var spend = (currentTime - this.bornTime) / 1000;
 
-			if (t < 1) {
-				ctx.clearRect(0, 0, this.width, this.height);
-				// target circle
-				ctx.beginPath();
-				ctx.arc(r, r, r - 1, 0, Math.PI * 2, true);
-				ctx.strokeStyle = 'rgba(255,255,255,1)';
-				ctx.closePath();
-				ctx.stroke();
-				// time circle
-				ctx.beginPath();
-				ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
-				ctx.strokeStyle = 'rgba(0,200,255,1)';
-				ctx.closePath();
-				ctx.stroke();
-			} else if (t <= 4) {
-				if (this.state === 0) {
-					this.judge();
-				}
-				if (this.state === 1) {
-					// Ok
-					var end_t = 4 - t;
-					ctx.clearRect(0, 0, this.width, this.height);
-					ctx.beginPath();
-					ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
-					ctx.fillStyle = 'rgba(0,200,255,' + end_t + ')';
-					ctx.closePath();
-					ctx.fill();
-					ctx.fillStyle = 'rgba(255,255,255,' + end_t + ')';
-					ctx.textAlign = 'center';
-					ctx.fillText('OK', this.width / 2, this.height / 2);
-				} else {
-					// Ng
-					var end_t = 4 - t;
-					ctx.clearRect(0, 0, this.width, this.height);
-					ctx.beginPath();
-					ctx.arc(r, r, (r - 1) * t, 0, Math.PI * 2, true);
-					ctx.fillStyle = 'rgba(255,100,100,' + end_t + ')';
-					ctx.closePath();
-					ctx.fill();
-					ctx.fillStyle = 'rgba(255,255,255,' + end_t + ')';
-					ctx.textAlign = 'center';
-					ctx.fillText('NG', this.width / 2, this.height / 2);
-				}
-			} else if (this.parentNode) {
+			if (spend >= Hack.ringTime && this.state === 0) {
+				this.judge();
+			}
+			if (spend > 4 && this.parentNode) {
 				this.parentNode.removeChild(this);
+			} else {
+				this.draw(spend);
+			}
+		},
+		draw: function (time) {
+			var t = Hack.ringTime > 0 ? time / Hack.ringTime : 1;
+			var w = this.width, h = this.height;
+			this.clearRect(0, 0, w, h);
+			switch (this.state) {
+			case 0:
+				this.noFill();
+				this.stroke(255);
+				this.ellipse(10, 10, 80, 80);
+				this.stroke(0,160,255);
+				this.ellipse(50 - t * 40, 50 - t * 40, t * 80, t * 80);
+				break;
+			case 1:
+				var _t = Math.max((3 - t) / 2, 0);
+				if (_t > 0) {
+					this.stroke(255 * _t, 95 * _t + 160, 255, _t);
+					this.strokeWeight(_t * 8);
+					this.noFill();
+					this.ellipse(4, 4, 92, 92);
+				}
+				this.fill(255, 255, 255, _t);
+				this.text('OK', 43, 53);
+				break;
+			case 2:
+				var _t = Math.max((3 - t) / 2, 0);
+				if (_t > 0) {
+					this.stroke(200 - 55 * _t, 45 * _t, 0, _t);
+					this.strokeWeight(_t * 4);
+					this.noFill();
+					this.ellipse(12, 12, 76, 76);
+				}
+				this.fill(255, 255, 255, _t);
+				this.text('NG', 43, 53);
+				break;
 			}
 		},
 		judge: function () {
 			// Hack.ringTime[sec] 経過した瞬間、カーソルがRingの中にあるか
-			if(	this.x <= Hack.mouseX && Hack.mouseX <= this.x + this.width &&
-				this.y <= Hack.mouseY && Hack.mouseY <= this.y + this.height) {
+			var dx = this.x + this.width / 2 - Hack.mouseX;
+			var dy = this.y + this.height / 2 - Hack.mouseY;
+			if (dx * dx + dy * dy <= 40 * 40) {
 				this.state = 1;
 				Hack.point += 1;
 			} else {
 				this.state = 2;
 			}
+		}
+	});
+
+	var StartLabelUI = Class(Label, {
+		initialize: function () {
+			Label.call(this, 'Loading');
+			this.color = 'rgb(255,255,255)';
+			this.font = '32px fantasy';
+			this.textAlign = 'center';
+			this.width = 200;
+			this.moveTo(140, 140);
+			this.tl.fadeIn(30).fadeOut(30).loop();
+			Hack.defaultParentNode.addChild(this);
+		},
+		loadSuccessed: function () {
+			this.tl.clear().fadeIn(30);
+			this.text = 'Start';
+			this.ontouchend = function () {
+				if (!Hack.isMusicStarted) {
+					Hack.dispatchEvent(new Event('pressstart'));
+					this.parentNode.removeChild(this);
+				}
+			};
+		},
+		loadFailed: function () {
+			this.tl.clear().fadeIn(30);
+			this.text = 'Load Failed';
+			this.color = 'rgb(255,0,0)';
 		}
 	});
 
