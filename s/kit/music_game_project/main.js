@@ -416,8 +416,8 @@ window.addEventListener('load', function () {
 			var speed = Math.sqrt(Math.pow(this.velocity.x, 2) + Math.pow(this.velocity.y, 2));
 			if (Hack.update) {
 				Hack.update(this, time, this.x, this.y, this.px, this.py, speed, this.velocity.x, this.velocity.y,
-					this.setPosition.bind(this), this.setSpeed.bind(this), this.setVelocity.bind(this), this.setForce.bind(this),
-					this.setPositionOn.bind(this), this.setSpeedOn.bind(this), this.setVelocityOn.bind(this), this.setForceOn.bind(this));
+					this.setPosition.bind(this), this.setSpeed.bind(this), this.setVelocity.bind(this), this.setForce.bind(this), this.setNotes.bind(this),
+					this.setPositionOn.bind(this), this.setSpeedOn.bind(this), this.setVelocityOn.bind(this), this.setForceOn.bind(this), this.setNotesOn.bind(this));
 			}
 		},
 		draw: function (time) {
@@ -468,7 +468,14 @@ window.addEventListener('load', function () {
 			if (x.length > 0) this.setForce(x[0], x[1]);
 			else this.force = { x: x, y: y };
 		},
-		setPositionOn: function () {
+		setNotes: function () {
+			if (arguments[0].length > 0) {
+				Hack.notes = arguments[0];
+			} else {
+				this.setNotes(Array.prototype.slice.call(arguments));
+			}
+		},
+		setPositionOn: function (time, args) {
 			this.setOn(arguments, 'Position');
 		},
 		setVelocityOn: function (time, args) {
@@ -480,9 +487,13 @@ window.addEventListener('load', function () {
 		setForceOn: function (time, args) {
 			this.setOn(arguments, 'Force');
 		},
-		setOn: function (args, type) {
+		setNotesOn: function (time, args) {
+			this.setOn(arguments, 'Notes');
+		},
+		setOn: function (mixed, type) {
+			var array = mixed[1] instanceof Array ? mixed[1] : Array.prototype.slice.call(mixed, 1);
 			var item = {
-				time: args[0], data: Array.prototype.slice.call(args, 1), type: type, enabled: true
+				time: mixed[0], data: array, type: type, enabled: true
 			};
 			// もう時間が過ぎていないか
 			if (item.time > this.commandStackSeek) return;
