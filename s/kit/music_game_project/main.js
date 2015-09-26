@@ -1,121 +1,130 @@
 window.addEventListener('load', function () {
 
 	Hack.restagingCode =
-	"/**\n"+
-	" * Introduction;\n"+
-	" *\n"+
-	" * このゲームは、すいせい（コメット）を おいかけて\n"+
-	" * わっか（リング）をあつめる ゲームです\n"+
-	" *\n"+
-	" * おんがくの リズムにあわせて コメットをうごかし\n"+
-	" * メディアアートを たいけん してみましょう\n"+
-	" *\n"+
-	" *\n"+
-	" * Musics;\n"+
-	" *\n"+
-	" *      Name    |  BPM  | intro | length short (full)\n"+
-	" *   testmusic  |  171  |  1.5  |          140 (258)\n"+
-	" *\n"+
-	" */\n"+
-	"Hack.music = {\n"+
-	"\tname: 'testmusic',\n"+
-	"\tBPM: 171,\n"+
-	"\tdelayTime: 1.5,\n"+
-	"\tlength: 8\n"+
-	"};\n"+
-	"\n"+
-	"/**\n"+
-	" * setup;\n"+
-	" *\n"+
-	" * ゲームが はじまったときに コールされる\n"+
-	" * さいしょの 位置（いち）や 速度（そくど）を きめる\n"+
-	" *\n"+
-	" */\n"+
-	"Hack.setup = function (comet) {\n"+
-	"\n"+
-	"\t// ひだりから 240px, うえから 160px の いち\n"+
-	"\tcomet.x = 240;\n"+
-	"\tcomet.y = 160;\n"+
-	"\n"+
-	"\n"+
-	"\t// みぎにむかって 100 [px/sec],\n"+
-	"\t// うえにむかって 100 [px/sec] の はやさ\n"+
-	"\tcomet.setSpeed(100, 100);\n"+
-	"\t\n"+
-	"\tcomet.fill(0);\n"+
-	"\tcomet.rect(0, 0, 480, 320);\n"+
-	"\n"+
-	"};\n"+
-	"\n"+
-	"/**\n"+
-	" * update;\n"+
-	" *\n"+
-	" * ゲームが つづいているあいだ つねに コールされる\n"+
-	" * time（タイム）には けいかじかんが はいっている\n"+
-	" *\n"+
-	" */\n"+
-	"Hack.update = function (comet,time) {\n"+
-	"\n"+
-	"\t// 0秒〜16秒までのあいだのこと\n"+
-	"\tif (time < 16) {\n"+
-	"\t\tcomet.force.y = 60;\n"+
-	"\t}\n"+
-	"\n"+
-	"\t// 16秒〜40秒までのあいだのこと\n"+
-	"\tif (16 < time && time < 40) {\n"+
-	"\t\tcomet.force.y = 0;\n"+
-	"\t\tcomet.setSpeed(300, 100);\n"+
-	"\t}\n"+
-	"\n"+
-	"};\n"+
-	"\n"+
-	"/**\n"+
-	" * draw;\n"+
-	" *\n"+
-	" * コメットの 軌跡（きせき）について かかれている\n"+
-	" * いろ や ふとさ などを かえられる\n"+
-	" *\n"+
-	" */\n"+
-	"Hack.draw = function (comet,time) {\n"+
-	"\n"+
-	"\t/**\n"+
-	"\t * COLORS(色の作り方);\n"+
-	"\t *\n"+
-	"\t * white(白):    (255,255,255)\n"+
-	"\t * gray(灰):     (127,127,127)\n"+
-	"\t * black(黒):    (  0,  0,  0)\n"+
-	"\t * red(赤):      (255,  0,  0)\n"+
-	"\t * green(緑):    (  0,255,  0)\n"+
-	"\t * blue(青):     (  0,  0,255)\n"+
-	"\t *\n"+
-	"\t * Transparent colors(透明色);\n"+
-	"\t *\n"+
-	"\t * light blue(明るい青):    (  0,  0,255,0.9);\n"+
-	"\t * dark blue(くらい青):     (  0,  0,255,0.4);\n"+
-	"\t *\n"+
-	"\t * ... もっと知りたい人は、「光の三原色」について しらべよう！\n"+
-	"\t * ... The three primary colors.\n"+
-	"\t *\n"+
-	"\t */\n"+
-	"\tcomet.stroke(  0,  0,255);\n"+
-	"\n"+
-	"\n"+
-	"\t// 線を引く\n"+
-	"\tcomet.strokeWeight(1);\n"+
-	"\tcomet.line(comet.x, comet.y, comet.px, comet.py);\n"+
-	"\n"+
-	"\t// 16秒よりあとのこと\n"+
-	"\tif (time > 16) {\n"+
-	"\t\t// 三角形の もようを えがく\n"+
-	"\t\tcomet.triangle(0, 0, comet.x, comet.y, comet.px, comet.py);\n"+
-	"\t}\n"+
-	"\t\n"+
-	"\t// 全体をぼかす\n"+
-	"\tcomet.noStroke();\n"+
-	"\tcomet.fill(  0,  0,  0,0.02);\n"+
-	"\tcomet.rect(0, 0, 480, 320);\n"+
-	"\n"+
-	"};\n";
+"/**\n"+
+" * Introduction;\n"+
+" *\n"+
+" * このゲームは、すいせい（コメット）を おいかけて\n"+
+" * わっか（リング）をあつめる ゲームです\n"+
+" *\n"+
+" * おんがくの リズムにあわせて コメットをうごかし\n"+
+" * メディアアートを たいけん してみましょう\n"+
+" *\n"+
+" *\n"+
+" * Musics;\n"+
+" *\n"+
+" *      Name    |  BPM  | intro | length short (full)\n"+
+" *   testmusic  |  171  |  1.5  |          140 (258)\n"+
+" *\n"+
+" */\n"+
+"Hack.music = {\n"+
+"\tname: 'testmusic',\n"+
+"\tBPM: 171,\n"+
+"\tdelayTime: 1.5,\n"+
+"\tlength: 8\n"+
+"};\n"+
+"\n"+
+"/**\n"+
+" * setup;\n"+
+" *\n"+
+" * ゲームが はじまったときに コールされる\n"+
+" * さいしょの 位置（いち）や 速度（そくど）を きめる\n"+
+" *\n"+
+" */\n"+
+"Hack.setup = function (comet) {\n"+
+"\n"+
+"\t// ひだりから 240px, うえから 160px の いち\n"+
+"\tcomet.x = 240;\n"+
+"\tcomet.y = 160;\n"+
+"\n"+
+"\n"+
+"\t// みぎにむかって 100 [px/sec],\n"+
+"\t// うえにむかって 100 [px/sec] の はやさ\n"+
+"\tcomet.velocity.x = 100;\n"+
+"\tcomet.velocity.y = -100;\n"+
+"\n"+
+"};\n"+
+"\n"+
+"/**\n"+
+" * update;\n"+
+" *\n"+
+" * ゲームが つづいているあいだ つねに コールされる\n"+
+" * time（タイム）には けいかじかんが はいっている\n"+
+" *\n"+
+" */\n"+
+"Hack.update = function (\n"+
+"\tcomet, time, x, y, px, py, speed, vx, vy,\n"+
+"\tsetPosition, setSpeed, setVelocity, setForce, setNotes,\n"+
+"\tsetPositionOn, setSpeedOn, setVelocityOn, setForceOn, setNotesOn) {\n"+
+"\n"+
+"\n"+
+"\t// 2秒のとき、ひだりから 200 うえから 80 に、いどうする\n"+
+"\tsetPositionOn(  2, 200, 80);\n"+
+"\n"+
+"\tsetNotesOn(4, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1);\n"+
+"\n"+
+"\tif (4 < time && time < 10) {\n"+
+"\t\tsetSpeed(400, 100);\n"+
+"\t}\n"+
+"\n"+
+"\tsetPositionOn( 10, 100,  0);\n"+
+"\n"+
+"\tsetForceOn( 16,   0,   0);\n"+
+"\tsetSpeedOn( 16, 300, 100);\n"+
+"\n"+
+"};\n"+
+"\n"+
+"/**\n"+
+" * draw;\n"+
+" *\n"+
+" * コメットの 軌跡（きせき）について かかれている\n"+
+" * いろ や ふとさ などを かえられる\n"+
+" *\n"+
+" */\n"+
+"Hack.draw = function (\n"+
+"\tcomet, time, x, y, px, py, speed, vx, vy,\n"+
+"\tline, rect, triangle, quad, point, ellipse, bezier,\n"+
+"\tstroke, noStroke, strokeWeight, fill, noFill,\n"+
+"\ttext, textFont, textSize, clearRect) {\n"+
+"\n"+
+"\t/**\n"+
+"\t * COLORS(色の作り方);\n"+
+"\t *\n"+
+"\t * white(白):    (255,255,255)\n"+
+"\t * gray(灰):     (127,127,127)\n"+
+"\t * black(黒):    (  0,  0,  0)\n"+
+"\t * red(赤):      (255,  0,  0)\n"+
+"\t * green(緑):    (  0,255,  0)\n"+
+"\t * blue(青):     (  0,  0,255)\n"+
+"\t *\n"+
+"\t * Transparent colors(透明色);\n"+
+"\t *\n"+
+"\t * light blue(明るい青):    (  0,  0,255,0.9);\n"+
+"\t * dark blue(くらい青):     (  0,  0,255,0.4);\n"+
+"\t *\n"+
+"\t * ... もっと知りたい人は、「光の三原色」について しらべよう！\n"+
+"\t * ... The three primary colors.\n"+
+"\t *\n"+
+"\t */\n"+
+"\tstroke(  0,  0,255);\n"+
+"\n"+
+"\n"+
+"\t// 線を引く\n"+
+"\tstrokeWeight(1);\n"+
+"\tline(x, y, px, py);\n"+
+"\n"+
+"\t// 16秒よりあとのこと\n"+
+"\tif (time > 16) {\n"+
+"\t\t// 三角形の もようを えがく\n"+
+"\t\ttriangle(0, 0, x, y, px, py);\n"+
+"\t}\n"+
+"\n"+
+"\t// 全体をぼかす\n"+
+"\tnoStroke();\n"+
+"\tfill(  0,  0,  0,0.02);\n"+
+"\trect(0, 0, 480, 320);\n"+
+"\n"+
+"};\n";
 
 	// Default
 	Hack.music = {
