@@ -326,10 +326,13 @@ window.addEventListener('load', function () {
 			ProcessingObject.call(this, 0, 0, context);
 			this.velocity = { x: 0, y: 0 };
 			this.force = { x: 0, y: 0 };
+			this.commandStack = [];
+			this.commandStackSeek = 0;
 			this.setup();
 		},
 		setup: function () {
 			this.setupTime = this.lastTime = new Date().getTime();
+			this.commandStackSeek = 0;
 
 			if (Hack.setup) {
 				Hack.setup(this);
@@ -341,6 +344,7 @@ window.addEventListener('load', function () {
 		onenterframe: function () {
 			var currentTime = new Date().getTime();
 			var t = (currentTime - this.lastTime) / 1000;
+			var spend = (currentTime - this.setupTime) / 1000;
 			this.lastTime = currentTime;
 
 			if (!Hack.isCometMoving) return;
@@ -348,7 +352,34 @@ window.addEventListener('load', function () {
 			this.px = this.x;
 			this.py = this.y;
 
-			this.update((currentTime - this.setupTime) / 1000);
+			this.update(spend);
+
+			// set-On method call
+			this.commandStack.forEach(function (item) {
+				if (item.enabled && item.time <= spend) {
+					switch (item.type) {
+					case 'position':
+						this.x = item.data[0];
+						this.y = item.data[1];
+						break;
+					case 'velocity':
+						this.velocity = { x: item.data[0], y: item.data[1] };
+						break;
+					case 'speed':
+						if (item.data.length === 1) {
+							this.setSpeed(item.data[0]);
+						} else if (item.data.length === 2) {
+							this.setSpeed(item.data[0], item.data[1]);
+						}
+						break;
+					case 'force':
+						this.force = { x: item.data[0], y: item.data[1] };
+						break;
+					}
+					item.enabled = false;
+				}
+			}, this);
+			this.commandStackSeek = spend;
 
 			this.velocity.x += this.force.x * t;
 			this.velocity.y += this.force.y * t;
@@ -373,20 +404,20 @@ window.addEventListener('load', function () {
 				this.velocity.y *= -1;
 			}
 
-			this.draw((currentTime - this.setupTime) / 1000);
+			this.draw(spend);
 
 			if (!Hack.isMusicStarted) return;
 
 			// 曲の長さを調べる
-			if ((currentTime - this.setupTime) / 1000 > Hack.music.length) {
+			if (spend > Hack.music.length) {
 				Hack.dispatchEvent(new Event('musicend'));
 			}
 
 			// Ringを吐き出す
 			var note8Millisecons = 30000 / Hack.music.BPM;
-			var spend = currentTime - this.setupTime - (Hack.nextBar * note8Millisecons * 16);
-			spend += (Hack.ringTime - Hack.music.delayTime) * 1000;
-			if (spend >= note8Millisecons * Hack.nextNote) {
+			var millisec = currentTime - this.setupTime - (Hack.nextBar * note8Millisecons * 16);
+			millisec += (Hack.ringTime - Hack.music.delayTime) * 1000;
+			if (millisec >= note8Millisecons * Hack.nextNote) {
 				if (Hack.notes[Hack.nextNote]) {
 					// 鳴らす
 					var ring = new Ring(this.x, this.y);
@@ -430,6 +461,36 @@ window.addEventListener('load', function () {
 				this.velocity = { x: sign.x * arguments[0], y: sign.y * arguments[1] };
 				break;
 			default: break;
+			}
+		},
+		setPositionOn: function () {
+			this.setOn(arguments, 'position');
+		},
+		setVelocityOn: function (time, args) {
+			this.setOn(arguments, 'velocity');
+		},
+		setSpeedOn: function (time, args) {
+			this.setOn(arguments, 'speed');
+		},
+		setForceOn: function (time, args) {
+			this.setOn(arguments, 'force');
+		},
+		setOn: function (args, type) {
+			var item = {
+				time: args[0], data: Array.prototype.slice.call(args, 1), type: type, enabled: true
+			};
+			// もう時間が過ぎていないか
+			if (item.time > this.commandStackSeek) return;
+
+			// 同じデータがないか
+			var isUnique = this.commandStack.every(function (element) {
+				return item.time !== element.time || item.type !== element.type ||
+						element.data.every(function (number, index) {
+							return item.data[index] !== number;
+						});
+			});
+			if (isUnique) {
+				this.commandStack.push(item);
 			}
 		}
 	});
