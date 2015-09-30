@@ -52,7 +52,7 @@ window.addEventListener('message', function (e) {
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
-    game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png', 'hackforplay/menu-button-menu.png', 'hackforplay/menu-button-restage.png', 'hackforplay/menu-button-hint.png', 'hackforplay/menu-button-comment.png', 'hackforplay/menu-button-retry.png', 'hackforplay/new_button_next.png', 'hackforplay/new_button_comment.png', 'hackforplay/new_button_restage.png', 'hackforplay/achievement_p.png', 'hackforplay/achievement_n.png');
+    game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png', 'hackforplay/menu-button-menu.png', 'hackforplay/menu-button-restage.png', 'hackforplay/menu-button-hint.png', 'hackforplay/menu-button-comment.png', 'hackforplay/menu-button-retry.png', 'hackforplay/new_button_next.png', 'hackforplay/new_button_comment.png', 'hackforplay/new_button_restage.png', 'hackforplay/achievement_p.png', 'hackforplay/achievement_n.png', 'hackforplay/new_button_town.png');
 
     // Hackのクラスを生成 インスタンスはget only
     var HackEnchant = enchant.Class.create(enchant.EventTarget, {
@@ -275,7 +275,7 @@ window.addEventListener('load', function() {
 					// 仮グラフィック
 					Hack.createSprite(165, 69, {
 						x: 65-game.rootScene.x, y: 320-game.rootScene.y,
-						image: game.assets['hackforplay/new_button_next.png'],
+						image: game.assets['hackforplay/new_button_town.png'],
 						defaultParentNode: game.rootScene,
 						ontouchend: function() {
 							// [NEXT] がクリックされたとき

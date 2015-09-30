@@ -35,16 +35,56 @@ var gameover; // gameoverメソッドも
             switch (__H4PENV__MODE) {
 
                 case 'quest':
-                // [NEXT]
-                (function (sprite) {
-                    sprite.image = game.assets['hackforplay/new_button_next.png'];
-                    sprite.moveTo(65, 320);
-                    sprite.tl.moveTo(65, 240, 10, enchant.Easing.CUBIC_EASEOUT);
-                    sprite.on('touchstart', function() {
-                        window.parent.postMessage('quest_move_next', '/');
-                    });
-                    game.rootScene.addChild(sprite);
-                })(new Sprite(165, 69));
+                if (sessionStorage.getItem('stage_param_next') >> 0 > 0) {
+                    // [NEXT]
+                    (function (sprite) {
+                        sprite.image = game.assets['hackforplay/new_button_next.png'];
+                        sprite.moveTo(65, 320);
+                        sprite.tl.moveTo(65, 240, 10, enchant.Easing.CUBIC_EASEOUT);
+                        sprite.on('touchstart', function() {
+                            window.parent.postMessage('quest_move_next', '/');
+                        });
+                        game.rootScene.addChild(sprite);
+                    })(new Sprite(165, 69));
+                } else {
+                    // [TOWN]
+                    // 仮のグラフィック
+                    (function (sprite) {
+                        sprite.image = game.assets['hackforplay/new_button_town.png'];
+                        sprite.moveTo(65, 320);
+                        sprite.tl.moveTo(65, 240, 10, enchant.Easing.CUBIC_EASEOUT);
+                        sprite.on('touchstart', function() {
+                            window.parent.postMessage('quest_move_next', '/');
+                        });
+                        game.rootScene.addChild(sprite);
+                    })(new Sprite(165, 69));
+                    if (sessionStorage.getItem('stage_param_reporting_requirements')) {
+                        // 演出
+                        // [Empty]
+                        (function (sprite) {
+                            sprite.image = game.assets['hackforplay/achievement_n.png'];
+                            sprite.moveTo(224, -32);
+                            sprite.tl.delay(13).moveBy(0, 92, 7, enchant.Easing.CUBIC_EASEOUT);
+                            game.rootScene.addChild(sprite);
+                        })(new Sprite(32, 32));
+                        // [Effect]
+                        (function (sprite) {
+                            sprite.image = game.assets['hackforplay/achievement_p.png'];
+                            sprite.moveTo(224, 60);
+                            sprite.tl.delay(28).scaleTo(12, 12, 20).and().fadeOut(20);
+                            sprite.scaleX = sprite.scaleY = 0;
+                            game.rootScene.addChild(sprite);
+                        })(new Sprite(32, 32));
+                        // [Entity]
+                        (function (sprite) {
+                            sprite.image = game.assets['hackforplay/achievement_p.png'];
+                            sprite.moveTo(224, 60);
+                            sprite.tl.delay(28).scaleTo(1, 1, 4);
+                            sprite.scaleX = sprite.scaleY = 0;
+                            game.rootScene.addChild(sprite);
+                        })(new Sprite(32, 32));
+                    }
+                }
                 // [COMMENT]
                 (function (sprite) {
                     sprite.image = game.assets['hackforplay/new_button_comment.png'];
