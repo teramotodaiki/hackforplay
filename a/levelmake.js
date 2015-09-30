@@ -81,6 +81,7 @@ $(function () {
 			levelEntity.removeClass('hidden level-wrapper-sample').addClass('level-wrapper-entity');
 			levelEntity.find('.PlayOrder').text(level.PlayOrder);
 			levelEntity.find('#LevelInfo').val(level.StageID);
+			levelEntity.find('.StageThumbnail').attr('src', level.Thumbnail);
 			levelEntity.find('.Link').attr('href', '/s/?mode=quest&level=' + level.ID);
 			levelEntity.find('form[data-query="updateLevel"]').data('id', level.ID);
 			levelEntity.find('.query-remove-level').data('id', level.ID);

@@ -137,6 +137,7 @@
 				    			</div>
 				    			<div class="quest-body-2">
 					    			<div class="level-wrapper-sample col-xs-3 margin-top-sm hidden">
+					    				<img src="" class="StageThumbnail img-responsive margin-bottom-sm" alt="">
 					    				<form class="form-inline" data-query="updateLevel">
 					    					<div class="form-group form-group-sm">
 					    						<label class="control-label" for="LevelInfo">

@@ -12,7 +12,8 @@
 		levels:
 		[{
 			StageID:INT,
-			PlayOrder:INT
+			PlayOrder:INT,
+			Thumbnail:String
 		}(,,,)]
 	}(,,,)]
  }
@@ -37,7 +38,7 @@ try {
 		exit;
 	}
 
-	$stmt	= $dbh->prepare('SELECT "ID","StageID","PlayOrder" FROM "Level" WHERE "QuestID"=:quest_id ORDER BY "PlayOrder"');
+	$stmt	= $dbh->prepare('SELECT l."ID",l."StageID",l."PlayOrder",s."Thumbnail" FROM "Level" AS l INNER JOIN "Stage" AS s ON l."StageID"=s."ID" WHERE l."QuestID"=:quest_id ORDER BY l."PlayOrder"');
 
 	foreach ($result['quests'] as $key => $value) {
 
