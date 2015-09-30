@@ -13,6 +13,7 @@ $(function () {
 
 			$('.load-pavilion').removeClass('active');
 			$(this).addClass('active');
+			$('.pavilion-body-1').removeClass('hidden');
 
 			// クエストリストのロード
 			$.post('../levelmake/getquestlist.php', {
@@ -74,9 +75,10 @@ $(function () {
 			if (quest.levels.length > 0) {
 				questEntity.find('.Debug').attr('href', '/s/?mode=quest&level=' + quest.levels[0].ID);
 			}
+			questEntity.data('type', quest.Type);
 
 			quest.levels.forEach(addLevel, questEntity);
-			questEntity.appendTo('.pavilion-info .pavilion-body-1');
+			questEntity.appendTo('.pavilion-info .pavilion-body-2');
 		}
 
 		function addLevel (level) {
@@ -170,6 +172,23 @@ $(function () {
 					alert('FALIED TO REMOVE; id=' + id);
 				}
 			});
+		}
+	});
+
+	// Type filtering
+	$('.type-filter-button').on('click', function() {
+		var type = $(this).data('filter');
+		if ($(this).hasClass('active')) {
+			$(this).removeClass('active');
+			$('.quest-info-entity').filter(function(index) {
+				console.log($(this).data('type'));
+				return $(this).data('type') === type;
+			}).addClass('hidden');
+		} else {
+			$(this).addClass('active');
+			$('.quest-info-entity').filter(function(index) {
+				return $(this).data('type') === type;
+			}).removeClass('hidden');
 		}
 	});
 });

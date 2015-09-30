@@ -118,7 +118,12 @@
 		    		</button>
 		    		<?php endforeach; ?>
 			    	<div class="pavilion-info row">
-			    		<div class="pavilion-body-1 col-xs-12">
+			    		<div class="pavilion-body-1 margin-top-lg col-xs-12 hidden">
+			    			<button type="button" class="btn btn-default type-filter-button active" data-filter="easy">easy</button>
+			    			<button type="button" class="btn btn-default type-filter-button active" data-filter="normal">normal</button>
+			    			<button type="button" class="btn btn-default type-filter-button active" data-filter="hard">hard</button>
+			    		</div>
+			    		<div class="pavilion-body-2 col-xs-12">
 				    		<div class="quest-info-sample margin-top-lg row hidden">
 				    			<div class="quest-body-1 col-xs-12">
 				    				<form class="form-inline" data-query="updateQuest">
@@ -160,7 +165,7 @@
 				    			</div>
 				    		</div>
 			    		</div>
-			    		<div class="pavilion-body-2 col-xs-12 margin-top-lg">
+			    		<div class="pavilion-body-3 col-xs-12 margin-top-lg">
 			    			<button type="button" class="btn btn-link query-add-quest">Add Quest</button>
 			    		</div>
 			    	</div>
