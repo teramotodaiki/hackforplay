@@ -11,6 +11,9 @@ $(function () {
 
 			$('.pavilion-info .quest-info-entity').remove();
 
+			$('.load-pavilion').removeClass('active');
+			$(this).addClass('active');
+
 			// クエストリストのロード
 			$.post('../levelmake/getquestlist.php', {
 				'id': id
