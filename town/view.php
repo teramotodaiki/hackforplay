@@ -20,6 +20,14 @@
 	<div class="container container-town">
 		<div class="row">
 			<div class="town-parent">
+				<div class="town-content content-parent content-background timeline timeline-3s">
+					<img class="town-content content-image content-cloud content-cloud-1">
+					<img class="town-content content-image content-cloud content-cloud-2">
+					<img class="town-content content-image content-cloud content-cloud-3">
+					<img class="town-content content-image content-cloud content-cloud-1">
+					<img class="town-content content-image content-cloud content-cloud-2">
+					<img class="town-content content-image content-cloud content-cloud-3">
+				</div>
 				<img class="town-content content-image timeline timeline-1s content-ground">
 				<div class="town-content content-button content-parent content-pavilion content-pavilion-0 hidden" data-query="pavilion">
 					<img class="town-content content-image timeline timeline-2s content-icon">
