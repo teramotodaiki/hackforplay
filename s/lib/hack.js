@@ -52,7 +52,7 @@ window.addEventListener('message', function (e) {
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
-    game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png', 'hackforplay/menu-button-menu.png', 'hackforplay/menu-button-restage.png', 'hackforplay/menu-button-hint.png', 'hackforplay/menu-button-comment.png', 'hackforplay/menu-button-retry.png', 'hackforplay/new_button_next.png', 'hackforplay/new_button_comment.png', 'hackforplay/new_button_restage.png');
+    game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png', 'hackforplay/menu-button-menu.png', 'hackforplay/menu-button-restage.png', 'hackforplay/menu-button-hint.png', 'hackforplay/menu-button-comment.png', 'hackforplay/menu-button-retry.png', 'hackforplay/new_button_next.png', 'hackforplay/new_button_comment.png', 'hackforplay/new_button_restage.png', 'hackforplay/achievement_p.png', 'hackforplay/achievement_n.png');
 
     // Hackのクラスを生成 インスタンスはget only
     var HackEnchant = enchant.Class.create(enchant.EventTarget, {
@@ -259,16 +259,53 @@ window.addEventListener('load', function() {
 
 			switch (__H4PENV__MODE) {
 				case 'quest':
-				// [NEXT]
-				Hack.createSprite(165, 69, {
-					x: 65-game.rootScene.x, y: 320-game.rootScene.y,
-					image: game.assets['hackforplay/new_button_next.png'],
-					defaultParentNode: game.rootScene,
-					ontouchend: function() {
-						// [NEXT] がクリックされたとき
-						window.parent.postMessage('quest_move_next', '/');
+				if (sessionStorage.getItem('stage_param_next') >> 0 > 0) {
+					// [NEXT]
+					Hack.createSprite(165, 69, {
+						x: 65-game.rootScene.x, y: 320-game.rootScene.y,
+						image: game.assets['hackforplay/new_button_next.png'],
+						defaultParentNode: game.rootScene,
+						ontouchend: function() {
+							// [NEXT] がクリックされたとき
+							window.parent.postMessage('quest_move_next', '/');
+						}
+					}).tl.moveTo(65-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
+				} else {
+					// [TOWN]
+					// 仮グラフィック
+					Hack.createSprite(165, 69, {
+						x: 65-game.rootScene.x, y: 320-game.rootScene.y,
+						image: game.assets['hackforplay/new_button_next.png'],
+						defaultParentNode: game.rootScene,
+						ontouchend: function() {
+							// [NEXT] がクリックされたとき
+							window.parent.postMessage('quest_move_next', '/');
+						}
+					}).tl.moveTo(65-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
+					if (sessionStorage.getItem('stage_param_reporting_requirements')) {
+						// 演出
+						// [Empty]
+						Hack.createSprite(32, 32, {
+							x: 224-game.rootScene.x, y: -32-game.rootScene.y,
+							image: game.assets['hackforplay/achievement_n.png'],
+							defaultParentNode: game.rootScene,
+						}).tl.delay(26).moveBy(0, 92, 14, enchant.Easing.CUBIC_EASEOUT);
+						// [Effect]
+						Hack.createSprite(32, 32, {
+							x: 224-game.rootScene.x, y: 60-game.rootScene.y,
+							image: game.assets['hackforplay/achievement_p.png'],
+							defaultParentNode: game.rootScene,
+							scaleX: 0, scaleY: 0
+						}).tl.delay(56).scaleTo(12, 12, 40).and().fadeOut(40);
+						// [Entity]
+						Hack.createSprite(32, 32, {
+							x: 224-game.rootScene.x, y: 60-game.rootScene.y,
+							image: game.assets['hackforplay/achievement_p.png'],
+							defaultParentNode: game.rootScene,
+							scaleX: 0, scaleY: 0
+						}).tl.delay(56).scaleTo(1, 1, 8);
 					}
-				}).tl.moveTo(65-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
+				}
 				// [COMMENT]
 				Hack.createSprite(165, 69, {
 					x: 250-game.rootScene.x, y: 320-game.rootScene.y,
