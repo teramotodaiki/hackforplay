@@ -145,6 +145,9 @@
 					    					</div>
 				    						<button type="submit" class="btn btn-default btn-sm">Update</button>
 					    				</form>
+			    						<button type="button" class="btn btn-link query-remove-level">
+			    							<span aria-hidden="true">&times;</span>
+			    						</button>
 					    			</div>
 				    			</div>
 				    			<div class="quest-body-3 col-xs-3 margin-top-sm">

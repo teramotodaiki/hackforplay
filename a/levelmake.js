@@ -82,6 +82,7 @@ $(function () {
 			levelEntity.find('.PlayOrder').text(level.PlayOrder);
 			levelEntity.find('#LevelInfo').val(level.StageID);
 			levelEntity.find('form[data-query="updateLevel"]').data('id', level.ID);
+			levelEntity.find('.query-remove-level').data('id', level.ID);
 			this.find('.quest-body-2').append(levelEntity);
 		}
 
@@ -150,4 +151,20 @@ $(function () {
 		});
 	});
 
+	// Remove level
+	$('.query-remove-level').on('click', function() {
+		var wrapper = $(this).parents('.level-wrapper-entity').get(0);
+		var id = $(this).data('id');
+		if (confirm('Are you sure to remove this level?')) {
+			$.post('../levelmake/removelevel.php', {
+				'id': id
+			}, function(data, textStatus, xhr) {
+				if (data === 'success') {
+					wrapper.remove();
+				}else {
+					alert('FALIED TO REMOVE; id=' + id);
+				}
+			});
+		}
+	});
 });
