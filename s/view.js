@@ -85,10 +85,8 @@ $(function(){
 								// 次のレベルに遷移
 								location.href = '/s/?mode=quest&level=' + getParam('next');
 							} else {
-								// (クエストコンプリート後の動線.クエスト一覧に遷移？)
-								if (confirm('これでおわりです。クエスト一覧に戻りますか？')) {
-									location.href = '/pavilion/?id=' + getParam('pavilion');
-								}
+								// (クエストコンプリート後の動線.ひろばにもどる)
+								location.href = '/town/';
 							}
 						}
 					});
