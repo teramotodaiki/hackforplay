@@ -139,7 +139,11 @@
 					    			<div class="level-wrapper-sample col-xs-3 margin-top-sm hidden">
 					    				<form class="form-inline" data-query="updateLevel">
 					    					<div class="form-group form-group-sm">
-					    						<label class="control-label" for="LevelInfo">Lv.<span class="PlayOrder"></span></label>
+					    						<label class="control-label" for="LevelInfo">
+					    							<a href="#" class="Link" title="Play" target="_blank">
+					    								Lv.<span class="PlayOrder"></span>
+					    							</a>
+					    						</label>
 					    						<input type="text" class="form-control" id="LevelInfo" size="5" value="">
 					    						<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 					    					</div>
