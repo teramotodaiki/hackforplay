@@ -11,6 +11,10 @@ $(function () {
 
 			$('.pavilion-info .quest-info-entity').remove();
 
+			$('.load-pavilion').removeClass('active');
+			$(this).addClass('active');
+			$('.pavilion-body-1').removeClass('hidden');
+
 			// クエストリストのロード
 			$.post('../levelmake/getquestlist.php', {
 				'id': id
@@ -71,9 +75,10 @@ $(function () {
 			if (quest.levels.length > 0) {
 				questEntity.find('.Debug').attr('href', '/s/?mode=quest&level=' + quest.levels[0].ID);
 			}
+			questEntity.data('type', quest.Type);
 
 			quest.levels.forEach(addLevel, questEntity);
-			questEntity.appendTo('.pavilion-info .pavilion-body-1');
+			questEntity.appendTo('.pavilion-info .pavilion-body-2');
 		}
 
 		function addLevel (level) {
@@ -81,7 +86,10 @@ $(function () {
 			levelEntity.removeClass('hidden level-wrapper-sample').addClass('level-wrapper-entity');
 			levelEntity.find('.PlayOrder').text(level.PlayOrder);
 			levelEntity.find('#LevelInfo').val(level.StageID);
+			levelEntity.find('.StageThumbnail').attr('src', level.Thumbnail);
+			levelEntity.find('.Link').attr('href', '/s/?mode=quest&level=' + level.ID);
 			levelEntity.find('form[data-query="updateLevel"]').data('id', level.ID);
+			levelEntity.find('.query-remove-level').data('id', level.ID);
 			this.find('.quest-body-2').append(levelEntity);
 		}
 
@@ -150,4 +158,37 @@ $(function () {
 		});
 	});
 
+	// Remove level
+	$('.query-remove-level').on('click', function() {
+		var wrapper = $(this).parents('.level-wrapper-entity').get(0);
+		var id = $(this).data('id');
+		if (confirm('Are you sure to remove this level?')) {
+			$.post('../levelmake/removelevel.php', {
+				'id': id
+			}, function(data, textStatus, xhr) {
+				if (data === 'success') {
+					wrapper.remove();
+				}else {
+					alert('FALIED TO REMOVE; id=' + id);
+				}
+			});
+		}
+	});
+
+	// Type filtering
+	$('.type-filter-button').on('click', function() {
+		var type = $(this).data('filter');
+		if ($(this).hasClass('active')) {
+			$(this).removeClass('active');
+			$('.quest-info-entity').filter(function(index) {
+				console.log($(this).data('type'));
+				return $(this).data('type') === type;
+			}).addClass('hidden');
+		} else {
+			$(this).addClass('active');
+			$('.quest-info-entity').filter(function(index) {
+				return $(this).data('type') === type;
+			}).removeClass('hidden');
+		}
+	});
 });

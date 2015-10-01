@@ -118,7 +118,12 @@
 		    		</button>
 		    		<?php endforeach; ?>
 			    	<div class="pavilion-info row">
-			    		<div class="pavilion-body-1 col-xs-12">
+			    		<div class="pavilion-body-1 margin-top-lg col-xs-12 hidden">
+			    			<button type="button" class="btn btn-default type-filter-button active" data-filter="easy">easy</button>
+			    			<button type="button" class="btn btn-default type-filter-button active" data-filter="normal">normal</button>
+			    			<button type="button" class="btn btn-default type-filter-button active" data-filter="hard">hard</button>
+			    		</div>
+			    		<div class="pavilion-body-2 col-xs-12">
 				    		<div class="quest-info-sample margin-top-lg row hidden">
 				    			<div class="quest-body-1 col-xs-12">
 				    				<form class="form-inline" data-query="updateQuest">
@@ -137,14 +142,22 @@
 				    			</div>
 				    			<div class="quest-body-2">
 					    			<div class="level-wrapper-sample col-xs-3 margin-top-sm hidden">
+					    				<img src="" class="StageThumbnail img-responsive margin-bottom-sm" alt="">
 					    				<form class="form-inline" data-query="updateLevel">
 					    					<div class="form-group form-group-sm">
-					    						<label class="control-label" for="LevelInfo">Lv.<span class="PlayOrder"></span></label>
+					    						<label class="control-label" for="LevelInfo">
+					    							<a href="#" class="Link" title="Play" target="_blank">
+					    								Lv.<span class="PlayOrder"></span>
+					    							</a>
+					    						</label>
 					    						<input type="text" class="form-control" id="LevelInfo" size="5" value="">
 					    						<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 					    					</div>
 				    						<button type="submit" class="btn btn-default btn-sm">Update</button>
 					    				</form>
+			    						<button type="button" class="btn btn-link query-remove-level">
+			    							<span aria-hidden="true">&times;</span>
+			    						</button>
 					    			</div>
 				    			</div>
 				    			<div class="quest-body-3 col-xs-3 margin-top-sm">
@@ -152,7 +165,7 @@
 				    			</div>
 				    		</div>
 			    		</div>
-			    		<div class="pavilion-body-2 col-xs-12 margin-top-lg">
+			    		<div class="pavilion-body-3 col-xs-12 margin-top-lg">
 			    			<button type="button" class="btn btn-link query-add-quest">Add Quest</button>
 			    		</div>
 			    	</div>
