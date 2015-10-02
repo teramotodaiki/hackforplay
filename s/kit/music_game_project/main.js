@@ -255,13 +255,13 @@ window.addEventListener('load', function () {
 
     Hack.onpressstart = Hack.onpressstart || function () {
         if (Hack.sound) {
+            Hack.isCometMoving = true;
+            Hack.isMusicStarted = true;
+            Hack.sound.play();
             // Comet move to initialized point
             if (Hack.isCometMoving) {
                 Hack.comet.setup();
             }
-            Hack.isCometMoving = true;
-            Hack.isMusicStarted = true;
-            Hack.sound.play();
         }
     };
 
@@ -411,7 +411,7 @@ window.addEventListener('load', function () {
             this.setup();
         },
         setup: function () {
-            this.setupTime = this.lastTime = new Date().getTime();
+            this.setupTime = this.lastTime = Hack.isMusicStarted ? 0 : new Date().getTime();
             this.commandStackSeek = 0;
 
             if (Hack.setup) {
@@ -422,7 +422,7 @@ window.addEventListener('load', function () {
             }
         },
         onenterframe: function () {
-            var currentTime = new Date().getTime();
+            var currentTime = Hack.isMusicStarted ? Hack.sound.currentTime * 1000 : new Date().getTime();
             var t = (currentTime - this.lastTime) / 1000;
             var spend = (currentTime - this.setupTime) / 1000;
             this.lastTime = currentTime;
