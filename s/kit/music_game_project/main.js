@@ -219,11 +219,11 @@ window.addEventListener('load', function () {
         Hack.ringParent = new Group();
         game.rootScene.addChild(Hack.ringParent); // layer 1
 
-        Hack.touchSensor = new Entity(game.width, game.height);
-        Hack.touchSensor.on('touchmove', function (event) {
-            Hack.mouseX = event.localX;
-            Hack.mouseY = event.localY;
-        });
+        Hack.touchSensor = new Sprite(game.width, game.height);
+        Hack.touchSensor.ontouchmove = function (event) {
+            Hack.mouseX = event.x;
+            Hack.mouseY = event.y;
+        };
         game.rootScene.addChild(Hack.touchSensor); // layer 2
 
         Hack.defaultParentNode = Hack.defaultParentNode || new Group();
