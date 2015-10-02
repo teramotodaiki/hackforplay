@@ -205,7 +205,8 @@ window.addEventListener('load', function () {
          * Layer
          * 0: cometSprite
          * 1: ringParent
-         * 2: UI (defaultParentNode)
+         * 2: touch sensor
+         * 3: UI (defaultParentNode)
          */
 
         var cometSprite = new Sprite(game.width, game.height);
@@ -217,6 +218,13 @@ window.addEventListener('load', function () {
 
         Hack.ringParent = new Group();
         game.rootScene.addChild(Hack.ringParent); // layer 1
+
+        Hack.touchSensor = new Entity(game.width, game.height);
+        Hack.touchSensor.on('touchmove', function (event) {
+            Hack.mouseX = event.localX;
+            Hack.mouseY = event.localY;
+        });
+        game.rootScene.addChild(Hack.touchSensor); // layer 2
 
         Hack.defaultParentNode = Hack.defaultParentNode || new Group();
         var startLabel = new StartLabelUI();
@@ -711,7 +719,7 @@ window.addEventListener('load', function () {
         }
     });
 
-    // Input
+    // PC Input
     var stage = document.getElementById('enchant-stage');
     stage.addEventListener('mousemove', function (event) {
         Hack.mouseX = event.clientX / game.scale;
