@@ -223,7 +223,7 @@ window.addEventListener('load', function () {
          */
 
         var coverSprite = new Sprite(game.width, game.height);
-        coverSprite.image = game.assets[Hack.coverImagePath];
+        coverSprite.image = Hack.coverOpacity > 0 ? game.assets[Hack.coverImagePath] : null;
         game.rootScene.addChild(coverSprite);
 
         var cometSprite = new Sprite(game.width, game.height);
