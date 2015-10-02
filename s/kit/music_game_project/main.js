@@ -181,23 +181,26 @@ window.addEventListener('load', function () {
 "\n"+
 "};\n";
 
-    Hack.music = Hack.music || {};
-
     var game = enchant.Core.instance;
-    game.preload('osa/bosu10_a.wav','osa/bosu19.wav', 'osa/clap00.wav', 'osa/coin03.wav', 'osa/kachi04.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav');
 
-    // settings
-    Hack.ringTime = Hack.ringTime || 0.5;
-    Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-    Hack.quota = Hack.quota || 1;
-    Hack.hitSE = Hack.hitSE || -1;
+    Hack.onload = function() {
 
-    Hack.nextNote = 0;
-    Hack.nextBar = 0;
-    Hack.point = 0;
-    Hack.noteNum = 0;
-    Hack.isMusicStarted = false;
-    Hack.isCometMoving = true;
+        // settings
+        Hack.ringTime = Hack.ringTime || 0.5;
+        Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+        Hack.music = Hack.music || {};
+
+        Hack.coverImagePath = 'tail_of_comet/' + Hack.music.name + '-cover.png';
+        Hack.soundEffectPath = (['osa/bosu10_a.wav','osa/bosu19.wav', 'osa/clap00.wav', 'osa/coin03.wav', 'osa/kachi04.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav'])[Hack.hitSE];
+        game.preload(Hack.coverImagePath, Hack.soundEffectPath);
+
+        Hack.nextNote = 0;
+        Hack.nextBar = 0;
+        Hack.point = 0;
+        Hack.noteNum = 0;
+        Hack.isMusicStarted = false;
+        Hack.isCometMoving = true;
+    };
 
     game.onload = game.onload || function () {
 
@@ -238,19 +241,6 @@ window.addEventListener('load', function () {
             console.log(exeption);
             startLabel.loadFailed();
         });
-
-        Hack.soundEffects = [
-            game.assets['osa/bosu10_a.wav'],
-            game.assets['osa/bosu19.wav'],
-            game.assets['osa/clap00.wav'],
-            game.assets['osa/coin03.wav'],
-            game.assets['osa/kachi04.wav'],
-            game.assets['osa/metal03.wav'],
-            game.assets['osa/metal05.wav'],
-            game.assets['osa/on06.wav'],
-            game.assets['osa/pi06.wav'],
-            game.assets['osa/wood05.wav']
-        ];
     };
 
     Hack.onpressstart = Hack.onpressstart || function () {
@@ -657,8 +647,8 @@ window.addEventListener('load', function () {
             if (dx * dx + dy * dy <= 40 * 40) {
                 this.state = 1;
                 Hack.point += 1;
-                if (Hack.soundEffects[Hack.hitSE]) {
-                    Hack.soundEffects[Hack.hitSE].play(true);
+                if (game.assets[Hack.soundEffectPath]) {
+                    game.assets[Hack.soundEffectPath].play(true);
                 }
             } else {
                 this.state = 2;
