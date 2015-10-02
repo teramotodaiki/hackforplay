@@ -13,12 +13,17 @@ window.addEventListener('load', function () {
 " *\n"+
 " * Musics;\n"+
 " *\n"+
-" *      Name    |  BPM  | intro | length short (full)\n"+
-" *   testmusic  |  170  | 1.63  |           89 (258)\n"+
+" *           Name          |  BPM  | intro | short (full)\n"+
+" *   birthday-song         |  122  | 2.555 |   100 (183)\n"+
+" *   senko-hanabi          |  174  | 1.195 |   111 (249)\n"+
+" *   travelers-summer      |  124  | 3.495 |    82 (162)\n"+
+" *   chicken-steak         |  120  | 2.495 |    69 (153)\n"+
+" *   shiawase-no-himitsu   |  128  | 2.495 |   109 (190)\n"+
+" *   hands                 |  122  | 7.995 |   103 (199)\n"+
 " *\n"+
 " */\n"+
 "Hack.music = {\n"+
-"\tname: 'testmusic',\n"+
+"\tname: 'birthday-song',\n"+
 "\tBPM: 170,\n"+
 "\tintro: 1.63,\n"+
 "\tlength: 89\n"+
@@ -192,7 +197,8 @@ window.addEventListener('load', function () {
         Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         Hack.music = Hack.music || {};
 
-        Hack.coverImagePath = 'tail_of_comet/' + Hack.music.name + '-cover.png';
+        Hack.music.path = 'yukison/' + Hack.music.name + '.mp3';
+        Hack.coverImagePath = 'yukison/' + Hack.music.name + '-cover.png';
         Hack.soundEffectPath = (['osa/bosu19.wav','osa/clap00.wav', 'osa/coin03.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav', 'osa/swing14.wav', 'osa/whistle00.wav'])[Hack.hitSE];
         game.preload(Hack.coverImagePath, Hack.soundEffectPath);
 
@@ -241,7 +247,6 @@ window.addEventListener('load', function () {
         var startLabel = new StartLabelUI();
 
         // Begin loading music
-        Hack.music.path = 'tail_of_comet/' + Hack.music.name + '.mp3';
         WebAudioSound.load(Hack.music.path, 'audio/mpeg', function () {
             Hack.sound = this;
             startLabel.loadSuccessed();
