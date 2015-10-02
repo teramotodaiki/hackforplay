@@ -410,7 +410,11 @@ window.addEventListener('load', function () {
         },
         setup: function () {
             this.setupTime = this.lastTime = Hack.isMusicStarted ? 0 : new Date().getTime();
+            this.commandStack = [];
             this.commandStackSeek = 0;
+            this.moveTo(0, 0);
+            this.velocity = { x: 0, y: 0 };
+            this.force = { x: 0, y: 0 };
 
             if (Hack.setup) {
                 Hack.setup(this);
