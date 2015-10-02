@@ -220,7 +220,7 @@ window.addEventListener('load', function () {
         game.rootScene.addChild(Hack.ringParent); // layer 1
 
         Hack.touchSensor = new Sprite(game.width, game.height);
-        Hack.touchSensor.ontouchmove = function (event) {
+        Hack.touchSensor.ontouchmove =　Hack.touchSensor.ontouchstart = function (event) {
             Hack.mouseX = event.x;
             Hack.mouseY = event.y;
         };
