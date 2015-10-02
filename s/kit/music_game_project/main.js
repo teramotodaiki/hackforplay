@@ -193,7 +193,7 @@ window.addEventListener('load', function () {
         Hack.music = Hack.music || {};
 
         Hack.coverImagePath = 'tail_of_comet/' + Hack.music.name + '-cover.png';
-        Hack.soundEffectPath = (['osa/bosu10_a.wav','osa/bosu19.wav', 'osa/clap00.wav', 'osa/coin03.wav', 'osa/kachi04.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav'])[Hack.hitSE];
+        Hack.soundEffectPath = (['osa/bosu19.wav','osa/clap00.wav', 'osa/coin03.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav', 'osa/swing14.wav', 'osa/whistle00.wav'])[Hack.hitSE];
         game.preload(Hack.coverImagePath, Hack.soundEffectPath);
 
         Hack.nextNote = 0;
