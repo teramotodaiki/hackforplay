@@ -24,9 +24,9 @@ window.addEventListener('load', function () {
 " */\n"+
 "Hack.music = {\n"+
 "\tname: 'birthday-song',\n"+
-"\tBPM: 170,\n"+
-"\tintro: 1.63,\n"+
-"\tlength: 89\n"+
+"\tBPM: 122,\n"+
+"\tintro: 2.555,\n"+
+"\tlength: 100\n"+
 "};\n"+
 "\n"+
 "/**\n"+
@@ -43,7 +43,7 @@ window.addEventListener('load', function () {
 "Hack.ringTime = 0.5;\n"+
 "Hack.quota = 100;\n"+
 "Hack.hitSE = 0;\n"+
-"Hack.coverOpacity = 0.1;\n"+
+"Hack.coverOpacity = 0.2;\n"+
 "\n"+
 "\n"+
 "/**\n"+
@@ -135,6 +135,7 @@ window.addEventListener('load', function () {
 "\t * red(赤):      (255,  0,  0)\n"+
 "\t * green(緑):    (  0,255,  0)\n"+
 "\t * blue(青):     (  0,  0,255)\n"+
+"\t * yellow(黄):   (255,255,  0)\n"+
 "\t *\n"+
 "\t * Transparent colors(透明色);\n"+
 "\t *\n"+
@@ -145,7 +146,7 @@ window.addEventListener('load', function () {
 "\t * ... The three primary colors.\n"+
 "\t *\n"+
 "\t */\n"+
-"\tstroke(  0,  0,255);\n"+
+"\tstroke(255,255,  0);\n"+
 "\n"+
 "\n"+
 "\t// 線を引く\n"+
@@ -183,7 +184,7 @@ window.addEventListener('load', function () {
 "\n"+
 "\t// 全体をぼかす\n"+
 "\tnoStroke();\n"+
-"\tfill(  0,  0,  0,0.08);\n"+
+"\tfill(  0,  0,  0,0.1);\n"+
 "\trect(0, 0, 480, 320);\n"+
 "\n"+
 "};\n";
