@@ -30,6 +30,7 @@ window.addEventListener('load', function () {
 " * ringTime:    リングがでてから はじけるまでの じかん\n"+
 " * quota:       クリアするために ひつような OK の かず\n"+
 " * hitSE:       OK のときの こうかおん（SE ... サウンドエフェクト）\n"+
+" * coverOpacity:はいけいの あかるさ. 0 から 1 の すうち\n"+
 " *\n"+
 " * ringTime を おおきくすると、OK が でやすくなります\n"+
 " * quota を おおきくすると、クリアが むずかしく なります\n"+
@@ -37,6 +38,7 @@ window.addEventListener('load', function () {
 "Hack.ringTime = 0.5;\n"+
 "Hack.quota = 100;\n"+
 "Hack.hitSE = 0;\n"+
+"Hack.coverOpacity = 0.1;\n"+
 "\n"+
 "\n"+
 "/**\n"+
@@ -206,28 +208,34 @@ window.addEventListener('load', function () {
 
         /**
          * Layer
-         * 0: cometSprite
-         * 1: ringParent
-         * 2: touch sensor
-         * 3: UI (defaultParentNode)
+         * 0: coverImage
+         * 1: cometSprite
+         * 2: ringParent
+         * 3: touch sensor
+         * 4: UI (defaultParentNode)
          */
+
+        var coverSprite = new Sprite(game.width, game.height);
+        coverSprite.image = game.assets[Hack.coverImagePath];
+        game.rootScene.addChild(coverSprite);
 
         var cometSprite = new Sprite(game.width, game.height);
         cometSprite.image = new Surface(game.width, game.height);
-        game.rootScene.addChild(cometSprite); // layer 0
+        cometSprite.opacity = 1 - Hack.coverOpacity;
+        game.rootScene.addChild(cometSprite);
 
         Hack.comet = new Comet(cometSprite.image.context);
         game.rootScene.addChild(Hack.comet);
 
         Hack.ringParent = new Group();
-        game.rootScene.addChild(Hack.ringParent); // layer 1
+        game.rootScene.addChild(Hack.ringParent);
 
         Hack.touchSensor = new Sprite(game.width, game.height);
         Hack.touchSensor.ontouchmove =　Hack.touchSensor.ontouchstart = function (event) {
             Hack.mouseX = event.x;
             Hack.mouseY = event.y;
         };
-        game.rootScene.addChild(Hack.touchSensor); // layer 2
+        game.rootScene.addChild(Hack.touchSensor);
 
         Hack.defaultParentNode = Hack.defaultParentNode || new Group();
         var startLabel = new StartLabelUI();
