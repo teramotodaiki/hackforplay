@@ -13,15 +13,20 @@ window.addEventListener('load', function () {
 " *\n"+
 " * Musics;\n"+
 " *\n"+
-" *      Name    |  BPM  | intro | length short (full)\n"+
-" *   testmusic  |  170  | 1.63  |           89 (258)\n"+
+" *           Name          |  BPM  | intro | short (full)\n"+
+" *   birthday-song         |  122  | 2.555 |   100 (183)\n"+
+" *   senko-hanabi          |  174  | 1.195 |   111 (249)\n"+
+" *   travelers-summer      |  124  | 3.495 |    82 (162)\n"+
+" *   chicken-steak         |  120  | 2.495 |    69 (153)\n"+
+" *   shiawase-no-himitsu   |  128  | 2.495 |   109 (190)\n"+
+" *   hands                 |  122  | 7.995 |   103 (199)\n"+
 " *\n"+
 " */\n"+
 "Hack.music = {\n"+
-"\tname: 'testmusic',\n"+
-"\tBPM: 170,\n"+
-"\tintro: 1.63,\n"+
-"\tlength: 89\n"+
+"\tname: 'birthday-song',\n"+
+"\tBPM: 122,\n"+
+"\tintro: 2.555,\n"+
+"\tlength: 100\n"+
 "};\n"+
 "\n"+
 "/**\n"+
@@ -30,6 +35,7 @@ window.addEventListener('load', function () {
 " * ringTime:    リングがでてから はじけるまでの じかん\n"+
 " * quota:       クリアするために ひつような OK の かず\n"+
 " * hitSE:       OK のときの こうかおん（SE ... サウンドエフェクト）\n"+
+" * coverOpacity:はいけいの あかるさ. 0 から 1 の すうち\n"+
 " *\n"+
 " * ringTime を おおきくすると、OK が でやすくなります\n"+
 " * quota を おおきくすると、クリアが むずかしく なります\n"+
@@ -37,6 +43,7 @@ window.addEventListener('load', function () {
 "Hack.ringTime = 0.5;\n"+
 "Hack.quota = 100;\n"+
 "Hack.hitSE = 0;\n"+
+"Hack.coverOpacity = 0.2;\n"+
 "\n"+
 "\n"+
 "/**\n"+
@@ -128,6 +135,7 @@ window.addEventListener('load', function () {
 "\t * red(赤):      (255,  0,  0)\n"+
 "\t * green(緑):    (  0,255,  0)\n"+
 "\t * blue(青):     (  0,  0,255)\n"+
+"\t * yellow(黄):   (255,255,  0)\n"+
 "\t *\n"+
 "\t * Transparent colors(透明色);\n"+
 "\t *\n"+
@@ -138,7 +146,7 @@ window.addEventListener('load', function () {
 "\t * ... The three primary colors.\n"+
 "\t *\n"+
 "\t */\n"+
-"\tstroke(  0,  0,255);\n"+
+"\tstroke(255,255,  0);\n"+
 "\n"+
 "\n"+
 "\t// 線を引く\n"+
@@ -176,61 +184,70 @@ window.addEventListener('load', function () {
 "\n"+
 "\t// 全体をぼかす\n"+
 "\tnoStroke();\n"+
-"\tfill(  0,  0,  0,0.08);\n"+
+"\tfill(  0,  0,  0,0.1);\n"+
 "\trect(0, 0, 480, 320);\n"+
 "\n"+
 "};\n";
 
-    Hack.music = Hack.music || {};
-
     var game = enchant.Core.instance;
-    game.preload('osa/bosu10_a.wav','osa/bosu19.wav', 'osa/clap00.wav', 'osa/coin03.wav', 'osa/kachi04.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav');
 
-    // settings
-    Hack.ringTime = Hack.ringTime || 0.5;
-    Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-    Hack.quota = Hack.quota || 1;
-    Hack.hitSE = Hack.hitSE || -1;
+    Hack.onload = Hack.onload || function() {
 
-    Hack.nextNote = 0;
-    Hack.nextBar = 0;
-    Hack.point = 0;
-    Hack.noteNum = 0;
-    Hack.isMusicStarted = false;
-    Hack.isCometMoving = true;
+        // settings
+        Hack.ringTime = Hack.ringTime || 0.5;
+        Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+        Hack.music = Hack.music || {};
+
+        Hack.music.path = 'yukison/' + Hack.music.name + '.mp3';
+        Hack.coverImagePath = 'yukison/' + Hack.music.name + '-cover.png';
+        Hack.soundEffectPath = (['osa/bosu19.wav','osa/clap00.wav', 'osa/coin03.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav', 'osa/swing14.wav', 'osa/whistle00.wav'])[Hack.hitSE];
+        game.preload(Hack.coverImagePath, Hack.soundEffectPath);
+
+        Hack.nextNote = 0;
+        Hack.nextBar = 0;
+        Hack.point = 0;
+        Hack.noteNum = 0;
+        Hack.isMusicStarted = false;
+        Hack.isCometMoving = true;
+    };
 
     game.onload = game.onload || function () {
 
         /**
          * Layer
-         * 0: cometSprite
-         * 1: ringParent
-         * 2: touch sensor
-         * 3: UI (defaultParentNode)
+         * 0: coverImage
+         * 1: cometSprite
+         * 2: ringParent
+         * 3: touch sensor
+         * 4: UI (defaultParentNode)
          */
+
+        var coverSprite = new Sprite(game.width, game.height);
+        coverSprite.image = Hack.coverOpacity > 0 ? game.assets[Hack.coverImagePath] : null;
+        game.rootScene.addChild(coverSprite);
 
         var cometSprite = new Sprite(game.width, game.height);
         cometSprite.image = new Surface(game.width, game.height);
-        game.rootScene.addChild(cometSprite); // layer 0
+        cometSprite.opacity = 1 - Hack.coverOpacity;
+        game.rootScene.addChild(cometSprite);
 
         Hack.comet = new Comet(cometSprite.image.context);
         game.rootScene.addChild(Hack.comet);
 
         Hack.ringParent = new Group();
-        game.rootScene.addChild(Hack.ringParent); // layer 1
+        game.rootScene.addChild(Hack.ringParent);
 
         Hack.touchSensor = new Sprite(game.width, game.height);
         Hack.touchSensor.ontouchmove =　Hack.touchSensor.ontouchstart = function (event) {
             Hack.mouseX = event.x;
             Hack.mouseY = event.y;
         };
-        game.rootScene.addChild(Hack.touchSensor); // layer 2
+        game.rootScene.addChild(Hack.touchSensor);
 
         Hack.defaultParentNode = Hack.defaultParentNode || new Group();
         var startLabel = new StartLabelUI();
 
         // Begin loading music
-        Hack.music.path = 'tail_of_comet/' + Hack.music.name + '.mp3';
         WebAudioSound.load(Hack.music.path, 'audio/mpeg', function () {
             Hack.sound = this;
             startLabel.loadSuccessed();
@@ -238,19 +255,6 @@ window.addEventListener('load', function () {
             console.log(exeption);
             startLabel.loadFailed();
         });
-
-        Hack.soundEffects = [
-            game.assets['osa/bosu10_a.wav'],
-            game.assets['osa/bosu19.wav'],
-            game.assets['osa/clap00.wav'],
-            game.assets['osa/coin03.wav'],
-            game.assets['osa/kachi04.wav'],
-            game.assets['osa/metal03.wav'],
-            game.assets['osa/metal05.wav'],
-            game.assets['osa/on06.wav'],
-            game.assets['osa/pi06.wav'],
-            game.assets['osa/wood05.wav']
-        ];
     };
 
     Hack.onpressstart = Hack.onpressstart || function () {
@@ -412,7 +416,11 @@ window.addEventListener('load', function () {
         },
         setup: function () {
             this.setupTime = this.lastTime = Hack.isMusicStarted ? 0 : new Date().getTime();
+            this.commandStack = [];
             this.commandStackSeek = 0;
+            this.moveTo(0, 0);
+            this.velocity = { x: 0, y: 0 };
+            this.force = { x: 0, y: 0 };
 
             if (Hack.setup) {
                 Hack.setup(this);
@@ -657,8 +665,8 @@ window.addEventListener('load', function () {
             if (dx * dx + dy * dy <= 40 * 40) {
                 this.state = 1;
                 Hack.point += 1;
-                if (Hack.soundEffects[Hack.hitSE]) {
-                    Hack.soundEffects[Hack.hitSE].play(true);
+                if (game.assets[Hack.soundEffectPath]) {
+                    game.assets[Hack.soundEffectPath].play(true);
                 }
             } else {
                 this.state = 2;
