@@ -32,7 +32,6 @@
 	start = isNaN(parseInt(start)) ? '0' : start;
 	sessionStorage.setItem('view_param_start', start);
 	</script>
-	<script src="topicview.js" type="text/javascript" charset="utf-8"></script>
 	<script src="ownview.js" type="text/javascript" charset="utf-8"></script>
 	<!-- Content -->
 	<div class="container">

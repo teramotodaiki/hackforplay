@@ -22,10 +22,16 @@ try {
 	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
 	session_commit();
 
+	// パビリオン一覧を取得
+	$stmt		= $dbh->prepare('SELECT "ID","DisplayName","KitStageID" FROM "Pavilion"');
+	$stmt->execute();
+	$pavilion	= $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 	include 'view.php';
 
 } catch (Exception $e) {
-
+	require_once '../exception/tracedata.php';
+	traceData($e);
 }
 
 ?>

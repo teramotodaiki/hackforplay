@@ -69,6 +69,7 @@
 								<div class="form-group">
 									<div class="col-sm-offset-6 col-sm-6">
 										<button class="written-in-ja btn btn-default" type="submit">ログイン</button>
+										<button type="button" class="btn btn-link" data-dismiss="modal" data-toggle="modal" data-target="#resetModal">パスワードを忘れました</button>
 									</div>
 								</div>
 							</form>

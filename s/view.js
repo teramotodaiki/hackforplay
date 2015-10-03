@@ -27,22 +27,17 @@ $(function(){
 			'height': width/1.5
 		});
 	$(".h4p_clear").height(width/1.5);
+	$(".h4p_credit").height(width/1.5);
 	// ゲームクリアの処理
 	window.addEventListener('message', function(e){
 		switch(e.data){
-			case "clear":
-				$(".h4p_game").hide();
-				// 一旦全部隠す
-				$(".h4p_clear-img").hide();
-				$(".h4p_clear-next").hide();
-				// フェードイン
-				$(".h4p_clear").fadeIn('slow', 'linear', function(){
-					var width = $(".h4p_clear-img").css('width');
-					$(".h4p_clear-img").css({'width':'100%', 'opacity':'0'})
-					.animate({'width':width, 'opacity':'1'}, 'slow', function() {
-						$(".h4p_clear-next").fadeIn('slow');
-					});
-				});
+			case "tutorial_next_page":
+				// 1~5のときは次のページへ / 6のときは getaccount へ
+				if (getParam('next')) {
+					location.href = '/s/?id=' + getParam('next');
+				} else {
+					location.href = '/getaccount/';
+				}
 				break;
 			case "thumbnail":
 				var data = sessionStorage.getItem('image');
@@ -61,8 +56,8 @@ $(function(){
 				$('.begin_restaging').trigger('click');
 				break;
 			case "show_hint":
-				// ゲーム側からヒントを表示する
-				$('.h4p_hint-button').trigger('click');
+				// ゲーム側からヒントを表示すると、モーダルがひらく
+				$('#youtubeModal').modal('show');
 				break;
 			case "show_comment":
 				// ゲーム側からコメントの入力画面を表示する
@@ -70,23 +65,31 @@ $(function(){
 				break;
 			case "quest_clear_level":
 				(function (callback) {
-					// このレベルをクリアしたことがあったか？
+					// 報告義務はあるか？ (クエスト|レベル) に, 初挑戦した or まだクリアしていない とき true
+					if (getParam('reporting_requirements')) {
 
-						// 実績を送信
-
-					callback();
-
-				})(function() {
-					// 次のレベルが存在するか
-					if (getParam('next') >> 0 > 0) {
-						// 次のレベルに遷移
-						location.href = '/s/?mode=quest&level=' + getParam('next');
+						$.post('../stage/sendlevelstate.php', {
+							'level': getParam('level')
+						} , function(data, textStatus, xhr) {
+							callback();
+						});
 					} else {
-						// (クエストコンプリート後の動線.クエスト一覧に遷移？)
-						if (confirm('これでおわりです。クエスト一覧に戻りますか？')) {
-							alert('工事中です');
-						}
+						callback();
 					}
+				})(function() {
+					// 次のレベルに移動する処理を準備しておく (トリガーはゲーム側に引かせる)
+					window.addEventListener('message', function (event) {
+						if (event.data === 'quest_move_next') {
+							// 次のレベルが存在するか
+							if (getParam('next') >> 0 > 0) {
+								// 次のレベルに遷移
+								location.href = '/s/?mode=quest&level=' + getParam('next');
+							} else {
+								// (クエストコンプリート後の動線.ひろばにもどる)
+								location.href = '/town/';
+							}
+						}
+					});
 				});
 				break;
 		}
@@ -180,7 +183,6 @@ $(function(){
 	// コメントを取得
 	function getCommentTask(callback) {
 
-		$('.h4p_comment-add').addClass('hidden');
 		$('.h4p_my-comment').addClass('hidden');
 
 		$.post('../stage/getmycommentbyid.php', {
@@ -194,7 +196,6 @@ $(function(){
 					break;
 				case 'no-session':
 				case 'not-found':
-					$('.h4p_comment-add').removeClass('hidden');
 
 					sessionStorage.setItem('stage_param_comment', ''); // no-comment
 					break;
@@ -221,7 +222,6 @@ $(function(){
 		// コメントの削除
 		var message = $('.h4p_my-comment .comment-message').text();
 		if (confirm(message + '\n\nこのメッセージを さくじょ します')) {
-
 			// 削除の実行
 			$.post('../stage/removecommentbyid.php', {
 				'comment_id': $('.h4p_my-comment .h4p_comment-trash').data('id'),
@@ -234,13 +234,10 @@ $(function(){
 					case 'not-found':
 					case 'database-error':
 						alert('エラー\nさくじょ できなかった');
-
 						sessionStorage.setItem('stage_param_comment', 'true');
 						break;
 					case 'success':
-						$('.h4p_comment-add').removeClass('hidden');
 						$('.h4p_my-comment').addClass('hidden');
-
 						sessionStorage.setItem('stage_param_comment', '');
 						break;
 				}
@@ -277,6 +274,8 @@ $(function(){
 			// frame.phpを経由して、getParam('src')のページをincludeさせる
 			// モードをRestagingにする
 			var gameSrc = encodeURIComponent(getParam('src'));
+			// hack系統のみ、GETパラメータではmodeを渡せないことがあるので、modeはsessionStorageで渡すようにする.
+			sessionStorage.setItem('stage_param_game_mode', (isExtendMode ? 'extend' : 'restaging'));
 			$(".h4p_game").height(width/1.5).children('iframe').attr({
 				'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=' + (isExtendMode ? 'extend' : 'restaging')
 			});
@@ -361,7 +360,9 @@ $(function(){
 					// ロギングの開始をサーバーに伝え、トークンを取得する
 					$.post('../analytics/beginrestaginglog.php', {
 						'stage_id': getParam('id'),
-						'mode': getParam('mode')
+						'mode': getParam('mode'),
+						'level': getParam('level'),
+						'report': getParam('reporting_restaged')
 					}, function(data, textStatus, xhr) {
 						switch (data) {
 							case 'error':
@@ -531,15 +532,6 @@ $(function(){
 			});
 			$(".h4p_info-footer").text("（リステージング中）");
 			$(".h4p_info-restaging>button").hide();
-			$(".h4p_info-retry>a").hide();
-			$(".h4p_info-retry-button").show();
-			$(".h4p_info-retry-button").on('click', function() {
-				jsEditor.save();
-				var code = jsEditor.getTextArea().value;
-				sessionStorage.setItem('retry_code', code);
-				alert_on_unload = false;
-				location.href = '/s?id='+getParam('id') + '&mode=restaging&retry=true';
-			});
 			$(".h4p_restaging_button").on('click', function() {
 				// RUN
 				jsEditor.save();
@@ -558,6 +550,7 @@ $(function(){
 				} else {
 					// Extendモード時はmode=restagingにしてリロード
 					var gameSrc = encodeURIComponent(getParam('src'));
+					sessionStorage.setItem('stage_param_game_mode', 'restaging');
 					$('.h4p_game>iframe').attr({
 						'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=restaging'
 					});
@@ -814,7 +807,65 @@ $(function(){
 					beginRestaging();
 					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
 				});
+				if (!getParam('directly_restaging')) {
+					// Show credit
+					$('.container-game .h4p_game iframe').css('opacity', 0);
+					$('.container-game .h4p_credit').removeClass('hidden');
+					$('.container-game .h4p_credit .Title').text(getParam('title'));
+					$('.container-game .h4p_credit .Author').text(getParam('author'));
+					$('.container-game .h4p_credit .hasnext-' + !!(getParam('next') >> 0)).removeClass('hidden');
+					$('.container-game .h4p_credit .PlayOrder').text(getParam('playorder'));
+
+					// 順番にフェードイン
+					$('.credit-timeline').hide();
+					(function task (index) {
+						var $element = $('.credit-timeline.credit-timeline-' + index);
+						if ($element === undefined) return;
+						$element.fadeIn(1000, function() {
+							task(index + 1);
+						});
+					})(0);
+
+					// ロードされた瞬間、ゲームを一時停止する
+					var paused = false, creditVisibility = true;
+					window.addEventListener('message', function(event) {
+						if (event.data === 'game_loaded' && creditVisibility) {
+							$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.pause()', '/');
+							paused = true;
+						}
+					});
+					// 2秒後、ゲームをフェードインする
+					setTimeout(function() {
+						$('.container-game .h4p_credit').addClass('hidden');
+						$('.container-game .h4p_game iframe').css('opacity', 1);
+						creditVisibility = false;
+						if (paused) {
+							$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.resume()', '/');
+						}
+					}, 4000);
+				}
 				break;
+		}
+
+		// Directly restaging
+		// 任意のステージをmode=restaging以外で読み込んだ直後にbeginRestagingするモード
+		if (getParam('directly_restaging')) {
+			switch (getParam('mode')) {
+			case 'official':
+				// replace_code を受けたのち, beginRestaging
+				window.addEventListener('message', function task(event) {
+					if (event.data === 'replace_code') {
+						beginRestaging();
+						window.removeEventListener('message', task);
+					}
+				});
+				break;
+			case 'replay':
+			case 'quest':
+				// 直後にbeginRestaging
+				beginRestaging();
+				break;
+			}
 		}
 	})();
 	(function(){
@@ -857,6 +908,10 @@ $(function(){
 		}
 	});
 
+	// ゲームフレームのリロード
+	$('.h4p_info-retry button').on('click', function() {
+		$(".h4p_game>iframe").get(0).contentWindow.postMessage('window.location.reload();', '/');
+	});
 
 	function getParam(key){
 		return sessionStorage.getItem('stage_param_'+key) || '';
@@ -867,13 +922,6 @@ $(function(){
 		// 説明すべきコンテンツが存在するかどうか
 		var embed_content = getParam('youtube');
 		if (embed_content === '') return;
-
-		$('.h4p_hint-button').removeClass('hidden'); // ヒントアイコンを表示
-
-		$('.h4p_hint-button').on('click', function() {
-			// モーダルがひらく
-			$('#youtubeModal').modal('show');
-		});
 
 		// 開かれたときにまだYouTubeがロードされていない場合、ロードを開始する
 		var player;
