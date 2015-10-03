@@ -40,8 +40,8 @@ window.addEventListener('load', function () {
 " * ringTime を おおきくすると、OK が でやすくなります\n"+
 " * quota を おおきくすると、クリアが むずかしく なります\n"+
 " */\n"+
-"Hack.ringTime = 0.5;\n"+
-"Hack.quota = 100;\n"+
+"Hack.ringTime = 1.0;\n"+
+"Hack.quota = 40;\n"+
 "Hack.hitSE = 0;\n"+
 "Hack.coverOpacity = 0.2;\n"+
 "\n"+
