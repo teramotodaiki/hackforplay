@@ -39,9 +39,10 @@ window.addEventListener('load', function () {
 " *\n"+
 " * ringTime を おおきくすると、OK が でやすくなります\n"+
 " * quota を おおきくすると、クリアが むずかしく なります\n"+
+" *\n"+
 " */\n"+
-"Hack.ringTime = 0.5;\n"+
-"Hack.quota = 100;\n"+
+"Hack.ringTime = 1.0;\n"+
+"Hack.quota = 40;\n"+
 "Hack.hitSE = 0;\n"+
 "Hack.coverOpacity = 0.2;\n"+
 "\n"+
@@ -50,20 +51,12 @@ window.addEventListener('load', function () {
 " * setup;\n"+
 " *\n"+
 " * ゲームが はじまったときに コールされる\n"+
-" * さいしょの 位置（いち）や 速度（そくど）を きめる\n"+
 " *\n"+
 " */\n"+
 "Hack.setup = function (comet) {\n"+
 "\n"+
-"\t// ひだりから 0px, うえから 160px の いち\n"+
 "\tcomet.x = 0;\n"+
-"\tcomet.y = 160;\n"+
-"\n"+
-"\n"+
-"\t// みぎにむかって 80 [px/sec],\n"+
-"\t// うえにむかって  0 [px/sec] の はやさ\n"+
-"\tcomet.velocity.x = 80;\n"+
-"\tcomet.velocity.y = 0;\n"+
+"\tcomet.y = 170;\n"+
 "\n"+
 "};\n"+
 "\n"+
@@ -79,37 +72,45 @@ window.addEventListener('load', function () {
 "\tsetPosition, setSpeed, setVelocity, setForce, setNotes,\n"+
 "\tsetPositionOn, setSpeedOn, setVelocityOn, setForceOn, setNotesOn) {\n"+
 "\n"+
+"\t// さいしょの うごき\n"+
+"\tsetPositionOn( 0,   0, 170); // ひだりから 0px, うえから 170px の いち\n"+
+"\tsetVelocityOn( 0,  53,   0); // みぎに 53px/sec, うえに 0px/sec の はやさ\n"+
 "\n"+
-"\t// さいしょの テンポを せってい\n"+
-"\tsetNotesOn(0, 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);\n"+
+"\t// 18秒のとき、はずむような うごき\n"+
+"\tsetPositionOn(18,   0, 170);\n"+
+"\tsetVelocityOn(18,  80,   0);\n"+
+"\tsetForceOn(   18,   0, 300);\n"+
 "\n"+
-"\n"+
-"\t// 13秒のとき、ひだりから 0 うえから 200 に、いどう\n"+
-"\t// よこむきに 50 たてむきに 100 のはやさ\n"+
-"\tsetPositionOn(12,   0, 160);\n"+
-"\tsetSpeedOn(   12,  50, 100);\n"+
-"\tsetNotesOn(   12,   1,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0);\n"+
-"\n"+
-"\n"+
-"\t// 24秒のとき、はずむような うごき\n"+
-"\tsetPositionOn(24, 320, 160);\n"+
-"\tsetVelocityOn(24,-100,   0);\n"+
-"\tsetForceOn(   24,   0, 400);\n"+
-"\tsetNotesOn(   24,   1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0);\n"+
-"\n"+
-"\t// 46秒のとき、うえで はずむ うごき\n"+
-"\t//setPositionOn(46,  20, 260);\n"+
-"\tsetVelocityOn(46,-100,   0);\n"+
-"\tsetForceOn(   46,   0,-200);\n"+
-"\tsetNotesOn(   46,   0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0);\n"+
-"\n"+
-"\t// 60秒から 89秒（さいご）まで ずっと、なみのような うごき\n"+
-"\tsetNotesOn(   60,   1,0,0,1,1,0,0,0,1,0,0,0,1,0,0,0);\n"+
-"\tsetPositionOn(60, 480, 250);\n"+
-"\tsetVelocityOn(60,-160,   0);\n"+
-"\tif (60 < time && time < 89) {\n"+
-"\t\tsetForce(0, (200 - y) * 20);\n"+
+"\t// 49秒から 64秒まで ずっと、だえんを えがく うごき\n"+
+"\tsetPositionOn(49, 400, 200);\n"+
+"\tsetVelocityOn(49,   0,  70);\n"+
+"\tif (49 < time && time < 65) {\n"+
+"\t\tsetForce((240 - x) * 0.3, (160 - y) * 0.3);\n"+
 "\t}\n"+
+"\n"+
+"\t// 65秒から 100秒（さいご）まで ずっと、なみのような うごき\n"+
+"\tsetPositionOn(65, 140, 240);\n"+
+"\tsetVelocityOn(65,-160,   0);\n"+
+"\tif (65 < time && time < 100) {\n"+
+"\t\tsetForce(0, (200 - y) * 10);\n"+
+"\t}\n"+
+"\t\n"+
+"\t/**\n"+
+"\t * setNotesOn(time, a,b,c,d, e,f,g,h, i,j,k,l, m,n,o,p);\n"+
+"\t *\n"+
+"\t * タイミングを せっていする\n"+
+"\t *\n"+
+"\t * time:    せっていする じかん [sec]\n"+
+"\t * a,...p:  1なら でる. 0なら でない\n"+
+"\t *\n"+
+"\t */\n"+
+"\tsetNotesOn(  0.0, 1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0);\n"+
+"\tsetNotesOn( 18.0, 1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0);\n"+
+"\tsetNotesOn( 48.5, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,1,1,0);\n"+
+"\tsetNotesOn( 63.5, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0);\n"+
+"\tsetNotesOn( 65.0, 1,0,0,0, 1,0,0,0, 1,0,1,0, 1,0,0,0);\n"+
+"\tsetNotesOn( 80.0, 1,0,1,0, 1,0,0,0, 1,0,0,0, 1,0,0,0);\n"+
+"\tsetNotesOn( 96.2, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0);\n"+
 "\n"+
 "};\n"+
 "\n"+
@@ -154,37 +155,60 @@ window.addEventListener('load', function () {
 "\tline(x, y, px, py);\n"+
 "\n"+
 "\n"+
-"\t// 24秒よりあとで、46秒までのあいだ\n"+
-"\tif (24 < time && time < 46) {\n"+
+"\t// 19秒よりあとで、33秒までのあいだ\n"+
+"\tif (19 < time && time < 33) {\n"+
 "\n"+
 "\t\t// あしもとに しろい てん\n"+
 "\t\tfill(255,255,255);\n"+
 "\t\tpoint(x, 300);\n"+
 "\n"+
 "\t}\n"+
-"\n"+
-"\t// 46秒よりあとで、60秒までのあいだ\n"+
-"\tif (46 < time && time < 60) {\n"+
-"\n"+
-"\t\t// たてながの うすいみずいろの だえん\n"+
+"\t\n"+
+"\t// 33秒よりあとで、49秒までのあいだ\n"+
+"\tif (33 < time && time < 49) {\n"+
+"\t\t\n"+
+"\t\t// あしもとに しろい だえん\n"+
 "\t\tnoStroke();\n"+
-"\t\tfill(  0,255,255, 0.5);\n"+
-"\t\tellipse(x, 0, x - px, 320);\n"+
+"\t\tfill(255,255,255,0.5);\n"+
+"\t\tellipse(x - 2, y + 20, 4, 300 - y);\n"+
+"\t\t\n"+
+"\t}\n"+
+"\n"+
+"\t// 49秒よりあとで、65秒までのあいだ\n"+
+"\tif (49 < time && time < 65) {\n"+
+"\n"+
+"\t\t// 中心 から さんかく... (240, 160) = 中心\n"+
+"\t\tnoStroke();\n"+
+"\t\tfill(  0,255,255,0.5);\n"+
+"\t\ttriangle(240, 160, x, y, px, py);\n"+
 "\n"+
 "\t}\n"+
 "\n"+
-"\t// 60秒よりあとで、89秒までのあいだ\n"+
-"\tif (60 < time && time < 89) {\n"+
+"\t// 65秒よりあとで、100秒までのあいだ\n"+
+"\tif (65 < time && time < 100) {\n"+
 "\n"+
-"\t\t// 中心から さんかく ... (240, 160) = 中心\n"+
-"\t\ttriangle(240,   0, x, y, px, py);\n"+
-"\t\ttriangle(240, 320, x, y, px, py);\n"+
+"\t\t// 右上と左下から さんかく ... (480, 0) = 右上, (0, 320) = 左下\n"+
+"\t\tnoStroke();\n"+
+"\t\tfill(  0,255,255,0.5);\n"+
+"\t\ttriangle(480,   0, x, y, px, py);\n"+
+"\t\ttriangle(  0, 320, x, y, px, py);\n"+
+"\n"+
+"\t}\n"+
+"\t\n"+
+"\t// 81秒よりあとで、100秒までのあいだ\n"+
+"\tif (81 < time && time < 100) {\n"+
+"\n"+
+"\t\t// 左上と右下から さんかく ... (0, 0) = 左上, (480, 320) = 右下\n"+
+"\t\tnoStroke();\n"+
+"\t\tfill(255,128,128,0.5);\n"+
+"\t\ttriangle(  0,   0, x, y, px, py);\n"+
+"\t\ttriangle(480, 320, x, y, px, py);\n"+
 "\n"+
 "\t}\n"+
 "\n"+
 "\t// 全体をぼかす\n"+
 "\tnoStroke();\n"+
-"\tfill(  0,  0,  0,0.1);\n"+
+"\tfill(0, 0, 0, 0.1);\n"+
 "\trect(0, 0, 480, 320);\n"+
 "\n"+
 "};\n";
