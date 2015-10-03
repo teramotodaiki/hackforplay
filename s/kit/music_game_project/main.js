@@ -216,7 +216,6 @@ window.addEventListener('load', function () {
     var game = enchant.Core.instance;
 
     Hack.onload = Hack.onload || function() {
-
         // settings
         Hack.ringTime = Hack.ringTime || 0.5;
         Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
