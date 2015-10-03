@@ -640,7 +640,7 @@ window.addEventListener('load', function () {
             if (spend >= Hack.ringTime && this.state === 0) {
                 this.judge();
             }
-            if (spend > 4 && this.parentNode) {
+            if (spend > 2 && this.parentNode) {
                 this.parentNode.removeChild(this);
             } else {
                 this.draw(spend);
@@ -659,7 +659,7 @@ window.addEventListener('load', function () {
                 this.ellipse(50 - t * 40, 50 - t * 40, t * 80, t * 80);
                 break;
             case 1:
-                var _t = Math.max((3 - t) / 2, 0);
+                var _t = Math.max(2 - t, 0);
                 if (_t > 0) {
                     this.stroke(255 * _t, 95 * _t + 160, 255, _t);
                     this.strokeWeight(_t * 8);
@@ -670,7 +670,7 @@ window.addEventListener('load', function () {
                 this.text('OK', 43, 53);
                 break;
             case 2:
-                var _t = Math.max((3 - t) / 2, 0);
+                var _t = Math.max(2 - t, 0);
                 if (_t > 0) {
                     this.stroke(200 - 55 * _t, 45 * _t, 0, _t);
                     this.strokeWeight(_t * 4);
