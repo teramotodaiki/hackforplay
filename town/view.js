@@ -24,8 +24,54 @@ $(function () {
 		$('.content-ground').attr('src', 'img/ground.png'),
 		$('.content-restage-frame').attr('src', 'img/recent_restage_frame.png'),
 		$('.content-achievement-frame').attr('src', 'img/pavilion_achievements.png'),
-		$('.content-locked-frame').attr('src', 'img/pavilion_locked.png')
+		$('.content-locked-frame').attr('src', 'img/pavilion_locked.png'),
+		$('.content-cloud-1').attr('src', 'img/cloud1.png'),
+		$('.content-cloud-2').attr('src', 'img/cloud2.png'),
+		$('.content-cloud-3').attr('src', 'img/cloud3.png')
 	);
+
+	// 雲のアニメーション
+	$('.content-cloud').each(function task(index, el) {
+		var $el = $(el);
+		var duration = Math.random() * 6000 + 10000;
+		$el.css({
+			left: Math.random() * 5 + '%',
+			top: Math.random() * 85 + '%',
+			opacity: 0
+		});
+		// 前半
+		setTimeout(function () {
+			$el.animate({
+				left: '+=20%',
+				opacity: 1
+			}, {
+				duration: duration / 4,
+				easing: 'linear',
+				complete: function() {
+					// 後半
+					$el.animate({
+						left: '+=40%'
+					}, {
+						duration: duration / 2,
+						easing: 'linear',
+						complete: function () {
+
+							$el.animate({
+								left: '+=20%',
+								opacity: 0
+							}, {
+								duration: duration / 4,
+								easing: 'linear',
+								complete: function () {
+									task(index, this);
+								}
+							});
+						}
+					});
+				}
+			});
+		}, Math.random() * 6000);
+	});
 
 	// ボタンイベントの実装
 	$('.content-button').on('click', function() {
