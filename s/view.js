@@ -856,6 +856,7 @@ $(function(){
 				window.addEventListener('message', function task(event) {
 					if (event.data === 'replace_code') {
 						beginRestaging();
+						sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
 						window.removeEventListener('message', task);
 					}
 				});
@@ -864,6 +865,7 @@ $(function(){
 			case 'quest':
 				// 直後にbeginRestaging
 				beginRestaging();
+				sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
 				break;
 			}
 		}
