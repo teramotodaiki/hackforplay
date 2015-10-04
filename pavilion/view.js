@@ -46,6 +46,7 @@ $(function () {
 			current.find('.Authors').text(quest.Authors.join(', '));
 			current.find('.QuestThumbnail').attr('src', quest.Levels[0].Thumbnail);
 			current.data('index', index);
+			current.data('id', quest.ID);
 			current.find('.achievement-cleared').attr('src', quest.Cleared ? 'img/achievement_p.png' : 'img/achievement_n.png');
 			current.find('.achievement-restaged').attr('src', quest.Restaged ? 'img/achievement_p.png' : 'img/achievement_n.png');
 
@@ -179,4 +180,26 @@ $(function () {
 		});
 
 	});
+
+	// アチーブメントの非同期更新
+	$.post('../stage/getachievementsbypavilionid.php', {
+		'pavilion_id': result.PavilionID
+	}, function(data, textStatus, xhr) {
+
+		switch (data) {
+			case 'no-session':
+			case 'invalid-id':
+			break;
+			default:
+			var result = $.parseJSON(data);
+			$('.row .quest-item-entity').filter(function(index) {
+				return result.Cleared.indexOf($(this).data('id')) !== -1;
+			}).find('.achievement-cleared').attr('src', 'img/achievement_p.png');
+			$('.row .quest-item-entity').filter(function(index) {
+				return result.Restaged.indexOf($(this).data('id')) !== -1;
+			}).find('.achievement-restaged').attr('src', 'img/achievement_p.png');
+			break;
+		}
+	});
+
 });
