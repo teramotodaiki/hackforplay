@@ -13,7 +13,7 @@ try {
 
 	$rewrite = filter_input(INPUT_GET, 'rewrite', FILTER_VALIDATE_BOOLEAN);
 	if (isset($session_userid) && $rewrite !== FALSE) {
-		header('Location:../town/');
+		header('Location:../r/');
 		exit();
 	}
 
