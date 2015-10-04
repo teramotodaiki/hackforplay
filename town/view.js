@@ -33,35 +33,44 @@ $(function () {
 	// 雲のアニメーション
 	$('.content-cloud').each(function task(index, el) {
 		var $el = $(el);
-		var duration = Math.random() * 4000 + 8000;
+		var duration = Math.random() * 6000 + 10000;
 		$el.css({
-			left: Math.random() * 15 + '%',
+			left: Math.random() * 5 + '%',
 			top: Math.random() * 85 + '%',
 			opacity: 0
 		});
 		// 前半
 		setTimeout(function () {
 			$el.animate({
-				left: '+=35%',
+				left: '+=20%',
 				opacity: 1
 			}, {
-				duration: duration / 2,
+				duration: duration / 4,
 				easing: 'linear',
 				complete: function() {
 					// 後半
 					$el.animate({
-						left: '+=35%',
-						opacity: 0
+						left: '+=40%'
 					}, {
 						duration: duration / 2,
 						easing: 'linear',
 						complete: function () {
-							task(index, this);
+
+							$el.animate({
+								left: '+=20%',
+								opacity: 0
+							}, {
+								duration: duration / 4,
+								easing: 'linear',
+								complete: function () {
+									task(index, this);
+								}
+							});
 						}
 					});
 				}
 			});
-		}, Math.random() * 4000);
+		}, Math.random() * 6000);
 	});
 
 	// ボタンイベントの実装
