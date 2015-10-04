@@ -157,7 +157,8 @@ iframe {
 .h4p_projectlist .panel-body p,
 .h4p_info-datail p,
 .comment-header .nickname,
-.comment-header .hashtag {
+.comment-header .hashtag,
+.text-overflow-ellipsis {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -185,6 +186,70 @@ iframe {
 	cursor: pointer;
 }
 
+.stage-frame-wrapper {
+	position: relative;
+	width: 242px;
+	height: 180px;
+	margin-bottom: 4px;
+}
+
+.stage-frame-wrapper img {
+	position: absolute;
+	width: 100%;
+	height: auto;
+}
+
+.stage-frame-wrapper .stage-thumbnail {
+	z-index: 1;
+	padding: 23px 4px 0px 4px;
+}
+
+.stage-frame-wrapper .stage-frame {
+	z-index: 2;
+}
+
+.quest-item-entity,
+.kit-item-entity,
+.modal-thumbnail-entity .stage-frame-wrapper,
+.modal-kit-entity .stage-frame-wrapper {
+	cursor: pointer;
+}
+
+#questModal .modal-content,
+#kitModal .modal-content {
+	background-color: transparent;
+	background-size: 100% 100%;
+	padding: 40px 40px;
+	border: none;
+	box-shadow: none;
+}
+
+.item-achievement .achievement {
+	display: block;
+}
+
+.quest-item-entity .item-underscore,
+.kit-item-entity .item-underscore,
+#questModal .item-underscore,
+#kitModal .item-underscore {
+	border-bottom: 1px solid rgb(0,0,0);
+	margin-bottom: 4px;
+}
+
+.h4p_credit .box-half-top,
+.h4p_credit .box-half-bottom {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+}
+
+.h4p_credit .box-half-top {
+	bottom: 60%;
+}
+
+.h4p_credit .box-half-bottom {
+	top: 40%;
+}
 
 /* アニメーション */
 
@@ -214,6 +279,22 @@ iframe {
 .directly_floating_shadow:hover {
 	z-index: 2;
 	box-shadow: 0px 10px 20px 4px rgba(0,0,0,0.5);
+}
+
+.animation-hover-expand {
+	z-index: 1;
+	-webkit-transition: -webkit-transform 0.2s;
+	-moz-transition: -moz-transform 0.2s;
+	-o-transition: -o-transform 0.2s;
+	transition: transform 0.2s;
+}
+
+.animation-hover-expand:hover {
+	z-index: 2;
+	-webkit-transform: scale(1.08, 1.08);
+	-moz-transform: scale(1.08, 1.08);
+	-o-transform: scale(1.08, 1.08);
+	transform: scale(1.08, 1.08);
 }
 
 /* コメントタグ(暫定) */

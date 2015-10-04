@@ -150,6 +150,16 @@ var emphasizeHint = function(){};
 					this.scaleX = this.scaleY = 1;
 				});
 			});
+			// メニューのスプライトを強調
+			var cursor = new Sprite(32, 32);
+            cursor.image = game.assets['img/icon0.png'];
+            cursor.frame = 43;
+            cursor.moveTo(Hack.menuOpener.x, Hack.menuOpener.y + 40);
+            cursor.tl.delay(8).moveBy(0, -8, 1).delay(8).moveBy(0, 8, 1).loop();
+			game.rootScene.addChild(cursor);
+            Hack.menuOpener.on('touchstart', function() {
+				game.rootScene.removeChild(cursor);
+            });
 		};
 
 		// スプライトの初期化

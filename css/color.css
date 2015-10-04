@@ -48,8 +48,10 @@ nav.navbar {
 	opacity: 0.9;
 }
 
-.h4p_game {
+.h4p_game,
+.h4p_credit {
 	background-color: black;
+	color: white;
 }
 
 /* 線の幅・色 */
@@ -71,6 +73,21 @@ nav.navbar {
 .h4p_filtering-buttons {
 	border-radius: 6px;
 	border: 16px solid rgb(255,255,255);
+}
+
+.btn-restage {
+	color: #fff !important;
+	background-color: #362f3c;
+}
+.btn-retry {
+	color: #fff !important;
+	background-color: #ff837b;
+}
+.btn-restage:hover {
+	background-color: #28232d;
+}
+.btn-retry:hover {
+	background-color: #d26c66;
 }
 
 /* 影の色 */
