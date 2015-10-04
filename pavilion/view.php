@@ -3,9 +3,6 @@
 <head prefix="og: http://ogp.me/ns#">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta http-equiv="Pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>hackforplay</title>
 	<?php require_once '../library.php' ?>
