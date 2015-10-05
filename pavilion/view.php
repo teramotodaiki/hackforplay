@@ -16,7 +16,7 @@
 	<script src="view.js" type="text/javascript"></script>
 	<script src="randomize.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-	var result = JSON.parse('<?php echo $pavilion_json; ?>');
+	sessionStorage.setItem('view_param_pavilion_id', '<?php echo $pavilion_id; ?>');
 	</script>
 	<?php include '../view/header.php'; ?>
 	<?php include 'modal.php'; ?>
