@@ -36,13 +36,11 @@ $(function () {
 			case 'no-session':
 			case 'invalid-input':
 			case 'uncertified':
-			case 'database-error': console.log(data); return;
+			case 'database-error': return;
 		}
 
 		var result = $.parseJSON(data);
 		if (!result) return;
-
-		console.log(result);
 
 		var NumberOfQuest;
 		alignmentQuests = function () {
