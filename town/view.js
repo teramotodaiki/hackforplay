@@ -139,6 +139,8 @@ $(function () {
 			$('.content-restage').data('args', town.recent_project.Token + ' ' + town.recent_project.SourceStageID);
 		}
 
+		render();
+
 	});
 
 	// containerの高さは、横幅に応じて決める
