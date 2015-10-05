@@ -84,8 +84,9 @@ $(function () {
 			location.href = '../pavilion/?id=' + args;
 			break;
 		case 'project':
+			args = args.split(' ');
 			$.post('../stage/fetchprojectbytoken.php', {
-				'token': args
+				'token': args[0]
 			} , function(data, textStatus, xhr) {
 				switch(data){
 				case 'no-session':
@@ -94,9 +95,9 @@ $(function () {
 					break;
 				default:
 					var value = $.parseJSON(data);
-					sessionStorage.setItem('project-token', args);
+					sessionStorage.setItem('project-token', args[0]);
 					sessionStorage.setItem('restaging_code', value.data);
-					location.href = '/s?mode=restaging&id=' + town.recent_project.SourceStageID;
+					location.href = '/s?mode=restaging&id=' + args[1];
 					break;
 				}
 			});
@@ -104,28 +105,41 @@ $(function () {
 		}
 	});
 
-	// パビリオンの表示・解放実績
-	town.pavilions.forEach(function (pavilion, index) {
-		var wrapper = $('.content-pavilion-' + pavilion.LocationNumber);
-		wrapper.removeClass('hidden');
-		wrapper.find('.content-icon').attr('src', pavilion.Icon);
-		if (pavilion.Certified >> 0) {
-			wrapper.find('.content-achievement-frame').removeClass('hidden');
-			wrapper.find('.content-achievement-text').removeClass('hidden').text(pavilion.Achievements);
-			wrapper.data('args', pavilion.ID);
-			wrapper.addClass('button-available');
-		} else {
-			wrapper.find('.content-locked-frame').removeClass('hidden');
-			wrapper.find('.content-locked-text').removeClass('hidden').text(town.has_achievements + '/' + pavilion.RequiredAchievements);
-		}
-	});
+	$.post('./load.php', {
 
-	// 最後に保存したプロジェクト
-	if (town.recent_project) {
-		$('.content-restage').removeClass('hidden').addClass('button-available');
-		$('.content-restage-thumbnail').attr('src', town.recent_project.Thumbnail);
-		$('.content-restage').data('args', town.recent_project.Token);
-	}
+	}, function(data, textStatus, xhr) {
+
+		switch (data) {
+			case 'no-session': return;
+			case 'database-error': return;
+		}
+		var town = $.parseJSON(data);
+		if (!town) return;
+
+		// パビリオンの表示・解放実績
+		town.pavilions.forEach(function (pavilion, index) {
+			var wrapper = $('.content-pavilion-' + pavilion.LocationNumber);
+			wrapper.removeClass('hidden');
+			wrapper.find('.content-icon').attr('src', pavilion.Icon);
+			if (pavilion.Certified >> 0) {
+				wrapper.find('.content-achievement-frame').removeClass('hidden');
+				wrapper.find('.content-achievement-text').removeClass('hidden').text(pavilion.Achievements);
+				wrapper.data('args', pavilion.ID);
+				wrapper.addClass('button-available');
+			} else {
+				wrapper.find('.content-locked-frame').removeClass('hidden');
+				wrapper.find('.content-locked-text').removeClass('hidden').text(town.has_achievements + '/' + pavilion.RequiredAchievements);
+			}
+		});
+
+		// 最後に保存したプロジェクト
+		if (town.recent_project) {
+			$('.content-restage').removeClass('hidden').addClass('button-available');
+			$('.content-restage-thumbnail').attr('src', town.recent_project.Thumbnail);
+			$('.content-restage').data('args', town.recent_project.Token + ' ' + town.recent_project.SourceStageID);
+		}
+
+	});
 
 	// containerの高さは、横幅に応じて決める
 	function render () {
