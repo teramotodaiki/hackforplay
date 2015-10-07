@@ -36,7 +36,7 @@ window.addEventListener('load', function () {
 " * quota:       クリアするために ひつような OK の かず\n"+
 " * hitSE:       OK のときの こうかおん（SE ... サウンドエフェクト）\n"+
 " * coverOpacity:はいけいの あかるさ. 0 から 1 の すうち\n"+
-" * notesInTime: 1テンポのなかで でてくる リングのかず\n"+
+" * notesInTime: ひとくぎりのなかで でてくる リングのかず\n"+
 " *\n"+
 " * ringTime を おおきくすると、OK が でやすくなります\n"+
 " * quota を おおきくすると、クリアが むずかしく なります\n"+
