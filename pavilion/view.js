@@ -6,7 +6,6 @@ $(function () {
 	$('.change-type-button').on('click', function() {
 		var showingType = $(this).data('type');
 
-		if (showingType === currentShowingType) return;
 		currentShowingType = showingType;
 
 		// 状態を保存する
@@ -29,6 +28,20 @@ $(function () {
 		if (alignmentQuests) alignmentQuests();
 	});
 
+	// 保存された状態があれば再開する
+	(function () {
+		var pavilion_id = sessionStorage.getItem('view_param_pavilion_id');
+		if (pavilion_id && pavilion_id >> 0) {
+			var type = localStorage.getItem('quest-board-showing-type_' + pavilion_id);
+			if (type) {
+				$('.change-type-button[data-type="' + type + '"]').trigger('click');
+			} else {
+				// デフォルト(easy)でクエストを並べる
+				$('.change-type-button[data-type="easy"]').trigger('click');
+			}
+		}
+	})();
+
 	$.post('load.php', {
 		id: sessionStorage.getItem('view_param_pavilion_id')
 	}, function(data, textStatus, xhr) {
@@ -36,13 +49,11 @@ $(function () {
 			case 'no-session':
 			case 'invalid-input':
 			case 'uncertified':
-			case 'database-error': console.log(data); return;
+			case 'database-error': return;
 		}
 
 		var result = $.parseJSON(data);
 		if (!result) return;
-
-		console.log(result);
 
 		var NumberOfQuest;
 		alignmentQuests = function () {
@@ -90,7 +101,7 @@ $(function () {
 					kit.fadeIn('fast').insertAfter(NumberOfQuest < 3 ? '.row .quest-item-entity:eq(0)':'.row .quest-item-entity:eq(1)');
 				}
 			}
-		}
+		};
 
 		if (result.Kit) {
 			var current = $('.kit-item-sample').clone(true, true);
@@ -104,19 +115,8 @@ $(function () {
 			$('.kit-item-sample').parent().append(current);
 		}
 
-		// 保存された状態があれば再開する
-		(function () {
-			var pavilion_id = sessionStorage.getItem('view_param_pavilion_id');
-			if (pavilion_id && pavilion_id >> 0) {
-				var type = localStorage.getItem('quest-board-showing-type_' + pavilion_id);
-				if (type) {
-					$('.change-type-button[data-type="' + type + '"]').trigger('click');
-				} else {
-					// デフォルト(easy)でクエストを並べる
-					$('.change-type-button[data-type="easy"]').trigger('click');
-				}
-			}
-		})();
+		// ロード直後の状態で並べる
+		$('.change-type-button[data-type="' + currentShowingType + '"]').trigger('click');
 
 		// クエストモーダル
 		$('#questModal .ModalClose,#kitModal .ModalClose').attr('src', result.ModalClose);

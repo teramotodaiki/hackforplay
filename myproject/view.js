@@ -24,8 +24,6 @@ $(function(){
 			$('<div>').addClass('caption').append(
 				$('<button>').addClass('btn btn-lg btn-block btn-default h4p_open-project').text('開く').attr('data-loading-text', 'データの取得中…')
 			).append(
-				$('<pre>').addClass('panel-title')
-			).append(
 				$('<p>').append($('<span>').addClass('registered').html('作成日時：<b></b>'))
 			).append(
 				$('<p>').append($('<span>').addClass('source').html('改造元：<b></b>'))
@@ -100,7 +98,6 @@ $(function(){
 				var project = jQuery.parseJSON(data);
 				var item = $projectItem.clone(true);
 				item.find('.thumbnail img').attr('src', project.thumbnail || 'img/noimage.png');
-				item.find('.panel-title').text(project.data);
 				var title = project.source_title;
 				item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
 				item.find('.registered b').text(project.registered);
@@ -129,7 +126,6 @@ $(function(){
 				result.values.forEach(function(project){
 					var item = $projectItem.clone(true);
 					item.find('.thumbnail img').attr('src', project.thumbnail || 'img/noimage.png');
-					item.find('.panel-title').text(project.data);
 					var title = project.source_title;
 					item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
 					item.find('.registered b').text(convertLocaleTimeString(project.registered));

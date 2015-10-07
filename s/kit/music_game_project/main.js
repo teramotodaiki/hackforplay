@@ -36,15 +36,18 @@ window.addEventListener('load', function () {
 " * quota:       クリアするために ひつような OK の かず\n"+
 " * hitSE:       OK のときの こうかおん（SE ... サウンドエフェクト）\n"+
 " * coverOpacity:はいけいの あかるさ. 0 から 1 の すうち\n"+
+" * notesInTime: ひとくぎりのなかで でてくる リングのかず\n"+
 " *\n"+
 " * ringTime を おおきくすると、OK が でやすくなります\n"+
 " * quota を おおきくすると、クリアが むずかしく なります\n"+
+" * notesInTime を おおきくすると、よりこまかく きざめます\n"+
 " *\n"+
 " */\n"+
 "Hack.ringTime = 1.0;\n"+
 "Hack.quota = 40;\n"+
 "Hack.hitSE = 0;\n"+
 "Hack.coverOpacity = 0.2;\n"+
+"Hack.notesInTime = 8;\n"+
 "\n"+
 "\n"+
 "/**\n"+
@@ -104,13 +107,13 @@ window.addEventListener('load', function () {
 "\t * a,...p:  1なら でる. 0なら でない\n"+
 "\t *\n"+
 "\t */\n"+
-"\tsetNotesOn(  0.0, 1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0);\n"+
-"\tsetNotesOn( 18.0, 1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0);\n"+
-"\tsetNotesOn( 48.5, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,1,1,0);\n"+
-"\tsetNotesOn( 63.5, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0);\n"+
-"\tsetNotesOn( 65.0, 1,0,0,0, 1,0,0,0, 1,0,1,0, 1,0,0,0);\n"+
-"\tsetNotesOn( 80.0, 1,0,1,0, 1,0,0,0, 1,0,0,0, 1,0,0,0);\n"+
-"\tsetNotesOn( 96.2, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0);\n"+
+"\tsetNotesOn(  0.0, 1,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0);\n"+
+"\tsetNotesOn( 18.0, 1,0,0,0,0,0,0,0, 1,0,0,0,0,0,0,0);\n"+
+"\tsetNotesOn( 48.5, 0,0,0,0,0,0,0,0, 0,0,0,0,0,1,1,0);\n"+
+"\tsetNotesOn( 63.5, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0);\n"+
+"\tsetNotesOn( 65.0, 1,0,0,0,1,0,0,0, 1,0,1,0,1,0,0,0);\n"+
+"\tsetNotesOn( 80.0, 1,0,1,0,1,0,0,0, 1,0,0,0,1,0,0,0);\n"+
+"\tsetNotesOn( 96.2, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0);\n"+
 "\n"+
 "};\n"+
 "\n"+
@@ -217,7 +220,9 @@ window.addEventListener('load', function () {
 
     Hack.onload = Hack.onload || function() {
         // settings
-        Hack.ringTime = Hack.ringTime || 0.5;
+        Hack.ringTime = Hack.ringTime || 0.05;
+        Hack.quota = Hack.quota || 0;
+        Hack.notesInTime = Hack.notesInTime || 8;
         Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         Hack.music = Hack.music || {};
 
@@ -226,8 +231,8 @@ window.addEventListener('load', function () {
         Hack.soundEffectPath = (['osa/bosu19.wav','osa/clap00.wav', 'osa/coin03.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav', 'osa/swing14.wav', 'osa/whistle00.wav'])[Hack.hitSE];
         game.preload(Hack.coverImagePath, Hack.soundEffectPath);
 
-        Hack.nextNote = 0;
-        Hack.nextBar = 0;
+        Hack.oneNoteTime = 240 / Hack.music.BPM / Hack.notesInTime; // note1個分の拍 [sec] 曲中は固定
+        Hack.noteCursor = 0;
         Hack.point = 0;
         Hack.noteNum = 0;
         Hack.isMusicStarted = false;
@@ -300,7 +305,6 @@ window.addEventListener('load', function () {
                 if (Hack.sound.volume <= 0) {
                     game.removeEventListener('enterframe', task);
                     Hack.sound.stop();
-                    Hack.isCometMoving = true;
                     new ScoreLabelUI(Hack.point, Hack.noteNum);
                     setTimeout(function () {
                         if (Hack.point > Hack.quota) {
@@ -313,6 +317,7 @@ window.addEventListener('load', function () {
             });
         }
         Hack.isMusicStarted = false;
+        Hack.isCometMoving = false;
     };
 
     var ProcessingObject = Class(Sprite, {
@@ -438,7 +443,7 @@ window.addEventListener('load', function () {
             this.setup();
         },
         setup: function () {
-            this.setupTime = this.lastTime = Hack.isMusicStarted ? 0 : new Date().getTime();
+            this.setupTime = this.lastTime = Hack.isMusicStarted ? 0 : new Date().getTime() / 1000;
             this.commandStack = [];
             this.commandStackSeek = 0;
             this.moveTo(0, 0);
@@ -453,17 +458,13 @@ window.addEventListener('load', function () {
             }
         },
         onenterframe: function () {
-            var currentTime = Hack.isMusicStarted ? Hack.sound.currentTime * 1000 : new Date().getTime();
-            var t = (currentTime - this.lastTime) / 1000;
-            var spend = (currentTime - this.setupTime) / 1000;
-            this.lastTime = currentTime;
+            var currentTime = Hack.isMusicStarted ? Hack.sound.currentTime : new Date().getTime() / 1000;
+            var spend = currentTime - this.setupTime;
 
             if (!Hack.isCometMoving) return;
 
             this.px = this.x;
             this.py = this.y;
-
-            this.update(spend);
 
             // set-On method call
             this.commandStack.forEach(function (item) {
@@ -474,30 +475,37 @@ window.addEventListener('load', function () {
             }, this);
             this.commandStackSeek = spend;
 
-            this.velocity.x += this.force.x * t;
-            this.velocity.y += this.force.y * t;
+            var t = currentTime - this.lastTime;
+            var len = Math.max(1, 1000 * t >> 0); // tが変化しても_tがおよそ0.001になるように
+            for (var i = 0; i < len; i++) {
+                var _t = t / len;
+                this.update(this.lastTime + _t * i);
 
-            this.x += this.velocity.x * t;
-            this.y += this.velocity.y * t;
-
-            if (this.x < 0) {
-                this.x = -this.x;
-                this.velocity.x *= -1;
-            }
-            if (this.x > game.width) {
-                this.x = game.width - (this.x - game.width);
-                this.velocity.x *= -1;
-            }
-            if (this.y < 0) {
-                this.y = -this.y;
-                this.velocity.y *= -1;
-            }
-            if (this.y > game.height) {
-                this.y = game.height - (this.y - game.height);
-                this.velocity.y *= -1;
+                this.velocity.x += this.force.x * _t;
+                this.velocity.y += this.force.y * _t;
+                this.x += this.velocity.x * _t;
+                this.y += this.velocity.y * _t;
+                if (this.x < 0) {
+                    this.x = -this.x;
+                    this.velocity.x *= -1;
+                }
+                if (this.x > game.width) {
+                    this.x = game.width - (this.x - game.width);
+                    this.velocity.x *= -1;
+                }
+                if (this.y < 0) {
+                    this.y = -this.y;
+                    this.velocity.y *= -1;
+                }
+                if (this.y > game.height) {
+                    this.y = game.height - (this.y - game.height);
+                    this.velocity.y *= -1;
+                }
             }
 
             this.draw(spend);
+
+            this.lastTime = currentTime;
 
             if (!Hack.isMusicStarted) return;
 
@@ -506,21 +514,14 @@ window.addEventListener('load', function () {
                 Hack.dispatchEvent(new Event('musicend'));
             }
 
-            // Ringを吐き出す
-            var note8Millisecons = 30000 / Hack.music.BPM;
-            var millisec = currentTime - this.setupTime - (Hack.nextBar * note8Millisecons * 16);
-            millisec += (Hack.ringTime - Hack.music.intro) * 1000;
-            if (millisec >= note8Millisecons * Hack.nextNote) {
-                if (Hack.notes[Hack.nextNote]) {
+            // Ringを吐き出す rawCursorがnoteCursorを越えたら、noteCursorがひとつ進む
+            var rawCursor = (spend + Hack.ringTime - Hack.music.intro) / Hack.oneNoteTime;
+            if (Hack.noteCursor <= rawCursor) {
+                if (Hack.notes[Hack.noteCursor % Hack.notes.length]) {
                     // 鳴らす
                     var ring = new Ring(this.x, this.y);
                 }
-                // ひとつ進む
-                Hack.nextNote ++;
-                if (Hack.nextNote >= Hack.notes.length){
-                    Hack.nextNote = 0;
-                    Hack.nextBar ++;
-                }
+                Hack.noteCursor ++; // ひとつ進む
             }
         },
         update: function (time) {
@@ -639,7 +640,7 @@ window.addEventListener('load', function () {
             if (spend >= Hack.ringTime && this.state === 0) {
                 this.judge();
             }
-            if (spend > 2 && this.parentNode) {
+            if (spend > Hack.ringTime * 2 && this.parentNode) {
                 this.parentNode.removeChild(this);
             } else {
                 this.draw(spend);
@@ -689,7 +690,7 @@ window.addEventListener('load', function () {
                 this.state = 1;
                 Hack.point += 1;
                 if (game.assets[Hack.soundEffectPath]) {
-                    game.assets[Hack.soundEffectPath].play(true);
+                    game.assets[Hack.soundEffectPath].play(false);
                 }
             } else {
                 this.state = 2;

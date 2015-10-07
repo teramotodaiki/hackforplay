@@ -10,7 +10,6 @@ information_of_projects:
 	source_title : 改造元ステージの名前,
 	source_mode : 改造元ステージのMode (official, replay),
 	token : プロジェクトのトークン,
-	data : コードなどのデータ,
 	thumbnail : サムネイルのURL,
 	registered : 作成された日時
 }
@@ -42,8 +41,6 @@ try {
 	if (empty($project)) {
 		exit('invalid-token');
 	}
-	require_once 'getcurrentcode.php';
-	$project['Data']	= getCurrentCode($project['ID']);
 
 	// ステートを更新
 	$stmt	= $dbh->prepare('UPDATE "Project" SET "State"=:enabled WHERE "ID"=:project_id');
@@ -68,12 +65,6 @@ try {
 	$item->token 		= $project['Token'];
 	$item->thumbnail	= $thumb ? $thumb : '';
 	$item->registered 	= $project['Registered'];
-	// dataを最初の4行だけ抜き出し
-	$data_exploded		= explode("\n", $project['Data'], 5);
-	if (count($data_exploded) > 4) {
-		unset($data_exploded[4]);
-	}
-	$item->data			= implode("\n", $data_exploded);
 
 	// 出力
 	$json = json_encode($item);

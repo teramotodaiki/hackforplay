@@ -148,6 +148,10 @@ nav #img-usericon {
 	margin: 0 2%;
 }
 
+.container-pavilion {
+	min-height: 600px;
+}
+
 /* 間隔属性 */
 .margin-top-lg {
 	margin-top: 40px;

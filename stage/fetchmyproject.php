@@ -10,7 +10,6 @@ information_of_projects:
 		source_title : 改造元ステージの名前,
 		source_mode : 改造元ステージのMode (official, replay),
 		token : プロジェクトのトークン,
-		data : コードなどのデータ,
 		thumbnail : サムネイルのURL,
 		registered : 作成された日時
 	](,,,[])
@@ -65,7 +64,6 @@ try {
 	}
 
 	// 配列のvalueを生成し、データを格納
-	require_once '../project/getcurrentcode.php';
 	$values = array();
 	foreach ($result as $key => $value) {
 		$item 	= new stdClass();
@@ -75,7 +73,6 @@ try {
 		$item->source_mode	= $value['Mode'];
 		$item->token 		= $value['Token'];
 		$item->registered 	= $value['Registered'];
-		$item->data			= getCurrentCode($value['ID']);
 		$item->thumbnail	= $value['Thumbnail'];
 
 		array_push($values, $item);
