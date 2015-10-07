@@ -218,6 +218,8 @@ window.addEventListener('load', function () {
     Hack.onload = Hack.onload || function() {
         // settings
         Hack.ringTime = Hack.ringTime || 0.5;
+        Hack.quota = Hack.quota || 0;
+        Hack.notesInTime = Hack.notesInTime || 2;
         Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         Hack.music = Hack.music || {};
 
@@ -226,8 +228,8 @@ window.addEventListener('load', function () {
         Hack.soundEffectPath = (['osa/bosu19.wav','osa/clap00.wav', 'osa/coin03.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav', 'osa/swing14.wav', 'osa/whistle00.wav'])[Hack.hitSE];
         game.preload(Hack.coverImagePath, Hack.soundEffectPath);
 
-        Hack.nextNote = 0;
-        Hack.nextBar = 0;
+        Hack.oneNoteTime = 60 / Hack.music.BPM / Hack.notesInTime; // note1個分の拍 [sec] 曲中は固定
+        Hack.noteCursor = 0;
         Hack.point = 0;
         Hack.noteNum = 0;
         Hack.isMusicStarted = false;
@@ -506,21 +508,14 @@ window.addEventListener('load', function () {
                 Hack.dispatchEvent(new Event('musicend'));
             }
 
-            // Ringを吐き出す
-            var note8Millisecons = 30000 / Hack.music.BPM;
-            var millisec = currentTime - this.setupTime - (Hack.nextBar * note8Millisecons * 16);
-            millisec += (Hack.ringTime - Hack.music.intro) * 1000;
-            if (millisec >= note8Millisecons * Hack.nextNote) {
-                if (Hack.notes[Hack.nextNote]) {
+            // Ringを吐き出す rawCursorがnoteCursorを越えたら、noteCursorがひとつ進む
+            var rawCursor = (spend + Hack.ringTime - Hack.music.intro) / Hack.oneNoteTime;
+            if (Hack.noteCursor <= rawCursor) {
+                if (Hack.notes[Hack.noteCursor % Hack.notes.length]) {
                     // 鳴らす
                     var ring = new Ring(this.x, this.y);
                 }
-                // ひとつ進む
-                Hack.nextNote ++;
-                if (Hack.nextNote >= Hack.notes.length){
-                    Hack.nextNote = 0;
-                    Hack.nextBar ++;
-                }
+                Hack.noteCursor ++; // ひとつ進む
             }
         },
         update: function (time) {
