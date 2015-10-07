@@ -36,15 +36,18 @@ window.addEventListener('load', function () {
 " * quota:       クリアするために ひつような OK の かず\n"+
 " * hitSE:       OK のときの こうかおん（SE ... サウンドエフェクト）\n"+
 " * coverOpacity:はいけいの あかるさ. 0 から 1 の すうち\n"+
+" * notesInTime: 1テンポのなかで でてくる リングのかず\n"+
 " *\n"+
 " * ringTime を おおきくすると、OK が でやすくなります\n"+
 " * quota を おおきくすると、クリアが むずかしく なります\n"+
+" * notesInTime を おおきくすると、よりこまかく きざめます\n"+
 " *\n"+
 " */\n"+
 "Hack.ringTime = 1.0;\n"+
 "Hack.quota = 40;\n"+
 "Hack.hitSE = 0;\n"+
 "Hack.coverOpacity = 0.2;\n"+
+"Hack.notesInTime = 2;\n"+
 "\n"+
 "\n"+
 "/**\n"+
