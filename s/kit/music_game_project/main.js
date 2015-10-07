@@ -47,7 +47,7 @@ window.addEventListener('load', function () {
 "Hack.quota = 40;\n"+
 "Hack.hitSE = 0;\n"+
 "Hack.coverOpacity = 0.2;\n"+
-"Hack.notesInTime = 2;\n"+
+"Hack.notesInTime = 8;\n"+
 "\n"+
 "\n"+
 "/**\n"+
@@ -107,13 +107,13 @@ window.addEventListener('load', function () {
 "\t * a,...p:  1なら でる. 0なら でない\n"+
 "\t *\n"+
 "\t */\n"+
-"\tsetNotesOn(  0.0, 1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0);\n"+
-"\tsetNotesOn( 18.0, 1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0);\n"+
-"\tsetNotesOn( 48.5, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,1,1,0);\n"+
-"\tsetNotesOn( 63.5, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0);\n"+
-"\tsetNotesOn( 65.0, 1,0,0,0, 1,0,0,0, 1,0,1,0, 1,0,0,0);\n"+
-"\tsetNotesOn( 80.0, 1,0,1,0, 1,0,0,0, 1,0,0,0, 1,0,0,0);\n"+
-"\tsetNotesOn( 96.2, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0);\n"+
+"\tsetNotesOn(  0.0, 1,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0);\n"+
+"\tsetNotesOn( 18.0, 1,0,0,0,0,0,0,0, 1,0,0,0,0,0,0,0);\n"+
+"\tsetNotesOn( 48.5, 0,0,0,0,0,0,0,0, 0,0,0,0,0,1,1,0);\n"+
+"\tsetNotesOn( 63.5, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0);\n"+
+"\tsetNotesOn( 65.0, 1,0,0,0,1,0,0,0, 1,0,1,0,1,0,0,0);\n"+
+"\tsetNotesOn( 80.0, 1,0,1,0,1,0,0,0, 1,0,0,0,1,0,0,0);\n"+
+"\tsetNotesOn( 96.2, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0);\n"+
 "\n"+
 "};\n"+
 "\n"+
@@ -222,7 +222,7 @@ window.addEventListener('load', function () {
         // settings
         Hack.ringTime = Hack.ringTime || 0.05;
         Hack.quota = Hack.quota || 0;
-        Hack.notesInTime = Hack.notesInTime || 2;
+        Hack.notesInTime = Hack.notesInTime || 8;
         Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         Hack.music = Hack.music || {};
 
@@ -231,7 +231,7 @@ window.addEventListener('load', function () {
         Hack.soundEffectPath = (['osa/bosu19.wav','osa/clap00.wav', 'osa/coin03.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav', 'osa/swing14.wav', 'osa/whistle00.wav'])[Hack.hitSE];
         game.preload(Hack.coverImagePath, Hack.soundEffectPath);
 
-        Hack.oneNoteTime = 60 / Hack.music.BPM / Hack.notesInTime; // note1個分の拍 [sec] 曲中は固定
+        Hack.oneNoteTime = 240 / Hack.music.BPM / Hack.notesInTime; // note1個分の拍 [sec] 曲中は固定
         Hack.noteCursor = 0;
         Hack.point = 0;
         Hack.noteNum = 0;
