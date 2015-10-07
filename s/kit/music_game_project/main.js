@@ -302,7 +302,6 @@ window.addEventListener('load', function () {
                 if (Hack.sound.volume <= 0) {
                     game.removeEventListener('enterframe', task);
                     Hack.sound.stop();
-                    Hack.isCometMoving = true;
                     new ScoreLabelUI(Hack.point, Hack.noteNum);
                     setTimeout(function () {
                         if (Hack.point > Hack.quota) {
@@ -315,6 +314,7 @@ window.addEventListener('load', function () {
             });
         }
         Hack.isMusicStarted = false;
+        Hack.isCometMoving = false;
     };
 
     var ProcessingObject = Class(Sprite, {
@@ -456,16 +456,12 @@ window.addEventListener('load', function () {
         },
         onenterframe: function () {
             var currentTime = Hack.isMusicStarted ? Hack.sound.currentTime : new Date().getTime() / 1000;
-            var t = currentTime - this.lastTime;
             var spend = currentTime - this.setupTime;
-            this.lastTime = currentTime;
 
             if (!Hack.isCometMoving) return;
 
             this.px = this.x;
             this.py = this.y;
-
-            this.update(spend);
 
             // set-On method call
             this.commandStack.forEach(function (item) {
@@ -476,30 +472,37 @@ window.addEventListener('load', function () {
             }, this);
             this.commandStackSeek = spend;
 
-            this.velocity.x += this.force.x * t;
-            this.velocity.y += this.force.y * t;
+            var t = currentTime - this.lastTime;
+            var len = Math.max(1, 1000 * t >> 0); // tが変化しても_tがおよそ0.001になるように
+            for (var i = 0; i < len; i++) {
+                var _t = t / len;
+                this.update(this.lastTime + _t * i);
 
-            this.x += this.velocity.x * t;
-            this.y += this.velocity.y * t;
-
-            if (this.x < 0) {
-                this.x = -this.x;
-                this.velocity.x *= -1;
-            }
-            if (this.x > game.width) {
-                this.x = game.width - (this.x - game.width);
-                this.velocity.x *= -1;
-            }
-            if (this.y < 0) {
-                this.y = -this.y;
-                this.velocity.y *= -1;
-            }
-            if (this.y > game.height) {
-                this.y = game.height - (this.y - game.height);
-                this.velocity.y *= -1;
+                this.velocity.x += this.force.x * _t;
+                this.velocity.y += this.force.y * _t;
+                this.x += this.velocity.x * _t;
+                this.y += this.velocity.y * _t;
+                if (this.x < 0) {
+                    this.x = -this.x;
+                    this.velocity.x *= -1;
+                }
+                if (this.x > game.width) {
+                    this.x = game.width - (this.x - game.width);
+                    this.velocity.x *= -1;
+                }
+                if (this.y < 0) {
+                    this.y = -this.y;
+                    this.velocity.y *= -1;
+                }
+                if (this.y > game.height) {
+                    this.y = game.height - (this.y - game.height);
+                    this.velocity.y *= -1;
+                }
             }
 
             this.draw(spend);
+
+            this.lastTime = currentTime;
 
             if (!Hack.isMusicStarted) return;
 
