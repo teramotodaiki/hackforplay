@@ -440,7 +440,7 @@ window.addEventListener('load', function () {
             this.setup();
         },
         setup: function () {
-            this.setupTime = this.lastTime = Hack.isMusicStarted ? 0 : new Date().getTime();
+            this.setupTime = this.lastTime = Hack.isMusicStarted ? 0 : new Date().getTime() / 1000;
             this.commandStack = [];
             this.commandStackSeek = 0;
             this.moveTo(0, 0);
@@ -455,9 +455,9 @@ window.addEventListener('load', function () {
             }
         },
         onenterframe: function () {
-            var currentTime = Hack.isMusicStarted ? Hack.sound.currentTime * 1000 : new Date().getTime();
-            var t = (currentTime - this.lastTime) / 1000;
-            var spend = (currentTime - this.setupTime) / 1000;
+            var currentTime = Hack.isMusicStarted ? Hack.sound.currentTime : new Date().getTime() / 1000;
+            var t = currentTime - this.lastTime;
+            var spend = currentTime - this.setupTime;
             this.lastTime = currentTime;
 
             if (!Hack.isCometMoving) return;
