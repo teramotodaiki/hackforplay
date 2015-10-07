@@ -220,7 +220,7 @@ window.addEventListener('load', function () {
 
     Hack.onload = Hack.onload || function() {
         // settings
-        Hack.ringTime = Hack.ringTime || 0.5;
+        Hack.ringTime = Hack.ringTime || 0.05;
         Hack.quota = Hack.quota || 0;
         Hack.notesInTime = Hack.notesInTime || 2;
         Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -640,7 +640,7 @@ window.addEventListener('load', function () {
             if (spend >= Hack.ringTime && this.state === 0) {
                 this.judge();
             }
-            if (spend > 2 && this.parentNode) {
+            if (spend > Hack.ringTime * 2 && this.parentNode) {
                 this.parentNode.removeChild(this);
             } else {
                 this.draw(spend);
