@@ -245,35 +245,6 @@ $(function(){
 		}
 	});
 
-	// Share Buttons
-	(function () {
-		var encodedTitle = encodeURIComponent(getParam('title'));
-		var URL = 'https://hackforplay.xyz/s/?id='+getParam('id');
-		var encodedURL = encodeURIComponent(URL);
-		$('.twitter-share-button').attr('href', 'https://twitter.com/intent/tweet?hashtags=hackforplay&text=' + encodedTitle + '&url=' + encodedURL);
-		$('.fb-share-button').attr('data-href', URL);
-		$('.h4p-link-button').height(22).css({
-			'margin-top': '-10px',
-			'padding': '1px 10px'
-		}).addClass('btn btn-sm btn-default').click(function(event) {
-			var input = $('<input>').attr({
-				'type': 'text',
-				'size': URL.length,
-				'value': URL
-			}).click(function(event) {
-				$(this).get(0).selectionStart = 0;
-				$(this).get(0).selectionEnd = URL.length;
-				$(this).focus();
-			}).focus(function(event) {
-				focus_on_game = false;
-			}).blur(function(event) {
-				focus_on_game = true;
-			}).insertAfter(this);
-			$(this).remove();
-			input.focus();
-		});
-	})();
-
 	// HackforPlay RePlay (then externalizing the code)
 	// 読み込み時の処理
 	var jsEditor = CodeMirror.fromTextArea($('textarea[name=restaging_code]').get(0), {
@@ -308,8 +279,6 @@ $(function(){
 			$(".h4p_game").height(width/1.5).children('iframe').attr({
 				'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=' + (isExtendMode ? 'extend' : 'restaging')
 			});
-			// シェアボタンを非表示に
-			$('.h4p_share-buttons').hide();
 
 			// ロギングを開始
 			(function() {
@@ -790,13 +759,10 @@ $(function(){
 						case 'database-error':
 							showAlert('alert-danger', 'エラーにより投稿できませんでした');
 							break;
-						default:
-							var val = data.split(',');
-							$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled');
-							$(".h4p_published-info").removeClass('hidden');
+						case 'success':
+							$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled').append($('<p>').text('ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。'));
+							$(".h4p_publish-return").show();
 							alert_on_unload = false; // 遷移時の警告を非表示
-							focus_on_game = false; // iframeにfocusできるように
-							$('#stage-share-frame').attr('src', 'share.php?share_id=' + val[0] + '&share_title=' + val[1]);
 							break;
 					}
 				});
