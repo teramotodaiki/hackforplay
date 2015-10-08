@@ -2,7 +2,7 @@
 /*
 トークンのみからプロジェクトの情報を取得し、セッションのUserIDでステージを投稿する
 Input:	token , thumb , path , title , (attendance-token)
-Output:	no-session , invalid-token , already-published , database-error , success
+Output:	no-session , invalid-token , already-published , database-error , {id}
 */
 
 require_once '../preload.php';
@@ -86,12 +86,14 @@ try {
 	}
 
 	// ステージIDをProjectに関連づける
+	$lastInsertId = $dbh->lastInsertId('Stage');
 	$stmt	= $dbh->prepare('UPDATE "Project" SET "PublishedStageID"=:lastinsertid WHERE "ID"=:projectid');
-	$stmt->bindValue(":lastinsertid", $dbh->lastInsertId('Stage'), PDO::PARAM_INT);
+	$stmt->bindValue(":lastinsertid", $lastInsertId, PDO::PARAM_INT);
 	$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
 	$stmt->execute();
 
-	exit('success');
+	echo $lastInsertId;
+	exit;
 
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';
