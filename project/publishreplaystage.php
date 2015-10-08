@@ -2,7 +2,7 @@
 /*
 トークンのみからプロジェクトの情報を取得し、セッションのUserIDでステージを投稿する
 Input:	token , thumb , path , title , (attendance-token)
-Output:	no-session , invalid-token , already-published , database-error , {id}
+Output:	no-session , invalid-token , already-published , database-error , {id},{title}
 */
 
 require_once '../preload.php';
@@ -92,7 +92,7 @@ try {
 	$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
 	$stmt->execute();
 
-	echo $lastInsertId;
+	echo implode(',', array($lastInsertId, $title));
 	exit;
 
 } catch (Exception $e) {

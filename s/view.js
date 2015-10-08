@@ -791,11 +791,12 @@ $(function(){
 							showAlert('alert-danger', 'エラーにより投稿できませんでした');
 							break;
 						default:
+							var val = data.split(',');
 							$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled');
 							$(".h4p_published-info").removeClass('hidden');
 							alert_on_unload = false; // 遷移時の警告を非表示
 							focus_on_game = false; // iframeにfocusできるように
-							$('#stage-share-frame').attr('src', 'share.php?share_id=' + data + '&share_title=' + '{title}');
+							$('#stage-share-frame').attr('src', 'share.php?share_id=' + val[0] + '&share_title=' + val[1]);
 							break;
 					}
 				});
