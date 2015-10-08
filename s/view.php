@@ -309,7 +309,7 @@ if ($mode === 'quest') {
 							<iframe id="stage-share-frame" src="" height="40" width="450"></iframe>
 						</div>
 					</div>
-					<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block">もどる</a>
+					<a href="../" title="もどる" class="h4p_publish-return btn btn-lg btn-block">もどる</a>
 				</div>
 			</div>
 			<div class="col-xs-12 h4p_my-comment hidden">
