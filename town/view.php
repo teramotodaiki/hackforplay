@@ -9,9 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/town.css">
 </head>
 <body class="">
-	<?php require_once '../analyticstracking.php' ?>
-	<?php require_once '../fb-root.php' ?>
-	<?php require_once '../sendattendance.php'; ?>
+	<?php require_once '../externalcodes.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<script src="view.js" type="text/javascript"></script>
 	<div class="container container-town">

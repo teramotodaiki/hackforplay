@@ -10,9 +10,7 @@
 <body class=""<?php if (isset($pavilionBg)) : ?>
 	style="background-image: url(<?php echo $pavilionBg; ?>)"
 <?php endif; ?>>
-	<?php require_once '../analyticstracking.php' ?>
-	<?php require_once '../fb-root.php' ?>
-	<?php require_once '../sendattendance.php'; ?>
+	<?php require_once '../externalcodes.php'; ?>
 	<script src="view.js" type="text/javascript"></script>
 	<script src="randomize.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
