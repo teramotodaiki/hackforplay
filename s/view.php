@@ -299,7 +299,18 @@ if ($mode === 'quest') {
 				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中...">
 					この改造ステージを投稿する
 				</button>
-				<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block" style="display:none">もどる</a>
+				<div class="h4p_published-info text-center hidden">
+					<p class="text-muted">ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。</p>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h4 class="panel-title">このステージをほかの人にもシェアしましょう！</h4>
+						</div>
+						<div class="panel-body">
+							<iframe src=""></iframe>
+						</div>
+					</div>
+					<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block">もどる</a>
+				</div>
 			</div>
 			<div class="col-xs-12 h4p_my-comment hidden">
 				<h4>おくったメッセージ</h4>

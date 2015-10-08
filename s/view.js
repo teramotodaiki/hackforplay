@@ -254,7 +254,7 @@ $(function(){
 		$('.fb-share-button').attr('href', encodedURL);
 		$('.h4p-link-button').height(22).css({
 			'margin-top': '-10px',
-			'padding-top': '1px'
+			'padding': '1px 10px'
 		}).addClass('btn btn-sm btn-default').click(function(event) {
 			var input = $('<input>').attr({
 				'type': 'text',
@@ -790,9 +790,9 @@ $(function(){
 						case 'database-error':
 							showAlert('alert-danger', 'エラーにより投稿できませんでした');
 							break;
-						case 'success':
-							$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled').append($('<p>').text('ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。'));
-							$(".h4p_publish-return").show();
+						default:
+							$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled');
+							$(".h4p_published-info").removeClass('hidden');
 							alert_on_unload = false; // 遷移時の警告を非表示
 							break;
 					}
