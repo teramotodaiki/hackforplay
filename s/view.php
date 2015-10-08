@@ -349,6 +349,7 @@ if ($mode === 'quest') {
 						<ul class="list-inline">
 							<li><a class="twitter-share-button" data-count="none">Tweet</a></li>
 							<li><div class="fb-share-button" data-layout="button"></div></li>
+							<li><div class="h4p-link-button"><span class="glyphicon glyphicon-paperclip"></span>URL</div></li>
 						</ul>
 					</div>
 				</div>

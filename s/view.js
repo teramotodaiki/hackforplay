@@ -248,9 +248,30 @@ $(function(){
 	// Share Buttons
 	(function () {
 		var encodedTitle = encodeURIComponent(getParam('title'));
-		var encodedURL = encodeURIComponent('https://hackforplay.xyz/s/?id='+getParam('id'));
+		var URL = 'https://hackforplay.xyz/s/?id='+getParam('id');
+		var encodedURL = encodeURIComponent(URL);
 		$('.twitter-share-button').attr('href', 'https://twitter.com/intent/tweet?hashtags=hackforplay&text=' + encodedTitle + '&url=' + encodedURL);
 		$('.fb-share-button').attr('href', encodedURL);
+		$('.h4p-link-button').height(22).css({
+			'margin-top': '-10px',
+			'padding-top': '1px'
+		}).addClass('btn btn-sm btn-default').click(function(event) {
+			var input = $('<input>').attr({
+				'type': 'text',
+				'size': URL.length,
+				'value': URL
+			}).click(function(event) {
+				$(this).get(0).selectionStart = 0;
+				$(this).get(0).selectionEnd = URL.length;
+				$(this).focus();
+			}).focus(function(event) {
+				focus_on_game = false;
+			}).blur(function(event) {
+				focus_on_game = true;
+			}).insertAfter(this);
+			$(this).remove();
+			input.focus();
+		});
 	})();
 
 	// HackforPlay RePlay (then externalizing the code)
