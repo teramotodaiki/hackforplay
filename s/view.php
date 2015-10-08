@@ -306,7 +306,7 @@ if ($mode === 'quest') {
 							<h4 class="panel-title">このステージをほかの人にもシェアしましょう！</h4>
 						</div>
 						<div class="panel-body">
-							<iframe src=""></iframe>
+							<iframe id="stage-share-frame" src="" height="40" width="450"></iframe>
 						</div>
 					</div>
 					<a href="../r" title="もどる" class="h4p_publish-return btn btn-lg btn-block">もどる</a>
