@@ -245,6 +245,14 @@ $(function(){
 		}
 	});
 
+	// Share Buttons
+	(function () {
+		var encodedTitle = encodeURIComponent(getParam('title'));
+		var encodedURL = encodeURIComponent('https://hackforplay.xyz/s/?id='+getParam('id'));
+		$('.twitter-share-button').attr('href', 'https://twitter.com/intent/tweet?hashtags=hackforplay&text=' + encodedTitle + '&url=' + encodedURL);
+		$('.fb-share-button').attr('href', encodedURL);
+	})();
+
 	// HackforPlay RePlay (then externalizing the code)
 	// 読み込み時の処理
 	var jsEditor = CodeMirror.fromTextArea($('textarea[name=restaging_code]').get(0), {

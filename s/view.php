@@ -60,8 +60,7 @@ if ($mode === 'quest') {
 	</style>
 </head>
 <body>
-	<?php include_once("../analyticstracking.php"); ?>
-	<?php require_once '../sendattendance.php'; ?>
+	<?php require_once '../externalcodes.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<?php require_once '../view/authmodal.php'; ?>
 	<!-- Alert -->
@@ -346,6 +345,12 @@ if ($mode === 'quest') {
 						<p class="overflow-auto"><?php echo $explain; ?></p>
 					</div>
 					<?php endif; ?>
+					<div class="col-xs-12">
+						<ul class="list-inline">
+							<li><a class="twitter-share-button" data-count="none">Tweet</a></li>
+							<li><div class="fb-share-button" data-layout="button"></div></li>
+						</ul>
+					</div>
 				</div>
 			</div>
 			<?php if ($id < 300) : ?>
