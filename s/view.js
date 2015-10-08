@@ -251,7 +251,7 @@ $(function(){
 		var URL = 'https://hackforplay.xyz/s/?id='+getParam('id');
 		var encodedURL = encodeURIComponent(URL);
 		$('.twitter-share-button').attr('href', 'https://twitter.com/intent/tweet?hashtags=hackforplay&text=' + encodedTitle + '&url=' + encodedURL);
-		$('.fb-share-button').attr('href', encodedURL);
+		$('.fb-share-button').attr('data-href', URL);
 		$('.h4p-link-button').height(22).css({
 			'margin-top': '-10px',
 			'padding': '1px 10px'
