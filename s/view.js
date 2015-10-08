@@ -308,6 +308,8 @@ $(function(){
 			$(".h4p_game").height(width/1.5).children('iframe').attr({
 				'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=' + (isExtendMode ? 'extend' : 'restaging')
 			});
+			// シェアボタンを非表示に
+			$('.h4p_share-buttons').hide();
 
 			// ロギングを開始
 			(function() {

@@ -345,7 +345,7 @@ if ($mode === 'quest') {
 						<p class="overflow-auto"><?php echo $explain; ?></p>
 					</div>
 					<?php endif; ?>
-					<div class="col-xs-12">
+					<div class="col-xs-12 h4p_share-buttons">
 						<ul class="list-inline">
 							<li><a class="twitter-share-button" data-count="none">Tweet</a></li>
 							<li><div class="fb-share-button" data-layout="button"></div></li>
