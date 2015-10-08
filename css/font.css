@@ -51,6 +51,10 @@ body {
 	font-size: 180%;
 }
 
+.h4p_publish p{
+	font-size: 60%;
+}
+
 .h4p_projectlist .caption pre {
 	font-size: 14px;
 }

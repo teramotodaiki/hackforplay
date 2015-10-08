@@ -72,10 +72,6 @@ $(function(){
 					'data-toggle': 'modal',
 					'data-target': '#reasonModal'
 				}).text('リジェクトされた理由')
-			).append(
-				$('<div>').addClass('h4p-link-button hidden').append(
-					$('<span>').addClass('glyphicon glyphicon-paperclip')
-				)
 			)
 		)
 	);
@@ -197,22 +193,6 @@ $(function(){
 				if (stage.state === 'rejected') {
 					var reason_json = JSON.stringify(stage.reject_reason);
 					item.find('.show_reason').removeClass('hide').data('reason', reason_json);
-				}
-				if (stage.state === 'published') {
-					var URL = 'https://hackforplay.xyz/s/?id='+stage.id;
-					item.find('.h4p-link-button').removeClass('hidden').addClass('btn btn-sm').click(function(event) {
-						var input = $('<input>').attr({
-							'type': 'text',
-							'size': URL.length,
-							'value': URL
-						}).click(function(event) {
-							$(this).get(0).selectionStart = 0;
-							$(this).get(0).selectionEnd = URL.length;
-							$(this).focus();
-						}).insertAfter(this);
-						$(this).remove();
-						input.focus();
-					});
 				}
 				item.appendTo($list);
 			});
