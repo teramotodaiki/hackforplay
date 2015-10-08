@@ -18,7 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="css/landingpage.css">
 </head>
 <body class="">
-	<?php require_once '../externalcodes.php'; ?>
+	<?php require_once 'externalcodes.php'; ?>
 	<script src="view/main.js" type="text/javascript" charset="utf-8"></script>
 	<?php require_once 'modals.php'; ?>
 	<?php include 'header.php'; ?>
