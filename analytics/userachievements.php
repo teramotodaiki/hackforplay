@@ -26,7 +26,7 @@ try {
 	require_once '../preload.php';
 
 	// User
-	$stmt_usr	= $dbh->prepare('SELECT DISTINCT "UserID" FROM "LevelUserMap" ORDER BY "ID"');
+	$stmt_usr	= $dbh->prepare('SELECT DISTINCT "UserID" FROM "LevelUserMap" ORDER BY "UserID"');
 	$stmt_usr->execute();
 
 	// Achievements
