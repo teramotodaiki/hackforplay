@@ -99,7 +99,7 @@ var gameover; // gameoverメソッドも
                 case 'official':
                 if (__H4PENV__PATH.indexOf('tutorial') === 0) {
                     // チュートリアルステージをクリアしたとき
-                    if (__H4PENV__NEXT) {
+                    if (__H4PENV__NEXT >> 0) {
                         // [NEXT]
                         (function (sprite) {
                             sprite.image = game.assets['hackforplay/new_button_next.png'];

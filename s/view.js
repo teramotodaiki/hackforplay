@@ -33,7 +33,7 @@ $(function(){
 		switch(e.data){
 			case "tutorial_next_page":
 				// 1~5のときは次のページへ / 6のときは getaccount へ
-				if (getParam('next')) {
+				if (getParam('next') >> 0) {
 					location.href = '/s/?id=' + getParam('next');
 				} else {
 					location.href = '/getaccount/';
