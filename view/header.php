@@ -109,6 +109,21 @@ $(function(){
 			'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
 			'&login_successed=' + encodeURIComponent(login_successed));
 	})();
+
+	// 通知
+	(function (data) {
+
+
+
+	})({
+		Notifications: [{
+			Type: "Comment",
+			Datail: ["ドラクエ", "/s/thumbs/016f2d2dccc042097085b7b6b8b10659.png", "てら", "おもしろい〜！"]
+		}, {
+			Type: "Comment",
+			Datail: ["パズドラ", "../s/thumbs/04102c9d878ebb295e3aaa434b11a36c.png", "たに", "これすごいね"]
+		}]
+	});
 });
 </script>
 <nav class="navbar navbar-default">
