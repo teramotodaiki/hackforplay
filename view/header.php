@@ -113,7 +113,9 @@ $(function(){
 	// 通知
 	(function (data) {
 
+		if (!data.Notifications.length) return;
 
+		$('.notification-message-icon>a').css('color', '#ff3b6f'); // 通知ありの状態
 
 	})({
 		Notifications: [{
@@ -199,6 +201,16 @@ $(function(){
 				<?php endif; ?>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown notification-message-icon">
+					<a href="#" title="Message" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<span class="glyphicon glyphicon-envelope"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="../comments/" title="See all">すべてをみる</a>
+						</li>
+					</ul>
+				</li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 						<img src="<?php echo $icon_url; ?>" class="img-circle" id="img-usericon">
