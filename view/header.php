@@ -145,6 +145,13 @@ $(function(){
 			$('.notification-state-unread').addClass('opened');
 		}, 10);
 	});
+
+	// 既読トリガー
+	$('.notification-check').on('click', function() {
+		$.post('../notification/readall.php');
+		$('.notification-state-unread').removeClass('notification-state-unread').addClass('notification-state-read');
+		$('.notification-icon>a').css('color', 'rgb(112,112,112)');
+	});
 });
 </script>
 <nav class="navbar navbar-default">
@@ -242,6 +249,11 @@ $(function(){
 							</a>
 						</li>
 						<!-- ~template -->
+						<li>
+							<span class="btn btn-link notification-check">
+								すべてチェック<span class="glyphicon glyphicon-check"></span>
+							</span>
+						</li>
 						<div class="notification-anchor"></div>
 						<li>
 							<a href="../comments/" title="See all">これまでのコメント</a>
