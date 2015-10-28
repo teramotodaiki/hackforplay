@@ -111,38 +111,28 @@ $(function(){
 	})();
 
 	// 通知
-	(function (data) {
+	$.post('../notification/outline.php',{
 
-		if (!data.Notifications.length) return;
+	}, function(data, textStatus, xhr) {
+
+		var result = $.parseJSON(data);
+		if (!result || !result.Notifications.length) return;
 
 		$('.notification-icon>a').css('color', '#ff3b6f'); // 通知ありの状態
-		var $parent = $('.notification-icon ul.dropdown-menu');
-		data.Notifications.forEach(function (item) {
+		result.Notifications.forEach(function (item) {
 
-			var entity = $(this).clone(true, true);
-			entity.removeClass('notification-comment-sample hidden').addClass('notification-comment-entity');
+			var prefix = 'notification-' + item.Type + '-';
+			var entity = $('.' + prefix + 'sample').clone(true, true);
+			entity.removeClass(prefix + 'sample hidden').addClass(prefix + 'entity');
 			entity.find('.notification-item-thumbnail').attr('src', item.Thumbnail);
-			entity.find('.notification-item-wrapper').attr('href', item.URL);
-			item.Detail.forEach(function (text, index) {
-				entity.find('.notification-detail-' + index).text(text);
+			entity.find('.notification-item-wrapper').attr('href', item.LinkedURL);
+			Object.keys(item.Detail).forEach(function (key, index) {
+				entity.find('.notification-detail-' + key).text(item.Detail[key]);
 			});
 
-			$parent.prepend(entity);
+			$(this).before(entity);
 
-		}, $('.notification-comment-sample'));
-
-	})({
-		Notifications: [{
-			Type: "Comment",
-			Thumbnail: "/s/thumbs/016f2d2dccc042097085b7b6b8b10659.png",
-			Detail: ["てら", "ドラクエ", "おもしろい〜！"],
-			URL: '../comments/'
-		}, {
-			Type: "Comment",
-			Thumbnail: "/s/thumbs/04102c9d878ebb295e3aaa434b11a36c.png",
-			Detail: ["たに", "パズドラ", "これすごいね"],
-			URL: '../comments/'
-		}]
+		}, $('.notification-anchor'));
 	});
 });
 </script>
@@ -233,14 +223,15 @@ $(function(){
 									</div>
 									<div class="col-xs-8">
 										<div class="notification-item-article break-word">
-											<b class="notification-detail-0"></b> が あなたのステージ
-											「<b class="notification-detail-1"></b>」にコメントしました
+											<b class="notification-detail-user"></b> が あなたのステージ
+											「<b class="notification-detail-stage"></b>」にコメントしました
 										</div>
 									</div>
 								</div>
 							</a>
 						</li>
 						<!-- ~template -->
+						<div class="notification-anchor"></div>
 						<li>
 							<a href="../comments/" title="See all">これまでのコメント</a>
 						</li>
