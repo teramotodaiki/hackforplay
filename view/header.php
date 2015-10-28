@@ -118,7 +118,10 @@ $(function(){
 		var result = $.parseJSON(data);
 		if (!result || !result.Notifications.length) return;
 
-		$('.notification-icon>a').css('color', '#ff3b6f'); // 通知ありの状態
+		if (result.HasUnread) {
+			$('.notification-icon>a').css('color', '#ff3b6f'); // 未読通知ありの状態
+		}
+
 		result.Notifications.forEach(function (item) {
 
 			var prefix = 'notification-' + item.Type + '-';

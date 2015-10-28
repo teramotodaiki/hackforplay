@@ -5,6 +5,7 @@
  * Input:	(offset|0) , (length|10)
  * Output:	result:JSON
  * {
+ *		HasUnread: true|false:Boolean,
  * 		Notifications: [{
  *			State: "unread"|"read":String
  *			Type: "comment":String,
@@ -53,6 +54,13 @@ try {
 
 		array_push($result->Notifications, $row);
 	}
+
+	// HasUnread
+	$stmt_has	= $dbh->prepare('SELECT COUNT(*) FROM "Notification" WHERE "UserID"=:userid AND "State"=:unread');
+	$stmt_has->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+	$stmt_has->bindValue(":unread", 'unread', PDO::PARAM_STR);
+	$stmt_has->execute();
+	$result->HasUnread	= (bool)$stmt_has->fetch(PDO::FETCH_COLUMN);
 
 	// Encode and Output
 	echo json_encode($result);
