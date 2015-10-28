@@ -116,14 +116,26 @@ $(function(){
 		if (!data.Notifications.length) return;
 
 		$('.notification-message-icon>a').css('color', '#ff3b6f'); // 通知ありの状態
+		var $parent = $('.notification-message-icon ul.dropdown-menu');
+		data.Notifications.forEach(function (item) {
+
+			var entity = $(this).clone(true, true);
+			entity.removeClass('notification-message-sample hidden').addClass('notification-message-entity');
+			entity.find('.notification-item-thumbnail').attr('src', item.Thumbnail);
+
+			$parent.prepend(entity);
+
+		}, $('.notification-message-sample'));
 
 	})({
 		Notifications: [{
 			Type: "Comment",
-			Datail: ["ドラクエ", "/s/thumbs/016f2d2dccc042097085b7b6b8b10659.png", "てら", "おもしろい〜！"]
+			Thumbnail: "/s/thumbs/016f2d2dccc042097085b7b6b8b10659.png",
+			Datail: ["ドラクエ", "てら", "おもしろい〜！"]
 		}, {
 			Type: "Comment",
-			Datail: ["パズドラ", "../s/thumbs/04102c9d878ebb295e3aaa434b11a36c.png", "たに", "これすごいね"]
+			Thumbnail: "/s/thumbs/04102c9d878ebb295e3aaa434b11a36c.png",
+			Datail: ["パズドラ", "たに", "これすごいね"]
 		}]
 	});
 });
@@ -206,8 +218,24 @@ $(function(){
 						<span class="glyphicon glyphicon-envelope"></span>
 					</a>
 					<ul class="dropdown-menu">
+						<!-- template ~ -->
+						<li class="notification-message-sample hidden">
+							<a class="notification-item-wrapper" href="#" title="">
+								<div class="row">
+									<div class="col-xs-4">
+										<img class="notification-item-thumbnail img-responsive" src="" alt="">
+									</div>
+									<div class="col-xs-8">
+										<div class="notification-item-article break-word">
+										aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+										</div>
+									</div>
+								</div>
+							</a>
+						</li>
+						<!-- ~template -->
 						<li>
-							<a href="../comments/" title="See all">すべてをみる</a>
+							<a href="../comments/" title="See all">これまでのメッセージ</a>
 						</li>
 					</ul>
 				</li>

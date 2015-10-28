@@ -148,6 +148,14 @@ nav #img-usericon {
 	margin: 0 2%;
 }
 
+.dropdown.notification-message-icon .dropdown-menu {
+	width: 380px;
+}
+
+.dropdown.notification-message-icon .dropdown-menu a.notification-item-wrapper {
+	height: 84px;
+}
+
 .container-pavilion {
 	min-height: 600px;
 }
@@ -381,4 +389,12 @@ button.h4p_open-project {
 #questModal .body-part-1 p,
 #kitModal .body-part-1 p {
 	margin: 5px 0;
+}
+
+.dropdown.notification-message-icon .dropdown-menu a.notification-item-wrapper {
+	padding: 6px 6px;
+}
+
+.notification-item-wrapper .notification-item-article {
+	margin-left: -15px;
 }

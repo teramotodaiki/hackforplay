@@ -251,6 +251,11 @@ iframe {
 	top: 40%;
 }
 
+.break-word {
+	word-wrap: break-word;
+	white-space: normal;
+}
+
 /* アニメーション */
 
 .h4p_item-transform {
