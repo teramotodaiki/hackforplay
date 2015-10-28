@@ -1,7 +1,7 @@
 <?php
 /**
  * outline.php
- * session user に対してストックされている unread な通知のすべてを取得する.
+ * session user に対してストックされている通知をあたらしい順に取得する.
  * Input:	(offset|0) , (length|10)
  * Output:	result:JSON
  * {
