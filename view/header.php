@@ -122,6 +122,10 @@ $(function(){
 			var entity = $(this).clone(true, true);
 			entity.removeClass('notification-message-sample hidden').addClass('notification-message-entity');
 			entity.find('.notification-item-thumbnail').attr('src', item.Thumbnail);
+			entity.find('.notification-item-wrapper').attr('href', item.URL);
+			item.Detail.forEach(function (text, index) {
+				entity.find('.notification-detail-' + index).text(text);
+			});
 
 			$parent.prepend(entity);
 
@@ -131,11 +135,13 @@ $(function(){
 		Notifications: [{
 			Type: "Comment",
 			Thumbnail: "/s/thumbs/016f2d2dccc042097085b7b6b8b10659.png",
-			Datail: ["ドラクエ", "てら", "おもしろい〜！"]
+			Detail: ["てら", "ドラクエ", "おもしろい〜！"],
+			URL: '../comments/'
 		}, {
 			Type: "Comment",
 			Thumbnail: "/s/thumbs/04102c9d878ebb295e3aaa434b11a36c.png",
-			Datail: ["パズドラ", "たに", "これすごいね"]
+			Detail: ["たに", "パズドラ", "これすごいね"],
+			URL: '../comments/'
 		}]
 	});
 });
@@ -227,7 +233,8 @@ $(function(){
 									</div>
 									<div class="col-xs-8">
 										<div class="notification-item-article break-word">
-										aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+											<b class="notification-detail-0"></b> が あなたのステージ
+											「<b class="notification-detail-1"></b>」にコメントしました
 										</div>
 									</div>
 								</div>
