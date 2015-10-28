@@ -148,11 +148,11 @@ nav #img-usericon {
 	margin: 0 2%;
 }
 
-.dropdown.notification-message-icon .dropdown-menu {
+.dropdown.notification-icon .dropdown-menu {
 	width: 380px;
 }
 
-.dropdown.notification-message-icon .dropdown-menu a.notification-item-wrapper {
+.dropdown.notification-icon .dropdown-menu a.notification-item-wrapper {
 	height: 84px;
 }
 
@@ -391,7 +391,7 @@ button.h4p_open-project {
 	margin: 5px 0;
 }
 
-.dropdown.notification-message-icon .dropdown-menu a.notification-item-wrapper {
+.dropdown.notification-icon .dropdown-menu a.notification-item-wrapper {
 	padding: 6px 6px;
 }
 

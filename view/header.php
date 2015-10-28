@@ -115,12 +115,12 @@ $(function(){
 
 		if (!data.Notifications.length) return;
 
-		$('.notification-message-icon>a').css('color', '#ff3b6f'); // 通知ありの状態
-		var $parent = $('.notification-message-icon ul.dropdown-menu');
+		$('.notification-icon>a').css('color', '#ff3b6f'); // 通知ありの状態
+		var $parent = $('.notification-icon ul.dropdown-menu');
 		data.Notifications.forEach(function (item) {
 
 			var entity = $(this).clone(true, true);
-			entity.removeClass('notification-message-sample hidden').addClass('notification-message-entity');
+			entity.removeClass('notification-comment-sample hidden').addClass('notification-comment-entity');
 			entity.find('.notification-item-thumbnail').attr('src', item.Thumbnail);
 			entity.find('.notification-item-wrapper').attr('href', item.URL);
 			item.Detail.forEach(function (text, index) {
@@ -129,7 +129,7 @@ $(function(){
 
 			$parent.prepend(entity);
 
-		}, $('.notification-message-sample'));
+		}, $('.notification-comment-sample'));
 
 	})({
 		Notifications: [{
@@ -219,13 +219,13 @@ $(function(){
 				<?php endif; ?>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown notification-message-icon">
-					<a href="#" title="Message" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				<li class="dropdown notification-icon">
+					<a href="#" title="Notification" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 						<span class="glyphicon glyphicon-envelope"></span>
 					</a>
 					<ul class="dropdown-menu">
 						<!-- template ~ -->
-						<li class="notification-message-sample hidden">
+						<li class="notification-comment-sample hidden">
 							<a class="notification-item-wrapper" href="#" title="">
 								<div class="row">
 									<div class="col-xs-4">
@@ -242,7 +242,7 @@ $(function(){
 						</li>
 						<!-- ~template -->
 						<li>
-							<a href="../comments/" title="See all">これまでのメッセージ</a>
+							<a href="../comments/" title="See all">これまでのコメント</a>
 						</li>
 					</ul>
 				</li>
@@ -267,7 +267,7 @@ $(function(){
 							<a href="/p" title="Preference">せってい</a>
 						</li>
 						<li>
-							<a href="/comments" title="Message">メッセージ</a>
+							<a href="/comments" title="Comments">もらったコメント</a>
 						</li>
 						<li role="separator" class="divider"></li>
 						<li>
