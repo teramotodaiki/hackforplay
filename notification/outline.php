@@ -35,6 +35,8 @@ try {
 	$stmt_not->execute();
 
 	$stmt_det	= $dbh->prepare('SELECT "Data","KeyString" FROM "NotificationDetail" WHERE "NotificationID"=:id');
+	$stmt_usr	= $dbh->prepare('SELECT "Nickname" FROM "User" WHERE "ID"=:userid');
+	$stmt_stg	= $dbh->prepare('SELECT "Title" FROM "Stage" WHERE "ID"=:stageid');
 
 	// Skip
 	for ($i = $offset; $i > 0 && $stmt_not->fetch(); $i--)
@@ -49,7 +51,21 @@ try {
 		$stmt_det->bindValue(":id", $row['ID'], PDO::FETCH_ASSOC);
 		$stmt_det->execute();
 		while ($detail = $stmt_det->fetch(PDO::FETCH_ASSOC)) {
-			$row['Detail'][$detail['KeyString']]	= $detail['Data'];
+			switch ($detail['KeyString']) {
+				case 'user':
+					$stmt_usr->bindValue(":userid", $detail['Data'], PDO::PARAM_INT);
+					$stmt_usr->execute();
+					$row['Detail']['user']	= $stmt_usr->fetch(PDO::FETCH_COLUMN);
+					break;
+				case 'stage':
+					$stmt_stg->bindValue(":stageid", $detail['Data'], PDO::PARAM_INT);
+					$stmt_stg->execute();
+					$row['Detail']['stage']	= $stmt_stg->fetch(PDO::FETCH_COLUMN);
+					break;
+				default:
+					$row['Detail'][$detail['KeyString']]	= $detail['Data'];
+					break;
+			}
 		}
 
 		array_push($result->Notifications, $row);
