@@ -256,7 +256,9 @@ $(function(){
 						</li>
 						<div class="notification-anchor"></div>
 						<li>
-							<a href="../comments/" title="See all">これまでのコメント</a>
+							<a class="btn btn-link" href="../comments/" title="See all">
+								<h5>これまでのコメント</h5>
+							</a>
 						</li>
 					</ul>
 				</li>
