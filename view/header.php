@@ -119,7 +119,7 @@ $(function(){
 		if (!result || !result.Notifications.length) return;
 
 		if (result.HasUnread) {
-			$('.notification-icon>a').css('color', '#ff3b6f'); // 未読通知ありの状態
+			$('.notification-icon>a').css('color', 'rgb(255, 59,111)'); // 未読通知ありの状態
 		}
 
 		result.Notifications.forEach(function (item) {
@@ -127,6 +127,7 @@ $(function(){
 			var prefix = 'notification-' + item.Type + '-';
 			var entity = $('.' + prefix + 'sample').clone(true, true);
 			entity.removeClass(prefix + 'sample hidden').addClass(prefix + 'entity');
+			entity.addClass('notification-state-' + item.State);
 			entity.find('.notification-item-thumbnail').attr('src', item.Thumbnail);
 			entity.find('.notification-item-wrapper').attr('href', item.LinkedURL);
 			Object.keys(item.Detail).forEach(function (key, index) {
@@ -136,6 +137,13 @@ $(function(){
 			$(this).before(entity);
 
 		}, $('.notification-anchor'));
+	});
+
+	// 開いたときの未読アニメーション
+	$('.dropdown.notification-icon').on('shown.bs.dropdown', function() {
+		setTimeout(function () {
+			$('.notification-state-unread').addClass('opened');
+		}, 10);
 	});
 });
 </script>

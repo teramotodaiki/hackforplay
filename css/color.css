@@ -54,6 +54,15 @@ nav.navbar {
 	color: white;
 }
 
+.notification-state-unread {
+	background-color: rgba(255, 59,111,0.4);
+	transition: background-color 0.2s ease-in;
+}
+
+.notification-state-unread.opened {
+	background-color: rgba(255, 59,111,0.05);
+}
+
 /* 線の幅・色 */
 nav.navbar {
 	border: none;
