@@ -170,6 +170,11 @@ nav #img-usericon {
 	transition: width 2.0s ease-in-out;
 }
 
+.notification-end {
+	width: 100%;
+	height: 100px;
+}
+
 .notification-order.active {
 	height: 2px;
 	width: 99%;

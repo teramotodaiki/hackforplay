@@ -116,19 +116,17 @@ $(function(){
 
 		// 最初に取得
 		$.post('../notification/outline.php', {
-			offset: 0,
+			offset: itemCount,
 			length: 10
 		}, function(data, textStatus, xhr) {
 			var result = $.parseJSON(data);
-
 			if (result && result.Notifications.length) {
-
 				layoutNotification(result);
-
 				itemCount += 10;
 				if (result.Notifications.length >= 10) {
-					// スクロールしたときに続きをロードするための notification-order を設置
 					$('<div>').addClass('notification-order').appendTo($('.notification-scroll'));
+				} else {
+					$('<div>').addClass('notification-end').appendTo($('.notification-scroll'));
 				}
 			}
 		});
@@ -142,13 +140,25 @@ $(function(){
 
 				// 追加
 				order.addClass('active');
-
-				setTimeout(function () {
+				$.post('../notification/outline.php', {
+					offset: itemCount,
+					length: 10
+				}, function(data, textStatus, xhr) {
 					order.remove();
-				}, 2000);
+
+					var result = $.parseJSON(data);
+					if (result && result.Notifications.length) {
+						layoutNotification(result);
+						itemCount += 10;
+						if (result.Notifications.length >= 10) {
+							$('<div>').addClass('notification-order').appendTo($('.notification-scroll'));
+						} else {
+							$('<div>').addClass('notification-end').appendTo($('.notification-scroll'));
+						}
+					}
+				});
 			}
 		});
-
 	})();
 
 	// 開いたときの未読アニメーション
