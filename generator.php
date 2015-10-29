@@ -14,7 +14,7 @@ try {
 
 	// Insert Statements
 	$stmt_noti	= $dbh->prepare('INSERT INTO "Notification" ("UserID","State","Type","Thumbnail","LinkedURL","MakeUnixTime") VALUES(:author_id,:unread,:comment,:thumb_url,:comments,:time)');
-
+	$stmt_deta	= $dbh->prepare('INSERT INTO "NotificationDetail" ("NotificationID","Data","KeyString") VALUES(:id_1,:userid,:user),(:id_2,:stageid,:stage) ');
 
 	while ($map = $stmt_map->fetch(PDO::FETCH_ASSOC)) {
 
@@ -38,6 +38,14 @@ try {
 		$stmt_noti->bindValue(":time", $time_unixtime, PDO::PARAM_STR);
 		$stmt_noti->execute();
 		$NotificationID	= $dbh->lastInsertId('Notification');
+
+		$stmt_deta->bindValue(":id_1", $NotificationID, PDO::PARAM_INT);
+		$stmt_deta->bindValue(":id_2", $NotificationID, PDO::PARAM_INT);
+		$stmt_deta->bindValue(":userid", $comment['UserID'], PDO::PARAM_INT);
+		$stmt_deta->bindValue(":user", 'user', PDO::PARAM_STR);
+		$stmt_deta->bindValue(":stageid", $map['StageID'], PDO::PARAM_INT);
+		$stmt_deta->bindValue(":stage", 'stage', PDO::PARAM_STR);
+		$stmt_deta->execute();
 
 	}
 
