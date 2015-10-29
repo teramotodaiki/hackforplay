@@ -21,8 +21,8 @@ try {
 	require_once '../preload.php';
 
 	// Input
-	$offset	= filter_input(INPUT_GET, 'offset', FILTER_VALIDATE_INT, array('options'=>array('default'=>0, 'min_range'=>0)));
-	$length	= filter_input(INPUT_GET, 'length', FILTER_VALIDATE_INT, array('options'=>array('default'=>10, 'min_range'=>0)));
+	$offset	= filter_input(INPUT_POST, 'offset', FILTER_VALIDATE_INT, array('options'=>array('default'=>0, 'min_range'=>0)));
+	$length	= filter_input(INPUT_POST, 'length', FILTER_VALIDATE_INT, array('options'=>array('default'=>10, 'min_range'=>0)));
 
 	// Session
 	session_start();
