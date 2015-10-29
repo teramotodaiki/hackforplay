@@ -33,24 +33,25 @@ try {
 		$time_datetime	= new DateTime($map['Registered'], new DateTimeZone('Asia/Tokyo'));
 		$time_unixtime	= $time_datetime->format('U') + $time_datetime->format('Z');
 
-		// GENERATE
-		$stmt_noti->bindValue(":author_id", $stage['UserID'], PDO::PARAM_INT);
-		$stmt_noti->bindValue(":unread", 'unread', PDO::PARAM_STR);
-		$stmt_noti->bindValue(":comment", 'comment', PDO::PARAM_STR);
-		$stmt_noti->bindValue(":thumb_url", $comment['Thumbnail'], PDO::PARAM_STR);
-		$stmt_noti->bindValue(":comments", '/comments/', PDO::PARAM_STR);
-		$stmt_noti->bindValue(":time", $time_unixtime, PDO::PARAM_STR);
-		$stmt_noti->execute();
-		$NotificationID	= $dbh->lastInsertId('Notification');
+		if ($stage['UserID']) {
+			// GENERATE
+			$stmt_noti->bindValue(":author_id", $stage['UserID'], PDO::PARAM_INT);
+			$stmt_noti->bindValue(":unread", 'unread', PDO::PARAM_STR);
+			$stmt_noti->bindValue(":comment", 'comment', PDO::PARAM_STR);
+			$stmt_noti->bindValue(":thumb_url", $comment['Thumbnail'], PDO::PARAM_STR);
+			$stmt_noti->bindValue(":comments", '/comments/', PDO::PARAM_STR);
+			$stmt_noti->bindValue(":time", $time_unixtime, PDO::PARAM_STR);
+			$stmt_noti->execute();
+			$NotificationID	= $dbh->lastInsertId('Notification');
 
-		$stmt_deta->bindValue(":id_1", $NotificationID, PDO::PARAM_INT);
-		$stmt_deta->bindValue(":id_2", $NotificationID, PDO::PARAM_INT);
-		$stmt_deta->bindValue(":userid", $comment['UserID'], PDO::PARAM_INT);
-		$stmt_deta->bindValue(":user", 'user', PDO::PARAM_STR);
-		$stmt_deta->bindValue(":stageid", $map['StageID'], PDO::PARAM_INT);
-		$stmt_deta->bindValue(":stage", 'stage', PDO::PARAM_STR);
-		$stmt_deta->execute();
-
+			$stmt_deta->bindValue(":id_1", $NotificationID, PDO::PARAM_INT);
+			$stmt_deta->bindValue(":id_2", $NotificationID, PDO::PARAM_INT);
+			$stmt_deta->bindValue(":userid", $comment['UserID'], PDO::PARAM_INT);
+			$stmt_deta->bindValue(":user", 'user', PDO::PARAM_STR);
+			$stmt_deta->bindValue(":stageid", $map['StageID'], PDO::PARAM_INT);
+			$stmt_deta->bindValue(":stage", 'stage', PDO::PARAM_STR);
+			$stmt_deta->execute();
+		}
 	}
 
 } catch (Exception $e) {
