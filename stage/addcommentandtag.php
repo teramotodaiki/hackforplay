@@ -16,7 +16,7 @@ try {
 	$stageid	= filter_input(INPUT_POST, 'stageid', FILTER_VALIDATE_INT);
 
 	// ステージが存在するか？
-	$stmt	= $dbh->prepare('SELECT "Title" FROM "Stage" WHERE "ID"=:stageid');
+	$stmt	= $dbh->prepare('SELECT "UserID","Title" FROM "Stage" WHERE "ID"=:stageid');
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 	$stmt->execute();
 	$stage	= $stmt->fetch();
@@ -105,6 +105,30 @@ try {
 		}
 
 	}
+
+	// コメントの通知
+
+	// 通知を生成
+	$stmt	= $dbh->prepare('INSERT INTO "Notification" ("UserID","State","Type","Thumbnail","LinkedURL","MakeUnixTime") VALUES(:author_id,:unread,:comment,:thumb_url,:comments,:time)');
+	$stmt->bindValue(":author_id", $stage['UserID'], PDO::PARAM_INT);
+	$stmt->bindValue(":unread", 'unread', PDO::PARAM_STR);
+	$stmt->bindValue(":comment", 'comment', PDO::PARAM_STR);
+	$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
+	$stmt->bindValue(":comments", '/comments/', PDO::PARAM_STR);
+	date_default_timezone_set('GMT');
+	$stmt->bindValue(":time", time(), PDO::PARAM_STR);
+	$stmt->execute();
+	$NotificationID	= $dbh->lastInsertId('Notification');
+
+	// ユーザー名とステージ名を追加
+	$stmt	= $dbh->prepare('INSERT INTO "NotificationDetail" ("NotificationID","Data","KeyString") VALUES(:id_1,:userid,:user),(:id_2,:stageid,:stage)');
+	$stmt->bindValue(":id_1", $NotificationID, PDO::PARAM_INT);
+	$stmt->bindValue(":id_2", $NotificationID, PDO::PARAM_INT);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+	$stmt->bindValue(":user", 'user', PDO::PARAM_STR);
+	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
+	$stmt->bindValue(":stage", 'stage', PDO::PARAM_STR);
+	$stmt->execute();
 
 } catch (Exception $e) {
 
