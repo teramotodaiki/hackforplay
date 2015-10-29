@@ -109,6 +109,100 @@ $(function(){
 			'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
 			'&login_successed=' + encodeURIComponent(login_successed));
 	})();
+
+	// 通知
+	(function () {
+		var itemCount = 0;
+
+		// 最初に取得
+		$.post('../notification/outline.php', {
+			offset: itemCount,
+			length: 10
+		}, function(data, textStatus, xhr) {
+			var result = $.parseJSON(data);
+			if (result && result.Notifications.length) {
+				layoutNotification(result);
+				itemCount += 10;
+				if (result.Notifications.length >= 10) {
+					$('<div>').addClass('notification-order').appendTo($('.notification-scroll'));
+				} else {
+					$('<div>').addClass('notification-end').appendTo($('.notification-scroll'));
+				}
+			} else {
+				$('.notification-suggestion').removeClass('hidden'); // ひとつも通知がないとき
+			}
+		});
+
+		// スクロール
+		$('.notification-scroll').on('scroll', function() {
+			// .notification-order が存在し、 .active でなく、 .notification-order が見えるところまでスクロールされたら
+			var order = $(this).find('.notification-order');
+			if (order && !order.hasClass('active') &&
+				this.scrollTop + $(this).height() >= this.scrollHeight - order.height()) {
+
+				// 追加
+				order.addClass('active');
+				$.post('../notification/outline.php', {
+					offset: itemCount,
+					length: 10
+				}, function(data, textStatus, xhr) {
+					order.remove();
+
+					var result = $.parseJSON(data);
+					if (result && result.Notifications.length) {
+						layoutNotification(result);
+						itemCount += 10;
+						if (result.Notifications.length >= 10) {
+							$('<div>').addClass('notification-order').appendTo($('.notification-scroll'));
+						} else {
+							$('<div>').addClass('notification-end').appendTo($('.notification-scroll'));
+						}
+					}
+				});
+			}
+		});
+	})();
+
+	// 開いたときの未読アニメーション
+	$('.dropdown.notification-icon').on('shown.bs.dropdown', function() {
+		setTimeout(function () {
+			$('.notification-state-unread').addClass('opened');
+		}, 10);
+	});
+
+	// 既読トリガー
+	$('.notification-check').on('click', function() {
+		$.post('../notification/readall.php');
+		$('.notification-state-unread').removeClass('notification-state-unread').addClass('notification-state-read');
+		$('.notification-icon>a').css('color', 'rgb(112,112,112)');
+	});
+
+	// レイアウト関数
+	function layoutNotification (result) {
+
+		if (result.HasUnread) {
+			$('.notification-icon>a').css('color', 'rgb(255, 59,111)'); // 未読通知ありの状態
+		}
+		if (result.Notifications.length > 3) {
+			$('.notification-scroll').addClass('scroll-y'); // 4つをこえたらスクロールする
+		}
+
+		result.Notifications.forEach(function (item) {
+
+			var prefix = 'notification-' + item.Type + '-';
+			var entity = $('.' + prefix + 'sample').clone(true, true);
+			entity.removeClass(prefix + 'sample hidden').addClass(prefix + 'entity');
+			entity.addClass('notification-state-' + item.State);
+			entity.find('.notification-item-thumbnail').attr('src', item.Thumbnail);
+			entity.find('.notification-item-wrapper').attr('href', item.LinkedURL);
+			Object.keys(item.Detail).forEach(function (key, index) {
+				entity.find('.notification-detail-' + key).text(item.Detail[key]);
+			});
+
+			$(this).append(entity);
+
+		}, $('.notification-scroll'));
+	}
 });
 </script>
 <nav class="navbar navbar-default">
@@ -184,6 +278,48 @@ $(function(){
 				<?php endif; ?>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown notification-icon">
+					<a href="#" title="Notification" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<span class="glyphicon glyphicon-envelope"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<!-- template ~ -->
+						<li class="notification-comment-sample hidden">
+							<a class="notification-item-wrapper display-block" href="#" title="">
+								<div class="row">
+									<div class="col-xs-4">
+										<img class="notification-item-thumbnail img-responsive" src="" alt="">
+									</div>
+									<div class="col-xs-8">
+										<div class="notification-item-article break-word">
+											<b class="notification-detail-user"></b> が あなたのステージ
+											「<b class="notification-detail-stage"></b>」にコメントしました
+										</div>
+									</div>
+								</div>
+							</a>
+						</li>
+						<!-- ~template -->
+						<li>
+							<span class="btn btn-link notification-check">
+								すべてチェック<span class="glyphicon glyphicon-check"></span>
+							</span>
+						</li>
+						<div class="notification-scroll"></div>
+						<li class="notification-suggestion hidden">
+							<a href="/s/?mode=official&directly_restaging=true&id=201&report=true" title="Make Stage">
+								<h4 class="break-word">
+									コメントは まだありません。ステージを とうこうして、コメントをもらいましょう
+								</h4>
+							</a>
+						</li>
+						<li>
+							<a class="btn btn-link" href="../comments/" title="See all">
+								<h5>これまでのコメント</h5>
+							</a>
+						</li>
+					</ul>
+				</li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 						<img src="<?php echo $icon_url; ?>" class="img-circle" id="img-usericon">
@@ -205,7 +341,7 @@ $(function(){
 							<a href="/p" title="Preference">せってい</a>
 						</li>
 						<li>
-							<a href="/comments" title="Message">メッセージ</a>
+							<a href="/comments" title="Comments">もらったコメント</a>
 						</li>
 						<li role="separator" class="divider"></li>
 						<li>

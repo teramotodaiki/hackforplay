@@ -54,6 +54,15 @@ nav.navbar {
 	color: white;
 }
 
+.notification-state-unread {
+	background-color: rgba(255, 59,111,0.4);
+	transition: background-color 0.2s ease-in;
+}
+
+.notification-state-unread.opened {
+	background-color: rgba(255, 59,111,0.05);
+}
+
 /* 線の幅・色 */
 nav.navbar {
 	border: none;
@@ -88,6 +97,25 @@ nav.navbar {
 }
 .btn-retry:hover {
 	background-color: #d26c66;
+}
+
+.notification-item-wrapper {
+	color: #333;
+	border-bottom: 1px solid #adadad;
+}
+
+.notification-item-wrapper:hover {
+	color: #333;
+	background-color: #f5f5f5;
+}
+
+.notification-order {
+	background-color: #05d8ff;
+}
+
+.notification-end {
+	background-color: #f5f5f5;
+	background: linear-gradient(#f5f5f5, #ffffff);
 }
 
 /* 影の色 */
