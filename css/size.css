@@ -164,6 +164,17 @@ nav #img-usericon {
 	max-height: 300px;
 }
 
+.notification-order {
+	height: 2px;
+	width: 0%;
+	transition: width 2.0s ease-in-out;
+}
+
+.notification-order.active {
+	height: 2px;
+	width: 99%;
+}
+
 /* 間隔属性 */
 .margin-top-lg {
 	margin-top: 40px;

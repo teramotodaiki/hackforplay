@@ -111,12 +111,62 @@ $(function(){
 	})();
 
 	// 通知
-	$.post('../notification/outline.php',{
+	(function () {
+		var itemCount = 0;
 
-	}, function(data, textStatus, xhr) {
+		// 最初に取得
+		$.post('../notification/outline.php', {
+			offset: 0,
+			length: 10
+		}, function(data, textStatus, xhr) {
+			var result = $.parseJSON(data);
 
-		var result = $.parseJSON(data);
-		if (!result || !result.Notifications.length) return;
+			if (result && result.Notifications.length) {
+
+				layoutNotification(result);
+
+				itemCount += 10;
+				if (result.Notifications.length >= 10) {
+					// スクロールしたときに続きをロードするための notification-order を設置
+					$('<div>').addClass('notification-order').appendTo($('.notification-scroll'));
+				}
+			}
+		});
+
+		// スクロール
+		$('.notification-scroll').on('scroll', function() {
+			// .notification-order が存在し、 .active でなく、 .notification-order が見えるところまでスクロールされたら
+			var order = $(this).find('.notification-order');
+			if (order && !order.hasClass('active') &&
+				this.scrollTop + $(this).height() >= this.scrollHeight - order.height()) {
+
+				// 追加
+				order.addClass('active');
+
+				setTimeout(function () {
+					order.remove();
+				}, 2000);
+			}
+		});
+
+	})();
+
+	// 開いたときの未読アニメーション
+	$('.dropdown.notification-icon').on('shown.bs.dropdown', function() {
+		setTimeout(function () {
+			$('.notification-state-unread').addClass('opened');
+		}, 10);
+	});
+
+	// 既読トリガー
+	$('.notification-check').on('click', function() {
+		$.post('../notification/readall.php');
+		$('.notification-state-unread').removeClass('notification-state-unread').addClass('notification-state-read');
+		$('.notification-icon>a').css('color', 'rgb(112,112,112)');
+	});
+
+	// レイアウト関数
+	function layoutNotification (result) {
 
 		if (result.HasUnread) {
 			$('.notification-icon>a').css('color', 'rgb(255, 59,111)'); // 未読通知ありの状態
@@ -140,21 +190,7 @@ $(function(){
 			$(this).append(entity);
 
 		}, $('.notification-scroll'));
-	});
-
-	// 開いたときの未読アニメーション
-	$('.dropdown.notification-icon').on('shown.bs.dropdown', function() {
-		setTimeout(function () {
-			$('.notification-state-unread').addClass('opened');
-		}, 10);
-	});
-
-	// 既読トリガー
-	$('.notification-check').on('click', function() {
-		$.post('../notification/readall.php');
-		$('.notification-state-unread').removeClass('notification-state-unread').addClass('notification-state-read');
-		$('.notification-icon>a').css('color', 'rgb(112,112,112)');
-	});
+	}
 });
 </script>
 <nav class="navbar navbar-default">
