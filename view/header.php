@@ -128,6 +128,8 @@ $(function(){
 				} else {
 					$('<div>').addClass('notification-end').appendTo($('.notification-scroll'));
 				}
+			} else {
+				$('.notification-suggestion').removeClass('hidden'); // ひとつも通知がないとき
 			}
 		});
 
@@ -304,6 +306,13 @@ $(function(){
 							</span>
 						</li>
 						<div class="notification-scroll"></div>
+						<li class="notification-suggestion hidden">
+							<a href="/s/?mode=official&directly_restaging=true&id=201&report=true" title="Make Stage">
+								<h4 class="break-word">
+									コメントは まだありません。ステージを とうこうして、コメントをもらいましょう
+								</h4>
+							</a>
+						</li>
 						<li>
 							<a class="btn btn-link" href="../comments/" title="See all">
 								<h5>これまでのコメント</h5>
