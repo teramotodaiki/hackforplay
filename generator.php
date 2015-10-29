@@ -1,6 +1,8 @@
 <?php
 // Temporaly generator
 
+exit;
+
 try {
 
 	require_once 'preload.php';
