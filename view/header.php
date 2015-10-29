@@ -121,6 +121,9 @@ $(function(){
 		if (result.HasUnread) {
 			$('.notification-icon>a').css('color', 'rgb(255, 59,111)'); // 未読通知ありの状態
 		}
+		if (result.Notifications.length > 3) {
+			$('.notification-scroll').addClass('scroll-y'); // 4つをこえたらスクロールする
+		}
 
 		result.Notifications.forEach(function (item) {
 
@@ -134,9 +137,9 @@ $(function(){
 				entity.find('.notification-detail-' + key).text(item.Detail[key]);
 			});
 
-			$(this).before(entity);
+			$(this).append(entity);
 
-		}, $('.notification-anchor'));
+		}, $('.notification-scroll'));
 	});
 
 	// 開いたときの未読アニメーション
@@ -234,7 +237,7 @@ $(function(){
 					<ul class="dropdown-menu">
 						<!-- template ~ -->
 						<li class="notification-comment-sample hidden">
-							<a class="notification-item-wrapper" href="#" title="">
+							<a class="notification-item-wrapper display-block" href="#" title="">
 								<div class="row">
 									<div class="col-xs-4">
 										<img class="notification-item-thumbnail img-responsive" src="" alt="">
@@ -254,7 +257,7 @@ $(function(){
 								すべてチェック<span class="glyphicon glyphicon-check"></span>
 							</span>
 						</li>
-						<div class="notification-anchor"></div>
+						<div class="notification-scroll"></div>
 						<li>
 							<a class="btn btn-link" href="../comments/" title="See all">
 								<h5>これまでのコメント</h5>

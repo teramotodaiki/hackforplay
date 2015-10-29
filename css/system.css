@@ -256,6 +256,15 @@ iframe {
 	white-space: normal;
 }
 
+.scroll-y {
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.display-block {
+	display: block;
+}
+
 /* アニメーション */
 
 .h4p_item-transform {

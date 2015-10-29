@@ -160,6 +160,10 @@ nav #img-usericon {
 	min-height: 600px;
 }
 
+.notification-scroll {
+	max-height: 300px;
+}
+
 /* 間隔属性 */
 .margin-top-lg {
 	margin-top: 40px;

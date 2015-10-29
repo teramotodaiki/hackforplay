@@ -100,7 +100,13 @@ nav.navbar {
 }
 
 .notification-item-wrapper {
-	border-bottom: 1px solid rgb(173,173,173);
+	color: #333;
+	border-bottom: 1px solid #adadad;
+}
+
+.notification-item-wrapper:hover {
+	color: #333;
+	background-color: #f5f5f5;
 }
 
 /* 影の色 */
