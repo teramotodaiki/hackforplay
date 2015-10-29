@@ -158,6 +158,11 @@ $(function(){
 							$('<div>').addClass('notification-end').appendTo($('.notification-scroll'));
 						}
 					}
+
+					// 未読メッセージのアニメーション
+					setTimeout(function () {
+						$('.notification-state-unread').addClass('opened');
+					}, 10);
 				});
 			}
 		});
