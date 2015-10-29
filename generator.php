@@ -5,6 +5,10 @@ try {
 
 	require_once 'preload.php';
 
+	// Clear Database
+	$dbh->prepare('DELETE FROM "Notification"')->execute();
+	$dbh->prepare('DELETE FROM "NotificationDetail"')->execute();
+
 	// Fetch Statements
 	$stmt_map	= $dbh->prepare('SELECT "StageID","CommentID","Registered" FROM "StageTagMap"');
 	$stmt_stage	= $dbh->prepare('SELECT "UserID" FROM "Stage" WHERE "ID"=:stage_id');
