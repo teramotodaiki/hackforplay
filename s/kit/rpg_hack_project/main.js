@@ -1,7 +1,7 @@
 window.addEventListener('load', function(){
 
 	var game = enchant.Core.instance;
-	game.preload('enchantjs/monster4.gif', 'enchantjs/x2/map1.png');
+	game.preload('enchantjs/monster4.gif', 'enchantjs/x2/map1.png', 'enchantjs/x1.5/chara5.png');
 
 	Hack.onload = function () {
 		Hack.maps = [];
@@ -54,9 +54,15 @@ window.addEventListener('load', function(){
 		});
 		game.rootScene.addChild(apad);
 		Hack.apad = apad;
+	});
+
+	game.onload = function () {
 
         var map = Hack.maps['floor'];
         map.load();                 // Load map
+
+        Hack.defaultParentNode = new Group();
+        map.scene.addChild(Hack.defaultParentNode);
 
 /*
         blueSlime = new BlueSlime('blueSlime'); // make blue slime
@@ -66,11 +72,51 @@ window.addEventListener('load', function(){
         var stair = new Stair('stair');
         map.scene.addChild(stair);
         stair.locate(13, 5);
-
-        var player = new Knight('player'); // make player
-        map.scene.addChild(player); // add player to scene
-        player.locate(1, 5); // move position
 */
+        var player = new Player(); // make player
+        Hack.defaultParentNode.addChild(player);
+        player.locate(1, 5); // move position
+
+    };
+
+    var Player = enchant.Class(enchant.Sprite, {
+
+		initialize: function () {
+			Sprite.call(this, 48, 48);
+			this.image = game.assets['enchantjs/x1.5/chara5.png'];
+			this.frame = 1;
+			this.imageOffset = { x: -8, y: -12 };
+			this.walking = false;
+		},
+		locate: function (fromLeft, fromTop) {
+			this.moveTo(
+				fromLeft * 32 + this.imageOffset.x,
+				fromTop * 32 + this.imageOffset.y);
+		},
+		walk: function (x, y) {
+			this.walking = true;
+			this.direction = Vec2Dir({ x: x, y: y });
+			var dx = x * 8, dy = y * 8;
+			this.tl.then(function () {
+				this.frame = this.direction * 9;
+			}).moveBy(dx, dy, 3).then(function () {
+				this.frame = this.direction * 9 + 1;
+			}).moveBy(dx, dy, 3).then(function () {
+				this.frame = this.direction * 9 + 2;
+			}).moveBy(dx, dy, 3).then(function () {
+				this.frame = this.direction * 9 + 1;
+				this.walking = false;
+			}).moveBy(dx, dy, 3);
+		},
+		onenterframe: function () {
+			if (!this.walking) {
+				var hor = game.input.right - game.input.left;
+				var ver = hor ? 0 : game.input.down - game.input.up;
+				if (hor || ver) {
+					this.walk(hor, ver);
+				}
+			}
+		}
 
     });
 /*
@@ -174,6 +220,31 @@ window.addEventListener('load', function(){
 		}
 		// Hack.player.locate(rel.to.x, rel.to.y);
 		next.callback();
+	}
+
+	/*  Dir2Vec
+		directionをforwardに変換する。 0/down, 1/left, 2/right, 3/up
+	*/
+	function Dir2Vec (dir) {
+		switch(dir){
+			case 0: return { x: 0, y: 1 };
+			case 1: return { x:-1, y: 0 };
+			case 2: return { x: 1, y: 0 };
+			case 3: return { x: 0, y:-1 };
+			default: return null;
+		}
+	}
+	/*  Vec2Dir
+		forwardをdirectionに変換する。およそのベクトルをまるめて近い向きに直す
+	*/
+	function Vec2Dir (vec) {
+		if(vec.x === undefined || vec.y === undefined){ return null; }
+		if(vec.x === 0 && vec.y === 0){ return null; }
+		var deg = Math.atan2(vec.y, vec.x) / Math.PI * 180;
+		if(-135 <= deg && deg <= -45){ return 3; } // up
+		if( -45 <= deg && deg <=  45){ return 2; } // right
+		if(  45 <= deg && deg <= 135){ return 0; } // down
+		return 1; // left
 	}
 
 });
