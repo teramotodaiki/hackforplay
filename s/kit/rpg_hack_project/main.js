@@ -2,6 +2,7 @@ window.addEventListener('load', function(){
 
 	var game = enchant.Core.instance;
 	game.preload('enchantjs/monster4.gif', 'enchantjs/x2/map1.png', 'enchantjs/x1.5/chara5.png');
+	game.keybind(' '.charCodeAt(0), 'a');
 
 	Hack.onload = function () {
 		Hack.maps = [];
@@ -64,37 +65,72 @@ window.addEventListener('load', function(){
         Hack.defaultParentNode = new Group();
         map.scene.addChild(Hack.defaultParentNode);
 
-/*
-        blueSlime = new BlueSlime('blueSlime'); // make blue slime
-        map.scene.addChild(blueSlime);
+        var blueSlime = new BlueSlime();
         blueSlime.locate(9, 5);
 
-        var stair = new Stair('stair');
-        map.scene.addChild(stair);
+        var stair = new MapObject(13);
         stair.locate(13, 5);
-*/
-        var player = new Player(); // make player
-        Hack.defaultParentNode.addChild(player);
-        player.locate(1, 5); // move position
+
+        var player = new Player();
+        player.locate(1, 5);
 
     };
 
-    var Player = enchant.Class(enchant.Sprite, {
+	var __BehaviorTypes = {
+		Idle : 1,       // 立ち状態
+		Walk : 2,       // 歩き状態
+		Attack : 4,     // 攻撃状態
+		Damaged : 8,    // 被撃状態
+		Dead : 16       // 死亡状態
+	};
+	Object.defineProperty(window, 'BehaviorTypes', {
+		get: function () { return __BehaviorTypes; }
+	});
 
-		initialize: function () {
-			Sprite.call(this, 48, 48);
-			this.image = game.assets['enchantjs/x1.5/chara5.png'];
-			this.frame = 1;
-			this.imageOffset = { x: -8, y: -12 };
-			this.walking = false;
+	var __RPGObject = enchant.Class(enchant.Sprite, {
+		initialize: function (width, height) {
+			Sprite.call(this, width, height);
+			this.offset = { x: 0, y: 0 };
+			this.moveTo(game.width, game.height);
+			Hack.defaultParentNode.addChild(this);
 		},
 		locate: function (fromLeft, fromTop) {
 			this.moveTo(
-				fromLeft * 32 + this.imageOffset.x,
-				fromTop * 32 + this.imageOffset.y);
+				fromLeft * 32 + this.offset.x,
+				fromTop * 32 + this.offset.y);
+		}
+	});
+	Object.defineProperty(window, 'RPGObject', {
+		get: function () {
+			return __RPGObject;
+		}
+	});
+
+	var __Player = enchant.Class(RPGObject, {
+		initialize: function () {
+			RPGObject.call(this, 48, 48);
+			this.image = game.assets['enchantjs/x1.5/chara5.png'];
+			this.frame = 1;
+			this.direction = 0;
+			this.offset = { x: -8, y: -12 };
+			this.behavior = BehaviorTypes.Idle;
+		},
+		onenterframe: function () {
+			if (this.behavior === BehaviorTypes.Idle) {
+				if (game.input.a) {
+					this.attack();
+				}
+			}
+			if (this.behavior === BehaviorTypes.Idle) {
+				var hor = game.input.right - game.input.left;
+				var ver = hor ? 0 : game.input.down - game.input.up;
+				if (hor || ver) {
+					this.walk(hor, ver);
+				}
+			}
 		},
 		walk: function (x, y) {
-			this.walking = true;
+			this.behavior = BehaviorTypes.Walk;
 			this.direction = Vec2Dir({ x: x, y: y });
 			var dx = x * 8, dy = y * 8;
 			this.tl.then(function () {
@@ -105,40 +141,43 @@ window.addEventListener('load', function(){
 				this.frame = this.direction * 9 + 2;
 			}).moveBy(dx, dy, 3).then(function () {
 				this.frame = this.direction * 9 + 1;
-				this.walking = false;
+				this.behavior = BehaviorTypes.Idle;
 			}).moveBy(dx, dy, 3);
 		},
-		onenterframe: function () {
-			if (!this.walking) {
-				var hor = game.input.right - game.input.left;
-				var ver = hor ? 0 : game.input.down - game.input.up;
-				if (hor || ver) {
-					this.walk(hor, ver);
-				}
-			}
+		attack: function () {
+			this.behavior = BehaviorTypes.Attack;
+			this.tl.then(function () {
+				this.frame = this.direction * 9 + 6;
+			}).delay(4).then(function () {
+				this.frame = this.direction * 9 + 7;
+			}).delay(4).then(function () {
+				this.frame = this.direction * 9 + 8;
+			}).delay(4).then(function () {
+				this.frame = this.direction * 9 + 1;
+				this.behavior = BehaviorTypes.Idle;
+			});
 		}
+	});
+	Object.defineProperty(window, 'Player', {
+		get: function () { return __Player; }
+	});
 
-    });
-/*
-    var BlueSlime = enchant.Class(Behaviour, {
-        initialize: function(_namae){
-            Behaviour.call(this, {
-                namae: _namae,
-                image: path+'monster4.gif',
-                width:48, height:48,
-                dx: -8, dy: -10
-            });
-            this.width = this.height = 32;
-            this.collider.y = 0;
-            this.sprite.frame = [2, 2, 2, 3, 3, 3];
-            this.hp = 3;
-            this.behavior = BehaviorTypes.Idle;
-            this.isPublic = false;
-            this.useMessage = false;
+	var __BlueSlime = enchant.Class(RPGObject, {
+        initialize: function(){
+			RPGObject.call(this, 48, 48);
+			this.image = game.assets['enchantjs/monster4.gif'];
+			this.offset = { x: -8, y: -10 };
+			this.frame = [2, 2, 2, 3, 3, 3];
+			this.hp = 3;
+			this.behavior = BehaviorTypes.Idle;
         },
-        damage : function(atk){
-            if( this.behavior !== BehaviorTypes.Damaged &&
-                this.behavior !== BehaviorTypes.Dead){
+        locate: function (fromLeft, fromTop) {
+			this.moveTo(
+				fromLeft * 32 + this.offset.x,
+				fromTop * 32 + this.offset.y);
+        },
+        damage: function(atk){
+            if(this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead) !== 0) {
                 this.hp -= atk;
                 if(this.hp > 0){
                     this.behavior = BehaviorTypes.Damaged;
@@ -157,28 +196,25 @@ window.addEventListener('load', function(){
             }
         }
     });
+	Object.defineProperty(window, 'BlueSlime', {
+		get: function () { return __BlueSlime; }
+	});
 
-    var Stair = enchant.Class(Behaviour, {
-        initialize: function(_namae){
-            Behaviour.call(this, {
-                namae: _namae,
-                image: 'img/map1.gif',
-                draw: 422
-            });
-            this.cleared = false;
-            this.useMessage = false;
-            this.collisionFlag = false; // no collision detection
+    var __MapObject = enchant.Class(RPGObject, {
+        initialize: function(frame){
+            RPGObject.call(this, 32, 32);
+            this.image = game.assets['enchantjs/x2/map1.png'];
+			this.offset = { x: 0, y: 0 };
+			this.frame = frame;
         },
         onenterframe: function(){
-            if(this.intersect(env.player)){
-                if(!this.cleared){
-                    this.cleared = true;
-                    clear(__H4PENV__TOKEN);
-                }
-            }
+
         }
     });
-*/
+    Object.defineProperty(window, 'MapObject', {
+		get: function () { return __MapObject; }
+    });
+
     /*
 	 * rmap.js (RelationalMap)
 	 * ある位置で他のマップとつながっている、切り替え可能なマップ
