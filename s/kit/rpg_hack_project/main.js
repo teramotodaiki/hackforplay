@@ -25,11 +25,11 @@ window.addEventListener('load', function(){
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
-			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
 		];
 	};
@@ -88,10 +88,16 @@ window.addEventListener('load', function(){
 	});
 
 	var __RPGObject = enchant.Class(enchant.Sprite, {
-		initialize: function (width, height) {
+		initialize: function (width, height, offsetX, offsetY) {
 			Sprite.call(this, width, height);
-			this.offset = { x: 0, y: 0 };
+			this.offset = { x: offsetX, y: offsetY };
 			this.moveTo(game.width, game.height);
+			Object.defineProperty(this, 'mapX', {
+				get: function () { return (this.x - this.offset.x) / 32 >> 0; }
+			});
+			Object.defineProperty(this, 'mapY', {
+				get: function () { return (this.y - this.offset.y) / 32 >> 0; }
+			});
 			Hack.defaultParentNode.addChild(this);
 		},
 		locate: function (fromLeft, fromTop) {
@@ -108,11 +114,10 @@ window.addEventListener('load', function(){
 
 	var __Player = enchant.Class(RPGObject, {
 		initialize: function () {
-			RPGObject.call(this, 48, 48);
+			RPGObject.call(this, 48, 48, -8, -12);
 			this.image = game.assets['enchantjs/x1.5/chara5.png'];
 			this.frame = 1;
 			this.direction = 0;
-			this.offset = { x: -8, y: -12 };
 			this.behavior = BehaviorTypes.Idle;
 		},
 		onenterframe: function () {
@@ -125,14 +130,25 @@ window.addEventListener('load', function(){
 				var hor = game.input.right - game.input.left;
 				var ver = hor ? 0 : game.input.down - game.input.up;
 				if (hor || ver) {
-					this.walk(hor, ver);
+					// Turn
+					this.direction = Vec2Dir({ x: hor, y: ver });
+					this.frame = this.direction * 9 + 1;
+					// Map Collision
+					if ( !Hack.map.hitTest((this.mapX + hor) * 32, (this.mapY + ver) * 32) ) {
+						// RPGObject(s) Collision
+						if (RPGObject.collection.every(function (item) {
+							return item.mapX !== this.mapX + hor || item.mapY !== this.mapY + ver;
+						}, this)) {
+							this.walk(hor, ver);
+						}
+					}
 				}
 			}
 		},
 		walk: function (x, y) {
 			this.behavior = BehaviorTypes.Walk;
-			this.direction = Vec2Dir({ x: x, y: y });
-			var dx = x * 8, dy = y * 8;
+			var dx = x * 11, dy = y * 11; // 11 * 3 = 33. But move 32.
+			var tx = this.x + x * 32, ty = this.y + y * 32;
 			this.tl.then(function () {
 				this.frame = this.direction * 9;
 			}).moveBy(dx, dy, 3).then(function () {
@@ -142,7 +158,8 @@ window.addEventListener('load', function(){
 			}).moveBy(dx, dy, 3).then(function () {
 				this.frame = this.direction * 9 + 1;
 				this.behavior = BehaviorTypes.Idle;
-			}).moveBy(dx, dy, 3);
+				this.moveTo(tx, ty);
+			});
 		},
 		attack: function () {
 			this.behavior = BehaviorTypes.Attack;
@@ -164,9 +181,8 @@ window.addEventListener('load', function(){
 
 	var __BlueSlime = enchant.Class(RPGObject, {
         initialize: function(){
-			RPGObject.call(this, 48, 48);
+			RPGObject.call(this, 48, 48, -8, -10);
 			this.image = game.assets['enchantjs/monster4.gif'];
-			this.offset = { x: -8, y: -10 };
 			this.frame = [2, 2, 2, 3, 3, 3];
 			this.hp = 3;
 			this.behavior = BehaviorTypes.Idle;
@@ -202,9 +218,8 @@ window.addEventListener('load', function(){
 
     var __MapObject = enchant.Class(RPGObject, {
         initialize: function(frame){
-            RPGObject.call(this, 32, 32);
+            RPGObject.call(this, 32, 32, 0, 0);
             this.image = game.assets['enchantjs/x2/map1.png'];
-			this.offset = { x: 0, y: 0 };
 			this.frame = frame;
         },
         onenterframe: function(){
