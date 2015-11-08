@@ -20,6 +20,7 @@ if(!isset($mode)){
 		var __H4PENV__MODE		= "<?php echo $mode; ?>";
 		</script>
 		<script src="/s/lib/enchant.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/s/lib/ui.enchant.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/s/lib/hack.js" type="text/javascript" charset="utf-8"></script>
 		<script src="kit/rpg_hack_project/main.js" type="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
