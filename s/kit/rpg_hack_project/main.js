@@ -1,7 +1,7 @@
 window.addEventListener('load', function(){
 
 	var game = enchant.Core.instance;
-	game.preload('enchantjs/monster4.gif', 'enchantjs/x2/map1.png', 'enchantjs/x1.5/chara5.png');
+	game.preload('enchantjs/monster4.gif', 'enchantjs/x2/map1.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
 	game.keybind(' '.charCodeAt(0), 'a');
 
 	Hack.onload = function () {
@@ -55,6 +55,15 @@ window.addEventListener('load', function(){
 		});
 		game.rootScene.addChild(apad);
 		Hack.apad = apad;
+
+		// Enchant book
+		Hack.enchantBookIcon = Hack.createSprite(64, 64, {
+			image: game.assets['hackforplay/enchantbook.png'],
+			defaultParentNode: game.rootScene,
+			ontouchend: function() {
+				Hack.openEditor();
+			}
+		});
 	});
 
 	game.onload = function () {
@@ -71,7 +80,7 @@ window.addEventListener('load', function(){
         var stair = new MapObject(13);
         stair.locate(13, 5);
 
-        var player = new Player();
+        var player = Hack.player = new Player();
         player.locate(1, 5);
 
     };
@@ -104,6 +113,10 @@ window.addEventListener('load', function(){
 			this.moveTo(
 				fromLeft * 32 + this.offset.x,
 				fromTop * 32 + this.offset.y);
+		},
+		destroy: function () {
+			if (this.scene) this.scene.removeChild(this);
+			if (this.parentNode) this.parentNode.removeChild(this);
 		}
 	});
 	Object.defineProperty(window, 'RPGObject', {
@@ -118,6 +131,8 @@ window.addEventListener('load', function(){
 			this.image = game.assets['enchantjs/x1.5/chara5.png'];
 			this.frame = 1;
 			this.direction = 0;
+			this.hp = 2;
+			this.atk = 1;
 			this.behavior = BehaviorTypes.Idle;
 		},
 		onenterframe: function () {
@@ -167,12 +182,30 @@ window.addEventListener('load', function(){
 				this.frame = this.direction * 9 + 6;
 			}).delay(4).then(function () {
 				this.frame = this.direction * 9 + 7;
+				var v = Dir2Vec(this.direction);
+				Attack(this.mapX + v.x, this.mapY + v.y, this.atk);
 			}).delay(4).then(function () {
 				this.frame = this.direction * 9 + 8;
 			}).delay(4).then(function () {
 				this.frame = this.direction * 9 + 1;
 				this.behavior = BehaviorTypes.Idle;
 			});
+		},
+		damage: function (atk) {
+			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
+                this.hp -= atk;
+                if(this.hp > 0){
+                    this.behavior += BehaviorTypes.Damaged;
+					this.tl.clear().hide().delay(3).show().delay(3).hide().delay(3).show().then(function () {
+						this.behavior = BehaviorTypes.Idle;
+					});
+                }else{
+					this.behavior = BehaviorTypes.Dead;
+					this.tl.clear().fadeOut(10).then(function(){
+						Hack.gameover();
+					});
+                }
+            }
 		}
 	});
 	Object.defineProperty(window, 'Player', {
@@ -193,18 +226,18 @@ window.addEventListener('load', function(){
 				fromTop * 32 + this.offset.y);
         },
         damage: function(atk){
-            if(this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead) !== 0) {
+			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
                 this.hp -= atk;
                 if(this.hp > 0){
                     this.behavior = BehaviorTypes.Damaged;
-                    this.sprite.frame = [4, 4, 5, null];
+                    this.frame = [4, 4, 5, null];
                     this.tl.clear().delay(5).then(function(){
                         this.behavior = BehaviorTypes.Idle;
-                        this.sprite.frame = [2, 2, 2, 3, 3, 3];
+                        this.frame = [2, 2, 2, 3, 3, 3];
                     });
                 }else{
                     this.behavior = BehaviorTypes.Dead;
-                    this.sprite.frame = [5, 5, 5, 7, 7];
+                    this.frame = [5, 5, 5, 7, 7];
                     this.tl.clear().delay(5).then(function(){
                         this.destroy();
                     });
@@ -296,6 +329,14 @@ window.addEventListener('load', function(){
 		if( -45 <= deg && deg <=  45){ return 2; } // right
 		if(  45 <= deg && deg <= 135){ return 0; } // down
 		return 1; // left
+	}
+
+	function Attack (x, y, atk) {
+		RPGObject.collection.filter(function (item) {
+			return item.mapX === x && item.mapY === y && typeof item.damage === 'function';
+		}).forEach(function (item) {
+			item.damage(atk);
+		});
 	}
 
 });
