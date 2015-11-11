@@ -47,12 +47,10 @@ window.addEventListener('load', function(){
 		apad.moveTo(100, 180);
 		apad.outside.scale(0.5, 0.5);
 		apad.inside.visible = false;
+		apad.outside.buttonMode = 'a';
 		apad.onenterframe = function() {
 			game.rootScene.addChild(this);
 		};
-		apad.on('touchstart', function(event) {
-			game.dispatchEvent(new Event('abuttondown'));
-		});
 		game.rootScene.addChild(apad);
 		Hack.apad = apad;
 
