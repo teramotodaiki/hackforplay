@@ -166,11 +166,11 @@ window.addEventListener('load', function(){
 			var tx = this.x + x * 32, ty = this.y + y * 32;
 			this.tl.then(function () {
 				this.frame = this.direction * 9;
-			}).moveBy(dx, dy, 3).then(function () {
+			}).moveBy(dx, dy, 4).then(function () {
 				this.frame = this.direction * 9 + 1;
-			}).moveBy(dx, dy, 3).then(function () {
+			}).moveBy(dx, dy, 4).then(function () {
 				this.frame = this.direction * 9 + 2;
-			}).moveBy(dx, dy, 3).then(function () {
+			}).moveBy(dx, dy, 4).then(function () {
 				this.frame = this.direction * 9 + 1;
 				this.behavior = BehaviorTypes.Idle;
 				this.moveTo(tx, ty);
