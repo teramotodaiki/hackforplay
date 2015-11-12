@@ -15,21 +15,21 @@ window.addEventListener('load', function(){
 "\tvar insect = new Insect();\n"+
 "\tinsect.locate(8, 1);\n"+
 "\n"+
-"// うろうろする\n"+
-"insect.onenterframe = function () {\n"+
-"\t\n"+
-"\t// When enterframe... つねに\n"+
-"\tif (this.behavior === BehaviorTypes.Idle) {\n"+
-"\t\t// Idel (まっている）とき\n"+
-"\t\tthis.behavior = BehaviorTypes.Walk;\n"+
-"\t\tthis.tl.clear().then(function () {\n"+
-"\t\t\tthis.scaleX *= -1; // Turn\n"+
-"\t\t}).moveBy(this.scaleX * 4 * 32, 0 * 32, 120).delay(60).then(function() {\n"+
-"\t\t\tthis.behavior = BehaviorTypes.Idle;\n"+
-"\t\t});\n"+
-"\t}\n"+
-"\t\n"+
-"};\n"+
+"\t// うろうろする\n"+
+"\tinsect.onenterframe = function () {\n"+
+"\t\t\n"+
+"\t\t// When enterframe... つねに\n"+
+"\t\tif (this.behavior === BehaviorTypes.Idle) {\n"+
+"\t\t\t// Idel (まっている）とき\n"+
+"\t\t\tthis.behavior = BehaviorTypes.Walk;\n"+
+"\t\t\tthis.tl.clear().then(function () {\n"+
+"\t\t\t\tthis.scaleX *= -1; // Turn\n"+
+"\t\t\t}).moveBy(this.scaleX * 4 * 32, 0 * 32, 120).delay(60).then(function() {\n"+
+"\t\t\t\tthis.behavior = BehaviorTypes.Idle;\n"+
+"\t\t\t});\n"+
+"\t\t}\n"+
+"\t\t\n"+
+"\t};\n"+
 "\n"+
 "\t// クモ\n"+
 "\tvar spider = new Spider();\n"+
