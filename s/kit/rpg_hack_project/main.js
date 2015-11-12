@@ -131,6 +131,7 @@ window.addEventListener('load', function(){
 			Object.defineProperty(this, 'mapY', {
 				get: function () { return (this.y - this.offset.y) / 32 >> 0; }
 			});
+			this.collisionFlag = false;
 			Hack.defaultParentNode.addChild(this);
 		},
 		locate: function (fromLeft, fromTop) {
@@ -176,7 +177,7 @@ window.addEventListener('load', function(){
 					if ( !Hack.map.hitTest((this.mapX + hor) * 32, (this.mapY + ver) * 32) ) {
 						// RPGObject(s) Collision
 						if (RPGObject.collection.every(function (item) {
-							return item.mapX !== this.mapX + hor || item.mapY !== this.mapY + ver;
+							return !item.collisionFlag || item.mapX !== this.mapX + hor || item.mapY !== this.mapY + ver;
 						}, this)) {
 							this.walk(hor, ver);
 						}
@@ -241,6 +242,7 @@ window.addEventListener('load', function(){
 			RPGObject.call(this, 48, 48, -8, -10);
 			this.image = game.assets['enchantjs/monster4.gif'];
 			this.frame = [2, 2, 2, 3, 3, 3];
+			this.collisionFlag = true;
 			this.hp = 3;
 			this.behavior = BehaviorTypes.Idle;
         },
