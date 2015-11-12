@@ -95,9 +95,15 @@ window.addEventListener('load', function(){
 			image: game.assets['hackforplay/enchantbook.png'],
 			defaultParentNode: Hack.menuGroup,
 			ontouchend: function() {
+				Hack.textarea.hide();
 				Hack.openEditor();
 			}
 		});
+
+		// Textarea
+		Hack.textarea.moveTo(64, 0);
+		Hack.textarea.width = 340;
+		Hack.textarea.height = 32;
 	});
 
 	game.onload = function () {
