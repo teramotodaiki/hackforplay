@@ -116,8 +116,17 @@ window.addEventListener('load', function(){
 
         var stair = new MapObject('UpStair');
         stair.locate(1, 7);
-        stair.onplayer = function () {
+        stair.onplayerenter = function () {
 			Hack.changeMap('room2');
+		};
+
+		var trap = new MapObject('Trap');
+		trap.locate(2, 5);
+		trap.onplayerenter = function () {
+			this.frame = MapObject.Dictionaly['UsedTrap'];
+		};
+		trap.onplayerleave = function () {
+			this.frame = MapObject.Dictionaly['Trap'];
 		};
 
         var player = Hack.player = new Player();
@@ -126,7 +135,7 @@ window.addEventListener('load', function(){
         Hack.maps['room2'].onload = function () {
 			var stair2 = new MapObject('DownStair');
 			stair2.locate(1, 7);
-			stair2.onplayer = function () {
+			stair2.onplayerenter = function () {
 				Hack.changeMap('room1');
 			};
         };
@@ -187,6 +196,7 @@ window.addEventListener('load', function(){
 			this.hp = 2;
 			this.atk = 1;
 			this.behavior = BehaviorTypes.Idle;
+			this.enteredStack = [];
 		},
 		onenterframe: function () {
 			if (this.behavior === BehaviorTypes.Idle) {
@@ -228,12 +238,18 @@ window.addEventListener('load', function(){
 				this.frame = this.direction * 9 + 1;
 				this.behavior = BehaviorTypes.Idle;
 				this.moveTo(tx, ty);
-				// Dispatch onplayer Event
+				// Dispatch playerleave Event
+				this.enteredStack.forEach(function (item) {
+					item.dispatchEvent(new Event('playerleave'));
+				});
+				this.enteredStack = [];
+				// Dispatch playerenter Event
 				RPGObject.collection.filter(function (item) {
 					return item.mapX === this.mapX  && item.mapY === this.mapY;
 				}, this).forEach(function (item) {
-					item.dispatchEvent(new Event('player'));
-				});
+					item.dispatchEvent(new Event('playerenter'));
+					this.enteredStack.push(item);
+				}, this);
 			});
 		},
 		attack: function () {
