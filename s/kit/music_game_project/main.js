@@ -690,7 +690,7 @@ window.addEventListener('load', function () {
                 this.state = 1;
                 Hack.point += 1;
                 if (game.assets[Hack.soundEffectPath]) {
-                    game.assets[Hack.soundEffectPath].play(false);
+                    game.assets[Hack.soundEffectPath].play(true);
                 }
             } else {
                 this.state = 2;
