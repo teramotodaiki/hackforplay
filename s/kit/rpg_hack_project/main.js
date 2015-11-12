@@ -109,6 +109,13 @@ window.addEventListener('load', function(){
         var player = Hack.player = new Player();
         player.locate(1, 5);
 
+
+        var stair2 = new MapObject(422);
+        stair2.locate(1, 7, 'room2');
+        stair2.onplayer = function () {
+			Hack.changeMap('room1');
+        };
+
     };
 
 	var __BehaviorTypes = {
@@ -136,7 +143,11 @@ window.addEventListener('load', function(){
 			this.collisionFlag = false;
 			Hack.defaultParentNode.addChild(this);
 		},
-		locate: function (fromLeft, fromTop) {
+		locate: function (fromLeft, fromTop, mapName) {
+			if (mapName) {
+				this.destroy();
+				Hack.maps[mapName].scene.addChild(this);
+			}
 			this.moveTo(
 				fromLeft * 32 + this.offset.x,
 				fromTop * 32 + this.offset.y);
@@ -253,11 +264,6 @@ window.addEventListener('load', function(){
 			this.collisionFlag = true;
 			this.hp = 3;
 			this.behavior = BehaviorTypes.Idle;
-        },
-        locate: function (fromLeft, fromTop) {
-			this.moveTo(
-				fromLeft * 32 + this.offset.x,
-				fromTop * 32 + this.offset.y);
         },
         damage: function(atk){
 			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
