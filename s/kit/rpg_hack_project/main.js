@@ -83,7 +83,7 @@ window.addEventListener('load', function(){
 		// Enchant book
 		Hack.enchantBookIcon = Hack.createSprite(64, 64, {
 			image: game.assets['hackforplay/enchantbook.png'],
-			defaultParentNode: game.rootScene,
+			defaultParentNode: Hack.menuGroup,
 			ontouchend: function() {
 				Hack.openEditor();
 			}
