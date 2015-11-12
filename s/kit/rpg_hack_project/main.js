@@ -403,12 +403,12 @@ window.addEventListener('load', function(){
 				this.behavior = BehaviorTypes.Idle;
 			});
 		},
-		onattacked: function (atk) {
+		onattacked: function (event) {
 			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
-                this.hp -= atk;
+                this.hp -= event.damage;
                 if(this.hp > 0){
                     this.behavior += BehaviorTypes.Damaged;
-					this.tl.clear().hide().delay(3).show().delay(3).hide().delay(3).show().then(function () {
+					this.tl.clear().delay(1).hide().delay(3).show().delay(3).hide().delay(3).show().then(function () {
 						this.behavior = BehaviorTypes.Idle;
 					});
                 }else{
