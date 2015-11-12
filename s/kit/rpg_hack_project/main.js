@@ -5,6 +5,15 @@ window.addEventListener('load', function(){
 	game.keybind(' '.charCodeAt(0), 'a');
 
 	Hack.onload = function () {
+
+		MapObject.Dictionaly = {
+			'Pot': 400,			'Rock': 401,		'UpStair': 402,
+			'Box': 420,			'Flower': 421,		'DownStair': 422,
+			'Trap': 440,		'UsedTrap': 441,	'Step': 442,
+			'Castle': 500,		'Village': 501,		'Cave': 502,
+			'Tree': 520,		'Table': 521
+		};
+
 		Hack.maps = [];
 		Hack.maps['room1'] = new RPGMap(32, 32);
 		Hack.maps['room1'].imagePath = 'enchantjs/x2/map1.gif';
@@ -58,6 +67,7 @@ window.addEventListener('load', function(){
 			[  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
 		];
+
 	};
 
 	game.on('load', function() {
@@ -98,7 +108,7 @@ window.addEventListener('load', function(){
         var blueSlime = new BlueSlime();
         blueSlime.locate(9, 5);
 
-        var stair = new MapObject(402);
+        var stair = new MapObject('UpStair');
         stair.locate(1, 7);
         stair.onplayer = function () {
 			Hack.changeMap('room2');
@@ -108,7 +118,7 @@ window.addEventListener('load', function(){
         player.locate(1, 5);
 
         Hack.maps['room2'].onload = function () {
-			var stair2 = new MapObject(422);
+			var stair2 = new MapObject('DownStair');
 			stair2.locate(1, 7);
 			stair2.onplayer = function () {
 				Hack.changeMap('room1');
@@ -293,7 +303,11 @@ window.addEventListener('load', function(){
         initialize: function(frame){
             RPGObject.call(this, 32, 32, 0, 0);
             this.image = game.assets['enchantjs/x2/map1.gif'];
-			this.frame = frame;
+			if (typeof frame === 'number') {
+				this.frame = frame;
+			} else if (MapObject.Dictionaly && MapObject.Dictionaly[frame]) {
+				this.frame = MapObject.Dictionaly[frame];
+			}
         },
         onenterframe: function(){
 
