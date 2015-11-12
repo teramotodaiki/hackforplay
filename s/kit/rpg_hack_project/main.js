@@ -38,6 +38,23 @@ window.addEventListener('load', function(){
 "\t// コウモリ\n"+
 "\tvar bat = new Bat();\n"+
 "\tbat.locate(6, 5);\n"+
+"\t// むかってくる\n"+
+"\tbat.onenterframe = function () {\n"+
+"\t\t\n"+
+"\t\t// When enterframe... つねに\n"+
+"\t\tif (this.behavior === BehaviorTypes.Idle) {\n"+
+"\t\t\t// Idel (まっている）とき\n"+
+"\t\t\tthis.behavior = BehaviorTypes.Walk;\n"+
+"\t\t\tvar x = Math.sign(Hack.player.x - this.x);\n"+
+"\t\t\tvar y = Math.sign(Hack.player.y - this.y);\n"+
+"\t\t\tthis.tl.clear().then(function () {\n"+
+"\t\t\t\tthis.scaleX = x < 0 ? 1 : -1; // Turn\n"+
+"\t\t\t}).moveBy(x * 32, y * 32, 40).delay(40).then(function() {\n"+
+"\t\t\t	this.behavior = BehaviorTypes.Idle;\n"+
+"\t\t\t});\n"+
+"\t\t}\n"+
+"\t\t\n"+
+"\t};\n"+
 "\n"+
 "\t// ドラゴン\n"+
 "\tvar dragon = new Dragon();\n"+
