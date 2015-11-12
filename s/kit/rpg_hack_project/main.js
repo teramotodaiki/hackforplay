@@ -1,7 +1,7 @@
 window.addEventListener('load', function(){
 
 	var game = enchant.Core.instance;
-	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
+	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
 	game.keybind(' '.charCodeAt(0), 'a');
 
 	Hack.onload = function () {
@@ -122,6 +122,12 @@ window.addEventListener('load', function(){
 
         var bat = new Bat();
         bat.locate(6, 5);
+
+        var dragon = new Dragon();
+        dragon.locate(5, 5);
+
+        var minotaur = new Minotaur();
+        minotaur.locate(4, 5);
 
         var stair = new MapObject('UpStair');
         stair.locate(1, 7);
@@ -429,6 +435,72 @@ window.addEventListener('load', function(){
     });
 	Object.defineProperty(window, 'Bat', {
 		get: function () { return __Bat; }
+	});
+
+	var __Dragon = enchant.Class(RPGObject, {
+        initialize: function(){
+			RPGObject.call(this, 80, 80, -24, -42);
+			this.image = game.assets['enchantjs/bigmonster1.gif'];
+			this.frame = [2, 2, 2, 3, 3, 3];
+			this.collisionFlag = true;
+			this.hp = 4;
+			this.behavior = BehaviorTypes.Idle;
+        },
+        onattacked: function(event){
+			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
+                this.hp -= event.damage;
+                if(this.hp > 0){
+                    this.behavior = BehaviorTypes.Damaged;
+                    this.frame = [4, 4, 5, null];
+                    this.tl.clear().delay(5).then(function(){
+                        this.behavior = BehaviorTypes.Idle;
+                        this.frame = [2, 2, 2, 3, 3, 3];
+                    });
+                }else{
+                    this.behavior = BehaviorTypes.Dead;
+                    this.frame = [5, 5, 5, 7, 7];
+                    this.tl.clear().delay(5).then(function(){
+                        this.destroy();
+                    });
+                }
+            }
+        }
+    });
+	Object.defineProperty(window, 'Dragon', {
+		get: function () { return __Dragon; }
+	});
+
+	var __Minotaur = enchant.Class(RPGObject, {
+        initialize: function(){
+			RPGObject.call(this, 80, 80, -40, -48);
+			this.image = game.assets['enchantjs/bigmonster2.gif'];
+			this.frame = [8, 8, 8, 9, 9, 9];
+			this.collisionFlag = true;
+			this.hp = 4;
+			this.behavior = BehaviorTypes.Idle;
+        },
+        onattacked: function(event){
+			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
+                this.hp -= event.damage;
+                if(this.hp > 0){
+                    this.behavior = BehaviorTypes.Damaged;
+                    this.frame = [7, 7, 6, null];
+                    this.tl.clear().delay(5).then(function(){
+                        this.behavior = BehaviorTypes.Idle;
+                        this.frame = [8, 8, 8, 9, 9, 9];
+                    });
+                }else{
+                    this.behavior = BehaviorTypes.Dead;
+                    this.frame = [7, 7, 7, 1, 0];
+                    this.tl.clear().delay(5).then(function(){
+                        this.destroy();
+                    });
+                }
+            }
+        }
+    });
+	Object.defineProperty(window, 'Minotaur', {
+		get: function () { return __Minotaur; }
 	});
 
     var __MapObject = enchant.Class(RPGObject, {
