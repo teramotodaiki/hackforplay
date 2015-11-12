@@ -1,14 +1,14 @@
 window.addEventListener('load', function(){
 
 	var game = enchant.Core.instance;
-	game.preload('enchantjs/monster4.gif', 'enchantjs/x2/map1.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
+	game.preload('enchantjs/monster4.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
 	game.keybind(' '.charCodeAt(0), 'a');
 
 	Hack.onload = function () {
 		Hack.maps = [];
-		Hack.maps['floor'] = new RelationalMap(32, 32);
-		Hack.maps['floor'].imagePath = 'enchantjs/x2/map1.png';
-		Hack.maps['floor'].bmap.loadData([
+		Hack.maps['room1'] = new RelationalMap(32, 32);
+		Hack.maps['room1'].imagePath = 'enchantjs/x2/map1.gif';
+		Hack.maps['room1'].bmap.loadData([
 			[  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1],
 			[  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1],
 			[  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1],
@@ -20,7 +20,33 @@ window.addEventListener('load', function(){
 			[  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1],
 			[  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1]
 		]);
-		Hack.maps['floor'].cmap = [
+		Hack.maps['room1'].cmap = [
+			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
+		];
+		Hack.maps['room2'] = new RelationalMap(32, 32);
+		Hack.maps['room2'].imagePath = 'enchantjs/x2/map1.gif';
+		Hack.maps['room2'].bmap.loadData([
+			[ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+			[ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+			[ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+			[ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+			[ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+			[ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+			[ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+			[ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+			[ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+			[ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+		]);
+		Hack.maps['room2'].cmap = [
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -66,7 +92,7 @@ window.addEventListener('load', function(){
 
 	game.onload = function () {
 
-        var map = Hack.maps['floor'];
+        var map = Hack.maps['room1'];
         map.load();                 // Load map
 
         Hack.defaultParentNode = new Group();
@@ -75,7 +101,7 @@ window.addEventListener('load', function(){
         var blueSlime = new BlueSlime();
         blueSlime.locate(9, 5);
 
-        var stair = new MapObject(13);
+        var stair = new MapObject(402);
         stair.locate(13, 5);
 
         var player = Hack.player = new Player();
@@ -250,7 +276,7 @@ window.addEventListener('load', function(){
     var __MapObject = enchant.Class(RPGObject, {
         initialize: function(frame){
             RPGObject.call(this, 32, 32, 0, 0);
-            this.image = game.assets['enchantjs/x2/map1.png'];
+            this.image = game.assets['enchantjs/x2/map1.gif'];
 			this.frame = frame;
         },
         onenterframe: function(){
