@@ -122,6 +122,15 @@ window.addEventListener('load', function(){
 "\t\t\n"+
 "\t};\n"+
 "\n"+
+"\tvar village = new MapObject('Village');\n"+
+"\tvillage.locate(1, 3);\n"+
+"\tvillage.onplayerenter = function () {\n"+
+"\t\t\n"+
+"\t\t// When enter... ふまれたら...\n"+
+"\t\tHack.player.locate(10, 3);\n"+
+"\t\t\n"+
+"\t};\n"+
+"\n"+
 "\t// プレイヤー（騎士）\n"+
 "\tvar player = Hack.player = new Player();\n"+
 "\tplayer.locate(1, 5);\n"+
