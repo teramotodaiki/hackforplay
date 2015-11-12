@@ -95,14 +95,16 @@ window.addEventListener('load', function(){
         var map = Hack.maps['room1'];
         map.load();                 // Load map
 
-        Hack.defaultParentNode = new Group();
-        map.scene.addChild(Hack.defaultParentNode);
+        Hack.defaultParentNode = map.scene;
 
         var blueSlime = new BlueSlime();
         blueSlime.locate(9, 5);
 
         var stair = new MapObject(402);
-        stair.locate(13, 5);
+        stair.locate(1, 7);
+        stair.onplayer = function () {
+			Hack.changeMap('room2');
+		};
 
         var player = Hack.player = new Player();
         player.locate(1, 5);
@@ -312,31 +314,29 @@ window.addEventListener('load', function(){
 		this.__defineSetter__('image', function(i){ this.bmap.image = this.fmap.image = i; });
 		this.__defineGetter__('width', function(){ return this.bmap.width; }); // this.bmap.widthのシノニム
 		this.__defineGetter__('height', function(){ return this.bmap.height; }); // this.bmap.heightのシノニム
-		this.rels = []; // from, name, toで記述
 		this.callback = function(){};
 		this.checkTile = function(x, y, z){};
 		this.hitTest = function(x, y){ return this.bmap.hitTest(x, y) || this.fmap.hitTest(x, y); };
-		this.getRel = function(x, y){ var t; this.rels.forEach(function(r){ if((x==r.from.x)&&(y==r.from.y)){ t=r; } }); return t; };
 		this.load = function(){
 			if (this.imagePath) this.image = game.assets[this.imagePath];
 			var a = function(n){ game.rootScene.addChild(n); };
 			a(this.bmap); a(this.scene); a(this.fmap); Hack.map = this;
 		};
 	};
-	function changeMap(rel){
-		var next = maps[rel.name];
+	Hack.changeMap = function (mapName){
+		var next = Hack.maps[mapName];
 		if(next !== Hack.map){
+			if (!next.image && next.imagePath) next.image = game.assets[next.imagePath];
 			var f = function(n, m){ game.rootScene.insertBefore(n, m); game.rootScene.removeChild(m); };
 			f(next.bmap, Hack.map.bmap);
 			f(next.scene, Hack.map.scene);
 			f(next.fmap, Hack.map.fmap);
 
-			// next.scene.addChild(Hack.player);
+			next.scene.addChild(Hack.player);
 			Hack.map = next;
 		}
-		// Hack.player.locate(rel.to.x, rel.to.y);
 		next.callback();
-	}
+	};
 
 	/*  Dir2Vec
 		directionをforwardに変換する。 0/down, 1/left, 2/right, 3/up
