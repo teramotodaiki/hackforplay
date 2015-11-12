@@ -1,10 +1,3 @@
-<?php
-// Play game
-$mode = filter_input(INPUT_GET, "mode");
-if(!isset($mode)){
-	$mode = "official";
-}
-?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -17,7 +10,7 @@ if(!isset($mode)){
 	</head>
 	<body style="margin: 0; background-color: #000;">
 		<script type="text/javascript" charset="utf-8">
-		var __H4PENV__MODE		= "<?php echo $mode; ?>";
+		var __H4PENV__MODE		= sessionStorage.getItem('stage_param_game_mode');
 		</script>
 		<script src="/s/lib/enchant.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/s/lib/ui.enchant.js" type="text/javascript" charset="utf-8"></script>
