@@ -128,9 +128,7 @@ window.addEventListener('load', function(){
 		trap.onplayerleave = function () {
 			this.frame = MapObject.Dictionaly['Trap'];
 		};
-		trap.onattacked = function (e) {
-			var v = Dir2Vec(e.attacker.direction);
-			this.moveBy(v.x * 32, v.y * 32);
+		trap.onattacked = function (event) {
 		};
 
         var player = Hack.player = new Player();
@@ -263,7 +261,7 @@ window.addEventListener('load', function(){
 			}).delay(4).then(function () {
 				this.frame = this.direction * 9 + 7;
 				var v = Dir2Vec(this.direction);
-				Attack.apply(this, [this.mapX + v.x, this.mapY + v.y, this.atk]);
+				Attack.apply(this, [this.mapX + v.x, this.mapY + v.y, this.atk, v.x, v.y]);
 			}).delay(4).then(function () {
 				this.frame = this.direction * 9 + 8;
 			}).delay(4).then(function () {
@@ -302,7 +300,6 @@ window.addEventListener('load', function(){
 			this.behavior = BehaviorTypes.Idle;
         },
         onattacked: function(event){
-        	console.log('onattacked!', event);
 			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
                 this.hp -= event.damage;
                 if(this.hp > 0){
@@ -425,13 +422,13 @@ window.addEventListener('load', function(){
 		return 1; // left
 	}
 
-	function Attack (x, y, damage) {
+	function Attack (x, y, damage, pushX, pushY) {
 		RPGObject.collection.filter(function (item) {
 			return item.mapX === x && item.mapY === y;
 		}).forEach(function (item) {
 			var e = new Event('attacked');
 			e.attacker = this;
-			e.damage = damage;
+			e.damage = damage || 0;
 			item.dispatchEvent(e);
 		}, this);
 	}
