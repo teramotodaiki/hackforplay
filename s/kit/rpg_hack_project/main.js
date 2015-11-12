@@ -321,11 +321,18 @@ window.addEventListener('load', function(){
 			RPGObject.call(this, 48, 48, -8, -12);
 			this.image = game.assets['enchantjs/x1.5/chara5.png'];
 			this.frame = 1;
-			this.direction = 0;
 			this.hp = 2;
 			this.atk = 1;
 			this.behavior = BehaviorTypes.Idle;
 			this.enteredStack = [];
+			var direction = 0;
+			Object.defineProperty(this, 'direction', {
+				get: function () { return direction; },
+				set: function (value) {
+					direction = value;
+					this.frame = this.direction * 9 + (this.frame % 9);
+				}
+			});
 		},
 		onenterframe: function () {
 			if (this.behavior === BehaviorTypes.Idle) {
