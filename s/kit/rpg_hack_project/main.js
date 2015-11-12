@@ -120,6 +120,9 @@ window.addEventListener('load', function(){
         var spider = new Spider();
         spider.locate(7, 5);
 
+        var bat = new Bat();
+        bat.locate(6, 5);
+
         var stair = new MapObject('UpStair');
         stair.locate(1, 7);
         stair.onplayerenter = function () {
@@ -393,6 +396,39 @@ window.addEventListener('load', function(){
     });
 	Object.defineProperty(window, 'Spider', {
 		get: function () { return __Spider; }
+	});
+
+	var __Bat = enchant.Class(RPGObject, {
+        initialize: function(){
+			RPGObject.call(this, 48, 48, -8, -18);
+			this.image = game.assets['enchantjs/monster3.gif'];
+			this.frame = [2, 2, 2, 3, 3, 3];
+			this.collisionFlag = true;
+			this.hp = 3;
+			this.behavior = BehaviorTypes.Idle;
+        },
+        onattacked: function(event){
+			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
+                this.hp -= event.damage;
+                if(this.hp > 0){
+                    this.behavior = BehaviorTypes.Damaged;
+                    this.frame = [4, 4, 5, null];
+                    this.tl.clear().delay(5).then(function(){
+                        this.behavior = BehaviorTypes.Idle;
+                        this.frame = [2, 2, 2, 3, 3, 3];
+                    });
+                }else{
+                    this.behavior = BehaviorTypes.Dead;
+                    this.frame = [5, 5, 5, 7, 7];
+                    this.tl.clear().delay(5).then(function(){
+                        this.destroy();
+                    });
+                }
+            }
+        }
+    });
+	Object.defineProperty(window, 'Bat', {
+		get: function () { return __Bat; }
 	});
 
     var __MapObject = enchant.Class(RPGObject, {
