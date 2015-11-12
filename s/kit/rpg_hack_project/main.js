@@ -1,7 +1,7 @@
 window.addEventListener('load', function(){
 
 	var game = enchant.Core.instance;
-	game.preload('enchantjs/monster4.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
+	game.preload('enchantjs/monster1.gif', 'enchantjs/monster4.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
 	game.keybind(' '.charCodeAt(0), 'a');
 
 	Hack.onload = function () {
@@ -113,6 +113,9 @@ window.addEventListener('load', function(){
 
         var blueSlime = new BlueSlime();
         blueSlime.locate(9, 5);
+
+        var insect = new Insect();
+        insect.locate(8, 5);
 
         var stair = new MapObject('UpStair');
         stair.locate(1, 7);
@@ -321,6 +324,39 @@ window.addEventListener('load', function(){
     });
 	Object.defineProperty(window, 'BlueSlime', {
 		get: function () { return __BlueSlime; }
+	});
+
+	var __Insect = enchant.Class(RPGObject, {
+        initialize: function(){
+			RPGObject.call(this, 48, 48, -8, -16);
+			this.image = game.assets['enchantjs/monster1.gif'];
+			this.frame = [2, 2, 2, 3, 3, 3];
+			this.collisionFlag = true;
+			this.hp = 3;
+			this.behavior = BehaviorTypes.Idle;
+        },
+        onattacked: function(event){
+			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
+                this.hp -= event.damage;
+                if(this.hp > 0){
+                    this.behavior = BehaviorTypes.Damaged;
+                    this.frame = [4, 4, 5, null];
+                    this.tl.clear().delay(5).then(function(){
+                        this.behavior = BehaviorTypes.Idle;
+                        this.frame = [2, 2, 2, 3, 3, 3];
+                    });
+                }else{
+                    this.behavior = BehaviorTypes.Dead;
+                    this.frame = [5, 5, 5, 7, 7];
+                    this.tl.clear().delay(5).then(function(){
+                        this.destroy();
+                    });
+                }
+            }
+        }
+    });
+	Object.defineProperty(window, 'Insect', {
+		get: function () { return __Insect; }
 	});
 
     var __MapObject = enchant.Class(RPGObject, {
