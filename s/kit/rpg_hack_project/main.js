@@ -128,6 +128,10 @@ window.addEventListener('load', function(){
 		trap.onplayerleave = function () {
 			this.frame = MapObject.Dictionaly['Trap'];
 		};
+		trap.onattacked = function (e) {
+			var v = Dir2Vec(e.attacker.direction);
+			this.moveBy(v.x * 32, v.y * 32);
+		};
 
         var player = Hack.player = new Player();
         player.locate(1, 5);
@@ -259,7 +263,7 @@ window.addEventListener('load', function(){
 			}).delay(4).then(function () {
 				this.frame = this.direction * 9 + 7;
 				var v = Dir2Vec(this.direction);
-				Attack(this.mapX + v.x, this.mapY + v.y, this.atk);
+				Attack.apply(this, [this.mapX + v.x, this.mapY + v.y, this.atk]);
 			}).delay(4).then(function () {
 				this.frame = this.direction * 9 + 8;
 			}).delay(4).then(function () {
@@ -267,7 +271,7 @@ window.addEventListener('load', function(){
 				this.behavior = BehaviorTypes.Idle;
 			});
 		},
-		damage: function (atk) {
+		onattacked: function (atk) {
 			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
                 this.hp -= atk;
                 if(this.hp > 0){
@@ -297,9 +301,10 @@ window.addEventListener('load', function(){
 			this.hp = 3;
 			this.behavior = BehaviorTypes.Idle;
         },
-        damage: function(atk){
+        onattacked: function(event){
+        	console.log('onattacked!', event);
 			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
-                this.hp -= atk;
+                this.hp -= event.damage;
                 if(this.hp > 0){
                     this.behavior = BehaviorTypes.Damaged;
                     this.frame = [4, 4, 5, null];
@@ -420,12 +425,15 @@ window.addEventListener('load', function(){
 		return 1; // left
 	}
 
-	function Attack (x, y, atk) {
+	function Attack (x, y, damage) {
 		RPGObject.collection.filter(function (item) {
-			return item.mapX === x && item.mapY === y && typeof item.damage === 'function';
+			return item.mapX === x && item.mapY === y;
 		}).forEach(function (item) {
-			item.damage(atk);
-		});
+			var e = new Event('attacked');
+			e.attacker = this;
+			e.damage = damage;
+			item.dispatchEvent(e);
+		}, this);
 	}
 
 });
