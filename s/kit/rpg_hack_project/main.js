@@ -50,14 +50,33 @@ window.addEventListener('load', function(){
 "\t// 男の子\n"+
 "\tvar boy = new Boy();\n"+
 "\tboy.locate(5, 6);\n"+
-"\n"+
+"\t// ことば\n"+
+"\tboy.onattacked = function () {\n"+
+"\t\tHack.log('Hey!');\n"+
+"\t};\n"+
+"\t\n"+
 "\t// 女の子\n"+
 "\tvar girl = new Girl();\n"+
 "\tgirl.locate(6, 6);\n"+
-"\n"+
+"\t// ２タイプの ことば\n"+
+"\tvar talkType = 0;\n"+
+"\tgirl.onattacked = function () {\n"+
+"\t\tif (talkType === 0) {\n"+
+"\t\t\tHack.log('マジで？');\n"+
+"\t\t\ttalkType = 1;\n"+
+"\t\t} else {\n"+
+"\t\t\tHack.log('ヤバい！');\n"+
+"\t\t\ttalkType = 0;\n"+
+"\t\t}\n"+
+"\t};\n"+
+"\t\n"+
 "\t// 女の人\n"+
 "\tvar woman = new Woman();\n"+
 "\twoman.locate(7, 6);\n"+
+"\t// JSONでダンプ\n"+
+"\twoman.onattacked = function () {\n"+
+"\t\tHack.log('Hello', 'World！', { age: this.age });\n"+
+"\t};\n"+
 "\n"+
 "\t// のぼりかいだん\n"+
 "\tvar stair = new MapObject('UpStair');\n"+
@@ -76,6 +95,7 @@ window.addEventListener('load', function(){
 "\t\t\n"+
 "\t\t// When enter... ふまれたら...\n"+
 "\t\tthis.frame = MapObject.Dictionaly['UsedTrap'];\n"+
+"\t\tHack.Attack.call(this, 2, 5, 1);\n"+
 "\t\t\n"+
 "\t};\n"+
 "\ttrap.onplayerleave = function () {\n"+
