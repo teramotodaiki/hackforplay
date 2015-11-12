@@ -68,12 +68,6 @@ window.addEventListener('load', function(){
 "\t\tthis.frame = MapObject.Dictionaly['Trap'];\n"+
 "\t\t\n"+
 "\t};\n"+
-"\ttrap.onattacked = function (event) {\n"+
-"\t\t\n"+
-"\t\t// When attacked... こうげきされたら\n"+
-"\t\tthis.moveBy(event.vecotr.x * 32, event.vector.y * 32);\n"+
-"\t\t\n"+
-"\t};\n"+
 "\n"+
 "\t// プレイヤー（騎士）\n"+
 "\tvar player = Hack.player = new Player();\n"+
@@ -395,7 +389,7 @@ window.addEventListener('load', function(){
 			}).delay(4).then(function () {
 				this.frame = this.direction * 9 + 7;
 				var v = Dir2Vec(this.direction);
-				Attack.apply(this, [this.mapX + v.x, this.mapY + v.y, this.atk, v.x, v.y]);
+				Hack.Attack.call(this, this.mapX + v.x, this.mapY + v.y, this.atk, v.x, v.y);
 			}).delay(4).then(function () {
 				this.frame = this.direction * 9 + 8;
 			}).delay(4).then(function () {
@@ -757,7 +751,7 @@ window.addEventListener('load', function(){
 		return 1; // left
 	}
 
-	function Attack (x, y, damage, pushX, pushY) {
+	Hack.Attack = function (x, y, damage, pushX, pushY) {
 		RPGObject.collection.filter(function (item) {
 			return item.mapX === x && item.mapY === y;
 		}).forEach(function (item) {
@@ -766,6 +760,6 @@ window.addEventListener('load', function(){
 			e.damage = damage || 0;
 			item.dispatchEvent(e);
 		}, this);
-	}
+	};
 
 });
