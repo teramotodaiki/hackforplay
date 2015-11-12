@@ -1,7 +1,7 @@
 window.addEventListener('load', function(){
 
 	var game = enchant.Core.instance;
-	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
+	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
 	game.keybind(' '.charCodeAt(0), 'a');
 
 	Hack.onload = function () {
@@ -128,6 +128,9 @@ window.addEventListener('load', function(){
 
         var minotaur = new Minotaur();
         minotaur.locate(4, 5);
+
+        var boy = new Boy();
+        boy.locate(5, 6);
 
         var stair = new MapObject('UpStair');
         stair.locate(1, 7);
@@ -501,6 +504,18 @@ window.addEventListener('load', function(){
     });
 	Object.defineProperty(window, 'Minotaur', {
 		get: function () { return __Minotaur; }
+	});
+
+	var __Boy = enchant.Class(RPGObject, {
+        initialize: function(){
+			RPGObject.call(this, 48, 48, -8, -18);
+			this.image = game.assets['enchantjs/x1.5/chara0.png'];
+			this.frame = 1;
+			this.collisionFlag = true;
+        }
+    });
+	Object.defineProperty(window, 'Boy', {
+		get: function () { return __Boy; }
 	});
 
     var __MapObject = enchant.Class(RPGObject, {
