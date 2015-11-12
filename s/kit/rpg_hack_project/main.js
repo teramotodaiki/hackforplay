@@ -325,15 +325,8 @@ window.addEventListener('load', function(){
 		},
 		load: function () {
 			if (!this.image && this.imagePath) this.image = game.assets[this.imagePath];
-			if (Hack.map) {
-				var f = function(n, m){ game.rootScene.insertBefore(n, m); game.rootScene.removeChild(m); };
-				f(this.bmap, Hack.map.bmap);
-				f(this.scene, Hack.map.scene);
-				f(this.fmap, Hack.map.fmap);
-			} else {
-				var a = function(n){ game.rootScene.addChild(n); };
-				a(this.bmap); a(this.scene); a(this.fmap);
-			}
+			var a = function(n){ game.rootScene.addChild(n); };
+			a(this.bmap); a(this.scene); a(this.fmap);
 			Hack.map = this;
 			Hack.defaultParentNode = this.scene;
 			if (!this.isLoaded) {
@@ -351,11 +344,18 @@ window.addEventListener('load', function(){
 	});
 
 	Hack.changeMap = function (mapName){
-		var next = Hack.maps[mapName];
-		if(next !== Hack.map){
-			if (!next.image && next.imagePath) next.image = game.assets[next.imagePath];
-			next.load();
-		}
+		(function (current, next) {
+			if(next && current !== next){
+				var r = function(n){ game.rootScene.removeChild(n); };
+				r(Hack.map.bmap);
+				r(Hack.map.scene);
+				r(Hack.map.fmap);
+				next.load();
+				current.dispatchEvent(new Event('leavemap'));
+				next.dispatchEvent(new Event('entermap'));
+			}
+		})(Hack.map, Hack.maps[mapName]);
+
 	};
 
 	/*  Dir2Vec
