@@ -6,7 +6,7 @@ window.addEventListener('load', function(){
 
 	Hack.onload = function () {
 		Hack.maps = [];
-		Hack.maps['room1'] = new RelationalMap(32, 32);
+		Hack.maps['room1'] = new RPGMap(32, 32);
 		Hack.maps['room1'].imagePath = 'enchantjs/x2/map1.gif';
 		Hack.maps['room1'].bmap.loadData([
 			[  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1],
@@ -32,7 +32,7 @@ window.addEventListener('load', function(){
 			[  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
 		];
-		Hack.maps['room2'] = new RelationalMap(32, 32);
+		Hack.maps['room2'] = new RPGMap(32, 32);
 		Hack.maps['room2'].imagePath = 'enchantjs/x2/map1.gif';
 		Hack.maps['room2'].bmap.loadData([
 			[ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
@@ -93,9 +93,7 @@ window.addEventListener('load', function(){
 	game.onload = function () {
 
         var map = Hack.maps['room1'];
-        map.load();                 // Load map
-
-        Hack.defaultParentNode = map.scene;
+        map.load(); // Load Map;  Hack.defaultParentNode == map.scene
 
         var blueSlime = new BlueSlime();
         blueSlime.locate(9, 5);
@@ -109,11 +107,12 @@ window.addEventListener('load', function(){
         var player = Hack.player = new Player();
         player.locate(1, 5);
 
-
-        var stair2 = new MapObject(422);
-        stair2.locate(1, 7, 'room2');
-        stair2.onplayer = function () {
-			Hack.changeMap('room1');
+        Hack.maps['room2'].onload = function () {
+			var stair2 = new MapObject(422);
+			stair2.locate(1, 7);
+			stair2.onplayer = function () {
+				Hack.changeMap('room1');
+			};
         };
 
     };
@@ -304,44 +303,59 @@ window.addEventListener('load', function(){
     });
 
     /*
-	 * rmap.js (RelationalMap)
-	 * ある位置で他のマップとつながっている、切り替え可能なマップ
+	 * RPGMap
+	 * レイヤー化された切り替え可能なマップ
 	 */
-	var RelationalMap = function(tileWidth, tileHeight) {
-		if (tileWidth === undefined) {tileWidth = 32;}
-		if (tileHeight === undefined) {tileHeight = 32;}
-		this.bmap = new Map(tileWidth, tileHeight); // 他のオブジェクトより奥に表示されるマップ
-		this.fmap = new Map(tileWidth, tileHeight); // 他のオブジェクトより手前に表示されるマップ
-		this.scene = new Group();					// マップ上に存在するオブジェクトをまとめるグループ
-		// cmap=this.bmap.collisionData
-		this.__defineSetter__('cmap', function(c){ this.bmap.collisionData = c; });
-		this.__defineGetter__('cmap', function(){ return this.bmap.collisionData; });
-		// image=this.bmap.image=this.fmap.image
-		this.__defineSetter__('image', function(i){ this.bmap.image = this.fmap.image = i; });
-		this.__defineGetter__('width', function(){ return this.bmap.width; }); // this.bmap.widthのシノニム
-		this.__defineGetter__('height', function(){ return this.bmap.height; }); // this.bmap.heightのシノニム
-		this.callback = function(){};
-		this.checkTile = function(x, y, z){};
-		this.hitTest = function(x, y){ return this.bmap.hitTest(x, y) || this.fmap.hitTest(x, y); };
-		this.load = function(){
-			if (this.imagePath) this.image = game.assets[this.imagePath];
-			var a = function(n){ game.rootScene.addChild(n); };
-			a(this.bmap); a(this.scene); a(this.fmap); Hack.map = this;
-		};
-	};
+	var __RPGMap = enchant.Class(EventTarget, {
+		initialize: function(tileWidth, tileHeight) {
+			EventTarget.call(this);
+			if (tileWidth === undefined) {tileWidth = 32;}
+			if (tileHeight === undefined) {tileHeight = 32;}
+			this.bmap = new Map(tileWidth, tileHeight); // 他のオブジェクトより奥に表示されるマップ
+			this.fmap = new Map(tileWidth, tileHeight); // 他のオブジェクトより手前に表示されるマップ
+			this.scene = new Group();					// マップ上に存在するオブジェクトをまとめるグループ
+			// cmap==this.bmap.collisionData
+			this.__defineSetter__('cmap', function(c){ this.bmap.collisionData = c; });
+			this.__defineGetter__('cmap', function(){ return this.bmap.collisionData; });
+			// image==this.bmap.image==this.fmap.image
+			this.__defineSetter__('image', function(i){ this.bmap.image = this.fmap.image = i; });
+			this.__defineGetter__('width', function(){ return this.bmap.width; }); // ==this.bmap.width
+			this.__defineGetter__('height', function(){ return this.bmap.height; }); // ==this.bmap.height
+			this.isLoaded = false;
+		},
+		load: function () {
+			if (!this.image && this.imagePath) this.image = game.assets[this.imagePath];
+			if (Hack.map) {
+				var f = function(n, m){ game.rootScene.insertBefore(n, m); game.rootScene.removeChild(m); };
+				f(this.bmap, Hack.map.bmap);
+				f(this.scene, Hack.map.scene);
+				f(this.fmap, Hack.map.fmap);
+			} else {
+				var a = function(n){ game.rootScene.addChild(n); };
+				a(this.bmap); a(this.scene); a(this.fmap);
+			}
+			Hack.map = this;
+			Hack.defaultParentNode = this.scene;
+			if (!this.isLoaded) {
+				this.isLoaded = true;
+				this.dispatchEvent(new Event('load'));
+			}
+			if (Hack.player) this.scene.addChild(Hack.player);
+		},
+		hitTest: function (x, y) {
+			return this.bmap.hitTest(x, y) || this.fmap.hitTest(x, y);
+		}
+	});
+	Object.defineProperty(window, 'RPGMap', {
+		get: function () { return __RPGMap; }
+	});
+
 	Hack.changeMap = function (mapName){
 		var next = Hack.maps[mapName];
 		if(next !== Hack.map){
 			if (!next.image && next.imagePath) next.image = game.assets[next.imagePath];
-			var f = function(n, m){ game.rootScene.insertBefore(n, m); game.rootScene.removeChild(m); };
-			f(next.bmap, Hack.map.bmap);
-			f(next.scene, Hack.map.scene);
-			f(next.fmap, Hack.map.fmap);
-
-			next.scene.addChild(Hack.player);
-			Hack.map = next;
+			next.load();
 		}
-		next.callback();
 	};
 
 	/*  Dir2Vec
