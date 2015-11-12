@@ -132,6 +132,10 @@ window.addEventListener('load', function(){
         var boy = new Boy();
         boy.locate(5, 6);
 
+        var girl = new Girl();
+        girl.locate(6, 6);
+
+
         var stair = new MapObject('UpStair');
         stair.locate(1, 7);
         stair.onplayerenter = function () {
@@ -516,6 +520,18 @@ window.addEventListener('load', function(){
     });
 	Object.defineProperty(window, 'Boy', {
 		get: function () { return __Boy; }
+	});
+
+	var __Girl = enchant.Class(RPGObject, {
+        initialize: function(){
+			RPGObject.call(this, 48, 48, -8, -18);
+			this.image = game.assets['enchantjs/x1.5/chara0.png'];
+			this.frame = 7;
+			this.collisionFlag = true;
+        }
+    });
+	Object.defineProperty(window, 'Girl', {
+		get: function () { return __Girl; }
 	});
 
     var __MapObject = enchant.Class(RPGObject, {
