@@ -199,6 +199,12 @@ window.addEventListener('load', function(){
 				this.frame = this.direction * 9 + 1;
 				this.behavior = BehaviorTypes.Idle;
 				this.moveTo(tx, ty);
+				// Dispatch onplayer Event
+				RPGObject.collection.filter(function (item) {
+					return item.mapX === this.mapX  && item.mapY === this.mapY;
+				}, this).forEach(function (item) {
+					item.dispatchEvent(new Event('player'));
+				});
 			});
 		},
 		attack: function () {
