@@ -186,7 +186,8 @@ window.addEventListener('load', function(){
 					this.direction = Vec2Dir({ x: hor, y: ver });
 					this.frame = this.direction * 9 + 1;
 					// Map Collision
-					if ( !Hack.map.hitTest((this.mapX + hor) * 32, (this.mapY + ver) * 32) ) {
+					if ( !Hack.map.hitTest((this.mapX + hor) * 32, (this.mapY + ver) * 32) &&
+						0 <= this.mapX + hor && this.mapX + hor < 15 && 0 <= this.mapY + ver && this.mapY + ver < 10) {
 						// RPGObject(s) Collision
 						if (RPGObject.collection.every(function (item) {
 							return !item.collisionFlag || item.mapX !== this.mapX + hor || item.mapY !== this.mapY + ver;
