@@ -60,6 +60,14 @@ window.addEventListener('load', function () {
 			});
 			this.collisionFlag = false;
 			this.getFrameOfBehavior = []; // BehaviorTypesをキーとしたgetterの配列
+			var behavior = BehaviorTypes.Idle;
+			Object.defineProperty(this, 'behavior', {
+				get: function () { return behavior; },
+				set: function (value) {
+					behavior = value;
+					this.frame = this.getFrame();
+				}
+			});
 			Hack.defaultParentNode.addChild(this);
 		},
 		locate: function (fromLeft, fromTop, mapName) {
@@ -91,13 +99,13 @@ window.addEventListener('load', function () {
 		},
 		getFrame: function () {
 			if (this.getFrameOfBehavior[this.behavior]) {
-				return this.getFrameOfBehavior[this.behavior]();
+				return this.getFrameOfBehavior[this.behavior].call(this);
 			}
 			// Search nearly state
 			for (var i = 32 - 1; i >= 0; i--) {
 				var getter = this.getFrameOfBehavior[this.behavior & (1 << i)];
 				if (getter) {
-					return getter();
+					return getter.call(this);
 				}
 			}
 		}
@@ -107,19 +115,36 @@ window.addEventListener('load', function () {
 		initialize: function () {
 			RPGObject.call(this, 48, 48, -8, -12);
 			this.image = game.assets['enchantjs/x1.5/chara5.png'];
-			this.frame = 1;
 			this.hp = 2;
 			this.atk = 1;
-			this.behavior = BehaviorTypes.Idle;
 			this.enteredStack = [];
 			var direction = 0;
 			Object.defineProperty(this, 'direction', {
 				get: function () { return direction; },
 				set: function (value) {
 					direction = value;
-					this.frame = this.direction * 9 + (this.frame % 9);
+					this.frame = [this.direction * 9 + (this.frame % 9)];
 				}
 			});
+			this.setFrame(BehaviorTypes.Idle, function () {
+				return [this.direction * 9 + 1];
+			});
+			this.setFrame(BehaviorTypes.Walk, function () {
+				var a = this.direction * 9, b = a + 1, c = a + 2;
+				return [a, a, a, a, b, b, b, b, c, c, c, c, b, b, b, b];
+			});
+			this.setFrame(BehaviorTypes.Attack, function () {
+				var a = this.direction * 9 + 6, b = a + 1, c = a + 2;
+				return [a, a, a, a, b, b, b, b, c, c, c, c, b, b, b, b];
+			});
+			this.setFrame(BehaviorTypes.Damaged, function () {
+				var a = this.direction * 9 + 2, b = -1;
+				return [a, b, b, b, a, a, a, b, b, b];
+			});
+			this.setFrame(BehaviorTypes.Dead, function () {
+				return [this.direction * 9 + 1];
+			});
+			this.behavior = BehaviorTypes.Idle;
 		},
 		onenterframe: function () {
 			if (this.behavior === BehaviorTypes.Idle) {
@@ -133,7 +158,6 @@ window.addEventListener('load', function () {
 				if (hor || ver) {
 					// Turn
 					this.direction = Hack.Vec2Dir({ x: hor, y: ver });
-					this.frame = this.direction * 9 + 1;
 					// Map Collision
 					if ( !Hack.map.hitTest((this.mapX + hor) * 32, (this.mapY + ver) * 32) &&
 						0 <= this.mapX + hor && this.mapX + hor < 15 && 0 <= this.mapY + ver && this.mapY + ver < 10) {
@@ -149,16 +173,8 @@ window.addEventListener('load', function () {
 		},
 		walk: function (x, y) {
 			this.behavior = BehaviorTypes.Walk;
-			var dx = x * 11, dy = y * 11; // 11 * 3 = 33. But move 32.
 			var tx = this.x + x * 32, ty = this.y + y * 32;
-			this.tl.then(function () {
-				this.frame = this.direction * 9;
-			}).moveBy(dx, dy, 4).then(function () {
-				this.frame = this.direction * 9 + 1;
-			}).moveBy(dx, dy, 4).then(function () {
-				this.frame = this.direction * 9 + 2;
-			}).moveBy(dx, dy, 4).then(function () {
-				this.frame = this.direction * 9 + 1;
+			this.tl.moveBy(x * 32, y * 32, 12).then(function () {
 				this.behavior = BehaviorTypes.Idle;
 				this.moveTo(tx, ty);
 				// Dispatch playerleave Event
@@ -177,16 +193,10 @@ window.addEventListener('load', function () {
 		},
 		attack: function () {
 			this.behavior = BehaviorTypes.Attack;
-			this.tl.then(function () {
-				this.frame = this.direction * 9 + 6;
-			}).delay(4).then(function () {
-				this.frame = this.direction * 9 + 7;
+			this.tl.delay(4).then(function () {
 				var v = Hack.Dir2Vec(this.direction);
 				Hack.Attack.call(this, this.mapX + v.x, this.mapY + v.y, this.atk, v.x, v.y);
-			}).delay(4).then(function () {
-				this.frame = this.direction * 9 + 8;
-			}).delay(4).then(function () {
-				this.frame = this.direction * 9 + 1;
+			}).delay(8).then(function () {
 				this.behavior = BehaviorTypes.Idle;
 			});
 		},
@@ -195,12 +205,12 @@ window.addEventListener('load', function () {
                 this.hp -= event.damage;
                 if(this.hp > 0){
                     this.behavior += BehaviorTypes.Damaged;
-					this.tl.clear().delay(1).hide().delay(3).show().delay(3).hide().delay(3).show().then(function () {
+					this.tl.delay(9).then(function () {
 						this.behavior = BehaviorTypes.Idle;
 					});
                 }else{
 					this.behavior = BehaviorTypes.Dead;
-					this.tl.clear().fadeOut(10).then(function(){
+					this.tl.fadeOut(10).then(function(){
 						Hack.gameover();
 					});
                 }
@@ -221,14 +231,6 @@ window.addEventListener('load', function () {
 			});
 			this.collisionFlag = true;
 			this.hp = 3;
-			var behavior = BehaviorTypes.Idle;
-			Object.defineProperty(this, 'behavior', {
-				get: function () { return behavior; },
-				set: function (value) {
-					behavior = value;
-					this.frame = this.getFrame();
-				}
-			});
 		},
 		onattacked: function (event) {
 			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
