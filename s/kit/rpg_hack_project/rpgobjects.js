@@ -65,6 +65,10 @@ window.addEventListener('load', function () {
 				get: function () { return behavior; },
 				set: function (value) {
 					behavior = value;
+					var type = Object.keys(BehaviorTypes).find(function (item) {
+						return BehaviorTypes[item] === behavior;
+					});
+					this.dispatchEvent( new Event( 'become' + type.toLowerCase() ) );
 					this.frame = this.getFrame();
 				}
 			});
