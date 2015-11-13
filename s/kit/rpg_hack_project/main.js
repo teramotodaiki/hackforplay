@@ -5,6 +5,9 @@ window.addEventListener('load', function () {
 	game.keybind(' '.charCodeAt(0), 'a');
 
 	console.log('preset', Hack.onload);
+	Hack.on('load', function(event) {
+		console.log('ignite');
+	});
 	Hack.onload = Hack.onload || function () {
 
 		MapObject.Dictionaly = {
