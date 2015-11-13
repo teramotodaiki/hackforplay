@@ -68,8 +68,10 @@ window.addEventListener('load', function () {
 					var type = Object.keys(BehaviorTypes).find(function (item) {
 						return BehaviorTypes[item] === behavior;
 					});
-					this.dispatchEvent( new Event( 'become' + type.toLowerCase() ) );
-					this.frame = this.getFrame();
+					if (type) {
+						this.dispatchEvent( new Event( 'become' + type.toLowerCase() ) );
+						this.frame = this.getFrame();
+					}
 				}
 			});
 			Hack.defaultParentNode.addChild(this);
