@@ -194,6 +194,14 @@ window.addEventListener('load', function () {
 			});
 			this.collisionFlag = true;
 			this.hp = 3;
+			var behavior = BehaviorTypes.Idle;
+			Object.defineProperty(this, 'behavior', {
+				get: function () { return behavior; },
+				set: function (value) {
+					behavior = value;
+					this.frame = this.getFrame();
+				}
+			});
 			this.behavior = BehaviorTypes.Idle;
 		},
 		setFrame: function (behavior, frame) {
@@ -201,22 +209,29 @@ window.addEventListener('load', function () {
 			var value = typeof behavior === 'number' ? behavior : BehaviorTypes[behavior];
 			this.frameOfBehavior[value] = frame;
 		},
+		getFrame: function () {
+			if (this.frameOfBehavior[this.behavior]) {
+				return this.frameOfBehavior[this.behavior];
+			}
+			// Search nearly state
+			for (var i = 32 - 1; i >= 0; i--) {
+				var frame = this.frameOfBehavior[this.behavior & (1 << i)];
+				if (frame) {
+					return frame;
+				}
+			}
+		},
 		onattacked: function (event) {
 			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
                 this.hp -= event.damage;
                 if(this.hp > 0){
                     this.behavior = BehaviorTypes.Damaged;
-                    var fdamaged = this.frameOfBehavior[BehaviorTypes.Damaged];
-                    this.frame = fdamaged;
-                    this.tl.clear().delay(fdamaged.length).then(function(){
+                    this.tl.clear().delay(this.getFrame().length).then(function(){
                         this.behavior = BehaviorTypes.Idle;
-                        this.frame = this.frameOfBehavior[BehaviorTypes.Idle];
                     });
                 }else{
                     this.behavior = BehaviorTypes.Dead;
-                    var fdead = this.frameOfBehavior[BehaviorTypes.Dead];
-                    this.frame = fdead;
-                    this.tl.clear().delay(fdead.length).then(function(){
+                    this.tl.clear().delay(this.getFrame().length).then(function(){
                         this.destroy();
                     });
                 }
