@@ -4,10 +4,6 @@ window.addEventListener('load', function () {
 	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
 	game.keybind(' '.charCodeAt(0), 'a');
 
-	console.log('preset', Hack.onload);
-	Hack.on('load', function(event) {
-		console.log('ignite');
-	});
 	Hack.onload = Hack.onload || function () {
 
 		MapObject.Dictionaly = {
@@ -86,7 +82,6 @@ window.addEventListener('load', function () {
 
 	game.onload = game.onload || function () {
 
-		console.log('game onload', Hack, Hack.maps);
         var map = Hack.maps['room1'];
         map.load(); // Load Map;  Hack.defaultParentNode == map.scene
 
