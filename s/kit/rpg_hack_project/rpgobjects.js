@@ -59,6 +59,7 @@ window.addEventListener('load', function () {
 				get: function () { return (this.y - this.offset.y) / 32 >> 0; }
 			});
 			this.collisionFlag = false;
+			this.getFrameOfBehavior = []; // BehaviorTypesをキーとしたgetterの配列
 			Hack.defaultParentNode.addChild(this);
 		},
 		locate: function (fromLeft, fromTop, mapName) {
@@ -73,6 +74,32 @@ window.addEventListener('load', function () {
 		destroy: function () {
 			if (this.scene) this.scene.removeChild(this);
 			if (this.parentNode) this.parentNode.removeChild(this);
+		},
+		setFrame: function (behavior, frame) {
+			// behavior is Key:number or Type:string
+			// frame is Frames:array or Getter:function
+			var value = typeof behavior === 'number' ? behavior : BehaviorTypes[behavior];
+			(function (_local) {
+				if (typeof frame === 'function') {
+					this.getFrameOfBehavior[value] = _local;
+				} else {
+					this.getFrameOfBehavior[value] = function () {
+						return _local;
+					};
+				}
+			}).call(this, frame);
+		},
+		getFrame: function () {
+			if (this.getFrameOfBehavior[this.behavior]) {
+				return this.getFrameOfBehavior[this.behavior]();
+			}
+			// Search nearly state
+			for (var i = 32 - 1; i >= 0; i--) {
+				var getter = this.getFrameOfBehavior[this.behavior & (1 << i)];
+				if (getter) {
+					return getter();
+				}
+			}
 		}
 	});
 
@@ -184,7 +211,6 @@ window.addEventListener('load', function () {
 	var __EnemyBase = enchant.Class(RPGObject, {
 		initialize: function (width, height, offsetX, offsetY) {
 			RPGObject.call(this, width, height, offsetX, offsetY);
-			this.frameOfBehavior = [];
 			Object.keys(BehaviorTypes).forEach(function (key) {
 				this.setFrame(key, [2, null]);
 			}, this);
@@ -203,24 +229,6 @@ window.addEventListener('load', function () {
 					this.frame = this.getFrame();
 				}
 			});
-			this.behavior = BehaviorTypes.Idle;
-		},
-		setFrame: function (behavior, frame) {
-			// behavior is Key:nuber or Type:string
-			var value = typeof behavior === 'number' ? behavior : BehaviorTypes[behavior];
-			this.frameOfBehavior[value] = frame;
-		},
-		getFrame: function () {
-			if (this.frameOfBehavior[this.behavior]) {
-				return this.frameOfBehavior[this.behavior];
-			}
-			// Search nearly state
-			for (var i = 32 - 1; i >= 0; i--) {
-				var frame = this.frameOfBehavior[this.behavior & (1 << i)];
-				if (frame) {
-					return frame;
-				}
-			}
 		},
 		onattacked: function (event) {
 			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
@@ -245,8 +253,10 @@ window.addEventListener('load', function () {
 			EnemyBase.call(this, 48, 48, -8, -10);
 			this.image = game.assets['enchantjs/monster4.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
+			this.behavior = BehaviorTypes.Idle;
         }
     });
 
@@ -255,8 +265,10 @@ window.addEventListener('load', function () {
 			EnemyBase.call(this, 48, 48, -8, -16);
 			this.image = game.assets['enchantjs/monster1.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
+			this.behavior = BehaviorTypes.Idle;
         }
     });
 
@@ -265,8 +277,10 @@ window.addEventListener('load', function () {
 			EnemyBase.call(this, 64, 64, -16, -24);
 			this.image = game.assets['enchantjs/monster2.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
+			this.behavior = BehaviorTypes.Idle;
         }
     });
 
@@ -275,8 +289,10 @@ window.addEventListener('load', function () {
 			EnemyBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/monster3.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
+			this.behavior = BehaviorTypes.Idle;
         }
     });
 
@@ -285,8 +301,10 @@ window.addEventListener('load', function () {
 			EnemyBase.call(this, 80, 80, -24, -42);
 			this.image = game.assets['enchantjs/bigmonster1.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
+			this.behavior = BehaviorTypes.Idle;
         }
     });
 
@@ -295,8 +313,10 @@ window.addEventListener('load', function () {
 			EnemyBase.call(this, 80, 80, -40, -48);
 			this.image = game.assets['enchantjs/bigmonster2.gif'];
 			this.setFrame(BehaviorTypes.Idle, [8, 8, 8, 9, 9, 9]);
+			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Damaged, [7, 7, 6, null]);
 			this.setFrame(BehaviorTypes.Dead, [7, 7, 7, 1, 0]);
+			this.behavior = BehaviorTypes.Idle;
         }
     });
 
