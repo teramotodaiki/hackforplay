@@ -287,13 +287,6 @@ $(function(){
 			// Ctrl+Zの押し過ぎで、全部消えてしまうのをふせぐ
 			change.cancel();
 		}
-		if (change.origin == "+delete" && change.to.ch - change.from.ch == 1) {
-			// 一部の記号を消せないようにする
-			var del = cm.doc.getRange(change.from, change.to);
-			if (del.match(/[,;=\(\)\[\]\']/g)) {
-				change.cancel();
-			}
-		}
 	});
 	var $div = $("div.h4p_restaging_editor");
 	jsEditor.setSize($div.width(), $div.height());

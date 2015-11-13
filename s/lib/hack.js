@@ -130,7 +130,7 @@ window.addEventListener('load', function() {
 					default: values[i] = arguments[i] + ''; break;
 				}
 			}
-			this.textarea.text += (this.textarea.text !== '' ? '\n' : '') + values.join(' ');
+			this.textarea.text = values.join(' ') + (this.textarea.text !== '' ? '\n' : '') + this.textarea.text;
 			this.textarea.show();
 
 		} catch (e) {
