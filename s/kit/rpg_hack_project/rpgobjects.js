@@ -22,19 +22,20 @@ window.addEventListener('load', function () {
 	 */
 
 	// Classes and Enums
-	Object.defineProperty(window, 'BehaviorTypes', { get: function () { return __BehaviorTypes; } });
-	Object.defineProperty(window, 'RPGObject', { get: function () { return __RPGObject; } });
-	Object.defineProperty(window, 'Player', { get: function () { return __Player; } });
-	Object.defineProperty(window, 'EnemyBase', { get: function () { return __EnemyBase; } });
-	Object.defineProperty(window, 'BlueSlime', { get: function () { return __BlueSlime; } });
-	Object.defineProperty(window, 'Insect', { get: function () { return __Insect; } });
-	Object.defineProperty(window, 'Spider', { get: function () { return __Spider; } });
-	Object.defineProperty(window, 'Dragon', { get: function () { return __Dragon; } });
-	Object.defineProperty(window, 'Minotaur', { get: function () { return __Minotaur; } });
-	Object.defineProperty(window, 'Boy', { get: function () { return __Boy; } });
-	Object.defineProperty(window, 'Girl', { get: function () { return __Girl; } });
-	Object.defineProperty(window, 'Woman', { get: function () { return __Woman; } });
-    Object.defineProperty(window, 'MapObject', { get: function () { return __MapObject; } });
+	Object.defineProperty(window, 'BehaviorTypes',	{ get: function () { return __BehaviorTypes; }	});
+	Object.defineProperty(window, 'RPGObject',		{ get: function () { return __RPGObject; }		});
+	Object.defineProperty(window, 'Player',			{ get: function () { return __Player; }			});
+	Object.defineProperty(window, 'EnemyBase',		{ get: function () { return __EnemyBase; }		});
+	Object.defineProperty(window, 'BlueSlime',		{ get: function () { return __BlueSlime; }		});
+	Object.defineProperty(window, 'Insect',			{ get: function () { return __Insect; }			});
+	Object.defineProperty(window, 'Spider',			{ get: function () { return __Spider; }			});
+	Object.defineProperty(window, 'Bat',			{ get: function () { return __Bat; }			});
+	Object.defineProperty(window, 'Dragon',			{ get: function () { return __Dragon; }			});
+	Object.defineProperty(window, 'Minotaur',		{ get: function () { return __Minotaur; }		});
+	Object.defineProperty(window, 'Boy',			{ get: function () { return __Boy; }			});
+	Object.defineProperty(window, 'Girl',			{ get: function () { return __Girl; }			});
+	Object.defineProperty(window, 'Woman',			{ get: function () { return __Woman; }			});
+    Object.defineProperty(window, 'MapObject',		{ get: function () { return __MapObject; }		});
 
     var game = enchant.Core.instance;
 
@@ -278,9 +279,6 @@ window.addEventListener('load', function () {
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
         }
     });
-	Object.defineProperty(window, 'Bat', {
-		get: function () { return __Bat; }
-	});
 
 	var __Dragon = enchant.Class(EnemyBase, {
         initialize: function(){
