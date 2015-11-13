@@ -201,17 +201,17 @@ window.addEventListener('load', function () {
                 this.hp -= event.damage;
                 if(this.hp > 0){
                     this.behavior = BehaviorTypes.Damaged;
-                    var f = this.frameOfBehavior[BehaviorTypes.Damaged];
-                    this.frame = f;
-                    this.tl.clear().delay(f.length).then(function(){
+                    var fdamaged = this.frameOfBehavior[BehaviorTypes.Damaged];
+                    this.frame = fdamaged;
+                    this.tl.clear().delay(fdamaged.length).then(function(){
                         this.behavior = BehaviorTypes.Idle;
                         this.frame = this.frameOfBehavior[BehaviorTypes.Idle];
                     });
                 }else{
                     this.behavior = BehaviorTypes.Dead;
-                    var f2 = this.frameOfBehavior[BehaviorTypes.Dead];
-                    this.frame = f2;
-                    this.tl.clear().delay(f2.length).then(function(){
+                    var fdead = this.frameOfBehavior[BehaviorTypes.Dead];
+                    this.frame = fdead;
+                    this.tl.clear().delay(fdead.length).then(function(){
                         this.destroy();
                     });
                 }
