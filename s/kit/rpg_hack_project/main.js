@@ -14,8 +14,8 @@ window.addEventListener('load', function () {
 			'Tree': 520,		'Table': 521
 		};
 
-		console.log('1');
 		Hack.maps = [];
+		console.log('Hack.onload', Hack, Hack.maps);
 		Hack.maps['room1'] = new RPGMap(32, 32);
 		Hack.maps['room1'].imagePath = 'enchantjs/x2/map1.gif';
 		Hack.maps['room1'].bmap.loadData([
@@ -83,7 +83,7 @@ window.addEventListener('load', function () {
 
 	game.onload = game.onload || function () {
 
-		console.log('2');
+		console.log('game onload', Hack, Hack.maps);
         var map = Hack.maps['room1'];
         map.load(); // Load Map;  Hack.defaultParentNode == map.scene
 
@@ -134,7 +134,6 @@ window.addEventListener('load', function () {
 	});
 
 	Hack.changeMap = function (mapName){
-		console.log('3');
 		(function (current, next) {
 			if(next && current !== next){
 				var r = function(n){ game.rootScene.removeChild(n); };
