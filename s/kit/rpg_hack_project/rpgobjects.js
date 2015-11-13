@@ -25,6 +25,7 @@ window.addEventListener('load', function () {
 	Object.defineProperty(window, 'BehaviorTypes', { get: function () { return __BehaviorTypes; } });
 	Object.defineProperty(window, 'RPGObject', { get: function () { return __RPGObject; } });
 	Object.defineProperty(window, 'Player', { get: function () { return __Player; } });
+	Object.defineProperty(window, 'EnemyBase', { get: function () { return __EnemyBase; } });
 	Object.defineProperty(window, 'BlueSlime', { get: function () { return __BlueSlime; } });
 	Object.defineProperty(window, 'Insect', { get: function () { return __Insect; } });
 	Object.defineProperty(window, 'Spider', { get: function () { return __Spider; } });
@@ -179,33 +180,54 @@ window.addEventListener('load', function () {
 		}
 	});
 
-	var __BlueSlime = enchant.Class(RPGObject, {
-        initialize: function(){
-			RPGObject.call(this, 48, 48, -8, -10);
-			this.image = game.assets['enchantjs/monster4.gif'];
-			this.frame = [2, 2, 2, 3, 3, 3];
+	var __EnemyBase = enchant.Class(RPGObject, {
+		initialize: function (width, height, offsetX, offsetY) {
+			RPGObject.call(this, width, height, offsetX, offsetY);
+			this.frameOfBehavior = [];
+			Object.keys(BehaviorTypes).forEach(function (key) {
+				this.setFrame(key, [2, null]);
+			}, this);
 			this.collisionFlag = true;
 			this.hp = 3;
 			this.behavior = BehaviorTypes.Idle;
-        },
-        onattacked: function(event){
+		},
+		setFrame: function (behavior, frame) {
+			// behavior is Key:nuber or Type:string
+			var value = typeof behavior === 'number' ? behavior : BehaviorTypes[behavior];
+			this.frameOfBehavior[value] = frame;
+		},
+		onattacked: function (event) {
 			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
                 this.hp -= event.damage;
                 if(this.hp > 0){
                     this.behavior = BehaviorTypes.Damaged;
-                    this.frame = [4, 4, 5, null];
-                    this.tl.clear().delay(5).then(function(){
+                    var f = this.frameOfBehavior[BehaviorTypes.Damaged];
+                    this.frame = f;
+                    this.tl.clear().delay(f.length).then(function(){
                         this.behavior = BehaviorTypes.Idle;
-                        this.frame = [2, 2, 2, 3, 3, 3];
+                        this.frame = this.frameOfBehavior[BehaviorTypes.Idle];
                     });
                 }else{
                     this.behavior = BehaviorTypes.Dead;
-                    this.frame = [5, 5, 5, 7, 7];
-                    this.tl.clear().delay(5).then(function(){
+                    var f2 = this.frameOfBehavior[BehaviorTypes.Dead];
+                    this.frame = f2;
+                    this.tl.clear().delay(f2.length).then(function(){
                         this.destroy();
                     });
                 }
             }
+		}
+	});
+
+	var __BlueSlime = enchant.Class(EnemyBase, {
+        initialize: function(){
+			EnemyBase.call(this, 48, 48, -8, -10);
+			this.image = game.assets['enchantjs/monster4.gif'];
+			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
+			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
+
+			this.frame = this.frameOfBehavior[BehaviorTypes.Idle];
         }
     });
 
