@@ -66,7 +66,7 @@ window.addEventListener('load', function () {
 				set: function (value) {
 					behavior = value;
 					var type = Object.keys(BehaviorTypes).find(function (item) {
-						return BehaviorTypes[item] === behavior;
+						return (BehaviorTypes[item] & behavior) > 0;
 					});
 					this.dispatchEvent( new Event( 'become' + type.toLowerCase() ) );
 					this.frame = this.getFrame();
