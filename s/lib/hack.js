@@ -564,9 +564,7 @@ window.addEventListener('load', function() {
 		}
 	});
 
-	console.log('before');
 	window.postMessage("Hack.dispatchEvent(new Event('load'));", "/"); // Hack.onloadのコール
-	console.log('after');
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
 	game.addEventListener('load', function(){
