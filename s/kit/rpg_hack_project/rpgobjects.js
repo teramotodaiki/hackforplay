@@ -39,11 +39,11 @@ window.addEventListener('load', function () {
     var game = enchant.Core.instance;
 
 	var __BehaviorTypes = {
-		Idle : 1,       // 立ち状態
-		Walk : 2,       // 歩き状態
-		Attack : 4,     // 攻撃状態
-		Damaged : 8,    // 被撃状態
-		Dead : 16       // 死亡状態
+		Idle :		1,	// 立ち状態
+		Walk :		2,	// 歩き状態
+		Attack :	4,	// 攻撃状態
+		Damaged :	8,	// 被撃状態
+		Dead :		16	// 死亡状態
 	};
 
 	var __RPGObject = enchant.Class(enchant.Sprite, {
@@ -246,161 +246,59 @@ window.addEventListener('load', function () {
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
-
-			this.frame = this.frameOfBehavior[BehaviorTypes.Idle];
         }
     });
 
-	var __Insect = enchant.Class(RPGObject, {
+	var __Insect = enchant.Class(EnemyBase, {
         initialize: function(){
-			RPGObject.call(this, 48, 48, -8, -16);
+			EnemyBase.call(this, 48, 48, -8, -16);
 			this.image = game.assets['enchantjs/monster1.gif'];
-			this.frame = [2, 2, 2, 3, 3, 3];
-			this.collisionFlag = true;
-			this.hp = 3;
-			this.behavior = BehaviorTypes.Idle;
-        },
-        onattacked: function(event){
-			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
-                this.hp -= event.damage;
-                if(this.hp > 0){
-                    this.behavior = BehaviorTypes.Damaged;
-                    this.frame = [4, 4, 5, null];
-                    this.tl.clear().delay(5).then(function(){
-                        this.behavior = BehaviorTypes.Idle;
-                        this.frame = [2, 2, 2, 3, 3, 3];
-                    });
-                }else{
-                    this.behavior = BehaviorTypes.Dead;
-                    this.frame = [5, 5, 5, 7, 7];
-                    this.tl.clear().delay(5).then(function(){
-                        this.destroy();
-                    });
-                }
-            }
+			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
+			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
         }
     });
 
-	var __Spider = enchant.Class(RPGObject, {
+	var __Spider = enchant.Class(EnemyBase, {
         initialize: function(){
-			RPGObject.call(this, 64, 64, -16, -24);
+			EnemyBase.call(this, 64, 64, -16, -24);
 			this.image = game.assets['enchantjs/monster2.gif'];
-			this.frame = [2, 2, 2, 3, 3, 3];
-			this.collisionFlag = true;
-			this.hp = 3;
-			this.behavior = BehaviorTypes.Idle;
-        },
-        onattacked: function(event){
-			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
-                this.hp -= event.damage;
-                if(this.hp > 0){
-                    this.behavior = BehaviorTypes.Damaged;
-                    this.frame = [4, 4, 5, null];
-                    this.tl.clear().delay(5).then(function(){
-                        this.behavior = BehaviorTypes.Idle;
-                        this.frame = [2, 2, 2, 3, 3, 3];
-                    });
-                }else{
-                    this.behavior = BehaviorTypes.Dead;
-                    this.frame = [5, 5, 5, 7, 7];
-                    this.tl.clear().delay(5).then(function(){
-                        this.destroy();
-                    });
-                }
-            }
+			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
+			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
         }
     });
 
-	var __Bat = enchant.Class(RPGObject, {
+	var __Bat = enchant.Class(EnemyBase, {
         initialize: function(){
-			RPGObject.call(this, 48, 48, -8, -18);
+			EnemyBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/monster3.gif'];
-			this.frame = [2, 2, 2, 3, 3, 3];
-			this.collisionFlag = true;
-			this.hp = 3;
-			this.behavior = BehaviorTypes.Idle;
-        },
-        onattacked: function(event){
-			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
-                this.hp -= event.damage;
-                if(this.hp > 0){
-                    this.behavior = BehaviorTypes.Damaged;
-                    this.frame = [4, 4, 5, null];
-                    this.tl.clear().delay(5).then(function(){
-                        this.behavior = BehaviorTypes.Idle;
-                        this.frame = [2, 2, 2, 3, 3, 3];
-                    });
-                }else{
-                    this.behavior = BehaviorTypes.Dead;
-                    this.frame = [5, 5, 5, 7, 7];
-                    this.tl.clear().delay(5).then(function(){
-                        this.destroy();
-                    });
-                }
-            }
+			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
+			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
         }
     });
 	Object.defineProperty(window, 'Bat', {
 		get: function () { return __Bat; }
 	});
 
-	var __Dragon = enchant.Class(RPGObject, {
+	var __Dragon = enchant.Class(EnemyBase, {
         initialize: function(){
-			RPGObject.call(this, 80, 80, -24, -42);
+			EnemyBase.call(this, 80, 80, -24, -42);
 			this.image = game.assets['enchantjs/bigmonster1.gif'];
-			this.frame = [2, 2, 2, 3, 3, 3];
-			this.collisionFlag = true;
-			this.hp = 4;
-			this.behavior = BehaviorTypes.Idle;
-        },
-        onattacked: function(event){
-			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
-                this.hp -= event.damage;
-                if(this.hp > 0){
-                    this.behavior = BehaviorTypes.Damaged;
-                    this.frame = [4, 4, 5, null];
-                    this.tl.clear().delay(5).then(function(){
-                        this.behavior = BehaviorTypes.Idle;
-                        this.frame = [2, 2, 2, 3, 3, 3];
-                    });
-                }else{
-                    this.behavior = BehaviorTypes.Dead;
-                    this.frame = [5, 5, 5, 7, 7];
-                    this.tl.clear().delay(5).then(function(){
-                        this.destroy();
-                    });
-                }
-            }
+			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
+			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
         }
     });
 
-	var __Minotaur = enchant.Class(RPGObject, {
+	var __Minotaur = enchant.Class(EnemyBase, {
         initialize: function(){
-			RPGObject.call(this, 80, 80, -40, -48);
+			EnemyBase.call(this, 80, 80, -40, -48);
 			this.image = game.assets['enchantjs/bigmonster2.gif'];
-			this.frame = [8, 8, 8, 9, 9, 9];
-			this.collisionFlag = true;
-			this.hp = 4;
-			this.behavior = BehaviorTypes.Idle;
-        },
-        onattacked: function(event){
-			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
-                this.hp -= event.damage;
-                if(this.hp > 0){
-                    this.behavior = BehaviorTypes.Damaged;
-                    this.frame = [7, 7, 6, null];
-                    this.tl.clear().delay(5).then(function(){
-                        this.behavior = BehaviorTypes.Idle;
-                        this.frame = [8, 8, 8, 9, 9, 9];
-                    });
-                }else{
-                    this.behavior = BehaviorTypes.Dead;
-                    this.frame = [7, 7, 7, 1, 0];
-                    this.tl.clear().delay(5).then(function(){
-                        this.destroy();
-                    });
-                }
-            }
+			this.setFrame(BehaviorTypes.Idle, [8, 8, 8, 9, 9, 9]);
+			this.setFrame(BehaviorTypes.Damaged, [7, 7, 6, null]);
+			this.setFrame(BehaviorTypes.Dead, [7, 7, 7, 1, 0]);
         }
     });
 
