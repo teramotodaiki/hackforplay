@@ -77,6 +77,7 @@ window.addEventListener('load', function () {
 		locate: function (fromLeft, fromTop, mapName) {
 			if (mapName) {
 				this.destroy();
+				console.log('4');
 				Hack.maps[mapName].scene.addChild(this);
 			}
 			this.moveTo(
