@@ -58,7 +58,6 @@ window.addEventListener('load', function () {
 			Object.defineProperty(this, 'mapY', {
 				get: function () { return (this.y - this.offset.y) / 32 >> 0; }
 			});
-			this.collisionFlag = false;
 			this.getFrameOfBehavior = []; // BehaviorTypesをキーとしたgetterの配列
 			var behavior = BehaviorTypes.Idle;
 			Object.defineProperty(this, 'behavior', {
@@ -72,6 +71,16 @@ window.addEventListener('load', function () {
 					this.frame = this.getFrame();
 				}
 			});
+			var collisionFlag = null; // this.collisionFlag (Default:true)
+			Object.defineProperty(this, 'collisionFlag', {
+				get: function () {
+					return collisionFlag !== null ? collisionFlag :
+						!(this.onplayerenter || this._listeners['playerenter'] ||
+						this.onplayerleave || this._listeners['playerleave']);
+				},
+				set: function (value) { collisionFlag = value; }
+			});
+
 			Hack.defaultParentNode.addChild(this);
 		},
 		locate: function (fromLeft, fromTop, mapName) {
@@ -233,7 +242,6 @@ window.addEventListener('load', function () {
 				get: function () { return direction; },
 				set: function (value) { this.scaleX = -(direction = Math.sign(value)) * Math.abs(this.scaleX); }
 			});
-			this.collisionFlag = true;
 			this.hp = 3;
 		},
 		onattacked: function (event) {
@@ -331,7 +339,6 @@ window.addEventListener('load', function () {
 			RPGObject.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
 			this.frame = 1;
-			this.collisionFlag = true;
         }
     });
 
@@ -340,7 +347,6 @@ window.addEventListener('load', function () {
 			RPGObject.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
 			this.frame = 7;
-			this.collisionFlag = true;
         }
     });
 
@@ -349,7 +355,6 @@ window.addEventListener('load', function () {
 			RPGObject.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
 			this.frame = 4;
-			this.collisionFlag = true;
         }
     });
 
