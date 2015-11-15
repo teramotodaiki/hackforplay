@@ -148,7 +148,7 @@ window.addEventListener('load', function () {
 			});
 			this.setFrame(BehaviorTypes.Attack, function () {
 				var a = this.direction * 9 + 6, b = a + 1, c = a + 2;
-				return [a, a, a, a, b, b, b, b, c, c, c, c, b, b, b, b];
+				return [a, a, a, a, b, b, b, b, c, c, c, c, null];
 			});
 			this.setFrame(BehaviorTypes.Damaged, function () {
 				var a = this.direction * 9 + 2, b = -1;
@@ -206,10 +206,11 @@ window.addEventListener('load', function () {
 		},
 		attack: function () {
 			this.behavior = BehaviorTypes.Attack;
-			this.tl.delay(4).then(function () {
+			var len = this.getFrame().length;
+			this.tl.then(function () {
 				var v = Hack.Dir2Vec(this.direction);
 				Hack.Attack.call(this, this.mapX + v.x, this.mapY + v.y, this.atk, v.x, v.y);
-			}).delay(8).then(function () {
+			}).delay(len).then(function () {
 				this.behavior = BehaviorTypes.Idle;
 			});
 		},
@@ -243,6 +244,17 @@ window.addEventListener('load', function () {
 				set: function (value) { this.scaleX = -(direction = Math.sign(value)) * Math.abs(this.scaleX); }
 			});
 			this.hp = 3;
+			this.atk = 1;
+		},
+		attack: function () {
+			this.behavior = BehaviorTypes.Attack;
+			var len = this.getFrame().length;
+			this.tl.then(function () {
+				var v = { x: this.direction, y: 0 };
+				Hack.Attack.call(this, this.mapX + v.x, this.mapY + v.y, this.atk, v.x, v.y);
+			}).delay(len).then(function () {
+				this.behavior = BehaviorTypes.Idle;
+			});
 		},
 		onattacked: function (event) {
 			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
@@ -266,8 +278,9 @@ window.addEventListener('load', function () {
         initialize: function(){
 			EnemyBase.call(this, 48, 48, -8, -10);
 			this.image = game.assets['enchantjs/monster4.gif'];
-			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 6, 6, 4, 4, 4, 5, 5, 5, 5, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
 			this.behavior = BehaviorTypes.Idle;
@@ -280,6 +293,7 @@ window.addEventListener('load', function () {
 			this.image = game.assets['enchantjs/monster1.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 6, 6, 4, 4, 4, 5, 5, 5, 5, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
 			this.behavior = BehaviorTypes.Idle;
@@ -292,6 +306,7 @@ window.addEventListener('load', function () {
 			this.image = game.assets['enchantjs/monster2.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 6, 6, 4, 4, 4, 5, 5, 5, 5, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
 			this.behavior = BehaviorTypes.Idle;
@@ -304,6 +319,7 @@ window.addEventListener('load', function () {
 			this.image = game.assets['enchantjs/monster3.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 6, 6, 4, 4, 4, 5, 5, 5, 5, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
 			this.behavior = BehaviorTypes.Idle;
@@ -316,6 +332,7 @@ window.addEventListener('load', function () {
 			this.image = game.assets['enchantjs/bigmonster1.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 6, 6, 4, 4, 4, 5, 5, 5, 5, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 5, null]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 7, 7]);
 			this.behavior = BehaviorTypes.Idle;
@@ -328,6 +345,7 @@ window.addEventListener('load', function () {
 			this.image = game.assets['enchantjs/bigmonster2.gif'];
 			this.setFrame(BehaviorTypes.Idle, [8, 8, 8, 9, 9, 9]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 3, 3, 3]);
+			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 6, 6, 4, 4, 4, 5, 5, 5, 5, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [7, 7, 6, null]);
 			this.setFrame(BehaviorTypes.Dead, [7, 7, 7, 1, 0]);
 			this.behavior = BehaviorTypes.Idle;
