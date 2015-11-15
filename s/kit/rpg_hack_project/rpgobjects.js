@@ -228,10 +228,10 @@ window.addEventListener('load', function () {
 			Object.keys(BehaviorTypes).forEach(function (key) {
 				this.setFrame(key, [2, null]);
 			}, this);
-			var direction = 1; // 1: Left, -1: Right
+			var direction = -1; // -1: Left, 1: Right
 			Object.defineProperty(this, 'direction', {
 				get: function () { return direction; },
-				set: function (value) { this.scaleX *= (direction = Math.sign(value)); }
+				set: function (value) { this.scaleX = -(direction = Math.sign(value)) * Math.abs(this.scaleX); }
 			});
 			this.collisionFlag = true;
 			this.hp = 3;
