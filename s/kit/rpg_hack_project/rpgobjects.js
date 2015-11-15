@@ -148,14 +148,14 @@ window.addEventListener('load', function () {
 			});
 			this.setFrame(BehaviorTypes.Attack, function () {
 				var a = this.direction * 9 + 6, b = a + 1, c = a + 2;
-				return [a, a, a, a, b, b, b, b, c, c, c, c, null];
+				return [a, a, a, a, b, b, b, b, c, c, c, c];
 			});
 			this.setFrame(BehaviorTypes.Damaged, function () {
 				var a = this.direction * 9 + 2, b = -1;
 				return [a, b, b, b, a, a, a, b, b, b];
 			});
 			this.setFrame(BehaviorTypes.Dead, function () {
-				return [this.direction * 9 + 1];
+				return [this.direction * 9 + 1, null];
 			});
 			this.behavior = BehaviorTypes.Idle;
 		},
