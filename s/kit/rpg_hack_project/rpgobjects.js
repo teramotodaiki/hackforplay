@@ -6,11 +6,15 @@ window.addEventListener('load', function () {
 
 	var bs = new BlueSlime();
 	bs.locate(5, 5);
-	bs.onenterplayer = function () {
+	bs.onplayerenter = function () {
 		// When player will step on bs
 		// プレイヤーが上に乗ったとき
 	};
-	bs.onleaveplayer = function () {
+	bs.onplayerestay = function () {
+		// When player still stay in bs
+		// プレイヤーが上に乗っている間
+	};
+	bs.onplayerexit = function () {
 		// When player will leave from bs
 		// プレイヤーが離れたとき
 	};
@@ -18,6 +22,15 @@ window.addEventListener('load', function () {
 		// When someone will attack bs
 		// 攻撃されたとき
 	};
+	bs.onbecomeidle = function () {
+		// When behavior becomes BehaviorTypes.Idle
+		// まち状態になったとき
+	};
+	// 同様に BehaviorTypes が定義されているだけ、イベントが存在します。
+	bs.onbecomewalk = function () {};
+	bs.onbecomeattack = function () {};
+	bs.onbecomedamaged = function () {};
+	bs.onbecomedead = function () {};
 
 	 */
 
@@ -40,6 +53,7 @@ window.addEventListener('load', function () {
     var game = enchant.Core.instance;
 
 	var __BehaviorTypes = {
+		None :      0,  // 無状態 (デフォルトではEventは発火されません)
 		Idle :		1,	// 立ち状態
 		Walk :		2,	// 歩き状態
 		Attack :	4,	// 攻撃状態
@@ -59,24 +73,42 @@ window.addEventListener('load', function () {
 				get: function () { return (this.y - this.offset.y) / 32 >> 0; }
 			});
 			this.getFrameOfBehavior = []; // BehaviorTypesをキーとしたgetterの配列
-			var behavior = BehaviorTypes.Idle;
+			// onbecome~ イベントで this.frame を更新するように
+			Object.keys(BehaviorTypes).forEach(function (item) {
+				this.on('become' + item.toLowerCase(), function () {
+					var key = BehaviorTypes[item];
+					var routine = this.getFrameOfBehavior[key];
+					if (routine) this.frame = routine.call(this);
+				});
+			}, this);
+			// このオブジェクトの behavior プロパティと、onbecome~イベントの発火
+			var behavior = BehaviorTypes.None;
 			Object.defineProperty(this, 'behavior', {
 				get: function () { return behavior; },
 				set: function (value) {
+					var append = value & ~behavior;
 					behavior = value;
-					var type = Object.keys(BehaviorTypes).find(function (item) {
-						return (BehaviorTypes[item] & behavior) > 0;
-					});
-					this.dispatchEvent( new Event( 'become' + type.toLowerCase() ) );
-					this.frame = this.getFrame();
+					var type = Object.keys(BehaviorTypes).filter(function (item) {
+						return (BehaviorTypes[item] & append) > 0;
+					}).forEach(function (item) {
+						// ignite 1 frame later
+						this.setTimeout(function () {
+							this.dispatchEvent( new Event( 'become' + item.toLowerCase() ) );
+						}, 1);
+					}, this);
 				}
 			});
+			this.setTimeout(function () {
+				// 1 frame later, call this.onbecomeidle
+				this.behavior = BehaviorTypes.Idle;
+			}, 1);
 			var collisionFlag = null; // this.collisionFlag (Default:true)
 			Object.defineProperty(this, 'collisionFlag', {
 				get: function () {
 					return collisionFlag !== null ? collisionFlag :
 						!(this.onplayerenter || this._listeners['playerenter'] ||
-						this.onplayerleave || this._listeners['playerleave']);
+						this.onplayerstay || this._listeners['playerstay'] ||
+						this.onplayerexit || this._listeners['playerexit']);
 				},
 				set: function (value) { collisionFlag = value; }
 			});
@@ -121,6 +153,23 @@ window.addEventListener('load', function () {
 					return getter.call(this);
 				}
 			}
+		},
+		setTimeout: function (callback, wait) {
+			var target = this.age + Math.min(1, wait);
+			this.on('enterframe', function task () {
+				if (this.age === target) {
+					callback.call(this);
+					this.removeEventListener('enterframe', task);
+				}
+			});
+		},
+		setInterval: function (callback, interval) {
+			var current = this.age;
+			this.on('enterframe', function task () {
+				if ((this.age - current) % interval === 0) {
+					callback.call(this);
+				}
+			});
 		}
 	});
 
@@ -131,6 +180,7 @@ window.addEventListener('load', function () {
 			this.hp = 2;
 			this.atk = 1;
 			this.enteredStack = [];
+			this.on('enterframe', this.stayCheck);
 			var direction = 0;
 			Object.defineProperty(this, 'direction', {
 				get: function () { return direction; },
@@ -148,7 +198,7 @@ window.addEventListener('load', function () {
 			});
 			this.setFrame(BehaviorTypes.Attack, function () {
 				var a = this.direction * 9 + 6, b = a + 1, c = a + 2;
-				return [a, a, a, a, b, b, b, b, c, c, c, c];
+				return [a, a, a, a, b, b, b, b, c, c, c, c, null];
 			});
 			this.setFrame(BehaviorTypes.Damaged, function () {
 				var a = this.direction * 9 + 2, b = -1;
@@ -157,7 +207,6 @@ window.addEventListener('load', function () {
 			this.setFrame(BehaviorTypes.Dead, function () {
 				return [this.direction * 9 + 1, null];
 			});
-			this.behavior = BehaviorTypes.Idle;
 		},
 		onenterframe: function () {
 			if (this.behavior === BehaviorTypes.Idle) {
@@ -190,11 +239,6 @@ window.addEventListener('load', function () {
 			this.tl.moveBy(x * 32, y * 32, 12).then(function () {
 				this.behavior = BehaviorTypes.Idle;
 				this.moveTo(tx, ty);
-				// Dispatch playerleave Event
-				this.enteredStack.forEach(function (item) {
-					item.dispatchEvent(new Event('playerleave'));
-				});
-				this.enteredStack = [];
 				// Dispatch playerenter Event
 				RPGObject.collection.filter(function (item) {
 					return item.mapX === this.mapX  && item.mapY === this.mapY;
@@ -229,6 +273,17 @@ window.addEventListener('load', function () {
 					});
                 }
             }
+		},
+		stayCheck: function () {
+			this.enteredStack.forEach(function (item) {
+				if (item.mapX === this.mapX && item.mapY === this.mapY) {
+					item.dispatchEvent(new Event('playerstay'));
+				} else {
+					item.dispatchEvent(new Event('playerexit'));
+					var index = this.enteredStack.indexOf(item);
+					this.enteredStack.splice(index, 1);
+				}
+			}, this);
 		}
 	});
 
@@ -280,10 +335,9 @@ window.addEventListener('load', function () {
 			this.image = game.assets['enchantjs/monster4.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 6, 4, 4, 4, 4, 5, 5, 5, 5, 4, 4, 4, 4]);
+			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 6, 4, 4, 4, 4, 5, 5, 5, 5, 4, 4, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, -1, null]);
-			this.behavior = BehaviorTypes.Idle;
         }
     });
 
@@ -293,10 +347,9 @@ window.addEventListener('load', function () {
 			this.image = game.assets['enchantjs/monster1.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4]);
+			this.setFrame(BehaviorTypes.Attack, [7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, -1, null]);
-			this.behavior = BehaviorTypes.Idle;
         }
     });
 
@@ -306,10 +359,9 @@ window.addEventListener('load', function () {
 			this.image = game.assets['enchantjs/monster2.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 7, 7, 7, 7, 7, 5, 5, 5, 5, 4, 4, 4, 4]);
+			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 7, 7, 7, 7, 7, 5, 5, 5, 5, 4, 4, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, -1, null]);
-			this.behavior = BehaviorTypes.Idle;
         }
     });
 
@@ -319,10 +371,9 @@ window.addEventListener('load', function () {
 			this.image = game.assets['enchantjs/monster3.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 4, 4, 4, 4, 4, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [9, 9, 9, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 4, 4, 4, 4]);
+			this.setFrame(BehaviorTypes.Attack, [9, 9, 9, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 4, 4, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, -1, null]);
-			this.behavior = BehaviorTypes.Idle;
         }
     });
 
@@ -332,10 +383,9 @@ window.addEventListener('load', function () {
 			this.image = game.assets['enchantjs/bigmonster1.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [8, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]);
+			this.setFrame(BehaviorTypes.Attack, [8, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5]);
 			this.setFrame(BehaviorTypes.Dead, [2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, -1, null]);
-			this.behavior = BehaviorTypes.Idle;
         }
     });
 
@@ -345,10 +395,9 @@ window.addEventListener('load', function () {
 			this.image = game.assets['enchantjs/bigmonster2.gif'];
 			this.setFrame(BehaviorTypes.Idle, [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5]);
+			this.setFrame(BehaviorTypes.Attack, [5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, null]);
 			this.setFrame(BehaviorTypes.Damaged, [7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6]);
 			this.setFrame(BehaviorTypes.Dead, [2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, -1, null]);
-			this.behavior = BehaviorTypes.Idle;
         }
     });
 
