@@ -1,10 +1,10 @@
 function saveImage (callbackText) {
 	var canvas = document.getElementById('enchant-stage').firstChild.firstChild;
 	sessionStorage.setItem('image', canvas ? canvas.toDataURL() : null);
-	window.parent.postMessage(callbackText, '/');
+	window.parent.postMessage(callbackText, '*');
 }
 function screenShot () {
-	window.parent.postMessage('screenshot', '/');
+	window.parent.postMessage('screenshot', '*');
 	window.saveImage('thumbnail');
 }
 function refocus () {
@@ -18,10 +18,10 @@ function sendToEditor(message) {
 	if(Hack.enchantBook === undefined){
 		console.error("sendToEditor関数が呼び出されましたが、Editorが作られていなかったため、イベントリスナに追加します。");
 		Hack.on('loadeditor', function(event) {
-			this.enchantBook._element.contentWindow.postMessage(message, '/');
+			this.enchantBook._element.contentWindow.postMessage(message, '*');
 		});
 	}else{
-		Hack.enchantBook._element.contentWindow.postMessage(message, '/');
+		Hack.enchantBook._element.contentWindow.postMessage(message, '*');
 	}
 }
 function __H4PENV__SENDCODE () {
@@ -70,7 +70,7 @@ window.addEventListener('load', function() {
 	});
 
 	// evaluate restaging code
-	switch (__H4PENV__MODE) {
+	switch (sessionStorage.getItem('stage_param_game_mode')) {
 		case 'restaging':
 		case 'replay':
 		case 'extend':
@@ -247,8 +247,8 @@ window.addEventListener('load', function() {
 
 	Hack.gameclear = function() {
 		// Questの実績を報告
-		if (__H4PENV__MODE === 'quest') {
-			window.parent.postMessage('quest_clear_level', '/');
+		if (sessionStorage.getItem('stage_param_game_mode') === 'quest') {
+			window.parent.postMessage('quest_clear_level', '*');
 		}
 
 		// 演出
@@ -257,7 +257,7 @@ window.addEventListener('load', function() {
 		lay.moveTo(-game.rootScene.x, -game.rootScene.y);
 		lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
 
-			switch (__H4PENV__MODE) {
+			switch (sessionStorage.getItem('stage_param_game_mode')) {
 				case 'quest':
 				if (sessionStorage.getItem('stage_param_next') >> 0 > 0) {
 					// [NEXT]
@@ -267,7 +267,7 @@ window.addEventListener('load', function() {
 						defaultParentNode: game.rootScene,
 						ontouchend: function() {
 							// [NEXT] がクリックされたとき
-							window.parent.postMessage('quest_move_next', '/');
+							window.parent.postMessage('quest_move_next', '*');
 						}
 					}).tl.moveTo(65-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 				} else {
@@ -279,7 +279,7 @@ window.addEventListener('load', function() {
 						defaultParentNode: game.rootScene,
 						ontouchend: function() {
 							// [NEXT] がクリックされたとき
-							window.parent.postMessage('quest_move_next', '/');
+							window.parent.postMessage('quest_move_next', '*');
 						}
 					}).tl.moveTo(65-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 					if (sessionStorage.getItem('stage_param_reporting_requirements')) {
@@ -313,7 +313,7 @@ window.addEventListener('load', function() {
 					defaultParentNode: game.rootScene,
 					ontouchend: function() {
 						// [COMMENT] がクリックされたとき
-						window.parent.postMessage('show_comment', '/');
+						window.parent.postMessage('show_comment', '*');
 					}
 				}).tl.moveTo(250-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 				break;
@@ -326,7 +326,7 @@ window.addEventListener('load', function() {
 					defaultParentNode: game.rootScene,
 					ontouchend: function() {
 						// [RESTAGING] がクリックされたとき
-						window.parent.postMessage('begin_restaging', '/');
+						window.parent.postMessage('begin_restaging', '*');
 					}
 				}).tl.moveTo(65-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 				// [RETRY]
@@ -352,7 +352,7 @@ window.addEventListener('load', function() {
 		lay.moveTo(-game.rootScene.x, -game.rootScene.y);
 		lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
 
-			switch (__H4PENV__MODE) {
+			switch (sessionStorage.getItem('stage_param_game_mode')) {
 				case 'quest':
 				// [RETRY]
 				Hack.createSprite(165, 69, {
@@ -374,7 +374,7 @@ window.addEventListener('load', function() {
 					defaultParentNode: game.rootScene,
 					ontouchend: function() {
 						// [RESTAGING] がクリックされたとき
-						window.parent.postMessage('begin_restaging', '/');
+						window.parent.postMessage('begin_restaging', '*');
 					}
 				}).tl.moveTo(65-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 				// [RETRY]
@@ -494,15 +494,15 @@ window.addEventListener('load', function() {
 			// 改造を始めるボタン
 			addGUIParts(game.assets['hackforplay/menu-button-restage.png'], function() {
 				var id = sessionStorage.getItem('stage_param_id') >> 0;
-				return __H4PENV__MODE !== 'restaging' && !(101 <= id && id <= 106);
+				return sessionStorage.getItem('stage_param_game_mode') !== 'restaging' && !(101 <= id && id <= 106);
 			}, function() {
-				window.parent.postMessage('begin_restaging', '/');
+				window.parent.postMessage('begin_restaging', '*');
 			});
 			// ヒントを表示するボタン
 			addGUIParts(game.assets['hackforplay/menu-button-hint.png'], function() {
 				return sessionStorage.getItem('stage_param_youtube');
 			}, function() {
-				window.parent.postMessage('show_hint', '/');
+				window.parent.postMessage('show_hint', '*');
 			});
 			// コメント入力画面を表示するボタン
 			addGUIParts(game.assets['hackforplay/menu-button-comment.png'], function() {
@@ -516,7 +516,7 @@ window.addEventListener('load', function() {
 						item.visible = visibility;
 					}, 100);
 				});
-				window.parent.postMessage('show_comment', '/');
+				window.parent.postMessage('show_comment', '*');
 				setTimeout(function() {
 					Hack.closeMenu();
 				}, 500);
@@ -554,11 +554,11 @@ window.addEventListener('load', function() {
 			return sessionStorage.getItem('restaging_code');
 		},
 		set: function(code){
-			switch (__H4PENV__MODE) {
+			switch (sessionStorage.getItem('stage_param_game_mode')) {
 				case 'official':
 				case 'extend':
 					sessionStorage.setItem('restaging_code', code);
-					window.parent.postMessage('replace_code', '/');
+					window.parent.postMessage('replace_code', '*');
 					break;
 			}
 		}
@@ -568,7 +568,7 @@ window.addEventListener('load', function() {
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
 	game.addEventListener('load', function(){
-		window.parent.postMessage('game_loaded', '/'); // ロードのタイミングを伝える
+		window.parent.postMessage('game_loaded', '*'); // ロードのタイミングを伝える
 		if (Hack.defaultParentNode) {
 			game.rootScene.addChild(Hack.defaultParentNode);
 		} else {
