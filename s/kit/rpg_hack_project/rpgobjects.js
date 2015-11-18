@@ -37,6 +37,7 @@ window.addEventListener('load', function () {
 	// Classes and Enums
 	Object.defineProperty(window, 'BehaviorTypes',	{ get: function () { return __BehaviorTypes; }	});
 	Object.defineProperty(window, 'RPGObject',		{ get: function () { return __RPGObject; }		});
+	Object.defineProperty(window, 'HumanBase',		{ get: function () { return __HumanBase; }		});
 	Object.defineProperty(window, 'Player',			{ get: function () { return __Player; }			});
 	Object.defineProperty(window, 'EnemyBase',		{ get: function () { return __EnemyBase; }		});
 	Object.defineProperty(window, 'BlueSlime',		{ get: function () { return __BlueSlime; }		});
@@ -86,16 +87,19 @@ window.addEventListener('load', function () {
 			Object.defineProperty(this, 'behavior', {
 				get: function () { return behavior; },
 				set: function (value) {
-					var append = value & ~behavior;
-					behavior = value;
-					var type = Object.keys(BehaviorTypes).filter(function (item) {
-						return (BehaviorTypes[item] & append) > 0;
-					}).forEach(function (item) {
-						// ignite 1 frame later
-						this.setTimeout(function () {
-							this.dispatchEvent( new Event( 'become' + item.toLowerCase() ) );
-						}, 1);
-					}, this);
+					if (value !== behavior) {
+						behavior = value;
+						Object.keys(BehaviorTypes).filter(function (item) {
+							// 最も大きい桁
+							var contain = behavior & BehaviorTypes[item];
+							return contain && behavior < contain * 2;
+						}).forEach(function (item) {
+							// On Becomeイベントを1フレーム後に発火
+							this.setTimeout(function () {
+								this.dispatchEvent( new Event( 'become' + item.toLowerCase() ) );
+							}, 1);
+						}, this);
+					}
 				}
 			});
 			this.setTimeout(function () {
@@ -112,6 +116,9 @@ window.addEventListener('load', function () {
 				},
 				set: function (value) { collisionFlag = value; }
 			});
+			// 初期化
+			this.direction = 0;
+			this.forward = { x: 0, y: 0 };
 
 			Hack.defaultParentNode.addChild(this);
 		},
@@ -153,34 +160,100 @@ window.addEventListener('load', function () {
 					return getter.call(this);
 				}
 			}
+			return [];
 		},
 		setTimeout: function (callback, wait) {
-			var target = this.age + Math.min(1, wait);
-			this.on('enterframe', function task () {
-				if (this.age === target) {
+			var target = this.age + Math.max(1, wait), flag = true;
+			function task () {
+				if (this.age === target && flag) {
 					callback.call(this);
-					this.removeEventListener('enterframe', task);
+					stopTimeout();
 				}
-			});
+			}
+			function stopTimeout () {
+				flag = false;
+				this.removeEventListener(task);
+			}
+			this.on('enterframe', task);
+			return stopTimeout.bind(this);
 		},
 		setInterval: function (callback, interval) {
-			var current = this.age;
-			this.on('enterframe', function task () {
-				if ((this.age - current) % interval === 0) {
+			var current = this.age, flag = true;
+			function task () {
+				if ((this.age - current) % interval === 0 && flag) {
 					callback.call(this);
 				}
-			});
+			}
+			function stopInterval () {
+				flag = false;
+				this.removeEventListener(task);
+			}
+			this.on('enterframe', task);
+			return stopInterval.bind(this);
+		},
+		attack: function () {
+			this.behavior = BehaviorTypes.Attack;
+			var f = this.forward;
+			Hack.Attack.call(this, this.mapX + f.x, this.mapY + f.y, this.atk, f.x, f.y);
+			this.setTimeout(function () {
+				this.behavior = BehaviorTypes.Idle;
+			}, this.getFrame().length);
+		},
+		onattacked: function (event) {
+			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
+				if (typeof this.hp === 'number') {
+					this.hp -= event.damage;
+				}
+				if(this.hp <= 0){
+					this.behavior = BehaviorTypes.Dead;
+				}else{
+					this.behavior |= BehaviorTypes.Damaged;
+					this.setTimeout(function(){
+						this.behavior &= ~BehaviorTypes.Damaged;
+					}, this.getFrame().length);
+				}
+            }
+		},
+		onbecomedead: function () {
+			this.setTimeout(function () {
+				this.destroy();
+			}, this.getFrame().length);
+		},
+		walk: function (distance) {
+			var f = this.forward, d = typeof distance === 'number' ? Math.max(0, distance) : 1;
+			var flag = null;
+			for (var i = 0; i < d; i++) {
+				var _x = this.mapX + f.x * d, _y = this.mapY + f.y * d;
+				// Map Collision
+				flag =	!Hack.map.hitTest(_x * 32, _y * 32) && 0 <= _x && _x < 15 && 0 <= _y && _y < 10;
+				// RPGObject(s) Collision
+				flag =	flag && RPGObject.collection.every(function (item) {
+					return !item.collisionFlag || item.mapX !== _x || item.mapY !== _y;
+				}, this);
+			}
+			if (flag) {
+				var move = { x: Math.round(f.x * 32 * d), y: Math.round(f.y * 32 * d) };
+				var target = { x: this.x + move.x, y: this.y + move.y };
+				this.behavior = BehaviorTypes.Walk;
+				var frame = this.getFrame().length;
+				var stopInterval = this.setInterval(function () {
+					this.moveBy(move.x / frame, move.y / frame);
+					this.dispatchEvent(new Event('walkmove'));
+				}, 1);
+				this.setTimeout(function () {
+					this.moveTo(target.x, target.y);
+					this.behavior = BehaviorTypes.Idle;
+					stopInterval();
+					this.dispatchEvent(new Event('walkend'));
+				}, frame);
+				this.dispatchEvent(new Event('walkstart'));
+			}
 		}
 	});
 
-	var __Player = enchant.Class(RPGObject, {
-		initialize: function () {
-			RPGObject.call(this, 48, 48, -8, -12);
-			this.image = game.assets['enchantjs/x1.5/chara5.png'];
-			this.hp = 2;
-			this.atk = 1;
-			this.enteredStack = [];
-			this.on('enterframe', this.stayCheck);
+    var __HumanBase = enchant.Class(RPGObject, {
+		initialize: function (width, height, offsetX, offsetY) {
+			RPGObject.call(this, width, height, offsetX, offsetY);
 			var direction = 0;
 			Object.defineProperty(this, 'direction', {
 				get: function () { return direction; },
@@ -189,24 +262,39 @@ window.addEventListener('load', function () {
 					this.frame = [this.direction * 9 + (this.frame % 9)];
 				}
 			});
-			this.setFrame(BehaviorTypes.Idle, function () {
-				return [this.direction * 9 + 1];
+			Object.defineProperty(this, 'forward', {
+				get: function () { return Hack.Dir2Vec(direction); },
+				set: function (value) { this.direction = Hack.Vec2Dir(value); }
 			});
-			this.setFrame(BehaviorTypes.Walk, function () {
-				var a = this.direction * 9, b = a + 1, c = a + 2;
-				return [a, a, a, a, b, b, b, b, c, c, c, c, b, b, b, b];
+			this.hp = 3;
+			this.atk = 1;
+		},
+		setFrameD9: function (behavior, frame) {
+			var array = typeof frame === 'function' ? frame() : frame;
+
+			this.setFrame(behavior, function () {
+				var _array = [];
+				array.forEach(function (item, index) {
+					_array[index] = item >= 0 ? item + this.direction * 9 : item;
+				}, this);
+				return _array;
 			});
-			this.setFrame(BehaviorTypes.Attack, function () {
-				var a = this.direction * 9 + 6, b = a + 1, c = a + 2;
-				return [a, a, a, a, b, b, b, b, c, c, c, c, null];
-			});
-			this.setFrame(BehaviorTypes.Damaged, function () {
-				var a = this.direction * 9 + 2, b = -1;
-				return [a, b, b, b, a, a, a, b, b, b];
-			});
-			this.setFrame(BehaviorTypes.Dead, function () {
-				return [this.direction * 9 + 1, null];
-			});
+		}
+    });
+
+	var __Player = enchant.Class(HumanBase, {
+		initialize: function () {
+			HumanBase.call(this, 48, 48, -8, -12);
+			this.image = game.assets['enchantjs/x1.5/chara5.png'];
+			this.enteredStack = [];
+			this.on('enterframe', this.stayCheck);
+			this.on('walkend', this.enterCheck);
+			this.on('becomedead', Hack.gameover);
+			this.setFrameD9(BehaviorTypes.Idle, [1]);
+			this.setFrameD9(BehaviorTypes.Walk, [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, null]);
+			this.setFrameD9(BehaviorTypes.Attack, [6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, null]);
+			this.setFrameD9(BehaviorTypes.Damaged, [2, -1, -1, -1, 2, 2, 2, -1, -1, -1]);
+			this.setFrameD9(BehaviorTypes.Dead, [1, null]);
 		},
 		onenterframe: function () {
 			if (this.behavior === BehaviorTypes.Idle) {
@@ -219,62 +307,22 @@ window.addEventListener('load', function () {
 				var ver = hor ? 0 : game.input.down - game.input.up;
 				if (hor || ver) {
 					// Turn
-					this.direction = Hack.Vec2Dir({ x: hor, y: ver });
-					// Map Collision
-					if ( !Hack.map.hitTest((this.mapX + hor) * 32, (this.mapY + ver) * 32) &&
-						0 <= this.mapX + hor && this.mapX + hor < 15 && 0 <= this.mapY + ver && this.mapY + ver < 10) {
-						// RPGObject(s) Collision
-						if (RPGObject.collection.every(function (item) {
-							return !item.collisionFlag || item.mapX !== this.mapX + hor || item.mapY !== this.mapY + ver;
-						}, this)) {
-							this.walk(hor, ver);
-						}
-					}
+					this.forward = { x: hor, y: ver };
+					this.walk(1);
 				}
 			}
 		},
-		walk: function (x, y) {
-			this.behavior = BehaviorTypes.Walk;
-			var tx = this.x + x * 32, ty = this.y + y * 32;
-			this.tl.moveBy(x * 32, y * 32, 12).then(function () {
-				this.behavior = BehaviorTypes.Idle;
-				this.moveTo(tx, ty);
-				// Dispatch playerenter Event
-				RPGObject.collection.filter(function (item) {
-					return item.mapX === this.mapX  && item.mapY === this.mapY;
-				}, this).forEach(function (item) {
-					item.dispatchEvent(new Event('playerenter'));
-					this.enteredStack.push(item);
-				}, this);
-			});
-		},
-		attack: function () {
-			this.behavior = BehaviorTypes.Attack;
-			var len = this.getFrame().length;
-			this.tl.then(function () {
-				var v = Hack.Dir2Vec(this.direction);
-				Hack.Attack.call(this, this.mapX + v.x, this.mapY + v.y, this.atk, v.x, v.y);
-			}).delay(len).then(function () {
-				this.behavior = BehaviorTypes.Idle;
-			});
-		},
-		onattacked: function (event) {
-			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
-                this.hp -= event.damage;
-                if(this.hp > 0){
-                    this.behavior += BehaviorTypes.Damaged;
-					this.tl.delay(9).then(function () {
-						this.behavior = BehaviorTypes.Idle;
-					});
-                }else{
-					this.behavior = BehaviorTypes.Dead;
-					this.tl.fadeOut(10).then(function(){
-						Hack.gameover();
-					});
-                }
-            }
+		enterCheck: function () {
+			// Dispatch playerenter Event
+			RPGObject.collection.filter(function (item) {
+				return item.mapX === this.mapX  && item.mapY === this.mapY;
+			}, this).forEach(function (item) {
+				item.dispatchEvent(new Event('playerenter'));
+				this.enteredStack.push(item);
+			}, this);
 		},
 		stayCheck: function () {
+			// Dispatch playerstay/playerexit Event
 			this.enteredStack.forEach(function (item) {
 				if (item.mapX === this.mapX && item.mapY === this.mapY) {
 					item.dispatchEvent(new Event('playerstay'));
@@ -290,42 +338,17 @@ window.addEventListener('load', function () {
 	var __EnemyBase = enchant.Class(RPGObject, {
 		initialize: function (width, height, offsetX, offsetY) {
 			RPGObject.call(this, width, height, offsetX, offsetY);
-			Object.keys(BehaviorTypes).forEach(function (key) {
-				this.setFrame(key, [2, null]);
-			}, this);
 			var direction = -1; // -1: Left, 1: Right
 			Object.defineProperty(this, 'direction', {
 				get: function () { return direction; },
 				set: function (value) { this.scaleX = -(direction = Math.sign(value)) * Math.abs(this.scaleX); }
 			});
+			Object.defineProperty(this, 'forward', {
+				get: function () { return { x: direction, y: 0 }; },
+				set: function (value) { this.direction = value.x; }
+			});
 			this.hp = 3;
 			this.atk = 1;
-		},
-		attack: function () {
-			this.behavior = BehaviorTypes.Attack;
-			var len = this.getFrame().length;
-			this.tl.then(function () {
-				var v = { x: this.direction, y: 0 };
-				Hack.Attack.call(this, this.mapX + v.x, this.mapY + v.y, this.atk, v.x, v.y);
-			}).delay(len).then(function () {
-				this.behavior = BehaviorTypes.Idle;
-			});
-		},
-		onattacked: function (event) {
-			if( (this.behavior & (BehaviorTypes.Damaged + BehaviorTypes.Dead)) === 0 ) {
-                this.hp -= event.damage;
-                if(this.hp > 0){
-                    this.behavior = BehaviorTypes.Damaged;
-                    this.tl.clear().delay(this.getFrame().length).then(function(){
-                        this.behavior = BehaviorTypes.Idle;
-                    });
-                }else{
-                    this.behavior = BehaviorTypes.Dead;
-                    this.tl.clear().delay(this.getFrame().length).then(function(){
-                        this.destroy();
-                    });
-                }
-            }
 		}
 	});
 
@@ -401,27 +424,42 @@ window.addEventListener('load', function () {
         }
     });
 
-	var __Boy = enchant.Class(RPGObject, {
+	var __Boy = enchant.Class(HumanBase, {
         initialize: function(){
-			RPGObject.call(this, 48, 48, -8, -18);
+			HumanBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
-			this.frame = 1;
+			var _0 = 0, _1 = _0 + 1, _2 = _0 + 2;
+			this.setFrame(BehaviorTypes.Idle, [_1]);
+			this.setFrame(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
+			this.setFrame(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
+			this.setFrame(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
+			this.setFrame(BehaviorTypes.Dead, [_1, null]);
         }
     });
 
-	var __Girl = enchant.Class(RPGObject, {
+	var __Girl = enchant.Class(HumanBase, {
         initialize: function(){
-			RPGObject.call(this, 48, 48, -8, -18);
+			HumanBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
-			this.frame = 7;
+			var _0 = 6, _1 = _0 + 1, _2 = _0 + 2;
+			this.setFrame(BehaviorTypes.Idle, [_1]);
+			this.setFrame(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
+			this.setFrame(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
+			this.setFrame(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
+			this.setFrame(BehaviorTypes.Dead, [_1, null]);
         }
     });
 
-	var __Woman = enchant.Class(RPGObject, {
+	var __Woman = enchant.Class(HumanBase, {
         initialize: function(){
-			RPGObject.call(this, 48, 48, -8, -18);
+			HumanBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
-			this.frame = 4;
+			var _0 = 3, _1 = _0 + 1, _2 = _0 + 2;
+			this.setFrame(BehaviorTypes.Idle, [_1]);
+			this.setFrame(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
+			this.setFrame(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
+			this.setFrame(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
+			this.setFrame(BehaviorTypes.Dead, [_1, null]);
         }
     });
 
