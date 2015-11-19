@@ -477,5 +477,4 @@ window.addEventListener('load', function () {
 
         }
     });
-
 });
