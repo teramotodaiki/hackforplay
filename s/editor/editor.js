@@ -83,6 +83,7 @@ function run(){
 
 	// 魔道書が閉じられたことをゲーム側に伝える
 	game.postMessage("if(window.editorWindowClosed) editorWindowClosed();", policy);
+	dispatchHackEvent('editend');
 }
 
 function cls(){
@@ -94,6 +95,7 @@ function cls(){
 
 	// 魔道書が閉じられたことをゲーム側に伝える
 	game.postMessage("if(window.editorWindowClosed) editorWindowClosed();", policy);
+	dispatchHackEvent('editcancel');
 }
 
 function undo () {
@@ -125,5 +127,12 @@ function setEditor(){
 	// postMessageされることでエスケープ\nが改行になってしまうことを防ぐため、\\nにしている。
 	var source =
 	"sendToEditor('jsEditor.setValue(\"'+(Hack.hint).replace(/\\n/g, \"\\\\n\")+'\");');";
+	game.postMessage(source, policy);
+}
+
+function dispatchHackEvent (type) {
+	// Hack.oneditend , Hack.oneditcancel Event を dispatchする
+	var source =
+	"if (Hack && Hack.dispatchEvent) { Hack.dispatchEvent(new Event('" + type + "')); }";
 	game.postMessage(source, policy);
 }
