@@ -291,8 +291,8 @@ window.addEventListener('load', function () {
 			this.on('walkend', this.enterCheck);
 			this.on('becomedead', Hack.gameover);
 			this.setFrameD9(BehaviorTypes.Idle, [1]);
-			this.setFrameD9(BehaviorTypes.Walk, [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, null]);
-			this.setFrameD9(BehaviorTypes.Attack, [0, 0, 0, 1, 1, 1, 2, 2, 2, 1, null]);
+			this.setFrameD9(BehaviorTypes.Walk, [0, 0, 0, 1, 1, 1, 2, 2, 2, 1, null]);
+			this.setFrameD9(BehaviorTypes.Attack, [6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, null]);
 			this.setFrameD9(BehaviorTypes.Damaged, [2, -1, -1, -1, 2, 2, 2, -1, -1, -1]);
 			this.setFrameD9(BehaviorTypes.Dead, [1, null]);
 		},
@@ -477,4 +477,5 @@ window.addEventListener('load', function () {
 
         }
     });
+
 });

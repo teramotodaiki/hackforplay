@@ -7,11 +7,12 @@ window.addEventListener('load', function () {
 	Hack.onload = Hack.onload || function () {
 
 		MapObject.Dictionaly = {
+			'Warp': 324,		'WarpRed': 325,		'WarpGreen': 326,	'WarpYellow': 327,
 			'Pot': 400,			'Rock': 401,		'UpStair': 402,
 			'Box': 420,			'Flower': 421,		'DownStair': 422,
 			'Trap': 440,		'UsedTrap': 441,	'Step': 442,
 			'Castle': 500,		'Village': 501,		'Cave': 502,
-			'Tree': 520,		'Table': 521
+			'Tree': 520,		'Table': 521,		'OpenedBox': 522
 		};
 
 		Hack.maps = [];
