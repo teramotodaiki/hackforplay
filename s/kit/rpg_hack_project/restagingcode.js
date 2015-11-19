@@ -35,7 +35,7 @@ window.addEventListener('load', function () {
 "\n"+
 "\n"+
 "\t// ワープゆか\n"+
-"\tvar warp = new MapObject(93);\n"+
+"\tvar warp = new MapObject('Warp');\n"+
 "\twarp.locate(3, 3);\n"+
 "\t// When enter... ふまれたら...\n"+
 "\twarp.onplayerenter = function () {\n"+
@@ -68,11 +68,12 @@ window.addEventListener('load', function () {
 "Hack.onload = function () {\n"+
 "\n"+
 "\tMapObject.Dictionaly = {\n"+
+"\t\t'Warp': 324,\t\t'WarpRed': 325,\t\t'WarpGreen': 326,\t'WarpYellow': 327,\n"+
 "\t\t'Pot': 400,\t\t\t'Rock': 401,\t\t'UpStair': 402,\n"+
 "\t\t'Box': 420,\t\t\t'Flower': 421,\t\t'DownStair': 422,\n"+
 "\t\t'Trap': 440,\t\t'UsedTrap': 441,\t'Step': 442,\n"+
 "\t\t'Castle': 500,\t\t'Village': 501,\t\t'Cave': 502,\n"+
-"\t\t'Tree': 520,\t\t'Table': 521\n"+
+"\t\t'Tree': 520,\t\t'Table': 521,\t\t'OpenedBox': 522\n"+
 "\t};\n"+
 "\n"+
 "\tHack.maps = [];\n"+
