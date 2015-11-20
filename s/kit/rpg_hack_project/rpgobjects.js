@@ -238,6 +238,7 @@ window.addEventListener('load', function () {
 				var frame = this.getFrame().length;
 				var stopInterval = this.setInterval(function () {
 					this.moveBy(move.x / frame, move.y / frame);
+					this.moveTo(Math.round(this.x), Math.round(this.y));
 					this.dispatchEvent(new Event('walkmove'));
 				}, 1);
 				this.setTimeout(function () {
@@ -275,7 +276,7 @@ window.addEventListener('load', function () {
 			this.setFrame(behavior, function () {
 				var _array = [];
 				array.forEach(function (item, index) {
-					_array[index] = item >= 0 ? item + this.direction * 9 : item;
+					_array[index] = item !== null && item >= 0 ? item + this.direction * 9 : item;
 				}, this);
 				return _array;
 			});
@@ -418,7 +419,7 @@ window.addEventListener('load', function () {
 			this.image = game.assets['enchantjs/bigmonster2.gif'];
 			this.setFrame(BehaviorTypes.Idle, [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]);
 			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, null]);
+			this.setFrame(BehaviorTypes.Attack, [3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,null]);
 			this.setFrame(BehaviorTypes.Damaged, [7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6]);
 			this.setFrame(BehaviorTypes.Dead, [2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, -1, null]);
         }
