@@ -15,10 +15,8 @@ window.addEventListener('load', function () {
 "\tblueSlime.hp = 10;\n"+
 "\t// When become dead... たおれたら...\n"+
 "\tblueSlime.onbecomedead = function () {\n"+
-"\n"+
 "\t\t// たおしたらクリア\n"+
 "\t\tHack.gameclear();\n"+
-"\n"+
 "\t};\n"+
 "\n"+
 "\n"+
@@ -27,10 +25,8 @@ window.addEventListener('load', function () {
 "\tstair.locate(12, 5);\n"+
 "\t// When enter... ふまれたら...\n"+
 "\tstair.onplayerenter = function () {\n"+
-"\n"+
 "\t\t// ふんだら room2 にいく\n"+
 "\t\tHack.changeMap('room2');\n"+
-"\n"+
 "\t};\n"+
 "\n"+
 "\n"+
@@ -39,10 +35,8 @@ window.addEventListener('load', function () {
 "\twarp.locate(3, 3);\n"+
 "\t// When enter... ふまれたら...\n"+
 "\twarp.onplayerenter = function () {\n"+
-"\n"+
 "\t\t// ふんだらワープ\n"+
 "\t\tHack.player.locate(12, 3);\n"+
-"\n"+
 "\t};\n"+
 "\n"+
 "\n"+
@@ -51,10 +45,8 @@ window.addEventListener('load', function () {
 "\tstair2.locate(5, 5, 'room2');\n"+
 "\t// When enter... ふまれたら...\n"+
 "\tstair2.onplayerenter = function () {\n"+
-"\n"+
 "\t\t// ゲームクリア\n"+
 "\t\tHack.gameclear();\n"+
-"\n"+
 "\t};\n"+
 "\n"+
 "\n"+
@@ -77,6 +69,8 @@ window.addEventListener('load', function () {
 "\t};\n"+
 "\n"+
 "\tHack.maps = [];\n"+
+"\n"+
+"\t// room1\n"+
 "\tHack.maps['room1'] = new RPGMap(32, 32);\n"+
 "\tHack.maps['room1'].imagePath = 'enchantjs/x2/map1.gif';\n"+
 "\tHack.maps['room1'].bmap.loadData([\n"+
@@ -103,6 +97,8 @@ window.addEventListener('load', function () {
 "\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
 "\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]\n"+
 "\t];\n"+
+"\n"+
+"\t// room1\n"+
 "\tHack.maps['room2'] = new RPGMap(32, 32);\n"+
 "\tHack.maps['room2'].imagePath = 'enchantjs/x2/map1.gif';\n"+
 "\tHack.maps['room2'].bmap.loadData([\n"+
@@ -129,6 +125,7 @@ window.addEventListener('load', function () {
 "\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
 "\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]\n"+
 "\t];\n"+
+"\n"+
 "};\n"+
 "\n"+
 "// EnchantBook\n"+
