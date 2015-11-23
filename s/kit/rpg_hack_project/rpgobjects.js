@@ -191,12 +191,20 @@ window.addEventListener('load', function () {
 			this.on('enterframe', task);
 			return stopInterval.bind(this);
 		},
-		attack: function () {
+		attack: function (count) {
+			var c = typeof count === 'number' ? count >> 0 : 1;
 			this.behavior = BehaviorTypes.Attack;
 			var f = this.forward;
 			Hack.Attack.call(this, this.mapX + f.x, this.mapY + f.y, this.atk, f.x, f.y);
 			this.setTimeout(function () {
 				this.behavior = BehaviorTypes.Idle;
+				if (count > 1) {
+					this.setTimeout(function () {
+						if (this.behavior === BehaviorTypes.Idle) {
+							this.attack(count - 1);
+						}
+					}, 1);
+				}
 			}, this.getFrame().length);
 		},
 		onattacked: function (event) {
@@ -220,21 +228,20 @@ window.addEventListener('load', function () {
 			}, this.getFrame().length);
 		},
 		walk: function (distance) {
-			var f = this.forward, d = typeof distance === 'number' ? Math.max(0, distance) : 1;
-			var flag = null;
-			for (var i = 0; i < d; i++) {
-				var _x = this.mapX + f.x * d, _y = this.mapY + f.y * d;
-				// Map Collision
-				flag =	!Hack.map.hitTest(_x * 32, _y * 32) && 0 <= _x && _x < 15 && 0 <= _y && _y < 10;
-				// RPGObject(s) Collision
-				flag =	flag && RPGObject.collection.every(function (item) {
-					return !item.collisionFlag || item.mapX !== _x || item.mapY !== _y;
-				}, this);
-			}
-			if (flag) {
-				var move = { x: Math.round(f.x * 32 * d), y: Math.round(f.y * 32 * d) };
-				var target = { x: this.x + move.x, y: this.y + move.y };
+			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
+			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
+
+			// Map Collision
+			var mapHit = Hack.map.hitTest(_x * 32, _y * 32) || 0 > _x || _x > 14 || 0 > _y || _y > 9;
+			// RPGObject(s) Collision
+			var hits = RPGObject.collection.filter(function (item) {
+				return item.collisionFlag && item.mapX === _x && item.mapY === _y;
+			});
+			if (!mapHit && !hits.length) {
 				this.behavior = BehaviorTypes.Walk;
+				this.dispatchEvent(new Event('walkstart'));
+				var move = { x: Math.round(f.x * 32 * s), y: Math.round(f.y * 32 * s) };
+				var target = { x: this.x + move.x, y: this.y + move.y };
 				var frame = this.getFrame().length;
 				var stopInterval = this.setInterval(function () {
 					this.moveBy(move.x / frame, move.y / frame);
@@ -246,8 +253,18 @@ window.addEventListener('load', function () {
 					this.behavior = BehaviorTypes.Idle;
 					stopInterval();
 					this.dispatchEvent(new Event('walkend'));
+					// next step
+					if (Math.abs(d) > 1) {
+						this.setTimeout(function () {
+							this.walk(Math.sign(d) * (Math.abs(d) - 1));
+						}, 1);
+					}
 				}, frame);
-				this.dispatchEvent(new Event('walkstart'));
+			} else {
+				var e = new Event('collided');
+				e.map = mapHit;
+				e.hits = hits;
+				this.dispatchEvent(e);
 			}
 		}
 	});
