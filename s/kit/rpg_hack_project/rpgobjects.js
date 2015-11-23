@@ -191,20 +191,18 @@ window.addEventListener('load', function () {
 			this.on('enterframe', task);
 			return stopInterval.bind(this);
 		},
-		attack: function (count) {
+		attack: function (count, continuous) {
 			var c = typeof count === 'number' ? count >> 0 : 1;
-			this.behavior = BehaviorTypes.Attack;
 			var f = this.forward;
+			if (continuous) {
+				this.frame = [];
+				this.frame = this.getFrame();
+			} else this.behavior = BehaviorTypes.Attack;
 			Hack.Attack.call(this, this.mapX + f.x, this.mapY + f.y, this.atk, f.x, f.y);
 			this.setTimeout(function () {
-				this.behavior = BehaviorTypes.Idle;
-				if (count > 1) {
-					this.setTimeout(function () {
-						if (this.behavior === BehaviorTypes.Idle) {
-							this.attack(count - 1);
-						}
-					}, 1);
-				}
+				// next step
+				if (count > 1) this.attack(count - 1, true);
+				else this.behavior = BehaviorTypes.Idle;
 			}, this.getFrame().length);
 		},
 		onattacked: function (event) {
@@ -227,10 +225,9 @@ window.addEventListener('load', function () {
 				this.destroy();
 			}, this.getFrame().length);
 		},
-		walk: function (distance) {
+		walk: function (distance, continuous) {
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
 			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
-
 			// Map Collision
 			var mapHit = Hack.map.hitTest(_x * 32, _y * 32) || 0 > _x || _x > 14 || 0 > _y || _y > 9;
 			// RPGObject(s) Collision
@@ -238,7 +235,10 @@ window.addEventListener('load', function () {
 				return item.collisionFlag && item.mapX === _x && item.mapY === _y;
 			});
 			if (!mapHit && !hits.length) {
-				this.behavior = BehaviorTypes.Walk;
+				if (continuous) {
+					this.frame = [];
+					this.frame = this.getFrame();
+				} else this.behavior = BehaviorTypes.Walk;
 				this.dispatchEvent(new Event('walkstart'));
 				var move = { x: Math.round(f.x * 32 * s), y: Math.round(f.y * 32 * s) };
 				var target = { x: this.x + move.x, y: this.y + move.y };
@@ -250,21 +250,18 @@ window.addEventListener('load', function () {
 				}, 1);
 				this.setTimeout(function () {
 					this.moveTo(target.x, target.y);
-					this.behavior = BehaviorTypes.Idle;
 					stopInterval();
 					this.dispatchEvent(new Event('walkend'));
 					// next step
-					if (Math.abs(d) > 1) {
-						this.setTimeout(function () {
-							this.walk(Math.sign(d) * (Math.abs(d) - 1));
-						}, 1);
-					}
+					if (Math.abs(d) > 1) this.walk(Math.sign(d) * (Math.abs(d) - 1), true);
+					else this.behavior = BehaviorTypes.Idle;
 				}, frame);
 			} else {
 				var e = new Event('collided');
 				e.map = mapHit;
 				e.hits = hits;
 				this.dispatchEvent(e);
+				if (continuous) this.behavior = BehaviorTypes.Idle;
 			}
 		}
 	});
@@ -297,6 +294,11 @@ window.addEventListener('load', function () {
 				}, this);
 				return _array;
 			});
+		},
+		turn: function (count) {
+			var c = typeof count === 'number' ? count % 4 + 4 : 1;
+			var i = [3, 2, 0, 1][this.direction] + c; // direction to turn index
+			this.direction = [2, 3, 1, 0][i%4]; // turn index to direction
 		}
     });
 
@@ -367,6 +369,11 @@ window.addEventListener('load', function () {
 			});
 			this.hp = 3;
 			this.atk = 1;
+		},
+		turn: function (count) {
+			var c = typeof count === 'number' ? Math.ceil( Math.abs(count / 2) ) : 1;
+			var i = { '-1': 1, '1': 0 }[this.direction] + c; // direction to turn index
+			this.direction = [1, -1, -1, 1][i%2]; // turn index to direction
 		}
 	});
 
