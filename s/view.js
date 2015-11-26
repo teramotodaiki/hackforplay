@@ -672,6 +672,7 @@ $(function(){
 							div.click(function(event) {
 								div.toggleClass('col-sm-3 col-sm-12');
 								div.find('.thumbnail').toggleClass('scroll-y overflow-hidden');
+								div.find('p').toggleClass('hidden');
 							});
 							var child = $('<div>').addClass('thumbnail overflow-hidden').css({
 								height: div.width()
@@ -681,6 +682,7 @@ $(function(){
 							}, function() {
 								$(this).css('background-color', 'rgb(255,255,255)');
 							});
+							$('<p>').addClass('text-center hidden').text(item).appendTo(child);
 							$('<img>').addClass('img-responsive').attr({
 								src: item
 							}).appendTo(child);
