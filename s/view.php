@@ -407,5 +407,8 @@ if ($mode === 'quest') {
 			</div>
 		</div>
 	</div>
+	<div class="container container-assets" style="float: left">
+		<div class="row"></div>
+	</div>
 </body>
 </html>
