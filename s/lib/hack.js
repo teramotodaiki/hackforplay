@@ -570,6 +570,10 @@ window.addEventListener('load', function() {
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
 	game.addEventListener('load', function(){
+		// game.assetsの中身をJSONにしてSessionStorageに格納する
+		var assets = game.assets ? JSON.stringify(game.assets) : '';
+		sessionStorage.setItem('stage_param_game_assets', assets);
+
 		window.parent.postMessage('game_loaded', '*'); // ロードのタイミングを伝える
 		if (Hack.defaultParentNode) {
 			game.rootScene.addChild(Hack.defaultParentNode);
