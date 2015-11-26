@@ -670,12 +670,29 @@ $(function(){
 						}).forEach(function (item) {
 							var div = $('<div>').addClass('col-sm-3').appendTo(this);
 							div.click(function(event) {
-								$(this).toggleClass('col-sm-3 col-sm-12');
-								$(this).find('.thumbnail').toggleClass('scroll-y overflow-hidden');
-								$(this).find('.thumbnail.scroll-y').height(
-									Math.min(320, $(this).find('img').outerHeight() + 30));
-								$(this).find('.thumbnail.overflow-hidden').outerHeight($(this).width());
-								$(this).find('p').toggleClass('hidden');
+								$(this).toggleClass('toggle-clicked');
+								var toggle = $(this).hasClass('toggle-clicked');
+								$('.container-assets .row').children('div').each(function(index, el) {
+									// close all
+									$(el).removeClass('col-sm-12 toggle-clicked').addClass('col-sm-3');
+									var $thumbnail = $(el).find('.thumbnail');
+									$thumbnail.removeClass('scroll-y').addClass('overflow-hidden').outerHeight($(this).width());
+									$thumbnail.find('p').addClass('hidden');
+								});
+								if (toggle) {
+									$(this).toggleClass('col-sm-3 col-sm-12 toggle-clicked');
+									var $thumbnail = $(this).find('.thumbnail');
+									$thumbnail.find('p').removeClass('hidden');
+									var _height = 0;
+									$thumbnail.children().each(function(index, el) {
+										_height += $(el).outerHeight(true);
+									});
+									if (_height < 320) $thumbnail.height(_height);
+									else {
+										$thumbnail.height(320);
+										$thumbnail.toggleClass('scroll-y overflow-hidden');
+									}
+								}
 							});
 							var child = $('<div>').addClass('thumbnail overflow-hidden').css({
 								height: div.width()
