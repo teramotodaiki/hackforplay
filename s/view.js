@@ -670,9 +670,12 @@ $(function(){
 						}).forEach(function (item) {
 							var div = $('<div>').addClass('col-sm-3').appendTo(this);
 							div.click(function(event) {
-								div.toggleClass('col-sm-3 col-sm-12');
-								div.find('.thumbnail').toggleClass('scroll-y overflow-hidden');
-								div.find('p').toggleClass('hidden');
+								$(this).toggleClass('col-sm-3 col-sm-12');
+								$(this).find('.thumbnail').toggleClass('scroll-y overflow-hidden');
+								$(this).find('.thumbnail.scroll-y').height(
+									Math.min(320, $(this).find('img').outerHeight() + 30));
+								$(this).find('.thumbnail.overflow-hidden').outerHeight($(this).width());
+								$(this).find('p').toggleClass('hidden');
 							});
 							var child = $('<div>').addClass('thumbnail overflow-hidden').css({
 								height: div.width()
