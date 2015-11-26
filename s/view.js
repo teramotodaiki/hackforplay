@@ -698,7 +698,7 @@ $(function(){
 								height: div.width()
 							}).appendTo(div);
 							child.hover(function() {
-								$(this).css('background-color', 'rgb(210,210,210)');
+								$(this).css('background-color', 'rgb(220,220,220)');
 							}, function() {
 								$(this).css('background-color', 'rgb(255,255,255)');
 							});
