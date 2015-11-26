@@ -457,7 +457,8 @@ $(function(){
 				}, 100);
 
 				// ２カラムアライメント（ゲームビュー | YouTubeビュー）
-				var alignmentMode = getParam('youtube') ? 'both' : 'game'; // both(２カラム) | game(ゲーム画面のみ)
+				// var alignmentMode = getParam('youtube') ? 'both' : 'game'; // both(２カラム) | game(ゲーム画面のみ)
+				var alignmentMode = 'both'; // both(２カラム) | game(ゲーム画面のみ)
 				var reload_timer = null;
 
 				// アライメントモードの切り替え
@@ -488,7 +489,7 @@ $(function(){
 						});
 						$('.container-tab').removeClass('hidden');
 						var youtube_width = body_width - $('.container-game').outerWidth() - $('.container-tab').outerWidth() - 60;
-						$('.container-youtube').removeClass('hidden').outerWidth(youtube_width);
+						$('.container-youtube,.container-assets').removeClass('hidden').outerWidth(youtube_width);
 						$('.h4p_youtube-frame iframe').attr({
 							'width': youtube_width,
 							'height': youtube_width / 1.5
@@ -506,7 +507,7 @@ $(function(){
 						$('.container-game').width(content_width);
 
 						$('.container-tab').removeClass('hidden');
-						$('.container-youtube').addClass('hidden').width(0);
+						$('.container-youtube,.container-assets').addClass('hidden').width(0);
 						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
 						break;
 					}
@@ -656,6 +657,61 @@ $(function(){
 					});
 				};
 			}
+
+			// game.assetsの表示
+			window.addEventListener('message', function task(event) {
+				if (event.data === 'game_loaded') {
+					var str = sessionStorage.getItem('stage_param_game_assets');
+					if (str) {
+						var assets = $.parseJSON(str);
+						Object.keys(assets).filter(function (item) {
+							return item.indexOf('hackforplay/') < 0 &&
+									(item.indexOf('.png') > -1 || item.indexOf('.gif') > -1 || item.indexOf('.jpg') > -1);
+						}).forEach(function (item) {
+							var div = $('<div>').addClass('col-sm-3').appendTo(this);
+							div.click(function(event) {
+								$(this).toggleClass('toggle-clicked');
+								var toggle = $(this).hasClass('toggle-clicked');
+								$('.container-assets .row').children('div').each(function(index, el) {
+									// close all
+									$(el).removeClass('col-sm-12 toggle-clicked').addClass('col-sm-3');
+									var $thumbnail = $(el).find('.thumbnail');
+									$thumbnail.removeClass('scroll-y').addClass('overflow-hidden').outerHeight($(this).width());
+									$thumbnail.find('p').addClass('hidden');
+								});
+								if (toggle) {
+									$(this).toggleClass('col-sm-3 col-sm-12 toggle-clicked');
+									var $thumbnail = $(this).find('.thumbnail');
+									$thumbnail.find('p').removeClass('hidden');
+									var _height = 0;
+									$thumbnail.children().each(function(index, el) {
+										_height += $(el).outerHeight(true);
+									});
+									if (_height < 320) $thumbnail.height(_height);
+									else {
+										$thumbnail.height(320);
+										$thumbnail.toggleClass('scroll-y overflow-hidden');
+									}
+								}
+							});
+							var child = $('<div>').addClass('thumbnail overflow-hidden').css({
+								height: div.width()
+							}).appendTo(div);
+							child.hover(function() {
+								$(this).css('background-color', 'rgb(220,220,220)');
+							}, function() {
+								$(this).css('background-color', 'rgb(255,255,255)');
+							});
+							$('<p>').addClass('text-center hidden').text(item).appendTo(child);
+							$('<img>').addClass('img-responsive').attr({
+								src: item
+							}).appendTo(child);
+						}, $('.container-assets .row'));
+
+						window.removeEventListener('message', task);
+					}
+				}
+			});
 
 		};
 
