@@ -92,6 +92,17 @@ $(function(){
 					});
 				});
 				break;
+			case "game_loaded":
+				// enchant.Core.instance.onload Event
+				// sessionStorageからgame.assetsを受け取る
+				var str = sessionStorage.getItem('stage_param_game_assets');
+				if (str) {
+					var assets = $.parseJSON(str);
+					Object.keys(assets).forEach(function (item) {
+						console.log(item);
+					});
+				}
+				break;
 		}
 	});
 
