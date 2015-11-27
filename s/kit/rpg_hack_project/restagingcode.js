@@ -50,6 +50,9 @@ window.addEventListener('load', function () {
 "\t};\n"+
 "\n"+
 "\n"+
+"\t// ( ^ - ^ ) //\n"+
+"\n"+
+"\n"+
 "\t// プレイヤー（騎士）\n"+
 "\tvar player = Hack.player = new Player();\n"+
 "\tplayer.locate(3, 5);\n"+

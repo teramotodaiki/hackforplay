@@ -696,6 +696,17 @@ $(function(){
 				}
 			});
 
+			// test
+			(function () {
+				// 対処療法的なアーキテクチャなので、後で直したほうがいい
+				jsEditor.save();
+				var code = jsEditor.getTextArea().value;
+				console.log(code.match(/(\n*)(\s*)(\/\/.*\/\/\n)/g));
+				code = code.replace(/(\n*)(\s*)(\/\/.*\/\/\n)/g, '$1$2// add here\n\n$2$3');
+				sessionStorage.setItem('restaging_code', code);
+				jsEditor.setValue(code);
+				jsEditor.save();
+			})();
 		};
 
 		function makeProject (successed, failed) {
