@@ -705,7 +705,20 @@ $(function(){
 					var smartAssets = $.parseJSON(str);
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
-					var regExp = /(\n+)(\s*)(\/\/.*\/\/\n)/g;
+					// regExp に一致する matches について、それぞれ head, indent, comment に分割
+					var placeholders = (function (regExp) {
+						var result = [];
+						(code.match(regExp) || []).forEach(function (match, index) {
+							var array = match.replace(regExp, '$1\0$2\0$3').split('\0');
+							result.push({
+								raw: match,
+								head: array[0],
+								indent: array[1],
+								comment: array[2]
+							});
+						});
+						return result;
+					})(/(^|\n)([ \t]*)(\/\/.*\/\/\n)/g);
 					smartAssets.forEach(function (asset) {
 						// Variable
 						if (asset.variables && asset.variables instanceof Array) {
@@ -723,12 +736,21 @@ $(function(){
 								}
 							});
 						}
-						// Replacement
-						var match = code.match(regExp);
-						if (match.length > 0) {
-							var space = match[0].replace(regExp, '$2');
-							code = code.replace(regExp, '$1$2' + asset.lines.join('\n' + space) + '\n\n$2$3');
-						}
+						// Replacement (ALL keywords contains)
+						placeholders.filter(function (p) {
+							var raw = asset.identifier,
+							identifier = typeof raw === 'string' ? raw.split('') : raw instanceof Array ? raw : [];
+							return identifier.every(function (keyword) {
+								return p.comment.indexOf(keyword) > -1;
+							});
+						}).forEach(function (p) {
+							var replacement = [
+							p.head, // 事前の改行または行頭
+							asset.lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
+							'\n', '\n', // ２つの空行
+							p.comment].join(p.indent);
+							code = code.split(p.raw).join(replacement);
+						});
 					});
 					sessionStorage.setItem('restaging_code', code);
 					jsEditor.setValue(code);
