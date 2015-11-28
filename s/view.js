@@ -658,7 +658,6 @@ $(function(){
 				};
 			}
 
-			// game.assetsの表示
 			window.addEventListener('message', function task(event) {
 				if (event.data === 'game_loaded') {
 					var str = sessionStorage.getItem('stage_param_game_assets');
@@ -696,95 +695,114 @@ $(function(){
 				}
 			});
 
-			// Smart Embed System
-			window.addEventListener('message', function task (event) {
-				if (event.data === 'game_loaded') {
-					window.removeEventListener('message', task);
-					var str = sessionStorage.getItem('stage_param_smart_assets');
-					var smartAssets = $.parseJSON(str);
-					smartAssets.forEach(function (asset) {
-						var div = $('<div>').addClass('col-sm-3 smart-embed').appendTo(this).data({
-							'asset': JSON.stringify(asset)
-						});
-						var child = $('<div>').addClass('thumbnail overflow-hidden').css({
-							height: div.width()
-						}).appendTo(div);
-						child.hover(function() {
-							$(this).css('background-color', 'rgb(210,210,210)');
-						}, function() {
-							$(this).css('background-color', 'rgb(255,255,255)');
-						});
-						$('<img>').addClass('img-responsive').attr({
-							src: asset.image
-						}).appendTo(child);
-					}, $('.container-assets .row'));
-				}
-			});
-			// Embed Processing
-			$('.container-assets .row').on('click', 'div.smart-embed', function () {
-				// Get asset
-				var json = $(this).data('asset');
-				if (!json) return;
-				var asset = $.parseJSON(json);
-				// Get code
-				jsEditor.save();
-				var code = jsEditor.getTextArea().value;
-				// regExp に一致する matches について、それぞれ head, indent, comment に分割
-				var placeholders = (function (regExp) {
-					var result = [];
-					(code.match(regExp) || []).forEach(function (match, index) {
-						var array = match.replace(regExp, '$1\0$2\0$3').split('\0');
-						result.push({
-							raw: match,
-							head: array[0],
-							indent: array[1],
-							comment: array[2]
-						});
-					});
-					return result;
-				})(/(^|\n)([ \t]*)(\/\/.*\/\/\n)/g);
-				// Variable
-				if (asset.variables && asset.variables instanceof Array) {
-					asset.variables.forEach(function (varName) {
-						for (var i = 1; i < 100000; i++) {
-							var reg = new RegExp('(^|\\W)' + varName + i + '(\\W|$)');
-							if (code.match(reg) === null) {
-								asset.lines.forEach(function (line, index) {
-									var _r = new RegExp('(^|\\W)' + varName + '(\\W|$)', 'g');
-									var replaced = line.replace(_r, '$1' + varName + i + '$2');
-									asset.lines[index] = replaced;
-								});
-								break;
-							}
-						}
-					});
-				}
-				// Replacement (ALL keywords contains)
-				var scroll = { from: {line: 0, ch: 0}, to: {line: 0, ch: 0} };
-				placeholders.filter(function (p) {
-					var raw = asset.identifier,
-					identifier = typeof raw === 'string' ? raw.split('') : raw instanceof Array ? raw : [];
-					return identifier.every(function (keyword) {
-						return p.comment.indexOf(keyword) > -1;
-					});
-				}).forEach(function (p) {
-					var replacement = [
-					p.head, // 事前の改行または行頭
-					asset.lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
-					'\n', '\n', // ２つの空行
-					p.comment].join(p.indent);
-					var splited = code.split(p.raw);
-					code = splited.join(replacement);
-					if (splited.length > 1) {
-						scroll.from.line = splited[0].split('\n').length - 1;
-						scroll.to.line = scroll.from.line + replacement.split('\n').length - 3;
+			// game.assetsの表示
+			(function () {
+				var __counters = [];
+				// Smart Embed System
+				window.addEventListener('message', function task (event) {
+					if (event.data === 'game_loaded') {
+						window.removeEventListener('message', task);
+						var str = sessionStorage.getItem('stage_param_smart_assets');
+						var smartAssets = $.parseJSON(str);
+						__counters = smartAssets.counters;
+						smartAssets.buttons.forEach(function (asset) {
+							var div = $('<div>').addClass('col-sm-3 smart-embed').appendTo(this).data({
+								'asset': JSON.stringify(asset)
+							});
+							var child = $('<div>').addClass('thumbnail overflow-hidden').css({
+								height: div.width()
+							}).appendTo(div);
+							child.hover(function() {
+								$(this).css('background-color', 'rgb(210,210,210)');
+							}, function() {
+								$(this).css('background-color', 'rgb(255,255,255)');
+							});
+							$('<img>').addClass('img-responsive').attr({
+								src: asset.image
+							}).appendTo(child);
+						}, $('.container-assets .row'));
 					}
 				});
-				jsEditor.setValue(code);
-				jsEditor.save();
-				jsEditor.setSelection(scroll.from, scroll.to, { scroll: true });
-				$('.h4p_restaging_button').trigger('click');
-			});
+				// Embed Processing
+				$('.container-assets .row').on('click', 'div.smart-embed', function () {
+					// Get asset
+					var json = $(this).data('asset');
+					if (!json) return;
+					var asset = $.parseJSON(json);
+					// Get code
+					jsEditor.save();
+					var code = jsEditor.getTextArea().value;
+					// regExp に一致する matches について、それぞれ head, indent, comment に分割
+					var placeholders = (function (regExp) {
+						var result = [];
+						(code.match(regExp) || []).forEach(function (match, index) {
+							var array = match.replace(regExp, '$1\0$2\0$3').split('\0');
+							result.push({
+								raw: match,
+								head: array[0],
+								indent: array[1],
+								comment: array[2]
+							});
+						});
+						return result;
+					})(/(^|\n)([ \t]*)(\/\/.*\/\/\n)/g);
+					// Variable
+					if (asset.variables && asset.variables instanceof Array) {
+						asset.variables.forEach(function (varName) {
+							for (var i = 1; i < 100000; i++) {
+								var reg = new RegExp('(^|\\W)' + varName + i + '(\\W|$)');
+								if (code.match(reg) === null) {
+									asset.lines.forEach(function (line, index) {
+										var _r = new RegExp('(^|\\W)' + varName + '(\\W|$)', 'g');
+										var replaced = line.replace(_r, '$1' + varName + i + '$2');
+										asset.lines[index] = replaced;
+									});
+									break;
+								}
+							}
+						});
+					}
+					// Counters
+					if (asset.counters && asset.counters instanceof Array) {
+						asset.counters.filter(function (key) {
+							return __counters[key] !== undefined;
+						}).forEach(function (key) {
+							(function () {
+								this.value = this.value > -1 ? this.value : this.init;
+								asset.lines.forEach(function (line, index) {
+									asset.lines[index] = line.split(key).join(this.value);
+								}, this);
+								this.value = (this.value + this.add) % this.size;
+							}).call(__counters[key]);
+						});
+					}
+					// Replacement (ALL keywords contains)
+					var scroll = { from: {line: 0, ch: 0}, to: {line: 0, ch: 0} };
+					placeholders.filter(function (p) {
+						var raw = asset.identifier,
+						identifier = typeof raw === 'string' ? raw.split('') : raw instanceof Array ? raw : [];
+						return identifier.every(function (keyword) {
+							return p.comment.indexOf(keyword) > -1;
+						});
+					}).forEach(function (p) {
+						var replacement = [
+						p.head, // 事前の改行または行頭
+						asset.lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
+						'\n', '\n', // ２つの空行
+						p.comment].join(p.indent);
+						var splited = code.split(p.raw);
+						code = splited.join(replacement);
+						if (splited.length > 1) {
+							scroll.from.line = splited[0].split('\n').length - 1;
+							scroll.to.line = scroll.from.line + replacement.split('\n').length - 3;
+						}
+					});
+					jsEditor.setValue(code);
+					jsEditor.save();
+					jsEditor.setSelection(scroll.from, scroll.to, { scroll: true });
+					$('.h4p_restaging_button').trigger('click');
+				});
+			})();
 		};
 
 		function makeProject (successed, failed) {
