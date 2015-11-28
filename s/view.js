@@ -697,16 +697,29 @@ $(function(){
 			});
 
 			// test
-			(function () {
-				// 対処療法的なアーキテクチャなので、後で直したほうがいい
-				jsEditor.save();
-				var code = jsEditor.getTextArea().value;
-				console.log(code.match(/(\n*)(\s*)(\/\/.*\/\/\n)/g));
-				code = code.replace(/(\n*)(\s*)(\/\/.*\/\/\n)/g, '$1$2// add here\n\n$2$3');
-				sessionStorage.setItem('restaging_code', code);
-				jsEditor.setValue(code);
-				jsEditor.save();
-			})();
+			window.addEventListener('message', function task (event) {
+				if (event.data === 'game_loaded') {
+					window.removeEventListener('message', task);
+					// 対処療法的なアーキテクチャなので、後で直したほうがいい
+					var str = sessionStorage.getItem('stage_param_smart_assets');
+					var smartAssets = $.parseJSON(str);
+					jsEditor.save();
+					var code = jsEditor.getTextArea().value;
+					var regExp = /(\n*)(\s*)(\/\/.*\/\/\n)/g;
+					smartAssets.forEach(function (item) {
+						console.log(item.lines);
+						var match = code.match(regExp);
+						if (match.length > 0) {
+							var space = match[0].replace(regExp, '$2');
+							code = code.replace(regExp, '$1$2' + item.lines.join('\n' + space) + '\n\n$2$3');
+						}
+					});
+					sessionStorage.setItem('restaging_code', code);
+					jsEditor.setValue(code);
+					jsEditor.save();
+					$('h4p_restaging_button').trigger('click');
+				}
+			});
 		};
 
 		function makeProject (successed, failed) {
