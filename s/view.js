@@ -783,6 +783,7 @@ $(function(){
 				jsEditor.setValue(code);
 				jsEditor.save();
 				jsEditor.setSelection(scroll.from, scroll.to, { scroll: true });
+				$('.h4p_restaging_button').trigger('click');
 			});
 		};
 
