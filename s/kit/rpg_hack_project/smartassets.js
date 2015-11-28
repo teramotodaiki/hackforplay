@@ -2,12 +2,13 @@ window.addEventListener('load', function () {
 	Hack.on('load', function() {
 		this.smartAssets = [
 		{
-			name: 'Warp',
-			variables: ['enemy'],
+			image: 'kit/rpg_hack_project/smartAssets/warp.png',
+			identifier: '()',
+			variables: ['item'],
 			lines: [
-			'// きょうぼうな スライム',
-			'var enemy = new BlueSlime();',
-			'enemy.locate(5, 3);']
+			"// ワープゆか",
+			"var item = new MapObject('Warp');",
+			"item.locate(5, 3);"]
 		}
 		];
 	});
