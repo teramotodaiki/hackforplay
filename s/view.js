@@ -705,7 +705,7 @@ $(function(){
 					var smartAssets = $.parseJSON(str);
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
-					var regExp = /(\n*)(\s*)(\/\/.*\/\/\n)/g;
+					var regExp = /(\n+)(\s*)(\/\/.*\/\/\n)/g;
 					smartAssets.forEach(function (asset) {
 						// Variable
 						if (asset.variables && asset.variables instanceof Array) {
