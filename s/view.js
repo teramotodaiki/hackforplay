@@ -760,6 +760,7 @@ $(function(){
 					});
 				}
 				// Replacement (ALL keywords contains)
+				var scroll = { from: {line: 0, ch: 0}, to: {line: 0, ch: 0} };
 				placeholders.filter(function (p) {
 					var raw = asset.identifier,
 					identifier = typeof raw === 'string' ? raw.split('') : raw instanceof Array ? raw : [];
@@ -772,12 +773,17 @@ $(function(){
 					asset.lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
 					'\n', '\n', // ２つの空行
 					p.comment].join(p.indent);
-					code = code.split(p.raw).join(replacement);
+					var splited = code.split(p.raw);
+					code = splited.join(replacement);
+					if (splited.length > 1) {
+						scroll.from.line = splited[0].split('\n').length - 1;
+						scroll.to.line = scroll.from.line + replacement.split('\n').length - 3;
+					}
 				});
 				jsEditor.setValue(code);
 				jsEditor.save();
+				jsEditor.setSelection(scroll.from, scroll.to, { scroll: true });
 			});
-
 		};
 
 		function makeProject (successed, failed) {
