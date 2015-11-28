@@ -3,6 +3,7 @@ window.addEventListener('load', function () {
 		this.smartAssets = [
 		{
 			name: 'Warp',
+			variables: ['enemy'],
 			lines: [
 			'// きょうぼうな スライム',
 			'var enemy = new BlueSlime();',

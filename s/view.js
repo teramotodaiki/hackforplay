@@ -706,18 +706,34 @@ $(function(){
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
 					var regExp = /(\n*)(\s*)(\/\/.*\/\/\n)/g;
-					smartAssets.forEach(function (item) {
-						console.log(item.lines);
+					smartAssets.forEach(function (asset) {
+						// Variable
+						if (asset.variables && asset.variables instanceof Array) {
+							asset.variables.forEach(function (varName) {
+								for (var i = 1; i < 100000; i++) {
+									var reg = new RegExp('(^|\\W)' + varName + i + '(\\W|$)');
+									if (code.match(reg) === null) {
+										asset.lines.forEach(function (line, index) {
+											var _r = new RegExp('(^|\\W)' + varName + '(\\W|$)', 'g');
+											var replaced = line.replace(_r, '$1' + varName + i + '$2');
+											asset.lines[index] = replaced;
+										});
+										break;
+									}
+								}
+							});
+						}
+						// Replacement
 						var match = code.match(regExp);
 						if (match.length > 0) {
 							var space = match[0].replace(regExp, '$2');
-							code = code.replace(regExp, '$1$2' + item.lines.join('\n' + space) + '\n\n$2$3');
+							code = code.replace(regExp, '$1$2' + asset.lines.join('\n' + space) + '\n\n$2$3');
 						}
 					});
 					sessionStorage.setItem('restaging_code', code);
 					jsEditor.setValue(code);
 					jsEditor.save();
-					$('h4p_restaging_button').trigger('click');
+					$('.h4p_restaging_button').trigger('click');
 				}
 			});
 		};
