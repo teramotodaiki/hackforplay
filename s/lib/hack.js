@@ -576,7 +576,6 @@ window.addEventListener('load', function() {
 
 		// smartAssetsをsessionStorageに格納する
 		var smartAssets = Hack.smartAssets ? JSON.stringify(Hack.smartAssets) : '';
-		console.log(smartAssets);
 		sessionStorage.setItem('stage_param_smart_assets', smartAssets);
 
 		window.parent.postMessage('game_loaded', '*'); // ロードのタイミングを伝える
