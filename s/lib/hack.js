@@ -574,6 +574,10 @@ window.addEventListener('load', function() {
 		var assets = game.assets ? JSON.stringify(game.assets) : '';
 		sessionStorage.setItem('stage_param_game_assets', assets);
 
+		// smartAssetsをsessionStorageに格納する
+		var smartAssets = Hack.smartAssets ? JSON.stringify(Hack.smartAssets) : '';
+		sessionStorage.setItem('stage_param_smart_assets', smartAssets);
+
 		window.parent.postMessage('game_loaded', '*'); // ロードのタイミングを伝える
 		if (Hack.defaultParentNode) {
 			game.rootScene.addChild(Hack.defaultParentNode);
