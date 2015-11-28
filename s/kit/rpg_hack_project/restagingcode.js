@@ -9,48 +9,48 @@ window.addEventListener('load', function () {
 "\n"+
 "\n"+
 "\t// スライム\n"+
-"\tvar blueSlime = new BlueSlime();\n"+
-"\tblueSlime.locate(7, 5);\n"+
-"\tblueSlime.scale(1, 1);\n"+
-"\tblueSlime.hp = 10;\n"+
+"\tvar enemy1 = new BlueSlime();\n"+
+"\tenemy1.locate(7, 5);\n"+
+"\tenemy1.scale(1, 1);\n"+
+"\tenemy1.hp = 10;\n"+
 "\t// When become dead... たおれたら...\n"+
-"\tblueSlime.onbecomedead = function () {\n"+
+"\tenemy1.onbecomedead = function () {\n"+
 "\t\t// たおしたらクリア\n"+
 "\t\tHack.gameclear();\n"+
 "\t};\n"+
 "\n"+
 "\n"+
 "\t// くだりかいだん\n"+
-"\tvar stair = new MapObject('DownStair');\n"+
-"\tstair.locate(12, 5);\n"+
+"\tvar item1 = new MapObject('DownStair');\n"+
+"\titem1.locate(12, 5);\n"+
 "\t// When enter... ふまれたら...\n"+
-"\tstair.onplayerenter = function () {\n"+
+"\titem1.onplayerenter = function () {\n"+
 "\t\t// ふんだら room2 にいく\n"+
 "\t\tHack.changeMap('room2');\n"+
 "\t};\n"+
 "\n"+
 "\n"+
 "\t// ワープゆか\n"+
-"\tvar warp = new MapObject('Warp');\n"+
-"\twarp.locate(3, 3);\n"+
+"\tvar item2 = new MapObject('Warp');\n"+
+"\titem2.locate(3, 3);\n"+
 "\t// When enter... ふまれたら...\n"+
-"\twarp.onplayerenter = function () {\n"+
+"\titem2.onplayerenter = function () {\n"+
 "\t\t// ふんだらワープ\n"+
 "\t\tHack.player.locate(12, 3);\n"+
 "\t};\n"+
 "\n"+
 "\n"+
-"\t// くだりかいだん２\n"+
-"\tvar stair2 = new MapObject('DownStair');\n"+
-"\tstair2.locate(5, 5, 'room2');\n"+
+"\t// くだりかいだん\n"+
+"\tvar item3 = new MapObject('DownStair');\n"+
+"\titem3.locate(5, 5, 'room2');\n"+
 "\t// When enter... ふまれたら...\n"+
-"\tstair2.onplayerenter = function () {\n"+
+"\titem3.onplayerenter = function () {\n"+
 "\t\t// ゲームクリア\n"+
 "\t\tHack.gameclear();\n"+
 "\t};\n"+
 "\n"+
 "\n"+
-"\t// ( ^ - ^ ) //\n"+
+"\t// ( Keep this line -- ここはけさないでね ) //\n"+
 "\n"+
 "\n"+
 "\t// プレイヤー（騎士）\n"+
@@ -128,6 +128,9 @@ window.addEventListener('load', function () {
 "\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
 "\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]\n"+
 "\t];\n"+
+"\n"+
+"\n"+
+"\t// < Keep this line -- ここはけさないでね > //\n"+
 "\n"+
 "};\n"+
 "\n"+
