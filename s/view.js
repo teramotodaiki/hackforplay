@@ -735,11 +735,11 @@ $(function(){
 							return __counters[key] !== undefined;
 						}).forEach(function (key) {
 							(function () {
-								this.value = this.value > -1 ? this.value : this.init;
+								this.index = this.index > -1 ? this.index : 0;
 								asset.lines.forEach(function (line, index) {
-									asset.lines[index] = line.split(key).join(this.value);
+									asset.lines[index] = line.split(key).join(this.table[this.index]);
 								}, this);
-								this.value = (this.value + this.add) % this.size;
+								this.index = ++this.index % this.table.length;
 							}).call(__counters[key]);
 						});
 					}

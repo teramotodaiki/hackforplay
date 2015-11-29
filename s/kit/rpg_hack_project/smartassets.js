@@ -27,16 +27,22 @@ window.addEventListener('load', function () {
 			],
 			counters: {
 				__cnt15: {
-					init: 6,
-					add: 1,
-					size: 15
+					table: shuffle([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
 				},
 				__cnt10: {
-					init: 3,
-					add: 1,
-					size: 10
+					table: shuffle([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5]) // length=11
 				}
 			}
 		};
 	});
+	function shuffle(array) {
+		var m = array.length, t, i;
+		while (m) {
+			i = Math.floor(Math.random() * m--);
+			t = array[m];
+			array[m] = array[i];
+			array[i] = t;
+		}
+		return array;
+	}
 });
