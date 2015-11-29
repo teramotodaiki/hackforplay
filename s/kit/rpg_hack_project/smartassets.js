@@ -4,6 +4,7 @@ window.addEventListener('load', function () {
 			buttons: [
 			{
 				image: 'enchantjs/x2/map1.gif',
+				trim: { x: 4*32, y: 16*32, width: 32, height: 32 },
 				identifier: '()',
 				variables: ['item'],
 				counters: ['__cnt15', '__cnt10'],

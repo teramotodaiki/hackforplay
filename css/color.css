@@ -119,6 +119,7 @@ nav.navbar {
 }
 
 .asset-wrapper-entity .wrapper {
+	background-color: white;
 	border: 6px solid rgb(92, 92, 92);
 	border-radius: 20px;
 	z-index: 1;

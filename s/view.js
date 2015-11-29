@@ -724,15 +724,18 @@ $(function(){
 							$div.toggleClass('asset-wrapper-sample hidden asset-wrapper-entity');
 							$div.data('asset', JSON.stringify(asset));
 							var size = $div.find('.wrapper').outerHeight($div.width()).height();
-							var trim = { x: 4*32, y: 16*32, width: 32, height: 32 };
 							$('<img>').attr('src', asset.image).on('load', function() {
-								$(this).css({
-									position: 'relative',
-									top: '-' + (trim.y * size / trim.height)>>0 + 'px',
-									left: '-' + (trim.x * size / trim.width)>>0 + 'px',
-									width: this.width * size / trim.width,
-									height: this.height * size / trim.height
-								});
+								if (asset.trim) {
+									$(this).css({
+										position: 'relative',
+										top: '-' + (asset.trim.y * size / asset.trim.height)>>0 + 'px',
+										left: '-' + (asset.trim.x * size / asset.trim.width)>>0 + 'px',
+										width: this.width * size / asset.trim.width,
+										height: this.height * size / asset.trim.height
+									});
+								} else {
+									$(this).addClass('img-responsive');
+								}
 							}).appendTo($div.find('.wrapper'));
 						}, $('.container-assets .asset-wrapper-sample'));
 					}
