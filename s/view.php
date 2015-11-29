@@ -410,8 +410,7 @@ if ($mode === 'quest') {
 	<div class="container container-assets hidden">
 		<div class="row">
 			<div class="asset-wrapper-sample col-sm-3 col-xs-12 hidden">
-				<div class="thumbnail overflow-hidden">
-					<img class="img-responsive"></img>
+				<div class="wrapper overflow-hidden">
 				</div>
 			</div>
 		</div>

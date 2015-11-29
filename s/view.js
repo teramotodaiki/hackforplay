@@ -723,8 +723,17 @@ $(function(){
 							var $div = this.clone(true, true).appendTo(this.parent());
 							$div.toggleClass('asset-wrapper-sample hidden asset-wrapper-entity');
 							$div.data('asset', JSON.stringify(asset));
-							$div.find('.thumbnail').outerHeight($div.width());
-							$div.find('img').attr('src', asset.image);
+							var size = $div.find('.wrapper').outerHeight($div.width()).height();
+							var trim = { x: 4*32, y: 16*32, width: 32, height: 32 };
+							$('<img>').attr('src', asset.image).on('load', function() {
+								$(this).css({
+									position: 'relative',
+									top: '-' + (trim.y * size / trim.height)>>0 + 'px',
+									left: '-' + (trim.x * size / trim.width)>>0 + 'px',
+									width: this.width * size / trim.width,
+									height: this.height * size / trim.height
+								});
+							}).appendTo($div.find('.wrapper'));
 						}, $('.container-assets .asset-wrapper-sample'));
 					}
 				});

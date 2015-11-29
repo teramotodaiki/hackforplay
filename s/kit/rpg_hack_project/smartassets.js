@@ -3,7 +3,7 @@ window.addEventListener('load', function () {
 		this.smartAssets = {
 			buttons: [
 			{
-				image: 'kit/rpg_hack_project/smartAssets/warp.png',
+				image: 'enchantjs/x2/map1.gif',
 				identifier: '()',
 				variables: ['item'],
 				counters: ['__cnt15', '__cnt10'],

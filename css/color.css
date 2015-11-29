@@ -118,14 +118,18 @@ nav.navbar {
 	background: linear-gradient(#f5f5f5, #ffffff);
 }
 
-.asset-wrapper-entity .thumbnail {
-	background-color: rgb(255,255,255);
-	border: 3px solid rgb(220,220,220);
+.asset-wrapper-entity .wrapper {
+	border: 6px solid rgb(92, 92, 92);
 	border-radius: 20px;
+	z-index: 1;
 }
 
-.asset-wrapper-entity .thumbnail:hover {
-	background-color: rgb(220,220,220);
+.asset-wrapper-entity img {
+	z-index: 0;
+}
+
+.asset-wrapper-entity .wrapper:hover {
+	border-color: rgb(220,220,220);
 }
 
 
