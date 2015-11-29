@@ -425,3 +425,11 @@ button.h4p_open-project {
 .notification-item-wrapper .notification-item-article {
 	margin-left: -15px;
 }
+
+.asset-wrapper-entity {
+	padding: 5px 5px;
+}
+
+.asset-wrapper-entity.toggle-clicked .wrapper {
+	padding: 12px 24px 8px 8px;
+}

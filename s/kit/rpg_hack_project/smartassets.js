@@ -3,8 +3,16 @@ window.addEventListener('load', function () {
 		this.smartAssets = {
 			buttons: [
 			{
+				// Map tip
+				image: 'img/mapTipIndex.jpg',
+				query: 'toggle',
+				caption: 'enchantjs/x2/map1.gif'
+			},
+			{
+				// Warp
 				image: 'enchantjs/x2/map1.gif',
 				trim: { x: 4*32, y: 16*32, width: 32, height: 32 },
+				query: 'embed',
 				identifier: '()',
 				variables: ['item'],
 				counters: ['__cnt15', '__cnt10'],

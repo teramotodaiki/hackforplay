@@ -656,60 +656,7 @@ $(function(){
 				};
 			}
 
-			window.addEventListener('message', function task(event) {
-				if (event.data === 'game_loaded') {
-					window.removeEventListener('message', task);
-					var str = sessionStorage.getItem('stage_param_game_assets');
-					if (str) {
-						var assets = $.parseJSON(str);
-						Object.keys(assets).filter(function (item) {
-							return item.indexOf('hackforplay/') < 0 &&
-									(item.indexOf('.png') > -1 || item.indexOf('.gif') > -1 || item.indexOf('.jpg') > -1);
-						}).forEach(function (item) {
-							var div = $('<div>').addClass('col-sm-3').appendTo(this);
-							div.click(function(event) {
-								$(this).toggleClass('toggle-clicked');
-								var toggle = $(this).hasClass('toggle-clicked');
-								$('.container-assets .row').children('div').each(function(index, el) {
-									// close all
-									$(el).removeClass('col-sm-12 toggle-clicked').addClass('col-sm-3');
-									var $thumbnail = $(el).find('.thumbnail');
-									$thumbnail.removeClass('scroll-y').addClass('overflow-hidden').outerHeight($(this).width());
-									$thumbnail.find('p').addClass('hidden');
-								});
-								if (toggle) {
-									$(this).toggleClass('col-sm-3 col-sm-12 toggle-clicked');
-									var $thumbnail = $(this).find('.thumbnail');
-									$thumbnail.find('p').removeClass('hidden');
-									var _height = 0;
-									$thumbnail.children().each(function(index, el) {
-										_height += $(el).outerHeight(true);
-									});
-									if (_height < 320) $thumbnail.height(_height);
-									else {
-										$thumbnail.height(320);
-										$thumbnail.toggleClass('scroll-y overflow-hidden');
-									}
-								}
-							});
-							var child = $('<div>').addClass('thumbnail overflow-hidden').css({
-								height: div.width()
-							}).appendTo(div);
-							child.hover(function() {
-								$(this).css('background-color', 'rgb(220,220,220)');
-							}, function() {
-								$(this).css('background-color', 'rgb(255,255,255)');
-							});
-							$('<p>').addClass('text-center hidden').text(item).appendTo(child);
-							$('<img>').addClass('img-responsive').attr({
-								src: item
-							}).appendTo(child);
-						}, $('.container-assets .row'));
-					}
-				}
-			});
-
-			// game.assetsの表示
+			// Smart Assets
 			(function () {
 				var __counters = [];
 				// Smart Embed System
@@ -721,10 +668,10 @@ $(function(){
 						__counters = smartAssets.counters;
 						smartAssets.buttons.forEach(function (asset) {
 							var $div = this.clone(true, true).appendTo(this.parent());
-							$div.toggleClass('asset-wrapper-sample hidden asset-wrapper-entity');
+							$div.toggleClass('asset-wrapper-sample hidden asset-wrapper-entity query-' + asset.query);
 							$div.data('asset', JSON.stringify(asset));
 							var size = $div.find('.wrapper').outerHeight($div.width()).height();
-							$('<img>').attr('src', asset.image).on('load', function() {
+							$div.find('img').attr('src', asset.image).on('load', function() {
 								if (asset.trim) {
 									$(this).css({
 										position: 'relative',
@@ -736,12 +683,15 @@ $(function(){
 								} else {
 									$(this).addClass('img-responsive');
 								}
-							}).appendTo($div.find('.wrapper'));
+							});
+							if (asset.caption) {
+								$div.find('.caption').text(asset.caption);
+							}
 						}, $('.container-assets .asset-wrapper-sample'));
 					}
 				});
 				// Embed Processing
-				$('.container-assets').on('click', '.asset-wrapper-entity', function () {
+				$('.container-assets').on('click', '.asset-wrapper-entity.query-embed', function () {
 					// Get asset
 					var json = $(this).data('asset');
 					if (!json) return;
@@ -818,6 +768,32 @@ $(function(){
 					jsEditor.save();
 					jsEditor.setSelection(scroll.from, scroll.to, { scroll: true });
 					$('.h4p_restaging_button').trigger('click');
+				});
+				// Toggle Processing
+				$('.container-assets').on('click', '.asset-wrapper-entity.query-toggle', function() {
+					$(this).toggleClass('toggle-clicked');
+					var toggle = $(this).hasClass('toggle-clicked');
+					$('.container-assets .query-toggle').each(function(index, el) {
+						// close all
+						$(el).removeClass('col-xs-12 toggle-clicked').addClass('col-lg-2 col-md-3 col-sm-4 col-xs-6');
+						var $wrapper = $(el).find('.wrapper');
+						$wrapper.removeClass('scroll-y').addClass('overflow-hidden').outerHeight($(this).width());
+						$wrapper.find('.caption').addClass('hidden');
+					});
+					if (toggle) {
+						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
+						var $wrapper = $(this).find('.wrapper');
+						$wrapper.find('.caption').removeClass('hidden');
+						var _height = 0;
+						$wrapper.children().each(function(index, el) {
+							_height += $(el).outerHeight(true);
+						});
+						if (_height < 320) $wrapper.height(_height);
+						else {
+							$wrapper.height(320);
+							$wrapper.toggleClass('scroll-y overflow-hidden');
+						}
+					}
 				});
 			})();
 		};
