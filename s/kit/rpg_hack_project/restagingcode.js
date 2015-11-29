@@ -8,36 +8,13 @@ window.addEventListener('load', function () {
 "\tmap.load(); // Load Map;  Hack.defaultParentNode == map.scene\n"+
 "\n"+
 "\n"+
-"\t// スライム\n"+
-"\tvar enemy1 = new BlueSlime();\n"+
-"\tenemy1.locate(7, 5);\n"+
-"\tenemy1.scale(1, 1);\n"+
-"\tenemy1.hp = 10;\n"+
-"\t// When become dead... たおれたら...\n"+
-"\tenemy1.onbecomedead = function () {\n"+
-"\t\t// たおしたらクリア\n"+
-"\t\tHack.gameclear();\n"+
-"\t};\n"+
-"\n"+
-"\n"+
-"\t// くだりかいだん\n"+
-"\tvar item1 = new MapObject('DownStair');\n"+
-"\titem1.locate(12, 5);\n"+
-"\t// When enter... ふまれたら...\n"+
+"\t// ゴール\n"+
+"\tvar item1 = new MapObject(0);\n"+
+"\titem1.locate(14, 5, 'room1');\n"+
 "\titem1.onplayerenter = function () {\n"+
-"\t\t// ふんだら room2 にいく\n"+
-"\t\tHack.changeMap('room2');\n"+
-"\t};\n"+
-"\n"+
-"\n"+
-"\t// スター（クリア）\n"+
-"\tvar item2 = new MapObject('Star');\n"+
-"\titem2.locate(5, 5, 'room2');\n"+
-"\t// When enter... ふまれたら...\n"+
-"\titem2.onplayerenter = function () {\n"+
 "\t\t// ゲームクリア\n"+
 "\t\tHack.gameclear();\n"+
-"\t\tthis.destroy();\n"+
+"\t\tHack.player.destroy();\n"+
 "\t};\n"+
 "\n"+
 "\n"+
@@ -95,34 +72,6 @@ window.addEventListener('load', function () {
 "\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]\n"+
 "\t];\n"+
 "\n"+
-"\t// room1\n"+
-"\tHack.maps['room2'] = new RPGMap(32, 32);\n"+
-"\tHack.maps['room2'].imagePath = 'enchantjs/x2/map1.gif';\n"+
-"\tHack.maps['room2'].bmap.loadData([\n"+
-"\t\t[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],\n"+
-"\t\t[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],\n"+
-"\t\t[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],\n"+
-"\t\t[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],\n"+
-"\t\t[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],\n"+
-"\t\t[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],\n"+
-"\t\t[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],\n"+
-"\t\t[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],\n"+
-"\t\t[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],\n"+
-"\t\t[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323]\n"+
-"\t]);\n"+
-"\tHack.maps['room2'].cmap = [\n"+
-"\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
-"\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
-"\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
-"\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
-"\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
-"\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
-"\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
-"\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
-"\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],\n"+
-"\t\t[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]\n"+
-"\t];\n"+
-"\n"+
 "\n"+
 "\t// < Keep this line -- ここはけさないでね > //\n"+
 "\n"+
@@ -133,7 +82,7 @@ window.addEventListener('load', function () {
 "\t\"//  -            =\\n\"+\n"+
 "\t\"// -  BASIC CODE  =\\n\"+\n"+
 "\t\"//  -            =\\n\"+\n"+
-"\t\"Hack.player.locate(6, 5);  // Teleportation\\n\"+\n"+
+"\t\"Hack.player.locate(6, 5, 'room1');  // Teleportation\\n\"+\n"+
 "\t\"Hack.player.direction = 2; // Turn\\n\"+\n"+
 "\t\"Hack.player.atk = 10;      // Power Up\\n\"+\n"+
 "\t\"\\n\"+\n"+
