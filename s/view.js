@@ -494,7 +494,6 @@ $(function(){
 							'width': youtube_width,
 							'height': youtube_width / 1.5
 						});
-						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
 						break;
 					case 'game':
 						// 1カラム 100:0 ただし幅には最大値がある
@@ -508,7 +507,6 @@ $(function(){
 
 						$('.container-tab').removeClass('hidden');
 						$('.container-youtube,.container-assets').addClass('hidden').width(0);
-						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
 						break;
 					}
 
