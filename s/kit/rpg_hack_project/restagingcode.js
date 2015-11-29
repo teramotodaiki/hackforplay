@@ -91,7 +91,7 @@ window.addEventListener('load', function () {
 "\t\"// *  EXTRA CODE  +  Remove // to use.\\n\"+\n"+
 "\t\"//  *            +   // をけして つかおう!\\n\"+\n"+
 "\t\"\\n\"+\n"+
-"\t\"// Hack.changeMap('room2');\\n\"+\n"+
+"\t\"// Hack.changeMap('room1');\\n\"+\n"+
 "\t\"// Hack.log('wwwwwwww');\\n\"+\n"+
 "\t\"\\n\"+\n"+
 "\t\"\\n\";\n"+
