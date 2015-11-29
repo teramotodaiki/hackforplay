@@ -123,7 +123,7 @@ window.addEventListener('load', function () {
 			Hack.defaultParentNode.addChild(this);
 		},
 		locate: function (fromLeft, fromTop, mapName) {
-			if (mapName) {
+			if (mapName && Hack.maps[mapName]) {
 				this.destroy();
 				Hack.maps[mapName].scene.addChild(this);
 			}
