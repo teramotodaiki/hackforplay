@@ -30,23 +30,14 @@ window.addEventListener('load', function () {
 "\t};\n"+
 "\n"+
 "\n"+
-"\t// ワープゆか\n"+
-"\tvar item2 = new MapObject('Warp');\n"+
-"\titem2.locate(3, 3);\n"+
+"\t// スター（クリア）\n"+
+"\tvar item2 = new MapObject('Star');\n"+
+"\titem2.locate(5, 5, 'room2');\n"+
 "\t// When enter... ふまれたら...\n"+
 "\titem2.onplayerenter = function () {\n"+
-"\t\t// ふんだらワープ\n"+
-"\t\tHack.player.locate(12, 3);\n"+
-"\t};\n"+
-"\n"+
-"\n"+
-"\t// くだりかいだん\n"+
-"\tvar item3 = new MapObject('DownStair');\n"+
-"\titem3.locate(5, 5, 'room2');\n"+
-"\t// When enter... ふまれたら...\n"+
-"\titem3.onplayerenter = function () {\n"+
 "\t\t// ゲームクリア\n"+
 "\t\tHack.gameclear();\n"+
+"\t\tthis.destroy();\n"+
 "\t};\n"+
 "\n"+
 "\n"+
@@ -68,7 +59,10 @@ window.addEventListener('load', function () {
 "\t\t'Box': 420,\t\t\t'Flower': 421,\t\t'DownStair': 422,\n"+
 "\t\t'Trap': 440,\t\t'UsedTrap': 441,\t'Step': 442,\n"+
 "\t\t'Castle': 500,\t\t'Village': 501,\t\t'Cave': 502,\n"+
-"\t\t'Tree': 520,\t\t'Table': 521,\t\t'OpenedBox': 522\n"+
+"\t\t'Tree': 520,\t\t'Table': 521,\t\t'OpenedBox': 522,\n"+
+"\t\t'Beam': 540,\t\t'Diamond': 560,\t\t'Sapphire': 561,\n"+
+"\t\t'Ruby': 562,\t\t'Heart': 563,\t\t'Skull': 564,\n"+
+"\t\t'Coin': 565,\t\t'Star': 566,\t\t'Key': 567\n"+
 "\t};\n"+
 "\n"+
 "\tHack.maps = [];\n"+
