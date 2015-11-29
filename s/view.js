@@ -720,25 +720,16 @@ $(function(){
 						var smartAssets = $.parseJSON(str);
 						__counters = smartAssets.counters;
 						smartAssets.buttons.forEach(function (asset) {
-							var div = $('<div>').addClass('col-sm-3 smart-embed').appendTo(this).data({
-								'asset': JSON.stringify(asset)
-							});
-							var child = $('<div>').addClass('thumbnail overflow-hidden').css({
-								height: div.width()
-							}).appendTo(div);
-							child.hover(function() {
-								$(this).css('background-color', 'rgb(210,210,210)');
-							}, function() {
-								$(this).css('background-color', 'rgb(255,255,255)');
-							});
-							$('<img>').addClass('img-responsive').attr({
-								src: asset.image
-							}).appendTo(child);
-						}, $('.container-assets .row'));
+							var $div = this.clone(true, true).appendTo(this.parent());
+							$div.toggleClass('asset-wrapper-sample hidden asset-wrapper-entity');
+							$div.data('asset', JSON.stringify(asset));
+							$div.find('.thumbnail').outerHeight($div.width());
+							$div.find('img').attr('src', asset.image);
+						}, $('.container-assets .asset-wrapper-sample'));
 					}
 				});
 				// Embed Processing
-				$('.container-assets .row').on('click', 'div.smart-embed', function () {
+				$('.container-assets').on('click', '.asset-wrapper-entity', function () {
 					// Get asset
 					var json = $(this).data('asset');
 					if (!json) return;
