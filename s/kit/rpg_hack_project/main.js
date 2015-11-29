@@ -125,7 +125,7 @@ window.addEventListener('load', function () {
 			if (Hack.player) this.scene.addChild(Hack.player);
 		},
 		hitTest: function (x, y) {
-			return this.bmap.hitTest(x, y) || this.fmap.hitTest(x, y);
+			return this.bmap.hitTest(x, y);
 		}
 	});
 	Object.defineProperty(window, 'RPGMap', {
