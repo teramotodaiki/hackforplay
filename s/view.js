@@ -660,6 +660,7 @@ $(function(){
 
 			window.addEventListener('message', function task(event) {
 				if (event.data === 'game_loaded') {
+					window.removeEventListener('message', task);
 					var str = sessionStorage.getItem('stage_param_game_assets');
 					if (str) {
 						var assets = $.parseJSON(str);
@@ -706,8 +707,6 @@ $(function(){
 								src: item
 							}).appendTo(child);
 						}, $('.container-assets .row'));
-
-						window.removeEventListener('message', task);
 					}
 				}
 			});
