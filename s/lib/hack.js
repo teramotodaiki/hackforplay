@@ -570,10 +570,6 @@ window.addEventListener('load', function() {
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
 	game.addEventListener('load', function(){
-		// game.assetsの中身をJSONにしてSessionStorageに格納する
-		var assets = game.assets ? JSON.stringify(game.assets) : '';
-		sessionStorage.setItem('stage_param_game_assets', assets);
-
 		// smartAssetをsessionStorageに格納する
 		var smartAsset = Hack.smartAsset ? JSON.stringify(Hack.smartAsset) : '';
 		sessionStorage.setItem('stage_param_smart_asset', smartAsset);
