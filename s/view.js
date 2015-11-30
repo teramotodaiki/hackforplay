@@ -663,11 +663,21 @@ $(function(){
 					if (event.data === 'game_loaded') {
 						var str = sessionStorage.getItem('stage_param_smart_asset');
 						smartAsset = $.parseJSON(str); // Update Smart Assets
-						$('.smart-asset-entity').remove(); // Delete old apps
 						smartAsset.apps.forEach(function (asset, index) {
-							var $div = this.clone(true, true).appendTo(this.parent());
-							$div.toggleClass('smart-asset-sample hidden smart-asset-entity query-' + asset.query);
-							$div.data('index', index);
+							// elementのdata-cacheと比較. eleがない:追加, eleと同じ:無視, eleと違う: 挿入後、eleを削除
+							var element = $('.container-assets .smart-asset-entity').get(index),
+							json = JSON.stringify(asset);
+							if (element && $(element).data('cache') === json) return; // eleと同じ:無視
+							var $div = this.clone(true, true).data({
+								index: index,
+								cache: json
+							}).toggleClass('smart-asset-sample hidden smart-asset-entity query-' + asset.query);
+							if (!element) {
+								$div.appendTo(this.parent()); // eleがない:追加
+							} else {
+								$div.insertBefore(element);
+								element.remove(); // eleと違う: 挿入後、eleを削除
+							}
 							var size = $div.find('.wrapper').outerHeight($div.width()).height();
 							$div.find('img').attr('src', asset.image).on('load', function() {
 								if (asset.trim) {
@@ -686,6 +696,10 @@ $(function(){
 								$div.find('.caption').text(asset.caption);
 							}
 						}, $('.container-assets .smart-asset-sample'));
+						// Removed Assets
+						$('.container-assets .smart-asset-entity').filter(function(index) {
+							return index >= smartAsset.apps.length;
+						}).remove();
 					}
 				});
 				// Embed Processing
