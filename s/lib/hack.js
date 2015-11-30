@@ -566,13 +566,46 @@ window.addEventListener('load', function() {
 		}
 	});
 
+	(function () {
+		var __apps = [], __counters = {};
+		Hack.smartAsset = {
+			append: function (asset) {
+				if (arguments.length > 1) {
+					Array.prototype.forEach.call(arguments, function (item) {
+						this.append(item);
+					}, this);
+				} else if (arguments.length === 1) {
+					__apps.push(asset);
+				}
+				return this;
+			},
+			setCounter: function (counter) {
+				if (arguments.length > 1) {
+					Array.prototype.forEach.call(arguments, function (item) {
+						this.setCounter(item);
+					}, this);
+				} else if (arguments.length === 1) {
+					__counters[counter.name] = counter;
+				}
+				return this;
+			}
+		};
+		Object.defineProperty(Hack.smartAsset, 'apps', {
+			enumerable: true,
+			get: function () { return __apps; }
+		});
+		Object.defineProperty(Hack.smartAsset, 'counters', {
+			enumerable: true,
+			get: function () { return __counters; }
+		});
+	})();
+
 	window.postMessage("Hack.dispatchEvent(new Event('load'));", "/"); // Hack.onloadのコール
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
 	game.addEventListener('load', function(){
 		// smartAssetをsessionStorageに格納する
-		var smartAsset = Hack.smartAsset ? JSON.stringify(Hack.smartAsset) : '';
-		sessionStorage.setItem('stage_param_smart_asset', smartAsset);
+		sessionStorage.setItem('stage_param_smart_asset', JSON.stringify(Hack.smartAsset));
 
 		window.parent.postMessage('game_loaded', '*'); // ロードのタイミングを伝える
 		if (Hack.defaultParentNode) {
