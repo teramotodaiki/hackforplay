@@ -658,18 +658,16 @@ $(function(){
 
 			// Smart Assets
 			(function () {
-				var __counters = [];
-				// Smart Embed System
-				window.addEventListener('message', function task (event) {
+				var smartAsset = null;
+				window.addEventListener('message', function (event) {
 					if (event.data === 'game_loaded') {
-						window.removeEventListener('message', task);
-						var str = sessionStorage.getItem('stage_param_smart_assets');
-						var smartAssets = $.parseJSON(str);
-						__counters = smartAssets.counters;
-						smartAssets.buttons.forEach(function (asset) {
+						var str = sessionStorage.getItem('stage_param_smart_asset');
+						smartAsset = $.parseJSON(str); // Update Smart Assets
+						$('.asset-wrapper-entity').remove(); // Delete old buttons
+						smartAsset.buttons.forEach(function (asset, index) {
 							var $div = this.clone(true, true).appendTo(this.parent());
 							$div.toggleClass('asset-wrapper-sample hidden asset-wrapper-entity query-' + asset.query);
-							$div.data('asset', JSON.stringify(asset));
+							$div.data('index', index);
 							var size = $div.find('.wrapper').outerHeight($div.width()).height();
 							$div.find('img').attr('src', asset.image).on('load', function() {
 								if (asset.trim) {
@@ -693,9 +691,8 @@ $(function(){
 				// Embed Processing
 				$('.container-assets').on('click', '.asset-wrapper-entity.query-embed', function () {
 					// Get asset
-					var json = $(this).data('asset');
-					if (!json) return;
-					var asset = $.parseJSON(json);
+					var index = $(this).data('index') >> 0;
+					var asset = smartAsset.buttons[index];
 					// Get code
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
@@ -732,7 +729,7 @@ $(function(){
 					// Counters
 					if (asset.counters && asset.counters instanceof Array) {
 						asset.counters.filter(function (key) {
-							return __counters[key] !== undefined;
+							return smartAsset.counters[key] !== undefined;
 						}).forEach(function (key) {
 							(function () {
 								this.index = this.index > -1 ? this.index : 0;
@@ -740,7 +737,7 @@ $(function(){
 									asset.lines[index] = line.split(key).join(this.table[this.index]);
 								}, this);
 								this.index = ++this.index % this.table.length;
-							}).call(__counters[key]);
+							}).call(smartAsset.counters[key]);
 						});
 					}
 					// Replacement (ALL keywords contains)

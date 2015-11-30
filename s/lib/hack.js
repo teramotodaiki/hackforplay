@@ -574,9 +574,9 @@ window.addEventListener('load', function() {
 		var assets = game.assets ? JSON.stringify(game.assets) : '';
 		sessionStorage.setItem('stage_param_game_assets', assets);
 
-		// smartAssetsをsessionStorageに格納する
-		var smartAssets = Hack.smartAssets ? JSON.stringify(Hack.smartAssets) : '';
-		sessionStorage.setItem('stage_param_smart_assets', smartAssets);
+		// smartAssetをsessionStorageに格納する
+		var smartAsset = Hack.smartAsset ? JSON.stringify(Hack.smartAsset) : '';
+		sessionStorage.setItem('stage_param_smart_asset', smartAsset);
 
 		window.parent.postMessage('game_loaded', '*'); // ロードのタイミングを伝える
 		if (Hack.defaultParentNode) {
