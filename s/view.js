@@ -663,10 +663,10 @@ $(function(){
 					if (event.data === 'game_loaded') {
 						var str = sessionStorage.getItem('stage_param_smart_asset');
 						smartAsset = $.parseJSON(str); // Update Smart Assets
-						$('.asset-wrapper-entity').remove(); // Delete old buttons
-						smartAsset.buttons.forEach(function (asset, index) {
+						$('.asset-app-entity').remove(); // Delete old apps
+						smartAsset.apps.forEach(function (asset, index) {
 							var $div = this.clone(true, true).appendTo(this.parent());
-							$div.toggleClass('asset-wrapper-sample hidden asset-wrapper-entity query-' + asset.query);
+							$div.toggleClass('asset-app-sample hidden asset-app-entity query-' + asset.query);
 							$div.data('index', index);
 							var size = $div.find('.wrapper').outerHeight($div.width()).height();
 							$div.find('img').attr('src', asset.image).on('load', function() {
@@ -685,14 +685,14 @@ $(function(){
 							if (asset.caption) {
 								$div.find('.caption').text(asset.caption);
 							}
-						}, $('.container-assets .asset-wrapper-sample'));
+						}, $('.container-assets .asset-app-sample'));
 					}
 				});
 				// Embed Processing
-				$('.container-assets').on('click', '.asset-wrapper-entity.query-embed', function () {
+				$('.container-assets').on('click', '.asset-app-entity.query-embed', function () {
 					// Get asset
 					var index = $(this).data('index') >> 0;
-					var asset = smartAsset.buttons[index];
+					var asset = smartAsset.apps[index];
 					// Get code
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
@@ -767,7 +767,7 @@ $(function(){
 					$('.h4p_restaging_button').trigger('click');
 				});
 				// Toggle Processing
-				$('.container-assets').on('click', '.asset-wrapper-entity.query-toggle', function() {
+				$('.container-assets').on('click', '.asset-app-entity.query-toggle', function() {
 					$(this).toggleClass('toggle-clicked');
 					var toggle = $(this).hasClass('toggle-clicked');
 					$('.container-assets .query-toggle').each(function(index, el) {

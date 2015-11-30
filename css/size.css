@@ -426,10 +426,10 @@ button.h4p_open-project {
 	margin-left: -15px;
 }
 
-.asset-wrapper-entity {
+.asset-app-entity {
 	padding: 5px 5px;
 }
 
-.asset-wrapper-entity.toggle-clicked .wrapper {
+.asset-app-entity.toggle-clicked .wrapper {
 	padding: 12px 24px 8px 8px;
 }

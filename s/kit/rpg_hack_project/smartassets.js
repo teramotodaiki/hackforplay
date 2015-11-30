@@ -1,6 +1,6 @@
 window.addEventListener('load', function () {
 	(function () {
-		var __buttons = [], __counters = {};
+		var __apps = [], __counters = {};
 		Hack.smartAsset = {
 			append: function (asset) {
 				if (arguments.length > 1) {
@@ -8,7 +8,7 @@ window.addEventListener('load', function () {
 						this.append(item);
 					}, this);
 				} else if (arguments.length === 1) {
-					__buttons.push(asset);
+					__apps.push(asset);
 				}
 				return this;
 			},
@@ -23,9 +23,9 @@ window.addEventListener('load', function () {
 				return this;
 			}
 		};
-		Object.defineProperty(Hack.smartAsset, 'buttons', {
+		Object.defineProperty(Hack.smartAsset, 'apps', {
 			enumerable: true,
-			get: function () { return __buttons; }
+			get: function () { return __apps; }
 		});
 		Object.defineProperty(Hack.smartAsset, 'counters', {
 			enumerable: true,
