@@ -663,10 +663,10 @@ $(function(){
 					if (event.data === 'game_loaded') {
 						var str = sessionStorage.getItem('stage_param_smart_asset');
 						smartAsset = $.parseJSON(str); // Update Smart Assets
-						$('.asset-app-entity').remove(); // Delete old apps
+						$('.smart-asset-entity').remove(); // Delete old apps
 						smartAsset.apps.forEach(function (asset, index) {
 							var $div = this.clone(true, true).appendTo(this.parent());
-							$div.toggleClass('asset-app-sample hidden asset-app-entity query-' + asset.query);
+							$div.toggleClass('smart-asset-sample hidden smart-asset-entity query-' + asset.query);
 							$div.data('index', index);
 							var size = $div.find('.wrapper').outerHeight($div.width()).height();
 							$div.find('img').attr('src', asset.image).on('load', function() {
@@ -685,11 +685,11 @@ $(function(){
 							if (asset.caption) {
 								$div.find('.caption').text(asset.caption);
 							}
-						}, $('.container-assets .asset-app-sample'));
+						}, $('.container-assets .smart-asset-sample'));
 					}
 				});
 				// Embed Processing
-				$('.container-assets').on('click', '.asset-app-entity.query-embed', function () {
+				$('.container-assets').on('click', '.smart-asset-entity.query-embed', function () {
 					// Get asset
 					var index = $(this).data('index') >> 0;
 					var asset = smartAsset.apps[index];
@@ -767,7 +767,7 @@ $(function(){
 					$('.h4p_restaging_button').trigger('click');
 				});
 				// Toggle Processing
-				$('.container-assets').on('click', '.asset-app-entity.query-toggle', function() {
+				$('.container-assets').on('click', '.smart-asset-entity.query-toggle', function() {
 					$(this).toggleClass('toggle-clicked');
 					var toggle = $(this).hasClass('toggle-clicked');
 					$('.container-assets .query-toggle').each(function(index, el) {

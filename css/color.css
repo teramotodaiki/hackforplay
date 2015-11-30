@@ -118,18 +118,18 @@ nav.navbar {
 	background: linear-gradient(#f5f5f5, #ffffff);
 }
 
-.asset-app-entity .wrapper {
+.smart-asset-entity .wrapper {
 	background-color: white;
 	border: 6px solid rgb(117, 117, 117);
 	border-radius: 20px;
 	z-index: 1;
 }
 
-.asset-app-entity img {
+.smart-asset-entity img {
 	z-index: 0;
 }
 
-.asset-app-entity .wrapper:hover {
+.smart-asset-entity .wrapper:hover {
 	border-color: rgb(220,220,220);
 }
 
