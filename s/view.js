@@ -658,6 +658,14 @@ $(function(){
 
 			// Smart Assets
 			(function () {
+				$('.container-assets').affix({
+					offset: {
+						top: $('nav.navbar').outerHeight(true),
+						bottom: function () { return -$('.container-game').outerHeight(); }
+					}
+				}).on('affix.bs.affix', function() {
+					$(this).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
+				});
 				var smartAsset = null;
 				window.addEventListener('message', function (event) {
 					if (event.data === 'game_loaded') {
@@ -700,6 +708,7 @@ $(function(){
 						$('.container-assets .smart-asset-entity').filter(function(index) {
 							return index >= smartAsset.apps.length;
 						}).remove();
+						$('.container-assets').css('height', $('.container-assets').outerHeight());
 					}
 				});
 				// Embed Processing

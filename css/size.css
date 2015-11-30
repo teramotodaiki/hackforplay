@@ -426,6 +426,16 @@ button.h4p_open-project {
 	margin-left: -15px;
 }
 
+.container-assets.affix {
+	position: fixed;
+	top: 0;
+}
+
+.container-assets.affix-bottom {
+	position: absolute;
+	bottom: 0;
+}
+
 .smart-asset-entity {
 	padding: 5px 5px;
 }
