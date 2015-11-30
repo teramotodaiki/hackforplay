@@ -407,8 +407,15 @@ if ($mode === 'quest') {
 			</div>
 		</div>
 	</div>
-	<div class="container container-assets" style="float: left">
-		<div class="row"></div>
+	<div class="container container-assets hidden">
+		<div class="row">
+			<div class="smart-asset-sample col-lg-2 col-md-3 col-sm-4 col-xs-6 hidden">
+				<div class="wrapper overflow-hidden">
+					<p class="caption text-center hidden"></p>
+					<img>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

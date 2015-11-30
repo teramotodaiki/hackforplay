@@ -180,6 +180,13 @@ nav #img-usericon {
 	width: 99%;
 }
 
+.container-game,
+.container-youtube,
+.container-tab,
+.container-assets {
+	float: left;
+}
+
 /* 間隔属性 */
 .margin-top-lg {
 	margin-top: 40px;
@@ -417,4 +424,22 @@ button.h4p_open-project {
 
 .notification-item-wrapper .notification-item-article {
 	margin-left: -15px;
+}
+
+.container-assets.affix {
+	position: fixed;
+	top: 0;
+}
+
+.container-assets.affix-bottom {
+	position: absolute;
+	bottom: 0;
+}
+
+.smart-asset-entity {
+	padding: 5px 5px;
+}
+
+.smart-asset-entity.toggle-clicked .wrapper {
+	padding: 12px 24px 8px 8px;
 }

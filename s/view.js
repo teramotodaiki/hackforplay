@@ -494,7 +494,6 @@ $(function(){
 							'width': youtube_width,
 							'height': youtube_width / 1.5
 						});
-						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
 						break;
 					case 'game':
 						// 1カラム 100:0 ただし幅には最大値がある
@@ -508,7 +507,6 @@ $(function(){
 
 						$('.container-tab').removeClass('hidden');
 						$('.container-youtube,.container-assets').addClass('hidden').width(0);
-						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
 						break;
 					}
 
@@ -658,94 +656,66 @@ $(function(){
 				};
 			}
 
-			window.addEventListener('message', function task(event) {
-				if (event.data === 'game_loaded') {
-					var str = sessionStorage.getItem('stage_param_game_assets');
-					if (str) {
-						var assets = $.parseJSON(str);
-						Object.keys(assets).filter(function (item) {
-							return item.indexOf('hackforplay/') < 0 &&
-									(item.indexOf('.png') > -1 || item.indexOf('.gif') > -1 || item.indexOf('.jpg') > -1);
-						}).forEach(function (item) {
-							var div = $('<div>').addClass('col-sm-3').appendTo(this);
-							div.click(function(event) {
-								$(this).toggleClass('toggle-clicked');
-								var toggle = $(this).hasClass('toggle-clicked');
-								$('.container-assets .row').children('div').each(function(index, el) {
-									// close all
-									$(el).removeClass('col-sm-12 toggle-clicked').addClass('col-sm-3');
-									var $thumbnail = $(el).find('.thumbnail');
-									$thumbnail.removeClass('scroll-y').addClass('overflow-hidden').outerHeight($(this).width());
-									$thumbnail.find('p').addClass('hidden');
-								});
-								if (toggle) {
-									$(this).toggleClass('col-sm-3 col-sm-12 toggle-clicked');
-									var $thumbnail = $(this).find('.thumbnail');
-									$thumbnail.find('p').removeClass('hidden');
-									var _height = 0;
-									$thumbnail.children().each(function(index, el) {
-										_height += $(el).outerHeight(true);
+			// Smart Assets
+			(function () {
+				$('.container-assets').affix({
+					offset: {
+						top: $('nav.navbar').outerHeight(true),
+						bottom: function () { return -$('.container-game').outerHeight(); }
+					}
+				}).on('affix.bs.affix', function() {
+					$(this).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
+				});
+				var smartAsset = null;
+				window.addEventListener('message', function (event) {
+					if (event.data === 'game_loaded') {
+						var str = sessionStorage.getItem('stage_param_smart_asset');
+						smartAsset = $.parseJSON(str); // Update Smart Assets
+						smartAsset.apps.forEach(function (asset, index) {
+							// elementのdata-cacheと比較. eleがない:追加, eleと同じ:無視, eleと違う: 挿入後、eleを削除
+							var element = $('.container-assets .smart-asset-entity').get(index),
+							json = JSON.stringify(asset);
+							if (element && $(element).data('cache') === json) return; // eleと同じ:無視
+							var $div = this.clone(true, true).data({
+								index: index,
+								cache: json
+							}).toggleClass('smart-asset-sample hidden smart-asset-entity query-' + asset.query);
+							if (!element) {
+								$div.appendTo(this.parent()); // eleがない:追加
+							} else {
+								$div.insertBefore(element);
+								element.remove(); // eleと違う: 挿入後、eleを削除
+							}
+							var size = $div.find('.wrapper').outerHeight($div.width()).height();
+							$div.find('img').attr('src', asset.image).on('load', function() {
+								if (asset.trim) {
+									$(this).css({
+										position: 'relative',
+										top: '-' + (asset.trim.y * size / asset.trim.height)>>0 + 'px',
+										left: '-' + (asset.trim.x * size / asset.trim.width)>>0 + 'px',
+										width: this.width * size / asset.trim.width,
+										height: this.height * size / asset.trim.height
 									});
-									if (_height < 320) $thumbnail.height(_height);
-									else {
-										$thumbnail.height(320);
-										$thumbnail.toggleClass('scroll-y overflow-hidden');
-									}
+								} else {
+									$(this).addClass('img-responsive');
 								}
 							});
-							var child = $('<div>').addClass('thumbnail overflow-hidden').css({
-								height: div.width()
-							}).appendTo(div);
-							child.hover(function() {
-								$(this).css('background-color', 'rgb(220,220,220)');
-							}, function() {
-								$(this).css('background-color', 'rgb(255,255,255)');
-							});
-							$('<p>').addClass('text-center hidden').text(item).appendTo(child);
-							$('<img>').addClass('img-responsive').attr({
-								src: item
-							}).appendTo(child);
-						}, $('.container-assets .row'));
-
-						window.removeEventListener('message', task);
-					}
-				}
-			});
-
-			// game.assetsの表示
-			(function () {
-				var __counters = [];
-				// Smart Embed System
-				window.addEventListener('message', function task (event) {
-					if (event.data === 'game_loaded') {
-						window.removeEventListener('message', task);
-						var str = sessionStorage.getItem('stage_param_smart_assets');
-						var smartAssets = $.parseJSON(str);
-						__counters = smartAssets.counters;
-						smartAssets.buttons.forEach(function (asset) {
-							var div = $('<div>').addClass('col-sm-3 smart-embed').appendTo(this).data({
-								'asset': JSON.stringify(asset)
-							});
-							var child = $('<div>').addClass('thumbnail overflow-hidden').css({
-								height: div.width()
-							}).appendTo(div);
-							child.hover(function() {
-								$(this).css('background-color', 'rgb(210,210,210)');
-							}, function() {
-								$(this).css('background-color', 'rgb(255,255,255)');
-							});
-							$('<img>').addClass('img-responsive').attr({
-								src: asset.image
-							}).appendTo(child);
-						}, $('.container-assets .row'));
+							if (asset.caption) {
+								$div.find('.caption').text(asset.caption);
+							}
+						}, $('.container-assets .smart-asset-sample'));
+						// Removed Assets
+						$('.container-assets .smart-asset-entity').filter(function(index) {
+							return index >= smartAsset.apps.length;
+						}).remove();
+						$('.container-assets').css('height', $('.container-assets').outerHeight());
 					}
 				});
 				// Embed Processing
-				$('.container-assets .row').on('click', 'div.smart-embed', function () {
+				$('.container-assets').on('click', '.smart-asset-entity.query-embed', function () {
 					// Get asset
-					var json = $(this).data('asset');
-					if (!json) return;
-					var asset = $.parseJSON(json);
+					var index = $(this).data('index') >> 0;
+					var asset = smartAsset.apps[index];
 					// Get code
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
@@ -782,15 +752,15 @@ $(function(){
 					// Counters
 					if (asset.counters && asset.counters instanceof Array) {
 						asset.counters.filter(function (key) {
-							return __counters[key] !== undefined;
+							return smartAsset.counters[key] !== undefined;
 						}).forEach(function (key) {
 							(function () {
-								this.value = this.value > -1 ? this.value : this.init;
+								this.index = this.index > -1 ? this.index : 0;
 								asset.lines.forEach(function (line, index) {
-									asset.lines[index] = line.split(key).join(this.value);
+									asset.lines[index] = line.split(key).join(this.table[this.index]);
 								}, this);
-								this.value = (this.value + this.add) % this.size;
-							}).call(__counters[key]);
+								this.index = ++this.index % this.table.length;
+							}).call(smartAsset.counters[key]);
 						});
 					}
 					// Replacement (ALL keywords contains)
@@ -818,6 +788,32 @@ $(function(){
 					jsEditor.save();
 					jsEditor.setSelection(scroll.from, scroll.to, { scroll: true });
 					$('.h4p_restaging_button').trigger('click');
+				});
+				// Toggle Processing
+				$('.container-assets').on('click', '.smart-asset-entity.query-toggle', function() {
+					$(this).toggleClass('toggle-clicked');
+					var toggle = $(this).hasClass('toggle-clicked');
+					$('.container-assets .query-toggle').each(function(index, el) {
+						// close all
+						$(el).removeClass('col-xs-12 toggle-clicked').addClass('col-lg-2 col-md-3 col-sm-4 col-xs-6');
+						var $wrapper = $(el).find('.wrapper');
+						$wrapper.removeClass('scroll-y').addClass('overflow-hidden').outerHeight($(this).width());
+						$wrapper.find('.caption').addClass('hidden');
+					});
+					if (toggle) {
+						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
+						var $wrapper = $(this).find('.wrapper');
+						$wrapper.find('.caption').removeClass('hidden');
+						var _height = 0;
+						$wrapper.children().each(function(index, el) {
+							_height += $(el).outerHeight(true);
+						});
+						if (_height < 320) $wrapper.height(_height);
+						else {
+							$wrapper.height(320);
+							$wrapper.toggleClass('scroll-y overflow-hidden');
+						}
+					}
 				});
 			})();
 		};
