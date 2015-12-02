@@ -127,7 +127,7 @@ window.addEventListener('load', function () {
 			var item = new MapObject('DownStair');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
-				Hack.changeMap('map2');
+				Hack.changeMap(Hack.maps.next);
 			};
 		}
 	}, {
