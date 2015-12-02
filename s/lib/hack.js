@@ -165,8 +165,11 @@ window.addEventListener('load', function() {
 			get: function(){
 				return _hint;
 			},
-			set: function(text){
-				_hint = text;
+			set: function(code){
+				if (code instanceof Function) {
+					code = Hack.fun2str(code);
+				}
+				_hint = code;
 				sendToEditor('setEditor();');
 			}
 		});
