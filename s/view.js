@@ -457,7 +457,8 @@ $(function(){
 				}, 100);
 
 				// ２カラムアライメント（ゲームビュー | YouTubeビュー）
-				var alignmentMode = getParam('youtube') ? 'both' : 'game'; // both(２カラム) | game(ゲーム画面のみ)
+				// var alignmentMode = getParam('youtube') ? 'both' : 'game'; // both(２カラム) | game(ゲーム画面のみ)
+				var alignmentMode = 'both'; // both(２カラム) | game(ゲーム画面のみ)
 				var reload_timer = null;
 
 				// アライメントモードの切り替え
@@ -488,12 +489,11 @@ $(function(){
 						});
 						$('.container-tab').removeClass('hidden');
 						var youtube_width = body_width - $('.container-game').outerWidth() - $('.container-tab').outerWidth() - 60;
-						$('.container-youtube').removeClass('hidden').outerWidth(youtube_width);
+						$('.container-youtube,.container-assets').removeClass('hidden').outerWidth(youtube_width);
 						$('.h4p_youtube-frame iframe').attr({
 							'width': youtube_width,
 							'height': youtube_width / 1.5
 						});
-						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
 						break;
 					case 'game':
 						// 1カラム 100:0 ただし幅には最大値がある
@@ -506,8 +506,7 @@ $(function(){
 						$('.container-game').width(content_width);
 
 						$('.container-tab').removeClass('hidden');
-						$('.container-youtube').addClass('hidden').width(0);
-						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
+						$('.container-youtube,.container-assets').addClass('hidden').width(0);
 						break;
 					}
 
@@ -657,6 +656,166 @@ $(function(){
 				};
 			}
 
+			// Smart Assets
+			(function () {
+				$('.container-assets').affix({
+					offset: {
+						top: $('nav.navbar').outerHeight(true),
+						bottom: function () { return -$('.container-game').outerHeight(); }
+					}
+				}).on('affix.bs.affix', function() {
+					$(this).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
+				});
+				var smartAsset = null;
+				window.addEventListener('message', function (event) {
+					if (event.data === 'game_loaded') {
+						var str = sessionStorage.getItem('stage_param_smart_asset');
+						smartAsset = $.parseJSON(str); // Update Smart Assets
+						smartAsset.apps.forEach(function (asset, index) {
+							// elementのdata-cacheと比較. eleがない:追加, eleと同じ:無視, eleと違う: 挿入後、eleを削除
+							var element = $('.container-assets .smart-asset-entity').get(index),
+							json = JSON.stringify(asset);
+							if (element && $(element).data('cache') === json) return; // eleと同じ:無視
+							var $div = this.clone(true, true).data({
+								index: index,
+								cache: json
+							}).toggleClass('smart-asset-sample hidden smart-asset-entity query-' + asset.query);
+							if (!element) {
+								$div.appendTo(this.parent()); // eleがない:追加
+							} else {
+								$div.insertBefore(element);
+								element.remove(); // eleと違う: 挿入後、eleを削除
+							}
+							var size = $div.find('.wrapper').outerHeight($div.width()).height();
+							$div.find('img').attr('src', asset.image).on('load', function() {
+								if (asset.trim) {
+									$(this).css({
+										position: 'relative',
+										top: '-' + (asset.trim.y * size / asset.trim.height)>>0 + 'px',
+										left: '-' + (asset.trim.x * size / asset.trim.width)>>0 + 'px',
+										width: this.width * size / asset.trim.width,
+										height: this.height * size / asset.trim.height
+									});
+								} else {
+									$(this).addClass('img-responsive');
+								}
+							});
+							if (asset.caption) {
+								$div.find('.caption').text(asset.caption);
+							}
+						}, $('.container-assets .smart-asset-sample'));
+						// Removed Assets
+						$('.container-assets .smart-asset-entity').filter(function(index) {
+							return index >= smartAsset.apps.length;
+						}).remove();
+						$('.container-assets').css('height', $('.container-assets').outerHeight());
+					}
+				});
+				// Embed Processing
+				$('.container-assets').on('click', '.smart-asset-entity.query-embed', function () {
+					// Get asset
+					var index = $(this).data('index') >> 0;
+					var asset = smartAsset.apps[index];
+					// Get code
+					jsEditor.save();
+					var code = jsEditor.getTextArea().value;
+					// regExp に一致する matches について、それぞれ head, indent, comment に分割
+					var placeholders = (function (regExp) {
+						var result = [];
+						(code.match(regExp) || []).forEach(function (match, index) {
+							var array = match.replace(regExp, '$1\0$2\0$3').split('\0');
+							result.push({
+								raw: match,
+								head: array[0],
+								indent: array[1],
+								comment: array[2]
+							});
+						});
+						return result;
+					})(/(^|\n)([ \t]*)(\/\/.*\/\/\n)/g);
+					// Variable
+					if (asset.variables && asset.variables instanceof Array) {
+						asset.variables.forEach(function (varName) {
+							for (var i = 1; i < 100000; i++) {
+								var reg = new RegExp('(^|\\W)' + varName + i + '(\\W|$)');
+								if (code.match(reg) === null) {
+									asset.lines.forEach(function (line, index) {
+										var _r = new RegExp('(^|\\W)' + varName + '(\\W|$)', 'g');
+										var replaced = line.replace(_r, '$1' + varName + i + '$2');
+										asset.lines[index] = replaced;
+									});
+									break;
+								}
+							}
+						});
+					}
+					// Counters
+					if (asset.counters && asset.counters instanceof Array) {
+						asset.counters.filter(function (key) {
+							return smartAsset.counters[key] !== undefined;
+						}).forEach(function (key) {
+							(function () {
+								this.index = this.index > -1 ? this.index : 0;
+								asset.lines.forEach(function (line, index) {
+									asset.lines[index] = line.split(key).join(this.table[this.index]);
+								}, this);
+								this.index = ++this.index % this.table.length;
+							}).call(smartAsset.counters[key]);
+						});
+					}
+					// Replacement (ALL keywords contains)
+					var scroll = { from: {line: 0, ch: 0}, to: {line: 0, ch: 0} };
+					placeholders.filter(function (p) {
+						var raw = asset.identifier,
+						identifier = typeof raw === 'string' ? raw.split('') : raw instanceof Array ? raw : [];
+						return identifier.every(function (keyword) {
+							return p.comment.indexOf(keyword) > -1;
+						});
+					}).forEach(function (p) {
+						var replacement = [
+						p.head, // 事前の改行または行頭
+						asset.lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
+						'\n', '\n', // ２つの空行
+						p.comment].join(p.indent);
+						var splited = code.split(p.raw);
+						code = splited.join(replacement);
+						if (splited.length > 1) {
+							scroll.from.line = splited[0].split('\n').length - 1;
+							scroll.to.line = scroll.from.line + replacement.split('\n').length - 3;
+						}
+					});
+					jsEditor.setValue(code);
+					jsEditor.save();
+					jsEditor.setSelection(scroll.from, scroll.to, { scroll: true });
+					$('.h4p_restaging_button').trigger('click');
+				});
+				// Toggle Processing
+				$('.container-assets').on('click', '.smart-asset-entity.query-toggle', function() {
+					$(this).toggleClass('toggle-clicked');
+					var toggle = $(this).hasClass('toggle-clicked');
+					$('.container-assets .query-toggle').each(function(index, el) {
+						// close all
+						$(el).removeClass('col-xs-12 toggle-clicked').addClass('col-lg-2 col-md-3 col-sm-4 col-xs-6');
+						var $wrapper = $(el).find('.wrapper');
+						$wrapper.removeClass('scroll-y').addClass('overflow-hidden').outerHeight($(this).width());
+						$wrapper.find('.caption').addClass('hidden');
+					});
+					if (toggle) {
+						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
+						var $wrapper = $(this).find('.wrapper');
+						$wrapper.find('.caption').removeClass('hidden');
+						var _height = 0;
+						$wrapper.children().each(function(index, el) {
+							_height += $(el).outerHeight(true);
+						});
+						if (_height < 320) $wrapper.height(_height);
+						else {
+							$wrapper.height(320);
+							$wrapper.toggleClass('scroll-y overflow-hidden');
+						}
+					}
+				});
+			})();
 		};
 
 		function makeProject (successed, failed) {
