@@ -79,6 +79,18 @@ window.addEventListener('load', function() {
 			break;
 	}
 
+	Hack.fun2str = function (func) {
+		// 関数の文字列化
+		var str = func.toString().match(/^function[^\{]*\{\n?(\s*)([\s\S]*)\}$/);
+		if (str !== null) {
+			var indent = str[1].match(/(.*)$/)[0];
+			return ('\n' + str[1] + str[2]).split('\n' + indent).join('\n').substr(1);
+		} else {
+			// 切り分けのミス
+			Hack.log('Hack.restagingCode hasnot set the function because hack.js is wrong. See hack.js and fix it');
+		}
+	};
+
 	// textarea : 画面全体をおおう半透明のテキストエリア(DOM)
 	Hack.textarea = (function(){
 		// scope: new Entity
@@ -153,8 +165,11 @@ window.addEventListener('load', function() {
 			get: function(){
 				return _hint;
 			},
-			set: function(text){
-				_hint = text;
+			set: function(code){
+				if (code instanceof Function) {
+					code = Hack.fun2str(code);
+				}
+				_hint = code;
 				sendToEditor('setEditor();');
 			}
 		});
@@ -556,6 +571,9 @@ window.addEventListener('load', function() {
 			return sessionStorage.getItem('restaging_code');
 		},
 		set: function(code){
+			if (code instanceof Function) {
+				code = Hack.fun2str(code);
+			}
 			switch (sessionStorage.getItem('stage_param_game_mode')) {
 				case 'official':
 				case 'extend':
@@ -575,6 +593,9 @@ window.addEventListener('load', function() {
 						this.append(item);
 					}, this);
 				} else if (arguments.length === 1) {
+					if (asset.code instanceof Function) {
+						asset.lines = Hack.fun2str(asset.code).split('\n');
+					}
 					__apps.push(asset);
 				}
 				return this;
