@@ -42,7 +42,7 @@ window.addEventListener('load', function () {
 				'Coin': 565,		'Star': 566,		'Key': 567
 			};
 
-			Hack.maps = [];
+			Hack.maps = {};
 
 			// map1
 			Hack.maps['map1'] = new RPGMap(32, 32);

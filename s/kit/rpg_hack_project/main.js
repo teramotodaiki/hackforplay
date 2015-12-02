@@ -15,7 +15,7 @@ window.addEventListener('load', function () {
 			'Tree': 520,		'Table': 521,		'OpenedBox': 522
 		};
 
-		Hack.maps = [];
+		Hack.maps = {};
 		Hack.maps['map1'] = new RPGMap(32, 32);
 		Hack.maps['map1'].imagePath = 'enchantjs/x2/dotmat.gif';
 		Hack.maps['map1'].bmap.loadData([
