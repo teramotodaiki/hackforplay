@@ -274,10 +274,10 @@ window.addEventListener('load', function () {
 		}
 	}).setCounter({
 		name: '__cnt15',
-		table: shuffle([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
+		table: shuffle(fill(0, 15))
 	}, {
 		name: '__cnt10',
-		table: shuffle([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5]) // length=11
+		table: shuffle(fill(0, 10).concat([(Math.random()*10) >> 0])) // length=11
 	});
 	function shuffle(array) {
 		var m = array.length, t, i;
@@ -286,6 +286,13 @@ window.addEventListener('load', function () {
 			t = array[m];
 			array[m] = array[i];
 			array[i] = t;
+		}
+		return array;
+	}
+	function fill (start, end) {
+		var array = [];
+		for (var i = start; i < end; i++) {
+			array.push(i);
 		}
 		return array;
 	}
