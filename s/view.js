@@ -521,6 +521,7 @@ $(function(){
 							$('.h4p_game>iframe').fadeIn('slow');
 						}, 100);
 					}
+					$('.container-game').css('float', 'left');
 
 					// エディタの幅を変更
 					setTimeout(function() {
@@ -663,9 +664,7 @@ $(function(){
 						top: $('nav.navbar').outerHeight(true),
 						bottom: function () { return -$('.container-game').outerHeight(); }
 					}
-				}).on('affix.bs.affix', function() {
-					$(this).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
-				});
+				}).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
 				var smartAsset = null;
 				window.addEventListener('message', function (event) {
 					if (event.data === 'game_loaded') {
