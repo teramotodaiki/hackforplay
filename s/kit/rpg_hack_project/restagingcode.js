@@ -4,13 +4,13 @@ window.addEventListener('load', function () {
 		// Game start
 		game.onload = function () {
 
-			var map = Hack.maps['room1'];
+			var map = Hack.maps['map1'];
 			map.load(); // Load Map;  Hack.defaultParentNode == map.scene
 
 
 			// ゴール
 			var item1 = new MapObject(0);
-			item1.locate(14, 5, 'room1');
+			item1.locate(14, 5, 'map1');
 			item1.onplayerenter = function () {
 				// ゲームクリア
 				Hack.gameclear();
@@ -42,12 +42,12 @@ window.addEventListener('load', function () {
 				'Coin': 565,		'Star': 566,		'Key': 567
 			};
 
-			Hack.maps = [];
+			Hack.maps = {};
 
-			// room1
-			Hack.maps['room1'] = new RPGMap(32, 32);
-			Hack.maps['room1'].imagePath = 'enchantjs/x2/map1.gif';
-			Hack.maps['room1'].bmap.loadData([
+			// map1
+			Hack.maps['map1'] = new RPGMap(32, 32);
+			Hack.maps['map1'].imagePath = 'enchantjs/x2/dotmat.gif';
+			Hack.maps['map1'].bmap.loadData([
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
@@ -59,7 +59,7 @@ window.addEventListener('load', function () {
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322]
 			]);
-			Hack.maps['room1'].cmap = [
+			Hack.maps['map1'].cmap = [
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -82,7 +82,7 @@ window.addEventListener('load', function () {
 			//  -            =
 			// -  BASIC CODE  =
 			//  -            =
-			Hack.player.locate(6, 5, 'room1');  // Teleportation
+			Hack.player.locate(6, 5, 'map1');  // Teleportation
 			Hack.player.direction = 2; // Turn
 			Hack.player.atk = 10;      // Power Up
 
@@ -91,7 +91,7 @@ window.addEventListener('load', function () {
 			// *  EXTRA CODE  +  Remove // to use.
 			//  *            +   // をけして つかおう!
 
-			// Hack.changeMap('room1');
+			// Hack.changeMap('map1');
 			// Hack.log('wwwwwwww');
 
 		};

@@ -1,7 +1,7 @@
 window.addEventListener('load', function () {
 
 	var game = enchant.Core.instance;
-	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
+	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/dotmat.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
 	game.keybind(' '.charCodeAt(0), 'a');
 
 	Hack.onload = Hack.onload || function () {
@@ -15,10 +15,10 @@ window.addEventListener('load', function () {
 			'Tree': 520,		'Table': 521,		'OpenedBox': 522
 		};
 
-		Hack.maps = [];
-		Hack.maps['room1'] = new RPGMap(32, 32);
-		Hack.maps['room1'].imagePath = 'enchantjs/x2/map1.gif';
-		Hack.maps['room1'].bmap.loadData([
+		Hack.maps = {};
+		Hack.maps['map1'] = new RPGMap(32, 32);
+		Hack.maps['map1'].imagePath = 'enchantjs/x2/dotmat.gif';
+		Hack.maps['map1'].bmap.loadData([
 			[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 			[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 			[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
@@ -30,7 +30,7 @@ window.addEventListener('load', function () {
 			[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 			[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322]
 		]);
-		Hack.maps['room1'].cmap = [
+		Hack.maps['map1'].cmap = [
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -44,6 +44,43 @@ window.addEventListener('load', function () {
 		];
 
 	};
+
+	Hack.on('load', function() {
+		// Appending to Hack.maps
+		if (Hack.maps && !Hack.maps['next']) {
+			Object.defineProperty(Hack.maps, 'next', {
+				get: function () {
+					var next = null;
+					Object.keys(Hack.maps).reduce(function (previousKey, currentKey, index) {
+						next = Hack.map === Hack.maps[previousKey] ? currentKey : next;
+					});
+					return next;
+				}
+			});
+		}
+		if (Hack.maps && !Hack.maps['current']) {
+			Object.defineProperty(Hack.maps, 'current', {
+				get: function () {
+					var current = null;
+					Object.keys(Hack.maps).forEach(function (key) {
+						current = Hack.map === Hack.maps[key] ? key : current;
+					});
+					return current;
+				}
+			});
+		}
+		if (Hack.maps && !Hack.maps['previous']) {
+			Object.defineProperty(Hack.maps, 'previous', {
+				get: function () {
+					var previous = null;
+					Object.keys(Hack.maps).reduceRight(function (previousKey, currentKey) {
+						previous = Hack.map === Hack.maps[previousKey] ? currentKey : previous;
+					});
+					return previous;
+				}
+			});
+		}
+	});
 
 	game.on('load', function() {
 		var pad = new Pad();
@@ -83,7 +120,7 @@ window.addEventListener('load', function () {
 
 	game.onload = game.onload || function () {
 
-        var map = Hack.maps['room1'];
+        var map = Hack.maps['map1'];
         map.load(); // Load Map;  Hack.defaultParentNode == map.scene
 
         var player = Hack.player = new Player();
@@ -135,7 +172,12 @@ window.addEventListener('load', function () {
 	Hack.changeMap = function (mapName){
 		(function (current, next) {
 			if (next === undefined) {
-				Hack.log(mapName + ' は、まだつくられていない');
+				switch (typeof mapName) {
+					case 'string': Hack.log(mapName + ' は、まだつくられていない'); break;
+					case 'object': Hack.log('まだ マップが つくられていないようだ'); break;
+					case 'number': Hack.log(mapName + ' ではなく \'map' + mapName + '\' ではありませんか？'); break;
+					default: Hack.log('Hack.changeMap(\'map2\'); の ように かいてみよう'); break;
+				}
 			} else if (current !== next) {
 				var r = function(n){ game.rootScene.removeChild(n); };
 				r(Hack.map.bmap);
