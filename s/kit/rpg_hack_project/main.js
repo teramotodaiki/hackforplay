@@ -45,6 +45,43 @@ window.addEventListener('load', function () {
 
 	};
 
+	Hack.on('load', function() {
+		// Appending to Hack.maps
+		if (Hack.maps && !Hack.maps['next']) {
+			Object.defineProperty(Hack.maps, 'next', {
+				get: function () {
+					var next = null;
+					Object.keys(Hack.maps).reduce(function (previousKey, currentKey, index) {
+						next = Hack.map === Hack.maps[previousKey] ? currentKey : next;
+					});
+					return next;
+				}
+			});
+		}
+		if (Hack.maps && !Hack.maps['current']) {
+			Object.defineProperty(Hack.maps, 'current', {
+				get: function () {
+					var current = null;
+					Object.keys(Hack.maps).forEach(function (key) {
+						current = Hack.map === Hack.maps[key] ? key : current;
+					});
+					return current;
+				}
+			});
+		}
+		if (Hack.maps && !Hack.maps['previous']) {
+			Object.defineProperty(Hack.maps, 'previous', {
+				get: function () {
+					var previous = null;
+					Object.keys(Hack.maps).reduceRight(function (previousKey, currentKey) {
+						previous = Hack.map === Hack.maps[previousKey] ? currentKey : previous;
+					});
+					return previous;
+				}
+			});
+		}
+	});
+
 	game.on('load', function() {
 		var pad = new Pad();
 		pad.moveTo(20, 200);
@@ -135,7 +172,12 @@ window.addEventListener('load', function () {
 	Hack.changeMap = function (mapName){
 		(function (current, next) {
 			if (next === undefined) {
-				Hack.log(mapName + ' は、まだつくられていない');
+				switch (typeof mapName) {
+					case 'string': Hack.log(mapName + ' は、まだつくられていない'); break;
+					case 'object': Hack.log('まだ マップが つくられていないようだ'); break;
+					case 'number': Hack.log(mapName + ' ではなく \'map' + mapName + '\' ではありませんか？'); break;
+					default: Hack.log('Hack.changeMap(\'map2\'); の ように かいてみよう'); break;
+				}
 			} else if (current !== next) {
 				var r = function(n){ game.rootScene.removeChild(n); };
 				r(Hack.map.bmap);
