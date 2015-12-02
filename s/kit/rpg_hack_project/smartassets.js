@@ -270,6 +270,22 @@ window.addEventListener('load', function () {
 				this.destroy();
 			};
 		}
+	}, {
+		// Up Stair
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { x: 2*32, y: 20*32, width: 32, height: 32 },
+		query: 'embed',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// のぼりかいだん
+			var item = new MapObject('UpStair');
+			item.locate(__cnt15, __cnt10, 'map2');
+			item.onplayerenter = function () {
+				Hack.changeMap('map1');
+			};
+		}
 	}).setCounter({
 		name: '__cnt15',
 		table: shuffle(fill(0, 15))
