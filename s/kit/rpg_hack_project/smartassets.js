@@ -10,12 +10,12 @@ window.addEventListener('load', function () {
 		trim: { x: 0, y: 0, width: 32*4, height: 32*4 },
 		query: 'embed',
 		identifier: '<>',
-		variables: ['map'],
+		counters: ['__cntMap'],
 		code: function () {
 			// map
-			Hack.maps['map'] = new RPGMap(32, 32);
-			Hack.maps['map'].imagePath = 'enchantjs/x2/dotmat.gif';
-			Hack.maps['map'].bmap.loadData([
+			Hack.maps['map__cntMap'] = new RPGMap(32, 32);
+			Hack.maps['map__cntMap'].imagePath = 'enchantjs/x2/dotmat.gif';
+			Hack.maps['map__cntMap'].bmap.loadData([
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
@@ -27,7 +27,7 @@ window.addEventListener('load', function () {
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322]
 			]);
-			Hack.maps['map'].cmap = [
+			Hack.maps['map__cntMap'].cmap = [
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -46,13 +46,12 @@ window.addEventListener('load', function () {
 		trim: { x: 10*32, y: 0, width: 32*4, height: 32*4 },
 		query: 'embed',
 		identifier: '<>',
-		variables: ['map'],
-		counters: [],
+		counters: ['__cntMap'],
 		code: function () {
-			// map
-			Hack.maps['map'] = new RPGMap(32, 32);
-			Hack.maps['map'].imagePath = 'enchantjs/x2/dotmat.gif';
-			Hack.maps['map'].bmap.loadData([
+			// map__cntMap
+			Hack.maps['map__cntMap'] = new RPGMap(32, 32);
+			Hack.maps['map__cntMap'].imagePath = 'enchantjs/x2/dotmat.gif';
+			Hack.maps['map__cntMap'].bmap.loadData([
 				[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],
 				[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],
 				[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],
@@ -64,7 +63,7 @@ window.addEventListener('load', function () {
 				[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],
 				[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323]
 			]);
-			Hack.maps['map'].cmap = [
+			Hack.maps['map__cntMap'].cmap = [
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -83,13 +82,12 @@ window.addEventListener('load', function () {
 		trim: { x: 10*32, y: 4*32, width: 32*4, height: 32*4 },
 		query: 'embed',
 		identifier: '<>',
-		variables: ['map'],
-		counters: [],
+		counters: ['__cntMap'],
 		code: function () {
 			// map
-			Hack.maps['map'] = new RPGMap(32, 32);
-			Hack.maps['map'].imagePath = 'enchantjs/x2/dotmat.gif';
-			Hack.maps['map'].bmap.loadData([
+			Hack.maps['map__cntMap'] = new RPGMap(32, 32);
+			Hack.maps['map__cntMap'].imagePath = 'enchantjs/x2/dotmat.gif';
+			Hack.maps['map__cntMap'].bmap.loadData([
 				[ 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93],
 				[ 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93],
 				[ 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93],
@@ -101,7 +99,7 @@ window.addEventListener('load', function () {
 				[ 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93],
 				[ 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93]
 			]);
-			Hack.maps['map'].cmap = [
+			Hack.maps['map__cntMap'].cmap = [
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -278,6 +276,9 @@ window.addEventListener('load', function () {
 	}, {
 		name: '__cnt10',
 		table: shuffle(fill(0, 10).concat([(Math.random()*10) >> 0])) // length=11
+	}, {
+		name: '__cntMap',
+		table: fill(2, 100)
 	});
 	function shuffle(array) {
 		var m = array.length, t, i;
