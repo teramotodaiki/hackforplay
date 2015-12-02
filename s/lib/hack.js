@@ -593,6 +593,9 @@ window.addEventListener('load', function() {
 						this.append(item);
 					}, this);
 				} else if (arguments.length === 1) {
+					if (asset.code instanceof Function) {
+						asset.lines = Hack.fun2str(asset.code).split('\n');
+					}
 					__apps.push(asset);
 				}
 				return this;
