@@ -491,7 +491,7 @@ window.addEventListener('load', function () {
     var __MapObject = enchant.Class(RPGObject, {
         initialize: function(frame){
             RPGObject.call(this, 32, 32, 0, 0);
-            this.image = game.assets['enchantjs/x2/map1.gif'];
+            this.image = game.assets['enchantjs/x2/dotmat.gif'];
 			if (typeof frame === 'number') {
 				this.frame = frame;
 			} else if (MapObject.Dictionaly && MapObject.Dictionaly[frame]) {

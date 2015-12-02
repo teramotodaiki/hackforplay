@@ -3,10 +3,10 @@ window.addEventListener('load', function () {
 		// Map tip
 		image: 'img/mapTipIndex.jpg',
 		query: 'toggle',
-		caption: 'enchantjs/x2/map1.gif'
+		caption: 'enchantjs/x2/dotmat.gif'
 	}, {
 		// Grassland Map
-		image: 'enchantjs/x2/map1.gif',
+		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 0, y: 0, width: 32*4, height: 32*4 },
 		query: 'embed',
 		identifier: '<>',
@@ -14,7 +14,7 @@ window.addEventListener('load', function () {
 		code: function () {
 			// room
 			Hack.maps['room'] = new RPGMap(32, 32);
-			Hack.maps['room'].imagePath = 'enchantjs/x2/map1.gif';
+			Hack.maps['room'].imagePath = 'enchantjs/x2/dotmat.gif';
 			Hack.maps['room'].bmap.loadData([
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
@@ -42,7 +42,7 @@ window.addEventListener('load', function () {
 		}
 	}, {
 		// Cave Map
-		image: 'enchantjs/x2/map1.gif',
+		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 10*32, y: 0, width: 32*4, height: 32*4 },
 		query: 'embed',
 		identifier: '<>',
@@ -51,7 +51,7 @@ window.addEventListener('load', function () {
 		code: function () {
 			// room
 			Hack.maps['room'] = new RPGMap(32, 32);
-			Hack.maps['room'].imagePath = 'enchantjs/x2/map1.gif';
+			Hack.maps['room'].imagePath = 'enchantjs/x2/dotmat.gif';
 			Hack.maps['room'].bmap.loadData([
 				[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],
 				[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],
@@ -79,7 +79,7 @@ window.addEventListener('load', function () {
 		}
 	}, {
 		// Iron Map
-		image: 'enchantjs/x2/map1.gif',
+		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 10*32, y: 4*32, width: 32*4, height: 32*4 },
 		query: 'embed',
 		identifier: '<>',
@@ -88,7 +88,7 @@ window.addEventListener('load', function () {
 		code: function () {
 			// room
 			Hack.maps['room'] = new RPGMap(32, 32);
-			Hack.maps['room'].imagePath = 'enchantjs/x2/map1.gif';
+			Hack.maps['room'].imagePath = 'enchantjs/x2/dotmat.gif';
 			Hack.maps['room'].bmap.loadData([
 				[ 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93],
 				[ 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93],
@@ -116,7 +116,7 @@ window.addEventListener('load', function () {
 		}
 	}, {
 		// Down Stair
-		image: 'enchantjs/x2/map1.gif',
+		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 2*32, y: 21*32, width: 32, height: 32 },
 		query: 'embed',
 		identifier: '()',
@@ -132,7 +132,7 @@ window.addEventListener('load', function () {
 		}
 	}, {
 		// Warp
-		image: 'enchantjs/x2/map1.gif',
+		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 4*32, y: 16*32, width: 32, height: 32 },
 		query: 'embed',
 		identifier: '()',
@@ -148,7 +148,7 @@ window.addEventListener('load', function () {
 		}
 	}, {
 		// Empty Box
-		image: 'enchantjs/x2/map1.gif',
+		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 2*32, y: 26*32, width: 32, height: 32 },
 		query: 'embed',
 		identifier: '()',
@@ -230,7 +230,7 @@ window.addEventListener('load', function () {
 		}
 	}, {
 		// Thorns Trap
-		image: 'enchantjs/x2/map1.gif',
+		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 0, y: 22*32, width: 32, height: 32 },
 		query: 'embed',
 		identifier: '()',
@@ -250,7 +250,7 @@ window.addEventListener('load', function () {
 		}
 	}, {
 		// Invisible Star
-		image: 'enchantjs/x2/map1.gif',
+		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 6*32, y: 28*32, width: 32, height: 32 },
 		query: 'embed',
 		identifier: '()',

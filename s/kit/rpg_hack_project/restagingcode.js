@@ -46,7 +46,7 @@ window.addEventListener('load', function () {
 
 			// room1
 			Hack.maps['room1'] = new RPGMap(32, 32);
-			Hack.maps['room1'].imagePath = 'enchantjs/x2/map1.gif';
+			Hack.maps['room1'].imagePath = 'enchantjs/x2/dotmat.gif';
 			Hack.maps['room1'].bmap.loadData([
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
