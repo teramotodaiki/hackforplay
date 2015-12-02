@@ -16,9 +16,9 @@ window.addEventListener('load', function () {
 		};
 
 		Hack.maps = [];
-		Hack.maps['room1'] = new RPGMap(32, 32);
-		Hack.maps['room1'].imagePath = 'enchantjs/x2/dotmat.gif';
-		Hack.maps['room1'].bmap.loadData([
+		Hack.maps['map1'] = new RPGMap(32, 32);
+		Hack.maps['map1'].imagePath = 'enchantjs/x2/dotmat.gif';
+		Hack.maps['map1'].bmap.loadData([
 			[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 			[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 			[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
@@ -30,7 +30,7 @@ window.addEventListener('load', function () {
 			[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 			[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322]
 		]);
-		Hack.maps['room1'].cmap = [
+		Hack.maps['map1'].cmap = [
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 			[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -83,7 +83,7 @@ window.addEventListener('load', function () {
 
 	game.onload = game.onload || function () {
 
-        var map = Hack.maps['room1'];
+        var map = Hack.maps['map1'];
         map.load(); // Load Map;  Hack.defaultParentNode == map.scene
 
         var player = Hack.player = new Player();

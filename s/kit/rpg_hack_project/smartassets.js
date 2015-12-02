@@ -10,12 +10,12 @@ window.addEventListener('load', function () {
 		trim: { x: 0, y: 0, width: 32*4, height: 32*4 },
 		query: 'embed',
 		identifier: '<>',
-		variables: ['room'],
+		variables: ['map'],
 		code: function () {
-			// room
-			Hack.maps['room'] = new RPGMap(32, 32);
-			Hack.maps['room'].imagePath = 'enchantjs/x2/dotmat.gif';
-			Hack.maps['room'].bmap.loadData([
+			// map
+			Hack.maps['map'] = new RPGMap(32, 32);
+			Hack.maps['map'].imagePath = 'enchantjs/x2/dotmat.gif';
+			Hack.maps['map'].bmap.loadData([
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
@@ -27,7 +27,7 @@ window.addEventListener('load', function () {
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322],
 				[322,322,322,322,322,322,322,322,322,322,322,322,322,322,322]
 			]);
-			Hack.maps['room'].cmap = [
+			Hack.maps['map'].cmap = [
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -46,13 +46,13 @@ window.addEventListener('load', function () {
 		trim: { x: 10*32, y: 0, width: 32*4, height: 32*4 },
 		query: 'embed',
 		identifier: '<>',
-		variables: ['room'],
+		variables: ['map'],
 		counters: [],
 		code: function () {
-			// room
-			Hack.maps['room'] = new RPGMap(32, 32);
-			Hack.maps['room'].imagePath = 'enchantjs/x2/dotmat.gif';
-			Hack.maps['room'].bmap.loadData([
+			// map
+			Hack.maps['map'] = new RPGMap(32, 32);
+			Hack.maps['map'].imagePath = 'enchantjs/x2/dotmat.gif';
+			Hack.maps['map'].bmap.loadData([
 				[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],
 				[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],
 				[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],
@@ -64,7 +64,7 @@ window.addEventListener('load', function () {
 				[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323],
 				[323,323,323,323,323,323,323,323,323,323,323,323,323,323,323]
 			]);
-			Hack.maps['room'].cmap = [
+			Hack.maps['map'].cmap = [
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -83,13 +83,13 @@ window.addEventListener('load', function () {
 		trim: { x: 10*32, y: 4*32, width: 32*4, height: 32*4 },
 		query: 'embed',
 		identifier: '<>',
-		variables: ['room'],
+		variables: ['map'],
 		counters: [],
 		code: function () {
-			// room
-			Hack.maps['room'] = new RPGMap(32, 32);
-			Hack.maps['room'].imagePath = 'enchantjs/x2/dotmat.gif';
-			Hack.maps['room'].bmap.loadData([
+			// map
+			Hack.maps['map'] = new RPGMap(32, 32);
+			Hack.maps['map'].imagePath = 'enchantjs/x2/dotmat.gif';
+			Hack.maps['map'].bmap.loadData([
 				[ 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93],
 				[ 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93],
 				[ 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93],
@@ -101,7 +101,7 @@ window.addEventListener('load', function () {
 				[ 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93],
 				[ 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93, 93]
 			]);
-			Hack.maps['room'].cmap = [
+			Hack.maps['map'].cmap = [
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
 				[  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
@@ -125,9 +125,9 @@ window.addEventListener('load', function () {
 		code: function () {
 			// くだりかいだん
 			var item = new MapObject('DownStair');
-			item.locate(__cnt15, __cnt10, 'room1');
+			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
-				Hack.changeMap('room2');
+				Hack.changeMap('map2');
 			};
 		}
 	}, {
@@ -141,7 +141,7 @@ window.addEventListener('load', function () {
 		code: function () {
 			// ワープゆか
 			var item = new MapObject('Warp');
-			item.locate(__cnt15, __cnt10, 'room1');
+			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				Hack.player.locate(11, 5);
 			};
@@ -157,7 +157,7 @@ window.addEventListener('load', function () {
 		code: function () {
 			// からのたからばこ
 			var item = new MapObject('Box');
-			item.locate(__cnt15, __cnt10, 'room1');
+			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				this.frame = MapObject.Dictionaly['OpenedBox'];
 			};
@@ -173,7 +173,7 @@ window.addEventListener('load', function () {
 		code: function () {
 			// はなしをする 女の人
 			var item = new Woman();
-			item.locate(__cnt15, __cnt10, 'room1');
+			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				Hack.log('こんにちは');
 			};
@@ -189,7 +189,7 @@ window.addEventListener('load', function () {
 		code: function () {
 			// きょうぼうな スライム
 			var enemy = new BlueSlime();
-			enemy.locate(__cnt15, __cnt10, 'room1');
+			enemy.locate(__cnt15, __cnt10, 'map1');
 			enemy.onbecomeidle = function () {
 				this.attack();
 			};
@@ -205,7 +205,7 @@ window.addEventListener('load', function () {
 		code: function () {
 			// おくびょうな イモムシ
 			var enemy = new Insect();
-			enemy.locate(__cnt15, __cnt10, 'room1');
+			enemy.locate(__cnt15, __cnt10, 'map1');
 			enemy.onbecomeidle = function () {
 				this.turn();
 				this.walk();
@@ -223,7 +223,7 @@ window.addEventListener('load', function () {
 			// ドラゴン（ラスボス）
 			var enemy = new Dragon();
 			enemy.hp = 10;
-			enemy.locate(__cnt15, __cnt10, 'room1');
+			enemy.locate(__cnt15, __cnt10, 'map1');
 			enemy.onbecomedead = function () {
 				Hack.gameclear();
 			};
@@ -239,7 +239,7 @@ window.addEventListener('load', function () {
 		code: function () {
 			// ふんだら ケガする トゲのワナ
 			var item = new MapObject('Trap');
-			item.locate(__cnt15, __cnt10, 'room1');
+			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				this.frame = MapObject.Dictionaly['UsedTrap'];
 				Hack.Attack.call(this, this.mapX, this.mapY, 1);
@@ -259,7 +259,7 @@ window.addEventListener('load', function () {
 		code: function () {
 			// スター（むてき）
 			var item = new MapObject('Star');
-			item.locate(__cnt15, __cnt10, 'room1');
+			item.locate(__cnt15, __cnt10, 'map1');
 			// When enter... ふまれたら...
 			item.onplayerenter = function () {
 				var onattacked = Hack.player.onattacked;
