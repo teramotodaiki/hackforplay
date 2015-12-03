@@ -1,14 +1,15 @@
 window.addEventListener('load', function () {
 	Hack.smartAsset.append({
-		// Map tip
+		title: 'Map tip indexes (enchantjs/x2/dotmat.gif)',
 		image: 'img/mapTipIndex.jpg',
 		query: 'toggle',
-		caption: 'enchantjs/x2/dotmat.gif'
+		media: 'img/mapTipIndex.jpg'
 	}, {
-		// Grassland Map
+		title: 'Grassland Map',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 0, y: 0, width: 32*4, height: 32*4 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '<>',
 		counters: ['__cntMap'],
 		code: function () {
@@ -41,10 +42,11 @@ window.addEventListener('load', function () {
 			];
 		}
 	}, {
-		// Cave Map
+		title: 'Cave Map',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 10*32, y: 0, width: 32*4, height: 32*4 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '<>',
 		counters: ['__cntMap'],
 		code: function () {
@@ -77,10 +79,11 @@ window.addEventListener('load', function () {
 			];
 		}
 	}, {
-		// Iron Map
+		title: 'Iron Map',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 10*32, y: 4*32, width: 32*4, height: 32*4 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '<>',
 		counters: ['__cntMap'],
 		code: function () {
@@ -113,10 +116,11 @@ window.addEventListener('load', function () {
 			];
 		}
 	}, {
-		// Down Stair
+		title: 'Down Stair',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 2*32, y: 21*32, width: 32, height: 32 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
@@ -129,10 +133,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		// Warp
+		title: 'Warp',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 4*32, y: 16*32, width: 32, height: 32 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
@@ -145,10 +150,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		// Empty Box
+		title: 'Empty Box',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 2*32, y: 26*32, width: 32, height: 32 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
@@ -161,10 +167,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		// Talking Woman
+		title: 'Talking Woman',
 		image: 'enchantjs/x1.5/chara0.png',
 		trim: { x: 4*48, y: 8, width: 48, height: 48 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
@@ -177,10 +184,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		// Violent Slime
+		title: 'Violent Slime',
 		image: 'enchantjs/monster4.gif',
 		trim: { x: 2*48-4, y: 1*48, width: 48, height: 48 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '()',
 		variables: ['enemy'],
 		counters: ['__cnt15', '__cnt10'],
@@ -193,10 +201,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		// Timid Insect
+		title: 'Timid Insect',
 		image: 'enchantjs/monster1.gif',
 		trim: { x: 2*48, y: 0*48, width: 48, height: 48 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '()',
 		variables: ['enemy'],
 		counters: ['__cnt15', '__cnt10'],
@@ -210,10 +219,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		// Boss Dragon
+		title: 'Boss Dragon',
 		image: 'enchantjs/bigmonster1.gif',
 		trim: { x: 8, y: 2*80-2, width: 80, height: 80 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '()',
 		variables: ['enemy'],
 		counters: ['__cnt15', '__cnt10'],
@@ -227,10 +237,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		// Thorns Trap
+		title: 'Thorns Trap',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 0, y: 22*32, width: 32, height: 32 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
@@ -247,10 +258,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		// Invisible Star
+		title: 'Invisible Star',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 6*32, y: 28*32, width: 32, height: 32 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
@@ -271,10 +283,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		// Up Stair
+		title: 'Up Stair',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 2*32, y: 20*32, width: 32, height: 32 },
 		query: 'embed',
+		caption: 'caption is here',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],

@@ -678,15 +678,16 @@ $(function(){
 							var $div = this.clone(true, true).data({
 								index: index,
 								cache: json
-							}).toggleClass('smart-asset-sample hidden smart-asset-entity query-' + asset.query);
+							}).toggleClass('smart-asset-sample smart-asset-entity query-' + asset.query);
 							if (!element) {
 								$div.appendTo(this.parent()); // eleがない:追加
 							} else {
 								$div.insertBefore(element);
 								element.remove(); // eleと違う: 挿入後、eleを削除
 							}
-							var size = $div.find('.wrapper').outerHeight($div.width()).height();
-							$div.find('img').attr('src', asset.image).on('load', function() {
+							// icon
+							var size = $div.find('.toggle-click-false').outerHeight($div.width()).height();
+							$div.find('img.icon').attr('src', asset.image).on('load', function() {
 								if (asset.trim) {
 									$(this).css({
 										position: 'relative',
@@ -699,9 +700,7 @@ $(function(){
 									$(this).addClass('img-responsive');
 								}
 							});
-							if (asset.caption) {
-								$div.find('.caption').text(asset.caption);
-							}
+							$div.find('.title').text(asset.title);
 						}, $('.container-assets .smart-asset-sample'));
 						// Removed Assets
 						$('.container-assets .smart-asset-entity').filter(function(index) {
@@ -711,9 +710,9 @@ $(function(){
 					}
 				});
 				// Embed Processing
-				$('.container-assets').on('click', '.smart-asset-entity.query-embed', function () {
+				$('.container-assets').on('click', '.query-embed button', function () {
 					// Get asset
-					var index = $(this).data('index') >> 0;
+					var index = $(this).parents('.smart-asset-entity').data('index') >> 0;
 					var asset = smartAsset.apps[index];
 					// Get code
 					jsEditor.save();
@@ -787,30 +786,50 @@ $(function(){
 					jsEditor.save();
 					jsEditor.setSelection(scroll.from, scroll.to, { scroll: true });
 					$('.h4p_restaging_button').trigger('click');
+					return false;
 				});
 				// Toggle Processing
-				$('.container-assets').on('click', '.smart-asset-entity.query-toggle', function() {
+				$('.container-assets').on('click', '.smart-asset-entity', function() {
 					$(this).toggleClass('toggle-clicked');
 					var toggle = $(this).hasClass('toggle-clicked');
-					$('.container-assets .query-toggle').each(function(index, el) {
+					var index = $(this).data('index') >> 0;
+					var asset = smartAsset.apps[index];
+					$('.container-assets .smart-asset-entity').each(function(index, el) {
 						// close all
 						$(el).removeClass('col-xs-12 toggle-clicked').addClass('col-lg-2 col-md-3 col-sm-4 col-xs-6');
-						var $wrapper = $(el).find('.wrapper');
-						$wrapper.removeClass('scroll-y').addClass('overflow-hidden').outerHeight($(this).width());
-						$wrapper.find('.caption').addClass('hidden');
 					});
 					if (toggle) {
 						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
-						var $wrapper = $(this).find('.wrapper');
-						$wrapper.find('.caption').removeClass('hidden');
-						var _height = 0;
-						$wrapper.children().each(function(index, el) {
-							_height += $(el).outerHeight(true);
-						});
-						if (_height < 320) $wrapper.height(_height);
-						else {
-							$wrapper.height(320);
-							$wrapper.toggleClass('scroll-y overflow-hidden');
+						switch (asset.query) {
+							case 'embed':
+							if (!$(this).find('img.embed-icon').attr('src')) {
+								$(this).find('img.embed-icon').attr('src', asset.image).on('load', function() {
+									var size = $(this).parent().outerHeight($(this).parent().parent().width()).height();
+									if (asset.trim) {
+										$(this).css({
+											position: 'relative',
+											top: '-' + (asset.trim.y * size / asset.trim.height)>>0 + 'px',
+											left: '-' + (asset.trim.x * size / asset.trim.width)>>0 + 'px',
+											width: this.width * size / asset.trim.width,
+											height: this.height * size / asset.trim.height
+										});
+									} else {
+										$(this).addClass('img-responsive');
+									}
+								});
+							}
+							if (!$(this).find('.embed-caption').text()) {
+								$(this).find('.embed-caption').text(asset.caption);
+							}
+							break;
+							case 'toggle':
+							if (asset.media && !$(this).find('.media-image').attr('src')) {
+								$(this).find('.media-image').attr('src', asset.media).on('load', function() {
+									if( $(this).height() > 320 ) {
+										$(this).parent().addClass('scroll-y');
+									}
+								});
+							}
 						}
 					}
 				});
