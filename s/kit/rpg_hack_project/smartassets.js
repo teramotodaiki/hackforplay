@@ -9,7 +9,7 @@ window.addEventListener('load', function () {
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 0, y: 0, width: 32*4, height: 32*4 },
 		query: 'embed',
-		caption: 'そうげんのマップが ついかされる。「くだりかいだん」をつかうと、つぎのマップに いけるようになる。はな や じゅもく と、あいしょうがいい',
+		caption: 'そうげんのマップが ついかされる。「くだりかいだん」をつかうと、つぎのマップに いけるようになる。はな や き と、あいしょうがいい',
 		identifier: '<>',
 		counters: ['__cntMap'],
 		code: function () {
@@ -118,7 +118,7 @@ window.addEventListener('load', function () {
 	}, {
 		title: 'くだりかいだん',
 		image: 'enchantjs/x2/dotmat.gif',
-		trim: { x: 2*32, y: 21*32, width: 32, height: 32 },
+		trim: { frame: 422, width: 32, height: 32 },
 		query: 'embed',
 		caption: 'つぎのマップに つながっている くだりせんようの かいだん。カイゾウすると、つぎのマップから つぎのつぎのマップに つなげることも…',
 		identifier: '()',
@@ -135,7 +135,7 @@ window.addEventListener('load', function () {
 	}, {
 		title: 'ワープゾーン',
 		image: 'enchantjs/x2/dotmat.gif',
-		trim: { x: 4*32, y: 16*32, width: 32, height: 32 },
+		trim: { frame: 324, width: 32, height: 32 },
 		query: 'embed',
 		caption: 'ふむとワープできる すごいゆか。あかいろや みどりいろも そんざいするという うわさ',
 		identifier: '()',
@@ -152,7 +152,7 @@ window.addEventListener('load', function () {
 	}, {
 		title: 'からばこ',
 		image: 'enchantjs/x2/dotmat.gif',
-		trim: { x: 2*32, y: 26*32, width: 32, height: 32 },
+		trim: { frame: 522, width: 32, height: 32 },
 		query: 'embed',
 		caption: 'まえで こうげきすると かぱっとひらく (た)からばこ。なかに なにか いれられると いいんだけどね',
 		identifier: '()',
@@ -164,6 +164,88 @@ window.addEventListener('load', function () {
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				this.frame = MapObject.Dictionaly['OpenedBox'];
+			};
+		}
+	}, {
+		title: 'おはなばたけ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 421, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'まえで こうげきすると ちってしまう はかないはな。うえを あるくことができる',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// はな
+			var item = new MapObject('Flower');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.collisionFlag = false;
+			item.onattacked = function () {
+				this.destroy();
+			};
+		}
+	}, {
+		title: 'キ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 520, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'まえで こうげきすると あっけなく おれてしまう キ。うえをあるくことは でキない',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// き
+			var item = new MapObject('Tree');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onattacked = function () {
+				this.destroy();
+			};
+		}
+	}, {
+		title: 'みためだけでかいわ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 401, width: 32, height: 32 },
+		query: 'embed',
+		caption: '２ばいのおおきさ',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// いわ
+			var item = new MapObject('Rock');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.scale(2, 2);
+		}
+	}, {
+		title: 'いわかんのあるかべ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 340, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'むこうがわが すけてみえる ふしぎなかべ。 opacity （オパシティ）を ０ にすると きえてしまう',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// いしかべ
+			var item = new MapObject('ClayWall');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.opacity = 0.5;
+		}
+	}, {
+		title: 'いしをもつかべ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 341, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'まえで こうげきすると しゃべる ふしぎなかべ。いっせつによると おおむかしの ざいにんが とじこめられている とか',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// いわかべ
+			var item = new MapObject('StoneWall');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onattacked = function () {
+				Hack.log('どうだ　おれさまは　かたいだろう！');
 			};
 		}
 	}, {
@@ -180,7 +262,7 @@ window.addEventListener('load', function () {
 			var item = new Woman();
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
-				Hack.log('こんにちは');
+				Hack.log('こんにちは。ここは 1F です');
 			};
 		}
 	}, {
@@ -203,7 +285,7 @@ window.addEventListener('load', function () {
 	}, {
 		title: 'よわインセクト',
 		image: 'enchantjs/monster1.gif',
-		trim: { x: 2*48, y: 0*48, width: 48, height: 48 },
+		trim: { frame: 2, width: 48, height: 48 },
 		query: 'embed',
 		caption: 'にげあしは おいらの とくぎなのさ。すばやく turn（ターン）して walk（あるく）のが ひけつさ',
 		identifier: '()',
@@ -239,7 +321,7 @@ window.addEventListener('load', function () {
 	}, {
 		title: 'ふむと いてっ！＞＜',
 		image: 'enchantjs/x2/dotmat.gif',
-		trim: { x: 0, y: 22*32, width: 32, height: 32 },
+		trim: { frame: 440, width: 32, height: 32 },
 		query: 'embed',
 		caption: 'ふむとダメージをうける めいわくなゆか。でも たった１ダメージだね。カイゾウすると なんダメージにも できるらしい',
 		identifier: '()',
@@ -258,9 +340,29 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		title: 'タタリ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 564, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'ぜったいに ふんづけたり こうげきしたり してはいけない。ぜったいにだ',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ドクロ
+			var item = new MapObject('Skull');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onplayerenter = function () {
+				Hack.player.behavior = BehaviorTypes.Dead;
+			};
+			item.onattacked = function () {
+				Hack.player.behavior = BehaviorTypes.Dead;
+			};
+		}
+	}, {
 		title: 'れいの アレ',
 		image: 'enchantjs/x2/dotmat.gif',
-		trim: { x: 6*32, y: 28*32, width: 32, height: 32 },
+		trim: { frame: 566, width: 32, height: 32 },
 		query: 'embed',
 		caption: 'ひろってから ３びょうちょい むてきになれる アイテム。３びょうちょい＝１００フレーム？ これも、カイゾウできるらしい',
 		identifier: '()',
@@ -284,7 +386,7 @@ window.addEventListener('load', function () {
 	}, {
 		title: 'のぼりかいだん',
 		image: 'enchantjs/x2/dotmat.gif',
-		trim: { x: 2*32, y: 20*32, width: 32, height: 32 },
+		trim: { frame: 402, width: 32, height: 32 },
 		query: 'embed',
 		caption: 'まえのマップに つながっている のぼりせんようの かいだん。なかみは くだりかいだんと たいしてかわらない',
 		identifier: '()',

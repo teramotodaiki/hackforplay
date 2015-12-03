@@ -31,6 +31,8 @@ window.addEventListener('load', function () {
 		Hack.onload = function () {
 
 			MapObject.Dictionaly = {
+				'Clay': 320,		'ClayWall': 340,	'ClayFloor': 323,
+				'Stone': 321,		'StoneWall': 341,	'StoneFloor': 342,
 				'Warp': 324,		'WarpRed': 325,		'WarpGreen': 326,	'WarpYellow': 327,
 				'Pot': 400,			'Rock': 401,		'UpStair': 402,
 				'Box': 420,			'Flower': 421,		'DownStair': 422,
