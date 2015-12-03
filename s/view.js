@@ -521,6 +521,7 @@ $(function(){
 							$('.h4p_game>iframe').fadeIn('slow');
 						}, 100);
 					}
+					$('.container-game').css('float', 'left');
 
 					// エディタの幅を変更
 					setTimeout(function() {
@@ -658,15 +659,7 @@ $(function(){
 
 			// Smart Assets
 			(function () {
-				$('.container-assets').affix({
-					offset: {
-						top: $('nav.navbar').outerHeight(true),
-						bottom: function () { return -$('.container-game').outerHeight(); }
-					}
-				}).on('affix.bs.affix', function() {
-					$(this).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
-				});
-				var smartAsset = null;
+				var smartAsset = null, __counters = {};
 				window.addEventListener('message', function (event) {
 					if (event.data === 'game_loaded') {
 						var str = sessionStorage.getItem('stage_param_smart_asset');
@@ -678,21 +671,27 @@ $(function(){
 							if (element && $(element).data('cache') === json) return; // eleと同じ:無視
 							var $div = this.clone(true, true).data({
 								index: index,
-								cache: json
-							}).toggleClass('smart-asset-sample hidden smart-asset-entity query-' + asset.query);
+								cache: json,
+								init: 'no'
+							}).toggleClass('smart-asset-sample smart-asset-entity query-' + asset.query);
 							if (!element) {
 								$div.appendTo(this.parent()); // eleがない:追加
 							} else {
 								$div.insertBefore(element);
 								element.remove(); // eleと違う: 挿入後、eleを削除
 							}
-							var size = $div.find('.wrapper').outerHeight($div.width()).height();
-							$div.find('img').attr('src', asset.image).on('load', function() {
+							// icon
+							var size = $div.find('.toggle-click-false').outerHeight($div.width()).height();
+							$div.find('img.icon').attr('src', asset.image).on('load', function() {
 								if (asset.trim) {
+									var x = asset.trim.x !== undefined ? asset.trim.x / asset.trim.width :
+									asset.trim.frame % (this.width / asset.trim.width),
+									y = asset.trim.y !== undefined ? asset.trim.y / asset.trim.height :
+									asset.trim.frame / this.width * asset.trim.width >> 0;
 									$(this).css({
 										position: 'relative',
-										top: '-' + (asset.trim.y * size / asset.trim.height)>>0 + 'px',
-										left: '-' + (asset.trim.x * size / asset.trim.width)>>0 + 'px',
+										top: '-' + (y * size >> 0) + 'px',
+										left: '-' + (x * size >> 0) + 'px',
 										width: this.width * size / asset.trim.width,
 										height: this.height * size / asset.trim.height
 									});
@@ -700,9 +699,6 @@ $(function(){
 									$(this).addClass('img-responsive');
 								}
 							});
-							if (asset.caption) {
-								$div.find('.caption').text(asset.caption);
-							}
 						}, $('.container-assets .smart-asset-sample'));
 						// Removed Assets
 						$('.container-assets .smart-asset-entity').filter(function(index) {
@@ -711,12 +707,85 @@ $(function(){
 						$('.container-assets').css('height', $('.container-assets').outerHeight());
 					}
 				});
-				// Embed Processing
-				$('.container-assets').on('click', '.smart-asset-entity.query-embed', function () {
-					// Get asset
+				$('.container-assets').on('click', '.smart-asset-entity', function() {
+					$(this).toggleClass('toggle-clicked');
 					var index = $(this).data('index') >> 0;
 					var asset = smartAsset.apps[index];
+					var toggle = $(this).hasClass('toggle-clicked');
+					var init = $(this).data('init');
+					$('.container-assets .smart-asset-entity').each(function(index, el) {
+						// close all
+						$(el).removeClass('col-xs-12 toggle-clicked').addClass('col-lg-2 col-md-3 col-sm-4 col-xs-6');
+					});
+					if (toggle) {
+						if (init === 'no') {
+							$(this).trigger('init.hfp', asset).data('init', 'yes');
+						}
+						$(this).trigger('show.hfp', asset);
+						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
+						// $(this).insertBefore('.smart-asset-entity:first');
+					}
+				}).on('init.hfp', '.query-embed', function(event, asset) {
+					$(this).find('.title').text(asset.title);
+					$(this).find('img.embed-icon').attr('src', asset.image).on('load', function() {
+						var size = $(this).parent().outerHeight($(this).parent().parent().width()).height();
+						if (asset.trim) {
+							var x = asset.trim.x !== undefined ? asset.trim.x / asset.trim.width :
+							asset.trim.frame % (this.width / asset.trim.width),
+							y = asset.trim.y !== undefined ? asset.trim.y / asset.trim.height :
+							asset.trim.frame / this.width * asset.trim.width >> 0;
+							$(this).css({
+								position: 'relative',
+								top: '-' + (y * size >> 0) + 'px',
+								left: '-' + (x * size >> 0) + 'px',
+								width: this.width * size / asset.trim.width,
+								height: this.height * size / asset.trim.height
+							});
+						} else {
+							$(this).addClass('img-responsive');
+						}
+					});
+					$(this).find('.embed-caption').text(asset.caption);
+				}).on('init.hfp', '.query-toggle', function(event, asset) {
+					$(this).find('.title').text(asset.title);
+					$(this).find('.media-image').attr('src', asset.media).on('load', function() {
+						if( $(this).height() > 320 ) {
+							$(this).parent().addClass('scroll-y');
+						}
+					});
+				}).on('show.hfp', '.query-embed', function(event, asset) {
+					// Update Embed Code
+					$(this).trigger('update.hfp', asset);
+				}).on('click', '.query-embed button', function(event) {
+					// Get asset
+					var $div = $(this).parents('.query-embed'),
+					index = $div.data('index') >> 0,
+					asset = smartAsset.apps[index];
 					// Get code
+					jsEditor.save();
+					var code = jsEditor.getTextArea().value,
+					keyword = $div.data('keyword'),
+					replacement = $div.data('replacement'),
+					splited = code.split(keyword);
+					// Replace
+					jsEditor.setValue(splited.join(replacement));
+					jsEditor.save();
+					if (splited.length > 1) {
+						jsEditor.setSelection({
+							line: splited[0].split('\n').length, ch: 0 }, {
+							line: splited[0].split('\n').length + replacement.split('\n').length - 6, ch: 0 }, {
+							scroll: true
+						});
+					}
+					// Count up
+					asset.counters.forEach(function (key) {
+						var cnt = __counters[key];
+						cnt.index = (cnt.index + 1) % cnt.table.length;
+					});
+					$('.h4p_restaging_button').trigger('click');
+					$(this).trigger('update.hfp', asset); // Update code
+					return false;
+				}).on('update.hfp', '.query-embed', function(event, asset) {
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
 					// regExp に一致する matches について、それぞれ head, indent, comment に分割
@@ -733,38 +802,37 @@ $(function(){
 						});
 						return result;
 					})(/(^|\n)([ \t]*)(\/\/.*\/\/\n)/g);
-					// Variable
-					if (asset.variables && asset.variables instanceof Array) {
-						asset.variables.forEach(function (varName) {
-							for (var i = 1; i < 100000; i++) {
-								var reg = new RegExp('(^|\\W)' + varName + i + '(\\W|$)');
-								if (code.match(reg) === null) {
-									asset.lines.forEach(function (line, index) {
-										var _r = new RegExp('(^|\\W)' + varName + '(\\W|$)', 'g');
-										var replaced = line.replace(_r, '$1' + varName + i + '$2');
-										asset.lines[index] = replaced;
-									});
-									break;
-								}
+					// Make dictionaly
+					var dictionaly = (asset.variables || []).map(function(item) {
+						// Variable
+						for (var i = 1; i < 100000; i++) {
+							if (code.match(new RegExp('(^|\\W)' + item + i + '(\\W|$)')) === null) {
+								return {
+									key: new RegExp('(^|\\W)' + item + '(\\W|$)', 'g'),
+									value: '$1' + item + i + '$2'
+								};
 							}
+						}
+					}).concat((asset.counters || []).map(function(item) {
+						// Counters
+						if (smartAsset.counters[item] !== undefined) {
+							var cnt = __counters[item] = (__counters[item] || smartAsset.counters[item]);
+							cnt.index = cnt.index > -1 ? cnt.index : 0;
+							return {
+								key: item,
+								value: cnt.table[cnt.index]
+							};
+						}
+					}));
+					// Translation
+					var lines = asset.lines.map(function(line) {
+						dictionaly.forEach(function (item) {
+							line = line.replace(item.key, item.value);
 						});
-					}
-					// Counters
-					if (asset.counters && asset.counters instanceof Array) {
-						asset.counters.filter(function (key) {
-							return smartAsset.counters[key] !== undefined;
-						}).forEach(function (key) {
-							(function () {
-								this.index = this.index > -1 ? this.index : 0;
-								asset.lines.forEach(function (line, index) {
-									asset.lines[index] = line.split(key).join(this.table[this.index]);
-								}, this);
-								this.index = ++this.index % this.table.length;
-							}).call(smartAsset.counters[key]);
-						});
-					}
+						return line;
+					});
 					// Replacement (ALL keywords contains)
-					var scroll = { from: {line: 0, ch: 0}, to: {line: 0, ch: 0} };
+					var replacement = null;
 					placeholders.filter(function (p) {
 						var raw = asset.identifier,
 						identifier = typeof raw === 'string' ? raw.split('') : raw instanceof Array ? raw : [];
@@ -772,49 +840,28 @@ $(function(){
 							return p.comment.indexOf(keyword) > -1;
 						});
 					}).forEach(function (p) {
-						var replacement = [
-						p.head, // 事前の改行または行頭
-						asset.lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
-						'\n', '\n', // ２つの空行
-						p.comment].join(p.indent);
-						var splited = code.split(p.raw);
-						code = splited.join(replacement);
-						if (splited.length > 1) {
-							scroll.from.line = splited[0].split('\n').length - 1;
-							scroll.to.line = scroll.from.line + replacement.split('\n').length - 3;
-						}
-					});
-					jsEditor.setValue(code);
-					jsEditor.save();
-					jsEditor.setSelection(scroll.from, scroll.to, { scroll: true });
-					$('.h4p_restaging_button').trigger('click');
-				});
-				// Toggle Processing
-				$('.container-assets').on('click', '.smart-asset-entity.query-toggle', function() {
-					$(this).toggleClass('toggle-clicked');
-					var toggle = $(this).hasClass('toggle-clicked');
-					$('.container-assets .query-toggle').each(function(index, el) {
-						// close all
-						$(el).removeClass('col-xs-12 toggle-clicked').addClass('col-lg-2 col-md-3 col-sm-4 col-xs-6');
-						var $wrapper = $(el).find('.wrapper');
-						$wrapper.removeClass('scroll-y').addClass('overflow-hidden').outerHeight($(this).width());
-						$wrapper.find('.caption').addClass('hidden');
-					});
-					if (toggle) {
-						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
-						var $wrapper = $(this).find('.wrapper');
-						$wrapper.find('.caption').removeClass('hidden');
-						var _height = 0;
-						$wrapper.children().each(function(index, el) {
-							_height += $(el).outerHeight(true);
+						replacement = [
+							p.head, // 事前の改行または行頭
+							lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
+							'\n', '\n', // ２つの空行
+							p.comment
+						].join(p.indent);
+						$(this).data({
+							'keyword': p.raw,
+							'replacement': replacement
 						});
-						if (_height < 320) $wrapper.height(_height);
-						else {
-							$wrapper.height(320);
-							$wrapper.toggleClass('scroll-y overflow-hidden');
-						}
+					}, this);
+					// Set
+					$(this).find('.embed-code').children().remove();
+					lines.forEach(function (line) {
+						$('<p>').text(line).appendTo(this);
+					}, $(this).find('.embed-code'));
+				}).affix({
+					offset: {
+						top: $('nav.navbar').outerHeight(true),
+						bottom: function () { return -$('.container-game').outerHeight()+340; }
 					}
-				});
+				}).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
 			})();
 		};
 

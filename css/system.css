@@ -261,7 +261,36 @@ iframe {
 	overflow-y: scroll;
 }
 
+.scroll-x {
+	overflow-x: scroll;
+	overflow-y: hidden;
+}
+
 .display-block {
+	display: block;
+}
+
+.smart-asset-sample {
+	display: none;
+}
+
+.smart-asset-entity.toggle-clicked .toggle-click-true,
+.smart-asset-entity .toggle-click-false {
+	display: block;
+}
+
+.smart-asset-entity .toggle-click-true,
+.smart-asset-entity.toggle-clicked .toggle-click-false {
+	display: none;
+}
+
+.visible-query-toggle,
+.visible-query-embed {
+	display: none;
+}
+
+.query-toggle .visible-query-toggle,
+.query-embed .visible-query-embed {
 	display: block;
 }
 

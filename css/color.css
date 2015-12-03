@@ -118,20 +118,28 @@ nav.navbar {
 	background: linear-gradient(#f5f5f5, #ffffff);
 }
 
-.smart-asset-entity .wrapper {
+.smart-asset-entity .smart-asset-wrapper,
+.smart-asset-wrapper .embed-frame {
 	background-color: white;
 	border: 6px solid rgb(117, 117, 117);
 	border-radius: 20px;
 	z-index: 1;
 }
 
-.smart-asset-entity img {
+.smart-asset-wrapper img {
 	z-index: 0;
 }
 
-.smart-asset-entity .wrapper:hover {
+.smart-asset-wrapper:hover,
+.smart-asset-wrapper .embed-frame:hover {
 	border-color: rgb(220,220,220);
 }
+
+.smart-asset-wrapper .embed-code {
+	border: 1px solid rgb(220,220,220);
+	background-color: rgb(216, 255, 250);
+}
+
 
 
 /* 影の色 */

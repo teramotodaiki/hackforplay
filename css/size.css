@@ -180,7 +180,6 @@ nav #img-usericon {
 	width: 99%;
 }
 
-.container-game,
 .container-youtube,
 .container-tab,
 .container-assets {
@@ -440,6 +439,22 @@ button.h4p_open-project {
 	padding: 5px 5px;
 }
 
-.smart-asset-entity.toggle-clicked .wrapper {
-	padding: 12px 24px 8px 8px;
+.smart-asset-wrapper.toggle-click-true {
+	padding: 10px 24px 8px 18px;
+	max-height: 380px;
+}
+
+.smart-asset-wrapper .embed-code p {
+	margin: 0;
+	white-space: pre;
+	font-family: monospace;
+}
+
+.smart-asset-wrapper .embed-frame,
+.smart-asset-wrapper button {
+	margin-bottom: 10px;
+}
+
+.smart-asset-wrapper .embed-caption {
+	min-height: 47px;
 }
