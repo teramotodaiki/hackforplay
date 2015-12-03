@@ -677,7 +677,8 @@ $(function(){
 							if (element && $(element).data('cache') === json) return; // eleと同じ:無視
 							var $div = this.clone(true, true).data({
 								index: index,
-								cache: json
+								cache: json,
+								init: 'no'
 							}).toggleClass('smart-asset-sample smart-asset-entity query-' + asset.query);
 							if (!element) {
 								$div.appendTo(this.parent()); // eleがない:追加
@@ -700,7 +701,6 @@ $(function(){
 									$(this).addClass('img-responsive');
 								}
 							});
-							$div.find('.title').text(asset.title);
 						}, $('.container-assets .smart-asset-sample'));
 						// Removed Assets
 						$('.container-assets .smart-asset-entity').filter(function(index) {
@@ -791,47 +791,46 @@ $(function(){
 				// Toggle Processing
 				$('.container-assets').on('click', '.smart-asset-entity', function() {
 					$(this).toggleClass('toggle-clicked');
-					var toggle = $(this).hasClass('toggle-clicked');
 					var index = $(this).data('index') >> 0;
 					var asset = smartAsset.apps[index];
+					var toggle = $(this).hasClass('toggle-clicked');
+					var init = $(this).data('init');
 					$('.container-assets .smart-asset-entity').each(function(index, el) {
 						// close all
 						$(el).removeClass('col-xs-12 toggle-clicked').addClass('col-lg-2 col-md-3 col-sm-4 col-xs-6');
 					});
 					if (toggle) {
-						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
-						switch (asset.query) {
-							case 'embed':
-							if (!$(this).find('img.embed-icon').attr('src')) {
-								$(this).find('img.embed-icon').attr('src', asset.image).on('load', function() {
-									var size = $(this).parent().outerHeight($(this).parent().parent().width()).height();
-									if (asset.trim) {
-										$(this).css({
-											position: 'relative',
-											top: '-' + (asset.trim.y * size / asset.trim.height)>>0 + 'px',
-											left: '-' + (asset.trim.x * size / asset.trim.width)>>0 + 'px',
-											width: this.width * size / asset.trim.width,
-											height: this.height * size / asset.trim.height
-										});
-									} else {
-										$(this).addClass('img-responsive');
-									}
-								});
-							}
-							if (!$(this).find('.embed-caption').text()) {
-								$(this).find('.embed-caption').text(asset.caption);
-							}
-							break;
-							case 'toggle':
-							if (asset.media && !$(this).find('.media-image').attr('src')) {
-								$(this).find('.media-image').attr('src', asset.media).on('load', function() {
-									if( $(this).height() > 320 ) {
-										$(this).parent().addClass('scroll-y');
-									}
-								});
-							}
+						if (init === 'no') {
+							$(this).trigger('init.hfp', asset).data('init', 'yes');
 						}
+						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
 					}
+				});
+				$('.container-assets').on('init.hfp', '.smart-asset-entity.query-embed', function(event, asset) {
+					$(this).find('.title').text(asset.title);
+					$(this).find('img.embed-icon').attr('src', asset.image).on('load', function() {
+						var size = $(this).parent().outerHeight($(this).parent().parent().width()).height();
+						if (asset.trim) {
+							$(this).css({
+								position: 'relative',
+								top: '-' + (asset.trim.y * size / asset.trim.height)>>0 + 'px',
+								left: '-' + (asset.trim.x * size / asset.trim.width)>>0 + 'px',
+								width: this.width * size / asset.trim.width,
+								height: this.height * size / asset.trim.height
+							});
+						} else {
+							$(this).addClass('img-responsive');
+						}
+					});
+					$(this).find('.embed-caption').text(asset.caption);
+				});
+				$('.container-assets').on('init.hfp', '.smart-asset-entity.query-toggle', function(event, asset) {
+					$(this).find('.title').text(asset.title);
+					$(this).find('.media-image').attr('src', asset.media).on('load', function() {
+						if( $(this).height() > 320 ) {
+							$(this).parent().addClass('scroll-y');
+						}
+					});
 				});
 			})();
 		};
