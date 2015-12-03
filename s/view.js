@@ -737,10 +737,6 @@ $(function(){
 						}
 					});
 					$(this).find('.embed-caption').text(asset.caption);
-					$(this).find('button').on('click', function () {
-						$(this).trigger('embed.hfp', asset);
-						return false;
-					});
 				}).on('init.hfp', '.query-toggle', function(event, asset) {
 					$(this).find('.title').text(asset.title);
 					$(this).find('.media-image').attr('src', asset.media).on('load', function() {
@@ -751,12 +747,16 @@ $(function(){
 				}).on('show.hfp', '.query-embed', function(event, asset) {
 					// Update Embed Code
 					$(this).trigger('update.hfp', asset);
-				}).on('embed.hfp', '.query-embed', function(event, asset) {
+				}).on('click', '.query-embed button', function(event) {
+					// Get asset
+					var $div = $(this).parents('.query-embed'),
+					index = $div.data('index') >> 0,
+					asset = smartAsset.apps[index];
 					// Get code
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value,
-					keyword = $(this).data('keyword'),
-					replacement = $(this).data('replacement'),
+					keyword = $div.data('keyword'),
+					replacement = $div.data('replacement'),
 					splited = code.split(keyword);
 					// Replace
 					jsEditor.setValue(splited.join(replacement));
@@ -774,7 +774,7 @@ $(function(){
 						cnt.index = (cnt.index + 1) % cnt.table.length;
 					});
 					$('.h4p_restaging_button').trigger('click');
-					$(this).parents('.query-embed').trigger('update.hfp', asset); // Update code
+					$(this).trigger('update.hfp', asset); // Update code
 					return false;
 				}).on('update.hfp', '.query-embed', function(event, asset) {
 					jsEditor.save();
@@ -793,36 +793,35 @@ $(function(){
 						});
 						return result;
 					})(/(^|\n)([ \t]*)(\/\/.*\/\/\n)/g);
-					// Variable
-					if (asset.variables && asset.variables instanceof Array) {
-						asset.variables.forEach(function (varName) {
-							for (var i = 1; i < 100000; i++) {
-								var reg = new RegExp('(^|\\W)' + varName + i + '(\\W|$)');
-								if (code.match(reg) === null) {
-									asset.lines.forEach(function (line, index) {
-										var _r = new RegExp('(^|\\W)' + varName + '(\\W|$)', 'g');
-										var replaced = line.replace(_r, '$1' + varName + i + '$2');
-										asset.lines[index] = replaced;
-									});
-									break;
-								}
+					// Make dictionaly
+					var dictionaly = (asset.variables || []).map(function(item) {
+						// Variable
+						for (var i = 1; i < 100000; i++) {
+							if (code.match(new RegExp('(^|\\W)' + item + i + '(\\W|$)')) === null) {
+								return {
+									key: new RegExp('(^|\\W)' + item + '(\\W|$)', 'g'),
+									value: '$1' + item + i + '$2'
+								};
 							}
+						}
+					}).concat((asset.counters || []).map(function(item) {
+						// Counters
+						if (smartAsset.counters[item] !== undefined) {
+							var cnt = __counters[item] = (__counters[item] || smartAsset.counters[item]);
+							cnt.index = cnt.index > -1 ? cnt.index : 0;
+							return {
+								key: item,
+								value: cnt.table[cnt.index]
+							};
+						}
+					}));
+					// Translation
+					var lines = asset.lines.map(function(line) {
+						dictionaly.forEach(function (item) {
+							line = line.replace(item.key, item.value);
 						});
-					}
-					// Counters
-					if (asset.counters && asset.counters instanceof Array) {
-						asset.counters.filter(function (key) {
-							return smartAsset.counters[key] !== undefined;
-						}).forEach(function (key) {
-							__counters[key] = (function () {
-								this.index = this.index > -1 ? this.index : 0;
-								asset.lines.forEach(function (line, index) {
-									asset.lines[index] = line.split(key).join(this.table[this.index]);
-								}, this);
-								return this;
-							}).call(__counters[key] || smartAsset.counters[key]);
-						});
-					}
+						return line;
+					});
 					// Replacement (ALL keywords contains)
 					var replacement = null;
 					placeholders.filter(function (p) {
@@ -834,7 +833,7 @@ $(function(){
 					}).forEach(function (p) {
 						replacement = [
 							p.head, // 事前の改行または行頭
-							asset.lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
+							lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
 							'\n', '\n', // ２つの空行
 							p.comment
 						].join(p.indent);
