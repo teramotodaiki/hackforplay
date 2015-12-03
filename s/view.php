@@ -432,7 +432,9 @@ if ($mode === 'quest') {
 							<p class="visible-query-embed embed-caption"></p>
 						</div>
 						<div class="col-xs-8">
-							<button type="button" class="btn btn-lg btn-block btn-primary visible-query-embed">EMBED</button>
+							<button type="button" class="btn btn-lg btn-block btn-primary visible-query-embed">
+								つかう
+							</button>
 						</div>
 						<div class="col-xs-12">
 							<div class="embed-code visible-query-embed scroll-x"></div>

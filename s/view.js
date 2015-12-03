@@ -723,6 +723,7 @@ $(function(){
 						}
 						$(this).trigger('show.hfp', asset);
 						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
+						// $(this).insertBefore('.smart-asset-entity:first');
 					}
 				}).on('init.hfp', '.query-embed', function(event, asset) {
 					$(this).find('.title').text(asset.title);
@@ -858,7 +859,7 @@ $(function(){
 				}).affix({
 					offset: {
 						top: $('nav.navbar').outerHeight(true),
-						bottom: function () { return -$('.container-game').outerHeight(); }
+						bottom: function () { return -$('.container-game').outerHeight()+340; }
 					}
 				}).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
 			})();
