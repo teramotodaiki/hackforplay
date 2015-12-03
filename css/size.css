@@ -441,10 +441,13 @@ button.h4p_open-project {
 
 .smart-asset-wrapper.toggle-click-true {
 	padding: 10px 24px 8px 18px;
+	max-height: 380px;
 }
 
-.smart-asset-wrapper .embed-code {
-	height: 140px;
+.smart-asset-wrapper .embed-code p {
+	margin: 0;
+	white-space: pre;
+	font-family: monospace;
 }
 
 .smart-asset-wrapper .embed-frame,
@@ -454,8 +457,4 @@ button.h4p_open-project {
 
 .smart-asset-wrapper .embed-caption {
 	min-height: 47px;
-}
-
-.smart-asset-wrapper .media-wrapper {
-	max-height: 320px;
 }

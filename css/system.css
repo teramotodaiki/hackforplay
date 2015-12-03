@@ -261,6 +261,11 @@ iframe {
 	overflow-y: scroll;
 }
 
+.scroll-x {
+	overflow-x: scroll;
+	overflow-y: hidden;
+}
+
 .display-block {
 	display: block;
 }

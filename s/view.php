@@ -435,9 +435,7 @@ if ($mode === 'quest') {
 							<button type="button" class="btn btn-lg btn-block btn-primary visible-query-embed">EMBED</button>
 						</div>
 						<div class="col-xs-12">
-							<div class="embed-code scroll-y visible-query-embed">
-								<p>Code is here</p><p>Code is here</p><p>Code is here</p><p>Code is here</p><p>Code is here</p><p>Code is here</p><p>Code is here</p><p>Code is here</p><p>Code is here</p><p>Code is here</p><p>Code is here</p>
-							</div>
+							<div class="embed-code visible-query-embed scroll-x"></div>
 						</div>
 					</div>
 				</div>

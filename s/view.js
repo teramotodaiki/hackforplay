@@ -844,7 +844,7 @@ $(function(){
 					}, this);
 					// Set
 					$(this).find('.embed-code').children().remove();
-					replacement.split('\n').forEach(function (line) {
+					lines.forEach(function (line) {
 						$('<p>').text(line).appendTo(this);
 					}, $(this).find('.embed-code'));
 				}).affix({
