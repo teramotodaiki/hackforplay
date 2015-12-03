@@ -81,14 +81,17 @@ window.addEventListener('load', function() {
 
 	Hack.fun2str = function (func) {
 		// 関数の文字列化
-		var str = func.toString().match(/^function[^\{]*\{\n?(\s*)([\s\S]*)\}$/);
-		if (str !== null) {
-			var indent = str[1].match(/(.*)$/)[0];
-			return ('\n' + str[1] + str[2]).split('\n' + indent).join('\n').substr(1);
-		} else {
-			// 切り分けのミス
-			Hack.log('Hack.restagingCode hasnot set the function because hack.js is wrong. See hack.js and fix it');
+		if (func instanceof Function) {
+			var str = func.toString().match(/^function[^\{]*\{\n?(\s*)([\s\S]*)\}$/);
+			if (str !== null) {
+				var indent = str[1].match(/(.*)$/)[0];
+				return ('\n' + str[1] + str[2]).split('\n' + indent).join('\n').substr(1);
+			} else {
+				// 切り分けのミス
+				Hack.log('Hack.restagingCode hasnot set the function because hack.js is wrong. See hack.js and fix it');
+			}
 		}
+		return '';
 	};
 
 	// textarea : 画面全体をおおう半透明のテキストエリア(DOM)
@@ -593,9 +596,7 @@ window.addEventListener('load', function() {
 						this.append(item);
 					}, this);
 				} else if (arguments.length === 1) {
-					if (asset.code instanceof Function) {
-						asset.lines = Hack.fun2str(asset.code).split('\n');
-					}
+					asset.lines = asset.lines || Hack.fun2str(asset.code).split('\n') || [];
 					__apps.push(asset);
 				}
 				return this;
