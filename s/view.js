@@ -659,12 +659,6 @@ $(function(){
 
 			// Smart Assets
 			(function () {
-				$('.container-assets').affix({
-					offset: {
-						top: $('nav.navbar').outerHeight(true),
-						bottom: function () { return -$('.container-game').outerHeight(); }
-					}
-				}).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
 				var smartAsset = null, __counters = {};
 				window.addEventListener('message', function (event) {
 					if (event.data === 'game_loaded') {
@@ -709,12 +703,80 @@ $(function(){
 						$('.container-assets').css('height', $('.container-assets').outerHeight());
 					}
 				});
-				// Embed Processing
-				$('.container-assets').on('click', '.query-embed button', function () {
-					// Get asset
-					var index = $(this).parents('.smart-asset-entity').data('index') >> 0;
+				$('.container-assets').on('click', '.smart-asset-entity', function() {
+					$(this).toggleClass('toggle-clicked');
+					var index = $(this).data('index') >> 0;
 					var asset = smartAsset.apps[index];
+					var toggle = $(this).hasClass('toggle-clicked');
+					var init = $(this).data('init');
+					$('.container-assets .smart-asset-entity').each(function(index, el) {
+						// close all
+						$(el).removeClass('col-xs-12 toggle-clicked').addClass('col-lg-2 col-md-3 col-sm-4 col-xs-6');
+					});
+					if (toggle) {
+						if (init === 'no') {
+							$(this).trigger('init.hfp', asset).data('init', 'yes');
+						}
+						$(this).trigger('show.hfp', asset);
+						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
+					}
+				}).on('init.hfp', '.query-embed', function(event, asset) {
+					$(this).find('.title').text(asset.title);
+					$(this).find('img.embed-icon').attr('src', asset.image).on('load', function() {
+						var size = $(this).parent().outerHeight($(this).parent().parent().width()).height();
+						if (asset.trim) {
+							$(this).css({
+								position: 'relative',
+								top: '-' + (asset.trim.y * size / asset.trim.height)>>0 + 'px',
+								left: '-' + (asset.trim.x * size / asset.trim.width)>>0 + 'px',
+								width: this.width * size / asset.trim.width,
+								height: this.height * size / asset.trim.height
+							});
+						} else {
+							$(this).addClass('img-responsive');
+						}
+					});
+					$(this).find('.embed-caption').text(asset.caption);
+					$(this).find('button').on('click', function () {
+						$(this).trigger('embed.hfp', asset);
+						return false;
+					});
+				}).on('init.hfp', '.query-toggle', function(event, asset) {
+					$(this).find('.title').text(asset.title);
+					$(this).find('.media-image').attr('src', asset.media).on('load', function() {
+						if( $(this).height() > 320 ) {
+							$(this).parent().addClass('scroll-y');
+						}
+					});
+				}).on('show.hfp', '.query-embed', function(event, asset) {
+					// Update Embed Code
+					$(this).trigger('update.hfp', asset);
+				}).on('embed.hfp', '.query-embed', function(event, asset) {
 					// Get code
+					jsEditor.save();
+					var code = jsEditor.getTextArea().value,
+					keyword = $(this).data('keyword'),
+					replacement = $(this).data('replacement'),
+					splited = code.split(keyword);
+					// Replace
+					jsEditor.setValue(splited.join(replacement));
+					jsEditor.save();
+					if (splited.length > 1) {
+						jsEditor.setSelection({
+							line: splited[0].split('\n').length, ch: 0 }, {
+							line: splited[0].split('\n').length + replacement.split('\n').length - 6, ch: 0 }, {
+							scroll: true
+						});
+					}
+					// Count up
+					asset.counters.forEach(function (key) {
+						var cnt = __counters[key];
+						cnt.index = (cnt.index + 1) % cnt.table.length;
+					});
+					$('.h4p_restaging_button').trigger('click');
+					$(this).parents('.query-embed').trigger('update.hfp', asset); // Update code
+					return false;
+				}).on('update.hfp', '.query-embed', function(event, asset) {
 					jsEditor.save();
 					var code = jsEditor.getTextArea().value;
 					// regExp に一致する matches について、それぞれ head, indent, comment に分割
@@ -757,13 +819,12 @@ $(function(){
 								asset.lines.forEach(function (line, index) {
 									asset.lines[index] = line.split(key).join(this.table[this.index]);
 								}, this);
-								this.index = ++this.index % this.table.length;
 								return this;
 							}).call(__counters[key] || smartAsset.counters[key]);
 						});
 					}
 					// Replacement (ALL keywords contains)
-					var scroll = { from: {line: 0, ch: 0}, to: {line: 0, ch: 0} };
+					var replacement = null;
 					placeholders.filter(function (p) {
 						var raw = asset.identifier,
 						identifier = typeof raw === 'string' ? raw.split('') : raw instanceof Array ? raw : [];
@@ -771,68 +832,28 @@ $(function(){
 							return p.comment.indexOf(keyword) > -1;
 						});
 					}).forEach(function (p) {
-						var replacement = [
-						p.head, // 事前の改行または行頭
-						asset.lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
-						'\n', '\n', // ２つの空行
-						p.comment].join(p.indent);
-						var splited = code.split(p.raw);
-						code = splited.join(replacement);
-						if (splited.length > 1) {
-							scroll.from.line = splited[0].split('\n').length - 1;
-							scroll.to.line = scroll.from.line + replacement.split('\n').length - 3;
-						}
-					});
-					jsEditor.setValue(code);
-					jsEditor.save();
-					jsEditor.setSelection(scroll.from, scroll.to, { scroll: true });
-					$('.h4p_restaging_button').trigger('click');
-					return false;
-				});
-				// Toggle Processing
-				$('.container-assets').on('click', '.smart-asset-entity', function() {
-					$(this).toggleClass('toggle-clicked');
-					var index = $(this).data('index') >> 0;
-					var asset = smartAsset.apps[index];
-					var toggle = $(this).hasClass('toggle-clicked');
-					var init = $(this).data('init');
-					$('.container-assets .smart-asset-entity').each(function(index, el) {
-						// close all
-						$(el).removeClass('col-xs-12 toggle-clicked').addClass('col-lg-2 col-md-3 col-sm-4 col-xs-6');
-					});
-					if (toggle) {
-						if (init === 'no') {
-							$(this).trigger('init.hfp', asset).data('init', 'yes');
-						}
-						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
+						replacement = [
+							p.head, // 事前の改行または行頭
+							asset.lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
+							'\n', '\n', // ２つの空行
+							p.comment
+						].join(p.indent);
+						$(this).data({
+							'keyword': p.raw,
+							'replacement': replacement
+						});
+					}, this);
+					// Set
+					$(this).find('.embed-code').children().remove();
+					replacement.split('\n').forEach(function (line) {
+						$('<p>').text(line).appendTo(this);
+					}, $(this).find('.embed-code'));
+				}).affix({
+					offset: {
+						top: $('nav.navbar').outerHeight(true),
+						bottom: function () { return -$('.container-game').outerHeight(); }
 					}
-				});
-				$('.container-assets').on('init.hfp', '.smart-asset-entity.query-embed', function(event, asset) {
-					$(this).find('.title').text(asset.title);
-					$(this).find('img.embed-icon').attr('src', asset.image).on('load', function() {
-						var size = $(this).parent().outerHeight($(this).parent().parent().width()).height();
-						if (asset.trim) {
-							$(this).css({
-								position: 'relative',
-								top: '-' + (asset.trim.y * size / asset.trim.height)>>0 + 'px',
-								left: '-' + (asset.trim.x * size / asset.trim.width)>>0 + 'px',
-								width: this.width * size / asset.trim.width,
-								height: this.height * size / asset.trim.height
-							});
-						} else {
-							$(this).addClass('img-responsive');
-						}
-					});
-					$(this).find('.embed-caption').text(asset.caption);
-				});
-				$('.container-assets').on('init.hfp', '.smart-asset-entity.query-toggle', function(event, asset) {
-					$(this).find('.title').text(asset.title);
-					$(this).find('.media-image').attr('src', asset.media).on('load', function() {
-						if( $(this).height() > 320 ) {
-							$(this).parent().addClass('scroll-y');
-						}
-					});
-				});
+				}).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
 			})();
 		};
 
