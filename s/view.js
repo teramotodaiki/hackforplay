@@ -665,7 +665,7 @@ $(function(){
 						bottom: function () { return -$('.container-game').outerHeight(); }
 					}
 				}).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
-				var smartAsset = null;
+				var smartAsset = null, __counters = {};
 				window.addEventListener('message', function (event) {
 					if (event.data === 'game_loaded') {
 						var str = sessionStorage.getItem('stage_param_smart_asset');
@@ -752,13 +752,14 @@ $(function(){
 						asset.counters.filter(function (key) {
 							return smartAsset.counters[key] !== undefined;
 						}).forEach(function (key) {
-							(function () {
+							__counters[key] = (function () {
 								this.index = this.index > -1 ? this.index : 0;
 								asset.lines.forEach(function (line, index) {
 									asset.lines[index] = line.split(key).join(this.table[this.index]);
 								}, this);
 								this.index = ++this.index % this.table.length;
-							}).call(smartAsset.counters[key]);
+								return this;
+							}).call(__counters[key] || smartAsset.counters[key]);
 						});
 					}
 					// Replacement (ALL keywords contains)
