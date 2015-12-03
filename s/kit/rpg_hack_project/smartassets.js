@@ -1,19 +1,19 @@
 window.addEventListener('load', function () {
 	Hack.smartAsset.append({
-		title: 'Map tip indexes (enchantjs/x2/dotmat.gif)',
+		title: 'マップ の すうじ (enchantjs/x2/dotmat.gif)',
 		image: 'img/mapTipIndex.jpg',
 		query: 'toggle',
 		media: 'img/mapTipIndex.jpg'
 	}, {
-		title: 'Grassland Map',
+		title: 'つぎのマップ（そうげん）',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 0, y: 0, width: 32*4, height: 32*4 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'そうげんのマップが ついかされる。「くだりかいだん」をつかうと、つぎのマップに いけるようになる。はな や じゅもく と、あいしょうがいい',
 		identifier: '<>',
 		counters: ['__cntMap'],
 		code: function () {
-			// map
+			// map__cntMap
 			Hack.maps['map__cntMap'] = new RPGMap(32, 32);
 			Hack.maps['map__cntMap'].imagePath = 'enchantjs/x2/dotmat.gif';
 			Hack.maps['map__cntMap'].bmap.loadData([
@@ -42,11 +42,11 @@ window.addEventListener('load', function () {
 			];
 		}
 	}, {
-		title: 'Cave Map',
+		title: 'つぎのマップ（どうくつ）',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 10*32, y: 0, width: 32*4, height: 32*4 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'どうくつのマップが ついかされる。「くだりかいだん」をつかうと、つぎのマップに いけるようになる。いわ や いしかべ と、あいしょうがいい',
 		identifier: '<>',
 		counters: ['__cntMap'],
 		code: function () {
@@ -79,15 +79,15 @@ window.addEventListener('load', function () {
 			];
 		}
 	}, {
-		title: 'Iron Map',
+		title: 'つぎのマップ（シルバー）',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 10*32, y: 4*32, width: 32*4, height: 32*4 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'どうくつのマップが ついかされる。「くだりかいだん」をつかうと、つぎのマップに いけるようになる。シンプルすぎて どうつかえばいいんだろう…',
 		identifier: '<>',
 		counters: ['__cntMap'],
 		code: function () {
-			// map
+			// map__cntMap
 			Hack.maps['map__cntMap'] = new RPGMap(32, 32);
 			Hack.maps['map__cntMap'].imagePath = 'enchantjs/x2/dotmat.gif';
 			Hack.maps['map__cntMap'].bmap.loadData([
@@ -116,16 +116,16 @@ window.addEventListener('load', function () {
 			];
 		}
 	}, {
-		title: 'Down Stair',
+		title: 'くだりかいだん',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 2*32, y: 21*32, width: 32, height: 32 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'つぎのマップに つながっている くだりせんようの かいだん。カイゾウすると、つぎのマップから つぎのつぎのマップに つなげることも…',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// くだりかいだん
+			// かいだん
 			var item = new MapObject('DownStair');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
@@ -133,16 +133,16 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'Warp',
+		title: 'ワープゾーン',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 4*32, y: 16*32, width: 32, height: 32 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'ふむとワープできる すごいゆか。あかいろや みどりいろも そんざいするという うわさ',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// ワープゆか
+			// ワープ
 			var item = new MapObject('Warp');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
@@ -150,16 +150,16 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'Empty Box',
+		title: 'からばこ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 2*32, y: 26*32, width: 32, height: 32 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'まえで こうげきすると かぱっとひらく (た)からばこ。なかに なにか いれられると いいんだけどね',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// からのたからばこ
+			// たからばこ
 			var item = new MapObject('Box');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
@@ -167,16 +167,16 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'Talking Woman',
+		title: 'ただのひと',
 		image: 'enchantjs/x1.5/chara0.png',
 		trim: { x: 4*48, y: 8, width: 48, height: 48 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'まえで こうげきすると しゃべる ひと。ふだんは、うけつけのしごとを しているらしい。ずっと おなじセリフしか いえないのかな？',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// はなしをする 女の人
+			// 女の人
 			var item = new Woman();
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
@@ -184,16 +184,16 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'Violent Slime',
+		title: 'バイオレンスライム',
 		image: 'enchantjs/monster4.gif',
 		trim: { x: 2*48-4, y: 1*48, width: 48, height: 48 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'ムチのように からだをふりまわす、キケンなスライム。idle（まっている）→attack（こうげきする）→idle…を えいえんにくりかえすだけの あわれなそんざい',
 		identifier: '()',
 		variables: ['enemy'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// きょうぼうな スライム
+			// スライム
 			var enemy = new BlueSlime();
 			enemy.locate(__cnt15, __cnt10, 'map1');
 			enemy.onbecomeidle = function () {
@@ -201,16 +201,16 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'Timid Insect',
+		title: 'よわインセクト',
 		image: 'enchantjs/monster1.gif',
 		trim: { x: 2*48, y: 0*48, width: 48, height: 48 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'にげあしは おいらの とくぎなのさ。すばやく turn（ターン）して walk（あるく）のが ひけつさ',
 		identifier: '()',
 		variables: ['enemy'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// おくびょうな イモムシ
+			// インセクト
 			var enemy = new Insect();
 			enemy.locate(__cnt15, __cnt10, 'map1');
 			enemy.onbecomeidle = function () {
@@ -219,16 +219,16 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'Boss Dragon',
+		title: 'ゴールドラゴン',
 		image: 'enchantjs/bigmonster1.gif',
 		trim: { x: 8, y: 2*80-2, width: 80, height: 80 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'ゴールドだけど あかいドラゴン。こいつをたおすと ゴールだよ なんつって',
 		identifier: '()',
 		variables: ['enemy'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// ドラゴン（ラスボス）
+			// ドラゴン
 			var enemy = new Dragon();
 			enemy.hp = 10;
 			enemy.locate(__cnt15, __cnt10, 'map1');
@@ -237,16 +237,16 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'Thorns Trap',
+		title: 'ふむと いてっ！＞＜',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 0, y: 22*32, width: 32, height: 32 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'ふむとダメージをうける めいわくなゆか。でも たった１ダメージだね。カイゾウすると なんダメージにも できるらしい',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// ふんだら ケガする トゲのワナ
+			// トゲのワナ
 			var item = new MapObject('Trap');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
@@ -258,11 +258,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'Invisible Star',
+		title: 'れいの アレ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 6*32, y: 28*32, width: 32, height: 32 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'ひろってから ３びょうちょい むてきになれる アイテム。３びょうちょい＝１００フレーム？ これも、カイゾウできるらしい',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
@@ -270,7 +270,6 @@ window.addEventListener('load', function () {
 			// スター（むてき）
 			var item = new MapObject('Star');
 			item.locate(__cnt15, __cnt10, 'map1');
-			// When enter... ふまれたら...
 			item.onplayerenter = function () {
 				var onattacked = Hack.player.onattacked;
 				Hack.player.setTimeout(function () {
@@ -283,16 +282,16 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'Up Stair',
+		title: 'のぼりかいだん',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 2*32, y: 20*32, width: 32, height: 32 },
 		query: 'embed',
-		caption: 'caption is here',
+		caption: 'まえのマップに つながっている のぼりせんようの かいだん。なかみは くだりかいだんと たいしてかわらない',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// のぼりかいだん
+			// かいだん
 			var item = new MapObject('UpStair');
 			item.locate(__cnt15, __cnt10, 'map2');
 			item.onplayerenter = function () {
