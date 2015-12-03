@@ -684,10 +684,14 @@ $(function(){
 							var size = $div.find('.toggle-click-false').outerHeight($div.width()).height();
 							$div.find('img.icon').attr('src', asset.image).on('load', function() {
 								if (asset.trim) {
+									var x = asset.trim.x !== undefined ? asset.trim.x / asset.trim.width :
+									asset.trim.frame % (this.width / asset.trim.width),
+									y = asset.trim.y !== undefined ? asset.trim.y / asset.trim.height :
+									asset.trim.frame / this.width * asset.trim.width >> 0;
 									$(this).css({
 										position: 'relative',
-										top: '-' + (asset.trim.y * size / asset.trim.height)>>0 + 'px',
-										left: '-' + (asset.trim.x * size / asset.trim.width)>>0 + 'px',
+										top: '-' + (y * size >> 0) + 'px',
+										left: '-' + (x * size >> 0) + 'px',
 										width: this.width * size / asset.trim.width,
 										height: this.height * size / asset.trim.height
 									});
@@ -725,10 +729,14 @@ $(function(){
 					$(this).find('img.embed-icon').attr('src', asset.image).on('load', function() {
 						var size = $(this).parent().outerHeight($(this).parent().parent().width()).height();
 						if (asset.trim) {
+							var x = asset.trim.x !== undefined ? asset.trim.x / asset.trim.width :
+							asset.trim.frame % (this.width / asset.trim.width),
+							y = asset.trim.y !== undefined ? asset.trim.y / asset.trim.height :
+							asset.trim.frame / this.width * asset.trim.width >> 0;
 							$(this).css({
 								position: 'relative',
-								top: '-' + (asset.trim.y * size / asset.trim.height)>>0 + 'px',
-								left: '-' + (asset.trim.x * size / asset.trim.width)>>0 + 'px',
+								top: '-' + (y * size >> 0) + 'px',
+								left: '-' + (x * size >> 0) + 'px',
 								width: this.width * size / asset.trim.width,
 								height: this.height * size / asset.trim.height
 							});
