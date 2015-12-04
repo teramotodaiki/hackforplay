@@ -773,7 +773,7 @@ $(function(){
 					if (splited.length > 1) {
 						jsEditor.setSelection({
 							line: splited[0].split('\n').length, ch: 0 }, {
-							line: splited[0].split('\n').length + replacement.split('\n').length - 6, ch: 0 }, {
+							line: splited[0].split('\n').length + replacement.split('\n').length - 5, ch: 0 }, {
 							scroll: true
 						});
 					}
