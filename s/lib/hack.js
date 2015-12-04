@@ -85,7 +85,7 @@ window.addEventListener('load', function() {
 			var str = func.toString().match(/^function[^\{]*\{\n?(\s*)([\s\S]*)\}$/);
 			if (str !== null) {
 				var indent = str[1].match(/(.*)$/)[0];
-				return ('\n' + str[1] + str[2]).split('\n' + indent).join('\n').substr(1);
+				return (str[2]).split('\n' + indent).join('\n').replace(/\s*$/, '');
 			} else {
 				// 切り分けのミス
 				Hack.log('Hack.restagingCode hasnot set the function because hack.js is wrong. See hack.js and fix it');

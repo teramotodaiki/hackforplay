@@ -748,11 +748,7 @@ $(function(){
 					$(this).find('.embed-caption').text(asset.caption);
 				}).on('init.hfp', '.query-toggle', function(event, asset) {
 					$(this).find('.title').text(asset.title);
-					$(this).find('.media-image').attr('src', asset.media).on('load', function() {
-						if( $(this).height() > 320 ) {
-							$(this).parent().addClass('scroll-y');
-						}
-					});
+					$(this).find('.media-image').attr('src', asset.media);
 				}).on('show.hfp', '.query-embed', function(event, asset) {
 					// Update Embed Code
 					$(this).trigger('update.hfp', asset);
@@ -773,7 +769,7 @@ $(function(){
 					if (splited.length > 1) {
 						jsEditor.setSelection({
 							line: splited[0].split('\n').length, ch: 0 }, {
-							line: splited[0].split('\n').length + replacement.split('\n').length - 6, ch: 0 }, {
+							line: splited[0].split('\n').length + replacement.split('\n').length - 5, ch: 0 }, {
 							scroll: true
 						});
 					}
