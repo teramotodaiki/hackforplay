@@ -407,5 +407,42 @@ if ($mode === 'quest') {
 			</div>
 		</div>
 	</div>
+	<div class="container container-assets hidden">
+		<div class="row">
+			<div class="smart-asset-sample col-lg-2 col-md-3 col-sm-4 col-xs-6">
+				<div class="smart-asset-wrapper toggle-click-false overflow-hidden">
+					<img class="icon">
+				</div>
+				<div class="smart-asset-wrapper toggle-click-true scroll-y">
+					<div class="row">
+						<div class="col-xs-12 visible-query-embed visible-query-toggle">
+							<h4 class="title"></h4>
+						</div>
+						<div class="col-xs-12 visible-query-toggle">
+							<div class="media-wrapper">
+								<img class="media-image img-responsive"></img>
+							</div>
+						</div>
+						<div class="col-xs-3">
+							<div class="overflow-hidden embed-frame visible-query-embed">
+								<img class="embed-icon"></img>
+							</div>
+						</div>
+						<div class="col-xs-9">
+							<p class="visible-query-embed embed-caption"></p>
+						</div>
+						<div class="col-xs-8">
+							<button type="button" class="btn btn-lg btn-block btn-primary visible-query-embed">
+								つかう
+							</button>
+						</div>
+						<div class="col-xs-12">
+							<div class="embed-code visible-query-embed scroll-x"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

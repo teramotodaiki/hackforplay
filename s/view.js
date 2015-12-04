@@ -457,7 +457,8 @@ $(function(){
 				}, 100);
 
 				// ２カラムアライメント（ゲームビュー | YouTubeビュー）
-				var alignmentMode = getParam('youtube') ? 'both' : 'game'; // both(２カラム) | game(ゲーム画面のみ)
+				// var alignmentMode = getParam('youtube') ? 'both' : 'game'; // both(２カラム) | game(ゲーム画面のみ)
+				var alignmentMode = 'both'; // both(２カラム) | game(ゲーム画面のみ)
 				var reload_timer = null;
 
 				// アライメントモードの切り替え
@@ -488,12 +489,11 @@ $(function(){
 						});
 						$('.container-tab').removeClass('hidden');
 						var youtube_width = body_width - $('.container-game').outerWidth() - $('.container-tab').outerWidth() - 60;
-						$('.container-youtube').removeClass('hidden').outerWidth(youtube_width);
+						$('.container-youtube,.container-assets').removeClass('hidden').outerWidth(youtube_width);
 						$('.h4p_youtube-frame iframe').attr({
 							'width': youtube_width,
 							'height': youtube_width / 1.5
 						});
-						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
 						break;
 					case 'game':
 						// 1カラム 100:0 ただし幅には最大値がある
@@ -506,8 +506,7 @@ $(function(){
 						$('.container-game').width(content_width);
 
 						$('.container-tab').removeClass('hidden');
-						$('.container-youtube').addClass('hidden').width(0);
-						$('.container-game,.container-youtube,.container-tab').css('float', 'left');
+						$('.container-youtube,.container-assets').addClass('hidden').width(0);
 						break;
 					}
 
@@ -522,6 +521,7 @@ $(function(){
 							$('.h4p_game>iframe').fadeIn('slow');
 						}, 100);
 					}
+					$('.container-game').css('float', 'left');
 
 					// エディタの幅を変更
 					setTimeout(function() {
@@ -657,6 +657,212 @@ $(function(){
 				};
 			}
 
+			// Smart Assets
+			(function () {
+				var smartAsset = null, __counters = {};
+				window.addEventListener('message', function (event) {
+					if (event.data === 'game_loaded') {
+						var str = sessionStorage.getItem('stage_param_smart_asset');
+						smartAsset = $.parseJSON(str); // Update Smart Assets
+						smartAsset.apps.forEach(function (asset, index) {
+							// elementのdata-cacheと比較. eleがない:追加, eleと同じ:無視, eleと違う: 挿入後、eleを削除
+							var element = $('.container-assets .smart-asset-entity').get(index),
+							json = JSON.stringify(asset);
+							if (element && $(element).data('cache') === json) return; // eleと同じ:無視
+							var $div = this.clone(true, true).data({
+								index: index,
+								cache: json,
+								init: 'no'
+							}).toggleClass('smart-asset-sample smart-asset-entity query-' + asset.query);
+							if (!element) {
+								$div.appendTo(this.parent()); // eleがない:追加
+							} else {
+								$div.insertBefore(element);
+								element.remove(); // eleと違う: 挿入後、eleを削除
+							}
+							// icon
+							var size = $div.find('.toggle-click-false').outerHeight($div.width()).height();
+							$div.find('img.icon').attr('src', asset.image).on('load', function() {
+								if (asset.trim) {
+									var x = asset.trim.x !== undefined ? asset.trim.x / asset.trim.width :
+									asset.trim.frame % (this.width / asset.trim.width),
+									y = asset.trim.y !== undefined ? asset.trim.y / asset.trim.height :
+									asset.trim.frame / this.width * asset.trim.width >> 0;
+									$(this).css({
+										position: 'relative',
+										top: '-' + (y * size >> 0) + 'px',
+										left: '-' + (x * size >> 0) + 'px',
+										width: this.width * size / asset.trim.width,
+										height: this.height * size / asset.trim.height
+									});
+								} else {
+									$(this).addClass('img-responsive');
+								}
+							});
+						}, $('.container-assets .smart-asset-sample'));
+						// Removed Assets
+						$('.container-assets .smart-asset-entity').filter(function(index) {
+							return index >= smartAsset.apps.length;
+						}).remove();
+						$('.container-assets').css('height', $('.container-assets').outerHeight());
+					}
+				});
+				$('.container-assets').on('click', '.smart-asset-entity', function() {
+					$(this).toggleClass('toggle-clicked');
+					var index = $(this).data('index') >> 0;
+					var asset = smartAsset.apps[index];
+					var toggle = $(this).hasClass('toggle-clicked');
+					var init = $(this).data('init');
+					$('.container-assets .smart-asset-entity').each(function(index, el) {
+						// close all
+						$(el).removeClass('col-xs-12 toggle-clicked').addClass('col-lg-2 col-md-3 col-sm-4 col-xs-6');
+					});
+					if (toggle) {
+						if (init === 'no') {
+							$(this).trigger('init.hfp', asset).data('init', 'yes');
+						}
+						$(this).trigger('show.hfp', asset);
+						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
+						// $(this).insertBefore('.smart-asset-entity:first');
+					}
+				}).on('init.hfp', '.query-embed', function(event, asset) {
+					$(this).find('.title').text(asset.title);
+					$(this).find('img.embed-icon').attr('src', asset.image).on('load', function() {
+						var size = $(this).parent().outerHeight($(this).parent().parent().width()).height();
+						if (asset.trim) {
+							var x = asset.trim.x !== undefined ? asset.trim.x / asset.trim.width :
+							asset.trim.frame % (this.width / asset.trim.width),
+							y = asset.trim.y !== undefined ? asset.trim.y / asset.trim.height :
+							asset.trim.frame / this.width * asset.trim.width >> 0;
+							$(this).css({
+								position: 'relative',
+								top: '-' + (y * size >> 0) + 'px',
+								left: '-' + (x * size >> 0) + 'px',
+								width: this.width * size / asset.trim.width,
+								height: this.height * size / asset.trim.height
+							});
+						} else {
+							$(this).addClass('img-responsive');
+						}
+					});
+					$(this).find('.embed-caption').text(asset.caption);
+				}).on('init.hfp', '.query-toggle', function(event, asset) {
+					$(this).find('.title').text(asset.title);
+					$(this).find('.media-image').attr('src', asset.media).on('load', function() {
+						if( $(this).height() > 320 ) {
+							$(this).parent().addClass('scroll-y');
+						}
+					});
+				}).on('show.hfp', '.query-embed', function(event, asset) {
+					// Update Embed Code
+					$(this).trigger('update.hfp', asset);
+				}).on('click', '.query-embed button', function(event) {
+					// Get asset
+					var $div = $(this).parents('.query-embed'),
+					index = $div.data('index') >> 0,
+					asset = smartAsset.apps[index];
+					// Get code
+					jsEditor.save();
+					var code = jsEditor.getTextArea().value,
+					keyword = $div.data('keyword'),
+					replacement = $div.data('replacement'),
+					splited = code.split(keyword);
+					// Replace
+					jsEditor.setValue(splited.join(replacement));
+					jsEditor.save();
+					if (splited.length > 1) {
+						jsEditor.setSelection({
+							line: splited[0].split('\n').length, ch: 0 }, {
+							line: splited[0].split('\n').length + replacement.split('\n').length - 6, ch: 0 }, {
+							scroll: true
+						});
+					}
+					// Count up
+					asset.counters.forEach(function (key) {
+						var cnt = __counters[key];
+						cnt.index = (cnt.index + 1) % cnt.table.length;
+					});
+					$('.h4p_restaging_button').trigger('click');
+					$(this).trigger('update.hfp', asset); // Update code
+					return false;
+				}).on('update.hfp', '.query-embed', function(event, asset) {
+					jsEditor.save();
+					var code = jsEditor.getTextArea().value;
+					// regExp に一致する matches について、それぞれ head, indent, comment に分割
+					var placeholders = (function (regExp) {
+						var result = [];
+						(code.match(regExp) || []).forEach(function (match, index) {
+							var array = match.replace(regExp, '$1\0$2\0$3').split('\0');
+							result.push({
+								raw: match,
+								head: array[0],
+								indent: array[1],
+								comment: array[2]
+							});
+						});
+						return result;
+					})(/(^|\n)([ \t]*)(\/\/.*\/\/\n)/g);
+					// Make dictionaly
+					var dictionaly = (asset.variables || []).map(function(item) {
+						// Variable
+						for (var i = 1; i < 100000; i++) {
+							if (code.match(new RegExp('(^|\\W)' + item + i + '(\\W|$)')) === null) {
+								return {
+									key: new RegExp('(^|\\W)' + item + '(\\W|$)', 'g'),
+									value: '$1' + item + i + '$2'
+								};
+							}
+						}
+					}).concat((asset.counters || []).map(function(item) {
+						// Counters
+						if (smartAsset.counters[item] !== undefined) {
+							var cnt = __counters[item] = (__counters[item] || smartAsset.counters[item]);
+							cnt.index = cnt.index > -1 ? cnt.index : 0;
+							return {
+								key: item,
+								value: cnt.table[cnt.index]
+							};
+						}
+					}));
+					// Translation
+					var lines = asset.lines.map(function(line) {
+						dictionaly.forEach(function (item) {
+							line = line.replace(item.key, item.value);
+						});
+						return line;
+					});
+					// Replacement (ALL keywords contains)
+					var replacement = null;
+					placeholders.filter(function (p) {
+						var raw = asset.identifier,
+						identifier = typeof raw === 'string' ? raw.split('') : raw instanceof Array ? raw : [];
+						return identifier.every(function (keyword) {
+							return p.comment.indexOf(keyword) > -1;
+						});
+					}).forEach(function (p) {
+						replacement = [
+							p.head, // 事前の改行または行頭
+							lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
+							'\n', '\n', // ２つの空行
+							p.comment
+						].join(p.indent);
+						$(this).data({
+							'keyword': p.raw,
+							'replacement': replacement
+						});
+					}, this);
+					// Set
+					$(this).find('.embed-code').children().remove();
+					lines.forEach(function (line) {
+						$('<p>').text(line).appendTo(this);
+					}, $(this).find('.embed-code'));
+				}).affix({
+					offset: {
+						top: $('nav.navbar').outerHeight(true),
+						bottom: function () { return -$('.container-game').outerHeight()+340; }
+					}
+				}).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
+			})();
 		};
 
 		function makeProject (successed, failed) {

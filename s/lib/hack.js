@@ -79,6 +79,21 @@ window.addEventListener('load', function() {
 			break;
 	}
 
+	Hack.fun2str = function (func) {
+		// 関数の文字列化
+		if (func instanceof Function) {
+			var str = func.toString().match(/^function[^\{]*\{\n?(\s*)([\s\S]*)\}$/);
+			if (str !== null) {
+				var indent = str[1].match(/(.*)$/)[0];
+				return ('\n' + str[1] + str[2]).split('\n' + indent).join('\n').substr(1);
+			} else {
+				// 切り分けのミス
+				Hack.log('Hack.restagingCode hasnot set the function because hack.js is wrong. See hack.js and fix it');
+			}
+		}
+		return '';
+	};
+
 	// textarea : 画面全体をおおう半透明のテキストエリア(DOM)
 	Hack.textarea = (function(){
 		// scope: new Entity
@@ -153,8 +168,11 @@ window.addEventListener('load', function() {
 			get: function(){
 				return _hint;
 			},
-			set: function(text){
-				_hint = text;
+			set: function(code){
+				if (code instanceof Function) {
+					code = Hack.fun2str(code);
+				}
+				_hint = code;
 				sendToEditor('setEditor();');
 			}
 		});
@@ -556,6 +574,9 @@ window.addEventListener('load', function() {
 			return sessionStorage.getItem('restaging_code');
 		},
 		set: function(code){
+			if (code instanceof Function) {
+				code = Hack.fun2str(code);
+			}
 			switch (sessionStorage.getItem('stage_param_game_mode')) {
 				case 'official':
 				case 'extend':
@@ -566,10 +587,48 @@ window.addEventListener('load', function() {
 		}
 	});
 
+	(function () {
+		var __apps = [], __counters = {};
+		Hack.smartAsset = {
+			append: function (asset) {
+				if (arguments.length > 1) {
+					Array.prototype.forEach.call(arguments, function (item) {
+						this.append(item);
+					}, this);
+				} else if (arguments.length === 1) {
+					asset.lines = asset.lines || Hack.fun2str(asset.code).split('\n') || [];
+					__apps.push(asset);
+				}
+				return this;
+			},
+			setCounter: function (counter) {
+				if (arguments.length > 1) {
+					Array.prototype.forEach.call(arguments, function (item) {
+						this.setCounter(item);
+					}, this);
+				} else if (arguments.length === 1) {
+					__counters[counter.name] = counter;
+				}
+				return this;
+			}
+		};
+		Object.defineProperty(Hack.smartAsset, 'apps', {
+			enumerable: true,
+			get: function () { return __apps; }
+		});
+		Object.defineProperty(Hack.smartAsset, 'counters', {
+			enumerable: true,
+			get: function () { return __counters; }
+		});
+	})();
+
 	window.postMessage("Hack.dispatchEvent(new Event('load'));", "/"); // Hack.onloadのコール
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
 	game.addEventListener('load', function(){
+		// smartAssetをsessionStorageに格納する
+		sessionStorage.setItem('stage_param_smart_asset', JSON.stringify(Hack.smartAsset));
+
 		window.parent.postMessage('game_loaded', '*'); // ロードのタイミングを伝える
 		if (Hack.defaultParentNode) {
 			game.rootScene.addChild(Hack.defaultParentNode);

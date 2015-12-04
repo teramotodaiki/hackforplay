@@ -18,6 +18,7 @@
 		<script src="kit/rpg_hack_project/rpgobjects.js" type="text/javascript" charset="utf-8"></script>
 		<script src="kit/rpg_hack_project/main.js" type="text/javascript" charset="utf-8"></script>
 		<script src="kit/rpg_hack_project/restagingcode.js" type="text/javascript" charset="utf-8"></script>
+		<script src="kit/rpg_hack_project/smartassets.js" type="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
 		textarea.log {
 			color: #fff;
