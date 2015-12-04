@@ -258,11 +258,11 @@ iframe {
 
 .scroll-y {
 	overflow-x: hidden;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .scroll-x {
-	overflow-x: scroll;
+	overflow-x: auto;
 	overflow-y: hidden;
 }
 

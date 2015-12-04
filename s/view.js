@@ -748,11 +748,7 @@ $(function(){
 					$(this).find('.embed-caption').text(asset.caption);
 				}).on('init.hfp', '.query-toggle', function(event, asset) {
 					$(this).find('.title').text(asset.title);
-					$(this).find('.media-image').attr('src', asset.media).on('load', function() {
-						if( $(this).height() > 320 ) {
-							$(this).parent().addClass('scroll-y');
-						}
-					});
+					$(this).find('.media-image').attr('src', asset.media);
 				}).on('show.hfp', '.query-embed', function(event, asset) {
 					// Update Embed Code
 					$(this).trigger('update.hfp', asset);
