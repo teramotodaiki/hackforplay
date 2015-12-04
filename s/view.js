@@ -744,7 +744,6 @@ $(function(){
 						} else {
 							$(this).addClass('img-responsive');
 						}
-						console.log('init', asset.lines);
 					});
 					$(this).find('.embed-caption').text(asset.caption);
 				}).on('init.hfp', '.query-toggle', function(event, asset) {
@@ -832,7 +831,6 @@ $(function(){
 						});
 						return line;
 					});
-					console.log('lines', lines, asset.lines);
 					// Replacement (ALL keywords contains)
 					var replacement = null;
 					placeholders.filter(function (p) {
