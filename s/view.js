@@ -831,6 +831,7 @@ $(function(){
 						});
 						return line;
 					});
+					console.log('lines', lines);
 					// Replacement (ALL keywords contains)
 					var replacement = null;
 					placeholders.filter(function (p) {
