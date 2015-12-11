@@ -134,7 +134,7 @@ window.addEventListener('load', function () {
 					return hp;
 				},
 				set: function (value) {
-					maxhp = Map.max(maxhp, value);
+					maxhp = Math.max(maxhp, value);
 					hp = value;
 					Hack.lifeLabel.life = (hp / maxhp) * Hack.lifeLabel._maxlife;
 				}
