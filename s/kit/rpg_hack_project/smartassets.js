@@ -150,6 +150,26 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		title: 'ゴールちてん',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 500, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'あなたのかえりを まちわびている おしろ。ここへ たどりつくと ゲームクリアになる',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ゴール
+			var item = new MapObject('castle');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onplayerenter = function () {
+				// ゲームクリア
+				Hack.gameclear();
+				Hack.player.destroy();
+				Hack.log('ゲームクリアです。おめでとう！');
+			};
+		}
+	}, {
 		title: 'からばこ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 522, width: 32, height: 32 },
