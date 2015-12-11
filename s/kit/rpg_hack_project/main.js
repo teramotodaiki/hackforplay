@@ -1,7 +1,7 @@
 window.addEventListener('load', function () {
 
 	var game = enchant.Core.instance;
-	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x2/dotmat.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png');
+	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x2/dotmat.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png', 'enchantjs/icon0.png');
 	game.keybind(' '.charCodeAt(0), 'a');
 
 	Hack.onload = Hack.onload || function () {
@@ -122,6 +122,27 @@ window.addEventListener('load', function () {
 		Hack.textarea.moveTo(64, 0);
 		Hack.textarea.width = 340;
 		Hack.textarea.height = 32;
+
+		// Life label
+		Hack.lifeLabel = (function () {
+			var maxhp, hp;
+			maxhp = hp = Hack.player.hp;
+			this.life = (hp / maxhp) * this._maxlife;
+			Object.defineProperty(Hack.player, 'hp', {
+				enumerable : true,
+				get: function () {
+					return hp;
+				},
+				set: function (value) {
+					maxhp = Map.max(maxhp, value);
+					hp = value;
+					Hack.lifeLabel.life = (hp / maxhp) * Hack.lifeLabel._maxlife;
+				}
+			});
+			Hack.menuGroup.addChild(this);
+			return this;
+
+		}).call(new LifeLabel(10, 72, Math.min(9, Hack.player.hp)));
 	});
 
 	game.onload = game.onload || function () {
