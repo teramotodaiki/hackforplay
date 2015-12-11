@@ -8,16 +8,6 @@ window.addEventListener('load', function () {
 			map.load(); // Load Map;  Hack.defaultParentNode == map.scene
 
 
-			// ゴール
-			var item1 = new MapObject(0);
-			item1.locate(14, 5, 'map1');
-			item1.onplayerenter = function () {
-				// ゲームクリア
-				Hack.gameclear();
-				Hack.player.destroy();
-			};
-
-
 			// ( Keep this line -- ここはけさないでね ) //
 
 
