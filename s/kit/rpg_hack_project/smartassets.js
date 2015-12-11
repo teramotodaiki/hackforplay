@@ -226,7 +226,7 @@ window.addEventListener('load', function () {
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// いしかべ
+			// いわかべ
 			var item = new MapObject('clayWall');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.opacity = 0.5;
@@ -241,7 +241,7 @@ window.addEventListener('load', function () {
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// いわかべ
+			// いしかべ
 			var item = new MapObject('stoneWall');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
