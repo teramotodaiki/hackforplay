@@ -126,7 +126,7 @@ window.addEventListener('load', function () {
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// かいだん
-			var item = new MapObject('DownStair');
+			var item = new MapObject('downStair');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				Hack.changeMap('map2');
@@ -143,10 +143,30 @@ window.addEventListener('load', function () {
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ワープ
-			var item = new MapObject('Warp');
+			var item = new MapObject('warp');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				Hack.player.locate(11, 5);
+			};
+		}
+	}, {
+		title: 'ゴールちてん',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 500, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'あなたのかえりを まちわびている おしろ。ここへ たどりつくと ゲームクリアになる',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ゴール
+			var item = new MapObject('castle');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onplayerenter = function () {
+				// ゲームクリア
+				Hack.gameclear();
+				Hack.player.destroy();
+				Hack.log('ゲームクリアです。おめでとう！');
 			};
 		}
 	}, {
@@ -160,10 +180,10 @@ window.addEventListener('load', function () {
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// たからばこ
-			var item = new MapObject('Box');
+			var item = new MapObject('box');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
-				this.frame = MapObject.Dictionaly['OpenedBox'];
+				this.frame = MapObject.dictionary.openedBox;
 			};
 		}
 	}, {
@@ -177,7 +197,7 @@ window.addEventListener('load', function () {
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// はな
-			var item = new MapObject('Flower');
+			var item = new MapObject('flower');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.collisionFlag = false;
 			item.onattacked = function () {
@@ -195,7 +215,7 @@ window.addEventListener('load', function () {
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// き
-			var item = new MapObject('Tree');
+			var item = new MapObject('tree');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				this.destroy();
@@ -212,7 +232,7 @@ window.addEventListener('load', function () {
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// いわ
-			var item = new MapObject('Rock');
+			var item = new MapObject('rock');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.scale(2, 2);
 		}
@@ -226,8 +246,8 @@ window.addEventListener('load', function () {
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// いしかべ
-			var item = new MapObject('ClayWall');
+			// いわかべ
+			var item = new MapObject('clayWall');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.opacity = 0.5;
 		}
@@ -241,8 +261,8 @@ window.addEventListener('load', function () {
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// いわかべ
-			var item = new MapObject('StoneWall');
+			// いしかべ
+			var item = new MapObject('stoneWall');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				Hack.log('どうだ　おれさまは　かたいだろう！');
@@ -329,14 +349,14 @@ window.addEventListener('load', function () {
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// トゲのワナ
-			var item = new MapObject('Trap');
+			var item = new MapObject('trap');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
-				this.frame = MapObject.Dictionaly['UsedTrap'];
+				this.frame = MapObject.dictionary.usedTrap;
 				Hack.Attack.call(this, this.mapX, this.mapY, 1);
 			};
 			item.onplayerexit = function () {
-				this.frame = MapObject.Dictionaly['Trap'];
+				this.frame = MapObject.dictionary.trap;
 			};
 		}
 	}, {
@@ -350,7 +370,7 @@ window.addEventListener('load', function () {
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ドクロ
-			var item = new MapObject('Skull');
+			var item = new MapObject('skull');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				Hack.player.behavior = BehaviorTypes.Dead;
@@ -370,7 +390,7 @@ window.addEventListener('load', function () {
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// スター（むてき）
-			var item = new MapObject('Star');
+			var item = new MapObject('star');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				var onattacked = Hack.player.onattacked;
@@ -394,7 +414,7 @@ window.addEventListener('load', function () {
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// かいだん
-			var item = new MapObject('UpStair');
+			var item = new MapObject('upStair');
 			item.locate(__cnt15, __cnt10, 'map2');
 			item.onplayerenter = function () {
 				Hack.changeMap('map1');
@@ -402,10 +422,10 @@ window.addEventListener('load', function () {
 		}
 	}).setCounter({
 		name: '__cnt15',
-		table: shuffle(fill(0, 15))
+		table: [11].concat(shuffle([0,1,2,3,4,5,6,7,8,9,10,12,13,14]))
 	}, {
 		name: '__cnt10',
-		table: shuffle(fill(0, 10).concat([(Math.random()*10) >> 0])) // length=11
+		table: [5].concat(shuffle([0,1,2,3,4,6,7,8,9].concat([(Math.random()*10) >> 0]))) // length=11
 	}, {
 		name: '__cntMap',
 		table: fill(2, 100)
