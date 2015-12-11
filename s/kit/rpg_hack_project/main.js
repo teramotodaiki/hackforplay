@@ -6,15 +6,6 @@ window.addEventListener('load', function () {
 
 	Hack.onload = Hack.onload || function () {
 
-		MapObject.Dictionaly = {
-			'Warp': 324,		'WarpRed': 325,		'WarpGreen': 326,	'WarpYellow': 327,
-			'Pot': 400,			'Rock': 401,		'UpStair': 402,
-			'Box': 420,			'Flower': 421,		'DownStair': 422,
-			'Trap': 440,		'UsedTrap': 441,	'Step': 442,
-			'Castle': 500,		'Village': 501,		'Cave': 502,
-			'Tree': 520,		'Table': 521,		'OpenedBox': 522
-		};
-
 		Hack.maps = {};
 		Hack.maps['map1'] = new RPGMap(32, 32);
 		Hack.maps['map1'].imagePath = 'enchantjs/x2/dotmat.gif';
@@ -80,6 +71,21 @@ window.addEventListener('load', function () {
 				}
 			});
 		}
+
+		MapObject.dictionary = MapObject.dictionary || {
+			clay: 320,		clayWall: 340,	clayFloor: 323,
+			stone: 321,		stoneWall: 341,	stoneFloor: 342,
+			warp: 324,		warpRed: 325,
+			warpGreen: 326,	warpYellow: 327,
+			pot: 400,		rock: 401,		upStair: 402,
+			box: 420,		flower: 421,	downStair: 422,
+			trap: 440,		usedTrap: 441,	step: 442,
+			castle: 500,	village: 501,	cave: 502,
+			tree: 520,		table: 521,		openedBox: 522,
+			beam: 540,		diamond: 560,	sapphire: 561,
+			ruby: 562,		heart: 563,		skull: 564,
+			coin: 565,		star: 566,		key: 567
+		};
 	});
 
 	game.on('load', function() {

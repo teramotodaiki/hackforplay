@@ -494,8 +494,8 @@ window.addEventListener('load', function () {
             this.image = game.assets['enchantjs/x2/dotmat.gif'];
 			if (typeof frame === 'number') {
 				this.frame = frame;
-			} else if (MapObject.Dictionaly && MapObject.Dictionaly[frame]) {
-				this.frame = MapObject.Dictionaly[frame];
+			} else if (MapObject.dictionary && MapObject.dictionary[frame]) {
+				this.frame = MapObject.dictionary[frame];
 			}
         },
         onenterframe: function(){
