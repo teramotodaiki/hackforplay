@@ -68,10 +68,10 @@ window.addEventListener('load', function () {
 			this.offset = { x: offsetX, y: offsetY };
 			this.moveTo(game.width, game.height);
 			Object.defineProperty(this, 'mapX', {
-				get: function () { return (this.x - this.offset.x) / 32 >> 0; }
+				get: function () { return (this.x - this.offset.x + 16) / 32 >> 0; }
 			});
 			Object.defineProperty(this, 'mapY', {
-				get: function () { return (this.y - this.offset.y) / 32 >> 0; }
+				get: function () { return (this.y - this.offset.y + 16) / 32 >> 0; }
 			});
 			this.getFrameOfBehavior = []; // BehaviorTypesをキーとしたgetterの配列
 			// onbecome~ イベントで this.frame を更新するように
