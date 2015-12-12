@@ -116,6 +116,12 @@ window.addEventListener('load', function () {
 				},
 				set: function (value) { collisionFlag = value; }
 			});
+			// Destroy when dead
+			this.on('becomedead', function() {
+				this.setTimeout(function () {
+					this.destroy();
+				}, this.getFrame().length);
+			});
 			// 初期化
 			this.direction = 0;
 			this.forward = { x: 0, y: 0 };
@@ -219,11 +225,6 @@ window.addEventListener('load', function () {
 					}, this.getFrame().length);
 				}
             }
-		},
-		onbecomedead: function () {
-			this.setTimeout(function () {
-				this.destroy();
-			}, this.getFrame().length);
 		},
 		walk: function (distance, continuous) {
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
