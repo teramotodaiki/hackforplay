@@ -409,7 +409,7 @@ if ($mode === 'quest') {
 	</div>
 	<div class="container container-assets hidden">
 		<div class="row">
-			<div class="smart-asset-sample col-lg-2 col-md-3 col-sm-4 col-xs-6">
+			<div class="smart-asset-sample">
 				<div class="smart-asset-wrapper toggle-click-false overflow-hidden">
 					<img class="icon">
 				</div>

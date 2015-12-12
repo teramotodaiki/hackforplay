@@ -715,14 +715,14 @@ $(function(){
 					var init = $(this).data('init');
 					$('.container-assets .smart-asset-entity').each(function(index, el) {
 						// close all
-						$(el).removeClass('col-xs-12 toggle-clicked').addClass('col-lg-2 col-md-3 col-sm-4 col-xs-6');
+						$(el).removeClass('toggle-clicked');
 					});
 					if (toggle) {
 						if (init === 'no') {
 							$(this).trigger('init.hfp', asset).data('init', 'yes');
 						}
 						$(this).trigger('show.hfp', asset);
-						$(this).toggleClass('col-lg-2 col-md-3 col-sm-4 col-xs-6 col-xs-12 toggle-clicked');
+						$(this).addClass('toggle-clicked');
 						// $(this).insertBefore('.smart-asset-entity:first');
 					}
 				}).on('init.hfp', '.query-embed', function(event, asset) {

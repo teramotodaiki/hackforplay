@@ -116,6 +116,12 @@ window.addEventListener('load', function () {
 				},
 				set: function (value) { collisionFlag = value; }
 			});
+			// Destroy when dead
+			this.on('becomedead', function() {
+				this.setTimeout(function () {
+					this.destroy();
+				}, this.getFrame().length);
+			});
 			// 初期化
 			this.direction = 0;
 			this.forward = { x: 0, y: 0 };
@@ -220,11 +226,6 @@ window.addEventListener('load', function () {
 				}
             }
 		},
-		onbecomedead: function () {
-			this.setTimeout(function () {
-				this.destroy();
-			}, this.getFrame().length);
-		},
 		walk: function (distance, continuous) {
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
 			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
@@ -257,11 +258,13 @@ window.addEventListener('load', function () {
 					else this.behavior = BehaviorTypes.Idle;
 				}, frame);
 			} else {
-				var e = new Event('collided');
-				e.map = mapHit;
-				e.hits = hits;
-				this.dispatchEvent(e);
-				if (continuous) this.behavior = BehaviorTypes.Idle;
+				this.setTimeout(function () {
+					var e = new Event('collided');
+					e.map = mapHit;
+					e.hits = hits;
+					this.dispatchEvent(e);
+					if (continuous) this.behavior = BehaviorTypes.Idle;
+				}, 1);
 			}
 		}
 	});
@@ -454,11 +457,11 @@ window.addEventListener('load', function () {
 			HumanBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
 			var _0 = 0, _1 = _0 + 1, _2 = _0 + 2;
-			this.setFrame(BehaviorTypes.Idle, [_1]);
-			this.setFrame(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
-			this.setFrame(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
-			this.setFrame(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
-			this.setFrame(BehaviorTypes.Dead, [_1, null]);
+			this.setFrameD9(BehaviorTypes.Idle, [_1]);
+			this.setFrameD9(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
+			this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
+			this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
+			this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
         }
     });
 
@@ -467,11 +470,11 @@ window.addEventListener('load', function () {
 			HumanBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
 			var _0 = 6, _1 = _0 + 1, _2 = _0 + 2;
-			this.setFrame(BehaviorTypes.Idle, [_1]);
-			this.setFrame(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
-			this.setFrame(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
-			this.setFrame(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
-			this.setFrame(BehaviorTypes.Dead, [_1, null]);
+			this.setFrameD9(BehaviorTypes.Idle, [_1]);
+			this.setFrameD9(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
+			this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
+			this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
+			this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
         }
     });
 
@@ -480,11 +483,11 @@ window.addEventListener('load', function () {
 			HumanBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
 			var _0 = 3, _1 = _0 + 1, _2 = _0 + 2;
-			this.setFrame(BehaviorTypes.Idle, [_1]);
-			this.setFrame(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
-			this.setFrame(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
-			this.setFrame(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
-			this.setFrame(BehaviorTypes.Dead, [_1, null]);
+			this.setFrameD9(BehaviorTypes.Idle, [_1]);
+			this.setFrameD9(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
+			this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
+			this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
+			this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
         }
     });
 
