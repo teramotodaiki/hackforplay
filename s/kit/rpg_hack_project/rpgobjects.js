@@ -257,11 +257,13 @@ window.addEventListener('load', function () {
 					else this.behavior = BehaviorTypes.Idle;
 				}, frame);
 			} else {
-				var e = new Event('collided');
-				e.map = mapHit;
-				e.hits = hits;
-				this.dispatchEvent(e);
-				if (continuous) this.behavior = BehaviorTypes.Idle;
+				this.setTimeout(function () {
+					var e = new Event('collided');
+					e.map = mapHit;
+					e.hits = hits;
+					this.dispatchEvent(e);
+					if (continuous) this.behavior = BehaviorTypes.Idle;
+				}, 1);
 			}
 		}
 	});
