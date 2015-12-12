@@ -456,11 +456,11 @@ window.addEventListener('load', function () {
 			HumanBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
 			var _0 = 0, _1 = _0 + 1, _2 = _0 + 2;
-			this.setFrame(BehaviorTypes.Idle, [_1]);
-			this.setFrame(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
-			this.setFrame(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
-			this.setFrame(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
-			this.setFrame(BehaviorTypes.Dead, [_1, null]);
+			this.setFrameD9(BehaviorTypes.Idle, [_1]);
+			this.setFrameD9(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
+			this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
+			this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
+			this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
         }
     });
 
@@ -469,11 +469,11 @@ window.addEventListener('load', function () {
 			HumanBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
 			var _0 = 6, _1 = _0 + 1, _2 = _0 + 2;
-			this.setFrame(BehaviorTypes.Idle, [_1]);
-			this.setFrame(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
-			this.setFrame(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
-			this.setFrame(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
-			this.setFrame(BehaviorTypes.Dead, [_1, null]);
+			this.setFrameD9(BehaviorTypes.Idle, [_1]);
+			this.setFrameD9(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
+			this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
+			this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
+			this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
         }
     });
 
@@ -482,11 +482,11 @@ window.addEventListener('load', function () {
 			HumanBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
 			var _0 = 3, _1 = _0 + 1, _2 = _0 + 2;
-			this.setFrame(BehaviorTypes.Idle, [_1]);
-			this.setFrame(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
-			this.setFrame(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
-			this.setFrame(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
-			this.setFrame(BehaviorTypes.Dead, [_1, null]);
+			this.setFrameD9(BehaviorTypes.Idle, [_1]);
+			this.setFrameD9(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
+			this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
+			this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
+			this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
         }
     });
 
