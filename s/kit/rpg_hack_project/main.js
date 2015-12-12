@@ -72,20 +72,26 @@ window.addEventListener('load', function () {
 			});
 		}
 
-		MapObject.dictionary = MapObject.dictionary || {
-			clay: 320,		clayWall: 340,	clayFloor: 323,
-			stone: 321,		stoneWall: 341,	stoneFloor: 342,
-			warp: 324,		warpRed: 325,
-			warpGreen: 326,	warpYellow: 327,
-			pot: 400,		rock: 401,		upStair: 402,
-			box: 420,		flower: 421,	downStair: 422,
-			trap: 440,		usedTrap: 441,	step: 442,
-			castle: 500,	village: 501,	cave: 502,
-			tree: 520,		table: 521,		openedBox: 522,
-			beam: 540,		diamond: 560,	sapphire: 561,
-			ruby: 562,		heart: 563,		skull: 564,
-			coin: 565,		star: 566,		key: 567
-		};
+		// 互換性維持
+		if (MapObject.Dictionaly) {
+			MapObject.dictionary = {
+				clay: 320,		clayWall: 340,	clayFloor: 323,
+				stone: 321,		stoneWall: 341,	stoneFloor: 342,
+				warp: 324,		warpRed: 325,
+				warpGreen: 326,	warpYellow: 327,
+				pot: 400,		rock: 401,		upStair: 402,
+				box: 420,		flower: 421,	downStair: 422,
+				trap: 440,		usedTrap: 441,	step: 442,
+				castle: 500,	village: 501,	cave: 502,
+				tree: 520,		table: 521,		openedBox: 522,
+				beam: 540,		diamond: 560,	sapphire: 561,
+				ruby: 562,		heart: 563,		skull: 564,
+				coin: 565,		star: 566,		key: 567
+			};
+			Object.keys(MapObject.Dictionaly).forEach(function (key) {
+				MapObject.dictionary[key] = MapObject.Dictionaly[key];
+			});
+		}
 	});
 
 	game.on('load', function() {
@@ -126,8 +132,7 @@ window.addEventListener('load', function () {
 		// Life label
 		Hack.lifeLabel = (function () {
 			var maxhp, hp;
-			maxhp = hp = Hack.player.hp;
-			this.life = (hp / maxhp) * this._maxlife;
+			maxhp = hp = this.life = Hack.player.hp;
 			Object.defineProperty(Hack.player, 'hp', {
 				enumerable : true,
 				get: function () {
@@ -136,13 +141,13 @@ window.addEventListener('load', function () {
 				set: function (value) {
 					maxhp = Math.max(maxhp, value);
 					hp = value;
-					Hack.lifeLabel.life = (hp / maxhp) * Hack.lifeLabel._maxlife;
+					Hack.lifeLabel.life = maxhp < Hack.lifeLabel._maxlife ? hp : (hp / maxhp) * Hack.lifeLabel._maxlife;
 				}
 			});
 			Hack.menuGroup.addChild(this);
 			return this;
 
-		}).call(new LifeLabel(10, 72, Math.min(9, Hack.player.hp)));
+		}).call(new LifeLabel(10, 72, 9));
 	});
 
 	game.onload = game.onload || function () {

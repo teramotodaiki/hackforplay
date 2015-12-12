@@ -286,6 +286,27 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		title: 'アントレプレナー',
+		image: 'enchantjs/x1.5/chara0.png',
+		trim: { x: 1*48, y: 8, width: 48, height: 48 },
+		query: 'embed',
+		caption: 'ひたすら はしりつづける おとこのこ。めざしているところは じぶんでも よくわかっていない',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// おとこのこ
+			var item = new Boy();
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onbecomeidle = function () {
+				this.walk();
+			};
+			item.oncollided = function () {
+				this.turn();
+				this.walk();
+			};
+		}
+	}, {
 		title: 'バイオレンスライム',
 		image: 'enchantjs/monster4.gif',
 		trim: { x: 2*48-4, y: 1*48, width: 48, height: 48 },
