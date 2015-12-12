@@ -436,7 +436,11 @@ button.h4p_open-project {
 }
 
 .smart-asset-entity {
+	width: 100px;
 	padding: 5px 5px;
+}
+.smart-asset-entity.toggle-clicked {
+	width: 100%;
 }
 
 .smart-asset-wrapper.toggle-click-true {

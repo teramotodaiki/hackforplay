@@ -294,6 +294,10 @@ iframe {
 	display: block;
 }
 
+.smart-asset-entity {
+	float: left;
+}
+
 /* アニメーション */
 
 .h4p_item-transform {
