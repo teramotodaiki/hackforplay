@@ -98,7 +98,7 @@ window.addEventListener('load', function () {
 		Hack.pad = pad;
 
 		var apad = new APad();
-		apad.moveTo(100, 180);
+		apad.moveTo(350, 200);
 		apad.outside.scale(0.5, 0.5);
 		apad.inside.visible = false;
 		apad.outside.buttonMode = 'a';
