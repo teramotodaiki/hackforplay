@@ -132,8 +132,7 @@ window.addEventListener('load', function () {
 		// Life label
 		Hack.lifeLabel = (function () {
 			var maxhp, hp;
-			maxhp = hp = Hack.player.hp;
-			this.life = (hp / maxhp) * this._maxlife;
+			maxhp = hp = this.life = Hack.player.hp;
 			Object.defineProperty(Hack.player, 'hp', {
 				enumerable : true,
 				get: function () {
@@ -142,13 +141,13 @@ window.addEventListener('load', function () {
 				set: function (value) {
 					maxhp = Math.max(maxhp, value);
 					hp = value;
-					Hack.lifeLabel.life = (hp / maxhp) * Hack.lifeLabel._maxlife;
+					Hack.lifeLabel.life = maxhp < Hack.lifeLabel._maxlife ? hp : (hp / maxhp) * Hack.lifeLabel._maxlife;
 				}
 			});
 			Hack.menuGroup.addChild(this);
 			return this;
 
-		}).call(new LifeLabel(10, 72, Math.min(9, Hack.player.hp)));
+		}).call(new LifeLabel(10, 72, 9));
 	});
 
 	game.onload = game.onload || function () {
