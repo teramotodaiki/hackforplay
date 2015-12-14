@@ -295,19 +295,22 @@ $(function(){
 			fullText = lines.join('\n');
 			if (fullText.split('{').length === fullText.split('}').length) {
 				// { } のセットが揃っている時、自動でインデントを行う
-				var tabs = 0, cursor = cm.doc.getCursor();
+				var tabs = 0, cursor = cm.doc.getCursor(), currentTabs = 0;
 				var value = lines.map(function(elem, index) {
 					tabs -= elem.split('}').length - 1;
 					tabs = Math.max(0, tabs);
+					currentTabs = index === cursor.line ? tabs : currentTabs;
 					var replace = elem.replace(/^\s*/g, new Array(tabs + 1).join('\t'));
 					tabs += elem.split('{').length - 1;
 					return replace;
 				}).join('\n');
 				if (fullText !== value) {
 					cm.doc.setValue(value);
+					var lastLine = change.text[change.text.length - 1].replace(/^\s*/g, '');
 					cm.doc.setCursor({
-						line: cursor.line + 0,
-						ch: cursor.ch + 1
+						line: cursor.line,
+						ch: currentTabs + lastLine.length,
+						option: { scroll: false }
 					});
 				}
 			}
