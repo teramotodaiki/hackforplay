@@ -245,6 +245,13 @@ if ($mode === 'quest') {
 		<div class="row">
 			<div class="col-xs-12 h4p_restaging directly_floating_shadow">
 				<div class="row">
+					<div class="col-xs-12 h4p_restaging_menu">
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-sm btn-default active" data-toggle="button" data-query="indent">
+								<span class="glyphicon glyphicon-indent-left"></span>
+							</button>
+						</div>
+					</div>
 					<div class="col-xs-12 h4p_restaging_editor">
 						<textarea name="restaging_code" value="// ステージ改造コードを書いて、このステージを改造してやろう!!"></textarea>
 					</div>

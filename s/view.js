@@ -289,8 +289,20 @@ $(function(){
 			change.cancel();
 		}
 	});
-	jsEditor.on('change', function(cm, change) {
-		if (['+input', 'paste'].indexOf(change.origin) > -1) {
+	(function () {
+		var button = $('.h4p_restaging_menu button[data-query="indent"]');
+		button.on('click', function() {
+			if (!$(this).hasClass('active')) {
+				task(jsEditor);
+			}
+		});
+		jsEditor.on('change', function(cm, change) {
+			// On/Off
+			if (button.hasClass('active') && ['+input', 'paste'].indexOf(change.origin) > -1) {
+				task(cm, change);
+			}
+		});
+		function task (cm, change) {
 			var lines = cm.doc.getValue(false),
 			fullText = lines.join('\n');
 			if (fullText.split('{').length === fullText.split('}').length) {
@@ -306,16 +318,18 @@ $(function(){
 				}).join('\n');
 				if (fullText !== value) {
 					cm.doc.setValue(value);
-					var lastLine = change.text[change.text.length - 1].replace(/^\s*/g, '');
-					cm.doc.setCursor({
-						line: cursor.line,
-						ch: currentTabs + lastLine.length,
-						option: { scroll: false }
-					});
+					if (change) {
+						var lastLine = change.text[change.text.length - 1].replace(/^\s*/g, '');
+						cm.doc.setCursor({
+							line: cursor.line,
+							ch: currentTabs + lastLine.length,
+							option: { scroll: false }
+						});
+					}
 				}
 			}
 		}
-	});
+	})();
 	var $div = $("div.h4p_restaging_editor");
 	jsEditor.setSize($div.width(), $div.height());
 	if(getParam('mode') !== "restaging"){
