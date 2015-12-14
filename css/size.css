@@ -265,8 +265,11 @@ nav #button-loginwithtwitter {
 	margin-top: 10px;
 }
 
+.h4p_restaging {
+	padding: 8px 15px 8px 15px;
+}
+
 .h4p_info,
-.h4p_restaging,
 .h4p_my-comment {
 	padding-top: 15px;
 	padding-bottom: 20px;
@@ -289,10 +292,6 @@ nav #button-loginwithtwitter {
 	padding-top: 10px;
 }
 
-.h4p_restaging {
-	height: 470px;
-}
-
 .h4p_restaging_editor {
 	height: 400px;
 	margin: 0;
@@ -304,7 +303,6 @@ nav #button-loginwithtwitter {
 }
 
 .h4p_restaging_button {
-	height: 45px;
 	margin: 0;
 }
 
@@ -461,4 +459,9 @@ button.h4p_open-project {
 
 .smart-asset-wrapper .embed-caption {
 	min-height: 47px;
+}
+
+.h4p_restaging_menu {
+	margin-bottom: 4px;
+	text-align: right;
 }
