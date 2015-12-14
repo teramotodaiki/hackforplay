@@ -280,12 +280,37 @@ $(function(){
 		mode: "javascript",
 		lineNumbers: true,
 		indentUnit: 4,
+		indentWithTabs: true,
 		autoClossBrackets: true
 	});
 	jsEditor.on('beforeChange', function(cm, change) {
 		if (change.origin === "undo" && cm.doc.historySize().undo === 0) {
 			// Ctrl+Zの押し過ぎで、全部消えてしまうのをふせぐ
 			change.cancel();
+		}
+	});
+	jsEditor.on('change', function(cm, change) {
+		if (['+input', 'paste'].indexOf(change.origin) > -1) {
+			var lines = cm.doc.getValue(false),
+			fullText = lines.join('\n');
+			if (fullText.split('{').length === fullText.split('}').length) {
+				// { } のセットが揃っている時、自動でインデントを行う
+				var tabs = 0, cursor = cm.doc.getCursor();
+				var value = lines.map(function(elem, index) {
+					tabs -= elem.split('}').length - 1;
+					tabs = Math.max(0, tabs);
+					var replace = elem.replace(/^\s*/g, new Array(tabs + 1).join('\t'));
+					tabs += elem.split('{').length - 1;
+					return replace;
+				}).join('\n');
+				if (fullText !== value) {
+					cm.doc.setValue(value);
+					cm.doc.setCursor({
+						line: cursor.line + 0,
+						ch: cursor.ch + 1
+					});
+				}
+			}
 		}
 	});
 	var $div = $("div.h4p_restaging_editor");
