@@ -280,6 +280,7 @@ $(function(){
 		mode: "javascript",
 		lineNumbers: true,
 		indentUnit: 4,
+		indentWithTabs: true,
 		autoClossBrackets: true
 	});
 	jsEditor.on('beforeChange', function(cm, change) {
@@ -288,6 +289,47 @@ $(function(){
 			change.cancel();
 		}
 	});
+	(function () {
+		var button = $('.h4p_restaging_menu button[data-query="indent"]');
+		button.on('click', function() {
+			if (!$(this).hasClass('active')) {
+				task(jsEditor);
+			}
+		});
+		jsEditor.on('change', function(cm, change) {
+			// On/Off
+			if (button.hasClass('active') && ['+input', 'paste'].indexOf(change.origin) > -1) {
+				task(cm, change);
+			}
+		});
+		function task (cm, change) {
+			var lines = cm.doc.getValue(false),
+			fullText = lines.join('\n');
+			if (fullText.split('{').length === fullText.split('}').length) {
+				// { } のセットが揃っている時、自動でインデントを行う
+				var tabs = 0, cursor = cm.doc.getCursor(), currentTabs = 0;
+				var value = lines.map(function(elem, index) {
+					tabs -= elem.split('}').length - 1;
+					tabs = Math.max(0, tabs);
+					currentTabs = index === cursor.line ? tabs : currentTabs;
+					var replace = elem.replace(/^\s*/g, new Array(tabs + 1).join('\t'));
+					tabs += elem.split('{').length - 1;
+					return replace;
+				}).join('\n');
+				if (fullText !== value) {
+					cm.doc.setValue(value);
+					if (change) {
+						var lastLine = change.text[change.text.length - 1].replace(/^\s*/g, '');
+						cm.doc.setCursor({
+							line: cursor.line,
+							ch: currentTabs + lastLine.length,
+							option: { scroll: false }
+						});
+					}
+				}
+			}
+		}
+	})();
 	var $div = $("div.h4p_restaging_editor");
 	jsEditor.setSize($div.width(), $div.height());
 	if(getParam('mode') !== "restaging"){
