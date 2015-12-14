@@ -293,16 +293,22 @@ $(function(){
 		var button = $('.h4p_restaging_menu button[data-query="indent"]');
 		button.on('click', function() {
 			if (!$(this).hasClass('active')) {
-				task(jsEditor);
+				refactoring(jsEditor);
 			}
 		});
 		jsEditor.on('change', function(cm, change) {
 			// On/Off
 			if (button.hasClass('active') && ['+input', 'paste'].indexOf(change.origin) > -1) {
-				task(cm, change);
+				refactoring(cm, change);
 			}
 		});
-		function task (cm, change) {
+		window.addEventListener('message', function task (event) {
+			if (event.data === 'game_loaded') {
+				refactoring(jsEditor);
+				window.removeEventListener('message', task);
+			}
+		});
+		function refactoring (cm, change) {
 			var lines = cm.doc.getValue(false),
 			fullText = lines.join('\n');
 			if (fullText.split('{').length === fullText.split('}').length) {
@@ -316,6 +322,7 @@ $(function(){
 					tabs += elem.split('{').length - 1;
 					return replace;
 				}).join('\n');
+				console.log(fullText !== value, fullText);
 				if (fullText !== value) {
 					cm.doc.setValue(value);
 					if (change) {
