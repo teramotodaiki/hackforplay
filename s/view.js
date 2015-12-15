@@ -319,21 +319,22 @@ $(function(){
 				var value = lines.map(function(elem, index) {
 					tabs -= elem.split('}').length - 1;
 					tabs = Math.max(0, tabs);
+					if (index === cursor.line) {
+						currentTabs = tabs + elem.match(/^\s*/g)[0].length;
+					}
 					currentTabs = index === cursor.line ? tabs : currentTabs;
 					var replace = elem.replace(/^\s*/g, new Array(tabs + 1).join('\t'));
 					tabs += elem.split('{').length - 1;
 					return replace;
 				}).join('\n');
 				if (fullText !== value) {
+					var scroll = cm.getScrollInfo();
 					cm.doc.setValue(value);
-					if (change) {
-						var lastLine = change.text[change.text.length - 1].replace(/^\s*/g, '');
-						cm.doc.setCursor({
-							line: cursor.line,
-							ch: currentTabs + lastLine.length,
-							option: { scroll: false }
-						});
-					}
+					cm.doc.setCursor({
+						line: cursor.line,
+						ch: cursor.ch + currentTabs
+					});
+					cm.scrollTo(scroll.left, scroll.top);
 				}
 			}
 		}
