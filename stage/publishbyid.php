@@ -51,7 +51,7 @@ try {
 		$stmt->bindValue(":id_2", $NotificationID, PDO::PARAM_INT);
 		$stmt->bindValue(":stageid", $stage_id, PDO::PARAM_INT);
 		$stmt->bindValue(":stage", 'stage', PDO::PARAM_STR);
-		$stmt->bindValue(":published", 'published', PDO::PARAM_INT);
+		$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 		$stmt->bindValue(":judged", 'judged', PDO::PARAM_STR);
 		$stmt->execute();
 	}
