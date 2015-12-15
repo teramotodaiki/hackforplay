@@ -293,7 +293,9 @@ $(function(){
 		var button = $('.h4p_restaging_menu button[data-query="indent"]');
 		button.on('click', function() {
 			if (!$(this).hasClass('active')) {
+				var scroll = jsEditor.getScrollInfo();
 				refactoring(jsEditor);
+				jsEditor.scrollTo(scroll.left, scroll.top);
 			}
 		});
 		jsEditor.on('change', function(cm, change) {
@@ -322,7 +324,6 @@ $(function(){
 					tabs += elem.split('{').length - 1;
 					return replace;
 				}).join('\n');
-				console.log(fullText !== value, fullText);
 				if (fullText !== value) {
 					cm.doc.setValue(value);
 					if (change) {
