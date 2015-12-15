@@ -313,13 +313,14 @@ $(function(){
 		function refactoring (cm, change) {
 			var lines = cm.doc.getValue(false),
 			fullText = lines.join('\n');
-			if (fullText.split('{').length === fullText.split('}').length) {
-				// { } のセットが揃っている時、自動でインデントを行う
+			if (fullText.split('{').length === fullText.split('}').length &&
+				fullText.split('[').length === fullText.split(']').length) {
+				// { } [ ] のセットが揃っている時、自動でインデントを行う
 				var tabs = 0, cursor = cm.doc.getCursor(), currentTabs = 0;
 				var value = lines.map(function(elem, index) {
-					var closerOnHead = elem.match(/^\s*(\}+)/),
-					openerNum = elem.split('{').length - 1,
-					closerNum = elem.split('}').length - 1;
+					var closerOnHead = elem.match(/^\s*([\}\]]+)/),
+					openerNum = elem.split('{').length + elem.split('[').length - 2,
+					closerNum = elem.split('}').length + elem.split(']').length - 2;
 					if (closerOnHead) {
 						tabs -= closerOnHead[1].length;
 						closerNum -= closerOnHead[1].length;
