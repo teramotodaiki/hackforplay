@@ -304,6 +304,21 @@ $(function(){
 								</div>
 							</a>
 						</li>
+						<li class="notification-judged-sample hidden">
+							<a class="notification-item-wrapper display-block" href="#" title="">
+								<div class="row">
+									<div class="col-xs-4">
+										<img class="notification-item-thumbnail img-responsive" src="" alt="">
+									</div>
+									<div class="col-xs-8">
+										<div class="notification-item-article break-word">
+											あなたのステージ <b class="notification-detail-stage"></b> が
+											<b class="notification-detail-judged"></b> となりました
+										</div>
+									</div>
+								</div>
+							</a>
+						</li>
 						<!-- ~template -->
 						<li>
 							<span class="btn btn-link notification-check">
