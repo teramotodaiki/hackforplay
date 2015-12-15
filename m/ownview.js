@@ -199,6 +199,23 @@ $(function(){
 		}
 	});
 
+	// リジェクトされた理由を表示するモーダル
+	var $reasonItem =
+	$('<div>').addClass('alert alert-danger').append(
+		$('<p>').addClass('message')
+	);
+	$('#reasonModal').on('show.bs.modal', function(event) {
+		$(this).find('.modal-body').children().remove();
+		var $button = $(event.relatedTarget);
+		var reason_json = $button.data('reason');
+		var reason = $.parseJSON(reason_json);
+		reason.forEach(function(item){
+			var reasonItem = $reasonItem.clone(true);
+			reasonItem.text(item);
+			reasonItem.appendTo('#reasonModal .modal-body');
+		});
+	});
+
 	// _level のアラート _text を生成し、jQueryオブジェクトを返す
 	function bsAlert (_level, _text) {
 		var _bsalert =

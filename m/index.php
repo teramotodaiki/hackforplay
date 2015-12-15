@@ -25,6 +25,15 @@ try {
 	}
 
 	if (isset($session_userid) && ($id === $session_userid || $id === NULL)) {
+		// コメント通知をすべて既読に
+		$stmt	= $dbh->prepare('UPDATE "Notification" SET "State"=:read,"ReadUnixTime"=:time WHERE "UserID"=:userid AND "State"=:unread AND "Type"=:judged');
+		$stmt->bindValue(":read", 'read', PDO::PARAM_STR);
+		date_default_timezone_set('GMT');
+		$stmt->bindValue(":time", time(), PDO::PARAM_INT);
+		$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+		$stmt->bindValue(":unread", 'unread', PDO::PARAM_STR);
+		$stmt->bindValue(":judged", 'judged', PDO::PARAM_STR);
+		$stmt->execute();
 		include 'ownview.php';
 	}elseif ($id !== NULL) {
 		include 'othersview.php';

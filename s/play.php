@@ -128,14 +128,23 @@ try {
 	}
 
 	// ステージの情報/制作者の情報/改造元ステージの情報を取得
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Mode",s."ProjectID",s."Path",s."Title",s."Explain",s."Playcount",s."NextID",s."Src",s."YouTubeID",s."Thumbnail",s."SourceID",u."Nickname",source."Title" AS SourceTitle FROM "Stage" AS s LEFT OUTER JOIN "User" AS u ON s."UserID"=u."ID" LEFT OUTER JOIN "Stage" AS source ON s."SourceID"=source."ID" WHERE s."ID"=:stageid AND s."State"!=:rejected');
+	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Mode",s."ProjectID",s."Path",s."Title",s."Explain",s."State",s."Playcount",s."NextID",s."Src",s."YouTubeID",s."Thumbnail",s."SourceID",u."Nickname",source."Title" AS SourceTitle FROM "Stage" AS s LEFT OUTER JOIN "User" AS u ON s."UserID"=u."ID" LEFT OUTER JOIN "Stage" AS source ON s."SourceID"=source."ID" WHERE s."ID"=:stageid');
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
-	$stmt->bindValue(":rejected", 'rejected', PDO::PARAM_STR);
 	$stmt->execute();
 	$stage	= $stmt->fetch(PDO::FETCH_ASSOC);
 	if($stage === NULL){
 		header('Location:' . $missing_page);
 		exit();
+	}
+
+	if ($stage['State'] === 'rejected' && $stage['UserID'] !== $session_userid) {
+		// リジェクトされている場合は、本人しか遊ぶことができない
+		$stage['Explain'] = 'This stage was rejected.';
+		$project['Data'] = '';
+	} elseif ($stage['Mode'] === 'replay') {
+		// リプレイの場合は改造コードを取得
+		require_once '../project/getcurrentcode.php';
+		$project['Data']	= getCurrentCode($stage['ProjectID']);
 	}
 
 	// もしYouTube IDがない場合, SourceIDのYouTubeIDで上書きする (仮の処理.いずれ複数対応)
@@ -144,12 +153,6 @@ try {
 		$stmt->bindValue(":source_id", $stage['SourceID'], PDO::PARAM_INT);
 		$stmt->execute();
 		$stage['YouTubeID'] = $stmt->fetch(PDO::FETCH_COLUMN);
-	}
-
-	// リプレイの場合は改造コードを取得
-	if ($stage['Mode'] === 'replay') {
-		require_once '../project/getcurrentcode.php';
-		$project['Data']	= getCurrentCode($stage['ProjectID']);
 	}
 
 	// Playcountを更新
