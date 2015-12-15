@@ -60,7 +60,6 @@ $(function () {
 				'stage_id': stage_id,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			} , function(data, textStatus, xhr) {
-				console.log(data);
 				if (data === 'success') {
 					item.after(bsAlert('alert-success', 'Successfly published'));
 					item.remove();

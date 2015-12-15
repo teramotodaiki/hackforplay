@@ -64,7 +64,7 @@ try {
 		$stmt	= $dbh->prepare('INSERT INTO "NotificationDetail" ("NotificationID","Data","KeyString") VALUES(:id_1,:stageid,:stage),(:id_2,:rejected,:judged)');
 		$stmt->bindValue(":id_1", $NotificationID, PDO::PARAM_INT);
 		$stmt->bindValue(":id_2", $NotificationID, PDO::PARAM_INT);
-		$stmt->bindValue(":stageid", $stage_id, PDO::PARAM_INT);
+		$stmt->bindValue(":stageid", $stage_id, PDO::PARAM_STR);
 		$stmt->bindValue(":stage", 'stage', PDO::PARAM_STR);
 		$stmt->bindValue(":rejected", 'rejected', PDO::PARAM_STR);
 		$stmt->bindValue(":judged", 'judged', PDO::PARAM_STR);

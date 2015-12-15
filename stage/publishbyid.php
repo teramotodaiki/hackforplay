@@ -32,8 +32,6 @@ try {
 		exit('failed');
 	}
 
-	try {
-
 	if ($stage['UserID']) {
 		// 通知を生成
 		$stmt	= $dbh->prepare('INSERT INTO "Notification" ("UserID","State","Type","Thumbnail","LinkedURL","MakeUnixTime") VALUES(:author_id,:unread,:judged,:thumb_url,:mypage,:time)');
@@ -56,11 +54,6 @@ try {
 		$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 		$stmt->bindValue(":judged", 'judged', PDO::PARAM_STR);
 		$stmt->execute();
-	}
-
-	} catch (PDOException $e) {
-		var_dump($e);
-		exit;
 	}
 
 	exit('success');
