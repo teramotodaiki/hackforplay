@@ -281,6 +281,7 @@ $(function(){
 		lineNumbers: true,
 		indentUnit: 4,
 		indentWithTabs: true,
+		matchBrackets: true,
 		autoCloseBrackets: true
 	});
 	jsEditor.on('beforeChange', function(cm, change) {
