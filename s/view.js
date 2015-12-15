@@ -320,9 +320,8 @@ $(function(){
 					tabs -= elem.split('}').length - 1;
 					tabs = Math.max(0, tabs);
 					if (index === cursor.line) {
-						currentTabs = tabs + elem.match(/^\s*/g)[0].length;
+						currentTabs = tabs - elem.match(/^\s*/g)[0].length;
 					}
-					currentTabs = index === cursor.line ? tabs : currentTabs;
 					var replace = elem.replace(/^\s*/g, new Array(tabs + 1).join('\t'));
 					tabs += elem.split('{').length - 1;
 					return replace;
