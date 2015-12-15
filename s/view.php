@@ -373,22 +373,6 @@ if ($mode === 'quest') {
 					</div>
 				</div>
 			</div>
-			<?php if ($id < 300) : ?>
-			<div class="col-xs-12 h4p_mapTip h4p_while-restaging">
-				<img src="img/mapTipIndex.jpg" alt="">
-			</div>
-			<?php else : ?>
-			<div class="col-xs-6 panel panel-default h4p_while-restaging">
-				<div class="panel-body text-center">
-					<a class="btn btn-link btn-lg" href="../resources/" target="_blank" title="Other Resources / 他の画像をみる">Other resources / 他の画像をみる</a>
-				</div>
-			</div>
-			<div class="col-xs-6 panel panel-default h4p_while-restaging">
-				<div class="panel-body text-center">
-					<a class="btn btn-link btn-lg" href="../reference/" target="_blank" title="Reference / リファレンスを見る">Reference / リファレンスを見る</a>
-				</div>
-			</div>
-			<?php endif; ?>
 		</div>
 	</div>
 	<div class="container container-tab hidden">
