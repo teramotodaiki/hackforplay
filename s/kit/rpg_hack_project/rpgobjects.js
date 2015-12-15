@@ -173,7 +173,7 @@ window.addEventListener('load', function () {
 			function task () {
 				if (this.age === target && flag) {
 					callback.call(this);
-					stopTimeout();
+					stopTimeout.call(this);
 				}
 			}
 			function stopTimeout () {
