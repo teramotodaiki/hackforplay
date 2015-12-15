@@ -180,7 +180,6 @@ nav #img-usericon {
 	width: 99%;
 }
 
-.container-youtube,
 .container-tab,
 .container-assets {
 	float: left;
@@ -277,8 +276,7 @@ nav #button-loginwithtwitter {
 
 .h4p_info,
 .h4p_restaging,
-.h4p_my-comment,
-.h4p_youtube-frame {
+.h4p_my-comment {
 	margin-top: 10px;
 }
 

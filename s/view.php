@@ -392,13 +392,6 @@ if ($mode === 'quest') {
 			</div>
 		</div>
 	</div>
-	<div class="container container-youtube hidden">
-		<div class="row">
-			<div class="col-xs-12 h4p_youtube-frame">
-				<div id="kit-embed-content" src=""></div>
-			</div>
-		</div>
-	</div>
 	<div class="container container-assets hidden">
 		<div class="row">
 			<div class="smart-asset-sample">

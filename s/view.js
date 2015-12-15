@@ -515,7 +515,6 @@ $(function(){
 				}, 100);
 
 				// ２カラムアライメント（ゲームビュー | YouTubeビュー）
-				// var alignmentMode = getParam('youtube') ? 'both' : 'game'; // both(２カラム) | game(ゲーム画面のみ)
 				var alignmentMode = 'both'; // both(２カラム) | game(ゲーム画面のみ)
 				var reload_timer = null;
 
@@ -546,12 +545,8 @@ $(function(){
 							'width': body_width / 2 >> 0
 						});
 						$('.container-tab').removeClass('hidden');
-						var youtube_width = body_width - $('.container-game').outerWidth() - $('.container-tab').outerWidth() - 60;
-						$('.container-youtube,.container-assets').removeClass('hidden').outerWidth(youtube_width);
-						$('.h4p_youtube-frame iframe').attr({
-							'width': youtube_width,
-							'height': youtube_width / 1.5
-						});
+						var w = body_width - $('.container-game').outerWidth() - $('.container-tab').outerWidth() - 60;
+						$('.container-assets').removeClass('hidden').outerWidth(w);
 						break;
 					case 'game':
 						// 1カラム 100:0 ただし幅には最大値がある
@@ -564,7 +559,7 @@ $(function(){
 						$('.container-game').width(content_width);
 
 						$('.container-tab').removeClass('hidden');
-						$('.container-youtube,.container-assets').addClass('hidden').width(0);
+						$('.container-assets').addClass('hidden').width(0);
 						break;
 					}
 
@@ -700,20 +695,6 @@ $(function(){
 					publishTask();
 				});
 			});
-
-			// YouTubeの設定
-			if (getParam('youtube') !== '') {
-
-				// YouTube Frame API をロード
-				$('<script>').attr('src', 'https://www.youtube.com/iframe_api').prependTo('body');
-				onYouTubeIframeAPIReady = function() {
-					var player = new YT.Player('kit-embed-content', {
-						width: $('.h4p_youtube-frame').width(),
-						height: $('.h4p_youtube-frame').width() / 1.5,
-						videoId: getParam('youtube')
-					});
-				};
-			}
 
 			// Smart Assets
 			(function () {
@@ -1214,6 +1195,7 @@ $(function(){
 	}
 
 	// YouTube等によるキットの説明
+	// ！　暫定的なYouTubeプレイヤー。一般化してゲーム側からコールして制御できる形にする
 	(function() {
 		// 説明すべきコンテンツが存在するかどうか
 		var embed_content = getParam('youtube');
