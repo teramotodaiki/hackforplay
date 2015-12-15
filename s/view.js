@@ -281,7 +281,8 @@ $(function(){
 		lineNumbers: true,
 		indentUnit: 4,
 		indentWithTabs: true,
-		autoClossBrackets: true
+		matchBrackets: true,
+		autoCloseBrackets: true
 	});
 	jsEditor.on('beforeChange', function(cm, change) {
 		if (change.origin === "undo" && cm.doc.historySize().undo === 0) {
@@ -293,39 +294,54 @@ $(function(){
 		var button = $('.h4p_restaging_menu button[data-query="indent"]');
 		button.on('click', function() {
 			if (!$(this).hasClass('active')) {
-				task(jsEditor);
+				var scroll = jsEditor.getScrollInfo();
+				refactoring(jsEditor);
+				jsEditor.scrollTo(scroll.left, scroll.top);
 			}
 		});
 		jsEditor.on('change', function(cm, change) {
 			// On/Off
 			if (button.hasClass('active') && ['+input', 'paste'].indexOf(change.origin) > -1) {
-				task(cm, change);
+				refactoring(cm, change);
 			}
 		});
-		function task (cm, change) {
+		window.addEventListener('message', function task (event) {
+			if (event.data === 'game_loaded') {
+				refactoring(jsEditor);
+				window.removeEventListener('message', task);
+			}
+		});
+		function refactoring (cm, change) {
 			var lines = cm.doc.getValue(false),
 			fullText = lines.join('\n');
-			if (fullText.split('{').length === fullText.split('}').length) {
-				// { } のセットが揃っている時、自動でインデントを行う
+			if (fullText.split('{').length === fullText.split('}').length &&
+				fullText.split('[').length === fullText.split(']').length) {
+				// { } [ ] のセットが揃っている時、自動でインデントを行う
 				var tabs = 0, cursor = cm.doc.getCursor(), currentTabs = 0;
 				var value = lines.map(function(elem, index) {
-					tabs -= elem.split('}').length - 1;
+					var closerOnHead = elem.match(/^\s*([\}\]]+)/),
+					openerNum = elem.split('{').length + elem.split('[').length - 2,
+					closerNum = elem.split('}').length + elem.split(']').length - 2;
+					if (closerOnHead) {
+						tabs -= closerOnHead[1].length;
+						closerNum -= closerOnHead[1].length;
+					}
 					tabs = Math.max(0, tabs);
-					currentTabs = index === cursor.line ? tabs : currentTabs;
+					if (index === cursor.line) {
+						currentTabs = tabs - elem.match(/^\s*/g)[0].length;
+					}
 					var replace = elem.replace(/^\s*/g, new Array(tabs + 1).join('\t'));
-					tabs += elem.split('{').length - 1;
+					tabs += openerNum - closerNum;
 					return replace;
 				}).join('\n');
 				if (fullText !== value) {
+					var scroll = cm.getScrollInfo();
 					cm.doc.setValue(value);
-					if (change) {
-						var lastLine = change.text[change.text.length - 1].replace(/^\s*/g, '');
-						cm.doc.setCursor({
-							line: cursor.line,
-							ch: currentTabs + lastLine.length,
-							option: { scroll: false }
-						});
-					}
+					cm.doc.setCursor({
+						line: cursor.line,
+						ch: cursor.ch + currentTabs
+					});
+					cm.scrollTo(scroll.left, scroll.top);
 				}
 			}
 		}

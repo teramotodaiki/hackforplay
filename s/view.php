@@ -49,6 +49,7 @@ if ($mode === 'quest') {
 	<!-- HackforPlay RePlay -->
 	<script src="editor/lib/codemirror.js" type="text/javascript"></script>
 	<script src="editor/mode/javascript/javascript.js" type="text/javascript"></script>
+	<script src="editor/addon/edit/matchbrackets.js" type="text/javascript"></script>
 	<script src="editor/addon/edit/closebrackets.js" type="text/javascript"></script>
 	<link rel="stylesheet" href="editor/lib/codemirror.css">
 	<style type="text/css" media="screen">
