@@ -317,13 +317,19 @@ $(function(){
 				// { } のセットが揃っている時、自動でインデントを行う
 				var tabs = 0, cursor = cm.doc.getCursor(), currentTabs = 0;
 				var value = lines.map(function(elem, index) {
-					tabs -= elem.split('}').length - 1;
+					var closerOnHead = elem.match(/^\s*(\}+)/),
+					openerNum = elem.split('{').length - 1,
+					closerNum = elem.split('}').length - 1;
+					if (closerOnHead) {
+						tabs -= closerOnHead[1].length;
+						closerNum -= closerOnHead[1].length;
+					}
 					tabs = Math.max(0, tabs);
 					if (index === cursor.line) {
 						currentTabs = tabs - elem.match(/^\s*/g)[0].length;
 					}
 					var replace = elem.replace(/^\s*/g, new Array(tabs + 1).join('\t'));
-					tabs += elem.split('{').length - 1;
+					tabs += openerNum - closerNum;
 					return replace;
 				}).join('\n');
 				if (fullText !== value) {
