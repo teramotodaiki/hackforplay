@@ -281,7 +281,7 @@ $(function(){
 		lineNumbers: true,
 		indentUnit: 4,
 		indentWithTabs: true,
-		autoClossBrackets: true
+		autoCloseBrackets: true
 	});
 	jsEditor.on('beforeChange', function(cm, change) {
 		if (change.origin === "undo" && cm.doc.historySize().undo === 0) {
