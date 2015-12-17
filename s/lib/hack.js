@@ -601,6 +601,10 @@ window.addEventListener('load', function() {
 				}
 				return this;
 			},
+			// @ignore
+			clearAll: function () {
+				__apps = [];
+			},
 			setCounter: function (counter) {
 				if (arguments.length > 1) {
 					Array.prototype.forEach.call(arguments, function (item) {
