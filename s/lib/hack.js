@@ -622,6 +622,14 @@ window.addEventListener('load', function() {
 		});
 	})();
 
+	Hack.openExternal = function (type) {
+		switch (type) {
+			case 'restaging':
+			window.parent.postMessage('begin_restaging', '/');
+			break;
+		}
+	};
+
 	window.postMessage("Hack.dispatchEvent(new Event('load'));", "/"); // Hack.onloadのコール
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 

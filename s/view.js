@@ -52,8 +52,10 @@ $(function(){
 				jsEditor.setValue(code);
 				break;
 			case "begin_restaging":
-				// ゲーム側からリステージングを開始する
-				$('.begin_restaging').trigger('click');
+				if ( !$('.container.container-game').hasClass('restaging') ) {
+					// ゲーム側からリステージングを開始する
+					$('.begin_restaging').trigger('click');
+				}
 				break;
 			case "show_hint":
 				// ゲーム側からヒントを表示すると、モーダルがひらく
@@ -358,6 +360,7 @@ $(function(){
 	(function(){
 		var beginRestaging = function(isExtendMode){
 
+			$('.container.container-game').addClass('restaging');
 			// frame.phpを経由して、getParam('src')のページをincludeさせる
 			// モードをRestagingにする
 			var gameSrc = encodeURIComponent(getParam('src'));
