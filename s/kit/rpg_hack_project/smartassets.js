@@ -273,7 +273,7 @@ window.addEventListener('load', function () {
 		image: 'enchantjs/x1.5/chara0.png',
 		trim: { x: 4*48, y: 8, width: 48, height: 48 },
 		query: 'embed',
-		caption: 'まえで こうげきすると しゃべる ひと。ふだんは、うけつけのしごとを しているらしい。ずっと おなじセリフしか いえないのかな？',
+		caption: 'しゃべる ひと。ふだんは、うけつけのしごとを しているらしい。ずっと おなじセリフしか いえないのかな？',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
@@ -281,7 +281,7 @@ window.addEventListener('load', function () {
 			// 女の人
 			var item = new Woman();
 			item.locate(__cnt15, __cnt10, 'map1');
-			item.onattacked = function () {
+			item.oncollided = function () {
 				Hack.log('こんにちは。ここは 1F です');
 			};
 		}
