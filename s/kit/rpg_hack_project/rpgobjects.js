@@ -260,13 +260,25 @@ window.addEventListener('load', function () {
 					else this.behavior = BehaviorTypes.Idle;
 				}, frame);
 			} else {
-				this.setTimeout(function () {
-					var e = new Event('collided');
-					e.map = mapHit;
-					e.hits = hits;
-					this.dispatchEvent(e);
-					if (continuous) this.behavior = BehaviorTypes.Idle;
-				}, 1);
+				// 直前のフレームで collided していたオブジェクトを除外
+				var e = new Event('collided');
+				e.map = mapHit;
+				e.hits = hits.filter(function (item) {
+					return !this._preventFrameHits || this._preventFrameHits.indexOf(item) < 0;
+				}, this);
+				e.hit = e.hits.length > 0 ? e.hits[0] : undefined;
+				if (e.hit || e.map) {
+					var e2 = new Event('collided');
+					e2.map = false;
+					e2.hits = [e2.hit = this];
+					this.setTimeout(function () {
+						this.dispatchEvent(e);
+						e.hits.forEach(function (item) {
+							item.dispatchEvent(e2);
+						});
+						if (continuous) this.behavior = BehaviorTypes.Idle;
+					}, 1);
+				}
 			}
 			this._preventFrameHits = hits;
 		}
