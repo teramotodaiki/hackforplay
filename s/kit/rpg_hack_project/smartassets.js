@@ -425,6 +425,24 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		title: 'ハート',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 563, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'ライフを かいふくする うれしいアイテム！ += にすると プラスされる。ところで -= にすると どうなるのだろうか',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ハート
+			var item = new MapObject('heart');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onplayerenter = function () {
+				Hack.player.hp += 1;
+				this.destroy();
+			};
+		}
+	}, {
 		title: 'のぼりかいだん',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 402, width: 32, height: 32 },
