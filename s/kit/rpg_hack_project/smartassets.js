@@ -342,6 +342,29 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		title: 'バット',
+		image: 'enchantjs/monster3.gif',
+		trim: { frame: 2, width: 48, height: 48 },
+		query: 'embed',
+		caption: '',
+		identifier: '()',
+		variables: ['enemy'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// コウモリ
+			var enemy = new Bat();
+			enemy.locate(__cnt15, __cnt10, 'map1');
+			enemy.onbecomeidle = function () {
+				var target = Hack.player;
+				var moveX = 32 * Math.sign(target.mapX - this.mapX);
+				var moveY = 32 * Math.sign(target.mapY - this.mapY);
+				this.direction = moveX;
+				this.tl.become('walk').moveBy(moveX, moveY, 30).then(function () {
+					Hack.Attack.call(this, this.mapX, this.mapY, this.atk);
+				}).become('attack', 20).become('idle');
+			};
+		}
+	}, {
 		title: 'ゴールドラゴン',
 		image: 'enchantjs/bigmonster1.gif',
 		trim: { x: 8, y: 2*80-2, width: 80, height: 80 },
