@@ -443,7 +443,7 @@ window.addEventListener('load', function () {
 		}
 	}).setCounter({
 		name: '__cnt15',
-		table: [11].concat(shuffle([0,1,2,3,4,5,6,7,8,9,10,12,13,14]))
+		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))
 	}, {
 		name: '__cnt10',
 		table: [5].concat(shuffle([0,1,2,3,4,6,7,8,9].concat([(Math.random()*10) >> 0]))) // length=11
