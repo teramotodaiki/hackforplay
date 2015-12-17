@@ -259,4 +259,21 @@ window.addEventListener('load', function () {
 		}, this);
 	};
 
+	/* Timeline Extention
+	 * become(type[, time])
+	 * time フレームが経過した時、behavior typeを指定する
+	*/
+	enchant.Timeline.prototype.become = function (type, time) {
+        this.add(new enchant.Action({
+            onactionstart: function() {
+				var capital = type[0].toUpperCase() + type.substr(1).toLowerCase();
+				if (this instanceof RPGObject && BehaviorTypes.hasOwnProperty(capital)) {
+					this.behavior = BehaviorTypes[capital];
+				}
+            },
+            time: time || 0
+        }));
+		return this;
+	};
+
 });
