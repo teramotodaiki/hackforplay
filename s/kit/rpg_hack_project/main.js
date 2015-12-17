@@ -250,8 +250,8 @@ window.addEventListener('load', function () {
 
 	Hack.Attack = function (x, y, damage, pushX, pushY) {
 		RPGObject.collection.filter(function (item) {
-			return item.mapX === x && item.mapY === y;
-		}).forEach(function (item) {
+			return item.mapX === x && item.mapY === y && item !== this;
+		}, this).forEach(function (item) {
 			var e = new Event('attacked');
 			e.attacker = this;
 			e.damage = damage || 0;
