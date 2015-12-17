@@ -379,7 +379,8 @@ window.addEventListener('load', function () {
 			var direction = -1; // -1: Left, 1: Right
 			Object.defineProperty(this, 'direction', {
 				get: function () { return direction; },
-				set: function (value) { this.scaleX = -(direction = Math.sign(value)) * Math.abs(this.scaleX); }
+				set: function (value) { this.scaleX = value === 0 ? this.scaleX :
+					-(direction = Math.sign(value)) * Math.abs(this.scaleX); }
 			});
 			Object.defineProperty(this, 'forward', {
 				get: function () { return { x: direction, y: 0 }; },
