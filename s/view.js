@@ -815,7 +815,6 @@ $(function(){
 							scroll: true
 						});
 					}
-					console.log('click', keyword, replacement, splited);
 					// Count up
 					asset.counters.forEach(function (key) {
 						var cnt = __counters[key];
@@ -885,7 +884,6 @@ $(function(){
 							'\n', '\n', // ２つの空行
 							p.comment
 						].join(p.indent);
-						console.log('result', p.raw, replacement);
 						$(this).data({
 							'keyword': p.raw,
 							'replacement': replacement
