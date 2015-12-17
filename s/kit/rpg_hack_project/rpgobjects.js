@@ -198,6 +198,7 @@ window.addEventListener('load', function () {
 			return stopInterval.bind(this);
 		},
 		attack: function (count, continuous) {
+			if (this.behavior !== BehaviorTypes.Idle) return;
 			var c = typeof count === 'number' ? count >> 0 : 1;
 			var f = this.forward;
 			if (continuous) {
@@ -227,6 +228,7 @@ window.addEventListener('load', function () {
             }
 		},
 		walk: function (distance, continuous) {
+			if (this.behavior !== BehaviorTypes.Idle) return;
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
 			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
 			// Map Collision
@@ -258,14 +260,27 @@ window.addEventListener('load', function () {
 					else this.behavior = BehaviorTypes.Idle;
 				}, frame);
 			} else {
-				this.setTimeout(function () {
-					var e = new Event('collided');
-					e.map = mapHit;
-					e.hits = hits;
-					this.dispatchEvent(e);
-					if (continuous) this.behavior = BehaviorTypes.Idle;
-				}, 1);
+				// 直前のフレームで collided していたオブジェクトを除外
+				var e = new Event('collided');
+				e.map = mapHit;
+				e.hits = hits.filter(function (item) {
+					return !this._preventFrameHits || this._preventFrameHits.indexOf(item) < 0;
+				}, this);
+				e.hit = e.hits.length > 0 ? e.hits[0] : undefined;
+				if (e.hit || e.map) {
+					var e2 = new Event('collided');
+					e2.map = false;
+					e2.hits = [e2.hit = this];
+					this.setTimeout(function () {
+						this.dispatchEvent(e);
+						e.hits.forEach(function (item) {
+							item.dispatchEvent(e2);
+						});
+						if (continuous) this.behavior = BehaviorTypes.Idle;
+					}, 1);
+				}
 			}
+			this._preventFrameHits = hits;
 		}
 	});
 
@@ -364,7 +379,8 @@ window.addEventListener('load', function () {
 			var direction = -1; // -1: Left, 1: Right
 			Object.defineProperty(this, 'direction', {
 				get: function () { return direction; },
-				set: function (value) { this.scaleX = -(direction = Math.sign(value)) * Math.abs(this.scaleX); }
+				set: function (value) { this.scaleX = value === 0 ? this.scaleX :
+					-(direction = Math.sign(value)) * Math.abs(this.scaleX); }
 			});
 			Object.defineProperty(this, 'forward', {
 				get: function () { return { x: direction, y: 0 }; },

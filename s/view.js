@@ -52,8 +52,10 @@ $(function(){
 				jsEditor.setValue(code);
 				break;
 			case "begin_restaging":
-				// ゲーム側からリステージングを開始する
-				$('.begin_restaging').trigger('click');
+				if ( !$('.container.container-game').hasClass('restaging') ) {
+					// ゲーム側からリステージングを開始する
+					$('.begin_restaging').trigger('click');
+				}
 				break;
 			case "show_hint":
 				// ゲーム側からヒントを表示すると、モーダルがひらく
@@ -358,6 +360,7 @@ $(function(){
 	(function(){
 		var beginRestaging = function(isExtendMode){
 
+			$('.container.container-game').addClass('restaging');
 			// frame.phpを経由して、getParam('src')のページをincludeさせる
 			// モードをRestagingにする
 			var gameSrc = encodeURIComponent(getParam('src'));
@@ -366,8 +369,6 @@ $(function(){
 			$(".h4p_game").height(width/1.5).children('iframe').attr({
 				'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=' + (isExtendMode ? 'extend' : 'restaging')
 			});
-			// シェアボタンを非表示に
-			$('.h4p_share-buttons').hide();
 
 			// ロギングを開始
 			(function() {
@@ -738,6 +739,8 @@ $(function(){
 									$(this).addClass('img-responsive');
 								}
 							});
+							// preopen
+							if (asset.preopen) $div.trigger('click');
 						}, $('.container-assets .smart-asset-sample'));
 						// Removed Assets
 						$('.container-assets .smart-asset-entity').filter(function(index) {

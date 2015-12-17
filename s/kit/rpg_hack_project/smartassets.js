@@ -273,7 +273,7 @@ window.addEventListener('load', function () {
 		image: 'enchantjs/x1.5/chara0.png',
 		trim: { x: 4*48, y: 8, width: 48, height: 48 },
 		query: 'embed',
-		caption: 'まえで こうげきすると しゃべる ひと。ふだんは、うけつけのしごとを しているらしい。ずっと おなじセリフしか いえないのかな？',
+		caption: 'しゃべる ひと。ふだんは、うけつけのしごとを しているらしい。ずっと おなじセリフしか いえないのかな？',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
@@ -281,7 +281,7 @@ window.addEventListener('load', function () {
 			// 女の人
 			var item = new Woman();
 			item.locate(__cnt15, __cnt10, 'map1');
-			item.onattacked = function () {
+			item.oncollided = function () {
 				Hack.log('こんにちは。ここは 1F です');
 			};
 		}
@@ -339,6 +339,29 @@ window.addEventListener('load', function () {
 			enemy.onbecomeidle = function () {
 				this.turn();
 				this.walk();
+			};
+		}
+	}, {
+		title: 'バット',
+		image: 'enchantjs/monster3.gif',
+		trim: { frame: 2, width: 48, height: 48 },
+		query: 'embed',
+		caption: '',
+		identifier: '()',
+		variables: ['enemy'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// コウモリ
+			var enemy = new Bat();
+			enemy.locate(__cnt15, __cnt10, 'map1');
+			enemy.onbecomeidle = function () {
+				var target = Hack.player;
+				var moveX = 32 * Math.sign(target.mapX - this.mapX);
+				var moveY = 32 * Math.sign(target.mapY - this.mapY);
+				this.direction = moveX;
+				this.tl.become('walk').moveBy(moveX, moveY, 30).then(function () {
+					Hack.Attack.call(this, this.mapX, this.mapY, this.atk);
+				}).become('attack', 20).become('idle');
 			};
 		}
 	}, {
@@ -425,6 +448,24 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		title: 'ハート',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 563, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'ライフを かいふくする うれしいアイテム！ += にすると プラスされる。ところで -= にすると どうなるのだろうか',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ハート
+			var item = new MapObject('heart');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onplayerenter = function () {
+				Hack.player.hp += 1;
+				this.destroy();
+			};
+		}
+	}, {
 		title: 'のぼりかいだん',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 402, width: 32, height: 32 },
@@ -443,7 +484,7 @@ window.addEventListener('load', function () {
 		}
 	}).setCounter({
 		name: '__cnt15',
-		table: [11].concat(shuffle([0,1,2,3,4,5,6,7,8,9,10,12,13,14]))
+		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))
 	}, {
 		name: '__cnt10',
 		table: [5].concat(shuffle([0,1,2,3,4,6,7,8,9].concat([(Math.random()*10) >> 0]))) // length=11
