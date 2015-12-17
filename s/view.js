@@ -739,6 +739,8 @@ $(function(){
 									$(this).addClass('img-responsive');
 								}
 							});
+							// preopen
+							if (asset.preopen) $div.trigger('click');
 						}, $('.container-assets .smart-asset-sample'));
 						// Removed Assets
 						$('.container-assets .smart-asset-entity').filter(function(index) {
