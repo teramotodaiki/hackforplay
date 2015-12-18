@@ -198,7 +198,7 @@ window.addEventListener('load', function () {
 			return stopInterval.bind(this);
 		},
 		attack: function (count, continuous) {
-			if (this.behavior !== BehaviorTypes.Idle) return;
+			if (!continuous && this.behavior !== BehaviorTypes.Idle) return;
 			var c = typeof count === 'number' ? count >> 0 : 1;
 			var f = this.forward;
 			if (continuous) {
