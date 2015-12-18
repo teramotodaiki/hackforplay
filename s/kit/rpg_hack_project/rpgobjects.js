@@ -198,7 +198,7 @@ window.addEventListener('load', function () {
 			return stopInterval.bind(this);
 		},
 		attack: function (count, continuous) {
-			if (this.behavior !== BehaviorTypes.Idle) return;
+			if (!continuous && this.behavior !== BehaviorTypes.Idle) return;
 			var c = typeof count === 'number' ? count >> 0 : 1;
 			var f = this.forward;
 			if (continuous) {
@@ -228,7 +228,7 @@ window.addEventListener('load', function () {
             }
 		},
 		walk: function (distance, continuous) {
-			if (this.behavior !== BehaviorTypes.Idle) return;
+			if (!continuous && this.behavior !== BehaviorTypes.Idle) return;
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
 			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
 			// Map Collision
