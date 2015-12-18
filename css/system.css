@@ -270,6 +270,10 @@ iframe {
 	display: block;
 }
 
+.restaging .h4p_share-buttons {
+	display: none;
+}
+
 .smart-asset-sample {
 	display: none;
 }

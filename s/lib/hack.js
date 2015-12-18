@@ -601,6 +601,10 @@ window.addEventListener('load', function() {
 				}
 				return this;
 			},
+			// @ignore
+			clearAll: function () {
+				__apps = [];
+			},
 			setCounter: function (counter) {
 				if (arguments.length > 1) {
 					Array.prototype.forEach.call(arguments, function (item) {
@@ -621,6 +625,14 @@ window.addEventListener('load', function() {
 			get: function () { return __counters; }
 		});
 	})();
+
+	Hack.openExternal = function (type) {
+		switch (type) {
+			case 'restaging':
+			window.parent.postMessage('begin_restaging', '/');
+			break;
+		}
+	};
 
 	window.postMessage("Hack.dispatchEvent(new Event('load'));", "/"); // Hack.onloadのコール
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
