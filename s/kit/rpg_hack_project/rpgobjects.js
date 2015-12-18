@@ -228,7 +228,7 @@ window.addEventListener('load', function () {
             }
 		},
 		walk: function (distance, continuous) {
-			if (this.behavior !== BehaviorTypes.Idle) return;
+			if (!continuous && this.behavior !== BehaviorTypes.Idle) return;
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
 			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
 			// Map Collision
