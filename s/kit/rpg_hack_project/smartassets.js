@@ -342,11 +342,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'バット',
+		title: 'じごくからのツカイ',
 		image: 'enchantjs/monster3.gif',
 		trim: { frame: 2, width: 48, height: 48 },
 		query: 'embed',
-		caption: '',
+		caption: 'ねらいをつけて おそってくる おそろしいコウモリ。 target に、むかってくる らしい',
 		identifier: '()',
 		variables: ['enemy'],
 		counters: ['__cnt15', '__cnt10'],
