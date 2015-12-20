@@ -79,6 +79,7 @@ window.addEventListener('load', function () {
 				stone: 321,		stoneWall: 341,	stoneFloor: 342,
 				warp: 324,		warpRed: 325,
 				warpGreen: 326,	warpYellow: 327,
+				magic: 328,		usedMagic: 329,
 				pot: 400,		rock: 401,		upStair: 402,
 				box: 420,		flower: 421,	downStair: 422,
 				trap: 440,		usedTrap: 441,	step: 442,
