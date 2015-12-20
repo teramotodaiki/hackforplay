@@ -184,6 +184,7 @@ window.addEventListener('load', function () {
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				this.frame = MapObject.dictionary.openedBox;
+				// 出てくるもの　→
 			};
 		}
 	}, {
