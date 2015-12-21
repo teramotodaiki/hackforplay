@@ -120,8 +120,8 @@ window.addEventListener('load', function () {
 			Object.defineProperty(this, 'isKinematic', {
 				get: function () {
 					return isKinematic !== null ? isKinematic :
-						!(this.velocity.x || this.velocity.y ||
-							this.acceleration.x || this.acceleration.y);
+						!(this.velocityX || this.velocityY ||
+							this.accelerationX || this.accelerationY);
 				},
 				set: function (value) { isKinematic = value; }
 			});
@@ -135,8 +135,8 @@ window.addEventListener('load', function () {
 			// 初期化
 			this.direction = 0;
 			this.forward = { x: 0, y: 0 };
-			this.velocity = { x: 0, y: 0 };
-			this.acceleration = { x: 0, y: 0 };
+			this.velocityX = this.velocityY = this.accelerationX = this.accelerationY = 0;
+			this.mass = 1;
 
 			Hack.defaultParentNode.addChild(this);
 		},
@@ -294,11 +294,19 @@ window.addEventListener('load', function () {
 			}
 			this._preventFrameHits = hits;
 		},
+		velocity: function (x, y) {
+			this.velocityX = x;
+			this.velocityY = y;
+		},
+		force: function (x, y) {
+			this.accelerationX = x / this.mass;
+			this.accelerationY = y / this.mass;
+		},
 		physicalUpdate: function () {
 			if (this.isKinematic) return;
-			this.velocity.x += this.acceleration.x;
-			this.velocity.y += this.acceleration.y;
-			this.moveBy(this.velocity.x, this.velocity.y);
+			this.velocityX += this.accelerationX;
+			this.velocityY += this.accelerationY;
+			this.moveBy(this.velocityX, this.velocityY);
 		}
 	});
 
