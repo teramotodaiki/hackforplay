@@ -33,6 +33,14 @@ window.addEventListener('load', function () {
 	bs.onbecomedead = function () {};
 
 	 */
+	/**
+	 * Collision Detection
+	 * [Case]						: [Event]		: [Note]
+	 * Kinematics ===> Kinematics	: oncollided	: Need collisionFlag is true
+	 * Physics ===> Physics			: oncollided	: Need collisionFlag is true, Change velocity
+	 * Physics ===> Kinematics		: ontriggered	: Ignore collisionFlag, Don't change velocity
+	 * Kinematics ===> Player		: onplayerenter	: Need collisionFlag is false, Dispatch onnly kinematics
+	*/
 
 	// Classes and Enums
 	Object.defineProperty(window, 'BehaviorTypes',	{ get: function () { return __BehaviorTypes; }	});
@@ -247,7 +255,7 @@ window.addEventListener('load', function () {
 			var mapHit = Hack.map.hitTest(_x * 32, _y * 32) || 0 > _x || _x > 14 || 0 > _y || _y > 9;
 			// RPGObject(s) Collision
 			var hits = RPGObject.collection.filter(function (item) {
-				return item.collisionFlag && item.mapX === _x && item.mapY === _y;
+				return item.isKinematic && item.collisionFlag && item.mapX === _x && item.mapY === _y;
 			});
 			if (!mapHit && !hits.length) {
 				if (continuous) {
@@ -548,4 +556,79 @@ window.addEventListener('load', function () {
         }
     });
 
+	game.on('exitframe', function() {
+		var physics = RPGObject.collection.filter(function (item) {
+			return !item.isKinematic;
+		});
+		physics.map(function (self, index) {
+			var intersects = self.intersect(RPGObject);
+			intersects.splice(intersects.indexOf(self), 1); // ignore self
+			// Dispatch trigger(stay|exit) event
+			(self._preventFrameHits || []).filter(function (item) {
+				return item.isKinematic;
+			}).forEach(function (item) {
+				if (intersects.indexOf(item) < 0) {
+					dispatchTriggerEvent('exit', self, item);
+					dispatchTriggerEvent('exit', item, self);
+				} else {
+					dispatchTriggerEvent('stay', self, item);
+					dispatchTriggerEvent('stay', item, self);
+				}
+			});
+			// Intersect on time (enter) or still intersect
+			var entered = intersects.filter(function (item) {
+				return !self._preventFrameHits || self._preventFrameHits.indexOf(item) < 0;
+			});
+			self._preventFrameHits = intersects; // Update cache
+			// Dispatch triggerenter event
+			entered.filter(function (item) {
+				return item.isKinematic;
+			}).forEach(function (item) {
+				dispatchTriggerEvent('enter', self, item);
+				dispatchTriggerEvent('enter', item, self);
+			});
+			// ===> Physics collision
+			return entered.filter(function (item) {
+				return !item.isKinematic && item.collisionFlag;
+			});
+		}).map(function(hits, index) {
+			var self = physics[index];
+			// Collided Event
+			var obj = {
+				event: new Event('collided'),
+				self: self,
+				velocityX: self.velocityX,
+				velocityY: self.velocityY
+			};
+			// Hit objects
+			obj.event.hits = hits;
+			if (hits.length > 0) {
+				obj.event.hit = hits[0];
+				var m1 = self.mass, m2 = hits[0].mass;
+				obj.velocityX = ((m1 - m2) * self.velocityX + 2 * m2 * hits[0].velocityX) / (m1 + m2);
+				obj.velocityY = ((m1 - m2) * self.velocityY + 2 * m2 * hits[0].velocityY) / (m1 + m2);
+			}
+			// Hit map
+			var mapHitX = self.x <= 0 || self.x + self.width >= game.width,
+			mapHitY = self.y <= 0 || self.y + self.height >= game.height;
+			obj.event.map = mapHitX || mapHitY;
+			obj.velocityX *= mapHitX ? -1 : 1;
+			obj.velocityY *= mapHitY ? -1 : 1;
+			return obj;
+		}).filter(function (obj) {
+			return obj.event.map || obj.event.hits.length > 0;
+		}).filter(function (obj) {
+			obj.self.velocityX = obj.velocityX;
+			obj.self.velocityY = obj.velocityY;
+			obj.self.x = Math.max(0, Math.min(game.width - obj.self.width, obj.self.x));
+			obj.self.y = Math.max(0, Math.min(game.height - obj.self.height, obj.self.y));
+		}).forEach(function (obj) {
+			obj.self.dispatchEvent(obj.event);
+		});
+		function dispatchTriggerEvent (type, self, hit) {
+			var event = new Event('trigger' + type);
+			event.hit = hit;
+			self.dispatchEvent(event);
+		}
+    });
 });
