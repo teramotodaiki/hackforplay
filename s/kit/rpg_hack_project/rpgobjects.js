@@ -116,6 +116,16 @@ window.addEventListener('load', function () {
 				},
 				set: function (value) { collisionFlag = value; }
 			});
+			var isKinematic = null; // this.isKinematic (Default: true)
+			Object.defineProperty(this, 'isKinematic', {
+				get: function () {
+					return isKinematic !== null ? isKinematic :
+						!(this.velocity.x || this.velocity.y ||
+							this.acceleration.x || this.acceleration.y);
+				},
+				set: function (value) { isKinematic = value; }
+			});
+			this.on('enterframe', this.physicalUpdate);
 			// Destroy when dead
 			this.on('becomedead', function() {
 				this.setTimeout(function () {
@@ -125,6 +135,8 @@ window.addEventListener('load', function () {
 			// 初期化
 			this.direction = 0;
 			this.forward = { x: 0, y: 0 };
+			this.velocity = { x: 0, y: 0 };
+			this.acceleration = { x: 0, y: 0 };
 
 			Hack.defaultParentNode.addChild(this);
 		},
@@ -228,7 +240,7 @@ window.addEventListener('load', function () {
             }
 		},
 		walk: function (distance, continuous) {
-			if (!continuous && this.behavior !== BehaviorTypes.Idle) return;
+			if (!this.isKinematic || !continuous && this.behavior !== BehaviorTypes.Idle) return;
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
 			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
 			// Map Collision
@@ -281,6 +293,12 @@ window.addEventListener('load', function () {
 				}
 			}
 			this._preventFrameHits = hits;
+		},
+		physicalUpdate: function () {
+			if (this.isKinematic) return;
+			this.velocity.x += this.acceleration.x;
+			this.velocity.y += this.acceleration.y;
+			this.moveBy(this.velocity.x, this.velocity.y);
 		}
 	});
 
