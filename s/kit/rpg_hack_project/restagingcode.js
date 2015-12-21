@@ -77,7 +77,7 @@ window.addEventListener('load', function () {
 			//  -            =
 			// -  BASIC CODE  =
 			//  -            =
-			Hack.player.locate(6, 5, 'map1');  // Teleportation
+			Hack.player.locate(6, 5);  // Teleportation
 			Hack.player.direction = 2; // Turn
 			Hack.player.atk = 10;      // Power Up
 
