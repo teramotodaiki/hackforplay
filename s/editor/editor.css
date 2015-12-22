@@ -1,5 +1,14 @@
 @charset "utf-8";
 
+.CodeMirror {
+	background-color: rgba(0,0,0,0);
+	top: 44px;
+}
+.CodeMirror-gutters {
+	background-color: rgba(0,0,0,0);
+	border: none;
+}
+
 body{
 	margin: 0;
 	width: 480px;

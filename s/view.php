@@ -57,6 +57,7 @@ if ($mode === 'quest') {
 	<script src="editor/addon/search/jump-to-line.js" type="text/javascript"></script>
 	<link rel="stylesheet" href="editor/addon/dialog/dialog.css">
 	<link rel="stylesheet" href="editor/lib/codemirror.css">
+	<link rel="stylesheet" href="../css/cmcolor.css">
 	<style type="text/css" media="screen">
 		.CodeMirror {
 		  top: 0px;
@@ -68,6 +69,10 @@ if ($mode === 'quest') {
 			box-shadow:rgba(0, 0, 0, 0.65098) 0px 0px 8px -1px;
 			-webkit-box-shadow:rgba(0, 0, 0, 0.65098) 0px 0px 8px -1px;
 			-moz-box-shadow:rgba(0, 0, 0, 0.65098) 0px 0px 8px -1px;
+		}
+		div.CodeMirror span.CodeMirror-matchingbracket {
+			color: #000;
+			border-bottom: 1px solid black;
 		}
 	</style>
 </head>
