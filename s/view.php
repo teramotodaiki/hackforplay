@@ -63,6 +63,12 @@ if ($mode === 'quest') {
 		  left: 0px;
 		  background-color: rgb(245,245,245);
 		}
+		.CodeMirror-dialog.CodeMirror-dialog-top {
+			/* box-shadow */
+			box-shadow:rgba(0, 0, 0, 0.65098) 0px 0px 8px -1px;
+			-webkit-box-shadow:rgba(0, 0, 0, 0.65098) 0px 0px 8px -1px;
+			-moz-box-shadow:rgba(0, 0, 0, 0.65098) 0px 0px 8px -1px;
+		}
 	</style>
 </head>
 <body>
