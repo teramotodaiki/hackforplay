@@ -581,15 +581,17 @@ window.addEventListener('load', function () {
 				this.velocityX *= 0.5 + Math.random();
 				this.velocityY *= 0.5 + Math.random();
 			}
-			if (Effect.lastNode){
+			if (Effect.lastNode && Effect.lastNode.parentNode === this.parentNode){
 				this.destroy();
-				Hack.defaultParentNode.insertBefore(this, Effect.lastNode);
+				Effect.lastNode.parentNode.insertBefore(this, Effect.lastNode);
 			}
 			Effect.lastNode = this;
 		},
 		locate: function (left, top) {
 			RPGObject.prototype.locate.call(this, left, top);
-			this.moveBy(this._random.x, this._random.y);
+			if (this._random) {
+				this.moveBy(this._random.x, this._random.y);
+			}
 		}
 	});
 
