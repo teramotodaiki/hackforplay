@@ -292,6 +292,21 @@ $(function(){
 			change.cancel();
 		}
 	});
+	// Keybind RUN|SAVE
+	jsEditor.setOption('extraKeys', {
+		'Ctrl-Enter': function () {
+			$('.h4p_restaging_button').trigger('click');
+		},
+		'Cmd-Enter': function () {
+			$('.h4p_restaging_button').trigger('click');
+		},
+		'Ctrl-S': function () {
+			$('.h4p_save_button').trigger('click');
+		},
+		'Cmd-S': function  () {
+			$('.h4p_save_button').trigger('click');
+		}
+	});
 	(function () {
 		var button = $('.h4p_restaging_menu button[data-query="indent"]');
 		button.on('click', function() {
