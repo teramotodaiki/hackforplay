@@ -3,6 +3,7 @@
 .CodeMirror {
 	background-color: rgba(0,0,0,0);
 	top: 44px;
+	font-size: large;
 }
 .CodeMirror-gutters {
 	background-color: rgba(0,0,0,0);

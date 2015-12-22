@@ -62,9 +62,10 @@ if ($mode === 'quest') {
 	<link rel="stylesheet" href="../css/cmcolor.css">
 	<style type="text/css" media="screen">
 		.CodeMirror {
-		  top: 0px;
-		  left: 0px;
-		  background-color: rgb(245,245,245);
+			top: 0px;
+			left: 0px;
+			background-color: rgb(245,245,245);
+			line-height: 1.2;
 		}
 		.CodeMirror-dialog.CodeMirror-dialog-top {
 			/* box-shadow */
