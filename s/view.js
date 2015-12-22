@@ -816,7 +816,7 @@ $(function(){
 						});
 					}
 					// Count up
-					asset.counters.forEach(function (key) {
+					(asset.counters || []).forEach(function (key) {
 						var cnt = __counters[key];
 						cnt.index = (cnt.index + 1) % cnt.table.length;
 					});
