@@ -58,6 +58,7 @@ window.addEventListener('load', function () {
 	Object.defineProperty(window, 'Girl',			{ get: function () { return __Girl; }			});
 	Object.defineProperty(window, 'Woman',			{ get: function () { return __Woman; }			});
     Object.defineProperty(window, 'MapObject',		{ get: function () { return __MapObject; }		});
+    Object.defineProperty(window, 'Effect',			{ get: function () { return __Effect; }			});
 
     var game = enchant.Core.instance;
 
@@ -157,9 +158,13 @@ window.addEventListener('load', function () {
 				fromLeft * 32 + this.offset.x,
 				fromTop * 32 + this.offset.y);
 		},
-		destroy: function () {
-			if (this.scene) this.scene.removeChild(this);
-			if (this.parentNode) this.parentNode.removeChild(this);
+		destroy: function (delay) {
+			if (delay > 0) this.setTimeout(destroyMe, delay);
+			else destroyMe.call(this);
+			function destroyMe () {
+				if (this.scene) this.scene.removeChild(this);
+				if (this.parentNode) this.parentNode.removeChild(this);
+			}
 		},
 		setFrame: function (behavior, frame) {
 			// behavior is Key:number or Type:string
@@ -556,6 +561,38 @@ window.addEventListener('load', function () {
         }
     });
 
+	var __Effect = enchant.Class(RPGObject, {
+		initialize: function (velocityX, velocityY, lifetime, randomize) {
+			RPGObject.call(this, 32, 32, 0, 0);
+			this.image = game.assets['enchantjs/x2/effect0.png'];
+			this.isKinematic = false;
+			this.velocity(velocityX, velocityY);
+			var frame = new Array(lifetime);
+			for (var i = frame.length - 1; i >= 0; i--) {
+				frame[i] = (i / lifetime * 5) >> 0;
+			}
+			this.frame = frame;
+			this.destroy(frame.length);
+			if (randomize) {
+				this._random = {
+					x: velocityX * 10 * Math.random(),
+					y: velocityY * 10 * Math.random()
+				};
+				this.velocityX *= 0.5 + Math.random();
+				this.velocityY *= 0.5 + Math.random();
+			}
+			if (Effect.lastNode){
+				this.destroy();
+				Hack.defaultParentNode.insertBefore(this, Effect.lastNode);
+			}
+			Effect.lastNode = this;
+		},
+		locate: function (left, top) {
+			RPGObject.prototype.locate.call(this, left, top);
+			this.moveBy(this._random.x, this._random.y);
+		}
+	});
+
 	game.on('exitframe', function() {
 		var physics = RPGObject.collection.filter(function (item) {
 			return !item.isKinematic;
@@ -611,7 +648,7 @@ window.addEventListener('load', function () {
 			// Hit map
 			var mapHitX = self.x <= 0 || self.x + self.width >= game.width,
 			mapHitY = self.y <= 0 || self.y + self.height >= game.height;
-			obj.event.map = mapHitX || mapHitY;
+			obj.event.map = self.collisionFlag && (mapHitX || mapHitY);
 			obj.velocityX *= mapHitX ? -1 : 1;
 			obj.velocityY *= mapHitY ? -1 : 1;
 			return obj;
@@ -628,6 +665,8 @@ window.addEventListener('load', function () {
 		function dispatchTriggerEvent (type, self, hit) {
 			var event = new Event('trigger' + type);
 			event.hit = hit;
+			event.mapX = hit.mapX;
+			event.mapY = hit.mapY;
 			self.dispatchEvent(event);
 		}
     });
