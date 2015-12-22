@@ -51,6 +51,11 @@ if ($mode === 'quest') {
 	<script src="editor/mode/javascript/javascript.js" type="text/javascript"></script>
 	<script src="editor/addon/edit/matchbrackets.js" type="text/javascript"></script>
 	<script src="editor/addon/edit/closebrackets.js" type="text/javascript"></script>
+	<script src="editor/addon/dialog/dialog.js" type="text/javascript"></script>
+	<script src="editor/addon/search/searchcursor.js" type="text/javascript"></script>
+	<script src="editor/addon/search/search.js" type="text/javascript"></script>
+	<script src="editor/addon/search/jump-to-line.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="editor/addon/dialog/dialog.css">
 	<link rel="stylesheet" href="editor/lib/codemirror.css">
 	<style type="text/css" media="screen">
 		.CodeMirror {

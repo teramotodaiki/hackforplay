@@ -149,7 +149,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
   line-height: 1;
   position: relative;
   overflow: hidden;
-  color: white; /* default text color */
+  color: #000; /* default text color */
 }
 
 .CodeMirror-scroll {
