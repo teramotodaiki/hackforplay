@@ -295,18 +295,10 @@ $(function(){
 	});
 	// Keybind RUN|SAVE
 	jsEditor.setOption('extraKeys', {
-		'Ctrl-Enter': function () {
-			$('.h4p_restaging_button').trigger('click');
-		},
-		'Cmd-Enter': function () {
-			$('.h4p_restaging_button').trigger('click');
-		},
-		'Ctrl-S': function () {
-			$('.h4p_save_button').trigger('click');
-		},
-		'Cmd-S': function  () {
-			$('.h4p_save_button').trigger('click');
-		}
+		'Ctrl-Enter': function () { $('.h4p_restaging_button').trigger('click'); },
+		'Cmd-Enter': function () { $('.h4p_restaging_button').trigger('click'); },
+		'Ctrl-S': function () { $('.h4p_save_button').trigger('click'); },
+		'Cmd-S': function  () { $('.h4p_save_button').trigger('click'); }
 	});
 	jsEditor.on('change', function() {
 		// Fix save icon
