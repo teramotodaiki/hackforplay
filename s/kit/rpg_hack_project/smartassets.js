@@ -483,6 +483,54 @@ window.addEventListener('load', function () {
 				Hack.changeMap('map1');
 			};
 		}
+	}, {
+		title: 'ばくえん',
+		image: 'enchantjs/x2/effect0.png',
+		trim: { frame: 1, width: 32, height: 32 },
+		query: 'embed',
+		caption: '',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ばくえん
+			var item = new Effect(0, -5, 40);
+			item.collisionFlag = false;
+			item.locate(__cnt15, __cnt10);
+			item.ontriggerenter = function (event) {
+				Hack.Attack.call(this, event.mapX, event.mapY, 1);
+			};
+		}
+	}, {
+		title: 'ごくえんのドラゴン',
+		image: 'enchantjs/bigmonster1.gif',
+		trim: { frame: 10, width: 80, height: 80 },
+		query: 'embed',
+		caption: '',
+		identifier: '()',
+		variables: ['enemy', 'item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ドラゴン
+			var enemy = new Dragon();
+			enemy.hp = 10;
+			enemy.locate(__cnt15, __cnt10, 'map1');
+			enemy.scale(2, 2);
+			enemy.setFrame('Idle', [10]);
+			enemy.onbecomedead = function () {
+				Hack.gameclear();
+			};
+			enemy.setInterval(function () {
+				// ばくえん
+				var item = new Effect(-5, 5, 40, true);
+				item.collisionFlag = false;
+				item.locate(this.mapX - 2, this.mapY - 1);
+				item.force(0.1, -0.1);
+				item.ontriggerenter = function (event) {
+					Hack.Attack.call(this, event.mapX, event.mapY, 1);
+				};
+			}, 1);
+		}
 	}).setCounter({
 		name: '__cnt15',
 		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))
