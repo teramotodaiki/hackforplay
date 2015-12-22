@@ -54,7 +54,9 @@ if ($mode === 'quest') {
 	<script src="editor/addon/dialog/dialog.js" type="text/javascript"></script>
 	<script src="editor/addon/search/searchcursor.js" type="text/javascript"></script>
 	<script src="editor/addon/search/search.js" type="text/javascript"></script>
-	<script src="editor/addon/search/jump-to-line.js" type="text/javascript"></script>
+	<script src="editor/keymap/sublime.js" type="text/javascript"></script>
+	<script src="editor/keymap/emacs.js" type="text/javascript"></script>
+	<script src="editor/keymap/vim.js" type="text/javascript"></script>
 	<link rel="stylesheet" href="editor/addon/dialog/dialog.css">
 	<link rel="stylesheet" href="editor/lib/codemirror.css">
 	<link rel="stylesheet" href="../css/cmcolor.css">
@@ -269,6 +271,11 @@ if ($mode === 'quest') {
 							</button>
 							<button type="button" class="btn btn-sm btn-default" data-query="redo">
 								<span class="glyphicon glyphicon-menu-right"></span>
+							</button>
+						</div>
+						<div class="btn-group menu-right" role="group">
+							<button type="button" class="btn btn-sm btn-default" data-query="keybind">
+								st
 							</button>
 						</div>
 						<div class="btn-group menu-right" role="group">

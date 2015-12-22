@@ -284,7 +284,8 @@ $(function(){
 		indentUnit: 4,
 		indentWithTabs: true,
 		matchBrackets: true,
-		autoCloseBrackets: true
+		autoCloseBrackets: true,
+		keyMap: 'sublime'
 	});
 	jsEditor.on('beforeChange', function(cm, change) {
 		if (change.origin === "undo" && cm.doc.historySize().undo === 0) {
@@ -318,6 +319,17 @@ $(function(){
 			break;
 			case 'redo':
 			jsEditor.redo();
+			break;
+			case 'keybind':
+			var bind = $(this).data('bind') || 'sublime';
+			var text;
+			switch (bind) {
+				case 'sublime': bind = 'vim'; text = 'vi'; break;
+				case 'vim': bind = 'emacs'; text = 'em'; break;
+				default: bind = 'sublime'; text = 'st'; break;
+			}
+			jsEditor.setOption('keyMap', bind);
+			$(this).data('bind', bind).text(text);
 			break;
 		}
 		jsEditor.scrollIntoView(jsEditor.getCursor());
