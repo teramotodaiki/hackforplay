@@ -33,6 +33,14 @@ window.addEventListener('load', function () {
 	bs.onbecomedead = function () {};
 
 	 */
+	/**
+	 * Collision Detection
+	 * [Case]						: [Event]		: [Note]
+	 * Kinematics ===> Kinematics	: oncollided	: Need collisionFlag is true
+	 * Physics ===> Physics			: oncollided	: Need collisionFlag is true, Change velocity
+	 * Physics ===> Kinematics		: ontriggered	: Ignore collisionFlag, Don't change velocity
+	 * Kinematics ===> Player		: onplayerenter	: Need collisionFlag is false, Dispatch onnly kinematics
+	*/
 
 	// Classes and Enums
 	Object.defineProperty(window, 'BehaviorTypes',	{ get: function () { return __BehaviorTypes; }	});
@@ -50,6 +58,7 @@ window.addEventListener('load', function () {
 	Object.defineProperty(window, 'Girl',			{ get: function () { return __Girl; }			});
 	Object.defineProperty(window, 'Woman',			{ get: function () { return __Woman; }			});
     Object.defineProperty(window, 'MapObject',		{ get: function () { return __MapObject; }		});
+    Object.defineProperty(window, 'Effect',			{ get: function () { return __Effect; }			});
 
     var game = enchant.Core.instance;
 
@@ -116,6 +125,16 @@ window.addEventListener('load', function () {
 				},
 				set: function (value) { collisionFlag = value; }
 			});
+			var isKinematic = null; // this.isKinematic (Default: true)
+			Object.defineProperty(this, 'isKinematic', {
+				get: function () {
+					return isKinematic !== null ? isKinematic :
+						!(this.velocityX || this.velocityY ||
+							this.accelerationX || this.accelerationY);
+				},
+				set: function (value) { isKinematic = value; }
+			});
+			this.on('enterframe', this.physicalUpdate);
 			// Destroy when dead
 			this.on('becomedead', function() {
 				this.setTimeout(function () {
@@ -125,6 +144,8 @@ window.addEventListener('load', function () {
 			// 初期化
 			this.direction = 0;
 			this.forward = { x: 0, y: 0 };
+			this.velocityX = this.velocityY = this.accelerationX = this.accelerationY = 0;
+			this.mass = 1;
 
 			Hack.defaultParentNode.addChild(this);
 		},
@@ -137,9 +158,13 @@ window.addEventListener('load', function () {
 				fromLeft * 32 + this.offset.x,
 				fromTop * 32 + this.offset.y);
 		},
-		destroy: function () {
-			if (this.scene) this.scene.removeChild(this);
-			if (this.parentNode) this.parentNode.removeChild(this);
+		destroy: function (delay) {
+			if (delay > 0) this.setTimeout(destroyMe, delay);
+			else destroyMe.call(this);
+			function destroyMe () {
+				if (this.scene) this.scene.removeChild(this);
+				if (this.parentNode) this.parentNode.removeChild(this);
+			}
 		},
 		setFrame: function (behavior, frame) {
 			// behavior is Key:number or Type:string
@@ -228,14 +253,14 @@ window.addEventListener('load', function () {
             }
 		},
 		walk: function (distance, continuous) {
-			if (!continuous && this.behavior !== BehaviorTypes.Idle) return;
+			if (!this.isKinematic || !continuous && this.behavior !== BehaviorTypes.Idle) return;
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
 			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
 			// Map Collision
 			var mapHit = Hack.map.hitTest(_x * 32, _y * 32) || 0 > _x || _x > 14 || 0 > _y || _y > 9;
 			// RPGObject(s) Collision
 			var hits = RPGObject.collection.filter(function (item) {
-				return item.collisionFlag && item.mapX === _x && item.mapY === _y;
+				return item.isKinematic && item.collisionFlag && item.mapX === _x && item.mapY === _y;
 			});
 			if (!mapHit && !hits.length) {
 				if (continuous) {
@@ -281,6 +306,20 @@ window.addEventListener('load', function () {
 				}
 			}
 			this._preventFrameHits = hits;
+		},
+		velocity: function (x, y) {
+			this.velocityX = x;
+			this.velocityY = y;
+		},
+		force: function (x, y) {
+			this.accelerationX = x / this.mass;
+			this.accelerationY = y / this.mass;
+		},
+		physicalUpdate: function () {
+			if (this.isKinematic) return;
+			this.velocityX += this.accelerationX;
+			this.velocityY += this.accelerationY;
+			this.moveBy(this.velocityX, this.velocityY);
 		}
 	});
 
@@ -522,4 +561,115 @@ window.addEventListener('load', function () {
         }
     });
 
+	var __Effect = enchant.Class(RPGObject, {
+		initialize: function (velocityX, velocityY, lifetime, randomize) {
+			RPGObject.call(this, 32, 32, 0, 0);
+			this.image = game.assets['enchantjs/x2/effect0.png'];
+			this.isKinematic = false;
+			this.velocity(velocityX, velocityY);
+			var frame = new Array(lifetime);
+			for (var i = frame.length - 1; i >= 0; i--) {
+				frame[i] = (i / lifetime * 5) >> 0;
+			}
+			this.frame = frame;
+			this.destroy(frame.length);
+			if (randomize) {
+				this._random = {
+					x: velocityX * 10 * Math.random(),
+					y: velocityY * 10 * Math.random()
+				};
+				this.velocityX *= 0.5 + Math.random();
+				this.velocityY *= 0.5 + Math.random();
+			}
+			if (Effect.lastNode && Effect.lastNode.parentNode === this.parentNode){
+				this.destroy();
+				Effect.lastNode.parentNode.insertBefore(this, Effect.lastNode);
+			}
+			Effect.lastNode = this;
+		},
+		locate: function (left, top) {
+			RPGObject.prototype.locate.call(this, left, top);
+			if (this._random) {
+				this.moveBy(this._random.x, this._random.y);
+			}
+		}
+	});
+
+	game.on('exitframe', function() {
+		var physics = RPGObject.collection.filter(function (item) {
+			return !item.isKinematic;
+		});
+		physics.map(function (self, index) {
+			var intersects = self.intersect(RPGObject);
+			intersects.splice(intersects.indexOf(self), 1); // ignore self
+			// Dispatch trigger(stay|exit) event
+			(self._preventFrameHits || []).filter(function (item) {
+				return item.isKinematic;
+			}).forEach(function (item) {
+				if (intersects.indexOf(item) < 0) {
+					dispatchTriggerEvent('exit', self, item);
+					dispatchTriggerEvent('exit', item, self);
+				} else {
+					dispatchTriggerEvent('stay', self, item);
+					dispatchTriggerEvent('stay', item, self);
+				}
+			});
+			// Intersect on time (enter) or still intersect
+			var entered = intersects.filter(function (item) {
+				return !self._preventFrameHits || self._preventFrameHits.indexOf(item) < 0;
+			});
+			self._preventFrameHits = intersects; // Update cache
+			// Dispatch triggerenter event
+			entered.filter(function (item) {
+				return item.isKinematic;
+			}).forEach(function (item) {
+				dispatchTriggerEvent('enter', self, item);
+				dispatchTriggerEvent('enter', item, self);
+			});
+			// ===> Physics collision
+			return entered.filter(function (item) {
+				return !item.isKinematic && item.collisionFlag;
+			});
+		}).map(function(hits, index) {
+			var self = physics[index];
+			// Collided Event
+			var obj = {
+				event: new Event('collided'),
+				self: self,
+				velocityX: self.velocityX,
+				velocityY: self.velocityY
+			};
+			// Hit objects
+			obj.event.hits = hits;
+			if (hits.length > 0) {
+				obj.event.hit = hits[0];
+				var m1 = self.mass, m2 = hits[0].mass;
+				obj.velocityX = ((m1 - m2) * self.velocityX + 2 * m2 * hits[0].velocityX) / (m1 + m2);
+				obj.velocityY = ((m1 - m2) * self.velocityY + 2 * m2 * hits[0].velocityY) / (m1 + m2);
+			}
+			// Hit map
+			var mapHitX = self.x <= 0 || self.x + self.width >= game.width,
+			mapHitY = self.y <= 0 || self.y + self.height >= game.height;
+			obj.event.map = self.collisionFlag && (mapHitX || mapHitY);
+			obj.velocityX *= mapHitX ? -1 : 1;
+			obj.velocityY *= mapHitY ? -1 : 1;
+			return obj;
+		}).filter(function (obj) {
+			return obj.event.map || obj.event.hits.length > 0;
+		}).filter(function (obj) {
+			obj.self.velocityX = obj.velocityX;
+			obj.self.velocityY = obj.velocityY;
+			obj.self.x = Math.max(0, Math.min(game.width - obj.self.width, obj.self.x));
+			obj.self.y = Math.max(0, Math.min(game.height - obj.self.height, obj.self.y));
+		}).forEach(function (obj) {
+			obj.self.dispatchEvent(obj.event);
+		});
+		function dispatchTriggerEvent (type, self, hit) {
+			var event = new Event('trigger' + type);
+			event.hit = hit;
+			event.mapX = hit.mapX;
+			event.mapY = hit.mapY;
+			self.dispatchEvent(event);
+		}
+    });
 });
