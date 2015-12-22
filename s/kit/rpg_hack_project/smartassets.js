@@ -467,6 +467,23 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		title: 'ふしぎなかぎ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 567, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'いつも ちがうところに でてくる ふしぎなかぎ。なにかと くみあわせて つかえそうだ',
+		identifier: '()',
+		variables: ['item'],
+		code: function () {
+			// かいだん
+			var item = new MapObject('key');
+			item.locate(random(0, 15), random(0, 10), 'map1');
+			item.onplayerenter = function () {
+				Hack.log('カチャリ という おと が きこえた');
+				this.destroy();
+			};
+		}
+	}, {
 		title: 'のぼりかいだん',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 402, width: 32, height: 32 },
