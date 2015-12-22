@@ -269,12 +269,13 @@ if ($mode === 'quest') {
 					</div>
 					<div class="col-xs-10 h4p_restaging_button">
 						<button type="button" class="btn btn-block btn-lg btn-primary">
-							<span>ステージ改造コードを実行</span>
+							<span class="glyphicon glyphicon-console"></span>
+							<span>うごかす</span>
 						</button>
 					</div>
 					<div class="col-xs-2 h4p_save_button">
-						<button type="button" class="btn btn-block btn-lg btn-info" data-loading-text="保存中…">
-							<span>保存</span>
+						<button type="button" class="btn btn-block btn-lg btn-info" data-loading-text="...">
+							<span class="glyphicon glyphicon-save"></span>
 						</button>
 					</div>
 				</div>
@@ -316,7 +317,8 @@ if ($mode === 'quest') {
 			</div>
 			<div class="col-xs-12 h4p_publish" style="display:none">
 				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中...">
-					この改造ステージを投稿する
+					<ruby>完成<rt>かんせい</rt></ruby>
+					<span class="glyphicon glyphicon-send"></span>
 				</button>
 				<div class="h4p_published-info text-center hidden">
 					<p class="text-muted">ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。</p>

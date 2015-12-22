@@ -307,6 +307,10 @@ $(function(){
 			$('.h4p_save_button').trigger('click');
 		}
 	});
+	jsEditor.on('change', function() {
+		// Fix save icon
+		$('.h4p_save_button .glyphicon').removeClass('glyphicon-saved').addClass('glyphicon-save');
+	});
 	(function () {
 		var button = $('.h4p_restaging_menu button[data-query="indent"]');
 		button.on('click', function() {
@@ -667,6 +671,7 @@ $(function(){
 					// 即座にリスナを解放する
 					window.removeEventListener('message', task);
 
+					loading.find('.glyphicon').toggleClass('glyphicon-save glyphicon-saved');
 					if(sessionStorage.getItem('project-token') === null){
 						// プロジェクトが作られていないので、作成
 						loading.button('loading');
