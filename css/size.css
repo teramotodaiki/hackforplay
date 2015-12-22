@@ -461,5 +461,11 @@ button.h4p_open-project {
 
 .h4p_restaging_menu {
 	margin-bottom: 4px;
-	text-align: right;
 }
+.h4p_restaging_menu .menu-right {
+	float: right;
+}
+.h4p_restaging_menu .menu-left {
+	float: left;
+}
+

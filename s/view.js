@@ -311,6 +311,17 @@ $(function(){
 		// Fix save icon
 		$('.h4p_save_button .glyphicon').removeClass('glyphicon-saved').addClass('glyphicon-save');
 	});
+	$('.h4p_restaging_menu').on('click', 'button', function() {
+		switch ($(this).data('query')) {
+			case 'undo':
+			jsEditor.undo();
+			break;
+			case 'redo':
+			jsEditor.redo();
+			break;
+		}
+		jsEditor.scrollIntoView(jsEditor.getCursor());
+	});
 	(function () {
 		var button = $('.h4p_restaging_menu button[data-query="indent"]');
 		button.on('click', function() {

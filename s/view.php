@@ -258,7 +258,15 @@ if ($mode === 'quest') {
 			<div class="col-xs-12 h4p_restaging directly_floating_shadow">
 				<div class="row">
 					<div class="col-xs-12 h4p_restaging_menu">
-						<div class="btn-group" role="group">
+						<div class="btn-group menu-left" role="group">
+							<button type="button" class="btn btn-sm btn-default" data-query="undo">
+								<span class="glyphicon glyphicon-menu-left"></span>
+							</button>
+							<button type="button" class="btn btn-sm btn-default" data-query="redo">
+								<span class="glyphicon glyphicon-menu-right"></span>
+							</button>
+						</div>
+						<div class="btn-group menu-right" role="group">
 							<button type="button" class="btn btn-sm btn-default active" data-toggle="button" data-query="indent">
 								<span class="glyphicon glyphicon-indent-left"></span>
 							</button>
