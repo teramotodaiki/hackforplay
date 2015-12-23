@@ -526,14 +526,14 @@ window.addEventListener('load', function () {
 		query: 'embed',
 		caption: 'たちのぼる ばくはつの エフェクト。スピード と じかん を ちょうせい できる',
 		identifier: '()',
-		variables: ['item'],
+		variables: ['effect'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ばくえん
-			var item = new Effect(0, -5, 40);
-			item.collisionFlag = false;
-			item.locate(__cnt15, __cnt10);
-			item.ontriggerenter = function (event) {
+			var effect = new Effect(0, -5, 40);
+			effect.collisionFlag = false;
+			effect.locate(__cnt15, __cnt10);
+			effect.ontriggerenter = function (event) {
 				Hack.Attack.call(this, event.mapX, event.mapY, 1);
 			};
 		}
@@ -544,7 +544,7 @@ window.addEventListener('load', function () {
 		query: 'embed',
 		caption: 'やつが この めいきゅうの あるじ 獄炎(ごくえん) の ドラゴン だ！',
 		identifier: '()',
-		variables: ['enemy', 'item'],
+		variables: ['enemy', 'effect'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ドラゴン
@@ -558,11 +558,11 @@ window.addEventListener('load', function () {
 			};
 			enemy.setInterval(function () {
 				// ばくえん
-				var item = new Effect(-5, 5, 40, true);
-				item.collisionFlag = false;
-				item.locate(this.mapX - 2, this.mapY - 1);
-				item.force(0.1, -0.1);
-				item.ontriggerenter = function (event) {
+				var effect = new Effect(-5, 5, 40, true);
+				effect.collisionFlag = false;
+				effect.locate(this.mapX - 2, this.mapY - 1);
+				effect.force(0.1, -0.1);
+				effect.ontriggerenter = function (event) {
 					Hack.Attack.call(this, event.mapX, event.mapY, 1);
 				};
 			}, 1);
