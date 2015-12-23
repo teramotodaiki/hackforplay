@@ -837,6 +837,8 @@ $(function(){
 						}
 					});
 					$(this).find('.embed-caption').text(asset.caption);
+				}).on('click', '.embed-code', function(event) {
+					return false;
 				}).on('init.hfp', '.query-toggle', function(event, asset) {
 					$(this).find('.title').text(asset.title);
 					$(this).find('.media-image').attr('src', asset.media);
