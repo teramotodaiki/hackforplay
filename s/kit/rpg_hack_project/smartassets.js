@@ -170,24 +170,6 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'からばこ',
-		image: 'enchantjs/x2/dotmat.gif',
-		trim: { frame: 522, width: 32, height: 32 },
-		query: 'embed',
-		caption: 'まえで こうげきすると かぱっとひらく (た)からばこ。なかに なにか いれられると いいんだけどね',
-		identifier: '()',
-		variables: ['item'],
-		counters: ['__cnt15', '__cnt10'],
-		code: function () {
-			// たからばこ
-			var item = new MapObject('box');
-			item.locate(__cnt15, __cnt10, 'map1');
-			item.onattacked = function () {
-				this.frame = MapObject.dictionary.openedBox;
-				// 出てくるもの　→
-			};
-		}
-	}, {
 		title: 'おはなばたけ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 421, width: 32, height: 32 },
@@ -267,6 +249,51 @@ window.addEventListener('load', function () {
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				Hack.log('どうだ　おれさまは　かたいだろう！');
+			};
+		}
+	}, {
+		title: 'からばこ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 522, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'まえで こうげきすると かぱっとひらく (た)からばこ。なかに なにか いれられると いいんだけどね',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// たからばこ
+			var item = new MapObject('box');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onattacked = function () {
+				this.frame = MapObject.dictionary.openedBox;
+				// 出てくるもの　→
+			};
+		}
+	}, {
+		title: 'ふしぎなツボ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 400, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'ランダムなアイテムがでてくる ふしぎなツボ。なんでも だせる という ウワサ',
+		identifier: '()',
+		variables: ['item', 'effect'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ツボ
+			var item = new MapObject('pot');
+			item.locate(__cnt15, __cnt10, 'map1');
+			var effect;
+			item.onattacked = function () {
+				// ランダムなアイテムをだす
+				var name = random(['diamond', 'sapphire', 'ruby']);
+				effect = new MapObject(name);
+				effect.locate(this.mapX, this.mapY);
+				effect.onplayerenter = function () {
+					this.velocity(0, -8);
+					this.force(0, 0.8);
+					this.destroy(16);
+				};
+				this.destroy();
 			};
 		}
 	}, {
@@ -405,6 +432,24 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		title: 'ハート',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 563, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'ライフを かいふくする うれしいアイテム！ += にすると プラスされる。ところで -= にすると どうなるのだろうか',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ハート
+			var item = new MapObject('heart');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onplayerenter = function () {
+				Hack.player.hp += 1;
+				this.destroy();
+			};
+		}
+	}, {
 		title: 'タタリ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 564, width: 32, height: 32 },
@@ -420,8 +465,27 @@ window.addEventListener('load', function () {
 			item.onplayerenter = function () {
 				Hack.player.behavior = BehaviorTypes.Dead;
 			};
-			item.onattacked = function () {
-				Hack.player.behavior = BehaviorTypes.Dead;
+			item.onattacked = function (event) {
+				event.attacker.behavior = BehaviorTypes.Dead;
+			};
+		}
+	}, {
+		title: 'チャリンチャリン',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 565, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'がめんを はねまわる コイン。',
+		identifier: '()',
+		variables: ['effect'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// コイン
+			var effect = new MapObject('coin');
+			effect.locate(__cnt15, __cnt10, 'map1');
+			effect.velocity(1, 0);
+			effect.force(0, 0.5);
+			effect.ontriggerenter = function () {
+				this.destroy();
 			};
 		}
 	}, {
@@ -449,24 +513,6 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'ハート',
-		image: 'enchantjs/x2/dotmat.gif',
-		trim: { frame: 563, width: 32, height: 32 },
-		query: 'embed',
-		caption: 'ライフを かいふくする うれしいアイテム！ += にすると プラスされる。ところで -= にすると どうなるのだろうか',
-		identifier: '()',
-		variables: ['item'],
-		counters: ['__cnt15', '__cnt10'],
-		code: function () {
-			// ハート
-			var item = new MapObject('heart');
-			item.locate(__cnt15, __cnt10, 'map1');
-			item.onplayerenter = function () {
-				Hack.player.hp += 1;
-				this.destroy();
-			};
-		}
-	}, {
 		title: 'ふしぎなかぎ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 567, width: 32, height: 32 },
@@ -475,7 +521,7 @@ window.addEventListener('load', function () {
 		identifier: '()',
 		variables: ['item'],
 		code: function () {
-			// かいだん
+			// かぎ
 			var item = new MapObject('key');
 			item.locate(random(0, 15), random(0, 10), 'map1');
 			item.onplayerenter = function () {
@@ -507,14 +553,14 @@ window.addEventListener('load', function () {
 		query: 'embed',
 		caption: 'たちのぼる ばくはつの エフェクト。スピード と じかん を ちょうせい できる',
 		identifier: '()',
-		variables: ['item'],
+		variables: ['effect'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ばくえん
-			var item = new Effect(0, -5, 40);
-			item.collisionFlag = false;
-			item.locate(__cnt15, __cnt10);
-			item.ontriggerenter = function (event) {
+			var effect = new Effect(0, -5, 40);
+			effect.collisionFlag = false;
+			effect.locate(__cnt15, __cnt10);
+			effect.ontriggerenter = function (event) {
 				Hack.Attack.call(this, event.mapX, event.mapY, 1);
 			};
 		}
@@ -525,7 +571,7 @@ window.addEventListener('load', function () {
 		query: 'embed',
 		caption: 'やつが この めいきゅうの あるじ 獄炎(ごくえん) の ドラゴン だ！',
 		identifier: '()',
-		variables: ['enemy', 'item'],
+		variables: ['enemy', 'effect'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ドラゴン
@@ -539,11 +585,11 @@ window.addEventListener('load', function () {
 			};
 			enemy.setInterval(function () {
 				// ばくえん
-				var item = new Effect(-5, 5, 40, true);
-				item.collisionFlag = false;
-				item.locate(this.mapX - 2, this.mapY - 1);
-				item.force(0.1, -0.1);
-				item.ontriggerenter = function (event) {
+				var effect = new Effect(-5, 5, 40, true);
+				effect.collisionFlag = false;
+				effect.locate(this.mapX - 2, this.mapY - 1);
+				effect.force(0.1, -0.1);
+				effect.ontriggerenter = function (event) {
 					Hack.Attack.call(this, event.mapX, event.mapY, 1);
 				};
 			}, 1);
