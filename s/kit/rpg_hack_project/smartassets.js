@@ -420,8 +420,8 @@ window.addEventListener('load', function () {
 			item.onplayerenter = function () {
 				Hack.player.behavior = BehaviorTypes.Dead;
 			};
-			item.onattacked = function () {
-				Hack.player.behavior = BehaviorTypes.Dead;
+			item.onattacked = function (event) {
+				event.attacker.behavior = BehaviorTypes.Dead;
 			};
 		}
 	}, {
