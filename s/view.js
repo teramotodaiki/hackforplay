@@ -350,7 +350,9 @@ $(function(){
 		});
 		window.addEventListener('message', function task (event) {
 			if (event.data === 'game_loaded') {
-				checkBracket(jsEditor, refactoring.bind(jsEditor), function () {
+				checkBracket(jsEditor, function () {
+					refactoring(jsEditor);
+				}, function () {
 					button.addClass('disabled');
 				});
 				window.removeEventListener('message', task);
@@ -366,7 +368,7 @@ $(function(){
 			}
 		}
 		function refactoring (cm, change) {
-			var lines = cm.doc.getValue(false),
+			var lines = cm.getValue(false),
 			fullText = lines.join('\n');
 			var tabs = 0, cursor = cm.doc.getCursor(), currentTabs = 0;
 			var value = lines.map(function(elem, index) {
