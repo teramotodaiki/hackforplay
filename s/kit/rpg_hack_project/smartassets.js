@@ -170,24 +170,6 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'からばこ',
-		image: 'enchantjs/x2/dotmat.gif',
-		trim: { frame: 522, width: 32, height: 32 },
-		query: 'embed',
-		caption: 'まえで こうげきすると かぱっとひらく (た)からばこ。なかに なにか いれられると いいんだけどね',
-		identifier: '()',
-		variables: ['item'],
-		counters: ['__cnt15', '__cnt10'],
-		code: function () {
-			// たからばこ
-			var item = new MapObject('box');
-			item.locate(__cnt15, __cnt10, 'map1');
-			item.onattacked = function () {
-				this.frame = MapObject.dictionary.openedBox;
-				// 出てくるもの　→
-			};
-		}
-	}, {
 		title: 'おはなばたけ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 421, width: 32, height: 32 },
@@ -267,6 +249,24 @@ window.addEventListener('load', function () {
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				Hack.log('どうだ　おれさまは　かたいだろう！');
+			};
+		}
+	}, {
+		title: 'からばこ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 522, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'まえで こうげきすると かぱっとひらく (た)からばこ。なかに なにか いれられると いいんだけどね',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// たからばこ
+			var item = new MapObject('box');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onattacked = function () {
+				this.frame = MapObject.dictionary.openedBox;
+				// 出てくるもの　→
 			};
 		}
 	}, {
@@ -405,6 +405,24 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		title: 'ハート',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 563, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'ライフを かいふくする うれしいアイテム！ += にすると プラスされる。ところで -= にすると どうなるのだろうか',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ハート
+			var item = new MapObject('heart');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onplayerenter = function () {
+				Hack.player.hp += 1;
+				this.destroy();
+			};
+		}
+	}, {
 		title: 'タタリ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 564, width: 32, height: 32 },
@@ -468,24 +486,6 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'ハート',
-		image: 'enchantjs/x2/dotmat.gif',
-		trim: { frame: 563, width: 32, height: 32 },
-		query: 'embed',
-		caption: 'ライフを かいふくする うれしいアイテム！ += にすると プラスされる。ところで -= にすると どうなるのだろうか',
-		identifier: '()',
-		variables: ['item'],
-		counters: ['__cnt15', '__cnt10'],
-		code: function () {
-			// ハート
-			var item = new MapObject('heart');
-			item.locate(__cnt15, __cnt10, 'map1');
-			item.onplayerenter = function () {
-				Hack.player.hp += 1;
-				this.destroy();
-			};
-		}
-	}, {
 		title: 'ふしぎなかぎ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 567, width: 32, height: 32 },
@@ -494,7 +494,7 @@ window.addEventListener('load', function () {
 		identifier: '()',
 		variables: ['item'],
 		code: function () {
-			// かいだん
+			// かぎ
 			var item = new MapObject('key');
 			item.locate(random(0, 15), random(0, 10), 'map1');
 			item.onplayerenter = function () {
