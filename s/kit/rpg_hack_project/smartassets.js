@@ -425,6 +425,25 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		title: 'チャリンチャリン',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 565, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'がめんを はねまわる コイン。',
+		identifier: '()',
+		variables: ['effect'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// コイン
+			var effect = new MapObject('coin');
+			effect.locate(__cnt15, __cnt10, 'map1');
+			effect.velocity(1, 0);
+			effect.force(0, 0.5);
+			effect.ontriggerenter = function () {
+				this.destroy();
+			};
+		}
+	}, {
 		title: 'れいの アレ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 566, width: 32, height: 32 },
