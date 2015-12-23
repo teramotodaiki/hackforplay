@@ -1,7 +1,7 @@
 window.addEventListener('load', function () {
 
 	var game = enchant.Core.instance;
-	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x2/dotmat.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png', 'enchantjs/icon0.png');
+	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x2/dotmat.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png', 'enchantjs/icon0.png', 'enchantjs/x2/effect0.png');
 	game.keybind(' '.charCodeAt(0), 'a');
 
 	Hack.onload = Hack.onload || function () {
@@ -79,6 +79,7 @@ window.addEventListener('load', function () {
 				stone: 321,		stoneWall: 341,	stoneFloor: 342,
 				warp: 324,		warpRed: 325,
 				warpGreen: 326,	warpYellow: 327,
+				magic: 328,		usedMagic: 329,
 				pot: 400,		rock: 401,		upStair: 402,
 				box: 420,		flower: 421,	downStair: 422,
 				trap: 440,		usedTrap: 441,	step: 442,
@@ -274,6 +275,30 @@ window.addEventListener('load', function () {
             time: time || 0
         }));
 		return this;
+	};
+
+	/* random
+	 * Random value between min to max (Detection type)
+	 * (int, int) ===> int
+	 * (float, int|float) ====> float
+	 * (value, value) ====> value ~ value
+	 * (value) ====> 0 ~ value
+	 * (Array) ====> value in Array
+	 * () ====> 0 ~ 1
+	*/
+	window.random = window.random || function (min, max) {
+		if (arguments.length === 0) return Math.random();
+		if (min instanceof Array) {
+			var keys = Object.keys(min);
+			return min[keys[random(keys.length)]];
+		}
+		var _min = arguments.length >= 2 ? Math.min(min, max) : 0;
+		var _sub = arguments.length >= 2 ? Math.max(min, max) - _min : min;
+		if (min % 1 === 0 && (max === undefined || max % 1 === 0)) {
+			return _min + Math.random() * _sub >> 0; // integer
+		} else {
+			return _min + Math.random() * _sub;
+		}
 	};
 
 });
