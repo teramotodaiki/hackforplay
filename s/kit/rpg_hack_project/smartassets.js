@@ -270,6 +270,33 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		title: 'ふしぎなツボ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 400, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'ランダムなアイテムがでてくる ふしぎなツボ。なんでも だせる という ウワサ',
+		identifier: '()',
+		variables: ['item', 'effect'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ツボ
+			var item = new MapObject('pot');
+			item.locate(__cnt15, __cnt10, 'map1');
+			var effect;
+			item.onattacked = function () {
+				// ランダムなアイテムをだす
+				var name = random(['diamond', 'sapphire', 'ruby']);
+				effect = new MapObject(name);
+				effect.locate(this.mapX, this.mapY);
+				effect.onplayerenter = function () {
+					this.velocity(0, -8);
+					this.force(0, 0.8);
+					this.destroy(16);
+				};
+				this.destroy();
+			};
+		}
+	}, {
 		title: 'ただのひと',
 		image: 'enchantjs/x1.5/chara0.png',
 		trim: { x: 4*48, y: 8, width: 48, height: 48 },
