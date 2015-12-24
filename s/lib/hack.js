@@ -266,8 +266,11 @@ window.addEventListener('load', function() {
 	};
 
 	(function () {
+		var playing = true;
 
 		Hack.gameclear = function() {
+			if (!playing) return;
+			playing = false;
 			// Questの実績を報告
 			if (sessionStorage.getItem('stage_param_game_mode') === 'quest') {
 				window.parent.postMessage('quest_clear_level', '*');
@@ -369,6 +372,9 @@ window.addEventListener('load', function() {
 		};
 
 		Hack.gameover = function() {
+			if (!playing) return;
+			playing = false;
+
 			var lay = Hack.overlay('rgba(0,0,0,0.4)', 'hackforplay/gameover.png');
 			lay.opacity = 0;
 			lay.moveTo(-game.rootScene.x, -game.rootScene.y);
