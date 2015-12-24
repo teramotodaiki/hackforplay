@@ -634,6 +634,58 @@ window.addEventListener('load', function() {
 		}
 	};
 
+	/**
+	 * Hack.define
+	 * obj: targeting object (If omitted: Hack)
+	 * prop: property name (obj.----)
+	 * condition: if (obj.---- === condition) { predicate(); }
+	 */
+	Hack.define = function (obj, prop, condition, predicate) {
+		var _value = null, descriptor = Object.getOwnPropertyDescriptor(obj, prop);
+		if (arguments.length < 4) return Hack.define(Hack, arguments[0], arguments[1], arguments[2]);
+		else if (descriptor) {
+			if (!descriptor.configurable) {
+				Hack.log('Cannot define prop ' + prop + '. It is NOT configurable');
+			} else if (descriptor.value !== undefined && !descriptor.writable) {
+				Hack.log('Cannot define prop ' + prop + '. It is NOT writable');
+			} else if (descriptor.value === undefined && descriptor.set === undefined) {
+				Hack.log('Cannot define prop ' + prop + '. It has NOT setter');
+			} else if (descriptor.value !== undefined) {
+				// Append setter
+				_value = descriptor.value;
+				descriptor = {
+					configurable: descriptor.configurable, enumerable: descriptor.enumerable,
+					get: function () { return _value; },
+					set: function (value) {
+						if ((_value = value) === condition && predicate instanceof Function) {
+							predicate();
+						}
+					}
+				};
+			} else {
+				// Extend setter
+				var setter = descriptor.set;
+				descriptor.set = function (value) {
+					setter.call(obj, value);
+					if (value === condition && predicate instanceof Function) {
+						predicate();
+					}
+				};
+			}
+		} else {
+			descriptor = {
+				configurable: true, enumerable: true,
+				get: function () { return _value; },
+				set: function (value) {
+					if ((_value = value) === condition && predicate instanceof Function) {
+						predicate();
+					}
+				}
+			};
+		}
+		Object.defineProperty(obj, prop, descriptor);
+	};
+
 	window.postMessage("Hack.dispatchEvent(new Event('load'));", "/"); // Hack.onloadのコール
 	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
