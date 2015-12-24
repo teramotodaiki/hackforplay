@@ -274,12 +274,12 @@ if ($mode === 'quest') {
 								<span class="glyphicon glyphicon-menu-right"></span>
 							</button>
 						</div>
-						<div class="btn-group menu-right" role="group">
+						<div class="btn-group menu-right faint-menu" role="group">
 							<button type="button" class="btn btn-sm btn-default" data-query="keybind">
 								st
 							</button>
 						</div>
-						<div class="btn-group menu-right" role="group">
+						<div class="btn-group menu-right faint-menu" role="group">
 							<button type="button" class="btn btn-sm btn-default active" data-toggle="button" data-query="indent">
 								<span class="glyphicon glyphicon-indent-left"></span>
 							</button>
