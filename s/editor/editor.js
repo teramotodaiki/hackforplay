@@ -68,7 +68,7 @@ window.onload = function(){
 };
 
 window.addEventListener('message', function(e){
-	console.log(e.data);
+	console.log(e.data.length, e.data);
 	eval(e.data);
 });
 
