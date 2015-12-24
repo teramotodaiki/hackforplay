@@ -661,6 +661,7 @@ window.addEventListener('load', function () {
 			obj.self.velocityY = obj.velocityY;
 			obj.self.x = Math.max(0, Math.min(game.width - obj.self.width, obj.self.x));
 			obj.self.y = Math.max(0, Math.min(game.height - obj.self.height, obj.self.y));
+			return true;
 		}).forEach(function (obj) {
 			obj.self.dispatchEvent(obj.event);
 		});
