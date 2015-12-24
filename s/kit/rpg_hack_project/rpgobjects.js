@@ -134,7 +134,6 @@ window.addEventListener('load', function () {
 				},
 				set: function (value) { isKinematic = value; }
 			});
-			this.on('enterframe', this.physicalUpdate);
 			// Destroy when dead
 			this.on('becomedead', function() {
 				this.setTimeout(function () {
@@ -314,12 +313,6 @@ window.addEventListener('load', function () {
 		force: function (x, y) {
 			this.accelerationX = x / this.mass;
 			this.accelerationY = y / this.mass;
-		},
-		physicalUpdate: function () {
-			if (this.isKinematic) return;
-			this.velocityX += this.accelerationX;
-			this.velocityY += this.accelerationY;
-			this.moveBy(this.velocityX, this.velocityY);
 		}
 	});
 
@@ -595,11 +588,28 @@ window.addEventListener('load', function () {
 		}
 	});
 
-	game.on('exitframe', function() {
-		var physics = RPGObject.collection.filter(function (item) {
-			return !item.isKinematic;
+	game.on('enterframe', function() {
+		var frame = game.collisionFrames || 10;
+		var physicsPhantom = RPGObject.collection.filter(function (item) {
+			return !item.isKinematic && !item.collisionFlag;
 		});
+		var physicsCollision = RPGObject.collection.filter(function (item) {
+			return !item.isKinematic && item.collisionFlag;
+		});
+
+		__physicsUpdateOnFrame(1, 1, physicsPhantom);
+		for (var tick = 1; tick <= frame; tick++) {
+			__physicsUpdateOnFrame(tick, frame, physicsCollision);
+		}
+	});
+	function __physicsUpdateOnFrame (tick, frame, physics) {
 		physics.map(function (self, index) {
+			// Physical Update
+			self.velocityX += self.accelerationX / frame;
+			self.velocityY += self.accelerationY / frame;
+			self.x += self.velocityX / frame;
+			self.y += self.velocityY / frame;
+			// Intersects
 			var intersects = self.intersect(RPGObject);
 			intersects.splice(intersects.indexOf(self), 1); // ignore self
 			// Dispatch trigger(stay|exit) event
@@ -609,7 +619,7 @@ window.addEventListener('load', function () {
 				if (intersects.indexOf(item) < 0) {
 					dispatchTriggerEvent('exit', self, item);
 					dispatchTriggerEvent('exit', item, self);
-				} else {
+				} else if (tick === frame) {
 					dispatchTriggerEvent('stay', self, item);
 					dispatchTriggerEvent('stay', item, self);
 				}
@@ -648,8 +658,10 @@ window.addEventListener('load', function () {
 				obj.velocityY = ((m1 - m2) * self.velocityY + 2 * m2 * hits[0].velocityY) / (m1 + m2);
 			}
 			// Hit map
-			var mapHitX = self.x <= 0 || self.x + self.width >= game.width,
-			mapHitY = self.y <= 0 || self.y + self.height >= game.height;
+			var mapHitX = (self.velocityX < 0 && self.x <= 0 ||
+				self.velocityX > 0 && self.x + self.width >= game.width),
+			mapHitY = (self.velocityY < 0 && self.y <= 0 ||
+				self.velocityY > 0 && self.y + self.height >= game.height);
 			obj.event.map = self.collisionFlag && (mapHitX || mapHitY);
 			obj.velocityX *= mapHitX ? -1 : 1;
 			obj.velocityY *= mapHitY ? -1 : 1;
@@ -661,6 +673,7 @@ window.addEventListener('load', function () {
 			obj.self.velocityY = obj.velocityY;
 			obj.self.x = Math.max(0, Math.min(game.width - obj.self.width, obj.self.x));
 			obj.self.y = Math.max(0, Math.min(game.height - obj.self.height, obj.self.y));
+			return true;
 		}).forEach(function (obj) {
 			obj.self.dispatchEvent(obj.event);
 		});
@@ -671,5 +684,5 @@ window.addEventListener('load', function () {
 			event.mapY = hit.mapY;
 			self.dispatchEvent(event);
 		}
-    });
+    }
 });
