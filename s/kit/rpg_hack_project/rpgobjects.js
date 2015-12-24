@@ -589,7 +589,7 @@ window.addEventListener('load', function () {
 	});
 
 	game.on('enterframe', function() {
-		var frame = game.physicalFrame || 10;
+		var frame = game.collisionFrames || 10;
 		var physicsPhantom = RPGObject.collection.filter(function (item) {
 			return !item.isKinematic && !item.collisionFlag;
 		});
@@ -597,12 +597,12 @@ window.addEventListener('load', function () {
 			return !item.isKinematic && item.collisionFlag;
 		});
 
-		__physicsUpdateOnExitFrame(1, 1, physicsPhantom);
+		__physicsUpdateOnFrame(1, 1, physicsPhantom);
 		for (var tick = 1; tick <= frame; tick++) {
-			__physicsUpdateOnExitFrame(tick, frame, physicsCollision);
+			__physicsUpdateOnFrame(tick, frame, physicsCollision);
 		}
 	});
-	function __physicsUpdateOnExitFrame (tick, frame, physics) {
+	function __physicsUpdateOnFrame (tick, frame, physics) {
 		physics.map(function (self, index) {
 			// Physical Update
 			self.velocityX += self.accelerationX / frame;
