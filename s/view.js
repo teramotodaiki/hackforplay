@@ -303,6 +303,13 @@ $(function(){
 	jsEditor.on('change', function() {
 		// Fix save icon
 		$('.h4p_save_button .glyphicon').removeClass('glyphicon-saved').addClass('glyphicon-save');
+		// Fix undo/redo icon
+		var undo = $('.h4p_restaging_menu button[data-query="undo"]'),
+		redo = $('.h4p_restaging_menu button[data-query="redo"]');
+		if (jsEditor.historySize().undo > 1) undo.removeClass('disabled');
+		else undo.addClass('disabled');
+		if (jsEditor.historySize().redo) redo.removeClass('disabled');
+		else redo.addClass('disabled');
 	});
 	$('.h4p_restaging_menu').on('click', 'button', function() {
 		switch ($(this).data('query')) {
@@ -351,6 +358,7 @@ $(function(){
 		window.addEventListener('message', function task (event) {
 			if (event.data === 'game_loaded') {
 				checkBracket(jsEditor, function () {
+					jsEditor.clearHistory();
 					refactoring(jsEditor);
 				}, function () {
 					button.addClass('disabled');
