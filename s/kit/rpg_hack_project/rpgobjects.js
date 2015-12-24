@@ -619,7 +619,7 @@ window.addEventListener('load', function () {
 				if (intersects.indexOf(item) < 0) {
 					dispatchTriggerEvent('exit', self, item);
 					dispatchTriggerEvent('exit', item, self);
-				} else if (tick === frame) {
+				} else if (tick === frame　&& !item.collisionFlag && !self.collisionFlag) {
 					dispatchTriggerEvent('stay', self, item);
 					dispatchTriggerEvent('stay', item, self);
 				}
@@ -636,43 +636,47 @@ window.addEventListener('load', function () {
 				dispatchTriggerEvent('enter', self, item);
 				dispatchTriggerEvent('enter', item, self);
 			});
-			// ===> Physics collision
-			return entered.filter(function (item) {
-				return !item.isKinematic && item.collisionFlag;
-			});
-		}).map(function(hits, index) {
-			var self = physics[index];
-			// Collided Event
-			var obj = {
-				event: new Event('collided'),
+			return {
 				self: self,
-				velocityX: self.velocityX,
-				velocityY: self.velocityY
+				hits: entered.filter(function (item) {
+					return !item.isKinematic && item.collisionFlag;
+				})
 			};
-			// Hit objects
-			obj.event.hits = hits;
+		}).filter(function (item) {
+			// ===> Physics collision
+			return item.self.collisionFlag;
+		}).filter(function (item) {
+			var self = item.self;
+			var event = item.event = new Event('collided');
+			var hits = event.hits = item.hits;
+			var calc = item.calc = { x: self.x, y: self.y, vx: self.velocityX, vy: self.velocityY };
 			if (hits.length > 0) {
-				obj.event.hit = hits[0];
+				// Hit objects
+				event.hit = hits[0];
 				var m1 = self.mass, m2 = hits[0].mass;
-				obj.velocityX = ((m1 - m2) * self.velocityX + 2 * m2 * hits[0].velocityX) / (m1 + m2);
-				obj.velocityY = ((m1 - m2) * self.velocityY + 2 * m2 * hits[0].velocityY) / (m1 + m2);
+				calc.vx = ((m1 - m2) * self.velocityX + 2 * m2 * hits[0].velocityX) / (m1 + m2);
+				calc.vy = ((m1 - m2) * self.velocityY + 2 * m2 * hits[0].velocityY) / (m1 + m2);
+				event.map = false;
+			} else {
+				// Hit map
+				var mapHitX = (self.velocityX < 0 && self.x <= 0 ||
+					self.velocityX > 0 && self.x + self.width >= game.width),
+				mapHitY = (self.velocityY < 0 && self.y <= 0 ||
+					self.velocityY > 0 && self.y + self.height >= game.height);
+				calc.x = mapHitX ? Math.max(0, Math.min(game.width - self.width, self.x)) : self.x;
+				calc.y = mapHitX ? Math.max(0, Math.min(game.height - self.height, self.y)) : self.y;
+				calc.vx = (mapHitX ? -1 : 1) * self.velocityX;
+				calc.vy = (mapHitY ? -1 : 1) * self.velocityY;
+				event.map = mapHitX || mapHitY;
 			}
-			// Hit map
-			var mapHitX = (self.velocityX < 0 && self.x <= 0 ||
-				self.velocityX > 0 && self.x + self.width >= game.width),
-			mapHitY = (self.velocityY < 0 && self.y <= 0 ||
-				self.velocityY > 0 && self.y + self.height >= game.height);
-			obj.event.map = self.collisionFlag && (mapHitX || mapHitY);
-			obj.velocityX *= mapHitX ? -1 : 1;
-			obj.velocityY *= mapHitY ? -1 : 1;
-			return obj;
-		}).filter(function (obj) {
-			return obj.event.map || obj.event.hits.length > 0;
-		}).filter(function (obj) {
-			obj.self.velocityX = obj.velocityX;
-			obj.self.velocityY = obj.velocityY;
-			obj.self.x = Math.max(0, Math.min(game.width - obj.self.width, obj.self.x));
-			obj.self.y = Math.max(0, Math.min(game.height - obj.self.height, obj.self.y));
+			return event.map || hits.length > 0;
+		}).filter(function (item) {
+			var self = item.self;
+			var calc = item.calc;
+			self.x = calc.x;
+			self.y = calc.y;
+			self.velocityX = calc.vx;
+			self.velocityY = calc.vy;
 			return true;
 		}).forEach(function (obj) {
 			obj.self.dispatchEvent(obj.event);
