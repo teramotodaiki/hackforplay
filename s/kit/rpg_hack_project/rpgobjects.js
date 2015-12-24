@@ -134,7 +134,6 @@ window.addEventListener('load', function () {
 				},
 				set: function (value) { isKinematic = value; }
 			});
-			this.on('enterframe', this.physicalUpdate);
 			// Destroy when dead
 			this.on('becomedead', function() {
 				this.setTimeout(function () {
@@ -314,12 +313,6 @@ window.addEventListener('load', function () {
 		force: function (x, y) {
 			this.accelerationX = x / this.mass;
 			this.accelerationY = y / this.mass;
-		},
-		physicalUpdate: function () {
-			if (this.isKinematic) return;
-			this.velocityX += this.accelerationX;
-			this.velocityY += this.accelerationY;
-			this.moveBy(this.velocityX, this.velocityY);
 		}
 	});
 
@@ -595,11 +588,28 @@ window.addEventListener('load', function () {
 		}
 	});
 
-	game.on('exitframe', function() {
-		var physics = RPGObject.collection.filter(function (item) {
-			return !item.isKinematic;
+	game.on('enterframe', function() {
+		var frame = game.physicalFrame || 10;
+		var physicsPhantom = RPGObject.collection.filter(function (item) {
+			return !item.isKinematic && !item.collisionFlag;
 		});
+		var physicsCollision = RPGObject.collection.filter(function (item) {
+			return !item.isKinematic && item.collisionFlag;
+		});
+
+		__physicsUpdateOnExitFrame(1, 1, physicsPhantom);
+		for (var tick = 1; tick <= frame; tick++) {
+			__physicsUpdateOnExitFrame(tick, frame, physicsCollision);
+		}
+	});
+	function __physicsUpdateOnExitFrame (tick, frame, physics) {
 		physics.map(function (self, index) {
+			// Physical Update
+			self.velocityX += self.accelerationX / frame;
+			self.velocityY += self.accelerationY / frame;
+			self.x += self.velocityX / frame;
+			self.y += self.velocityY / frame;
+			// Intersects
 			var intersects = self.intersect(RPGObject);
 			intersects.splice(intersects.indexOf(self), 1); // ignore self
 			// Dispatch trigger(stay|exit) event
@@ -609,7 +619,7 @@ window.addEventListener('load', function () {
 				if (intersects.indexOf(item) < 0) {
 					dispatchTriggerEvent('exit', self, item);
 					dispatchTriggerEvent('exit', item, self);
-				} else {
+				} else if (tick === frame) {
 					dispatchTriggerEvent('stay', self, item);
 					dispatchTriggerEvent('stay', item, self);
 				}
@@ -674,5 +684,5 @@ window.addEventListener('load', function () {
 			event.mapY = hit.mapY;
 			self.dispatchEvent(event);
 		}
-    });
+    }
 });
