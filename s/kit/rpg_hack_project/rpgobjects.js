@@ -648,8 +648,10 @@ window.addEventListener('load', function () {
 				obj.velocityY = ((m1 - m2) * self.velocityY + 2 * m2 * hits[0].velocityY) / (m1 + m2);
 			}
 			// Hit map
-			var mapHitX = self.x <= 0 || self.x + self.width >= game.width,
-			mapHitY = self.y <= 0 || self.y + self.height >= game.height;
+			var mapHitX = (self.velocityX < 0 && self.x <= 0 ||
+				self.velocityX > 0 && self.x + self.width >= game.width),
+			mapHitY = (self.velocityY < 0 && self.y <= 0 ||
+				self.velocityY > 0 && self.y + self.height >= game.height);
 			obj.event.map = self.collisionFlag && (mapHitX || mapHitY);
 			obj.velocityX *= mapHitX ? -1 : 1;
 			obj.velocityY *= mapHitY ? -1 : 1;
