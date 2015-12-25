@@ -205,11 +205,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'みためだけでかいわ',
+		title: 'バクダンいわ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 401, width: 32, height: 32 },
 		query: 'embed',
-		caption: '２ばいのおおきさ',
+		caption: 'しげきを あたえると ばくはつするぞ！おすなよ ぜったいに おすなよ！',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
@@ -217,7 +217,17 @@ window.addEventListener('load', function () {
 			// いわ
 			var item = new MapObject('rock');
 			item.locate(__cnt15, __cnt10, 'map1');
-			item.scale(2, 2);
+			item.onattacked = function () {
+				// ばくえん
+				var effect = new Effect(0, -1, 40);
+				effect.locate(this.mapX, this.mapY);
+				effect.collisionFlag = false;
+				effect.scale(2, 2);
+				effect.ontriggerenter = function (event) {
+					Hack.Attack.call(this, event.mapX, event.mapY, 99);
+				};
+				this.destroy();
+			};
 		}
 	}, {
 		title: 'いわかんのあるかべ',
@@ -393,24 +403,6 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'ゴールドラゴン',
-		image: 'enchantjs/bigmonster1.gif',
-		trim: { x: 8, y: 2*80-2, width: 80, height: 80 },
-		query: 'embed',
-		caption: 'ゴールドだけど あかいドラゴン。こいつをたおすと ゴールだよ なんつって',
-		identifier: '()',
-		variables: ['enemy'],
-		counters: ['__cnt15', '__cnt10'],
-		code: function () {
-			// ドラゴン
-			var enemy = new Dragon();
-			enemy.hp = 10;
-			enemy.locate(__cnt15, __cnt10, 'map1');
-			enemy.onbecomedead = function () {
-				Hack.gameclear();
-			};
-		}
-	}, {
 		title: 'ふむと いてっ！＞＜',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 440, width: 32, height: 32 },
@@ -547,22 +539,30 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'ばくえん',
-		image: 'enchantjs/x2/effect0.png',
-		trim: { frame: 1, width: 32, height: 32 },
+		title: 'じげんばくだん',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 580, width: 32, height: 32 },
 		query: 'embed',
-		caption: 'たちのぼる ばくはつの エフェクト。スピード と じかん を ちょうせい できる',
+		caption: 'じげんしき ばくだん と たちのぼる ばくはつの エフェクト。じかん を ちょうせい できる',
 		identifier: '()',
-		variables: ['effect'],
+		variables: ['item', 'effect'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// ばくえん
-			var effect = new Effect(0, -5, 40);
-			effect.collisionFlag = false;
-			effect.locate(__cnt15, __cnt10);
-			effect.ontriggerenter = function (event) {
-				Hack.Attack.call(this, event.mapX, event.mapY, 1);
-			};
+			// ボム
+			var item = new MapObject('bomb');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.time = 3.0;
+			item.setTimeout(function () {
+				// ばくえん
+				var effect = new Effect(0, -1, 40);
+				effect.locate(this.mapX, this.mapY);
+				effect.collisionFlag = false;
+				effect.scale(2, 2);
+				effect.ontriggerenter = function (event) {
+					Hack.Attack.call(this, event.mapX, event.mapY, 99);
+				};
+				this.destroy();
+			}, item.time * game.fps);
 		}
 	}, {
 		title: 'ごくえんのドラゴン',

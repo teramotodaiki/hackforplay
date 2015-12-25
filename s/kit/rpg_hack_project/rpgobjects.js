@@ -82,6 +82,15 @@ window.addEventListener('load', function () {
 			Object.defineProperty(this, 'mapY', {
 				get: function () { return (this.y - this.offset.y + 16) / 32 >> 0; }
 			});
+			Object.defineProperty(this, 'map', {
+				get: function () {
+					var parent = Object.keys(Hack.maps).filter(function (name) {
+						return Hack.maps[name].scene === this.parentNode;
+					}, this);
+					if (parent.length === 0) return undefined;
+					else return parent[0];
+				}
+			});
 			this.getFrameOfBehavior = []; // BehaviorTypesをキーとしたgetterの配列
 			// onbecome~ イベントで this.frame を更新するように
 			Object.keys(BehaviorTypes).forEach(function (item) {
