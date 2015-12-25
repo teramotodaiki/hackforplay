@@ -393,24 +393,6 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'ゴールドラゴン',
-		image: 'enchantjs/bigmonster1.gif',
-		trim: { x: 8, y: 2*80-2, width: 80, height: 80 },
-		query: 'embed',
-		caption: 'ゴールドだけど あかいドラゴン。こいつをたおすと ゴールだよ なんつって',
-		identifier: '()',
-		variables: ['enemy'],
-		counters: ['__cnt15', '__cnt10'],
-		code: function () {
-			// ドラゴン
-			var enemy = new Dragon();
-			enemy.hp = 10;
-			enemy.locate(__cnt15, __cnt10, 'map1');
-			enemy.onbecomedead = function () {
-				Hack.gameclear();
-			};
-		}
-	}, {
 		title: 'ふむと いてっ！＞＜',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 440, width: 32, height: 32 },
