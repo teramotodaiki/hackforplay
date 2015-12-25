@@ -205,11 +205,11 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'みためだけでかいわ',
+		title: 'バクダンいわ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 401, width: 32, height: 32 },
 		query: 'embed',
-		caption: '２ばいのおおきさ',
+		caption: 'しげきを あたえると ばくはつするぞ！おすなよ ぜったいに おすなよ！',
 		identifier: '()',
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
@@ -217,7 +217,17 @@ window.addEventListener('load', function () {
 			// いわ
 			var item = new MapObject('rock');
 			item.locate(__cnt15, __cnt10, 'map1');
-			item.scale(2, 2);
+			item.onattacked = function () {
+				// ばくえん
+				var effect = new Effect(0, -1, 40);
+				effect.locate(this.mapX, this.mapY);
+				effect.collisionFlag = false;
+				effect.scale(2, 2);
+				effect.ontriggerenter = function (event) {
+					Hack.Attack.call(this, event.mapX, event.mapY, 99);
+				};
+				this.destroy();
+			};
 		}
 	}, {
 		title: 'いわかんのあるかべ',
