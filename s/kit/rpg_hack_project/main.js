@@ -87,7 +87,9 @@ window.addEventListener('load', function () {
 				tree: 520,		table: 521,		openedBox: 522,
 				beam: 540,		diamond: 560,	sapphire: 561,
 				ruby: 562,		heart: 563,		skull: 564,
-				coin: 565,		star: 566,		key: 567
+				coin: 565,		star: 566,		key: 567,
+				bomb: 580,		coldBomb: 581,	egg: 582,
+				poo: 583
 			};
 			Object.keys(MapObject.Dictionaly).forEach(function (key) {
 				MapObject.dictionary[key] = MapObject.Dictionaly[key];
