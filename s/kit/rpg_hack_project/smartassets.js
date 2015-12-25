@@ -547,22 +547,30 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
-		title: 'ばくえん',
-		image: 'enchantjs/x2/effect0.png',
-		trim: { frame: 1, width: 32, height: 32 },
+		title: 'じげんばくだん',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 580, width: 32, height: 32 },
 		query: 'embed',
-		caption: 'たちのぼる ばくはつの エフェクト。スピード と じかん を ちょうせい できる',
+		caption: 'じげんしき ばくだん と たちのぼる ばくはつの エフェクト。じかん を ちょうせい できる',
 		identifier: '()',
-		variables: ['effect'],
+		variables: ['item', 'effect'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// ばくえん
-			var effect = new Effect(0, -5, 40);
-			effect.collisionFlag = false;
-			effect.locate(__cnt15, __cnt10);
-			effect.ontriggerenter = function (event) {
-				Hack.Attack.call(this, event.mapX, event.mapY, 1);
-			};
+			// ボム
+			var item = new MapObject('bomb');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.time = 3.0;
+			item.setTimeout(function () {
+				// ばくえん
+				var effect = new Effect(0, -1, 40);
+				effect.locate(this.mapX, this.mapY);
+				effect.collisionFlag = false;
+				effect.scale(2, 2);
+				effect.ontriggerenter = function (event) {
+					Hack.Attack.call(this, event.mapX, event.mapY, 99);
+				};
+				this.destroy();
+			}, item.time * game.fps);
 		}
 	}, {
 		title: 'ごくえんのドラゴン',
