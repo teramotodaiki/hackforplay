@@ -165,12 +165,10 @@ if ($mode === 'quest') {
 			        	<div class="form-group">
 			        		<label for="stage-name" class="control-label">ステージ名<small>（自由に決めてください）</small>:</label>
 			        		<input type="text" class="form-control" id="stage-name">
-			        		<p id="stage-name_alert" class="alert alert-danger">ステージ名を入力してください。</p>
 			        	</div>
 			        	<div class="form-group">
 			        		<label for="stage-explain" class="control-label">ステージの説明:</label>
 			        		<textarea class="form-control" id="stage-explain"></textarea>
-			        		<p id="stage-explain_alert" class="alert alert-danger" style="display:none;"></p>
 			        	</div>
 			        </form>
 			    </div>
@@ -343,14 +341,6 @@ if ($mode === 'quest') {
 				</button>
 				<div class="h4p_published-info text-center hidden">
 					<p class="text-muted">ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。</p>
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<h4 class="panel-title">このステージをほかの人にもシェアしましょう！</h4>
-						</div>
-						<div class="panel-body">
-							<iframe id="stage-share-frame" src="" height="40" width="450"></iframe>
-						</div>
-					</div>
 					<a href="../" title="もどる" class="h4p_publish-return btn btn-lg btn-block">もどる</a>
 				</div>
 			</div>
