@@ -744,11 +744,40 @@ $(function(){
 			});
 
 			// 投稿
-			$("#publish-button").on('click', function() {
-
-				$("#inputModal").modal('hide');
-				publishTask();
-			});
+			(function () {
+				var $form = $('#inputModal form');
+				$form.submit(function(event) {
+					validation(function () {
+						$('#inputModal').modal('hide');
+						publishTask();
+					}, null, false);
+					return false;
+				});
+				var showing = false;
+				$('#inputModal').on('show.bs.modal', function() {
+					showing = true;
+					validation(function () {
+						$form.find('button[type="submit"]').removeClass('disabled');
+					}, function () {
+						$form.find('button[type="submit"]').addClass('disabled');
+					}, true);
+				}).on('hide.bs.modal', function() {
+					showing = false;
+				});
+				function validation (success, failed, retry) {
+					var values = {
+						title: $form.find('.stage-name').val(),
+						explain: $form.find('.stage-explain').val(),
+						flag: showing
+					};
+					if (Object.keys(values).every(function (key) {
+						return values[key];
+					})) { if (success) success(); } else { if (failed) failed(); }
+					if (retry) setTimeout(function () {
+						validation(success, failed, showing);
+					}, 100);
+				}
+			})();
 
 			// Smart Assets
 			(function () {
@@ -1040,8 +1069,8 @@ $(function(){
 		}
 		function publishTask (callback) {
 			var stage_info = {
-				title: $("#stage-name").val(),
-				explain: $('#stage-explain').val(),
+				title: $("#inputModal .stage-name").val(),
+				explain: $('#inputModal .stage-explain').val(),
 				path: getParam('path'),
 				source_id: getParam('id')
 			};

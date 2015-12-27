@@ -462,11 +462,11 @@ button.h4p_open-project {
 .h4p_restaging_menu {
 	margin-bottom: 4px;
 }
-.h4p_restaging_menu .menu-right {
+div.menu-right {
 	float: right;
 	margin-left: 10px;
 }
-.h4p_restaging_menu .menu-left {
+div.menu-left {
 	float: left;
 	margin-right: 10px;
 }
