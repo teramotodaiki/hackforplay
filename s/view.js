@@ -754,7 +754,15 @@ $(function(){
 				$form.submit(function(event) {
 					validation(function () {
 						$('#inputModal').modal('hide');
-						publishTask();
+						$('.h4p_publish button').addClass('disabled');
+						if(sessionStorage.getItem('project-token') === null){
+							// プロジェクトが作られていないので、作成
+							makeProject(function() {
+								publishTask();
+							});
+						}else{
+							publishTask();
+						}
 					}, null, false);
 					return false;
 				});
