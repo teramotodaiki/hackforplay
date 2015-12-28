@@ -9,14 +9,6 @@ try {
 	require_once '../preload.php';
 	require_once 'getcurrentcodeascache.php';
 
-	session_start();
-	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
-	session_commit();
-
-	if (!isset($session_userid)) {
-		exit('no-session');
-	}
-
 	// キューから取り出し
 	$stmt_stock = $dbh->prepare('SELECT "ID","Project","Code","Publish","Registered","Thumbnail","NewStage" FROM "CodeStock" ORDER BY "ID" DESC');
 	$stmt_stock->execute();
@@ -89,8 +81,6 @@ try {
 	exit('success ' . date('Y-m-d H:i:s'));
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
-	die();
+	die($e->getMessage() . date(' Y-m-d H:i:s'));
 }
 ?>
