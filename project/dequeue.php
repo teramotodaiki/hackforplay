@@ -76,6 +76,14 @@ try {
 			}
 			$stmt->execute();
 		}
+
+		// 投稿された場合、ステートをqueueからjudgingに
+		if ((bool)$row['Publish'] === TRUE) {
+			$stmt = $dbh->prepare('UPDATE "Stage" SET "State"=:judging WHERE "ID"=:new_stage');
+			$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
+			$stmt->bindValue(":new_stage", $row['NewStage'], PDO::PARAM_INT);
+			$stmt->execute();
+		}
 	}
 
 	$stmt = $dbh->prepare('DELETE FROM "CodeStock"');
