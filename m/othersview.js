@@ -126,9 +126,11 @@ $(function(){
 				}
 				var label_lv = (stage.state === 'published' ? 'label-success' :
 								stage.state === 'judging'	? 'label-warning' :
+								stage.state === 'queue'		? 'label-warning' :
 								stage.state === 'rejected'	? 'label-danger' : 'label-default');
 				var label_tx = (stage.state === 'published' ? '公開中' :
 								stage.state === 'judging'	? '審査中' :
+								stage.state === 'queue'		? '処理中' :
 								stage.state === 'rejected'	? 'リジェクト' : '非公開');
 				item.find('.state').addClass(label_lv).text(label_tx);
 

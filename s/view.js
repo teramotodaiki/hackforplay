@@ -754,7 +754,15 @@ $(function(){
 				$form.submit(function(event) {
 					validation(function () {
 						$('#inputModal').modal('hide');
-						publishTask();
+						$('.h4p_publish button').addClass('disabled');
+						if(sessionStorage.getItem('project-token') === null){
+							// プロジェクトが作られていないので、作成
+							makeProject(function() {
+								publishTask();
+							});
+						}else{
+							publishTask();
+						}
 					}, null, false);
 					return false;
 				});
@@ -1035,7 +1043,6 @@ $(function(){
 				publish : false,
 				'attendance-token' : sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
-				console.log(data);
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
@@ -1090,7 +1097,6 @@ $(function(){
 				stage_info: JSON.stringify(stage_info),
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			} , function(data, textStatus, xhr) {
-				console.log(data);
 				$('#h4p_publish button').button('reset');
 				switch(data){
 					case 'no-session':

@@ -4,8 +4,9 @@
 Input:	id
 Stage.State:
   published:公開されている/プレイ可能
-  judging:	審査中/プレイ可能
-  rejected:	審査等でリジェクトされた/プレイ不可能
+  judging:	審査中/自分のみプレイ可能
+  queue:	処理中/プレイ不可能
+  rejected:	審査等でリジェクトされた/自分のみプレイ可能
 */
 
 try {
@@ -139,7 +140,15 @@ try {
 
 	if ($stage['State'] === 'rejected' && $stage['UserID'] !== $session_userid) {
 		// リジェクトされている場合は、本人しか遊ぶことができない
-		$stage['Explain'] = 'This stage was rejected.';
+		$stage['Explain'] = 'This stage was rejected. (リジェクト・プレイ不可)';
+		$project['Data'] = '';
+	} elseif ($stage['State'] === 'judging' && $stage['UserID'] !== $session_userid) {
+		// 審査中の場合は、本人しか遊ぶことができない
+		$stage['Explain'] = 'This stage is been judging. (審査中)';
+		$project['Data'] = '';
+	} elseif ($stage['State'] === 'queue') {
+		// 処理中の場合は、遊ぶことができない
+		$stage['Explain'] = 'This stage is been processing now. (処理中)';
 		$project['Data'] = '';
 	} elseif ($stage['Mode'] === 'replay') {
 		// リプレイの場合は改造コードを取得

@@ -100,6 +100,10 @@ $(function(){
 			'judging' : {
 				nextState : 'pending',
 				message : '審査を停止しました'
+			},
+			'queue' : {
+				nextState : 'pending',
+				message : '審査を停止しました'
 			}
 		};
 		if (pattern[state] === undefined) return;
@@ -169,21 +173,25 @@ $(function(){
 				}
 				var label_lv = (stage.state === 'published' ? 'label-success' :
 								stage.state === 'judging'	? 'label-warning' :
+								stage.state === 'queue'		? 'label-warning' :
 								stage.state === 'pending'	? 'label-primary' :
 								stage.state === 'rejected'	? 'label-danger' : 'label-default');
 				var label_tx = (stage.state === 'published' ? '公開中' :
 								stage.state === 'judging'	? '審査中' :
+								stage.state === 'queue'		? '処理中' :
 								stage.state === 'pending'	? '審査停止中' :
 								stage.state === 'rejected'	? 'リジェクト' : '非公開');
 				var label_pt = (stage.state === 'published' ? true :
 								stage.state === 'judging'	? true :
+								stage.state === 'queue'		? true :
 								stage.state === 'private'	? true : false);
 				item.find('.state').addClass(label_lv).text(label_tx).data('state', stage.state).data('stage_id', stage.id);
 				if (label_pt) {
 					item.find('.state').hover(function() {
 						$(this).text(
 							stage.state === 'published' ? '非公開にする' :
-							stage.state === 'judging'	? '審査を停止する' : '公開する');
+							stage.state === 'judging'	? '審査を停止する' :
+							stage.state === 'queue'		? '審査を停止する' : '公開する');
 					}, function() {
 						$(this).text(label_tx);
 					});
