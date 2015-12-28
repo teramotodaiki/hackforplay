@@ -448,6 +448,11 @@ $(function(){
 					log.SaveCount = log.SaveCount || 0;
 					log.SaveCount ++;
 				});
+				$('#inputModal').on('click', '#publish-button', function() {
+					log.PublishCount = log.PublishCount || 0;
+					log.PublishCount ++;
+					updateLog();
+				});
 				jsEditor.on('beforeChange', function(cm, change) {
 					switch (change.origin) {
 					case '+input':

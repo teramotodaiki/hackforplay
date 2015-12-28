@@ -6,6 +6,7 @@ Input:	token , log:JSON
 {
 	ExecuteCount	int(11)			0
 	SaveCount		int(11)			0
+	PublishCount	int(11)			0
 	InputNumberCount	int(11)		0
 	InputAlphabetCount	int(11)		0
 	InputOtherCount	int(11)			0
@@ -49,10 +50,11 @@ try {
 	$gmtime	= time();
 
 	// データの更新
-	$stmt	= $dbh->prepare('UPDATE "RestagingLog" SET "LastUnixTime"=:LastUnixTime,"ExecuteCount"=:ExecuteCount,"SaveCount"=:SaveCount,"InputNumberCount"=:InputNumberCount,"InputAlphabetCount"=:InputAlphabetCount,"InputOtherCount"=:InputOtherCount,"PasteCount"=:PasteCount,"DeleteCount"=:DeleteCount WHERE "ID"=:current_id');
+	$stmt	= $dbh->prepare('UPDATE "RestagingLog" SET "LastUnixTime"=:LastUnixTime,"ExecuteCount"=:ExecuteCount,"SaveCount"=:SaveCount,"PublishCount"=:PublishCount,"InputNumberCount"=:InputNumberCount,"InputAlphabetCount"=:InputAlphabetCount,"InputOtherCount"=:InputOtherCount,"PasteCount"=:PasteCount,"DeleteCount"=:DeleteCount WHERE "ID"=:current_id');
 	$stmt->bindValue(":LastUnixTime", $gmtime, PDO::PARAM_INT);
 	$stmt->bindValue(":ExecuteCount", isset($data->ExecuteCount) ? $data->ExecuteCount : 0, PDO::PARAM_INT);
 	$stmt->bindValue(":SaveCount", isset($data->SaveCount) ? $data->SaveCount : 0, PDO::PARAM_INT);
+	$stmt->bindValue(":PublishCount", isset($data->PublishCount) ? $data->PublishCount : 0, PDO::PARAM_INT);
 	$stmt->bindValue(":InputNumberCount", isset($data->InputNumberCount) ? $data->InputNumberCount : 0, PDO::PARAM_INT);
 	$stmt->bindValue(":InputAlphabetCount", isset($data->InputAlphabetCount) ? $data->InputAlphabetCount:0, PDO::PARAM_INT);
 	$stmt->bindValue(":InputOtherCount", isset($data->InputOtherCount) ? $data->InputOtherCount : 0, PDO::PARAM_INT);
