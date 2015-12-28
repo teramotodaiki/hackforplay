@@ -78,6 +78,9 @@ try {
 		}
 	}
 
+	$stmt = $dbh->prepare('DELETE FROM "CodeStock"');
+	$stmt->execute();
+
 	exit('success ' . date('Y-m-d H:i:s'));
 
 } catch (Exception $e) {
