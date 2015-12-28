@@ -184,7 +184,6 @@ $(function () {
 		$('#judge').on('click', 'button[data-query="dequeue"]', function() {
 			var loading = $(this).button('loading');
 			$.post('../project/dequeue.php', {}, function(data, textStatus, xhr) {
-				console.log(data);
 				loading.button('reset');
 				fetchTask();
 			});
