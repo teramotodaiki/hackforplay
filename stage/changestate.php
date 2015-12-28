@@ -36,6 +36,7 @@ try {
 		'published'	=> array('private'),
 		'private'	=> array('published'),
 		'judging'	=> array('pending', 'rejected'),
+		'queue'		=> array('pending'),
 		'pending'	=> array('judging')
 	);
 
