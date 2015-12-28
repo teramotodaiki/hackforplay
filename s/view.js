@@ -688,7 +688,6 @@ $(function(){
 
 				// 投稿可能状態に
 				$(".h4p_publish").show();
-				$("#stage-name_alert").hide();
 				$("#author_alert").hide();
 
 				// ゲームをリロード
@@ -750,16 +749,40 @@ $(function(){
 			});
 
 			// 投稿
-			$("#publish-button").on('click', function() {
-
-				$("#inputModal").modal('hide');
-				// 必ず保存してから投稿
-				$('.h4p_save_button button').button('loading');
-				updateTask(function() {
-					$('.h4p_save_button button').button('reset');
-					publishTask();
+			(function () {
+				var $form = $('#inputModal form');
+				$form.submit(function(event) {
+					validation(function () {
+						$('#inputModal').modal('hide');
+						publishTask();
+					}, null, false);
+					return false;
 				});
-			});
+				var showing = false;
+				$('#inputModal').on('show.bs.modal', function() {
+					showing = true;
+					validation(function () {
+						$form.find('button[type="submit"]').removeClass('disabled');
+					}, function () {
+						$form.find('button[type="submit"]').addClass('disabled');
+					}, true);
+				}).on('hide.bs.modal', function() {
+					showing = false;
+				});
+				function validation (success, failed, retry) {
+					var values = {
+						title: $form.find('.stage-name').val(),
+						explain: $form.find('.stage-explain').val(),
+						flag: showing
+					};
+					if (Object.keys(values).every(function (key) {
+						return values[key];
+					})) { if (success) success(); } else { if (failed) failed(); }
+					if (retry) setTimeout(function () {
+						validation(success, failed, showing);
+					}, 100);
+				}
+			})();
 
 			// Smart Assets
 			(function () {
@@ -1004,20 +1027,14 @@ $(function(){
 		}
 		function updateTask (callback) {
 			// Update data
-			var token = sessionStorage.getItem('project-token');
-			var timezone = new Date().getTimezoneString();
-			jsEditor.save();
-			var code = jsEditor.getTextArea().value;
-
-			$.post('../project/updatefromtoken.php', {
-				'token': token,
-				'data': code,
-				'source_stage_id': getParam('id'),
-				'timezone': timezone,
-				'thumb': sessionStorage.getItem('image') || null,
-				'attendance-token': sessionStorage.getItem('attendance-token')
+			$.post('../project/enqueue.php', {
+				token : sessionStorage.getItem('project-token'),
+				code : jsEditor.getValue(''),
+				timezone : new Date().getTimezoneString(),
+				thumb : sessionStorage.getItem('image') || null,
+				publish : false,
+				'attendance-token' : sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
-
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
@@ -1056,61 +1073,51 @@ $(function(){
 			});
 		}
 		function publishTask (callback) {
-
-			var title = $("#stage-name").val();
-			var explain = $('#stage-explain').val();
-			if(title === ""){ $("#stage-name_alert").show('fast'); }
-			if(title !== ""){
-				$("#h4p_publish button").button('loading');
-				jsEditor.save();
-				var code = jsEditor.getTextArea().value;
-				var timezone = new Date().getTimezoneString();
-				$.post('../project/publishreplaystage.php', {
-					'token': sessionStorage.getItem('project-token'),
-					'thumb': sessionStorage.getItem('image') || null,
-					'path': getParam('path'),
-					'title': title,
-					'explain': explain,
-					'timezone': timezone,
-					'attendance-token': sessionStorage.getItem('attendance-token')
-				} , function(data, textStatus, xhr) {
-
-					$('#h4p_publish button').button('reset');
-
-					switch(data){
-						case 'no-session':
-							$('#signinModal').modal('show').find('.modal-title').text('ステージを投稿するには、ログインしてください');
-							break;
-						case 'invalid-token':
-							// project-tokenがない、またはサーバー側と照合できないとき
-							showAlert('alert-danger', 'プロジェクトが見つかりません。新規に作成を行いますので、しばらくお待ちください…');
-							$('.h4p_save_button button').button('loading');
-							makeProject(function() {
-								updateTask(function() {
-									$('.h4p_save_button button').button('reset');
-									showAlert('alert-success', 'プロジェクトが作成されました！もう一度投稿してください');
-								}, function() {
-									$('.h4p_save_button button').button('reset');
-								});
+			var stage_info = {
+				title: $("#inputModal .stage-name").val(),
+				explain: $('#inputModal .stage-explain').val(),
+				path: getParam('path'),
+				source_id: getParam('id')
+			};
+			$("#h4p_publish button").button('loading');
+			$.post('../project/enqueue.php', {
+				token: sessionStorage.getItem('project-token'),
+				code: jsEditor.getValue(''),
+				timezone: new Date().getTimezoneString(),
+				thumb: sessionStorage.getItem('image') || null,
+				publish: true,
+				stage_info: JSON.stringify(stage_info),
+				'attendance-token': sessionStorage.getItem('attendance-token')
+			} , function(data, textStatus, xhr) {
+				$('#h4p_publish button').button('reset');
+				switch(data){
+					case 'no-session':
+						$('#signinModal').modal('show').find('.modal-title').text('ステージを投稿するには、ログインしてください');
+						break;
+					case 'invalid-token':
+						// project-tokenがない、またはサーバー側と照合できないとき
+						showAlert('alert-danger', 'プロジェクトが見つかりません。新規に作成を行いますので、しばらくお待ちください…');
+						makeProject(function() {
+							publishTask(function() {
+								showAlert('alert-success', '投稿が完了しました！');
 							});
-							break;
-						case 'already-published':
-							showAlert('alert-danger', 'すでに投稿されたステージです');
-							break;
-						case 'database-error':
-							showAlert('alert-danger', 'エラーにより投稿できませんでした');
-							break;
-						default:
-							var val = data.split(',');
-							$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled');
-							$(".h4p_published-info").removeClass('hidden');
-							alert_on_unload = false; // 遷移時の警告を非表示
-							focus_on_game = false; // iframeにfocusできるように
-							$('#stage-share-frame').attr('src', 'share.php?share_id=' + val[0] + '&share_title=' + val[1]);
-							break;
-					}
-				});
-			}
+						});
+						break;
+					case 'already-published':
+						showAlert('alert-danger', 'すでに投稿されたステージです');
+						break;
+					case 'database-error':
+						showAlert('alert-danger', 'エラーにより投稿できませんでした');
+						break;
+					case 'success':
+						$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled');
+						$(".h4p_published-info").removeClass('hidden');
+						alert_on_unload = false; // 遷移時の警告を非表示
+						focus_on_game = false; // iframeにfocusできるように
+						if (callback) callback();
+						break;
+				}
+			});
 		}
 
 		switch(getParam('mode')){
@@ -1126,7 +1133,6 @@ $(function(){
 				beginRestaging();
 				// 投稿可能状態に
 				$(".h4p_publish").show();
-				$("#stage-name_alert").hide();
 				$("#author_alert").hide();
 
 				scrollToAnchor();

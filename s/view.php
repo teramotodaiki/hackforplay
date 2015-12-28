@@ -157,28 +157,28 @@ if ($mode === 'quest') {
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			        <h4 class="modal-title" id="inputModalLabel">このステージについて入力してください</h4>
 		    	</div>
-			    <div class="modal-body">
-			    	<form>
+		    	<form>
+				    <div class="modal-body">
 			        	<div class="form-group">
 			    			<img class="stage-thumbnail" src="" alt="" width="240" height="160">
 			        	</div>
 			        	<div class="form-group">
-			        		<label for="stage-name" class="control-label">ステージ名<small>（自由に決めてください）</small>:</label>
-			        		<input type="text" class="form-control" id="stage-name">
-			        		<p id="stage-name_alert" class="alert alert-danger">ステージ名を入力してください。</p>
+			        		<label class="control-label">ステージ名<small>（自由に決めてください）</small>:</label>
+			        		<input type="text" class="form-control stage-name">
 			        	</div>
 			        	<div class="form-group">
-			        		<label for="stage-explain" class="control-label">ステージの説明:</label>
-			        		<textarea class="form-control" id="stage-explain"></textarea>
-			        		<p id="stage-explain_alert" class="alert alert-danger" style="display:none;"></p>
+			        		<label class="control-label">ステージの説明:</label>
+			        		<textarea class="form-control stage-explain"></textarea>
 			        	</div>
-			        </form>
-			    </div>
-	    		<div class="modal-footer">
-	        		<p class="alert alert-warning">特定の個人を指すキーワードや暴言などを記入すると、削除されることがあります。</p>
-	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-	       			<button type="button" class="btn btn-primary" id="publish-button" >投稿する</button>
-	    		</div>
+				    </div>
+				    <div class="modal-footer">
+		        		<p class="alert alert-warning">
+		        			特定の個人を指すキーワードや暴言などを記入すると、削除されることがあります。
+		        		</p>
+		        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+		       			<button type="submit" class="btn btn-lg btn-primary disabled">投稿する</button>
+				    </div>
+		        </form>
 			</div>
 		</div>
 	</div>
@@ -343,14 +343,6 @@ if ($mode === 'quest') {
 				</button>
 				<div class="h4p_published-info text-center hidden">
 					<p class="text-muted">ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。</p>
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<h4 class="panel-title">このステージをほかの人にもシェアしましょう！</h4>
-						</div>
-						<div class="panel-body">
-							<iframe id="stage-share-frame" src="" height="40" width="450"></iframe>
-						</div>
-					</div>
 					<a href="../" title="もどる" class="h4p_publish-return btn btn-lg btn-block">もどる</a>
 				</div>
 			</div>

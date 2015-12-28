@@ -109,6 +109,11 @@
 					<canvas id="canvas" height="300" width="600"></canvas>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="judge">
+			    	<div class="row">
+			    		<div class="col-md-6">Last Auto Update : <span class="last-update"></span></div>
+			    		<div class="col-md-6"><button type="button" class="btn btn-block" data-query="dequeue" data-loading-text="...">Manually Update</button></div>
+			    	</div>
+			    	<hr>
 			    	<div class="row list-judging"></div>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="levelmake">
