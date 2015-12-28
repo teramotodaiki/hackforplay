@@ -39,7 +39,7 @@ try {
 		return $result;
 	}
 
-	// キューから取り出し
+		// キューから取り出し
 	$stmt_stock = $dbh->prepare('SELECT "ID","Project","Code","Publish","Registered","Thumbnail","NewStage" FROM "CodeStock" ORDER BY "ID" DESC');
 	$stmt_stock->execute();
 
@@ -90,7 +90,9 @@ try {
 		$stmt->bindValue(":thumb_url", $row['Thumbnail'], PDO::PARAM_STR);
 		$stmt->bindValue(":registered", $row['Registered'], PDO::PARAM_STR);
 		$result = $stmt->execute();
-		if (!$result) continue; // 失敗
+		if (!$result) {
+			throw new Exception("Dequeue: Failed insert script ---- StockID:" . $row['ID'], 1); // 失敗
+		}
 		$script_id = $dbh->lastInsertId('Script');
 
 		$insertion_max	= 500; // 一度に挿入できる最大数
@@ -104,6 +106,14 @@ try {
 				$stmt->bindValue($key * 3 + 2, $key + $offset_index, PDO::PARAM_INT);
 				$stmt->bindValue($key * 3 + 3, $value, PDO::PARAM_INT);
 			}
+			$stmt->execute();
+		}
+
+		// 投稿された場合、ステートをqueueからjudgingに
+		if ((bool)$row['Publish'] === TRUE) {
+			$stmt = $dbh->prepare('UPDATE "Stage" SET "State"=:judging WHERE "ID"=:new_stage');
+			$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
+			$stmt->bindValue(":new_stage", $row['NewStage'], PDO::PARAM_INT);
 			$stmt->execute();
 		}
 	}
