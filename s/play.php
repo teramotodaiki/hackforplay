@@ -142,7 +142,8 @@ try {
 		// リジェクトされている場合は、本人しか遊ぶことができない
 		$stage['Explain'] = 'This stage was rejected. (リジェクト・プレイ不可)';
 		$project['Data'] = '';
-	} elseif ($stage['State'] === 'judging' && $stage['UserID'] !== $session_userid) {
+	} elseif ($stage['State'] === 'judging' && $stage['UserID'] !== $session_userid &&
+		($session_userid === NULL || $session_userid > 10)) {
 		// 審査中の場合は、本人しか遊ぶことができない
 		$stage['Explain'] = 'This stage is been judging. (審査中)';
 		$project['Data'] = '';
