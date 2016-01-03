@@ -30,7 +30,7 @@ window.onload = function(){
 			// Ctrl+Zの押し過ぎで、全部消えてしまうのをふせぐ
 			change.cancel();
 		}
-		if (change.origin === "+input" /*|| change.origin === "paste"*/) {
+		if (change.origin === "+input" || change.origin === "*compose" /*|| change.origin === "paste"*/) {
 			var matchFlag = false;
 			var replaced = [];
 			change.text.forEach(function(input){
