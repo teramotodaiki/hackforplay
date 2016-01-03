@@ -347,7 +347,7 @@ $(function(){
 		jsEditor.on('change', function(cm, change) {
 			checkBracket(cm, function () {
 				button.removeClass('disabled');
-				if (button.hasClass('active') && ['+input', 'paste'].indexOf(change.origin) > -1) {
+				if (button.hasClass('active') && ['+input', '*compose', 'paste'].indexOf(change.origin) > -1) {
 					// { } [ ] のセットが揃っている時、自動でインデントを行う
 					refactoring(cm, change);
 				}
