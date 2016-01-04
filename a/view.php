@@ -75,6 +75,9 @@
 			    <li role="presentation">
 			    	<a href="#levelmake" aria-controls="levelmake" role="tab" data-toggle="tab">Level Make</a>
 			    </li>
+			    <li role="presentation">
+			    	<a href="#tutorial" aria-controls="tutorial" role="tab" data-toggle="tab">Tutorial</a>
+			    </li>
 			</ul>
 			<div class="col-xs-10 tab-content">
 			    <div role="tabpanel" class="tab-pane" id="summary">
@@ -171,6 +174,9 @@
 			    			<button type="button" class="btn btn-link query-add-quest">Add Quest</button>
 			    		</div>
 			    	</div>
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="tutorial">
+					<canvas id="canvas" height="300" width="600"></canvas>
 			    </div>
 			</div>
 		</div>

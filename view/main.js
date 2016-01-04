@@ -53,4 +53,10 @@ $(function(){
 		});
 	};
 	loadAndSetPN(0);
+
+	// チュートリアルのトラッキングにもちいるキーを初期化
+	$('.l-1 a').on('click', function() {
+		localStorage.removeItem('tutorial_tracking_key');
+		localStorage.removeItem('tutorial_tracking_log');
+	});
 });
