@@ -6,15 +6,25 @@ try {
 
 	$show_code = filter_input(INPUT_GET, 'show_code', FILTER_VALIDATE_BOOLEAN);
 
-	$stmt = $dbh->prepare('SELECT COUNT(*) FROM "Line"');
+	$lastmonth = (new DateTime(NULL, new DateTimeZone('UTC')))->modify('-1 month')->format('Y-m-d H:i:s');
+
+	// １ヶ月以内のScriptのうち、最もIDの若いものを取得
+	$stmt = $dbh->prepare('SELECT MIN("ID") FROM "Script" WHERE "Registered">:lastmonth');
+	$stmt->bindValue(":lastmonth", $lastmonth, PDO::PARAM_STR);
 	$stmt->execute();
-	$line_count = $stmt->fetch(PDO::FETCH_COLUMN, 0);
+	$min_id = $stmt->fetch(PDO::FETCH_COLUMN);
+
+	$stmt = $dbh->prepare('SELECT COUNT(*) FROM "Line" WHERE "ScriptID">=:min_id');
+	$stmt->bindValue(":min_id", $min_id, PDO::PARAM_INT);
+	$stmt->execute();
+	$line_count = $stmt->fetch(PDO::FETCH_COLUMN);
 
 	$stmt = $dbh->prepare('SELECT "ID","Value" FROM "Code"');
 	$stmt->execute();
 	$code = $stmt->fetchAll(PDO::FETCH_COLUMN | PDO::FETCH_GROUP);
 
-	$stmt = $dbh->prepare('SELECT "CodeID" FROM "Line"');
+	$stmt = $dbh->prepare('SELECT "CodeID" FROM "Line" WHERE "ScriptID">=:min_id');
+	$stmt->bindValue(":min_id", $min_id, PDO::PARAM_INT);
 	$stmt->execute();
 
 	$count = array();
