@@ -21,7 +21,6 @@ try {
 			$current_userid	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
 
 			// まだ関連付けされたUserがなければ、このUserを関連付ける
-			var_dump($current_userid);
 			if (!$current_userid) {
 				$stmt		= $dbh->prepare('UPDATE "AnonymousUser" SET "UserID"=:session_userid WHERE "ID"=:anonymous_user_id');
 				$stmt->bindValue(":session_userid", $_SESSION['UserID'], PDO::PARAM_INT);
