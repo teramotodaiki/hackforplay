@@ -66,6 +66,7 @@ try {
 			if (!isset($data[$value->stageid])) {
 				$data[$value->stageid] = new AnonymousUserData;
 			}
+			$data[$value->stageid]->useHint = 1;
 		}
 	}
 
