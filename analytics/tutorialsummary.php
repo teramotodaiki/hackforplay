@@ -16,7 +16,7 @@ try {
 	$stmt	= $dbh->prepare('SELECT MIN("ID"),COUNT("UserID") FROM "AnonymousUser" WHERE "Registered">:now');
 	$stmt->bindValue(":now", (new DateTime(NULL, new DateTimeZone('UTC')))->modify('-1 month')->format('Y-m-d H:i:s'), PDO::PARAM_STR);
 	$stmt->execute();
-	$info	= $stmt->fetch(PDO::FETCH_ASSOC);
+	$info	= $stmt->fetchAll(PDO::FETCH_ASSOC);
 	var_dump($info);
 
 	// MIN ID 以降のAUserIDを持つAnonymous User Dataをすべて取得
