@@ -149,7 +149,7 @@ var gameover; // gameoverメソッドも
                             }, 8000);
                         });
                     }
-
+                    window.parent.postMessage('clear', '/'); // チュートリアルのログを取るためのトリガー
                 } else {
                     // そうでないステージをクリアしたとき => 何もしない
                 }
