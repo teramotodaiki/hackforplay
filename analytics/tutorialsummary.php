@@ -13,10 +13,10 @@ try {
 	require_once '../preload.php';
 
 	// 過去１ヶ月のうち最もIDの若いものを取得
-	$stmt	= $dbh->prepare('SELECT MIN("ID"),COUNT("UserID") FROM "AnonymousUser" WHERE "Registered">:now');
+	$stmt	= $dbh->prepare('SELECT MIN("ID"),COUNT(DISTINCT "UserID") FROM "AnonymousUser" WHERE "Registered">:now');
 	$stmt->bindValue(":now", (new DateTime(NULL, new DateTimeZone('UTC')))->modify('-1 month')->format('Y-m-d H:i:s'), PDO::PARAM_STR);
 	$stmt->execute();
-	$info	= $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$info	= $stmt->fetch(PDO::FETCH_ASSOC);
 	var_dump($info);
 
 	// MIN ID 以降のAUserIDを持つAnonymous User Dataをすべて取得
@@ -37,7 +37,7 @@ try {
 			$dist[$count] ++;
 		}
 	}
-	$dist['Reg'] = (int)$info['COUNT("UserID")']; // 会員登録をしたユーザーの数
+	$dist['Reg'] = (int)$info['COUNT(DISTINCT "UserID")']; // 会員登録をしたユーザーの数
 
 	$summary_of_tutorial		= new stdClass;
 	$summary_of_tutorial->values = $dist;
