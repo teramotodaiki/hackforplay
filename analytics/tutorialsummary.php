@@ -17,12 +17,16 @@ try {
 	$stmt->bindValue(":now", (new DateTime(NULL, new DateTimeZone('UTC')))->modify('-1 month')->format('Y-m-d H:i:s'), PDO::PARAM_STR);
 	$stmt->execute();
 	$info	= $stmt->fetch(PDO::FETCH_ASSOC);
+	var_dump($info);
 
 	// MIN ID 以降のAUserIDを持つAnonymous User Dataをすべて取得
 	$stmt	= $dbh->prepare('SELECT "AUserID","StageID" FROM "AnonymousUserData" WHERE "AUserID">:min_id');
 	$stmt->bindValue(":min_id", $info['MIN("ID")'], PDO::PARAM_INT);
 	$stmt->execute();
 	$alldata = $stmt->fetchAll(PDO::FETCH_COLUMN | PDO::FETCH_GROUP);
+	echo "<br/><br/><br/>";
+	var_dump($alldata);
+	echo "<br/><br/><br/>";
 
 	// 分布を求める
 	$dist	= array_fill(101, 6, 0); // ユーザー分布
