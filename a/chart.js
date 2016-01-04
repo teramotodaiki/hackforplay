@@ -120,4 +120,25 @@ $(function(){
 			});
 		});
 	});
+
+	$('a[data-toggle="tab"][aria-controls="tutorial"]').on('show.bs.tab', function(event) {
+		$.post('../analytics/tutorialsummary.php', {}, function(data, textStatus, xhr) {
+			var result = $.parseJSON(data);
+
+			new Chart($('#tutorial canvas').get(0).getContext("2d")).Bar({
+				labels : result.labels,
+				datasets : [
+					{
+						fillColor : "rgba(60,110,220,0.5)",
+						strokeColor : "rgba(60,110,220,0.8)",
+						highlightFill: "rgba(60,110,220,0.75)",
+						highlightStroke: "rgba(60,110,220,1)",
+						data : result.values
+					}
+				]
+			}, {
+				responsive: true
+			});
+		});
+	});
 });
