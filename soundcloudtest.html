@@ -8,14 +8,36 @@
 <body>
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript"></script>
 	<script type="text/javascript" charset="utf-8">
-	console.log(SC);
 	SC.initialize({
-	  client_id: '52532cd2cd109c968a6c795b919898e8',
-	  redirect_uri: location.href
+		client_id: '52532cd2cd109c968a6c795b919898e8',
+		redirect_uri: location.href
+	});
+
+	SC.connect().then(function() {
+		return SC.get('/me');
+	}).then(function(me) {
+		console.log('Hello, ' + me.username);
+	});
+
+	SC.stream('/tracks/293').then(function(player){
+		console.log('player', player);
+		player.play();
 	});
 
 	SC.stream('/tracks/237122888', function (sound) {
-		sound.play();
+		console.log('callback on stream', sound);
+		sound.play({
+			volume: 50,
+			onsuspend: function() {
+				console.log('on suspend');
+			},
+			onload: function() {
+				console.log('on load', sound.readyState);
+			},
+			onfinish: function() {
+				console.log('on finish');
+			}
+		});
 	});
 	</script>
 	<h1>This is Sound Cloud API test</h1>
