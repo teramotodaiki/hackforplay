@@ -13,32 +13,46 @@
 		redirect_uri: location.href
 	});
 
-	SC.connect().then(function() {
-		return SC.get('/me');
-	}).then(function(me) {
-		console.log('Hello, ' + me.username);
+	var _player = null;
+	window.addEventListener('keydown', function (event) {
+		console.log('keydown', event.which);
+		switch (event.which) {
+			case 65: // A
+			SC.connect().then(function() {
+				return SC.get('/me');
+			}).then(function(me) {
+				console.log('Hello, ' + me.username);
+			});
+			break;
+			case 66: // B
+			SC.stream('/tracks/293').then(function (player){
+				console.log('player', player);
+				player.play();
+				_player = player;
+			});
+			break;
+			case 67: // C
+			console.log(_player.pause);
+			_player.pause();
+			break;
+			case 68: // D
+			SC.get('/tracks/239954721').then(function (track) {
+				console.log('track', track);
+			});
+			break;
+			case 69:
+			SC.get('/groups/195').then(function (group) {
+				console.log('group', group);
+			});
+			break;
+		}
 	});
 
-	SC.stream('/tracks/293').then(function(player){
-		console.log('player', player);
-		player.play();
-	});
 
-	SC.stream('/tracks/237122888', function (sound) {
-		console.log('callback on stream', sound);
-		sound.play({
-			volume: 50,
-			onsuspend: function() {
-				console.log('on suspend');
-			},
-			onload: function() {
-				console.log('on load', sound.readyState);
-			},
-			onfinish: function() {
-				console.log('on finish');
-			}
-		});
-	});
+
+
+
+
 	</script>
 	<h1>This is Sound Cloud API test</h1>
 </body>
