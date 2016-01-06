@@ -23,10 +23,9 @@ window.addEventListener('load', function () {
 " *\n"+
 " */\n"+
 "Hack.music = {\n"+
-"\tname: 'birthday-song',\n"+
-"\tBPM: 122,\n"+
-"\tintro: 2.555,\n"+
-"\tlength: 100\n"+
+"\ttrack: 238023166,\n"+
+"\tlength: 30,\n"+
+"\tintro: 0\n"+
 "};\n"+
 "\n"+
 "/**\n"+
@@ -226,10 +225,22 @@ window.addEventListener('load', function () {
         Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         Hack.music = Hack.music || {};
 
-        Hack.music.path = 'yukison/' + Hack.music.name + '.mp3';
-        Hack.coverImagePath = 'yukison/' + Hack.music.name + '-cover.png';
+        if (Hack.music.name) {
+            // Open music file
+            Hack.music.type = 'WebAudioSound';
+            Hack.music.path = 'yukison/' + Hack.music.name + '.mp3';
+            Hack.coverImagePath = 'yukison/' + Hack.music.name + '-cover.png';
+            game.preload(Hack.coverImagePath);
+        } else if (Hack.music.track) {
+            // Sound Cloud file
+            Hack.music.type = 'SoundCloud';
+            Hack.music.path = '/tracks/' + Hack.music.track;
+        } else {
+            Hack.log('Hack.music が指定されていません name または track プロパティが必要です');
+        }
+
         Hack.soundEffectPath = (['osa/bosu19.wav','osa/clap00.wav', 'osa/coin03.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav', 'osa/swing14.wav', 'osa/whistle00.wav'])[Hack.hitSE];
-        game.preload(Hack.coverImagePath, Hack.soundEffectPath);
+        game.preload(Hack.soundEffectPath);
 
         Hack.oneNoteTime = 240 / Hack.music.BPM / Hack.notesInTime; // note1個分の拍 [sec] 曲中は固定
         Hack.noteCursor = 0;
@@ -250,9 +261,11 @@ window.addEventListener('load', function () {
          * 4: UI (defaultParentNode)
          */
 
-        var coverSprite = new Sprite(game.width, game.height);
-        coverSprite.image = Hack.coverOpacity > 0 ? game.assets[Hack.coverImagePath] : null;
-        game.rootScene.addChild(coverSprite);
+         if (Hack.coverImagePath) {
+            var coverSprite = new Sprite(game.width, game.height);
+            coverSprite.image = Hack.coverOpacity > 0 ? game.assets[Hack.coverImagePath] : null;
+            game.rootScene.addChild(coverSprite);
+         }
 
         var cometSprite = new Sprite(game.width, game.height);
         cometSprite.image = new Surface(game.width, game.height);
@@ -276,13 +289,42 @@ window.addEventListener('load', function () {
         var startLabel = new StartLabelUI();
 
         // Begin loading music
-        WebAudioSound.load(Hack.music.path, 'audio/mpeg', function () {
-            Hack.sound = this;
-            startLabel.loadSuccessed();
-        }, function (exeption) {
-            console.log(exeption);
-            startLabel.loadFailed();
-        });
+        switch (Hack.music.type) {
+            case 'WebAudioSound':
+            WebAudioSound.load(Hack.music.path, 'audio/mpeg', function () {
+                Hack.sound = this;
+                startLabel.loadSuccessed();
+            }, function (exeption) {
+                console.log(exeption);
+                startLabel.loadFailed();
+            });
+            break;
+            case 'SoundCloud':
+            (function (SC) {
+                SC.initialize({
+                    // Hack移植時にServerからJSONで設定を投げるように
+                    client_id: '52532cd2cd109c968a6c795b919898e8'
+                });
+                SC.get(Hack.music.path).then(function (track) {
+                    Hack.music.BPM = Hack.music.BPM || track.bpm || 60;
+                    Hack.music.intro = Hack.music.intro || 1;
+                    SC.stream(Hack.music.path).then(function (player){
+                        Hack.sound = new SCPlayerWrapper(player);
+                        startLabel.loadSuccessed();
+                    }, function (exception) {
+                        console.log(exception);
+                        startLabel.loadFailed();
+                    });
+                }, function (exception) {
+                    console.log(exception);
+                    startLabel.loadFailed();
+                });
+            })(window.SC);
+            window.SC = null;
+            break;
+        }
+
+
     };
 
     Hack.onpressstart = Hack.onpressstart || function () {
@@ -304,7 +346,7 @@ window.addEventListener('load', function () {
                 Hack.sound.volume -= 0.02;
                 if (Hack.sound.volume <= 0) {
                     game.removeEventListener('enterframe', task);
-                    Hack.sound.stop();
+                    Hack.sound.pause();
                     new ScoreLabelUI(Hack.point, Hack.noteNum);
                     setTimeout(function () {
                         if (Hack.point > Hack.quota) {
@@ -747,6 +789,43 @@ window.addEventListener('load', function () {
                 this.text = this.prefix[0] + this.current + this.prefix[1] + this.notes + this.prefix[2];
             } else {
                 this.text = this.prefix[0] + this.score + this.prefix[1] + this.notes + this.prefix[2];
+            }
+        }
+    });
+
+    var SCPlayerWrapper = Class(EventTarget, {
+        initialize: function (player) {
+            EventTarget.call(this);
+            this.player = player;
+            this.preventJSTime = new Date().getTime(); // Milliseconds
+            this.preventSCTime = 0; // Milliseconds
+        },
+        play: function () {
+            this.player.play();
+        },
+        pause: function () {
+            this.player.pause();
+        },
+        volume: {
+            configurable: true, enumerable: true,
+            get: function () {
+                return this.player.getVolume();
+            },
+            set: function (value) {
+                this.player.setVolume(value);
+            }
+        },
+        currentTime: {
+            configurable: true, enumerable: true,
+            get: function () {
+                var time = this.player.currentTime();
+                if (time > 0 && time === this.preventSCTime) {
+                    time += new Date().getTime() - this.preventJSTime; // 補正
+                } else {
+                    this.preventJSTime = new Date().getTime();
+                    this.preventSCTime = time;
+                }
+                return time / 1000;
             }
         }
     });
