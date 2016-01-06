@@ -109,6 +109,7 @@ window.addEventListener('load', function () {
             break;
             case 'SoundCloud':
             (function (SC) {
+                window.parent.postMessage('use_soundcloud', '/');
                 SC.initialize({
                     // Hack移植時にServerからJSONで設定を投げるように
                     client_id: '52532cd2cd109c968a6c795b919898e8'
