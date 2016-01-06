@@ -1,221 +1,5 @@
 window.addEventListener('load', function () {
 
-    Hack.restagingCode =
-"/**\n"+
-" * Introduction;\n"+
-" *\n"+
-" * このゲームは、すいせい（コメット）を おいかけて\n"+
-" * わっか（リング）をあつめる ゲームです\n"+
-" *\n"+
-" * おんがくの リズムにあわせて コメットをうごかし\n"+
-" * メディアアートを たいけん してみましょう\n"+
-" *\n"+
-" *\n"+
-" * Musics;\n"+
-" *\n"+
-" *           Name          |  BPM  | intro | short (full)\n"+
-" *   birthday-song         |  122  | 2.555 |   100 (183)\n"+
-" *   senko-hanabi          |  174  | 1.195 |   111 (249)\n"+
-" *   travelers-summer      |  124  | 3.495 |    82 (162)\n"+
-" *   chicken-steak         |  120  | 2.495 |    69 (153)\n"+
-" *   shiawase-no-himitsu   |  128  | 2.495 |   109 (190)\n"+
-" *   hands                 |  122  | 7.995 |   103 (199)\n"+
-" *\n"+
-" */\n"+
-"Hack.music = {\n"+
-"\tname: 'birthday-song',\n"+
-"\tBPM: 122,\n"+
-"\tintro: 2.555,\n"+
-"\tlength: 100\n"+
-"};\n"+
-"\n"+
-"/**\n"+
-" * Settings;\n"+
-" * \n"+
-" * ringTime:    リングがでてから はじけるまでの じかん\n"+
-" * quota:       クリアするために ひつような OK の かず\n"+
-" * hitSE:       OK のときの こうかおん（SE ... サウンドエフェクト）\n"+
-" * coverOpacity:はいけいの あかるさ. 0 から 1 の すうち\n"+
-" * notesInTime: ひとくぎりのなかで でてくる リングのかず\n"+
-" *\n"+
-" * ringTime を おおきくすると、OK が でやすくなります\n"+
-" * quota を おおきくすると、クリアが むずかしく なります\n"+
-" * notesInTime を おおきくすると、よりこまかく きざめます\n"+
-" *\n"+
-" */\n"+
-"Hack.ringTime = 1.0;\n"+
-"Hack.quota = 40;\n"+
-"Hack.hitSE = 0;\n"+
-"Hack.coverOpacity = 0.2;\n"+
-"Hack.notesInTime = 8;\n"+
-"\n"+
-"\n"+
-"/**\n"+
-" * setup;\n"+
-" *\n"+
-" * ゲームが はじまったときに コールされる\n"+
-" *\n"+
-" */\n"+
-"Hack.setup = function (comet) {\n"+
-"\n"+
-"\tcomet.x = 0;\n"+
-"\tcomet.y = 170;\n"+
-"\n"+
-"};\n"+
-"\n"+
-"/**\n"+
-" * update;\n"+
-" *\n"+
-" * ゲームが つづいているあいだ つねに コールされる\n"+
-" * time（タイム）には けいかじかんが はいっている\n"+
-" *\n"+
-" */\n"+
-"Hack.update = function (\n"+
-"\tcomet, time, x, y, px, py, speed, vx, vy,\n"+
-"\tsetPosition, setSpeed, setVelocity, setForce, setNotes,\n"+
-"\tsetPositionOn, setSpeedOn, setVelocityOn, setForceOn, setNotesOn) {\n"+
-"\n"+
-"\t// さいしょの うごき\n"+
-"\tsetPositionOn( 0,   0, 170); // ひだりから 0px, うえから 170px の いち\n"+
-"\tsetVelocityOn( 0,  53,   0); // みぎに 53px/sec, うえに 0px/sec の はやさ\n"+
-"\n"+
-"\t// 18秒のとき、はずむような うごき\n"+
-"\tsetPositionOn(18,   0, 170);\n"+
-"\tsetVelocityOn(18,  80,   0);\n"+
-"\tsetForceOn(   18,   0, 300);\n"+
-"\n"+
-"\t// 49秒から 64秒まで ずっと、だえんを えがく うごき\n"+
-"\tsetPositionOn(49, 400, 200);\n"+
-"\tsetVelocityOn(49,   0,  70);\n"+
-"\tif (49 < time && time < 65) {\n"+
-"\t\tsetForce((240 - x) * 0.3, (160 - y) * 0.3);\n"+
-"\t}\n"+
-"\n"+
-"\t// 65秒から 100秒（さいご）まで ずっと、なみのような うごき\n"+
-"\tsetPositionOn(65, 140, 240);\n"+
-"\tsetVelocityOn(65,-160,   0);\n"+
-"\tif (65 < time && time < 100) {\n"+
-"\t\tsetForce(0, (200 - y) * 10);\n"+
-"\t}\n"+
-"\t\n"+
-"\t/**\n"+
-"\t * setNotesOn(time, a,b,c,d, e,f,g,h, i,j,k,l, m,n,o,p);\n"+
-"\t *\n"+
-"\t * タイミングを せっていする\n"+
-"\t *\n"+
-"\t * time:    せっていする じかん [sec]\n"+
-"\t * a,...p:  1なら でる. 0なら でない\n"+
-"\t *\n"+
-"\t */\n"+
-"\tsetNotesOn(  0.0, 1,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0);\n"+
-"\tsetNotesOn( 18.0, 1,0,0,0,0,0,0,0, 1,0,0,0,0,0,0,0);\n"+
-"\tsetNotesOn( 48.5, 0,0,0,0,0,0,0,0, 0,0,0,0,0,1,1,0);\n"+
-"\tsetNotesOn( 63.5, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0);\n"+
-"\tsetNotesOn( 65.0, 1,0,0,0,1,0,0,0, 1,0,1,0,1,0,0,0);\n"+
-"\tsetNotesOn( 80.0, 1,0,1,0,1,0,0,0, 1,0,0,0,1,0,0,0);\n"+
-"\tsetNotesOn( 96.2, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0);\n"+
-"\n"+
-"};\n"+
-"\n"+
-"/**\n"+
-" * draw;\n"+
-" *\n"+
-" * コメットの 軌跡（きせき）について かかれている\n"+
-" * いろ や ふとさ などを かえられる\n"+
-" *\n"+
-" */\n"+
-"Hack.draw = function (\n"+
-"\tcomet, time, x, y, px, py, speed, vx, vy,\n"+
-"\tline, rect, triangle, quad, point, ellipse, bezier,\n"+
-"\tstroke, noStroke, strokeWeight, fill, noFill,\n"+
-"\ttext, textFont, textSize, clearRect) {\n"+
-"\n"+
-"\t/**\n"+
-"\t * COLORS(色の作り方);\n"+
-"\t *\n"+
-"\t * white(白):    (255,255,255)\n"+
-"\t * gray(灰):     (127,127,127)\n"+
-"\t * black(黒):    (  0,  0,  0)\n"+
-"\t * red(赤):      (255,  0,  0)\n"+
-"\t * green(緑):    (  0,255,  0)\n"+
-"\t * blue(青):     (  0,  0,255)\n"+
-"\t * yellow(黄):   (255,255,  0)\n"+
-"\t *\n"+
-"\t * Transparent colors(透明色);\n"+
-"\t *\n"+
-"\t * light blue(明るい青):    (  0,  0,255,0.9);\n"+
-"\t * dark blue(くらい青):     (  0,  0,255,0.4);\n"+
-"\t *\n"+
-"\t * ... もっと知りたい人は、「光の三原色」について しらべよう！\n"+
-"\t * ... The three primary colors.\n"+
-"\t *\n"+
-"\t */\n"+
-"\tstroke(255,255,  0);\n"+
-"\n"+
-"\n"+
-"\t// 線を引く\n"+
-"\tstrokeWeight(1);\n"+
-"\tline(x, y, px, py);\n"+
-"\n"+
-"\n"+
-"\t// 19秒よりあとで、33秒までのあいだ\n"+
-"\tif (19 < time && time < 33) {\n"+
-"\n"+
-"\t\t// あしもとに しろい てん\n"+
-"\t\tfill(255,255,255);\n"+
-"\t\tpoint(x, 300);\n"+
-"\n"+
-"\t}\n"+
-"\t\n"+
-"\t// 33秒よりあとで、49秒までのあいだ\n"+
-"\tif (33 < time && time < 49) {\n"+
-"\t\t\n"+
-"\t\t// あしもとに しろい だえん\n"+
-"\t\tnoStroke();\n"+
-"\t\tfill(255,255,255,0.5);\n"+
-"\t\tellipse(x - 2, y + 20, 4, 300 - y);\n"+
-"\t\t\n"+
-"\t}\n"+
-"\n"+
-"\t// 49秒よりあとで、65秒までのあいだ\n"+
-"\tif (49 < time && time < 65) {\n"+
-"\n"+
-"\t\t// 中心 から さんかく... (240, 160) = 中心\n"+
-"\t\tnoStroke();\n"+
-"\t\tfill(  0,255,255,0.5);\n"+
-"\t\ttriangle(240, 160, x, y, px, py);\n"+
-"\n"+
-"\t}\n"+
-"\n"+
-"\t// 65秒よりあとで、100秒までのあいだ\n"+
-"\tif (65 < time && time < 100) {\n"+
-"\n"+
-"\t\t// 右上と左下から さんかく ... (480, 0) = 右上, (0, 320) = 左下\n"+
-"\t\tnoStroke();\n"+
-"\t\tfill(  0,255,255,0.5);\n"+
-"\t\ttriangle(480,   0, x, y, px, py);\n"+
-"\t\ttriangle(  0, 320, x, y, px, py);\n"+
-"\n"+
-"\t}\n"+
-"\t\n"+
-"\t// 81秒よりあとで、100秒までのあいだ\n"+
-"\tif (81 < time && time < 100) {\n"+
-"\n"+
-"\t\t// 左上と右下から さんかく ... (0, 0) = 左上, (480, 320) = 右下\n"+
-"\t\tnoStroke();\n"+
-"\t\tfill(255,128,128,0.5);\n"+
-"\t\ttriangle(  0,   0, x, y, px, py);\n"+
-"\t\ttriangle(480, 320, x, y, px, py);\n"+
-"\n"+
-"\t}\n"+
-"\n"+
-"\t// 全体をぼかす\n"+
-"\tnoStroke();\n"+
-"\tfill(0, 0, 0, 0.1);\n"+
-"\trect(0, 0, 480, 320);\n"+
-"\n"+
-"};\n";
-
     var game = enchant.Core.instance;
 
     Hack.onload = Hack.onload || function() {
@@ -226,12 +10,30 @@ window.addEventListener('load', function () {
         Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         Hack.music = Hack.music || {};
 
-        Hack.music.path = 'yukison/' + Hack.music.name + '.mp3';
-        Hack.coverImagePath = 'yukison/' + Hack.music.name + '-cover.png';
-        Hack.soundEffectPath = (['osa/bosu19.wav','osa/clap00.wav', 'osa/coin03.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav', 'osa/swing14.wav', 'osa/whistle00.wav'])[Hack.hitSE];
-        game.preload(Hack.coverImagePath, Hack.soundEffectPath);
+        if (Hack.music.name) {
+            // Open music file
+            Hack.music.type = 'WebAudioSound';
+            Hack.music.path = 'yukison/' + Hack.music.name + '.mp3';
+            Hack.coverImagePath = 'yukison/' + Hack.music.name + '-cover.png';
+            game.preload(Hack.coverImagePath);
+        } else if (Hack.music.track) {
+            // Sound Cloud file
+            Hack.music.type = 'SoundCloud';
+            Hack.music.path = '/tracks/' + Hack.music.track;
+        } else {
+            Hack.log('Hack.music が指定されていません name または track プロパティが必要です');
+        }
 
-        Hack.oneNoteTime = 240 / Hack.music.BPM / Hack.notesInTime; // note1個分の拍 [sec] 曲中は固定
+        Hack.soundEffectPath = (['osa/bosu19.wav','osa/clap00.wav', 'osa/coin03.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav', 'osa/swing14.wav', 'osa/whistle00.wav'])[Hack.hitSE];
+        game.preload(Hack.soundEffectPath);
+
+        Object.defineProperty(Hack, 'oneNoteTime', {
+            configurable: true, enumerable: true,
+            get: function () {
+                // note1個分の拍 [sec] 曲中は固定
+                return 240 / Hack.music.BPM / Hack.notesInTime;
+            }
+        });
         Hack.noteCursor = 0;
         Hack.point = 0;
         Hack.noteNum = 0;
@@ -250,9 +52,11 @@ window.addEventListener('load', function () {
          * 4: UI (defaultParentNode)
          */
 
-        var coverSprite = new Sprite(game.width, game.height);
-        coverSprite.image = Hack.coverOpacity > 0 ? game.assets[Hack.coverImagePath] : null;
-        game.rootScene.addChild(coverSprite);
+         if (Hack.coverImagePath) {
+            var coverSprite = new Sprite(game.width, game.height);
+            coverSprite.image = Hack.coverOpacity > 0 ? game.assets[Hack.coverImagePath] : null;
+            game.rootScene.addChild(coverSprite);
+         }
 
         var cometSprite = new Sprite(game.width, game.height);
         cometSprite.image = new Surface(game.width, game.height);
@@ -276,13 +80,42 @@ window.addEventListener('load', function () {
         var startLabel = new StartLabelUI();
 
         // Begin loading music
-        WebAudioSound.load(Hack.music.path, 'audio/mpeg', function () {
-            Hack.sound = this;
-            startLabel.loadSuccessed();
-        }, function (exeption) {
-            console.log(exeption);
-            startLabel.loadFailed();
-        });
+        switch (Hack.music.type) {
+            case 'WebAudioSound':
+            WebAudioSound.load(Hack.music.path, 'audio/mpeg', function () {
+                Hack.sound = this;
+                startLabel.loadSuccessed();
+            }, function (exeption) {
+                console.log(exeption);
+                startLabel.loadFailed();
+            });
+            break;
+            case 'SoundCloud':
+            (function (SC) {
+                SC.initialize({
+                    // Hack移植時にServerからJSONで設定を投げるように
+                    client_id: '52532cd2cd109c968a6c795b919898e8'
+                });
+                SC.get(Hack.music.path).then(function (track) {
+                    Hack.music.BPM = Hack.music.BPM || track.bpm || 60;
+                    Hack.music.intro = Hack.music.intro || 2;
+                    SC.stream(Hack.music.path).then(function (player){
+                        Hack.sound = new SCPlayerWrapper(player);
+                        startLabel.loadSuccessed();
+                    }, function (exception) {
+                        console.log(exception);
+                        startLabel.loadFailed();
+                    });
+                }, function (exception) {
+                    console.log(exception);
+                    startLabel.loadFailed();
+                });
+            })(window.SC);
+            window.SC = null;
+            break;
+        }
+
+
     };
 
     Hack.onpressstart = Hack.onpressstart || function () {
@@ -304,7 +137,7 @@ window.addEventListener('load', function () {
                 Hack.sound.volume -= 0.02;
                 if (Hack.sound.volume <= 0) {
                     game.removeEventListener('enterframe', task);
-                    Hack.sound.stop();
+                    Hack.sound.pause();
                     new ScoreLabelUI(Hack.point, Hack.noteNum);
                     setTimeout(function () {
                         if (Hack.point > Hack.quota) {
@@ -747,6 +580,43 @@ window.addEventListener('load', function () {
                 this.text = this.prefix[0] + this.current + this.prefix[1] + this.notes + this.prefix[2];
             } else {
                 this.text = this.prefix[0] + this.score + this.prefix[1] + this.notes + this.prefix[2];
+            }
+        }
+    });
+
+    var SCPlayerWrapper = Class(EventTarget, {
+        initialize: function (player) {
+            EventTarget.call(this);
+            this.player = player;
+            this.preventJSTime = new Date().getTime(); // Milliseconds
+            this.preventSCTime = 0; // Milliseconds
+        },
+        play: function () {
+            this.player.play();
+        },
+        pause: function () {
+            this.player.pause();
+        },
+        volume: {
+            configurable: true, enumerable: true,
+            get: function () {
+                return this.player.getVolume();
+            },
+            set: function (value) {
+                this.player.setVolume(value);
+            }
+        },
+        currentTime: {
+            configurable: true, enumerable: true,
+            get: function () {
+                var time = this.player.currentTime();
+                if (time > 0 && time === this.preventSCTime) {
+                    time += new Date().getTime() - this.preventJSTime; // 補正
+                } else {
+                    this.preventJSTime = new Date().getTime();
+                    this.preventSCTime = time;
+                }
+                return time / 1000;
             }
         }
     });
