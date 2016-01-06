@@ -24,8 +24,7 @@ window.addEventListener('load', function () {
 		*/
 		Hack.music = {
 			track: 238023166,
-			length: 30,
-			intro: 1
+			length: 30
 		};
 
 		/**

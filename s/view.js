@@ -94,6 +94,9 @@ $(function(){
 					});
 				});
 				break;
+			case 'use_soundcloud':
+			$('.brand-soundcloud').removeClass('hidden');
+			break;
 		}
 	});
 

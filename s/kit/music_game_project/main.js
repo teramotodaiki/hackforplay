@@ -79,6 +79,29 @@ window.addEventListener('load', function () {
         Hack.defaultParentNode = Hack.defaultParentNode || new Group();
         var startLabel = new StartLabelUI();
 
+        Hack.artistLabel = (function () {
+            var label = new Label('...');
+            label.moveTo(40, 0);
+            label.color = 'rgb(180,180,180)';
+            label.font = '14px fantasy';
+            Hack.defaultParentNode.addChild(label);
+            return label;
+        })();
+        Hack.titleLabel = (function () {
+            var label = new Label('...');
+            label.moveTo(40, 16);
+            label.color = 'rgb(255,255,255)';
+            label.font = '16px fantasy';
+            Hack.defaultParentNode.addChild(label);
+            return label;
+        })();
+        Hack.artworkSprite = (function () {
+            var sprite = new Sprite(32, 32);
+            sprite.moveTo(0, 0);
+            Hack.defaultParentNode.addChild(sprite);
+            return sprite;
+        });
+
         // Begin loading music
         switch (Hack.music.type) {
             case 'WebAudioSound':
@@ -92,12 +115,21 @@ window.addEventListener('load', function () {
             break;
             case 'SoundCloud':
             (function (SC) {
+                window.parent.postMessage('use_soundcloud', '/');
                 SC.initialize({
                     // Hack移植時にServerからJSONで設定を投げるように
                     client_id: '52532cd2cd109c968a6c795b919898e8'
                 });
                 SC.get(Hack.music.path).then(function (track) {
-                    Hack.music.BPM = Hack.music.BPM || track.bpm || 60;
+                    console.log(track.artwork_url);
+                    Hack.titleLabel.text = track.title;
+                    Hack.artistLabel.text = track.user.username;
+                    Hack.artworkSprite.image = Sprite.load(track.artwork_url, function () {
+                        console.log('success');
+                    }, function () {
+                        console.log('failed');
+                    });
+                    Hack.music.BPM = Hack.music.BPM || track.bpm || 120;
                     Hack.music.intro = Hack.music.intro || 2;
                     SC.stream(Hack.music.path).then(function (player){
                         Hack.sound = new SCPlayerWrapper(player);
