@@ -120,7 +120,6 @@ window.addEventListener('load', function () {
                         Hack.defaultParentNode.addChild(sprite);
                         return sprite;
                     })();
-                    console.log(track.artwork_url);
                     if (track.artwork_url) {
                         Surface.load(track.artwork_url, function (event) {
                             var i = Hack.artworkSprite.image;
@@ -137,15 +136,12 @@ window.addEventListener('load', function () {
                     }
                     Hack.music.BPM = Hack.music.BPM || track.bpm || 120;
                     Hack.music.intro = Hack.music.intro || 2;
-                    SC.stream(Hack.music.path).then(function (player){
-                        Hack.sound = new SCPlayerWrapper(player);
-                        startLabel.loadSuccessed();
-                    }, function (exception) {
-                        console.log(exception);
-                        startLabel.loadFailed();
-                    });
-                }, function (exception) {
-                    console.log(exception);
+                    return SC.stream(Hack.music.path);
+                }).then(function (player) {
+                    Hack.sound = new SCPlayerWrapper(player);
+                    startLabel.loadSuccessed();
+                }).catch(function (message) {
+                    console.log(message);
                     startLabel.loadFailed();
                 });
             })(window.SC);
