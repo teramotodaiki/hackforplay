@@ -79,6 +79,23 @@ window.addEventListener('load', function () {
         Hack.defaultParentNode = Hack.defaultParentNode || new Group();
         var startLabel = new StartLabelUI();
 
+        Hack.artistLabel = (function () {
+            var label = new Label('...');
+            label.moveTo(10, 10);
+            label.color = 'rgb(180,180,180)';
+            label.font = '14px fantasy';
+            Hack.defaultParentNode.addChild(label);
+            return label;
+        })();
+        Hack.titleLabel = (function () {
+            var label = new Label('...');
+            label.moveTo(10, 32);
+            label.color = 'rgb(255,255,255)';
+            label.font = '16px fantasy';
+            Hack.defaultParentNode.addChild(label);
+            return label;
+        })();
+
         // Begin loading music
         switch (Hack.music.type) {
             case 'WebAudioSound':
@@ -98,6 +115,8 @@ window.addEventListener('load', function () {
                 });
                 SC.get(Hack.music.path).then(function (track) {
                     Hack.music.BPM = Hack.music.BPM || track.bpm || 60;
+                    Hack.titleLabel.text = track.title;
+                    Hack.artistLabel.text = track.user.username;
                     Hack.music.intro = Hack.music.intro || 2;
                     SC.stream(Hack.music.path).then(function (player){
                         Hack.sound = new SCPlayerWrapper(player);
