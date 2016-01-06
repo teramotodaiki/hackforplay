@@ -114,9 +114,9 @@ window.addEventListener('load', function () {
                     client_id: '52532cd2cd109c968a6c795b919898e8'
                 });
                 SC.get(Hack.music.path).then(function (track) {
-                    Hack.music.BPM = Hack.music.BPM || track.bpm || 60;
                     Hack.titleLabel.text = track.title;
                     Hack.artistLabel.text = track.user.username;
+                    Hack.music.BPM = Hack.music.BPM || track.bpm || 120;
                     Hack.music.intro = Hack.music.intro || 2;
                     SC.stream(Hack.music.path).then(function (player){
                         Hack.sound = new SCPlayerWrapper(player);
