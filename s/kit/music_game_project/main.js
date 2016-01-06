@@ -79,29 +79,6 @@ window.addEventListener('load', function () {
         Hack.defaultParentNode = Hack.defaultParentNode || new Group();
         var startLabel = new StartLabelUI();
 
-        Hack.artistLabel = (function () {
-            var label = new Label('...');
-            label.moveTo(40, 0);
-            label.color = 'rgb(180,180,180)';
-            label.font = '14px fantasy';
-            Hack.defaultParentNode.addChild(label);
-            return label;
-        })();
-        Hack.titleLabel = (function () {
-            var label = new Label('...');
-            label.moveTo(40, 16);
-            label.color = 'rgb(255,255,255)';
-            label.font = '16px fantasy';
-            Hack.defaultParentNode.addChild(label);
-            return label;
-        })();
-        Hack.artworkSprite = (function () {
-            var sprite = new Sprite(32, 32);
-            sprite.image = new Surface(sprite.width, sprite.height);
-            Hack.defaultParentNode.addChild(sprite);
-            return sprite;
-        })();
-
         // Begin loading music
         switch (Hack.music.type) {
             case 'WebAudioSound':
@@ -121,18 +98,43 @@ window.addEventListener('load', function () {
                     client_id: '52532cd2cd109c968a6c795b919898e8'
                 });
                 SC.get(Hack.music.path).then(function (track) {
+                    Hack.artistLabel = (function () {
+                        var label = new Label(track.title);
+                        label.moveTo(40, 0);
+                        label.color = 'rgb(180,180,180)';
+                        label.font = '14px fantasy';
+                        Hack.defaultParentNode.addChild(label);
+                        return label;
+                    })();
+                    Hack.titleLabel = (function () {
+                        var label = new Label(track.user.username);
+                        label.moveTo(40, 16);
+                        label.color = 'rgb(255,255,255)';
+                        label.font = '16px fantasy';
+                        Hack.defaultParentNode.addChild(label);
+                        return label;
+                    })();
+                    Hack.artworkSprite = (function () {
+                        var sprite = new Sprite(32, 32);
+                        sprite.image = new Surface(sprite.width, sprite.height);
+                        Hack.defaultParentNode.addChild(sprite);
+                        return sprite;
+                    })();
                     console.log(track.artwork_url);
-                    Hack.titleLabel.text = track.title;
-                    Hack.artistLabel.text = track.user.username;
-                    Surface.load(track.artwork_url, function (event) {
-                        var i = Hack.artworkSprite.image;
-                        var t = event.target;
-                        Hack.artworkSprite.image.draw(event.target, 0, 0, t.width, t.height, 0, 0, i.width, i.height);
-                    }, function (event) {
-                        console.log(event);
+                    if (track.artwork_url) {
+                        Surface.load(track.artwork_url, function (event) {
+                            var i = Hack.artworkSprite.image;
+                            var t = event.target;
+                            Hack.artworkSprite.image.draw(event.target, 0, 0, t.width, t.height, 0, 0, i.width, i.height);
+                        }, function (event) {
+                            console.log(event);
+                            Hack.titleLabel.x = 0;
+                            Hack.artistLabel.x = 0;
+                        });
+                    } else {
                         Hack.titleLabel.x = 0;
                         Hack.artistLabel.x = 0;
-                    });
+                    }
                     Hack.music.BPM = Hack.music.BPM || track.bpm || 120;
                     Hack.music.intro = Hack.music.intro || 2;
                     SC.stream(Hack.music.path).then(function (player){
