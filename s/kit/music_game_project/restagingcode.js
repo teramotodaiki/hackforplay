@@ -23,8 +23,10 @@ window.addEventListener('load', function () {
 		*
 		*/
 		Hack.music = {
-			track: 238023166,
-			length: 30
+			name: 'birthday-song',
+			length: 100,
+			BPM: 122,
+			intro: 2.555
 		};
 
 		/**
@@ -105,7 +107,7 @@ window.addEventListener('load', function () {
 			* a,...p:  1なら でる. 0なら でない
 			*
 			*/
-			setNotesOn(  0.0, 1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1);
+			setNotesOn(  0.0, 1,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0);
 			setNotesOn( 18.0, 1,0,0,0,0,0,0,0, 1,0,0,0,0,0,0,0);
 			setNotesOn( 48.5, 0,0,0,0,0,0,0,0, 0,0,0,0,0,1,1,0);
 			setNotesOn( 63.5, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0);
