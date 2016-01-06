@@ -345,7 +345,7 @@ window.addEventListener('load', function () {
             this.commandStackSeek = spend;
 
             var t = currentTime - this.lastTime;
-            var len = Math.max(1, 1000 * t >> 0); // tが変化しても_tがおよそ0.001になるように
+            var len = Math.min(1000, Math.max(1, 1000 * t >> 0)); // tが変化しても_tがおよそ0.001になるように
             for (var i = 0; i < len; i++) {
                 var _t = t / len;
                 this.update(this.lastTime + _t * i);
