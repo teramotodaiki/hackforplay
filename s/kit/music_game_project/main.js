@@ -242,7 +242,13 @@ window.addEventListener('load', function () {
         Hack.soundEffectPath = (['osa/bosu19.wav','osa/clap00.wav', 'osa/coin03.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav', 'osa/swing14.wav', 'osa/whistle00.wav'])[Hack.hitSE];
         game.preload(Hack.soundEffectPath);
 
-        Hack.oneNoteTime = 240 / Hack.music.BPM / Hack.notesInTime; // note1個分の拍 [sec] 曲中は固定
+        Object.defineProperty(Hack, 'oneNoteTime', {
+            configurable: true, enumerable: true,
+            get: function () {
+                // note1個分の拍 [sec] 曲中は固定
+                return 240 / Hack.music.BPM / Hack.notesInTime;
+            }
+        });
         Hack.noteCursor = 0;
         Hack.point = 0;
         Hack.noteNum = 0;
