@@ -97,10 +97,10 @@ window.addEventListener('load', function () {
         })();
         Hack.artworkSprite = (function () {
             var sprite = new Sprite(32, 32);
-            sprite.moveTo(0, 0);
+            sprite.image = new Surface(sprite.width, sprite.height);
             Hack.defaultParentNode.addChild(sprite);
             return sprite;
-        });
+        })();
 
         // Begin loading music
         switch (Hack.music.type) {
@@ -124,10 +124,14 @@ window.addEventListener('load', function () {
                     console.log(track.artwork_url);
                     Hack.titleLabel.text = track.title;
                     Hack.artistLabel.text = track.user.username;
-                    Hack.artworkSprite.image = Sprite.load(track.artwork_url, function () {
-                        console.log('success');
-                    }, function () {
-                        console.log('failed');
+                    Surface.load(track.artwork_url, function (event) {
+                        var i = Hack.artworkSprite.image;
+                        var t = event.target;
+                        Hack.artworkSprite.image.draw(event.target, 0, 0, t.width, t.height, 0, 0, i.width, i.height);
+                    }, function (event) {
+                        console.log(event);
+                        Hack.titleLabel.x = 0;
+                        Hack.artistLabel.x = 0;
                     });
                     Hack.music.BPM = Hack.music.BPM || track.bpm || 120;
                     Hack.music.intro = Hack.music.intro || 2;
