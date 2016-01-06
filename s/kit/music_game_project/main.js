@@ -82,7 +82,7 @@ window.addEventListener('load', function () {
         // Begin loading music
         switch (Hack.music.type) {
             case 'WebAudioSound':
-            WebAudioSound.load(Hack.music.path, 'audio/mpeg', function () {
+            Sound.load(Hack.music.path, 'audio/mpeg', function () {
                 Hack.sound = this;
                 startLabel.loadSuccessed();
             }, function (exeption) {
