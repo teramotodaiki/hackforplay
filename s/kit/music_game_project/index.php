@@ -16,6 +16,7 @@
 		<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<script src="lib/hack.js" type="text/javascript" charset="utf-8"></script>
 		<script src="kit/music_game_project/main.js" type="text/javascript" charset="utf-8"></script>
+		<script src="kit/music_game_project/restagingcode.js" type="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
 		textarea.log {
 			color: #fff;
