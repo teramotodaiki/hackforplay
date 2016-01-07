@@ -644,6 +644,91 @@ window.addEventListener('load', function() {
 	};
 
 	/**
+	 * Hack.openSoundCloud(resource:String, id:Number[, successed:Function, failed:Function])
+	 * resource: defaults '/tracks'
+	 * id: resource ID (like 123)
+	 * successed: callback function (if ignore it, do AUTO PLAY)
+	 * failed: callback function
+	 * **** CAUTION This method can be called only once in the playing. ****
+	 *
+	 * Hack.soundCloudCredit
+	 * The group contains credit informations. parentNode === Hack.menuGroup
+	*/
+	(function (SC) {
+		if (!SC) return;
+		Hack.soundCloudCredit = new Group();
+		Hack.soundCloudCredit.moveTo(0, 320);
+		Hack.menuGroup.addChild(Hack.soundCloudCredit);
+		Hack.openSoundCloud = function (resource, id, successed, failed) {
+			var args = Array.prototype.slice.call(arguments);
+			if (typeof args[0] === 'number') return Hack.openSoundCloud('/tracks', args[0], args[1], args[2]);
+			else if (['/tracks'].indexOf(resource) === -1) {
+				Hack.log('Hack.openSoundCloud', resource, 'is unsupported. Use: /tracks');
+			} else if (!openSoundCloud) {
+				Hack.log('Hack.openSoundCloud can be called only once in the playing');
+			} else {
+				// Success calling
+				window.parent.postMessage('use_soundcloud', '/');
+				openSoundCloud(resource, id, successed, failed);
+				openSoundCloud = null;
+			}
+		};
+		function openSoundCloud (resource, id, successed, failed) {
+			var param = resource + '/' + id;
+			SC.initialize({
+				client_id: '52532cd2cd109c968a6c795b919898e8'
+			});
+			SC.get(param).then(function (track) {
+				var allowed = ['no-rights-reserved', 'cc-by', 'cc-by-nd', 'cc-by-sa'];
+				if (allowed.indexOf(track.license) === -1) {
+					throw new Error('This track cannot play in hackforplay because it licensed ' + track.license + '.  You can play tracks licensed ' + allowed.join(','));
+				} else {
+					// Artist label
+					(function () {
+						this.color = 'rgb(180,180,180)';
+						this.font = '12px fantasy';
+						this.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+						this.width = 480;
+						this.height = 14;
+						Hack.soundCloudCredit.addChild(this);
+						this.moveTo(track.artwork_url ? 40 : 0, 0);
+					}).call(new Label(track.user.username));
+					// Title label
+					(function () {
+						this.color = 'rgb(255,255,255)';
+						this.font = '14px fantasy';
+						this.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+						this.width = 480;
+						this.height = 18;
+						Hack.soundCloudCredit.addChild(this);
+						this.moveTo(track.artwork_url ? 40 : 0, 14);
+					}).call(new Label(track.title));
+					// Artwork
+					(function () {
+						var i = this.image = new Surface(this.width, this.height);
+						Hack.soundCloudCredit.addChild(this);
+						Surface.load(track.artwork_url, function (event) {
+							var t = event.target;
+							i.draw(t, 0, 0, t.width, t.height, 0, 0, i.width, i.height);
+						});
+					}).call(new Sprite(32, 32));
+					Hack.soundCloudCredit.tl.moveBy(0, -32, 20);
+					// Streaming
+					return SC.stream(param);
+				}
+			}).then(function (player) {
+				if (successed) successed(player);
+				else player.play(); // auto play
+				Hack.soundCloudCredit.tl.delay(game.fps * 4).moveBy(0, 32, 20);
+			}).catch(function (message) {
+				if (failed) failed(message);
+				else Hack.log(message.message);
+			});
+		}
+	})(window.SC);
+	window.SC = null;
+
+	/**
 	 * Hack.define
 	 * obj: targeting object (If omitted: Hack)
 	 * prop: property name (obj.----)

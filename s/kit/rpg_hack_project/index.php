@@ -14,6 +14,7 @@
 		</script>
 		<script src="lib/enchant.js" type="text/javascript" charset="utf-8"></script>
 		<script src="lib/ui.enchant.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript" charset="utf-8"></script>
 		<script src="lib/hack.js" type="text/javascript" charset="utf-8"></script>
 		<script src="kit/rpg_hack_project/rpgobjects.js" type="text/javascript" charset="utf-8"></script>
 		<script src="kit/rpg_hack_project/main.js" type="text/javascript" charset="utf-8"></script>
