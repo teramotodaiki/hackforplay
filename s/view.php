@@ -397,7 +397,7 @@ if ($mode === 'quest') {
 							<li><div class="h4p-link-button"><span class="glyphicon glyphicon-paperclip"></span>URL</div></li>
 						</ul>
 					</div>
-					<div class="col-xs-12 brand-soundcloud">
+					<div class="col-xs-12 hidden brand-soundcloud">
 						<a href="http://soundcloud.com"><img src="../img/powered_by_soundcloud.png" height="64" width="64" alt=""></a>
 					</div>
 				</div>
