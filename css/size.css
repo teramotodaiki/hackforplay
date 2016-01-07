@@ -309,7 +309,8 @@ nav #button-loginwithtwitter {
 	padding-bottom: 20px;
 }
 
-.h4p_publish {
+.h4p_publish,
+.h4p_external {
 	padding-left: 1px;
 	padding-right: 1px;
 }

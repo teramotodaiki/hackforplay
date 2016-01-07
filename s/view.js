@@ -1280,6 +1280,18 @@ $(function(){
 		return sessionStorage.getItem('stage_param_'+key) || '';
 	}
 
+	// ゲーム側から制御可能なSoundCloudのプレイヤー
+	(function (SC) {
+		window.addEventListener('message', function (event) {
+			if (event.data === 'external-soundcloud') {
+				var track_url = sessionStorage.getItem('external-soundcloud-url');
+				SC.oEmbed(track_url, { auto_play: true, maxheight: 166 }).then(function(oEmbed) {
+					$('.h4p_external').html(oEmbed.html);
+				});
+			}
+		});
+	})(window.SC);
+
 	// YouTube等によるキットの説明
 	// ！　暫定的なYouTubeプレイヤー。一般化してゲーム側からコールして制御できる形にする
 	(function() {
