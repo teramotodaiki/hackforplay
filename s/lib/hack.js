@@ -640,6 +640,10 @@ window.addEventListener('load', function() {
 			case 'restaging':
 			window.parent.postMessage('begin_restaging', '/');
 			break;
+			case 'soundcloud':
+			sessionStorage.setItem('external-soundcloud-url', arguments[1]);
+			window.parent.postMessage('external-soundcloud', '/');
+			break;
 		}
 	};
 
