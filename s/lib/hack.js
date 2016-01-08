@@ -725,7 +725,9 @@ window.addEventListener('load', function() {
 				result.player = player;
 				if (successed) successed(result);
 				else player.play(); // auto play
-				Hack.soundCloudCredit.tl.delay(game.fps * 4).moveBy(0, 32, 20);
+				player.on('play-start', function(event) {
+					Hack.soundCloudCredit.tl.delay(game.fps * 4).moveBy(0, 32, 20);
+				});
 			}).catch(function (message) {
 				if (failed) failed(message);
 				else Hack.log(message.message);
