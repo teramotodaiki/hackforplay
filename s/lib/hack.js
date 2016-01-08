@@ -678,11 +678,12 @@ window.addEventListener('load', function() {
 			}
 		};
 		function openSoundCloud (resource, id, successed, failed) {
-			var param = resource + '/' + id;
+			var param = resource + '/' + id, result = {};
 			SC.initialize({
 				client_id: '52532cd2cd109c968a6c795b919898e8'
 			});
 			SC.get(param).then(function (track) {
+				result.track = track;
 				var allowed = ['no-rights-reserved', 'cc-by', 'cc-by-nd', 'cc-by-sa'];
 				if (allowed.indexOf(track.license) === -1) {
 					throw new Error('This track cannot play in hackforplay because it licensed ' + track.license + '.  You can play tracks licensed ' + allowed.join(','));
@@ -721,7 +722,8 @@ window.addEventListener('load', function() {
 					return SC.stream(param);
 				}
 			}).then(function (player) {
-				if (successed) successed(player);
+				result.player = player;
+				if (successed) successed(result);
 				else player.play(); // auto play
 				Hack.soundCloudCredit.tl.delay(game.fps * 4).moveBy(0, 32, 20);
 			}).catch(function (message) {
