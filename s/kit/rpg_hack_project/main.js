@@ -73,28 +73,38 @@ window.addEventListener('load', function () {
 		}
 
 		// 互換性維持
-		if (MapObject.Dictionaly) {
-			MapObject.dictionary = {
-				clay: 320,		clayWall: 340,	clayFloor: 323,
-				stone: 321,		stoneWall: 341,	stoneFloor: 342,
-				warp: 324,		warpRed: 325,
-				warpGreen: 326,	warpYellow: 327,
-				magic: 328,		usedMagic: 329,
-				pot: 400,		rock: 401,		upStair: 402,
-				box: 420,		flower: 421,	downStair: 422,
-				trap: 440,		usedTrap: 441,	step: 442,
-				castle: 500,	village: 501,	cave: 502,
-				tree: 520,		table: 521,		openedBox: 522,
-				beam: 540,		diamond: 560,	sapphire: 561,
-				ruby: 562,		heart: 563,		skull: 564,
-				coin: 565,		star: 566,		key: 567,
-				bomb: 580,		coldBomb: 581,	egg: 582,
-				poo: 583
-			};
-			Object.keys(MapObject.Dictionaly).forEach(function (key) {
-				MapObject.dictionary[key] = MapObject.Dictionaly[key];
+		(function () {
+			MapObject.dictionary = MapObject.dictionary || {};
+			Array.prototype.filter.call(arguments, function (dictionary) {
+				return typeof dictionary === 'object';
+			}).forEach(function (dictionary) {
+				Object.keys(dictionary).filter(function (key) {
+					return !MapObject.dictionary.hasOwnProperty(key);
+				}).forEach(function (key) {
+					MapObject.dictionary[key] = dictionary[key];
+				});
 			});
-		}
+		})(
+		// 旧仕様ユーザー定義
+		MapObject.Dictionaly,
+		// 新仕様公式定義
+		{
+			clay: 320,		clayWall: 340,	clayFloor: 323,
+			stone: 321,		stoneWall: 341,	stoneFloor: 342,
+			warp: 324,		warpRed: 325,
+			warpGreen: 326,	warpYellow: 327,
+			magic: 328,		usedMagic: 329,
+			pot: 400,		rock: 401,		upStair: 402,
+			box: 420,		flower: 421,	downStair: 422,
+			trap: 440,		usedTrap: 441,	step: 442,
+			castle: 500,	village: 501,	cave: 502,
+			tree: 520,		table: 521,		openedBox: 522,
+			beam: 540,		diamond: 560,	sapphire: 561,
+			ruby: 562,		heart: 563,		skull: 564,
+			coin: 565,		star: 566,		key: 567,
+			bomb: 580,		coldBomb: 581,	egg: 582,
+			poo: 583
+		});
 	});
 
 	game.on('load', function() {
