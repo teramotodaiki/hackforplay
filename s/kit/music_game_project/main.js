@@ -19,7 +19,6 @@ window.addEventListener('load', function () {
         } else if (Hack.music.track) {
             // Sound Cloud file
             Hack.music.type = 'SoundCloud';
-            Hack.music.path = '/tracks/' + Hack.music.track;
         } else {
             Hack.log('Hack.music が指定されていません name または track プロパティが必要です');
         }
@@ -91,61 +90,15 @@ window.addEventListener('load', function () {
             });
             break;
             case 'SoundCloud':
-            (function (SC) {
-                window.parent.postMessage('use_soundcloud', '/');
-                SC.initialize({
-                    // Hack移植時にServerからJSONで設定を投げるように
-                    client_id: '52532cd2cd109c968a6c795b919898e8'
-                });
-                SC.get(Hack.music.path).then(function (track) {
-                    Hack.artistLabel = (function () {
-                        var label = new Label(track.title);
-                        label.moveTo(40, 0);
-                        label.color = 'rgb(180,180,180)';
-                        label.font = '14px fantasy';
-                        Hack.defaultParentNode.addChild(label);
-                        return label;
-                    })();
-                    Hack.titleLabel = (function () {
-                        var label = new Label(track.user.username);
-                        label.moveTo(40, 16);
-                        label.color = 'rgb(255,255,255)';
-                        label.font = '16px fantasy';
-                        Hack.defaultParentNode.addChild(label);
-                        return label;
-                    })();
-                    Hack.artworkSprite = (function () {
-                        var sprite = new Sprite(32, 32);
-                        sprite.image = new Surface(sprite.width, sprite.height);
-                        Hack.defaultParentNode.addChild(sprite);
-                        return sprite;
-                    })();
-                    if (track.artwork_url) {
-                        Surface.load(track.artwork_url, function (event) {
-                            var i = Hack.artworkSprite.image;
-                            var t = event.target;
-                            Hack.artworkSprite.image.draw(event.target, 0, 0, t.width, t.height, 0, 0, i.width, i.height);
-                        }, function (event) {
-                            console.log(event);
-                            Hack.titleLabel.x = 0;
-                            Hack.artistLabel.x = 0;
-                        });
-                    } else {
-                        Hack.titleLabel.x = 0;
-                        Hack.artistLabel.x = 0;
-                    }
-                    Hack.music.BPM = Hack.music.BPM || track.bpm || 120;
-                    Hack.music.intro = Hack.music.intro || 2;
-                    return SC.stream(Hack.music.path);
-                }).then(function (player) {
-                    Hack.sound = new SCPlayerWrapper(player);
-                    startLabel.loadSuccessed();
-                }).catch(function (message) {
-                    console.log(message);
-                    startLabel.loadFailed();
-                });
-            })(window.SC);
-            window.SC = null;
+            Hack.openSoundCloud('/tracks', Hack.music.track, function (obj) {
+                Hack.sound = new SCPlayerWrapper(obj.player);
+                Hack.music.BPM = Hack.music.BPM || obj.track.bpm || 120;
+                Hack.music.intro = Hack.music.intro || 2;
+                startLabel.loadSuccessed();
+            }, function (error) {
+                Hack.log(error.message);
+                startLabel.loadFailed();
+            });
             break;
         }
 
