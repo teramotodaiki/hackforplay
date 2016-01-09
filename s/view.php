@@ -1,6 +1,7 @@
 <?php
 $id 	= $stage['ID'];
 $path	= $stage['Path'];
+$state	= $stage['State'];
 $title 	= $stage['Title'];
 $explain= $stage['Explain'];
 $next 	= $stage['NextID'];
@@ -121,6 +122,7 @@ if ($mode === 'quest') {
 		s('next', "<?php echo $next; ?>" || '0');
 		s('mode', "<?php echo $mode; ?>");
 		s('game_mode', "<?php echo $mode; ?>");
+		s('state', "<?php echo $state; ?>")
 		s('retry', "<?php echo $retry; ?>");
 		s('origin_id', "<?php echo $origin_id; ?>");
 		s('src', "<?php echo $src;  ?>");

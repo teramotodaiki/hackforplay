@@ -523,7 +523,7 @@ window.addEventListener('load', function() {
 			// 改造を始めるボタン
 			addGUIParts(game.assets['hackforplay/menu-button-restage.png'], function() {
 				var id = sessionStorage.getItem('stage_param_id') >> 0;
-				return sessionStorage.getItem('stage_param_game_mode') !== 'restaging' && !(101 <= id && id <= 106);
+				return sessionStorage.getItem('stage_param_game_mode') !== 'restaging' && !(101 <= id && id <= 106) && sessionStorage.getItem('stage_param_state') !== 'private';
 			}, function() {
 				window.parent.postMessage('begin_restaging', '*');
 			});

@@ -1280,6 +1280,11 @@ $(function(){
 		return sessionStorage.getItem('stage_param_'+key) || '';
 	}
 
+	// State=private
+	if (getParam('state') === 'private') {
+		$('.h4p_publish,.h4p_info-restaging>*,.h4p_share-buttons').addClass('hidden');
+	}
+
 	// ゲーム側から制御可能な埋め込みリンク
 	(function () {
 		window.addEventListener('message', function (event) {
