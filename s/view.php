@@ -391,7 +391,7 @@ if ($mode === 'quest') {
 					</div>
 					<?php if ($explain !== NULL && $explain !== '') : ?>
 					<div class="col-xs-12 h4p_info-explain">
-						<p class="overflow-auto"><?php echo $explain; ?></p>
+						<p class="overflow-auto"><?php echo htmlspecialchars($explain); ?></p>
 					</div>
 					<?php endif; ?>
 					<div class="col-xs-12 h4p_share-buttons">
