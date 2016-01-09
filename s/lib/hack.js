@@ -523,7 +523,7 @@ window.addEventListener('load', function() {
 			// 改造を始めるボタン
 			addGUIParts(game.assets['hackforplay/menu-button-restage.png'], function() {
 				var id = sessionStorage.getItem('stage_param_id') >> 0;
-				return sessionStorage.getItem('stage_param_game_mode') !== 'restaging' && !(101 <= id && id <= 106);
+				return sessionStorage.getItem('stage_param_game_mode') !== 'restaging' && !(101 <= id && id <= 106) && sessionStorage.getItem('stage_param_state') !== 'private';
 			}, function() {
 				window.parent.postMessage('begin_restaging', '*');
 			});
@@ -643,6 +643,15 @@ window.addEventListener('load', function() {
 			case 'soundcloud':
 			sessionStorage.setItem('external-soundcloud-url', arguments[1]);
 			window.parent.postMessage('external-soundcloud', '/');
+			break;
+			case 'link':
+			if (typeof arguments[1] !== 'string' || arguments[1].match(/^https?\:\/\/.*\.[a-z]+/) === null) {
+				Hack.log('Invalid URL: ' + arguments[1]);
+			} else {
+				var param = { href: arguments[1], html: arguments[2] };
+				sessionStorage.setItem('external-link-param', JSON.stringify(param));
+				window.parent.postMessage('external-link', '/');
+			}
 			break;
 		}
 	};

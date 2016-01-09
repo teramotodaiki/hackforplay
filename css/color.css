@@ -22,7 +22,8 @@ nav.navbar {
 
 .h4p_info,
 .h4p_restaging,
-.h4p_my-comment {
+.h4p_my-comment,
+.h4p_external {
 	background-color: rgb(255,255,255);
 }
 

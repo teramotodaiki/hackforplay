@@ -302,6 +302,17 @@ iframe {
 	float: left;
 }
 
+.h4p_external .h4p_external-wrapper {
+	text-align: center;
+	padding: 20px;
+	max-height: 100px;
+}
+
+.h4p_external-wrapper>* {
+	cursor: pointer;
+}
+
+
 /* アニメーション */
 
 .h4p_item-transform {
