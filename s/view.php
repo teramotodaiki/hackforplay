@@ -368,13 +368,13 @@ if ($mode === 'quest') {
 			<div class="col-xs-12 h4p_info">
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 h4p_info-datail">
-						<p><h3 class="h4p_info-title"><?php echo $title; ?></h3></p>
+						<p><h3 class="h4p_info-title"><?php echo htmlspecialchars($title); ?></h3></p>
 						<p><span>プレイ回数：<b><?php echo $count."回"; ?></b></span></p>
 						<?php if ($author_id === NULL) : ?>
 						<p><span><b>公式ステージ</b></span></p>
 						<?php else: ?>
-						<p><span>作成者：<b><a href="../m?id=<?php echo $author_id; ?>" target="_blank"><?php echo $author; ?></a></b></span></p>
-						<p><span>改造元：<b><a href="../s?id=<?php echo $source_id; ?>" target="_blank"><?php echo $source_title; ?></a></b></span></p>
+						<p><span>作成者：<b><a href="../m?id=<?php echo $author_id; ?>" target="_blank"><?php echo htmlspecialchars($author); ?></a></b></span></p>
+						<p><span>改造元：<b><a href="../s?id=<?php echo $source_id; ?>" target="_blank"><?php echo htmlspecialchars($source_title); ?></a></b></span></p>
 						<?php endif; ?>
 					</div>
 					<div class="col-xs-6 col-sm-3 h4p_info-restaging">
@@ -391,7 +391,7 @@ if ($mode === 'quest') {
 					</div>
 					<?php if ($explain !== NULL && $explain !== '') : ?>
 					<div class="col-xs-12 h4p_info-explain">
-						<p class="overflow-auto"><?php echo $explain; ?></p>
+						<p class="overflow-auto"><?php echo htmlspecialchars($explain); ?></p>
 					</div>
 					<?php endif; ?>
 					<div class="col-xs-12 h4p_share-buttons">
