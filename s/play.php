@@ -4,6 +4,7 @@
 Input:	id
 Stage.State:
   published:公開されている/プレイ可能
+  private:  非公開/プレイ可能
   judging:	審査中/自分のみプレイ可能
   queue:	処理中/プレイ不可能
   rejected:	審査等でリジェクトされた/自分のみプレイ可能
