@@ -705,6 +705,9 @@ $(function(){
 						'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=restaging'
 					});
 				}
+
+				// ゲーム画面にスクロール
+				window.scroll(0, $('.h4p_game').offset().top - 100);
 			});
 			$('.h4p_save_button').on('click', function() {
 				// Save
