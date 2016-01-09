@@ -644,6 +644,15 @@ window.addEventListener('load', function() {
 			sessionStorage.setItem('external-soundcloud-url', arguments[1]);
 			window.parent.postMessage('external-soundcloud', '/');
 			break;
+			case 'link':
+			if (typeof arguments[1] !== 'string' || arguments[1].match(/^https?\:\/\/.*\.[a-z]+/) === null) {
+				Hack.log('Invalid URL: ' + arguments[1]);
+			} else {
+				var param = { href: arguments[1], html: arguments[2] };
+				sessionStorage.setItem('external-link-param', JSON.stringify(param));
+				window.parent.postMessage('external-link', '/');
+			}
+			break;
 		}
 	};
 
