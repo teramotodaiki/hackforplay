@@ -5,6 +5,7 @@ $(function(){
 	setInterval(function(){
 		var game = $(".h4p_game>iframe").get(0);
 		if(	game !== undefined && game !== document.activeElement && focus_on_game){
+			document.activeElement.blur();
 			var source = "refocus();";	// フォーカスを戻すメソッドをゲーム側で呼び出す
 			game.contentWindow.postMessage(source, '/');
 		}
