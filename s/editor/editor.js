@@ -16,7 +16,8 @@ window.onload = function(){
 		mode: "javascript",
 		lineNumbers: false,
 		indentUnit: 4,
-		autoClossBrackets: true
+		scrollbarStyle: 'simple',
+		autoCloseBrackets: true
 	});
 	jsEditor.setSize(440, 320-60);
 	// ヒントメッセージ送信のリクエスト
