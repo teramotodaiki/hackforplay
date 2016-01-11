@@ -49,6 +49,15 @@ window.addEventListener('message', function (e) {
 	}
 });
 
+// IE11 互換性維持
+Math.sign = Math.sign || function(x) {
+	x = +x; // convert to a number
+	if (x === 0 || isNaN(x)) {
+		return x;
+	}
+	return x > 0 ? 1 : -1;
+};
+
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
