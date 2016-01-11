@@ -65,6 +65,13 @@ window.onload = function(){
 		var source = "if(window.editorTextChanged) editorTextChanged();";
 		game.postMessage(source, policy);
 	});
+	jsEditor.on('focus', function() {
+		$('.phantom').addClass('focus');
+	});
+	jsEditor.on('blur', function() {
+		$('.phantom').removeClass('focus');
+	});
+
 };
 
 window.addEventListener('message', function(e){

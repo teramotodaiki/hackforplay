@@ -34,3 +34,12 @@ input {
 	background-repeat: no-repeat;
 	z-index: 0;
 }
+
+.phantom {
+	opacity: 0.5;
+	transition: opacity 0.5s linear;
+}
+
+.phantom.focus {
+	opacity: 1;
+}
