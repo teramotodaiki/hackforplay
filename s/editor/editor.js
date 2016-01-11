@@ -14,11 +14,11 @@ window.addEventListener('click', function(e){
 window.onload = function(){
 	jsEditor = CodeMirror.fromTextArea(document.getElementById('editor_js'), {
 		mode: "javascript",
-		lineNumbers: true,
+		lineNumbers: false,
 		indentUnit: 4,
 		autoClossBrackets: true
 	});
-	jsEditor.setSize(460, 320-44);
+	jsEditor.setSize(440, 320-60);
 	// ヒントメッセージ送信のリクエスト
 	setHint();
 	$("input[name=run]").on('click', run);
