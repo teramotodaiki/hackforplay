@@ -5,6 +5,7 @@ $(function(){
 	setInterval(function(){
 		var game = $(".h4p_game>iframe").get(0);
 		if(	game !== undefined && game !== document.activeElement && focus_on_game){
+			document.activeElement.blur();
 			var source = "refocus();";	// フォーカスを戻すメソッドをゲーム側で呼び出す
 			game.contentWindow.postMessage(source, '/');
 		}
@@ -676,10 +677,9 @@ $(function(){
 				}
 				$(this).hover(function() {
 					focus_on_game = false; // focus on editor
-				}, function() {
-					if (!$('.modal').hasClass('in')) {
-						focus_on_game = true; // focus on game
-					}
+				});
+				$('.h4p_game').hover(function() {
+					focus_on_game = true;
 				});
 			});
 			$(".h4p_info-footer").text("（リステージング中）");
