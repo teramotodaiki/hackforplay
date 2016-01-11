@@ -58,9 +58,11 @@ if ($mode === 'quest') {
 	<script src="editor/keymap/sublime.js" type="text/javascript"></script>
 	<script src="editor/keymap/emacs.js" type="text/javascript"></script>
 	<script src="editor/keymap/vim.js" type="text/javascript"></script>
+	<script src="editor/addon/scroll/simplescrollbars.js" type="text/javascript"></script>
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="editor/addon/dialog/dialog.css">
 	<link rel="stylesheet" href="editor/lib/codemirror.css">
+	<link rel="stylesheet" href="editor/addon/dialog/dialog.css">
+	<link rel="stylesheet" href="editor/addon/scroll/simplescrollbars.css">
 	<link rel="stylesheet" href="../css/cmcolor.css">
 	<style type="text/css" media="screen">
 		.CodeMirror {
