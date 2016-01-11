@@ -34,6 +34,7 @@ window.addEventListener('message', function (e) {
 		try {
 			var hint = Hack ? Hack.hint : ''; // 旧RPGとの互換性を維持するための仕様(hintがないとsetHintされた時にエラー)
 			var game = enchant ? enchant.Core.instance : undefined;
+			console.log('game eval', e.data);
 			eval(e.data);
 		} catch (exception) {
 			if (exception.sourceURL && exception.stack.indexOf('eval') !== -1) {
@@ -182,6 +183,7 @@ window.addEventListener('load', function() {
 					code = Hack.fun2str(code);
 				}
 				_hint = code;
+				console.log('game hint', _hint);
 				sendToEditor('setEditor();');
 			}
 		});
