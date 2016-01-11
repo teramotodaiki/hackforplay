@@ -284,6 +284,7 @@ $(function(){
 	var jsEditor = CodeMirror.fromTextArea($('textarea[name=restaging_code]').get(0), {
 		mode: "javascript",
 		lineNumbers: true,
+		scrollbarStyle: 'simple',
 		indentUnit: 4,
 		indentWithTabs: true,
 		matchBrackets: true,
