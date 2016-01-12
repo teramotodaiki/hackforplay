@@ -184,7 +184,6 @@ window.addEventListener('load', function() {
 				_hint = code;
 				sessionStorage.setItem('enchantbook-set-hint', _hint);
 				sendToEditor('setEditor();');
-				console.log('sendToEditor setEditor call');
 			}
 		});
 

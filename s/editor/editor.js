@@ -12,7 +12,6 @@ window.addEventListener('click', function(e){
 });
 
 window.onload = function(){
-	document.getElementById('editor_js').value = sessionStorage.getItem('enchantbook-set-hint');
 	jsEditor = CodeMirror.fromTextArea(document.getElementById('editor_js'), {
 		mode: "javascript",
 		lineNumbers: false,
@@ -20,10 +19,9 @@ window.onload = function(){
 		scrollbarStyle: 'simple',
 		autoCloseBrackets: true
 	});
-	console.log('created',sessionStorage.getItem('enchantbook-set-hint') );
 	jsEditor.setSize(440, 320-60);
 	// ヒントメッセージ送信のリクエスト
-	// setHint();
+	setHint();
 	$("input[name=run]").on('click', run);
 	$("input[name=cls]").on('click', cls);
 	$("input[name=undo]").on('click', undo);
@@ -78,11 +76,10 @@ window.onload = function(){
 };
 
 window.addEventListener('message', function(e){
-	console.log('editor', e.data);
 	try {
 		eval(e.data);
 	} catch (ex) {
-		console.log(ex);
+		console.error(ex.message);
 	}
 });
 
@@ -138,14 +135,10 @@ function setHint(){
 }
 
 function setEditor(){
-	// // ゲーム側に、ヒントを送信してセットするようリクエストを送る。
-	// // postMessageされることでエスケープ\nが改行になってしまうことを防ぐため、\\nにしている。
-	// var source =
-	// "sendToEditor('jsEditor.setValue(\"'+(Hack.hint).replace(/\\n/g, \"\\\\n\")+'\");');";
-	// game.postMessage(source, policy);
-	// var code = sessionStorage.getItem('enchantbook-set-hint');
-	// console.log('setEditor', code);
-	// if (jsEditor) jsEditor.setValue(code);
+	// sessionStorageを用いて渡した値をsetする
+	var code = sessionStorage.getItem('enchantbook-set-hint');
+	if (jsEditor) jsEditor.setValue(code);
+	else document.getElementById('editor_js').value = code;
 }
 
 function dispatchHackEvent (type) {
