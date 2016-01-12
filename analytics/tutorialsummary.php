@@ -1,6 +1,6 @@
 <?php
 /*
-過去1ヶ月間に作られたAnonymousUserが遊んだStageID[101-106]の数とその後登録した数を取得する
+過去１週間に作られたAnonymousUserが遊んだStageID[101-106]の数とその後登録した数を取得する
 Output:	no-data , parse-error , JSON{summary_of_tutorial}
 {
 	labels : [101-106,Reg],
@@ -12,17 +12,17 @@ try {
 
 	require_once '../preload.php';
 
-	$lastmonth = (new DateTime(NULL, new DateTimeZone('UTC')))->modify('-1 month')->format('Y-m-d H:i:s');
+	$lastweek = (new DateTime(NULL, new DateTimeZone('UTC')))->modify('-1 week')->format('Y-m-d H:i:s');
 
 	// 過去１ヶ月のうち最もIDの若いものを取得
 	$stmt	= $dbh->prepare('SELECT MIN("ID") FROM "AnonymousUser" WHERE "Registered">:now');
-	$stmt->bindValue(":now", $lastmonth, PDO::PARAM_STR);
+	$stmt->bindValue(":now", $lastweek, PDO::PARAM_STR);
 	$stmt->execute();
 	$min_id	= $stmt->fetch(PDO::FETCH_COLUMN);
 
 	// 登録したユーザーの数を取得
 	$stmt	= $dbh->prepare('SELECT COUNT(DISTINCT "UserID") FROM "AnonymousUser" WHERE "Registered">:now');
-	$stmt->bindValue(":now", $lastmonth, PDO::PARAM_STR);
+	$stmt->bindValue(":now", $lastweek, PDO::PARAM_STR);
 	$stmt->execute();
 	$reg	= $stmt->fetch(PDO::FETCH_COLUMN);
 
