@@ -5,6 +5,7 @@ $(function(){
 	setInterval(function(){
 		var game = $(".h4p_game>iframe").get(0);
 		if(	game !== undefined && game !== document.activeElement && focus_on_game){
+			document.activeElement.blur();
 			var source = "refocus();";	// フォーカスを戻すメソッドをゲーム側で呼び出す
 			game.contentWindow.postMessage(source, '/');
 		}
@@ -284,6 +285,7 @@ $(function(){
 	var jsEditor = CodeMirror.fromTextArea($('textarea[name=restaging_code]').get(0), {
 		mode: "javascript",
 		lineNumbers: true,
+		scrollbarStyle: 'simple',
 		indentUnit: 4,
 		indentWithTabs: true,
 		matchBrackets: true,
@@ -675,10 +677,9 @@ $(function(){
 				}
 				$(this).hover(function() {
 					focus_on_game = false; // focus on editor
-				}, function() {
-					if (!$('.modal').hasClass('in')) {
-						focus_on_game = true; // focus on game
-					}
+				});
+				$('.h4p_game').hover(function() {
+					focus_on_game = true;
 				});
 			});
 			$(".h4p_info-footer").text("（リステージング中）");
@@ -705,9 +706,6 @@ $(function(){
 						'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=restaging'
 					});
 				}
-
-				// ゲーム画面にスクロール
-				window.scroll(0, $('.h4p_game').offset().top - 100);
 			});
 			$('.h4p_save_button').on('click', function() {
 				// Save
@@ -762,6 +760,7 @@ $(function(){
 						$('#inputModal').modal('hide');
 						$('.h4p_publish button').addClass('disabled');
 						if(sessionStorage.getItem('project-token') === null){
+							$('.h4p_publish button').removeClass('disabled');
 							// プロジェクトが作られていないので、作成
 							makeProject(function() {
 								publishTask();
@@ -1093,7 +1092,7 @@ $(function(){
 				path: getParam('path'),
 				source_id: getParam('id')
 			};
-			$("#h4p_publish button").button('loading');
+			$(".h4p_publish button").button('loading');
 			$.post('../project/enqueue.php', {
 				token: sessionStorage.getItem('project-token'),
 				code: jsEditor.getValue(''),
@@ -1103,7 +1102,7 @@ $(function(){
 				stage_info: JSON.stringify(stage_info),
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			} , function(data, textStatus, xhr) {
-				$('#h4p_publish button').button('reset');
+				$('.h4p_publish button').button('reset');
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを投稿するには、ログインしてください');
@@ -1124,7 +1123,7 @@ $(function(){
 						showAlert('alert-danger', 'エラーにより投稿できませんでした');
 						break;
 					case 'success':
-						$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled');
+						$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled').addClass('disabled');
 						$(".h4p_published-info").removeClass('hidden');
 						alert_on_unload = false; // 遷移時の警告を非表示
 						focus_on_game = false; // iframeにfocusできるように
