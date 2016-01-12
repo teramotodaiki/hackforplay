@@ -21,6 +21,7 @@ window.onload = function(){
 	});
 	jsEditor.setSize(440, 320-60);
 	// ヒントメッセージ送信のリクエスト
+	setEditor();
 	setHint();
 	$("input[name=run]").on('click', run);
 	$("input[name=cls]").on('click', cls);
