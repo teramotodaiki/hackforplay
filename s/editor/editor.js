@@ -76,7 +76,6 @@ window.onload = function(){
 };
 
 window.addEventListener('message', function(e){
-	console.log('editor eval', e.data);
 	eval(e.data);
 });
 
@@ -134,7 +133,6 @@ function setHint(){
 function setEditor(){
 	// ゲーム側に、ヒントを送信してセットするようリクエストを送る。
 	// postMessageされることでエスケープ\nが改行になってしまうことを防ぐため、\\nにしている。
-	console.log('editor', 'setEditor');
 	var source =
 	"sendToEditor('jsEditor.setValue(\"'+(Hack.hint).replace(/\\n/g, \"\\\\n\")+'\");');";
 	game.postMessage(source, policy);
