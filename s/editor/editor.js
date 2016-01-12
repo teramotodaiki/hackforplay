@@ -17,8 +17,10 @@ window.onload = function(){
 		lineNumbers: false,
 		indentUnit: 4,
 		scrollbarStyle: 'simple',
+		value: sessionStorage.getItem('enchantbook-set-hint'),
 		autoCloseBrackets: true
 	});
+	console.log('created',sessionStorage.getItem('enchantbook-set-hint') );
 	jsEditor.setSize(440, 320-60);
 	// ヒントメッセージ送信のリクエスト
 	setHint();
