@@ -289,11 +289,13 @@ iframe {
 }
 
 .visible-query-toggle,
+.visible-query-replace,
 .visible-query-embed {
 	display: none;
 }
 
 .query-toggle .visible-query-toggle,
+.query-replace .visible-query-replace,
 .query-embed .visible-query-embed {
 	display: block;
 }

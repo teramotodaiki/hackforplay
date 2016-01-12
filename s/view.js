@@ -867,7 +867,7 @@ $(function(){
 						$(this).addClass('toggle-clicked');
 						// $(this).insertBefore('.smart-asset-entity:first');
 					}
-				}).on('init.hfp', '.query-embed', function(event, asset) {
+				}).on('init.hfp', '.query-embed,.query-replace', function(event, asset) {
 					$(this).find('.title').text(asset.title);
 					$(this).find('img.embed-icon').attr('src', asset.image).on('load', function() {
 						var size = $(this).parent().outerHeight($(this).parent().parent().width()).height();
@@ -893,27 +893,26 @@ $(function(){
 				}).on('init.hfp', '.query-toggle', function(event, asset) {
 					$(this).find('.title').text(asset.title);
 					$(this).find('.media-image').attr('src', asset.media);
-				}).on('show.hfp', '.query-embed', function(event, asset) {
+				}).on('show.hfp', '.query-embed,.query-replace', function(event, asset) {
 					// Update Embed Code
 					$(this).trigger('update.hfp', asset);
-				}).on('click', '.query-embed button', function(event) {
+				}).on('click', '.query-embed button,.query-replace button', function(event) {
 					// Get asset
-					var $div = $(this).parents('.query-embed'),
+					var $div = $(this).parents('.query-embed,.query-replace'),
 					index = $div.data('index') >> 0,
 					asset = smartAsset.apps[index];
 					// Get code
-					jsEditor.save();
-					var code = jsEditor.getTextArea().value,
+					var code = jsEditor.getValue(''),
 					keyword = $div.data('keyword'),
 					replacement = $div.data('replacement'),
-					splited = code.split(keyword);
+					splited = code.split(keyword),
+					length = $div.data('length');
 					// Replace
 					jsEditor.setValue(splited.join(replacement));
-					jsEditor.save();
 					if (splited.length > 1) {
 						jsEditor.setSelection({
 							line: splited[0].split('\n').length, ch: 0 }, {
-							line: splited[0].split('\n').length + replacement.split('\n').length - 5, ch: 0 }, {
+							line: splited[0].split('\n').length + length, ch: 0 }, {
 							scroll: true
 						});
 					}
@@ -925,9 +924,8 @@ $(function(){
 					$('.h4p_restaging_button').trigger('click');
 					$(this).trigger('update.hfp', asset); // Update code
 					return false;
-				}).on('update.hfp', '.query-embed', function(event, asset) {
-					jsEditor.save();
-					var code = jsEditor.getTextArea().value;
+				}).on('update.hfp', '.query-embed,.query-replace', function(event, asset) {
+					var code = jsEditor.getValue('');
 					// regExp に一致する matches について、それぞれ head, indent, comment に分割
 					var placeholders = (function (regExp) {
 						var result = [];
@@ -941,7 +939,25 @@ $(function(){
 							});
 						});
 						return result;
-					})(/(^|\n)([ \t]*)(\/\/.*\/\/\n)/g);
+					})(/(^|\n)([ \t]*)(\/\/.*\/\/\n)/g).filter(function(p) {
+						var raw = asset.identifier,
+						identifier = typeof raw === 'string' ? raw.split('') : raw instanceof Array ? raw : [];
+						return identifier.every(function (keyword) {
+							return p.comment.indexOf(keyword) > -1;
+						});
+					});
+					// Pattern matching
+					var patterns = asset.query === 'replace' && asset.pattern ? (function () {
+						var regExp = new RegExp('(^|\n)([ \t]*)(' + asset.pattern + ')');
+						var result = regExp.exec(code);
+						if (!result) return null;
+						return [{
+							raw: result[0],
+							head: result[1],
+							indent: result[2],
+							comment: ''
+						}];
+					})() : null;
 					// Make dictionaly
 					var dictionaly = (asset.variables || []).map(function(item) {
 						// Variable
@@ -973,14 +989,13 @@ $(function(){
 					});
 					// Replacement (ALL keywords contains)
 					var replacement = null;
-					placeholders.filter(function (p) {
-						var raw = asset.identifier,
-						identifier = typeof raw === 'string' ? raw.split('') : raw instanceof Array ? raw : [];
-						return identifier.every(function (keyword) {
-							return p.comment.indexOf(keyword) > -1;
-						});
-					}).forEach(function (p) {
-						replacement = [
+					(patterns || placeholders).forEach(function (p) {
+						replacement = patterns ?
+						[
+							p.head, // 事前の改行または行頭
+							lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
+						].join(p.indent) :
+						[
 							p.head, // 事前の改行または行頭
 							lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
 							'\n', '\n', // ２つの空行
@@ -988,7 +1003,8 @@ $(function(){
 						].join(p.indent);
 						$(this).data({
 							'keyword': p.raw,
-							'replacement': replacement
+							'replacement': replacement,
+							'length': lines.length
 						});
 					}, this);
 					// Set
