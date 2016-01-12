@@ -23,7 +23,7 @@ window.onload = function(){
 	console.log('created',sessionStorage.getItem('enchantbook-set-hint') );
 	jsEditor.setSize(440, 320-60);
 	// ヒントメッセージ送信のリクエスト
-	setHint();
+	// setHint();
 	$("input[name=run]").on('click', run);
 	$("input[name=cls]").on('click', cls);
 	$("input[name=undo]").on('click', undo);
