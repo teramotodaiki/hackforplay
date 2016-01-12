@@ -12,12 +12,12 @@ window.addEventListener('click', function(e){
 });
 
 window.onload = function(){
+	document.getElementById('editor_js').value = sessionStorage.getItem('enchantbook-set-hint');
 	jsEditor = CodeMirror.fromTextArea(document.getElementById('editor_js'), {
 		mode: "javascript",
 		lineNumbers: false,
 		indentUnit: 4,
 		scrollbarStyle: 'simple',
-		value: sessionStorage.getItem('enchantbook-set-hint'),
 		autoCloseBrackets: true
 	});
 	console.log('created',sessionStorage.getItem('enchantbook-set-hint') );
@@ -143,9 +143,9 @@ function setEditor(){
 	// var source =
 	// "sendToEditor('jsEditor.setValue(\"'+(Hack.hint).replace(/\\n/g, \"\\\\n\")+'\");');";
 	// game.postMessage(source, policy);
-	var code = sessionStorage.getItem('enchantbook-set-hint');
-	console.log('setEditor', code);
-	if (jsEditor) jsEditor.setValue(code);
+	// var code = sessionStorage.getItem('enchantbook-set-hint');
+	// console.log('setEditor', code);
+	// if (jsEditor) jsEditor.setValue(code);
 }
 
 function dispatchHackEvent (type) {
