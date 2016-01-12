@@ -435,7 +435,7 @@ if ($mode === 'quest') {
 				</div>
 				<div class="smart-asset-wrapper toggle-click-true scroll-y">
 					<div class="row">
-						<div class="col-xs-12 visible-query-embed visible-query-toggle">
+						<div class="col-xs-12 visible-query-embed visible-query-toggle visible-query-replace">
 							<h4 class="title"></h4>
 						</div>
 						<div class="col-xs-12 visible-query-toggle">
@@ -444,20 +444,20 @@ if ($mode === 'quest') {
 							</div>
 						</div>
 						<div class="col-xs-3">
-							<div class="overflow-hidden embed-frame visible-query-embed">
+							<div class="overflow-hidden embed-frame visible-query-embed visible-query-replace">
 								<img class="embed-icon"></img>
 							</div>
 						</div>
 						<div class="col-xs-9">
-							<p class="visible-query-embed embed-caption"></p>
+							<p class="visible-query-embed visible-query-replace embed-caption"></p>
 						</div>
 						<div class="col-xs-8">
-							<button type="button" class="btn btn-lg btn-block btn-primary visible-query-embed">
+							<button type="button" class="btn btn-lg btn-block btn-primary visible-query-embed visible-query-replace">
 								つかう
 							</button>
 						</div>
 						<div class="col-xs-12">
-							<div class="embed-code visible-query-embed scroll-x"></div>
+							<div class="embed-code visible-query-embed visible-query-replace scroll-x"></div>
 						</div>
 					</div>
 				</div>

@@ -594,6 +594,17 @@ window.addEventListener('load', function () {
 				};
 			}, 1);
 		}
+	}, {
+		title: 'SoundCloud API',
+		image: 'service/soundcloud-icon.png',
+		trim: { left: 0, top: 0, width: 32, height: 32 },
+		query: 'replace',
+		caption: 'サウンドクラウドのAPI（エーピーアイ）をつかって、ゲームのなかで サウンドをならそう！',
+		identifier: '()',
+		pattern: /Hack\.openSoundCloud\([0-9]*\);?.*\n/g.source,
+		code: function () {
+			Hack.openSoundCloud(23208586);
+		}
 	}).setCounter({
 		name: '__cnt15',
 		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))
