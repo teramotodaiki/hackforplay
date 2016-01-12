@@ -138,8 +138,10 @@ function setHint(){
 function setEditor(){
 	// sessionStorageを用いて渡した値をsetする
 	var code = sessionStorage.getItem('enchantbook-set-hint');
-	if (jsEditor) jsEditor.setValue(code);
-	else document.getElementById('editor_js').value = code;
+	if (code) {
+		if (jsEditor) jsEditor.setValue(code);
+		else document.getElementById('editor_js').value = code;
+	}
 }
 
 function dispatchHackEvent (type) {
