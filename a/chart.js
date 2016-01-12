@@ -129,11 +129,20 @@ $(function(){
 				labels : result.labels,
 				datasets : [
 					{
+						label: 'Last week',
+						fillColor : "rgba(60,110,220,0.2)",
+						strokeColor : "rgba(60,110,220,0.4)",
+						highlightFill: "rgba(60,110,220,0.45)",
+						highlightStroke: "rgba(60,110,220,0.6)",
+						data : result.lastweek
+					},
+					{
+						label: 'This week',
 						fillColor : "rgba(60,110,220,0.5)",
 						strokeColor : "rgba(60,110,220,0.8)",
 						highlightFill: "rgba(60,110,220,0.75)",
 						highlightStroke: "rgba(60,110,220,1)",
-						data : result.values
+						data : result.thisweek
 					}
 				]
 			}, {
