@@ -126,9 +126,6 @@ function renderUI () {
 function setHint(){
 	// ゲーム側に、ヒントを送信してセットするようリクエストを送る。
 	// postMessageされることでエスケープ\nが改行になってしまうことを防ぐため、\\nにしている。
-	console.log('editor', 'setHint');
-	game.postMessage('console.log(hint);', '/');
-	game.postMessage('console.log(hint.replace(/\\n/g, "\\\\n"));', '/');
 	var source =
 	"sendToEditor('jsEditor.setValue(\"'+(hint).replace(/\\n/g, \"\\\\n\")+'\");');";
 	game.postMessage(source, policy);
