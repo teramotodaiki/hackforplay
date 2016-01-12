@@ -728,14 +728,14 @@ window.addEventListener('load', function() {
 						this.moveTo(track.artwork_url ? 40 : 0, 14);
 					}).call(new Label(track.title));
 					// Artwork
-					(function () {
-						var i = this.image = new Surface(this.width, this.height);
-						Hack.soundCloudCredit.addChild(this);
-						Surface.load(track.artwork_url, function (event) {
-							var t = event.target;
-							i.draw(t, 0, 0, t.width, t.height, 0, 0, i.width, i.height);
-						});
-					}).call(new Sprite(32, 32));
+					// (function () {
+					// 	var i = this.image = new Surface(this.width, this.height);
+					// 	Hack.soundCloudCredit.addChild(this);
+					// 	Surface.load(track.artwork_url, function (event) {
+					// 		var t = event.target;
+					// 		i.draw(t, 0, 0, t.width, t.height, 0, 0, i.width, i.height);
+					// 	});
+					// }).call(new Sprite(32, 32));
 					Hack.soundCloudCredit.tl.moveBy(0, -32, 20);
 					// Streaming
 					return SC.stream(param);
