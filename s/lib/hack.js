@@ -747,6 +747,8 @@ window.addEventListener('load', function() {
 				player.on('play-start', function(event) {
 					Hack.soundCloudCredit.tl.delay(game.fps * 4).moveBy(0, 32, 20);
 				});
+				// Logging
+				postAPILog('soundcloud', id);
 			}).catch(function (message) {
 				if (failed) failed(message);
 				else Hack.log(message.message);
@@ -821,4 +823,15 @@ window.addEventListener('load', function() {
 			Hack.defaultParentNode = game.rootScene;
 		}
     });
+
+    function postAPILog (service, id) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open('POST', '../../analytics/apilog.php', true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		var data = { service: service, id: id, stage: sessionStorage.getItem('stage_param_id') };
+		var serialized = Object.keys(data).map(function(key) {
+			return key + '=' + data[key];
+		}).join('&');
+		xhttp.send(serialized);
+    }
 });
