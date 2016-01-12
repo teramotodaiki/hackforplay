@@ -21,6 +21,7 @@ window.onload = function(){
 	});
 	jsEditor.setSize(440, 320-60);
 	// ヒントメッセージ送信のリクエスト
+	setEditor();
 	setHint();
 	$("input[name=run]").on('click', run);
 	$("input[name=cls]").on('click', cls);
@@ -76,7 +77,11 @@ window.onload = function(){
 };
 
 window.addEventListener('message', function(e){
-	eval(e.data);
+	try {
+		eval(e.data);
+	} catch (ex) {
+		console.error(ex.message);
+	}
 });
 
 function run(){
@@ -131,11 +136,10 @@ function setHint(){
 }
 
 function setEditor(){
-	// ゲーム側に、ヒントを送信してセットするようリクエストを送る。
-	// postMessageされることでエスケープ\nが改行になってしまうことを防ぐため、\\nにしている。
-	var source =
-	"sendToEditor('jsEditor.setValue(\"'+(Hack.hint).replace(/\\n/g, \"\\\\n\")+'\");');";
-	game.postMessage(source, policy);
+	// sessionStorageを用いて渡した値をsetする
+	var code = sessionStorage.getItem('enchantbook-set-hint');
+	if (jsEditor) jsEditor.setValue(code);
+	else document.getElementById('editor_js').value = code;
 }
 
 function dispatchHackEvent (type) {

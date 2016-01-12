@@ -182,6 +182,7 @@ window.addEventListener('load', function() {
 					code = Hack.fun2str(code);
 				}
 				_hint = code;
+				sessionStorage.setItem('enchantbook-set-hint', _hint);
 				sendToEditor('setEditor();');
 			}
 		});
