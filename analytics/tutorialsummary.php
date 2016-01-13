@@ -8,7 +8,6 @@ Output:	no-data , parse-error , JSON{summary_of_tutorial}
 	lastweek : [チュートリアル挑戦率(先週１週間)]
 }
 */
-
 try {
 
 	require_once '../preload.php';
