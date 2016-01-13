@@ -7,7 +7,6 @@ Output:	no-data , parse-error , JSON{summary_of_tutorial}
 	values : [チュートリアル挑戦率]
 }
 */
-
 try {
 
 	require_once '../preload.php';
