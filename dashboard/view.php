@@ -30,8 +30,9 @@
 				</div>
 			</div>
 			<div class="col-xs-12 panel panel-default" style="padding-left: 200px; padding-right: 200px">
+				<h3 class="text-center">セッション時間　[秒]</h3>
 				<div class="panel-body">
-					<canvas id="summary1"></canvas>
+					<canvas id="sessiontime"></canvas>
 				</div>
 			</div>
 		</div>
