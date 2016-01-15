@@ -4,7 +4,7 @@ $(function(){
 		var result = $.parseJSON(data);
 		if (!result) return;
 
-		new Chart($('canvas#sessiontime').get(0).getContext("2d")).Line({
+		new Chart($('canvas#sessiontime').get(0).getContext("2d")).Bar({
 			labels : result.labels,
 			datasets : [
 				{
@@ -15,7 +15,9 @@ $(function(){
 					pointStrokeColor : "#fff",
 					pointHighlightFill : "#fff",
 					pointHighlightStroke : "rgba(220,220,220,1)",
-					data : result.thisweek
+					data : result.thisweek.map(function(num) {
+						return (num / 360 | 0) / 10;
+					})
 				}
 			]
 		}, {
