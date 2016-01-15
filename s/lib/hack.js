@@ -690,13 +690,11 @@ window.addEventListener('load', function() {
 				Hack.log('Hack.openSoundCloud can be called only once in the playing');
 			} else if (typeof id === 'string') {
 				// Resolve URL
-				console.log(id);
-				var result = SC.resolve(id).then(function  (info) {
-					console.log(info);
-				}, function (error) {
-					console.log(error);
+				var api = '/resolve?url=' + id;
+				console.log(api);
+				SC.get(api, { limit: 1 }, function (result) {
+					console.log(result);
 				});
-				console.log(result);
 			} else if (typeof id === 'number') {
 				// Success calling
 				window.parent.postMessage('use_soundcloud', '/');
