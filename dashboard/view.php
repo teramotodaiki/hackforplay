@@ -41,6 +41,12 @@
 					<canvas id="projectnum" class="width-fit"></canvas>
 				</div>
 			</div>
+			<div class="col-xs-12 panel panel-default">
+				<div class="panel-body text-center">
+					<h4>ほかに、どんなチャートがみたいですか？</h4>
+					<a class="btn btn-info btn-lg" href="http://hackforplay.weebly.com/contact.html" title="リクエストしてみよう！" target="_blank">リクエストしてみよう！ <span class="glyphicon glyphicon-new-window"></span> </a>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>
