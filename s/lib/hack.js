@@ -826,13 +826,22 @@ window.addEventListener('load', function() {
     });
 
     function postAPILog (service, id) {
+		postRequest('../../analytics/apilog.php', {
+			service: service,
+			id: id,
+			stage: sessionStorage.getItem('stage_param_id')
+		});
+    }
+
+    function postRequest (path, params, success, error) {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open('POST', '../../analytics/apilog.php', true);
+		xhttp.open('POST', path, true);
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		var data = { service: service, id: id, stage: sessionStorage.getItem('stage_param_id') };
-		var serialized = Object.keys(data).map(function(key) {
-			return key + '=' + data[key];
+		var serialized = Object.keys(params).map(function(key) {
+			return key + '=' + params[key];
 		}).join('&');
 		xhttp.send(serialized);
+		xhttp.onload = success;
+		xhttp.onerror = error;
     }
 });
