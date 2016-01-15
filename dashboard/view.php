@@ -29,10 +29,16 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-12 panel panel-default" style="padding-left: 200px; padding-right: 200px">
+			<div class="col-xs-6 panel panel-default">
 				<h3 class="text-center">セッション時間　[時間]</h3>
 				<div class="panel-body">
 					<canvas id="sessiontime"></canvas>
+				</div>
+			</div>
+			<div class="col-xs-6 panel panel-default">
+				<h3 class="text-center">プロジェクト数　[個]</h3>
+				<div class="panel-body">
+					<canvas id="projectnum"></canvas>
 				</div>
 			</div>
 		</div>
