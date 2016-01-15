@@ -32,13 +32,13 @@
 			<div class="col-xs-6 panel panel-default">
 				<h3 class="text-center">セッション時間　[時間]</h3>
 				<div class="panel-body">
-					<canvas id="sessiontime"></canvas>
+					<canvas id="sessiontime" class="width-fit"></canvas>
 				</div>
 			</div>
 			<div class="col-xs-6 panel panel-default">
 				<h3 class="text-center">プロジェクト数　[個]</h3>
 				<div class="panel-body">
-					<canvas id="projectnum"></canvas>
+					<canvas id="projectnum" class="width-fit"></canvas>
 				</div>
 			</div>
 		</div>
