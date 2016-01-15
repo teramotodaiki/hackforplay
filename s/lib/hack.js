@@ -689,22 +689,20 @@ window.addEventListener('load', function() {
 			if (!openSoundCloud) {
 				Hack.log('Hack.openSoundCloud can be called only once in the playing');
 			} else if (typeof id === 'string') {
-				// Resolve URL
-				var api = '/resolve?url=' + id;
-				console.log(api);
-				SC.get(api, { limit: 1 }, function (result) {
-					console.log(result);
-				});
+				// Success calling
+				window.parent.postMessage('use_soundcloud', '/');
+				openSoundCloud('resolve/?url=' + id, successed, failed);
+				openSoundCloud = null;
 			} else if (typeof id === 'number') {
 				// Success calling
 				window.parent.postMessage('use_soundcloud', '/');
-				openSoundCloud('tracks', id, successed, failed);
+				openSoundCloud('tracks/' + id, successed, failed);
 				openSoundCloud = null;
 			}
 		};
-		function openSoundCloud (resource, id, successed, failed) {
-			var param = resource + '/' + id, result = {};
-			SC.get(param).then(function (track) {
+		function openSoundCloud (api, successed, failed) {
+			var result = {};
+			SC.get(api).then(function (track) {
 				result.track = track;
 				var allowed = ['no-rights-reserved', 'cc-by', 'cc-by-nd', 'cc-by-sa'];
 				if (allowed.indexOf(track.license) === -1) {
@@ -741,7 +739,7 @@ window.addEventListener('load', function() {
 					// }).call(new Sprite(32, 32));
 					Hack.soundCloudCredit.tl.moveBy(0, -32, 20);
 					// Streaming
-					return SC.stream(param);
+					return SC.stream('/tracks/' + track.id);
 				}
 			}).then(function (player) {
 				result.player = player;
@@ -751,7 +749,7 @@ window.addEventListener('load', function() {
 					Hack.soundCloudCredit.tl.delay(game.fps * 4).moveBy(0, 32, 20);
 				});
 				// Logging
-				postAPILog('soundcloud', id);
+				postAPILog('soundcloud', result.track.id);
 			}).catch(function (message) {
 				if (failed) failed(message);
 				else Hack.log(message.message);
