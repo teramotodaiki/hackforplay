@@ -49,6 +49,7 @@
 /* 幅・高さ属性 */
 .width-fit {
 	width: 100%;
+	max-width: 100%;
 }
 
 nav #img-usericon {
