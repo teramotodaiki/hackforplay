@@ -667,8 +667,8 @@ window.addEventListener('load', function() {
 	};
 
 	/**
-	 * Hack.openSoundCloud(resource:String, id:Number[, successed:Function, failed:Function])
-	 * resource: defaults '/tracks'
+	 * Hack.openSoundCloud(url:String|id:Number[, successed:Function, failed:Function])
+	 * url: SoundCloud URL (like https://soundcloud.com/......)
 	 * id: resource ID (like 123)
 	 * successed: callback function (if ignore it, do AUTO PLAY)
 	 * failed: callback function
@@ -682,25 +682,30 @@ window.addEventListener('load', function() {
 		Hack.soundCloudCredit = new Group();
 		Hack.soundCloudCredit.moveTo(0, 320);
 		Hack.menuGroup.addChild(Hack.soundCloudCredit);
-		Hack.openSoundCloud = function (resource, id, successed, failed) {
-			var args = Array.prototype.slice.call(arguments);
-			if (typeof args[0] === 'number') return Hack.openSoundCloud('/tracks', args[0], args[1], args[2]);
-			else if (['/tracks'].indexOf(resource) === -1) {
-				Hack.log('Hack.openSoundCloud', resource, 'is unsupported. Use: /tracks');
-			} else if (!openSoundCloud) {
+		SC.initialize({
+			client_id: '52532cd2cd109c968a6c795b919898e8'
+		});
+		Hack.openSoundCloud = function (id, successed, failed) {
+			if (!openSoundCloud) {
 				Hack.log('Hack.openSoundCloud can be called only once in the playing');
-			} else {
+			} else if (typeof id === 'string') {
+				// Resolve URL
+				console.log(id);
+				var result = SC.resolve(id).then(function  (info) {
+					console.log(info);
+				}, function (error) {
+					console.log(error);
+				});
+				console.log(result);
+			} else if (typeof id === 'number') {
 				// Success calling
 				window.parent.postMessage('use_soundcloud', '/');
-				openSoundCloud(resource, id, successed, failed);
+				openSoundCloud('tracks', id, successed, failed);
 				openSoundCloud = null;
 			}
 		};
 		function openSoundCloud (resource, id, successed, failed) {
 			var param = resource + '/' + id, result = {};
-			SC.initialize({
-				client_id: '52532cd2cd109c968a6c795b919898e8'
-			});
 			SC.get(param).then(function (track) {
 				result.track = track;
 				var allowed = ['no-rights-reserved', 'cc-by', 'cc-by-nd', 'cc-by-sa'];
