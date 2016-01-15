@@ -603,7 +603,7 @@ window.addEventListener('load', function () {
 		identifier: '()',
 		pattern: /Hack\.openSoundCloud\([0-9]*\);?.*\n/g.source,
 		code: function () {
-			Hack.openSoundCloud(23208586);
+			Hack.openSoundCloud('https://soundcloud.com/nelward/splatoon-main-theme-snes-ey-remix');
 		}
 	}).setCounter({
 		name: '__cnt15',
