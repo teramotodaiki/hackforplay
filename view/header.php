@@ -281,6 +281,9 @@ $(function(){
 					</a>
 				</li>
 				<?php endif; ?>
+				<li>
+					<a href="/dashboard/" title="ダッシュボード">ダッシュボード</a>
+				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown notification-icon">
