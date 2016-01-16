@@ -80,8 +80,8 @@ try {
 
 	$stmt	= $dbh->prepare('INSERT INTO "ImageCache"("Origin","Width","Height","PngData") VALUES(:origin,:width,:height,:contents)');
 	$stmt->bindValue(":origin", $origin, PDO::PARAM_STR);
-	$stmt->bindValue(":width", $width, PDO::PARAM_STR);
-	$stmt->bindValue(":height", $height, PDO::PARAM_STR);
+	$stmt->bindValue(":width", $width, PDO::PARAM_INT);
+	$stmt->bindValue(":height", $height, PDO::PARAM_INT);
 	$stmt->bindValue(":contents", $contents, PDO::PARAM_LOB);
 	$flag	= $stmt->execute();
 	if (!$flag) {
