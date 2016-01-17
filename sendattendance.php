@@ -35,26 +35,6 @@ Attendance 情報を送信する
 			sessionStorage.setItem('attendance-token', result);
 		});
 	});
-	$(window).on('beforeunload', function(event) {
-		if(_ignore_attendance) return;
-
-		var token = sessionStorage.getItem('attendance-token');
-		if(token === null) return;
-
-		var timezone = new Date().getTimezoneString();
-		$.ajax({
-			url: '/attendance/end.php',
-			type: 'POST',
-			async: false,
-			data: {
-				'timezone': timezone,
-				'attendance-token': token
-			}
-		})
-		.always(function(result){
-			sessionStorage.removeItem('attendance-token');
-			return;
-		});
-	});
+	// /attendance/end.phpは廃止
 })();
 </script>
