@@ -86,7 +86,7 @@ try {
 	$stmt->bindValue(":width", $width, PDO::PARAM_INT);
 	$stmt->bindValue(":height", $height, PDO::PARAM_INT);
 	$stmt->bindValue(":filename", $filename, PDO::PARAM_STR);
-	$flag	= $stmt->execute();
+	$stmt->execute();
 
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';

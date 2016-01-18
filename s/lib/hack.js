@@ -735,7 +735,6 @@ window.addEventListener('load', function() {
 							origin: track.artwork_url,
 							width: i.width, height: i.height
 						}, function () {
-							console.log(this.responseText);
 							if (this.responseText === 'NG') return;
 							Surface.load(this.responseText, function (event) {
 								var t = event.target;
