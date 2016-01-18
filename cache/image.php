@@ -76,6 +76,9 @@ try {
 	imagepng($dist, './imagedata/' . $filename);
 	imagedestroy($dist);
 
+	echo '/cache/imagedata/' . $filename;
+	exit();
+
 	$stmt	= $dbh->prepare('INSERT INTO "ImageCache"("Origin","Width","Height","Filename") VALUES(:origin,:width,:height,:filename)');
 	$stmt->bindValue(":origin", $origin, PDO::PARAM_STR);
 	$stmt->bindValue(":width", $width, PDO::PARAM_INT);
@@ -86,7 +89,6 @@ try {
 		exit('NG');
 	}
 
-	echo '/cache/imagedata/' . $filename;
 
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';
