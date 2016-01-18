@@ -73,7 +73,12 @@ try {
 	$bytes		= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
 	$filename	= bin2hex($bytes).'.png'; // binaly to hex
 
-	imagepng($dist, './imagedata/' . $filename);
+	$flag = imagepng($dist, './imagedata/' . $filename);
+	if ($flag) {
+		echo '/cache/imagedata/' . $filename;
+	} else {
+		exit('NG');
+	}
 	imagedestroy($dist);
 
 	$stmt	= $dbh->prepare('INSERT INTO "ImageCache"("Origin","Width","Height","Filename") VALUES(:origin,:width,:height,:filename)');
@@ -82,10 +87,6 @@ try {
 	$stmt->bindValue(":height", $height, PDO::PARAM_INT);
 	$stmt->bindValue(":filename", $filename, PDO::PARAM_STR);
 	$flag	= $stmt->execute();
-	if (!$flag) {
-		exit('NG');
-	}
-
 
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';
