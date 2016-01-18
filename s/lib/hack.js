@@ -731,12 +731,12 @@ window.addEventListener('load', function() {
 					(function () {
 						var i = this.image = new Surface(this.width, this.height);
 						Hack.soundCloudCredit.addChild(this);
-						postRequest('/image/cache.php', {
+						postRequest('/cache/image.php', {
 							origin: track.artwork_url,
 							width: i.width, height: i.height
 						}, function () {
 							if (this.responseText === 'NG') return;
-							Surface.load('/image/get.php?id=' + this.responseText, function (event) {
+							Surface.load(this.responseText, function (event) {
 								var t = event.target;
 								i.draw(t, 0, 0, t.width, t.height, 0, 0, i.width, i.height);
 							});
