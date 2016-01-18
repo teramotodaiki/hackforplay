@@ -1,9 +1,9 @@
 <?php
 /**
- * cache.php
- * Original URL から png画像を取得し サムネイルにして (したものを) 取得する
+ * image.php
+ * Original URL から 画像を取得し サムネイル(png)にして (したものを) 取得する
  * Input: Origin , width , height
- * Output: NG , {id:Int}
+ * Output: NG , {URL:string}
 */
 
 try {
@@ -20,7 +20,7 @@ try {
 	}
 
 	// Use cache
-	$stmt	= $dbh->prepare('SELECT "ID","Width","Height" FROM "ImageCache" WHERE "Origin"=:origin');
+	$stmt	= $dbh->prepare('SELECT "Width","Height","Filename" FROM "ImageCache" WHERE "Origin"=:origin');
 	$stmt->bindValue(":origin", $origin, PDO::PARAM_STR);
 	$stmt->execute();
 	while ($cache = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -29,7 +29,7 @@ try {
 			(isset($height) && $height != $cache['Height'])) {
 			continue; // 指定サイズに沿わない
 		} else {
-			echo $cache['ID'];
+			echo '/cache/imagedata/' . $cache['Filename'];
 			exit();
 		}
 	}
@@ -71,24 +71,22 @@ try {
 
 	// Make file (temporary)
 	$bytes		= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
-	$filename	= './'.bin2hex($bytes).'.png'; // binaly to hex
-	imagepng($dist, $filename);
+	$filename	= bin2hex($bytes).'.png'; // binaly to hex
+
+	imagepng($dist, './imagedata/' . $filename);
 	imagedestroy($dist);
 
-	$contents	= file_get_contents($filename);
-	unlink($filename);
-
-	$stmt	= $dbh->prepare('INSERT INTO "ImageCache"("Origin","Width","Height","PngData") VALUES(:origin,:width,:height,:contents)');
+	$stmt	= $dbh->prepare('INSERT INTO "ImageCache"("Origin","Width","Height","Filename") VALUES(:origin,:width,:height,:filename)');
 	$stmt->bindValue(":origin", $origin, PDO::PARAM_STR);
 	$stmt->bindValue(":width", $width, PDO::PARAM_INT);
 	$stmt->bindValue(":height", $height, PDO::PARAM_INT);
-	$stmt->bindValue(":contents", $contents, PDO::PARAM_LOB);
+	$stmt->bindValue(":filename", $filename, PDO::PARAM_STR);
 	$flag	= $stmt->execute();
 	if (!$flag) {
 		exit('NG');
 	}
 
-	echo $dbh->lastInsertId('ImageCache');
+	echo '/cache/imagedata/' . $filename;
 
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';
