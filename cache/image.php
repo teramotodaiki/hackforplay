@@ -73,7 +73,10 @@ try {
 	$bytes		= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
 	$filename	= bin2hex($bytes).'.png'; // binaly to hex
 
-	imagepng($dist, './imagedata/' . $filename);
+	$flag = imagepng($dist, './imagedata/' . $filename);
+	if (!$flag) {
+		exit('imagepng failed');
+	}
 	imagedestroy($dist);
 
 	echo '/cache/imagedata/' . $filename;
