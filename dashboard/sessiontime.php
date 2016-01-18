@@ -1,7 +1,7 @@
 <?php
 /**
  * sessiontime.php
- *
+ * 30分以内の連続するAttendanceをSessionTimeと定義し、累計時間を求める
 */
 
 
@@ -15,7 +15,7 @@ try {
 
 	$lastweek = (new DateTime())->modify('-8 days'); // Timezoneがあるので、多めにさかのぼる
 
-	$stmt	= $dbh->prepare('SELECT "Begin","End" FROM "Attendance" WHERE "UserID"=:userid AND "End">:lastweek ORDER BY "Begin"');
+	$stmt	= $dbh->prepare('SELECT DISTINCT "Begin" FROM "Attendance" WHERE "UserID"=:userid AND "Begin">:lastweek ORDER BY "Begin"');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":lastweek", $lastweek->format('Y-m-d H:i:s'), PDO::PARAM_STR);
 	$stmt->execute();
@@ -28,18 +28,15 @@ try {
 
 	$cursor	= (new DateTime())->modify('-8 days'); // 初期化
 	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-		if (!isset($row['Begin']) || !isset($row['End'])) {
-			continue;
-		}
+		if (!isset($row['Begin'])) continue;
 		$begin	= new DateTime($row['Begin']);
-		$end	= new DateTime($row['End']);
 		$day	= $begin->format('m/d');
-		if (isset($dist[$day]) && $cursor < $end) {
-			$nextDay = new DateTime($begin->format('Y-m-') . ($begin->format('d') + 1), new DateTimeZone($begin->format('e')));
-			$diff = min($nextDay, $end)->format('U') - max($cursor, $begin)->format('U');
-			$dist[$day]	+= $diff;
-			$cursor	= min($nextDay, $end);
+		// cursor + 30 min > begin なら、 begin - cursor をカウント
+		$cur30	= (new DateTime($cursor->format('Y-m-d H:i:s')))->modify('+30 minutes');
+		if (isset($dist[$day]) && $cur30 > $begin) {
+			$dist[$day]	+= $begin->format('U') - $cursor->format('U');
 		}
+		$cursor = $begin;
 	}
 
 	$result	= new stdClass;

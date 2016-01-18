@@ -1,5 +1,6 @@
 <?php
 /*
++**廃止***
 トークンを取得し、 Attendance レコードを更新する
 Input:	attendance-token
 */

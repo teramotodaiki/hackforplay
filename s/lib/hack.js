@@ -716,7 +716,7 @@ window.addEventListener('load', function() {
 						this.width = 480;
 						this.height = 14;
 						Hack.soundCloudCredit.addChild(this);
-						this.moveTo(track.artwork_url ? 40 : 0, 0);
+						this.moveTo(track.artwork_url ? 32 : 0, 0);
 					}).call(new Label(track.user.username));
 					// Title label
 					(function () {
@@ -726,17 +726,22 @@ window.addEventListener('load', function() {
 						this.width = 480;
 						this.height = 18;
 						Hack.soundCloudCredit.addChild(this);
-						this.moveTo(track.artwork_url ? 40 : 0, 14);
+						this.moveTo(track.artwork_url ? 32 : 0, 14);
 					}).call(new Label(track.title));
-					// Artwork
-					// (function () {
-					// 	var i = this.image = new Surface(this.width, this.height);
-					// 	Hack.soundCloudCredit.addChild(this);
-					// 	Surface.load(track.artwork_url, function (event) {
-					// 		var t = event.target;
-					// 		i.draw(t, 0, 0, t.width, t.height, 0, 0, i.width, i.height);
-					// 	});
-					// }).call(new Sprite(32, 32));
+					(function () {
+						var i = this.image = new Surface(this.width, this.height);
+						Hack.soundCloudCredit.addChild(this);
+						postRequest('/cache/image.php', {
+							origin: track.artwork_url,
+							width: i.width, height: i.height
+						}, function () {
+							if (this.responseText === 'NG') return;
+							Surface.load(this.responseText, function (event) {
+								var t = event.target;
+								i.draw(t, 0, 0, t.width, t.height, 0, 0, i.width, i.height);
+							});
+						});
+					}).call(new Sprite(32, 32));
 					Hack.soundCloudCredit.tl.moveBy(0, -32, 20);
 					// Streaming
 					return SC.stream('/tracks/' + track.id);
@@ -826,13 +831,22 @@ window.addEventListener('load', function() {
     });
 
     function postAPILog (service, id) {
+		postRequest('../../analytics/apilog.php', {
+			service: service,
+			id: id,
+			stage: sessionStorage.getItem('stage_param_id')
+		});
+    }
+
+    function postRequest (path, params, success, error) {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open('POST', '../../analytics/apilog.php', true);
+		xhttp.open('POST', path, true);
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		var data = { service: service, id: id, stage: sessionStorage.getItem('stage_param_id') };
-		var serialized = Object.keys(data).map(function(key) {
-			return key + '=' + data[key];
+		var serialized = Object.keys(params).map(function(key) {
+			return key + '=' + params[key];
 		}).join('&');
 		xhttp.send(serialized);
+		xhttp.onload = success;
+		xhttp.onerror = error;
     }
 });
