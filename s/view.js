@@ -299,6 +299,12 @@ $(function(){
 			'Cmd-S': function  () { $('.h4p_save_button').trigger('click'); },
 			'Ctrl-Q': function(cm){ cm.foldCode(cm.getCursor()); }
 		},
+		foldOptions: {
+			rangeFinder: CodeMirror.fold.auto,
+			widget: "✧⟣❃⟢✧",
+			minFoldSize: 0,
+			scanUp: false
+		},
 		keyMap: 'sublime'
 	});
 	jsEditor.on('beforeChange', function(cm, change) {
