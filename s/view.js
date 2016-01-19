@@ -290,6 +290,21 @@ $(function(){
 		indentWithTabs: true,
 		matchBrackets: true,
 		autoCloseBrackets: true,
+		foldGutter: true,
+		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+		extraKeys: {
+			'Ctrl-Enter': function () { $('.h4p_restaging_button').trigger('click'); },
+			'Cmd-Enter': function () { $('.h4p_restaging_button').trigger('click'); },
+			'Ctrl-S': function () { $('.h4p_save_button').trigger('click'); },
+			'Cmd-S': function  () { $('.h4p_save_button').trigger('click'); },
+			'Ctrl-Q': function(cm){ cm.foldCode(cm.getCursor()); }
+		},
+		foldOptions: {
+			rangeFinder: CodeMirror.fold.auto,
+			widget: "✧⟣❃⟢✧",
+			minFoldSize: 0,
+			scanUp: false
+		},
 		keyMap: 'sublime'
 	});
 	jsEditor.on('beforeChange', function(cm, change) {
@@ -297,13 +312,6 @@ $(function(){
 			// Ctrl+Zの押し過ぎで、全部消えてしまうのをふせぐ
 			change.cancel();
 		}
-	});
-	// Keybind RUN|SAVE
-	jsEditor.setOption('extraKeys', {
-		'Ctrl-Enter': function () { $('.h4p_restaging_button').trigger('click'); },
-		'Cmd-Enter': function () { $('.h4p_restaging_button').trigger('click'); },
-		'Ctrl-S': function () { $('.h4p_save_button').trigger('click'); },
-		'Cmd-S': function  () { $('.h4p_save_button').trigger('click'); }
 	});
 	jsEditor.on('change', function() {
 		// Fix save icon
