@@ -376,6 +376,7 @@ $(function(){
 					window.addEventListener('message', function _task (event) {
 						if (event.data === 'game_loaded') {
 							window.removeEventListener('message', _task);
+							jsEditor.execCommand('foldAll');
 							checkBracket(jsEditor, function () {
 								jsEditor.clearHistory();
 								refactoring(jsEditor);
