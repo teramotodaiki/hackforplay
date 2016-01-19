@@ -908,37 +908,13 @@ $(function(){
 				}).on('show.hfp', '.query-embed,.query-replace', function(event, asset) {
 					// Update Embed Code
 					$(this).trigger('update.hfp', asset);
-				}).on('click', '.query-embed button', function(event) {
-					// Get asset
-					var $div = $(this).parents('.query-embed'),
-					index = $div.data('index') >> 0,
-					asset = smartAsset.apps[index];
-					// Get embed pos
-					var identifier = typeof asset.identifier === 'string' ? asset.identifier.split('') : asset.identifier,
-					pos = {
-						line: jsEditor.getValue(false).findIndex(function (code, index) {
-							return code.search(/\/\/.*\/\//) != -1 && identifier.every(function (key) {
-								return code.indexOf(key) != -1;
-							});
-						}),
-						ch: 0
-					};
-					replaceRange($div.data('replacement'), pos, pos, '+input', '\n\n');
-					// Count up
-					(asset.counters || []).forEach(function (key) {
-						var cnt = __counters[key];
-						cnt.index = (cnt.index + 1) % cnt.table.length;
-					});
-					$('.h4p_restaging_button').trigger('click');
-					$(this).trigger('update.hfp', asset); // Update code
-					return false;
-				}).on('click', '.query-replace button', function(event) {
-					var $div = $(this).parents('.query-replace'),
+				}).on('click', '.query-embed button,.query-replace button', function(event) {
+					var $div = $(this).parents('.query-replace,.query-embed'),
 					index = $div.data('index') >> 0,
 					asset = smartAsset.apps[index];
 					// Pattern matching
 					var code = jsEditor.getValue(''),
-					matching = code.match(asset.pattern);
+					matching = asset.query === 'replace' ? code.match(asset.pattern) : false;
 					if (matching) {
 						// Get replace pos
 						var before = code.split(matching[0])[0],
