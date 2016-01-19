@@ -908,26 +908,29 @@ $(function(){
 				}).on('show.hfp', '.query-embed,.query-replace', function(event, asset) {
 					// Update Embed Code
 					$(this).trigger('update.hfp', asset);
-				}).on('click', '.query-embed button,.query-replace button', function(event) {
+				}).on('click', '.query-embed button', function(event) {
 					// Get asset
-					var $div = $(this).parents('.query-embed,.query-replace'),
+					var $div = $(this).parents('.query-embed'),
 					index = $div.data('index') >> 0,
 					asset = smartAsset.apps[index];
-					// Get code
-					var code = jsEditor.getValue(''),
-					keyword = $div.data('keyword'),
-					replacement = $div.data('replacement'),
-					splited = code.split(keyword),
-					length = $div.data('length');
-					// Replace
-					jsEditor.setValue(splited.join(replacement));
-					if (splited.length > 1) {
-						jsEditor.setSelection({
-							line: splited[0].split('\n').length, ch: 0 }, {
-							line: splited[0].split('\n').length + length, ch: 0 }, {
-							scroll: true
-						});
-					}
+					// Get embed pos
+					var identifier = typeof asset.identifier === 'string' ? asset.identifier.split('') : asset.identifier,
+					pos = {
+						line: jsEditor.getValue(false).findIndex(function (code, index) {
+							return code.search(/\/\/.*\/\//) != -1 && identifier.every(function (key) {
+								return code.indexOf(key) != -1;
+							});
+						}),
+						ch: 0
+					};
+					var replacement = $div.data('replacement').concat('\n\n');
+					jsEditor.replaceRange(replacement, pos, pos, '+input');
+					jsEditor.setSelection(pos, {
+						line: pos.line + replacement.split('\n').length - 2,
+						ch: 0
+					}, {
+						scroll: true
+					});
 					// Count up
 					(asset.counters || []).forEach(function (key) {
 						var cnt = __counters[key];
@@ -936,28 +939,11 @@ $(function(){
 					$('.h4p_restaging_button').trigger('click');
 					$(this).trigger('update.hfp', asset); // Update code
 					return false;
+				}).on('click', '.query-replace button', function(event) {
+
+
 				}).on('update.hfp', '.query-embed,.query-replace', function(event, asset) {
 					var code = jsEditor.getValue('');
-					// regExp に一致する matches について、それぞれ head, indent, comment に分割
-					var placeholders = (function (regExp) {
-						var result = [];
-						(code.match(regExp) || []).forEach(function (match, index) {
-							var array = match.replace(regExp, '$1\0$2\0$3').split('\0');
-							result.push({
-								raw: match,
-								head: array[0],
-								indent: array[1],
-								comment: array[2]
-							});
-						});
-						return result;
-					})(/(^|\n)([ \t]*)(\/\/.*\/\/\n)/g).filter(function(p) {
-						var raw = asset.identifier,
-						identifier = typeof raw === 'string' ? raw.split('') : raw instanceof Array ? raw : [];
-						return identifier.every(function (keyword) {
-							return p.comment.indexOf(keyword) > -1;
-						});
-					});
 					// Pattern matching
 					var patterns = asset.query === 'replace' && asset.pattern ? (function () {
 						var regExp = new RegExp('(^|\n)([ \t]*)(' + asset.pattern + ')');
@@ -999,27 +985,7 @@ $(function(){
 						});
 						return line;
 					});
-					// Replacement (ALL keywords contains)
-					var replacement = null;
-					(patterns || placeholders).forEach(function (p) {
-						replacement = patterns ?
-						[
-							p.head, // 事前の改行または行頭
-							lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
-						].join(p.indent) :
-						[
-							p.head, // 事前の改行または行頭
-							lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
-							'\n', '\n', // ２つの空行
-							p.comment
-						].join(p.indent);
-						$(this).data({
-							'keyword': p.raw,
-							'replacement': replacement,
-							'length': lines.length
-						});
-					}, this);
-					// Set
+					$(this).data('replacement', lines.join('\n'));
 					$(this).find('.embed-code').children().remove();
 					lines.forEach(function (line) {
 						$('<p>').text(line).appendTo(this);
