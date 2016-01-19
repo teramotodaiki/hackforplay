@@ -70,7 +70,6 @@ if ($mode === 'quest') {
 	<link rel="stylesheet" href="../css/cmcolor.css">
 	<style type="text/css" media="screen">
 		.CodeMirror {
-			font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
 			top: 0px;
 			left: 0px;
 			background-color: rgb(245,245,245);
@@ -85,6 +84,11 @@ if ($mode === 'quest') {
 		div.CodeMirror span.CodeMirror-matchingbracket {
 			color: #000;
 			border-bottom: 1px solid black;
+		}
+		.CodeMirror-foldgutter-open:after {
+			color: blue;
+			text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px, #b9f -1px 1px 2px;
+			content: "❃";
 		}
 	</style>
 </head>

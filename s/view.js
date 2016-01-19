@@ -302,7 +302,7 @@ $(function(){
 		foldOptions: {
 			rangeFinder: CodeMirror.fold.auto,
 			widget: "✧⟣❃⟢✧",
-			minFoldSize: 0,
+			minFoldSize: 1,
 			scanUp: false
 		},
 		keyMap: 'sublime'
@@ -368,17 +368,27 @@ $(function(){
 				button.addClass('disabled');
 			});
 		});
-		window.addEventListener('message', function task (event) {
-			if (event.data === 'game_loaded') {
-				checkBracket(jsEditor, function () {
-					jsEditor.clearHistory();
-					refactoring(jsEditor);
-				}, function () {
-					button.addClass('disabled');
-				});
-				window.removeEventListener('message', task);
-			}
-		});
+
+		(function () {
+			jsEditor.on('beforeChange', function task (cm, change) {
+				if (change.origin === 'setValue') {
+					jsEditor.off('beforeChange', task);
+					window.addEventListener('message', function _task (event) {
+						if (event.data === 'game_loaded') {
+							window.removeEventListener('message', _task);
+							checkBracket(jsEditor, function () {
+								jsEditor.clearHistory();
+								refactoring(jsEditor);
+							}, function () {
+								button.addClass('disabled');
+							});
+							jsEditor.execCommand('foldAll');
+						}
+					});
+				}
+			});
+		})();
+
 		function checkBracket (cm, success, failed) {
 			var fullText = cm.getValue('');
 			if (fullText.split('{').length === fullText.split('}').length &&
