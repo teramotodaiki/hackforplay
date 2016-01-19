@@ -940,22 +940,63 @@ $(function(){
 					$(this).trigger('update.hfp', asset); // Update code
 					return false;
 				}).on('click', '.query-replace button', function(event) {
-
-
+					var $div = $(this).parents('.query-replace'),
+					index = $div.data('index') >> 0,
+					asset = smartAsset.apps[index];
+					// Pattern matching
+					var code = jsEditor.getValue(''),
+					matching = code.match(asset.pattern);
+					if (matching) {
+						// Get replace pos
+						var before = code.split(matching[0])[0],
+						beforeLines = before.split('\n'),
+						matchLines = matching[0].split('\n'),
+						from = {
+							line: beforeLines.length - 1,
+							ch: beforeLines[beforeLines.length - 1].length
+						}, to = {
+							line: from.line + matching[0].split('\n').length - 1,
+							ch: matchLines[matchLines.length - 1].length + 1
+						};
+						var replacement = $div.data('replacement'),
+						replacementLines = replacement.split('\n');
+						jsEditor.replaceRange(replacement.concat('\n\n'), from, to, '+input');
+						jsEditor.setSelection(from, {
+							line: from.line + replacementLines.length - 1,
+							ch: replacementLines[replacementLines.length - 1].length + 1
+						}, {
+							scroll: true
+						});
+					} else {
+						// Get embed pos
+						var identifier = typeof asset.identifier === 'string' ? asset.identifier.split('') : asset.identifier,
+						pos = {
+							line: jsEditor.getValue(false).findIndex(function (code, index) {
+								return code.search(/\/\/.*\/\//) != -1 && identifier.every(function (key) {
+									return code.indexOf(key) != -1;
+								});
+							}),
+							ch: 0
+						};
+						var replacement = $div.data('replacement');
+						jsEditor.replaceRange(replacement.concat('\n\n'), pos, pos, '+input');
+						jsEditor.setSelection(pos, {
+							line: pos.line + replacement.split('\n').length,
+							ch: 0
+						}, {
+							scroll: true
+						});
+					}
+					// Count up
+					(asset.counters || []).forEach(function (key) {
+						var cnt = __counters[key];
+						cnt.index = (cnt.index + 1) % cnt.table.length;
+					});
+					$('.h4p_restaging_button').trigger('click');
+					$(this).trigger('update.hfp', asset); // Update code
+					return false;
 				}).on('update.hfp', '.query-embed,.query-replace', function(event, asset) {
 					var code = jsEditor.getValue('');
-					// Pattern matching
-					var patterns = asset.query === 'replace' && asset.pattern ? (function () {
-						var regExp = new RegExp('(^|\n)([ \t]*)(' + asset.pattern + ')');
-						var result = regExp.exec(code);
-						if (!result) return null;
-						return [{
-							raw: result[0],
-							head: result[1],
-							indent: result[2],
-							comment: ''
-						}];
-					})() : null;
 					// Make dictionaly
 					var dictionaly = (asset.variables || []).map(function(item) {
 						// Variable
