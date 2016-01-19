@@ -70,7 +70,6 @@ if ($mode === 'quest') {
 	<link rel="stylesheet" href="../css/cmcolor.css">
 	<style type="text/css" media="screen">
 		.CodeMirror {
-			font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
 			top: 0px;
 			left: 0px;
 			background-color: rgb(245,245,245);

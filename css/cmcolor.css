@@ -1,3 +1,4 @@
+.CodeMirror { font-family: Consolas, 'Courier New', Courier, Monaco, monospace; }
 .cm-s-default .cm-keyword { color: #ce3f5c; }
 .cm-s-default .cm-number { color: #856fff; }
 .cm-s-default .cm-property { color: #4da4e3; }
