@@ -388,14 +388,15 @@ $(function(){
 						if (event.data === 'game_loaded') {
 							console.log(5);
 							window.removeEventListener('message', _task);
-							jsEditor.execCommand('foldAll');
-							console.log(CodeMirror.commands.foldAll);
 							checkBracket(jsEditor, function () {
+								console.log('true');
 								jsEditor.clearHistory();
 								refactoring(jsEditor);
 							}, function () {
+								console.log('false');
 								button.addClass('disabled');
 							});
+							jsEditor.execCommand('foldAll');
 						}
 					});
 				}
