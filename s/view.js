@@ -370,11 +370,16 @@ $(function(){
 		});
 
 		(function () {
+			console.log(1);
 			jsEditor.on('beforeChange', function task (cm, change) {
+				console.log(2);
 				if (change.origin === 'setValue') {
+					console.log(3);
 					jsEditor.off('beforeChange', task);
 					window.addEventListener('message', function _task (event) {
+						console.log(4);
 						if (event.data === 'game_loaded') {
+							console.log(5);
 							window.removeEventListener('message', _task);
 							jsEditor.execCommand('foldAll');
 							checkBracket(jsEditor, function () {
