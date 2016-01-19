@@ -923,14 +923,7 @@ $(function(){
 						}),
 						ch: 0
 					};
-					var replacement = $div.data('replacement').concat('\n\n');
-					jsEditor.replaceRange(replacement, pos, pos, '+input');
-					jsEditor.setSelection(pos, {
-						line: pos.line + replacement.split('\n').length - 2,
-						ch: 0
-					}, {
-						scroll: true
-					});
+					replaceRange($div.data('replacement'), pos, pos, '+input', '\n\n');
 					// Count up
 					(asset.counters || []).forEach(function (key) {
 						var cnt = __counters[key];
@@ -958,15 +951,7 @@ $(function(){
 							line: from.line + matching[0].split('\n').length - 1,
 							ch: matchLines[matchLines.length - 1].length + 1
 						};
-						var replacement = $div.data('replacement'),
-						replacementLines = replacement.split('\n');
-						jsEditor.replaceRange(replacement.concat('\n\n'), from, to, '+input');
-						jsEditor.setSelection(from, {
-							line: from.line + replacementLines.length - 1,
-							ch: replacementLines[replacementLines.length - 1].length + 1
-						}, {
-							scroll: true
-						});
+						replaceRange($div.data('replacement'), from, to, '+input');
 					} else {
 						// Get embed pos
 						var identifier = typeof asset.identifier === 'string' ? asset.identifier.split('') : asset.identifier,
@@ -978,14 +963,7 @@ $(function(){
 							}),
 							ch: 0
 						};
-						var replacement = $div.data('replacement');
-						jsEditor.replaceRange(replacement.concat('\n\n'), pos, pos, '+input');
-						jsEditor.setSelection(pos, {
-							line: pos.line + replacement.split('\n').length,
-							ch: 0
-						}, {
-							scroll: true
-						});
+						replaceRange($div.data('replacement'), pos, pos, '+input', '\n\n');
 					}
 					// Count up
 					(asset.counters || []).forEach(function (key) {
@@ -1037,6 +1015,16 @@ $(function(){
 						bottom: function () { return -$('.container-game').outerHeight()+340; }
 					}
 				}).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
+				function replaceRange (replacement, from, to, origin, suffix) {
+					var replacementLines = replacement.split('\n');
+					jsEditor.replaceRange(replacement.concat(suffix || ''), from, to, origin);
+					jsEditor.setSelection(from, {
+						line: from.line + replacementLines.length - 1,
+						ch: replacementLines[replacementLines.length - 1].length + 1
+					}, {
+						scroll: true
+					});
+				}
 			})();
 		};
 
