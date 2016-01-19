@@ -23,10 +23,6 @@ window.onload = function(){
 	// ヒントメッセージ送信のリクエスト
 	setEditor();
 	setHint();
-	$("input[name=run]").on('click', run);
-	$("input[name=cls]").on('click', cls);
-	$("input[name=undo]").on('click', undo);
-	$("input[name=redo]").on('click', redo);
 	jsEditor.on('beforeChange', function(cm, change) {
 		if (change.origin === "undo" && cm.doc.historySize().undo === 0) {
 			// Ctrl+Zの押し過ぎで、全部消えてしまうのをふせぐ
@@ -68,10 +64,10 @@ window.onload = function(){
 		game.postMessage(source, policy);
 	});
 	jsEditor.on('focus', function() {
-		$('.phantom').addClass('focus');
+		document.body.classList.add('focused');
 	});
 	jsEditor.on('blur', function() {
-		$('.phantom').removeClass('focus');
+		document.body.classList.remove('focused');
 	});
 
 };
@@ -86,7 +82,7 @@ window.addEventListener('message', function(e){
 
 function run(){
 	jsEditor.save();
-	game.postMessage($("#editor_js").val(), policy); // ここでコードを実行させる
+	game.postMessage(document.getElementById('editor_js').value, policy); // ここでコードを実行させる
 	game.postMessage("__H4PENV__SENDCODE();", policy); // 直前に実行したコードをログとして送信させる
 	var source =
 	"var e = getEditor();"+
@@ -114,16 +110,18 @@ function cls(){
 function undo () {
 	jsEditor.doc.undo();
 	renderUI();
+	jsEditor.focus();
 }
 
 function redo () {
 	jsEditor.doc.redo();
 	renderUI();
+	jsEditor.focus();
 }
 
 function renderUI () {
-	$("input[name=undo]").attr('src', 'img/ui_undo_' + (jsEditor.doc.historySize().undo > 1 ? 'enabled.png':'disabled.png'));
-	$("input[name=redo]").attr('src', 'img/ui_redo_' + (jsEditor.doc.historySize().redo > 0 ? 'enabled.png':'disabled.png'));
+	document.getElementById('undo').setAttribute('src', 'img/ui_undo_' + (jsEditor.doc.historySize().undo > 1 ? 'enabled.png':'disabled.png'));
+	document.getElementById('redo').setAttribute('src', 'img/ui_redo_' + (jsEditor.doc.historySize().redo > 0 ? 'enabled.png':'disabled.png'));
 }
 
 // RPG互換性維持のための仕様
