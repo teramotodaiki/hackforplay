@@ -11,7 +11,7 @@ try {
 	// 現在GMTから9日間以内のAttendanceをすべて取得
 	$gmnow		= gmdate('Y-m-d H:i:s');
 	$_9daysago	= (new DateTime($gmnow))->modify('-9 days')->format('Y-m-d H:i:s');
-	$stmt	= $dbh->prepare('SELECT "UserID","Begin" FROM "Attendance" WHERE "End">:_begin ORDER BY "Begin" DESC');
+	$stmt	= $dbh->prepare('SELECT "UserID","Begin" FROM "Attendance" WHERE "Begin">:_begin ORDER BY "Begin" DESC');
 	$stmt->bindValue(":_begin", $_9daysago, PDO::PARAM_STR);
 	$stmt->execute();
 

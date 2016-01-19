@@ -1,7 +1,7 @@
 $(function(){
 
 	$('a[data-toggle="tab"][aria-controls="activerate"]').on('show.bs.tab', function(event) {
-		$.get('../analytics/activeratesummary.php',{
+		$.get('../analytics/activeusersummary.php',{
 
 		}, function(data) {
 			var result = $.parseJSON(data);
@@ -10,14 +10,24 @@ $(function(){
 				labels : result.labels,
 				datasets : [
 					{
-						label: "Active User Rate",
-						fillColor : "rgba(220,220,220,0.2)",
-						strokeColor : "rgba(220,220,220,1)",
-						pointColor : "rgba(220,220,220,1)",
-						pointStrokeColor : "#fff",
+						label: "Active User",
+						fillColor : "rgba(60,110,220,0.2)",
+						strokeColor : "rgba(60,110,220,0.6)",
+						pointColor: "rgba(60,110,220,0.15)",
+						pointStrokeColor: "rgba(60,110,220,0.2)",
 						pointHighlightFill : "#fff",
-						pointHighlightStroke : "rgba(220,220,220,1)",
-						data : result.values
+						pointHighlightStroke : "#000",
+						data : result.dau
+					},
+					{
+						label: "Registered User",
+						fillColor : "rgba(60,220,110,0.6)",
+						strokeColor : "rgba(60,220,110,0.6)",
+						pointColor: "rgba(60,220,110,0.15)",
+						pointStrokeColor: "rgba(60,220,110,0.2)",
+						pointHighlightFill : "#fff",
+						pointHighlightStroke : "#000",
+						data : result.dru
 					}
 				]
 			}, {
