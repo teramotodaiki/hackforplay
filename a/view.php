@@ -58,7 +58,7 @@
 			    	<a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">summary</a>
 			    </li>
 			    <li role="presentation">
-			    	<a href="#activerate" aria-controls="activerate" role="tab" data-toggle="tab">アクティブ率</a>
+			    	<a href="#activerate" aria-controls="activerate" role="tab" data-toggle="tab">DAU&DRU</a>
 			    </li>
 			    <li role="presentation">
 			    	<a href="#playcount" aria-controls="playcount" role="tab" data-toggle="tab">プレイ回数</a>
