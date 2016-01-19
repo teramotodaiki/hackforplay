@@ -62,6 +62,7 @@ if ($mode === 'quest') {
 	<script src="editor/addon/fold/foldcode.js" type="text/javascript"></script>
 	<script src="editor/addon/fold/foldgutter.js" type="text/javascript"></script>
 	<script src="editor/addon/fold/brace-fold.js" type="text/javascript"></script>
+	<script src="editor/addon/comment/comment.js" type="text/javascript"></script>
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript"></script>
 	<link rel="stylesheet" href="editor/lib/codemirror.css">
 	<link rel="stylesheet" href="editor/addon/dialog/dialog.css">
