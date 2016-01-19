@@ -86,6 +86,11 @@ if ($mode === 'quest') {
 			color: #000;
 			border-bottom: 1px solid black;
 		}
+		.CodeMirror-foldgutter-open:after {
+			color: blue;
+			text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px, #b9f -1px 1px 2px;
+			content: "❃";
+		}
 	</style>
 </head>
 <body>

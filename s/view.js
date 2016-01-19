@@ -302,7 +302,7 @@ $(function(){
 		foldOptions: {
 			rangeFinder: CodeMirror.fold.auto,
 			widget: "✧⟣❃⟢✧",
-			minFoldSize: 0,
+			minFoldSize: 1,
 			scanUp: false
 		},
 		keyMap: 'sublime'
