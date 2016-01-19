@@ -601,7 +601,7 @@ window.addEventListener('load', function () {
 		query: 'replace',
 		caption: 'サウンドクラウドのAPI（エーピーアイ）をつかって、ゲームのなかで サウンドをならそう！',
 		identifier: '()',
-		pattern: /Hack\.openSoundCloud\(.*\);?.*\n/g.source,
+		pattern: /Hack\.openSoundCloud\(.*\)\;?/g.source,
 		code: function () {
 			Hack.openSoundCloud('https://soundcloud.com/nelward/splatoon-main-theme-snes-ey-remix');
 		}
@@ -612,7 +612,7 @@ window.addEventListener('load', function () {
 		query: 'replace',
 		caption: 'サウンドクラウドの埋め込みプレーヤーをつかって、サウンドをならそう！ APIでは再生できない曲も こっちでは再生できることがあるぞ。',
 		identifier: '()',
-		pattern: /Hack\.openExternal\(\'soundcloud\'\,.*\);?.*\n/g.source,
+		pattern: /Hack\.openExternal\(\'soundcloud\'\,.*\)\;?/g.source,
 		code: function () {
 			Hack.openExternal('soundcloud', 'https://soundcloud.com/john-sevenight/pokemon-dubstep-remix');
 		}

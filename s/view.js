@@ -399,10 +399,8 @@ $(function(){
 			}
 		}
 		function refactoring (cm, change) {
-			var lines = cm.getValue(false),
-			fullText = lines.join('\n');
-			var tabs = 0, cursor = cm.doc.getCursor(), currentTabs = 0;
-			var value = lines.map(function(elem, index) {
+			var tabs = 0, cursor = cm.doc.getCursor();
+			cm.getValue(false).forEach(function(elem, index) {
 				var closerOnHead = elem.match(/^\s*([\}\]]+)/),
 				openerNum = elem.split('{').length + elem.split('[').length - 2,
 				closerNum = elem.split('}').length + elem.split(']').length - 2;
@@ -411,22 +409,18 @@ $(function(){
 					closerNum -= closerOnHead[1].length;
 				}
 				tabs = Math.max(0, tabs);
-				if (index === cursor.line) {
-					currentTabs = tabs - elem.match(/^\s*/g)[0].length;
+				var replacement = elem.replace(/^\s*/g, new Array(tabs + 1).join('\t'));
+				if (elem !== replacement) {
+					cm.replaceRange(replacement, { line: index, ch: 0 }, { line: index });
+					if (cursor.line === index) {
+						cm.doc.setCursor({
+							line: cursor.line,
+							ch: cursor.ch + tabs - elem.match(/^\s*/g)[0].length
+						});
+					}
 				}
-				var replace = elem.replace(/^\s*/g, new Array(tabs + 1).join('\t'));
 				tabs += openerNum - closerNum;
-				return replace;
-			}).join('\n');
-			if (fullText !== value) {
-				var scroll = cm.getScrollInfo();
-				cm.doc.setValue(value);
-				cm.doc.setCursor({
-					line: cursor.line,
-					ch: cursor.ch + currentTabs
-				});
-				cm.scrollTo(scroll.left, scroll.top);
-			}
+			});
 		}
 	})();
 	var $div = $("div.h4p_restaging_editor");
@@ -915,24 +909,37 @@ $(function(){
 					// Update Embed Code
 					$(this).trigger('update.hfp', asset);
 				}).on('click', '.query-embed button,.query-replace button', function(event) {
-					// Get asset
-					var $div = $(this).parents('.query-embed,.query-replace'),
+					var $div = $(this).parents('.query-replace,.query-embed'),
 					index = $div.data('index') >> 0,
 					asset = smartAsset.apps[index];
-					// Get code
+					// Pattern matching
 					var code = jsEditor.getValue(''),
-					keyword = $div.data('keyword'),
-					replacement = $div.data('replacement'),
-					splited = code.split(keyword),
-					length = $div.data('length');
-					// Replace
-					jsEditor.setValue(splited.join(replacement));
-					if (splited.length > 1) {
-						jsEditor.setSelection({
-							line: splited[0].split('\n').length, ch: 0 }, {
-							line: splited[0].split('\n').length + length, ch: 0 }, {
-							scroll: true
-						});
+					matching = asset.query === 'replace' ? code.match(asset.pattern) : false;
+					if (matching) {
+						// Get replace pos
+						var before = code.split(matching[0])[0],
+						beforeLines = before.split('\n'),
+						matchLines = matching[0].split('\n'),
+						from = {
+							line: beforeLines.length - 1,
+							ch: beforeLines[beforeLines.length - 1].length
+						}, to = {
+							line: from.line + matching[0].split('\n').length - 1,
+							ch: matchLines[matchLines.length - 1].length + 1
+						};
+						replaceRange($div.data('replacement'), from, to, '+input');
+					} else {
+						// Get embed pos
+						var identifier = typeof asset.identifier === 'string' ? asset.identifier.split('') : asset.identifier,
+						pos = {
+							line: jsEditor.getValue(false).findIndex(function (code, index) {
+								return code.search(/\/\/.*\/\//) != -1 && identifier.every(function (key) {
+									return code.indexOf(key) != -1;
+								});
+							}),
+							ch: 0
+						};
+						replaceRange($div.data('replacement'), pos, pos, '+input', '\n\n');
 					}
 					// Count up
 					(asset.counters || []).forEach(function (key) {
@@ -944,38 +951,6 @@ $(function(){
 					return false;
 				}).on('update.hfp', '.query-embed,.query-replace', function(event, asset) {
 					var code = jsEditor.getValue('');
-					// regExp に一致する matches について、それぞれ head, indent, comment に分割
-					var placeholders = (function (regExp) {
-						var result = [];
-						(code.match(regExp) || []).forEach(function (match, index) {
-							var array = match.replace(regExp, '$1\0$2\0$3').split('\0');
-							result.push({
-								raw: match,
-								head: array[0],
-								indent: array[1],
-								comment: array[2]
-							});
-						});
-						return result;
-					})(/(^|\n)([ \t]*)(\/\/.*\/\/\n)/g).filter(function(p) {
-						var raw = asset.identifier,
-						identifier = typeof raw === 'string' ? raw.split('') : raw instanceof Array ? raw : [];
-						return identifier.every(function (keyword) {
-							return p.comment.indexOf(keyword) > -1;
-						});
-					});
-					// Pattern matching
-					var patterns = asset.query === 'replace' && asset.pattern ? (function () {
-						var regExp = new RegExp('(^|\n)([ \t]*)(' + asset.pattern + ')');
-						var result = regExp.exec(code);
-						if (!result) return null;
-						return [{
-							raw: result[0],
-							head: result[1],
-							indent: result[2],
-							comment: ''
-						}];
-					})() : null;
 					// Make dictionaly
 					var dictionaly = (asset.variables || []).map(function(item) {
 						// Variable
@@ -1005,27 +980,7 @@ $(function(){
 						});
 						return line;
 					});
-					// Replacement (ALL keywords contains)
-					var replacement = null;
-					(patterns || placeholders).forEach(function (p) {
-						replacement = patterns ?
-						[
-							p.head, // 事前の改行または行頭
-							lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
-						].join(p.indent) :
-						[
-							p.head, // 事前の改行または行頭
-							lines.join('\n' + p.indent) + '\n', // Smart Assets の中身
-							'\n', '\n', // ２つの空行
-							p.comment
-						].join(p.indent);
-						$(this).data({
-							'keyword': p.raw,
-							'replacement': replacement,
-							'length': lines.length
-						});
-					}, this);
-					// Set
+					$(this).data('replacement', lines.join('\n'));
 					$(this).find('.embed-code').children().remove();
 					lines.forEach(function (line) {
 						$('<p>').text(line).appendTo(this);
@@ -1036,6 +991,16 @@ $(function(){
 						bottom: function () { return -$('.container-game').outerHeight()+340; }
 					}
 				}).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
+				function replaceRange (replacement, from, to, origin, suffix) {
+					var replacementLines = replacement.split('\n');
+					jsEditor.replaceRange(replacement.concat(suffix || ''), from, to, origin);
+					jsEditor.setSelection(from, {
+						line: from.line + replacementLines.length - 1,
+						ch: replacementLines[replacementLines.length - 1].length + 1
+					}, {
+						scroll: true
+					});
+				}
 			})();
 		};
 
@@ -1395,3 +1360,25 @@ $(function(){
 	})();
 
 });
+if (!Array.prototype.findIndex) {
+  Array.prototype.findIndex = function(predicate) {
+    if (this == null) {
+      throw new TypeError('Array.prototype.findIndex called on null or undefined');
+    }
+    if (typeof predicate !== 'function') {
+      throw new TypeError('predicate must be a function');
+    }
+    var list = Object(this);
+    var length = list.length >>> 0;
+    var thisArg = arguments[1];
+    var value;
+
+    for (var i = 0; i < length; i++) {
+      value = list[i];
+      if (predicate.call(thisArg, value, i, list)) {
+        return i;
+      }
+    }
+    return -1;
+  };
+}
