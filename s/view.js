@@ -399,10 +399,8 @@ $(function(){
 			}
 		}
 		function refactoring (cm, change) {
-			var lines = cm.getValue(false),
-			fullText = lines.join('\n');
-			var tabs = 0, cursor = cm.doc.getCursor(), currentTabs = 0;
-			var value = lines.map(function(elem, index) {
+			var tabs = 0, cursor = cm.doc.getCursor();
+			cm.getValue(false).forEach(function(elem, index) {
 				var closerOnHead = elem.match(/^\s*([\}\]]+)/),
 				openerNum = elem.split('{').length + elem.split('[').length - 2,
 				closerNum = elem.split('}').length + elem.split(']').length - 2;
@@ -411,22 +409,18 @@ $(function(){
 					closerNum -= closerOnHead[1].length;
 				}
 				tabs = Math.max(0, tabs);
-				if (index === cursor.line) {
-					currentTabs = tabs - elem.match(/^\s*/g)[0].length;
+				var replacement = elem.replace(/^\s*/g, new Array(tabs + 1).join('\t'));
+				if (elem !== replacement) {
+					cm.replaceRange(replacement, { line: index, ch: 0 }, { line: index });
+					if (cursor.line === index) {
+						cm.doc.setCursor({
+							line: cursor.line,
+							ch: cursor.ch + tabs - elem.match(/^\s*/g)[0].length
+						});
+					}
 				}
-				var replace = elem.replace(/^\s*/g, new Array(tabs + 1).join('\t'));
 				tabs += openerNum - closerNum;
-				return replace;
-			}).join('\n');
-			if (fullText !== value) {
-				var scroll = cm.getScrollInfo();
-				cm.doc.setValue(value);
-				cm.doc.setCursor({
-					line: cursor.line,
-					ch: cursor.ch + currentTabs
-				});
-				cm.scrollTo(scroll.left, scroll.top);
-			}
+			});
 		}
 	})();
 	var $div = $("div.h4p_restaging_editor");
