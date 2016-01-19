@@ -369,31 +369,17 @@ $(function(){
 			});
 		});
 
-		jsEditor.on('beforeChange', function(cm, change) {
-			if (change.origin === 'setValue') { console.log('setValue'); }
-		});
-		window.addEventListener('message', function _task (event) {
-			if (event.data === 'game_loaded') { console.log('game_loaded'); }
-		});
-
 		(function () {
-			console.log(1);
 			jsEditor.on('beforeChange', function task (cm, change) {
-				console.log(2);
 				if (change.origin === 'setValue') {
-					console.log(3);
 					jsEditor.off('beforeChange', task);
 					window.addEventListener('message', function _task (event) {
-						console.log(4, event.data);
 						if (event.data === 'game_loaded') {
-							console.log(5);
 							window.removeEventListener('message', _task);
 							checkBracket(jsEditor, function () {
-								console.log('true');
 								jsEditor.clearHistory();
 								refactoring(jsEditor);
 							}, function () {
-								console.log('false');
 								button.addClass('disabled');
 							});
 							jsEditor.execCommand('foldAll');
