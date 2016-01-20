@@ -628,8 +628,8 @@ $(function(){
 							'width': body_width / 2 >> 0
 						});
 						$('.container-tab').removeClass('hidden');
-						var w = body_width - $('.container-game').outerWidth() - $('.container-tab').outerWidth() - 60;
-						$('.container-assets').removeClass('hidden').outerWidth(w);
+						var W = $('.container-game').outerWidth() + $('.container-tab').outerWidth();
+						$('.container-assets').removeClass('hidden').outerWidth(body_width - W - 60).css('left', W);
 						break;
 					case 'game':
 						// 1カラム 100:0 ただし幅には最大値がある
@@ -649,13 +649,6 @@ $(function(){
 					if ($('.h4p_game>iframe').width() !== $('.container-game').width()) {
 						// ゲームの幅を変更
 						$('.h4p_game,.h4p_game>iframe').width($('.container-game').width()).height($('.container-game').width() / 1.5 >> 0);
-
-						// リロード ごまかしのフェードイン
-						if (reload_timer) clearTimeout(reload_timer);
-						reload_timer = setTimeout(function() {
-							$(".h4p_game>iframe").hide().get(0).contentWindow.postMessage('window.location.reload();', '/');
-							$('.h4p_game>iframe').fadeIn('slow');
-						}, 100);
 					}
 					$('.container-game').css('float', 'left');
 
@@ -992,7 +985,7 @@ $(function(){
 						top: $('nav.navbar').outerHeight(true),
 						bottom: function () { return -$('.container-game').outerHeight()+340; }
 					}
-				}).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
+				});
 				function replaceRange (replacement, from, to, origin, suffix) {
 					var replacementLines = replacement.split('\n');
 					jsEditor.replaceRange(replacement.concat(suffix || ''), from, to, origin);
