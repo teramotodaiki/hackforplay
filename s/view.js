@@ -649,13 +649,6 @@ $(function(){
 					if ($('.h4p_game>iframe').width() !== $('.container-game').width()) {
 						// ゲームの幅を変更
 						$('.h4p_game,.h4p_game>iframe').width($('.container-game').width()).height($('.container-game').width() / 1.5 >> 0);
-
-						// リロード ごまかしのフェードイン
-						if (reload_timer) clearTimeout(reload_timer);
-						reload_timer = setTimeout(function() {
-							$(".h4p_game>iframe").hide().get(0).contentWindow.postMessage('window.location.reload();', '/');
-							$('.h4p_game>iframe').fadeIn('slow');
-						}, 100);
 					}
 					$('.container-game').css('float', 'left');
 
