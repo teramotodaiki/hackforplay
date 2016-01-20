@@ -58,6 +58,23 @@ Math.sign = Math.sign || function(x) {
 	return x > 0 ? 1 : -1;
 };
 
+// resize
+window.addEventListener('resize', function () {
+	(function () {
+		document.documentElement.style.overflow = 'hidden';
+		var fWidth = parseInt(window.innerWidth, 10),
+		fHeight = parseInt(window.innerHeight, 10);
+		if (fWidth && fHeight) {
+			this.scale =  Math.min(
+				fWidth / this.width,
+				fHeight / this.height
+			);
+		} else {
+			this.scale = 1;
+		}
+	}).call(enchant.Core.instance);
+});
+
 window.addEventListener('load', function() {
     enchant();
     var game = new enchant.Core(480, 320);
