@@ -328,9 +328,11 @@ $(function(){
 		switch ($(this).data('query')) {
 			case 'undo':
 			jsEditor.undo();
+			$('.h4p_restaging_button').trigger('click');
 			break;
 			case 'redo':
 			jsEditor.redo();
+			$('.h4p_restaging_button').trigger('click');
 			break;
 			case 'keybind':
 			var bind = $(this).data('bind') || 'sublime';
