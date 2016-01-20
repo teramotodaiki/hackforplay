@@ -628,8 +628,8 @@ $(function(){
 							'width': body_width / 2 >> 0
 						});
 						$('.container-tab').removeClass('hidden');
-						var w = body_width - $('.container-game').outerWidth() - $('.container-tab').outerWidth() - 60;
-						$('.container-assets').removeClass('hidden').outerWidth(w);
+						var W = $('.container-game').outerWidth() + $('.container-tab').outerWidth();
+						$('.container-assets').removeClass('hidden').outerWidth(body_width - W - 60).css('left', W);
 						break;
 					case 'game':
 						// 1カラム 100:0 ただし幅には最大値がある
@@ -985,7 +985,7 @@ $(function(){
 						top: $('nav.navbar').outerHeight(true),
 						bottom: function () { return -$('.container-game').outerHeight()+340; }
 					}
-				}).css('left', $('.container-game').outerWidth() + $('.container-tab').outerWidth());
+				});
 				function replaceRange (replacement, from, to, origin, suffix) {
 					var replacementLines = replacement.split('\n');
 					jsEditor.replaceRange(replacement.concat(suffix || ''), from, to, origin);
