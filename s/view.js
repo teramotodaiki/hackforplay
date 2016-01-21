@@ -944,7 +944,7 @@ $(function(){
 					$('.h4p_restaging_button').trigger('click');
 					$(this).trigger('update.hfp', asset); // Update code
 					window.__PostActivity('asset', {
-						AssetID: index,
+						AssetID: asset.id || null,
 						Registered: new Date().format('Y-m-d H:i:s.u', true),
 						token: sessionStorage.getItem('project-token')
 					});

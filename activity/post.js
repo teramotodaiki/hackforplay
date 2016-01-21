@@ -22,7 +22,6 @@ $(function () {
 			var list = fetch.filter(function (row) { return row.Path === path; });
 			$.post(path, { list: JSON.stringify(list) }, function(data, textStatus, xhr) {
 				// Success
-				console.log(textStatus, data);
 				if (data === 'NG') {
 					enqueue(list);
 				}
@@ -30,7 +29,6 @@ $(function () {
 				enqueue(list); // retry sending
 				console.error('failed to post');
 			}).always(function () {
-				console.log('end request');
 				count ++;
 				if (count === pathList.length)
 					setTimeout(task, _interval); // All tasks finished
