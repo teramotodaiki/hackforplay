@@ -943,6 +943,11 @@ $(function(){
 					});
 					$('.h4p_restaging_button').trigger('click');
 					$(this).trigger('update.hfp', asset); // Update code
+					window.__PostActivity('asset', {
+						AssetID: index,
+						Registered: new Date().format('Y-m-d H:i:s.u', true),
+						token: sessionStorage.getItem('project-token')
+					});
 					return false;
 				}).on('update.hfp', '.query-embed,.query-replace', function(event, asset) {
 					var code = jsEditor.getValue('');
