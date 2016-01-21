@@ -57,5 +57,18 @@ function signout (){
 		var prefix2 = Math.abs(rawValue) < 10 ? '0' : '';
 		return prefix1 + prefix2 + Math.abs(rawValue) + ':00';
 	}
+	// like PHP Datetime format (utc flag default: false)
+	Date.prototype.format = function (format, utc) {
+		utc = !!utc;
+		format = format.replace('Y', utc ? this.getUTCFullYear() : this.getFullYear());
+		format = format.replace('d', ('0' + (utc ? this.getUTCDate() : this.getDate())).slice(-2));
+		format = format.replace('m', ('0' + ((utc ? this.getUTCMonth() : this.getMonth()) + 1)).slice(-2));
+		format = format.replace('H', ('0' + (utc ? this.getUTCHours() : this.getHours())).slice(-2));
+		format = format.replace('i', ('0' + (utc ? this.getUTCMinutes() : this.getMinutes())).slice(-2));
+		format = format.replace('s', ('0' + (utc ? this.getUTCSeconds() : this.getSeconds())).slice(-2));
+		var microseconds = (utc ? this.getUTCMilliseconds() : this.getMilliseconds()) * 1000;
+		format = format.replace('u', ('000' + microseconds).slice(-6));
+		return format;
+	}
 })();
 </script>
