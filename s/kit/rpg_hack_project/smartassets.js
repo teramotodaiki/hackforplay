@@ -1,10 +1,12 @@
 window.addEventListener('load', function () {
 	Hack.smartAsset.append({
+		id: 1,
 		title: 'マップ の すうじ (enchantjs/x2/dotmat.gif)',
 		image: 'img/mapTipIndex.jpg',
 		query: 'toggle',
 		media: 'img/mapTipIndex.jpg'
 	}, {
+		id: 2,
 		title: 'つぎのマップ（そうげん）',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 0, y: 0, width: 32*4, height: 32*4 },
@@ -42,6 +44,7 @@ window.addEventListener('load', function () {
 			];
 		}
 	}, {
+		id: 3,
 		title: 'つぎのマップ（どうくつ）',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 10*32, y: 0, width: 32*4, height: 32*4 },
@@ -79,6 +82,7 @@ window.addEventListener('load', function () {
 			];
 		}
 	}, {
+		id: 4,
 		title: 'つぎのマップ（シルバー）',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { x: 10*32, y: 4*32, width: 32*4, height: 32*4 },
@@ -116,6 +120,7 @@ window.addEventListener('load', function () {
 			];
 		}
 	}, {
+		id: 5,
 		title: 'くだりかいだん',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 422, width: 32, height: 32 },
@@ -133,6 +138,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 6,
 		title: 'ワープゾーン',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 324, width: 32, height: 32 },
@@ -150,6 +156,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 7,
 		title: 'ゴールちてん',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 500, width: 32, height: 32 },
@@ -170,6 +177,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 8,
 		title: 'おはなばたけ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 421, width: 32, height: 32 },
@@ -188,6 +196,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 9,
 		title: 'キ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 520, width: 32, height: 32 },
@@ -205,6 +214,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 10,
 		title: 'バクダンいわ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 401, width: 32, height: 32 },
@@ -230,6 +240,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 11,
 		title: 'いわかんのあるかべ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 340, width: 32, height: 32 },
@@ -245,6 +256,7 @@ window.addEventListener('load', function () {
 			item.opacity = 0.5;
 		}
 	}, {
+		id: 12,
 		title: 'いしをもつかべ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 341, width: 32, height: 32 },
@@ -262,6 +274,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 13,
 		title: 'からばこ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 522, width: 32, height: 32 },
@@ -280,6 +293,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 14,
 		title: 'ふしぎなツボ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 400, width: 32, height: 32 },
@@ -307,6 +321,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 15,
 		title: 'ただのひと',
 		image: 'enchantjs/x1.5/chara0.png',
 		trim: { x: 4*48, y: 8, width: 48, height: 48 },
@@ -324,6 +339,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 16,
 		title: 'アントレプレナー',
 		image: 'enchantjs/x1.5/chara0.png',
 		trim: { x: 1*48, y: 8, width: 48, height: 48 },
@@ -345,6 +361,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 17,
 		title: 'バイオレンスライム',
 		image: 'enchantjs/monster4.gif',
 		trim: { x: 2*48-4, y: 1*48, width: 48, height: 48 },
@@ -362,6 +379,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 18,
 		title: 'よわインセクト',
 		image: 'enchantjs/monster1.gif',
 		trim: { frame: 2, width: 48, height: 48 },
@@ -380,6 +398,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 19,
 		title: 'じごくからのツカイ',
 		image: 'enchantjs/monster3.gif',
 		trim: { frame: 2, width: 48, height: 48 },
@@ -403,6 +422,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 20,
 		title: 'ふむと いてっ！＞＜',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 440, width: 32, height: 32 },
@@ -424,6 +444,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 21,
 		title: 'ハート',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 563, width: 32, height: 32 },
@@ -442,6 +463,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 22,
 		title: 'タタリ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 564, width: 32, height: 32 },
@@ -462,6 +484,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 22,
 		title: 'チャリンチャリン',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 565, width: 32, height: 32 },
@@ -481,6 +504,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 23,
 		title: 'れいの アレ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 566, width: 32, height: 32 },
@@ -505,6 +529,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 24,
 		title: 'ふしぎなかぎ',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 567, width: 32, height: 32 },
@@ -522,6 +547,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 25,
 		title: 'のぼりかいだん',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 402, width: 32, height: 32 },
@@ -539,6 +565,7 @@ window.addEventListener('load', function () {
 			};
 		}
 	}, {
+		id: 26,
 		title: 'じげんばくだん',
 		image: 'enchantjs/x2/dotmat.gif',
 		trim: { frame: 580, width: 32, height: 32 },
@@ -565,6 +592,7 @@ window.addEventListener('load', function () {
 			}, item.time * game.fps);
 		}
 	}, {
+		id: 27,
 		title: 'ごくえんのドラゴン',
 		image: 'enchantjs/bigmonster1.gif',
 		trim: { frame: 10, width: 80, height: 80 },
@@ -595,6 +623,7 @@ window.addEventListener('load', function () {
 			}, 1);
 		}
 	}, {
+		id: 28,
 		title: 'SoundCloud API',
 		image: 'service/soundcloud-icon.png',
 		trim: { left: 0, top: 0, width: 32, height: 32 },
@@ -606,6 +635,7 @@ window.addEventListener('load', function () {
 			Hack.openSoundCloud('https://soundcloud.com/nelward/splatoon-main-theme-snes-ey-remix');
 		}
 	}, {
+		id: 29,
 		title: 'SoundCloud 埋め込みプレーヤー',
 		image: 'service/soundcloud-icon-black.png',
 		trim: { left: 0, top: 0, width: 64, height: 43 },
