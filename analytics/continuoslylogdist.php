@@ -15,7 +15,7 @@ try {
 	$stmt->bindValue(":_begin", $_9daysago, PDO::PARAM_STR);
 	$stmt->execute();
 
-	$values			= array_fill(0, 7, 0);
+	$values			= array_fill(1, 7, 0);
 	foreach ($stmt->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_COLUMN) as $UserID => $attendance) {
 
 		// 現地時間で[今日]の00:00:00を表すGMTのDateTime := DATE (datetime ~ datetime+1day)
@@ -50,7 +50,7 @@ try {
 			}
 		}
 		if ($count > 0) {
-			$values[$count-1] ++; // 分布をつくる
+			$values[min($count-1, 7)] ++; // 分布をつくる
 		}
 	}
 
