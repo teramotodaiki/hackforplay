@@ -1007,7 +1007,6 @@ $(function(){
 		function makeProject (successed, failed) {
 			// 残っているトークンを破棄
 			sessionStorage.removeItem('project-token');
-			var code = sessionStorage.getItem('restaging_code');
 			var timezone = new Date().getTimezoneString();
 			$.post('../project/makefromstage.php', {
 				'stageid': getParam('id'),
