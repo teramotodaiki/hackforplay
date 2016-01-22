@@ -1137,7 +1137,7 @@ $(function(){
 				// official mode (load default code from main.js)
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
-					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
+					makeProject();
 				});
 				break;
 			case "restaging":
@@ -1154,7 +1154,7 @@ $(function(){
 				sessionStorage.setItem('restaging_code', getParam('replay_code'));
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
-					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
+					makeProject();
 				});
 				break;
 			case "extend":
@@ -1167,7 +1167,7 @@ $(function(){
 				sessionStorage.setItem('restaging_code', getParam('replay_code'));
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
-					sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
+					makeProject();
 				});
 				if (!getParam('directly_restaging')) {
 					// Show credit
@@ -1217,9 +1217,9 @@ $(function(){
 				// replace_code を受けたのち, beginRestaging
 				window.addEventListener('message', function task(event) {
 					if (event.data === 'replace_code') {
-						beginRestaging();
-						sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
 						window.removeEventListener('message', task);
+						beginRestaging();
+						makeProject();
 					}
 				});
 				break;
