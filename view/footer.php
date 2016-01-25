@@ -3,6 +3,8 @@
 		<div class="row">
 			<div class="col-md-4 col-xs-8">
 				<ul class="list-inline">
+					<li class="pull-left"><a class="h4p_footer" href="http://hackforplayworkshop.weebly.com" title="Contact" target='_blank'>
+						運営会社</a></li>
 					<li class="pull-left"><a class="h4p_footer" href="http://hackforplay.weebly.com/contact.html" title="Contact">
 						お問い合わせ</a></li>
 					<li class="pull-left"><a class="h4p_footer" href="http://hackforplay.weebly.com/blog/001" title="Blog">

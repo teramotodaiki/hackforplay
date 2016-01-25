@@ -15,11 +15,11 @@ try {
 	$getWeeklySummary = function ($start, $end) use ($dbh)
 	{
 		// 過去１ヶ月のうち最もIDの若いものを取得
-		$stmt	= $dbh->prepare('SELECT MIN("ID") FROM "AnonymousUser" WHERE :start<"Registered" AND "Registered"<:end');
+		$stmt	= $dbh->prepare('SELECT MIN("ID"),MAX("ID") FROM "AnonymousUser" WHERE :start<"Registered" AND "Registered"<:end');
 		$stmt->bindValue(":start", $start, PDO::PARAM_STR);
 		$stmt->bindValue(":end", $end, PDO::PARAM_STR);
 		$stmt->execute();
-		$min_id	= $stmt->fetch(PDO::FETCH_COLUMN);
+		$range	= $stmt->fetch();
 
 		// 登録したユーザーの数を取得
 		$stmt	= $dbh->prepare('SELECT COUNT(DISTINCT "UserID") FROM "AnonymousUser" WHERE :start<"Registered" AND "Registered"<:end');
@@ -29,8 +29,9 @@ try {
 		$reg	= $stmt->fetch(PDO::FETCH_COLUMN);
 
 		// MIN ID 以降のAUserIDを持つAnonymous User Dataをすべて取得
-		$stmt	= $dbh->prepare('SELECT "AUserID","StageID" FROM "AnonymousUserData" WHERE "AUserID">:min_id');
-		$stmt->bindValue(":min_id", $min_id, PDO::PARAM_INT);
+		$stmt	= $dbh->prepare('SELECT "AUserID","StageID" FROM "AnonymousUserData" WHERE :min_id<"AUserID" AND "AUserID"<:max_id ');
+		$stmt->bindValue(":min_id", $range[0], PDO::PARAM_INT);
+		$stmt->bindValue(":max_id", $range[1], PDO::PARAM_INT);
 		$stmt->execute();
 		$alldata = $stmt->fetchAll(PDO::FETCH_COLUMN | PDO::FETCH_GROUP);
 
