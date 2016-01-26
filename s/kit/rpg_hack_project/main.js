@@ -161,6 +161,29 @@ window.addEventListener('load', function () {
 			return this;
 
 		}).call(new LifeLabel(10, 72, 9));
+
+		/**
+		 * Hack.score
+		 * Generic scoring property
+		 * Invoke Hack.onscorechange
+		*/
+		Hack.scoreLabel = (function (self) {
+			Object.defineProperty(Hack, 'score', {
+				enumerable: true, configurable: false,
+				get: function () {
+					return self.score;
+				},
+				set: function (value) {
+					if (self.score !== value) {
+						var e = new Event('scorechange');
+						e.score = self.score = value;
+						Hack.dispatchEvent(e);
+					}
+				}
+			});
+			Hack.menuGroup.addChild(self);
+			return self;
+		})(new ScoreLabel(10, 88));
 	});
 
 	game.onload = game.onload || function () {
