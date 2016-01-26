@@ -103,6 +103,7 @@ window.addEventListener('load', function () {
 			// このオブジェクトの behavior プロパティと、onbecome~イベントの発火
 			var behavior = BehaviorTypes.None;
 			Object.defineProperty(this, 'behavior', {
+				configurable: true,
 				get: function () { return behavior; },
 				set: function (value) {
 					if (value !== behavior) {
@@ -252,6 +253,7 @@ window.addEventListener('load', function () {
 				}
 				if(this.hp <= 0){
 					this.behavior = BehaviorTypes.Dead;
+					Object.defineProperty(this, 'behavior', { set: function () {} }); // an-writable
 				}else{
 					this.behavior |= BehaviorTypes.Damaged;
 					this.setTimeout(function(){
