@@ -74,6 +74,11 @@ window.addEventListener('load', function () {
 
 		};
 
+		// Score up/Score down
+		Hack.onscorechange = function () {
+
+		};
+
 		// EnchantBook
 		Hack.hint = function () {
 			//  -            =
