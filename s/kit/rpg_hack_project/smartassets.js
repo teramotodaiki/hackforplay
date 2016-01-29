@@ -420,6 +420,9 @@ window.addEventListener('load', function () {
 					Hack.Attack.call(this, this.mapX, this.mapY, this.atk);
 				}).become('attack', 20).become('idle');
 			};
+			enemy.onbecomedead = function () {
+				Hack.score += 1;
+			};
 		}
 	}, {
 		id: 20,
@@ -501,6 +504,7 @@ window.addEventListener('load', function () {
 			effect.force(0, 0.5);
 			effect.ontriggerenter = function () {
 				this.destroy();
+				Hack.score += 1;
 			};
 		}
 	}, {
@@ -626,7 +630,7 @@ window.addEventListener('load', function () {
 		id: 28,
 		title: 'SoundCloud API',
 		image: 'service/soundcloud-icon.png',
-		trim: { left: 0, top: 0, width: 32, height: 32 },
+		trim: { x: 0, y: 0, width: 32, height: 32 },
 		query: 'replace',
 		caption: 'サウンドクラウドのAPI（エーピーアイ）をつかって、ゲームのなかで サウンドをならそう！',
 		identifier: '()',
@@ -638,13 +642,134 @@ window.addEventListener('load', function () {
 		id: 29,
 		title: 'SoundCloud 埋め込みプレーヤー',
 		image: 'service/soundcloud-icon-black.png',
-		trim: { left: 0, top: 0, width: 64, height: 43 },
+		trim: { x: 10, y: 0, width: 43, height: 43 },
 		query: 'replace',
 		caption: 'サウンドクラウドの埋め込みプレーヤーをつかって、サウンドをならそう！ APIでは再生できない曲も こっちでは再生できることがあるぞ。',
 		identifier: '()',
 		pattern: /Hack\.openExternal\(\'soundcloud\'\,.*\)\;?/g.source,
 		code: function () {
 			Hack.openExternal('soundcloud', 'https://soundcloud.com/john-sevenight/pokemon-dubstep-remix');
+		}
+	}, {
+		id: 30,
+		title: 'うれしいダイヤモンド',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 560, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'ゲットすると、スコアになる',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ダイヤモンド
+			var item = new MapObject('diamond');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onplayerenter = function () {
+				this.destroy();
+				Hack.score += 1;
+			};
+		}
+	}, {
+		id: 31,
+		title: 'スコアでゲームクリア',
+		image: 'hackforplay/clear.png',
+		trim: { x: 80, y: 0, width: 320, height: 320 },
+		query: 'embed',
+		caption: 'スコア１０以上のとき、ゲームクリアにせっていする',
+		identifier: '[]',
+		code: function () {
+			// スコアでゲームクリア
+			if (Hack.score >= 10) {
+				Hack.gameclear();
+			}
+		}
+	}, {
+		id: 32,
+		title: 'スコアで光るまほうじん',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 329, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'スコア７以上のとき うえにのると、まほうじんが光る(だけ)',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ダイヤモンド
+			var item = new MapObject('magic');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onplayerenter = function () {
+				if (Hack.score >= 7) {
+					this.frame = MapObject.dictionary.usedMagic;
+				}
+			};
+		}
+	}, {
+		id: 33,
+		title: 'よのなか、マネー（おカネ）だ！',
+		image: 'enchantjs/font0.png',
+		trim: { x: 206, y: 30, width: 16, height: 16 },
+		query: 'embed',
+		caption: 'スコアをマネーにして、さいしょから 100 だけ もっているようにする',
+		identifier: '<>',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// マネー（おカネ）にする
+			Hack.scoreLabel.label = 'MONEY:';
+			Hack.score = 100;
+		}
+	}, {
+		id: 34,
+		title: 'かたいからばこ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 420, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'スコアが足りないときは びくともしない ただの からばこ',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// かたいたからばこ
+			var item = new MapObject('box');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onattacked = function () {
+				if (Hack.score < 5) {
+					Hack.log('たからばこは びくともしない ');
+				} else {
+					this.frame = MapObject.dictionary.openedBox;
+					Hack.log('ガチャ！たからばこが あいた！');
+					// 出てくるもの　→
+				}
+			};
+		}
+	}, {
+		id: 34,
+		title: 'おはなやさん',
+		image: 'enchantjs/x1.5/chara0.png',
+		trim: { frame: 7, width: 48, height: 48 },
+		query: 'embed',
+		caption: 'おはなを うっている 女の子',
+		identifier: '()',
+		variables: ['chara', 'item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// おはなやさん
+			var chara = new Girl();
+			chara.locate(__cnt15, __cnt10, 'map1');
+			chara.oncollided = function () {
+				if (Hack.score < 100) {
+					Hack.log('おはなは100エンです。おカネが たりないよ。');
+				} else {
+					Hack.log('おはなは100エンです。はい、どうぞ');
+					Hack.score -= 100;
+					// おはな
+					var item = new MapObject('flower');
+					item.locate(this.mapX, this.mapY + 1, 'map1');
+					item.onplayerenter = function () {
+						this.destroy();
+					};
+				}
+			};
 		}
 	}).setCounter({
 		name: '__cnt15',
