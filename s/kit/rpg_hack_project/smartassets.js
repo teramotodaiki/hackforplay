@@ -742,6 +742,35 @@ window.addEventListener('load', function () {
 				}
 			};
 		}
+	}, {
+		id: 34,
+		title: 'おはなやさん',
+		image: 'enchantjs/x1.5/chara0.png',
+		trim: { frame: 7, width: 48, height: 48 },
+		query: 'embed',
+		caption: 'スコアが足りないときは びくともしない ただの からばこ',
+		identifier: '()',
+		variables: ['chara', 'item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// おはなやさん
+			var chara = new Girl();
+			chara.locate(__cnt15, __cnt10, 'map1');
+			chara.oncollided = function () {
+				if (Hack.score < 100) {
+					Hack.log('おはなは100エンです。おカネが たりないよ。');
+				} else {
+					Hack.log('おはなは100エンです。はい、どうぞ');
+					Hack.score -= 100;
+					// おはな
+					var item = new MapObject('flower');
+					item.locate(this.mapX, this.mapY + 1, 'map1');
+					item.onplayerenter = function () {
+						this.destroy();
+					};
+				}
+			};
+		}
 	}).setCounter({
 		name: '__cnt15',
 		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))
