@@ -162,28 +162,16 @@ window.addEventListener('load', function () {
 
 		}).call(new LifeLabel(10, 72, 9));
 
-		/**
-		 * Hack.score
-		 * Generic scoring property
-		 * Invoke Hack.onscorechange
-		*/
-		Hack.scoreLabel = (function (self) {
-			Object.defineProperty(Hack, 'score', {
-				enumerable: true, configurable: false,
-				get: function () {
-					return self.score;
-				},
-				set: function (value) {
-					if (self.score !== value) {
-						var e = new Event('scorechange');
-						e.score = self.score = value;
-						Hack.dispatchEvent(e);
-					}
-				}
+		Hack.scoreLabel = (function (self, source) {
+			Object.keys(source).filter(function(key) {
+				var desc = Object.getOwnPropertyDescriptor(source, key);
+				return desc !== undefined && desc.enumerable;
+			}).forEach(function (key) {
+				self[key] = source[key];
 			});
 			Hack.menuGroup.addChild(self);
 			return self;
-		})(new ScoreLabel(10, 88));
+		})(new ScoreLabel(10, 88), Hack.scoreLabel);
 	});
 
 	game.onload = game.onload || function () {
@@ -256,7 +244,6 @@ window.addEventListener('load', function () {
 				next.dispatchEvent(new Event('entermap'));
 			}
 		})(Hack.map, Hack.maps[mapName]);
-
 	};
 
 	/*  Dir2Vec
@@ -294,6 +281,27 @@ window.addEventListener('load', function () {
 			item.dispatchEvent(e);
 		}, this);
 	};
+
+	/**
+	 * Hack.score
+	 * Generic scoring property
+	 * Invoke Hack.onscorechange
+	*/
+	Object.defineProperty(Hack, 'score', {
+		enumerable: true, configurable: false,
+		get: function () {
+			return Hack.scoreLabel.score;
+		},
+		set: function (value) {
+			if (Hack.scoreLabel.score !== value) {
+				var e = new Event('scorechange');
+				e.score = Hack.scoreLabel.score = value;
+				Hack.dispatchEvent(e);
+			}
+		}
+	});
+	Hack.scoreLabel = Object.create(null); // 仮オブジェクト
+	Hack.score = 0; // Fire a event and Initialize score
 
 	/* Timeline Extention
 	 * become(type[, time])
