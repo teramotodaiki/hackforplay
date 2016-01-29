@@ -663,7 +663,7 @@ window.addEventListener('load', function () {
 		code: function () {
 			// ダイヤモンド
 			var item = new MapObject('diamond');
-			item.locate(__cnt15, __cnt10);
+			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				this.destroy();
 				Hack.score += 1;
@@ -696,7 +696,7 @@ window.addEventListener('load', function () {
 		code: function () {
 			// ダイヤモンド
 			var item = new MapObject('magic');
-			item.locate(__cnt15, __cnt10);
+			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				if (Hack.score >= 7) {
 					this.frame = MapObject.dictionary.usedMagic;
