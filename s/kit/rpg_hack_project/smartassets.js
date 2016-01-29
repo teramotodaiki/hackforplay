@@ -377,6 +377,9 @@ window.addEventListener('load', function () {
 			enemy.onbecomeidle = function () {
 				this.attack();
 			};
+			enemy.onbecomedead = function () {
+				Hack.score += 1;
+			};
 		}
 	}, {
 		id: 18,
@@ -395,6 +398,9 @@ window.addEventListener('load', function () {
 			enemy.onbecomeidle = function () {
 				this.turn();
 				this.walk();
+			};
+			enemy.onbecomedead = function () {
+				Hack.score += 1;
 			};
 		}
 	}, {
