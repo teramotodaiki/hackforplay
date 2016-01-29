@@ -313,7 +313,7 @@ $(function(){
 			change.cancel();
 		}
 	});
-	jsEditor.on('change', function() {
+	jsEditor.on('change', function(cm, change) {
 		// Fix save icon
 		$('.h4p_save_button .glyphicon').removeClass('glyphicon-saved').addClass('glyphicon-save');
 		// Fix undo/redo icon
@@ -323,6 +323,10 @@ $(function(){
 		else undo.addClass('disabled');
 		if (jsEditor.historySize().redo) redo.removeClass('disabled');
 		else redo.addClass('disabled');
+		// Run on paste
+		if (change.origin === 'paste') {
+			$('.h4p_restaging_button').trigger('click');
+		}
 	});
 	$('.h4p_restaging_menu').on('click', 'button', function() {
 		switch ($(this).data('query')) {
