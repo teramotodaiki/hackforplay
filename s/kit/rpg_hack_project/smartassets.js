@@ -703,6 +703,21 @@ window.addEventListener('load', function () {
 				}
 			};
 		}
+	}, {
+		id: 33,
+		title: 'よのなか、マネー（おカネ）だ！',
+		image: 'enchantjs/font0.png',
+		trim: { x: 206, y: 30, width: 16, height: 16 },
+		query: 'embed',
+		caption: 'スコアをマネーにして、さいしょから 100 だけ もっているようにする',
+		identifier: '<>',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// マネー（おカネ）にする
+			Hack.scoreLabel.label = 'MONEY:';
+			Hack.score = 100;
+		}
 	}).setCounter({
 		name: '__cnt15',
 		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))
