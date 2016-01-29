@@ -652,6 +652,25 @@ window.addEventListener('load', function () {
 		}
 	}, {
 		id: 30,
+		title: 'うれしいダイヤモンド',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 560, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'ゲットすると、スコアになる',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ダイヤモンド
+			var item = new MapObject('diamond');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onplayerenter = function () {
+				this.destroy();
+				Hack.score += 1;
+			};
+		}
+	}, {
+		id: 31,
 		title: 'スコアでゲームクリア',
 		image: 'hackforplay/clear.png',
 		trim: { x: 80, y: 0, width: 320, height: 320 },
@@ -663,6 +682,94 @@ window.addEventListener('load', function () {
 			if (Hack.score >= 10) {
 				Hack.gameclear();
 			}
+		}
+	}, {
+		id: 32,
+		title: 'スコアで光るまほうじん',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 329, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'スコア７以上のとき うえにのると、まほうじんが光る(だけ)',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ダイヤモンド
+			var item = new MapObject('magic');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onplayerenter = function () {
+				if (Hack.score >= 7) {
+					this.frame = MapObject.dictionary.usedMagic;
+				}
+			};
+		}
+	}, {
+		id: 33,
+		title: 'よのなか、マネー（おカネ）だ！',
+		image: 'enchantjs/font0.png',
+		trim: { x: 206, y: 30, width: 16, height: 16 },
+		query: 'embed',
+		caption: 'スコアをマネーにして、さいしょから 100 だけ もっているようにする',
+		identifier: '<>',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// マネー（おカネ）にする
+			Hack.scoreLabel.label = 'MONEY:';
+			Hack.score = 100;
+		}
+	}, {
+		id: 34,
+		title: 'かたいからばこ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 420, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'スコアが足りないときは びくともしない ただの からばこ',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// かたいたからばこ
+			var item = new MapObject('box');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onattacked = function () {
+				if (Hack.score < 5) {
+					Hack.log('たからばこは びくともしない ');
+				} else {
+					this.frame = MapObject.dictionary.openedBox;
+					Hack.log('ガチャ！たからばこが あいた！');
+					// 出てくるもの　→
+				}
+			};
+		}
+	}, {
+		id: 34,
+		title: 'おはなやさん',
+		image: 'enchantjs/x1.5/chara0.png',
+		trim: { frame: 7, width: 48, height: 48 },
+		query: 'embed',
+		caption: 'スコアが足りないときは びくともしない ただの からばこ',
+		identifier: '()',
+		variables: ['chara', 'item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// おはなやさん
+			var chara = new Girl();
+			chara.locate(__cnt15, __cnt10, 'map1');
+			chara.oncollided = function () {
+				if (Hack.score < 100) {
+					Hack.log('おはなは100エンです。おカネが たりないよ。');
+				} else {
+					Hack.log('おはなは100エンです。はい、どうぞ');
+					Hack.score -= 100;
+					// おはな
+					var item = new MapObject('flower');
+					item.locate(this.mapX, this.mapY + 1, 'map1');
+					item.onplayerenter = function () {
+						this.destroy();
+					};
+				}
+			};
 		}
 	}).setCounter({
 		name: '__cnt15',
