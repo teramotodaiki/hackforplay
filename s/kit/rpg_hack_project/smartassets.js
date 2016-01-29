@@ -683,6 +683,26 @@ window.addEventListener('load', function () {
 				Hack.gameclear();
 			}
 		}
+	}, {
+		id: 32,
+		title: 'スコアで光るまほうじん',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 329, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'スコア７以上のとき うえにのると、まほうじんが光る(だけ)',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ダイヤモンド
+			var item = new MapObject('magic');
+			item.locate(__cnt15, __cnt10);
+			item.onplayerenter = function () {
+				if (Hack.score >= 7) {
+					this.frame = MapObject.dictionary.usedMagic;
+				}
+			};
+		}
 	}).setCounter({
 		name: '__cnt15',
 		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))
