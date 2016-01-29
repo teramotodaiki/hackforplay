@@ -652,6 +652,25 @@ window.addEventListener('load', function () {
 		}
 	}, {
 		id: 30,
+		title: 'うれしいダイヤモンド',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 560, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'ゲットすると、スコアになる',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ダイヤモンド
+			var item = new MapObject('diamond');
+			item.locate(__cnt15, __cnt10);
+			item.onplayerenter = function () {
+				this.destroy();
+				Hack.score += 1;
+			};
+		}
+	}, {
+		id: 31,
 		title: 'スコアでゲームクリア',
 		image: 'hackforplay/clear.png',
 		trim: { x: 80, y: 0, width: 320, height: 320 },
