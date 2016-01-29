@@ -420,6 +420,9 @@ window.addEventListener('load', function () {
 					Hack.Attack.call(this, this.mapX, this.mapY, this.atk);
 				}).become('attack', 20).become('idle');
 			};
+			enemy.onbecomedead = function () {
+				Hack.score += 1;
+			};
 		}
 	}, {
 		id: 20,
@@ -501,6 +504,7 @@ window.addEventListener('load', function () {
 			effect.force(0, 0.5);
 			effect.ontriggerenter = function () {
 				this.destroy();
+				Hack.score += 1;
 			};
 		}
 	}, {
@@ -626,7 +630,7 @@ window.addEventListener('load', function () {
 		id: 28,
 		title: 'SoundCloud API',
 		image: 'service/soundcloud-icon.png',
-		trim: { left: 0, top: 0, width: 32, height: 32 },
+		trim: { x: 0, y: 0, width: 32, height: 32 },
 		query: 'replace',
 		caption: 'サウンドクラウドのAPI（エーピーアイ）をつかって、ゲームのなかで サウンドをならそう！',
 		identifier: '()',
@@ -638,13 +642,27 @@ window.addEventListener('load', function () {
 		id: 29,
 		title: 'SoundCloud 埋め込みプレーヤー',
 		image: 'service/soundcloud-icon-black.png',
-		trim: { left: 0, top: 0, width: 64, height: 43 },
+		trim: { x: 10, y: 0, width: 43, height: 43 },
 		query: 'replace',
 		caption: 'サウンドクラウドの埋め込みプレーヤーをつかって、サウンドをならそう！ APIでは再生できない曲も こっちでは再生できることがあるぞ。',
 		identifier: '()',
 		pattern: /Hack\.openExternal\(\'soundcloud\'\,.*\)\;?/g.source,
 		code: function () {
 			Hack.openExternal('soundcloud', 'https://soundcloud.com/john-sevenight/pokemon-dubstep-remix');
+		}
+	}, {
+		id: 30,
+		title: 'スコアでゲームクリア',
+		image: 'hackforplay/clear.png',
+		trim: { x: 80, y: 0, width: 320, height: 320 },
+		query: 'embed',
+		caption: 'スコア１０以上のとき、ゲームクリアにせっていする',
+		identifier: '[]',
+		code: function () {
+			// スコアでゲームクリア
+			if (Hack.score >= 10) {
+				Hack.gameclear();
+			}
 		}
 	}).setCounter({
 		name: '__cnt15',
