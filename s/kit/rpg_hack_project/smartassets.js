@@ -748,7 +748,7 @@ window.addEventListener('load', function () {
 		image: 'enchantjs/x1.5/chara0.png',
 		trim: { frame: 7, width: 48, height: 48 },
 		query: 'embed',
-		caption: 'スコアが足りないときは びくともしない ただの からばこ',
+		caption: 'おはなを うっている 女の子',
 		identifier: '()',
 		variables: ['chara', 'item'],
 		counters: ['__cnt15', '__cnt10'],
