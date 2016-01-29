@@ -718,6 +718,30 @@ window.addEventListener('load', function () {
 			Hack.scoreLabel.label = 'MONEY:';
 			Hack.score = 100;
 		}
+	}, {
+		id: 34,
+		title: 'かたいからばこ',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 420, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'スコアが足りないときは びくともしない ただの からばこ',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// かたいたからばこ
+			var item = new MapObject('box');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.onattacked = function () {
+				if (Hack.score < 5) {
+					Hack.log('たからばこは びくともしない ');
+				} else {
+					this.frame = MapObject.dictionary.openedBox;
+					Hack.log('ガチャ！たからばこが あいた！');
+					// 出てくるもの　→
+				}
+			};
+		}
 	}).setCounter({
 		name: '__cnt15',
 		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))
