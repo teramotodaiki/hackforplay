@@ -420,6 +420,9 @@ window.addEventListener('load', function () {
 					Hack.Attack.call(this, this.mapX, this.mapY, this.atk);
 				}).become('attack', 20).become('idle');
 			};
+			enemy.onbecomedead = function () {
+				Hack.score += 1;
+			};
 		}
 	}, {
 		id: 20,
@@ -501,6 +504,7 @@ window.addEventListener('load', function () {
 			effect.force(0, 0.5);
 			effect.ontriggerenter = function () {
 				this.destroy();
+				Hack.score += 1;
 			};
 		}
 	}, {
