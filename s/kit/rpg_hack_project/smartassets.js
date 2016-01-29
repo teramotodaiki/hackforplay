@@ -646,6 +646,20 @@ window.addEventListener('load', function () {
 		code: function () {
 			Hack.openExternal('soundcloud', 'https://soundcloud.com/john-sevenight/pokemon-dubstep-remix');
 		}
+	}, {
+		id: 30,
+		title: 'スコアでゲームクリア',
+		image: 'hackforplay/clear.png',
+		trim: { x: 80, y: 0, width: 320, height: 320 },
+		query: 'embed',
+		caption: 'スコア１０以上のとき、ゲームクリアにせっていする',
+		identifier: '[]',
+		code: function () {
+			// スコアでゲームクリア
+			if (Hack.score >= 10) {
+				Hack.gameclear();
+			}
+		}
 	}).setCounter({
 		name: '__cnt15',
 		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))
