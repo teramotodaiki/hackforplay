@@ -879,7 +879,7 @@ window.addEventListener('load', function() {
 				var res = i.context.getImageData(this._frameLeft, this._frameTop, this.width, this.height);
 				this._representativeColors = getRepresentativeColor(res.data);
 			}
-			return this._representativeColors;
+			return this._representativeColors[0];
 		},
 		set: function (color) {
 			//
@@ -888,16 +888,19 @@ window.addEventListener('load', function() {
     // 代表色を抽出
     function getRepresentativeColor (data) {
 		// RGP色空間を64分割->色空間Viに存在するピクセルの数をカウント
-		var space = new Array(64).fill(0), index, rgb; // 0 ~ 63 ... 6bit [RRGGBB]
-		for (index = data.length - 4; index >= 0; index -= 4) {
+		var space = new Array(64).fill(0); // 0 ~ 63 ... 6bit [RRGGBB]
+		for (var index = data.length - 4; index >= 0; index -= 4) {
 			if (data[index + 3] > 0) {
-				rgb = rgb256toNum64(data[index], data[index + 1], data[index + 2]);
+				var rgb = rgb256toNum64(data[index], data[index + 1], data[index + 2]);
 				space[rgb] ++;
 			}
 		}
 		space[0] = 0; // 黒は輪郭線として代表色にはさせない
-		var strong = space.indexOf(Math.max.apply(null, space));
-		return [strong << 2 & 192, strong << 4 & 192, strong << 6 & 192];
+		return new Array(16).fill(0).map(function (index) {
+			var strong = space.indexOf(Math.max.apply(null, space));
+			space[strong] = 0;
+			return [strong << 2 & 192, strong << 4 & 192, strong << 6 & 192];
+		});
 		function rgb256toNum64 (r, g, b) {
 			var R2 = r >> 6 & 3; // 2bits of R
 			var G2 = g >> 6 & 3;
