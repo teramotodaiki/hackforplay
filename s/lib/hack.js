@@ -913,6 +913,9 @@ window.addEventListener('load', function() {
     // 色空間1でマスクしたRGB空間を、色2に転写するフィルタを追加する
     // @scope Sprite
     enchant.Sprite.prototype.moveColor = function (order, filterColor) {
+		filterColor = filterColor.map(function(value) {
+			return Math.min(256 - 64, value); // 64階調を残す
+		});
 		this._filter = this._filter || new Array(64).fill(null); // RRGGBBをキーとするRGBフィルタ
 		var space64 = rgb256toNum64(this.colors[order]);
 		if (this._filter[space64] && this._filter[space64].join(' ') === filterColor.join(' ')) return;
@@ -926,9 +929,9 @@ window.addEventListener('load', function() {
 			if (data[index + 3] > 0) {
 				var rgb = rgb256toNum64(data[index], data[index + 1], data[index + 2]);
 				if (this._filter[rgb]) {
-					data[index + 0] *= this._filter[rgb][0] / 255; // r
-					data[index + 1] *= this._filter[rgb][1] / 255; // g
-					data[index + 2] *= this._filter[rgb][2] / 255; // b
+					data[index + 0] = this._filter[rgb][0] + (data[index + 0] & 63); // r
+					data[index + 1] = this._filter[rgb][1] + (data[index + 1] & 63); // g
+					data[index + 2] = this._filter[rgb][2] + (data[index + 2] & 63); // b
 				}
 			}
 		}
