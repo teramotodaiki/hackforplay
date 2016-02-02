@@ -700,7 +700,7 @@ window.addEventListener('load', function () {
 		variables: ['item'],
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
-			// ダイヤモンド
+			// まほうじん
 			var item = new MapObject('magic');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
