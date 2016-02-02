@@ -909,12 +909,6 @@ window.addEventListener('load', function() {
 			rep.push([strong << 2 & 192, strong << 4 & 192, strong << 6 & 192]);
 		}
 		return rep;
-		function rgb256toNum64 (r, g, b) {
-			var R2 = r >> 6 & 3; // 2bits of R
-			var G2 = g >> 6 & 3;
-			var B2 = b >> 6 & 3;
-			return R2 << 4 | G2 << 2 | B2; // RRGGBB 6bit value
-		}
     }
     // 色空間1でマスクしたRGB空間を、色2に転写する
     // @scope Sprite
@@ -934,6 +928,15 @@ window.addEventListener('load', function() {
 		}
 		this.image.context.putImageData(imageData, 0, 0);
     };
+    function rgb256toNum64 (r, g, b) {
+		if (arguments[0] instanceof Array) {
+			return rgb256toNum64.call(null, arguments[0][0], arguments[0][1], arguments[0][2]);
+		}
+		var R2 = r >> 6 & 3; // 2bits of R
+		var G2 = g >> 6 & 3;
+		var B2 = b >> 6 & 3;
+		return R2 << 4 | G2 << 2 | B2; // RRGGBB 6bit value
+	}
 });
 if (!Array.prototype.fill) {
   Array.prototype.fill = function(value) {
