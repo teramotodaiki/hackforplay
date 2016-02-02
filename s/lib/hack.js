@@ -887,7 +887,7 @@ window.addEventListener('load', function() {
 		mainColor: {
 			configurable: true, enumerable: true,
 			get: function () { return this.colors[0]; },
-			set: function (color) { this.moveColor(this.colors[0], color); }
+			set: function (color) { this.moveColor(0, color); }
 		}
     });
     // 代表色を抽出
