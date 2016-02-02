@@ -882,7 +882,9 @@ window.addEventListener('load', function() {
 			return this._representativeColors[0];
 		},
 		set: function (color) {
-			//
+			this._originalImage = this._originalImage || this.image; // 元画像を保持
+			this.image = this._originalImage.clone();
+			moveColor.call(this.image, this.mainColor, color);
 		}
     });
     // 代表色を抽出
@@ -907,6 +909,22 @@ window.addEventListener('load', function() {
 			var B2 = b >> 6 & 3;
 			return R2 << 4 | G2 << 2 | B2; // RRGGBB 6bit value
 		}
+    }
+    // 色空間1でマスクしたRGB空間を、色2に転写する
+    // @scope Surface
+    function moveColor (colorSpace, color) {
+		var imageData = this.context.getImageData(0, 0, this.width, this.height),
+		data = imageData.data;
+		for (var index = data.length - 4; index >= 0; index -= 4) {
+			var contains = data[index + 3] > 0 &&
+				(data[index + 0] ^ colorSpace[0]) < 64 &&
+				(data[index + 1] ^ colorSpace[1]) < 64 &&
+				(data[index + 2] ^ colorSpace[2]) < 64; // 色空間に含まれている
+			data[index + 0] += contains ? color[0] : 0; // r
+			data[index + 1] += contains ? color[1] : 0; // g
+			data[index + 2] += contains ? color[2] : 0; // b
+		}
+		this.context.putImageData(imageData, 0, 0);
     }
 });
 if (!Array.prototype.fill) {
