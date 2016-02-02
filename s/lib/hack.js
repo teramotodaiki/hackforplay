@@ -915,7 +915,7 @@ window.addEventListener('load', function() {
     enchant.Sprite.prototype.moveColor = function (order, filterColor) {
 		this._filter = this._filter || new Array(64).fill(null); // RRGGBBをキーとするRGBフィルタ
 		var space64 = rgb256toNum64(this.colors[order]);
-		if (this._filter[space64] === filterColor) return; // すでに適用されているフィルタ
+		if (this._filter[space64] && this._filter[space64].join(' ') === filterColor.join(' ')) return;
 		this._filter[space64] = filterColor;
 
 		this._origin = this._origin || this.image; // 元画像を参照
