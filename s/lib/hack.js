@@ -910,7 +910,7 @@ window.addEventListener('load', function() {
 		var space = new Array(64).fill(0); // 0 ~ 63 ... 6bit [RRGGBB]
 		for (var index = data.length - 4; index >= 0; index -= 4) {
 			if (data[index + 3] > 0) {
-				var rgb = rgb256toNum64(data[index], data[index + 1], data[index + 2]);
+				var rgb = rgb256toNum64(Array.prototype.slice.call(data, index, index + 3));
 				space[rgb] ++;
 			}
 		}
@@ -949,7 +949,7 @@ window.addEventListener('load', function() {
 		data = imageData.data;
 		for (var index = data.length - 4; index >= 0; index -= 4) {
 			if (data[index + 3] > 0) {
-				var rgb = rgb256toNum64(data[index], data[index + 1], data[index + 2]);
+				var rgb = rgb256toNum64(Array.prototype.slice.call(data, index, index + 3));
 				(this._filter[rgb] || []).forEach(function (color, i) {
 					data[index + i] = color + (data[index + i] & 63); // r, g, b
 				});
