@@ -872,19 +872,22 @@ window.addEventListener('load', function() {
      * argument Surface property mainColor
      * method of get representative color
     */
-    Object.defineProperty(enchant.Sprite.prototype, 'mainColor', {
-		get: function () {
-			if (!this._representativeColors) {
-				var i = this.image.context ? this.image : this.image.clone();
-				var res = i.context.getImageData(this._frameLeft, this._frameTop, this.width, this.height);
-				this._representativeColors = getRepresentativeColor(res.data);
+    Object.defineProperties(enchant.Sprite.prototype, {
+		colors: {
+			configurable: false, enumerable: false,
+			get: function () {
+				if (!this._representativeColors) {
+					var i = this.image.context ? this.image : this.image.clone();
+					var res = i.context.getImageData(this._frameLeft, this._frameTop, this.width, this.height);
+					this._representativeColors = getRepresentativeColor(res.data);
+				}
+				return this._representativeColors;
 			}
-			return this._representativeColors[0];
 		},
-		set: function (color) {
-			this._originalImage = this._originalImage || this.image; // 元画像を保持
-			this.image = this._originalImage.clone();
-			moveColor.call(this.image, this.mainColor, color);
+		mainColor: {
+			configurable: true, enumerable: true,
+			get: function () { return this.colors[0]; },
+			set: function (color) { console.log(this.colors[0]); this.moveColor(this.colors[0], color); }
 		}
     });
     // 代表色を抽出
@@ -898,11 +901,14 @@ window.addEventListener('load', function() {
 			}
 		}
 		space[0] = 0; // 黒は輪郭線として代表色にはさせない
-		return new Array(16).fill(0).map(function (index) {
-			var strong = space.indexOf(Math.max.apply(null, space));
+		var rep = [];
+		for (var max = Math.max.apply(null, space); max > 0;
+				max = Math.max.apply(null, space)) {
+			var strong = space.indexOf(max);
 			space[strong] = 0;
-			return [strong << 2 & 192, strong << 4 & 192, strong << 6 & 192];
-		});
+			rep.push([strong << 2 & 192, strong << 4 & 192, strong << 6 & 192]);
+		}
+		return rep;
 		function rgb256toNum64 (r, g, b) {
 			var R2 = r >> 6 & 3; // 2bits of R
 			var G2 = g >> 6 & 3;
@@ -911,9 +917,11 @@ window.addEventListener('load', function() {
 		}
     }
     // 色空間1でマスクしたRGB空間を、色2に転写する
-    // @scope Surface
-    function moveColor (colorSpace, color) {
-		var imageData = this.context.getImageData(0, 0, this.width, this.height),
+    // @scope Sprite
+    enchant.Sprite.prototype.moveColor = function (colorSpace, color) {
+		this._origin = this._origin || this.image; // 元画像を参照
+		this.image = this._origin.clone(); // 他のSpriteに影響を与えないようコピー
+		var imageData = this.image.context.getImageData(0, 0, this.image.width, this.image.height),
 		data = imageData.data;
 		for (var index = data.length - 4; index >= 0; index -= 4) {
 			var contains = data[index + 3] > 0 &&
@@ -924,8 +932,8 @@ window.addEventListener('load', function() {
 			data[index + 1] += contains ? color[1] : 0; // g
 			data[index + 2] += contains ? color[2] : 0; // b
 		}
-		this.context.putImageData(imageData, 0, 0);
-    }
+		this.image.context.putImageData(imageData, 0, 0);
+    };
 });
 if (!Array.prototype.fill) {
   Array.prototype.fill = function(value) {
