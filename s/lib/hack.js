@@ -868,6 +868,20 @@ window.addEventListener('load', function() {
     }
 
     /**
+     * Hack.css2rgba
+     * style: CSS Color style
+     * @return [r, g, b, a]
+     */
+    (function () {
+		var ctx = new Surface(1, 1).context;
+		Hack.css2rgba = function (style) {
+			ctx.fillStyle = style;
+			ctx.fillRect(0, 0, 1, 1);
+			return ctx.getImageData(0, 0, 1, 1).data;
+		};
+    })();
+
+    /**
      * Image Processing
      * argument Surface property mainColor
      * method of get representative color
@@ -896,7 +910,7 @@ window.addEventListener('load', function() {
 		var space = new Array(64).fill(0); // 0 ~ 63 ... 6bit [RRGGBB]
 		for (var index = data.length - 4; index >= 0; index -= 4) {
 			if (data[index + 3] > 0) {
-				var rgb = rgb256toNum64(data[index], data[index + 1], data[index + 2]);
+				var rgb = rgb256toNum64(Array.prototype.slice.call(data, index, index + 3));
 				space[rgb] ++;
 			}
 		}
@@ -910,29 +924,40 @@ window.addEventListener('load', function() {
 		}
 		return rep;
     }
-    // 色空間1でマスクしたRGB空間を、色2に転写するフィルタを追加する
-    // @scope Sprite
+    /**
+     * 色空間1でマスクしたRGB空間を、色2に転写するフィルタを追加する
+     * @scope Sprite
+     * order: number of Sprite.prototype.color index
+     * filterColor: CSS color or [r, g, b]
+	 */
     enchant.Sprite.prototype.moveColor = function (order, filterColor) {
-		filterColor = filterColor.map(function(value) {
-			return Math.min(256 - 64, value); // 64階調を残す
-		});
 		this._filter = this._filter || new Array(64).fill(null); // RRGGBBをキーとするRGBフィルタ
-		var space64 = rgb256toNum64(this.colors[order]);
-		if (this._filter[space64] && this._filter[space64].join(' ') === filterColor.join(' ')) return;
-		this._filter[space64] = filterColor;
-
+		if (0 > order || order >= this.colors.length) return;
+		var space = rgb256toNum64(this.colors[order]);
+		if (filterColor === 'original' || !filterColor) {
+			// Remove filter
+			this._filter[space] = null;
+		} else {
+			// Color convert - Add filter
+			filterColor = typeof filterColor === 'string' ? Hack.css2rgba(filterColor) : filterColor;
+			filterColor = Array.prototype.slice.call(filterColor, 0, 3);
+			filterColor = filterColor.map(function(value) {
+				return Math.min(256 - 64, value); // 64階調を残す
+			});
+			if (this._filter[space] && this._filter[space].join(' ') === filterColor.join(' ')) return;
+			this._filter[space] = filterColor;
+		}
+		// Transfer
 		this._origin = this._origin || this.image; // 元画像を参照
 		this.image = this._origin.clone(); // 他のSpriteに影響を与えないようコピー
 		var imageData = this.image.context.getImageData(0, 0, this.image.width, this.image.height),
 		data = imageData.data;
 		for (var index = data.length - 4; index >= 0; index -= 4) {
 			if (data[index + 3] > 0) {
-				var rgb = rgb256toNum64(data[index], data[index + 1], data[index + 2]);
-				if (this._filter[rgb]) {
-					data[index + 0] = this._filter[rgb][0] + (data[index + 0] & 63); // r
-					data[index + 1] = this._filter[rgb][1] + (data[index + 1] & 63); // g
-					data[index + 2] = this._filter[rgb][2] + (data[index + 2] & 63); // b
-				}
+				var rgb = rgb256toNum64(Array.prototype.slice.call(data, index, index + 3));
+				(this._filter[rgb] || []).forEach(function (color, i) {
+					data[index + i] = color + (data[index + i] & 63); // r, g, b
+				});
 			}
 		}
 		this.image.context.putImageData(imageData, 0, 0);
