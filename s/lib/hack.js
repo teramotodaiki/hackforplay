@@ -910,7 +910,7 @@ window.addEventListener('load', function() {
 		}
 		return rep;
     }
-    // 色空間1でマスクしたRGB空間を、色2に転写する
+    // 色空間1でマスクしたRGB空間を、色2に転写するフィルタを追加する
     // @scope Sprite
     enchant.Sprite.prototype.moveColor = function (order, filterColor) {
 		this._filter = this._filter || new Array(64).fill(null); // RRGGBBをキーとするRGBフィルタ
