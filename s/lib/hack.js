@@ -868,6 +868,20 @@ window.addEventListener('load', function() {
     }
 
     /**
+     * Hack.css2rgba
+     * style: CSS Color style
+     * @return [r, g, b, a]
+     */
+    (function () {
+		var ctx = new Surface(1, 1).context;
+		Hack.css2rgba = function (style) {
+			ctx.fillStyle = style;
+			ctx.fillRect(0, 0, 1, 1);
+			return ctx.getImageData(0, 0, 1, 1).data;
+		};
+    })();
+
+    /**
      * Image Processing
      * argument Surface property mainColor
      * method of get representative color
@@ -910,9 +924,15 @@ window.addEventListener('load', function() {
 		}
 		return rep;
     }
-    // 色空間1でマスクしたRGB空間を、色2に転写するフィルタを追加する
-    // @scope Sprite
+    /**
+     * 色空間1でマスクしたRGB空間を、色2に転写するフィルタを追加する
+     * @scope Sprite
+     * order: number of Sprite.prototype.color index
+     * filterColor: CSS color or [r, g, b]
+	 */
     enchant.Sprite.prototype.moveColor = function (order, filterColor) {
+		// Color convert
+		filterColor = typeof filterColor === 'string' ? Array.prototype.slice.call(Hack.css2rgba(filterColor), 0, 3) : filterColor;
 		filterColor = filterColor.map(function(value) {
 			return Math.min(256 - 64, value); // 64階調を残す
 		});
