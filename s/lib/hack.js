@@ -564,8 +564,8 @@ window.addEventListener('load', function() {
 			addGUIParts(game.assets['hackforplay/menu-button-comment.png'], function() {
 				return !sessionStorage.getItem('stage_param_comment'); // 存在しない場合は !'' === true
 			}, function() {
-				// menuGroupを100ミリ秒間非表示にする
-				menuGroup.childNodes.forEach(function(item) {
+				// GUIParts,overlayを100ミリ秒間非表示にする
+				GUIParts.concat(overlay).forEach(function (item) {
 					var visibility = item.visible;
 					item.visible = false;
 					setTimeout(function() {
@@ -866,4 +866,151 @@ window.addEventListener('load', function() {
 		xhttp.onload = success;
 		xhttp.onerror = error;
     }
+
+    /**
+     * Hack.css2rgba
+     * style: CSS Color style
+     * @return [r, g, b, a]
+     */
+    (function () {
+		var ctx = new Surface(1, 1).context;
+		Hack.css2rgba = function (style) {
+			ctx.fillStyle = style;
+			ctx.fillRect(0, 0, 1, 1);
+			return ctx.getImageData(0, 0, 1, 1).data;
+		};
+    })();
+
+    /**
+     * Image Processing
+     * argument Surface property mainColor
+     * method of get representative color
+    */
+    Object.defineProperties(enchant.Sprite.prototype, {
+		colors: {
+			configurable: false, enumerable: false,
+			get: function () {
+				if (!this._representativeColors) {
+					var i = this.image.context ? this.image : this.image.clone();
+					var res = i.context.getImageData(this._frameLeft, this._frameTop, this.width, this.height);
+					this._representativeColors = getRepresentativeColor(res.data);
+				}
+				return this._representativeColors;
+			}
+		},
+		mainColor: {
+			configurable: true, enumerable: true,
+			get: function () { return this.colors[0]; },
+			set: function (color) { this.moveColor(0, color); }
+		}
+    });
+    // 代表色を抽出
+    function getRepresentativeColor (data) {
+		// RGP色空間を64分割->色空間Viに存在するピクセルの数をカウント
+		var space = new Array(64).fill(0); // 0 ~ 63 ... 6bit [RRGGBB]
+		for (var index = data.length - 4; index >= 0; index -= 4) {
+			if (data[index + 3] > 0) {
+				var rgb = rgb256toNum64(Array.prototype.slice.call(data, index, index + 3));
+				space[rgb] ++;
+			}
+		}
+		space[0] = 0; // 黒は輪郭線として代表色にはさせない
+		var rep = [];
+		for (var max = Math.max.apply(null, space); max > 0;
+				max = Math.max.apply(null, space)) {
+			var strong = space.indexOf(max);
+			space[strong] = 0;
+			rep.push([strong << 2 & 192, strong << 4 & 192, strong << 6 & 192]);
+		}
+		return rep;
+    }
+    /**
+     * 色空間1でマスクしたRGB空間を、色2に転写するフィルタを追加する
+     * @scope Sprite
+     * order: number of Sprite.prototype.color index
+     * filterColor: CSS color or [r, g, b]
+	 */
+    enchant.Sprite.prototype.moveColor = function (order, filterColor) {
+		this._filter = this._filter || new Array(64).fill(null); // RRGGBBをキーとするRGBフィルタ
+		if (0 > order || order >= this.colors.length) return;
+		var space = rgb256toNum64(this.colors[order]);
+		if (filterColor === 'original' || !filterColor) {
+			// Remove filter
+			this._filter[space] = null;
+		} else {
+			// Color convert - Add filter
+			filterColor = typeof filterColor === 'string' ? Hack.css2rgba(filterColor) : filterColor;
+			filterColor = Array.prototype.slice.call(filterColor, 0, 3);
+			filterColor = filterColor.map(function(value) {
+				return Math.min(256 - 64, value); // 64階調を残す
+			});
+			if (this._filter[space] && this._filter[space].join(' ') === filterColor.join(' ')) return;
+			this._filter[space] = filterColor;
+		}
+		// Transfer
+		this._origin = this._origin || this.image; // 元画像を参照
+		this.image = this._origin.clone(); // 他のSpriteに影響を与えないようコピー
+		var imageData = this.image.context.getImageData(0, 0, this.image.width, this.image.height),
+		data = imageData.data;
+		for (var index = data.length - 4; index >= 0; index -= 4) {
+			if (data[index + 3] > 0) {
+				var rgb = rgb256toNum64(Array.prototype.slice.call(data, index, index + 3));
+				(this._filter[rgb] || []).forEach(function (color, i) {
+					data[index + i] = color + (data[index + i] & 63); // r, g, b
+				});
+			}
+		}
+		this.image.context.putImageData(imageData, 0, 0);
+    };
+    function rgb256toNum64 (r, g, b) {
+		if (arguments[0] instanceof Array) {
+			return rgb256toNum64.call(null, arguments[0][0], arguments[0][1], arguments[0][2]);
+		}
+		var R2 = r >> 6 & 3; // 2bits of R
+		var G2 = g >> 6 & 3;
+		var B2 = b >> 6 & 3;
+		return R2 << 4 | G2 << 2 | B2; // RRGGBB 6bit value
+	}
 });
+if (!Array.prototype.fill) {
+  Array.prototype.fill = function(value) {
+
+    // Steps 1-2.
+    if (this == null) {
+      throw new TypeError('this is null or not defined');
+    }
+
+    var O = Object(this);
+
+    // Steps 3-5.
+    var len = O.length >>> 0;
+
+    // Steps 6-7.
+    var start = arguments[1];
+    var relativeStart = start >> 0;
+
+    // Step 8.
+    var k = relativeStart < 0 ?
+      Math.max(len + relativeStart, 0) :
+      Math.min(relativeStart, len);
+
+    // Steps 9-10.
+    var end = arguments[2];
+    var relativeEnd = end === undefined ?
+      len : end >> 0;
+
+    // Step 11.
+    var final = relativeEnd < 0 ?
+      Math.max(len + relativeEnd, 0) :
+      Math.min(relativeEnd, len);
+
+    // Step 12.
+    while (k < final) {
+      O[k] = value;
+      k++;
+    }
+
+    // Step 13.
+    return O;
+  };
+}
