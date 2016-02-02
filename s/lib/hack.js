@@ -931,18 +931,23 @@ window.addEventListener('load', function() {
      * filterColor: CSS color or [r, g, b]
 	 */
     enchant.Sprite.prototype.moveColor = function (order, filterColor) {
-		// Color convert
-		filterColor = typeof filterColor === 'string' ? Hack.css2rgba(filterColor) : filterColor;
-		filterColor = Array.prototype.slice.call(filterColor, 0, 3);
-		filterColor = filterColor.map(function(value) {
-			return Math.min(256 - 64, value); // 64階調を残す
-		});
 		this._filter = this._filter || new Array(64).fill(null); // RRGGBBをキーとするRGBフィルタ
 		if (0 > order || order >= this.colors.length) return;
-		var space64 = rgb256toNum64(this.colors[order]);
-		if (this._filter[space64] && this._filter[space64].join(' ') === filterColor.join(' ')) return;
-		this._filter[space64] = filterColor;
-
+		var space = rgb256toNum64(this.colors[order]);
+		if (filterColor === 'original' || !filterColor) {
+			// Remove filter
+			this._filter[space] = null;
+		} else {
+			// Color convert - Add filter
+			filterColor = typeof filterColor === 'string' ? Hack.css2rgba(filterColor) : filterColor;
+			filterColor = Array.prototype.slice.call(filterColor, 0, 3);
+			filterColor = filterColor.map(function(value) {
+				return Math.min(256 - 64, value); // 64階調を残す
+			});
+			if (this._filter[space] && this._filter[space].join(' ') === filterColor.join(' ')) return;
+			this._filter[space] = filterColor;
+		}
+		// Transfer
 		this._origin = this._origin || this.image; // 元画像を参照
 		this.image = this._origin.clone(); // 他のSpriteに影響を与えないようコピー
 		var imageData = this.image.context.getImageData(0, 0, this.image.width, this.image.height),
