@@ -866,6 +866,45 @@ window.addEventListener('load', function() {
 		xhttp.onload = success;
 		xhttp.onerror = error;
     }
+
+    /**
+     * Image Processing
+     * argument Surface property mainColor
+     * method of get representative color
+    */
+    Object.defineProperty(enchant.Sprite.prototype, 'mainColor', {
+		get: function () {
+			if (!this._representativeColors) {
+				var i = this.image.context ? this.image : this.image.clone();
+				var res = i.context.getImageData(this._frameLeft, this._frameTop, this.width, this.height);
+				this._representativeColors = getRepresentativeColor(res.data);
+			}
+			return this._representativeColors;
+		},
+		set: function (color) {
+			//
+		}
+    });
+    // 代表色を抽出
+    function getRepresentativeColor (data) {
+		// RGP色空間を64分割->色空間Viに存在するピクセルの数をカウント
+		var space = new Array(64).fill(0), index, rgb; // 0 ~ 63 ... 6bit [RRGGBB]
+		for (index = data.length - 4; index >= 0; index -= 4) {
+			if (data[index + 3] > 0) {
+				rgb = rgb256toNum64(data[index], data[index + 1], data[index + 2]);
+				space[rgb] ++;
+			}
+		}
+		space[0] = 0; // 黒は輪郭線として代表色にはさせない
+		var strong = space.indexOf(Math.max.apply(null, space));
+		return [strong << 2 & 192, strong << 4 & 192, strong << 6 & 192];
+		function rgb256toNum64 (r, g, b) {
+			var R2 = r >> 6 & 3; // 2bits of R
+			var G2 = g >> 6 & 3;
+			var B2 = b >> 6 & 3;
+			return R2 << 4 | G2 << 2 | B2; // RRGGBB 6bit value
+		}
+    }
 });
 if (!Array.prototype.fill) {
   Array.prototype.fill = function(value) {
