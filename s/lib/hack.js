@@ -564,8 +564,8 @@ window.addEventListener('load', function() {
 			addGUIParts(game.assets['hackforplay/menu-button-comment.png'], function() {
 				return !sessionStorage.getItem('stage_param_comment'); // 存在しない場合は !'' === true
 			}, function() {
-				// menuGroupを100ミリ秒間非表示にする
-				menuGroup.childNodes.forEach(function(item) {
+				// GUIParts,overlayを100ミリ秒間非表示にする
+				GUIParts.concat(overlay).forEach(function (item) {
 					var visibility = item.visible;
 					item.visible = false;
 					setTimeout(function() {
