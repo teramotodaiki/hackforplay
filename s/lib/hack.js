@@ -938,6 +938,7 @@ window.addEventListener('load', function() {
 			return Math.min(256 - 64, value); // 64階調を残す
 		});
 		this._filter = this._filter || new Array(64).fill(null); // RRGGBBをキーとするRGBフィルタ
+		if (0 > order || order >= this.colors.length) return;
 		var space64 = rgb256toNum64(this.colors[order]);
 		if (this._filter[space64] && this._filter[space64].join(' ') === filterColor.join(' ')) return;
 		this._filter[space64] = filterColor;
