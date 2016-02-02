@@ -932,7 +932,8 @@ window.addEventListener('load', function() {
 	 */
     enchant.Sprite.prototype.moveColor = function (order, filterColor) {
 		// Color convert
-		filterColor = typeof filterColor === 'string' ? Array.prototype.slice.call(Hack.css2rgba(filterColor), 0, 3) : filterColor;
+		filterColor = typeof filterColor === 'string' ? Hack.css2rgba(filterColor) : filterColor;
+		filterColor = Array.prototype.slice.call(filterColor, 0, 3);
 		filterColor = filterColor.map(function(value) {
 			return Math.min(256 - 64, value); // 64階調を残す
 		});
@@ -948,11 +949,9 @@ window.addEventListener('load', function() {
 		for (var index = data.length - 4; index >= 0; index -= 4) {
 			if (data[index + 3] > 0) {
 				var rgb = rgb256toNum64(data[index], data[index + 1], data[index + 2]);
-				if (this._filter[rgb]) {
-					data[index + 0] = this._filter[rgb][0] + (data[index + 0] & 63); // r
-					data[index + 1] = this._filter[rgb][1] + (data[index + 1] & 63); // g
-					data[index + 2] = this._filter[rgb][2] + (data[index + 2] & 63); // b
-				}
+				(this._filter[rgb] || []).forEach(function (color, i) {
+					data[index + i] = color + (data[index + i] & 63); // r, g, b
+				});
 			}
 		}
 		this.image.context.putImageData(imageData, 0, 0);
