@@ -1351,6 +1351,12 @@ $(function(){
 			switch (component.hostname) {
 				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
 				case 'hackforplay.xyz': openLink($wrapper, component.href); break;
+				case 'restaging.hackforplay':
+				if ( !$('.container.container-game').hasClass('restaging') ) {
+					// ゲーム側からリステージングを開始する
+					$('.begin_restaging').trigger('click');
+				}
+				$item.removeClass('visible');
 			}
 		});
 		function openSoundCloud ($wrapper, track_url) {

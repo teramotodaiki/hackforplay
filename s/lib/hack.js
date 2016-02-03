@@ -662,20 +662,16 @@ window.addEventListener('load', function() {
 		});
 	})();
 
-	Hack.openExternal = function (type) {
-		switch (type) {
-			case 'restaging':
-			window.parent.postMessage('begin_restaging', '/');
-			break;
-			case 'soundcloud':
-			case 'link':
-			var message = {
-				query: 'openExternal',
-				url: arguments[1]
-			};
-			window.parent.postMessage(JSON.stringify(message), '/');
-			break;
+	Hack.openExternal = function (url) {
+		if (/^https?:\/\//.exec(url) === null) {
+			if (arguments.length > 1) Hack.openExternal(arguments[1]); // 互換性保持
+			else return false; // 引数にURLが含まれていない
 		}
+		var message = {
+			query: 'openExternal',
+			url: url
+		};
+		window.parent.postMessage(JSON.stringify(message), '/');
 	};
 
 	/**
