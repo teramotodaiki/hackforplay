@@ -319,29 +319,27 @@ iframe {
 	height: 100%;
 }
 
-.container-open-external .item-open-external {
+.container-open-external div.item-open-external {
 	position: relative;
 	height: 180px;
 }
 
-.item-open-external .embed-frame {
+.item-open-external>div {
 	position: absolute;
 	float: left;
 	height: 100%;
+	background-color: rgb(188,188,188);
+}
+
+.item-open-external .embed-frame {
 	width: 320px;
-	background-color: rgba(0,0,0,0.8);
 }
 
 .item-open-external .side-menu {
-	position: absolute;
-	float: left;
 	left: 320px;
-	height: 100%;
 	width: 24px;
-	background-color: rgba(255,255,0,0.8);
 	border-radius: 0px 32px 32px 0px;
-	border: 0px solid black;
-	border-width: 1px 1px 1px 0px;
+	border-left: 1px solid rgb(144,144,144);
 }
 
 .side-menu .glyphicon {
