@@ -317,13 +317,11 @@ iframe {
 .container-open-external {
 	z-index: 3;
 	height: 100%;
-	top: 80px;
 }
 
 .container-open-external .item-open-external {
 	position: relative;
 	height: 180px;
-	margin: -40px 0px;
 }
 
 .item-open-external .embed-frame {
