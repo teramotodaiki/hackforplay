@@ -668,14 +668,12 @@ window.addEventListener('load', function() {
 			window.parent.postMessage('begin_restaging', '/');
 			break;
 			case 'soundcloud':
-			sessionStorage.setItem('open-external-url', arguments[1]);
-			window.parent.postMessage('open-external', '/');
-			break;
 			case 'link':
-			var param = { href: arguments[1], html: arguments[2] };
-			sessionStorage.setItem('open-external-url', arguments[1]);
-			sessionStorage.setItem('external-link-param', JSON.stringify(param));
-			window.parent.postMessage('open-external', '/');
+			var message = {
+				query: 'openExternal',
+				url: arguments[1]
+			};
+			window.parent.postMessage(JSON.stringify(message), '/');
 			break;
 		}
 	};
