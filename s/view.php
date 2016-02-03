@@ -478,6 +478,7 @@ if ($mode === 'quest') {
 	<div class="container-open-external height-fit affix">
 		<div class="item-open-external">
 			<div class="embed-frame">
+				<iframe class="external-window" id="external-window-1" src="game.php"></iframe>
 			</div>
 			<div class="side-menu">
 				<span class="glyphicon glyphicon-remove"></span>
@@ -486,6 +487,7 @@ if ($mode === 'quest') {
 		</div>
 		<div class="item-open-external">
 			<div class="embed-frame">
+				<iframe class="external-window" id="external-window-2" src="game.php"></iframe>
 			</div>
 			<div class="side-menu">
 				<span class="glyphicon glyphicon-remove"></span>
@@ -494,6 +496,7 @@ if ($mode === 'quest') {
 		</div>
 		<div class="item-open-external">
 			<div class="embed-frame">
+				<iframe class="external-window" id="external-window-3" src="game.php"></iframe>
 			</div>
 			<div class="side-menu">
 				<span class="glyphicon glyphicon-remove"></span>

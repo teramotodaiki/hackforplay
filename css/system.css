@@ -332,7 +332,6 @@ iframe {
 	height: 100%;
 	width: 320px;
 	background-color: rgba(0,0,0,0.8);
-	border: 1px solid black;
 }
 
 .item-open-external .side-menu {
@@ -343,7 +342,8 @@ iframe {
 	width: 24px;
 	background-color: rgba(255,255,0,0.8);
 	border-radius: 0px 32px 32px 0px;
-	border: 1px solid black;
+	border: 0px solid black;
+	border-width: 1px 1px 1px 0px;
 }
 
 .side-menu .glyphicon {
@@ -353,6 +353,11 @@ iframe {
 
 .side-menu .glyphicon:hover {
 	color: white;
+}
+
+.embed-frame iframe.external-window {
+	width: 100%;
+	height: 100%;
 }
 
 /* アニメーション */
