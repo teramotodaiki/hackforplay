@@ -479,7 +479,7 @@ if ($mode === 'quest') {
 	<?php for ($i = 1; $i <= 3; $i++) : ?>
 		<div class="item-open-external">
 			<div class="embed-frame">
-				<iframe class="external-window" id="external-window-<?php echo $i; ?>" src=""></iframe>
+				<iframe class="fit" id="external-window-<?php echo $i; ?>" src=""></iframe>
 			</div>
 			<div class="side-menu">
 				<span class="glyphicon glyphicon-remove"></span>

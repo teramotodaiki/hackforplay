@@ -52,6 +52,11 @@
 	max-width: 100%;
 }
 
+.fit {
+	width: 100%;
+	height: 100%;
+}
+
 nav #img-usericon {
 	max-height: 40px;
 	margin: -10px 0px;
@@ -470,4 +475,25 @@ div.menu-left {
 .h4p_restaging_menu button.btn.btn-sm {
 	width: 34px;
 }
+
+.container-open-external,
+.item-open-external>div {
+	height: 100%;
+}
+.container-open-external div.item-open-external {
+	height: 180px;
+}
+.item-open-external .embed-frame {
+	width: 320px;
+}
+.item-open-external .side-menu {
+	left: 320px;
+	width: 24px;
+	border-radius: 0px 32px 32px 0px;
+}
+.side-menu .glyphicon {
+	margin: 28px 0px 0px 4px;
+	font-size: 16px;
+}
+
 
