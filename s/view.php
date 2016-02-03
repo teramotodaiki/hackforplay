@@ -483,7 +483,8 @@ if ($mode === 'quest') {
 			</div>
 			<div class="side-menu">
 				<span class="glyphicon glyphicon-remove"></span>
-				<span class="glyphicon glyphicon-chevron-left"></span>
+				<span class="glyphicon glyphicon glyphicon-pushpin"></span>
+				<span class="glyphicon glyphicon-chevron-right"></span>
 			</div>
 		</div>
 	<?php endfor; ?>

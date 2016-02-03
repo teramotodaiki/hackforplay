@@ -1353,6 +1353,9 @@ $(function(){
 			timeoutID = null;
 		}
 	})();
+	$('.container-open-external .item-open-external').on('click', '.glyphicon-pushpin,.glyphicon-chevron-right', function() {
+		$(this).parents('.item-open-external').toggleClass('opened');
+	});
 
 	// YouTube等によるキットの説明
 	// ！　暫定的なYouTubeプレイヤー。一般化してゲーム側からコールして制御できる形にする

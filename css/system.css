@@ -331,6 +331,16 @@ iframe {
 	position: absolute;
 	float: left;
 }
+.item-open-external .glyphicon-pushpin,
+.item-open-external.opened .glyphicon-chevron-right,
+.item-open-external:hover .glyphicon-chevron-right {
+	display: none;
+}
+.item-open-external .glyphicon-chevron-right,
+.item-open-external.opened .glyphicon-pushpin,
+.item-open-external:hover .glyphicon-pushpin {
+	display: block;
+}
 
 /* アニメーション */
 
