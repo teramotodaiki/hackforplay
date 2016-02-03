@@ -662,25 +662,16 @@ window.addEventListener('load', function() {
 		});
 	})();
 
-	Hack.openExternal = function (type) {
-		switch (type) {
-			case 'restaging':
-			window.parent.postMessage('begin_restaging', '/');
-			break;
-			case 'soundcloud':
-			sessionStorage.setItem('external-soundcloud-url', arguments[1]);
-			window.parent.postMessage('external-soundcloud', '/');
-			break;
-			case 'link':
-			if (typeof arguments[1] !== 'string' || arguments[1].match(/^https?\:\/\/.*\.[a-z]+/) === null) {
-				Hack.log('Invalid URL: ' + arguments[1]);
-			} else {
-				var param = { href: arguments[1], html: arguments[2] };
-				sessionStorage.setItem('external-link-param', JSON.stringify(param));
-				window.parent.postMessage('external-link', '/');
-			}
-			break;
+	Hack.openExternal = function (url) {
+		if (/^https?:\/\//.exec(url) === null) {
+			if (arguments.length > 1) Hack.openExternal(arguments[1]); // 互換性保持
+			else return false; // 引数にURLが含まれていない
 		}
+		var message = {
+			query: 'openExternal',
+			url: url
+		};
+		window.parent.postMessage(JSON.stringify(message), '/');
 	};
 
 	/**

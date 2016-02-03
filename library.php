@@ -71,4 +71,15 @@ function signout (){
 		return format;
 	}
 })();
+// Parsed Web Messaging (Required query property)
+window.addEventListener('message', function (event) {
+	if (event.origin === location.origin) {
+		var parsed;
+		try {
+			parsed = $.parseJSON(event.data);
+		} catch (e) { return; }
+		if (!parsed && !parsed.query) return;
+		$(window).trigger(parsed.query + '.' + 'parsedMessage', [parsed]);
+	}
+});
 </script>

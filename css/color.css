@@ -142,12 +142,15 @@ nav.navbar {
 	background-color: rgb(216, 255, 250);
 }
 
-.side-menu .glyphicon {
+.side-menu .glyphicon,
+.item-open-external .glyphicon-play-circle {
 	color: rgb( 80,  80,  80);
 }
 .side-menu .glyphicon:hover,
-.item-open-external.opened .side-menu .glyphicon-pushpin {
+.item-open-external.opened .side-menu .glyphicon-pushpin,
+.item-open-external:hover .glyphicon-play-circle {
 	color: rgb(255, 255, 255);
+	cursor: pointer;
 }
 
 .faint-menu {
@@ -155,6 +158,23 @@ nav.navbar {
 }
 .faint-menu:hover {
 	opacity: 1;
+}
+
+.item-open-external .cover-thumbnail {
+	transition: -webkit-filter 0.2s linear 0.4s, filter 0.2s linear 0.4s;
+	-webkit-filter : blur(0px);
+	filter : blur(0px);
+}
+.item-open-external:hover .cover-thumbnail {
+	-webkit-filter : blur(8px);
+	filter : blur(8px);
+}
+.item-open-external .cover-black {
+	transition: background-color 0.1s linear;
+	background-color : rgba(0, 0, 0, 0);
+}
+.item-open-external:hover .cover-black {
+	background-color : rgba(0, 0, 0, 0.6);
 }
 
 /* 影の色 */
