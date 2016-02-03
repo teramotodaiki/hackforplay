@@ -314,6 +314,46 @@ iframe {
 	cursor: pointer;
 }
 
+.container-open-external {
+	z-index: 3;
+	height: 100%;
+	top: 80px;
+}
+
+.container-open-external .item-open-external {
+	position: relative;
+	height: 180px;
+	margin: -40px 0px;
+}
+
+.item-open-external .embed-frame {
+	position: absolute;
+	float: left;
+	height: 100%;
+	width: 320px;
+	background-color: rgba(0,0,0,0.8);
+	border: 1px solid black;
+}
+
+.item-open-external .side-menu {
+	position: absolute;
+	float: left;
+	left: 320px;
+	height: 100%;
+	width: 24px;
+	background-color: rgba(255,255,0,0.8);
+	border-radius: 0px 32px 32px 0px;
+	border: 1px solid black;
+}
+
+.side-menu .glyphicon {
+	margin: 28px 0px 0px 4px;
+	font-size: 16px;
+}
+
+.side-menu .glyphicon:hover {
+	color: white;
+}
 
 /* アニメーション */
 

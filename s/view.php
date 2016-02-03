@@ -475,5 +475,31 @@ if ($mode === 'quest') {
 			</div>
 		</div>
 	</div>
+	<div class="container-open-external height-fit affix">
+		<div class="item-open-external">
+			<div class="embed-frame">
+			</div>
+			<div class="side-menu">
+				<span class="glyphicon glyphicon-remove"></span>
+				<span class="glyphicon glyphicon-chevron-left"></span>
+			</div>
+		</div>
+		<div class="item-open-external">
+			<div class="embed-frame">
+			</div>
+			<div class="side-menu">
+				<span class="glyphicon glyphicon-remove"></span>
+				<span class="glyphicon glyphicon-chevron-left"></span>
+			</div>
+		</div>
+		<div class="item-open-external">
+			<div class="embed-frame">
+			</div>
+			<div class="side-menu">
+				<span class="glyphicon glyphicon-remove"></span>
+				<span class="glyphicon glyphicon-chevron-left"></span>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
