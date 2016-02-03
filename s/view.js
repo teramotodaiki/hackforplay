@@ -1320,6 +1320,45 @@ $(function(){
 		});
 	})(window.SC);
 
+	// 汎用的な ExternalLinkWindow  Hack.openExternal で制御する
+	(function () {
+		var oldHeight = 0, timeoutID = null, maxWindowNum = 3;
+		resizeTask();
+		$(window).resize(function(event) {
+			var height = $('.container-open-external').height();
+			if (oldHeight === height) return;
+			if (timeoutID !== null) {
+				clearTimeout(timeoutID);
+				timeoutID = setTimeout(resizeTask, 100);
+			} else {
+				resizeTask();
+				timeoutID = setTimeout(null, 100);
+			}
+		});
+		function resizeTask () {
+			var $container = $('.container-open-external');
+			var $items = $container.find('.item-open-external');
+			var marginSum = $container.height() - maxWindowNum * $items.height();
+			if (marginSum >= 0) {
+				// 十分なスペースがある
+				var margin = Math.min(marginSum / 3 >> 0, 20);
+				$items.css('margin-top', margin + 'px');
+				$container.css('top', '0px');
+			} else {
+				// スペースが足りない（重なる）
+				var overlap = -marginSum / 2 >> 0;
+				$items.css('margin-top', -overlap + 'px');
+				$container.css('top', overlap + 'px');
+			}
+			timeoutID = null;
+		}
+	})();
+	$('.container-open-external .item-open-external').on('click', '.glyphicon-pushpin,.glyphicon-chevron-right', function() {
+		$(this).parents('.item-open-external').toggleClass('opened');
+	}).on('click', '.glyphicon-remove', function() {
+		$(this).parents('.item-open-external').toggleClass('visible');
+	});
+
 	// YouTube等によるキットの説明
 	// ！　暫定的なYouTubeプレイヤー。一般化してゲーム側からコールして制御できる形にする
 	(function() {

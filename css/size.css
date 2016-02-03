@@ -52,6 +52,11 @@
 	max-width: 100%;
 }
 
+.fit {
+	width: 100%;
+	height: 100%;
+}
+
 nav #img-usericon {
 	max-height: 40px;
 	margin: -10px 0px;
@@ -296,11 +301,6 @@ nav #button-loginwithtwitter {
 	margin: 0;
 }
 
-.h4p_restaging_editor textarea {
-	width: 100%;
-	height: 100%;
-}
-
 .h4p_restaging_button {
 	margin: 0;
 }
@@ -475,4 +475,35 @@ div.menu-left {
 .h4p_restaging_menu button.btn.btn-sm {
 	width: 34px;
 }
+
+.container-open-external,
+.item-open-external>div {
+	height: 100%;
+}
+.container-open-external div.item-open-external {
+	height: 180px;
+}
+.item-open-external .embed-frame {
+	transition: width 0.2s ease-in-out;
+	width: 0px;
+}
+.item-open-external .side-menu {
+	transition: left 0.2s ease-in-out;
+	left: 0px;
+	width: 24px;
+	border-radius: 0px 32px 32px 0px;
+}
+.item-open-external:hover .embed-frame,
+.item-open-external.opened .embed-frame {
+	width: 320px;
+}
+.item-open-external:hover .side-menu,
+.item-open-external.opened .side-menu  {
+	left: 320px;
+}
+.side-menu .glyphicon {
+	margin: 28px 0px 0px 4px;
+	font-size: 16px;
+}
+
 

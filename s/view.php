@@ -475,5 +475,19 @@ if ($mode === 'quest') {
 			</div>
 		</div>
 	</div>
+	<div class="container-open-external affix">
+	<?php for ($i = 1; $i <= 3; $i++) : ?>
+		<div class="item-open-external visible">
+			<div class="embed-frame">
+				<iframe class="fit" id="external-window-<?php echo $i; ?>" src=""></iframe>
+			</div>
+			<div class="side-menu">
+				<span class="glyphicon glyphicon-remove"></span>
+				<span class="glyphicon glyphicon glyphicon-pushpin"></span>
+				<span class="glyphicon glyphicon-chevron-right"></span>
+			</div>
+		</div>
+	<?php endfor; ?>
+	</div>
 </body>
 </html>
