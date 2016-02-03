@@ -1321,21 +1321,36 @@ $(function(){
 	// 汎用的な ExternalLinkWindow  Hack.openExternal で制御する
 	(function (SC) {
 		window.SC = undefined;
-		window.addEventListener('message', function (event) {
-			if (event.data === 'open-external') {
-				var url = sessionStorage.getItem('open-external-url') || '';
-				var component;
-				try {
-					component = new URL(url);
-				} catch (e) { return; }
-				var $item = $('.container-open-external .item-open-external:first');
-				var $wrapper = $item.find('.embed-frame');
-				$item.addClass('opened visible');
-				switch (component.hostname) {
-					case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
-					case 'hackforplay.xyz': openLink($wrapper, component.href); break;
-				}
-				autoClose($item);
+		$(window).on('openExternal.parsedMessage', function(event, data) {
+			var component;
+			try {
+				component = new URL(data.url);
+			} catch (e) { return; }
+			var $all = $('.container-open-external .item-open-external');
+			var $item = $all.filter(function () {
+				// 1.全く同じURL
+				return $(this).hasClass('visible') && $(this).attr('data-href') === component.href;
+			});
+			if ($item.length > 0) return;
+			$item = $all.filter(function() {
+				// 2.同じドメイン ===> Override
+				return $(this).hasClass('visible') && $(this).data('hostname') === component.hostname;
+			}).first();
+			$item = $item.length > 0 ? $item : $all.filter(function() {
+				// 3.空いているところ
+				return !$(this).hasClass('visible');
+			}).first();
+			if ($item.length === 0) return; // No empty
+			var $wrapper = $item.find('.embed-frame');
+			$wrapper.children().remove();
+			$item.attr({
+				'data-href': component.href,
+				'data-hostname': component.hostname
+			});
+			openAndAutoclose($item);
+			switch (component.hostname) {
+				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
+				case 'hackforplay.xyz': openLink($wrapper, component.href); break;
 			}
 		});
 		function openSoundCloud ($wrapper, track_url) {
@@ -1357,7 +1372,8 @@ $(function(){
 				location.href = link_url;
 			});
 		}
-		function autoClose ($item) {
+		function openAndAutoclose ($item) {
+			$item.addClass('opened visible');
 			var timeoutID = setTimeout(function () {
 				$item.removeClass('opened');
 			}, 2000);
