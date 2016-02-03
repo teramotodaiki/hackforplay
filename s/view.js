@@ -1329,9 +1329,11 @@ $(function(){
 					component = new URL(url);
 				} catch (e) { return; }
 				var $item = $('.container-open-external .item-open-external:first');
+				var $wrapper = $item.find('.embed-frame');
 				$item.addClass('opened visible');
 				switch (component.hostname) {
-					case 'soundcloud.com': openSoundCloud($item.find('.embed-frame'), component.href); break;
+					case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
+					case 'hackforplay.xyz': openLink($wrapper, component.href); break;
 				}
 				autoClose($item);
 			}
@@ -1341,12 +1343,19 @@ $(function(){
 				$wrapper.html(oEmbed.html);
 			});
 		}
-		function openLink ($wrapper, param) {
-			$wrapper.html(param.html).children().on('click', function() {
+		function openLink ($wrapper, link_url) {
+			$wrapper.append(
+				$('<div>').addClass('fit cover-thumbnail').css({
+					backgroundImage: 'url(https://hackforplay.xyz/s/thumbs/237f58a53423ab8b228d7b0970c0660c.png)'
+				})
+			).append(
+				$('<div>').addClass('fit cover-black text-center').append(
+					$('<span>').addClass('glyphicon glyphicon-play-circle')
+				)
+			).on('click', function() {
 				alert_on_unload = false; // 警告を出さない
-				location.href = param.href;
+				location.href = link_url;
 			});
-			$wrapper.append($('<small>').addClass('text-muted').text('Link to ' + param.href));
 		}
 		function autoClose ($item) {
 			var timeoutID = setTimeout(function () {
