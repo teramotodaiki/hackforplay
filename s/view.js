@@ -1355,6 +1355,8 @@ $(function(){
 	})();
 	$('.container-open-external .item-open-external').on('click', '.glyphicon-pushpin,.glyphicon-chevron-right', function() {
 		$(this).parents('.item-open-external').toggleClass('opened');
+	}).on('click', '.glyphicon-remove', function() {
+		$(this).parents('.item-open-external').toggleClass('visible');
 	});
 
 	// YouTube等によるキットの説明

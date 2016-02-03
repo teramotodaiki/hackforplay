@@ -324,6 +324,12 @@ iframe {
 .container-open-external {
 	z-index: 3;
 }
+.item-open-external {
+	visibility: hidden;
+}
+.item-open-external.visible {
+	visibility: visible;
+}
 .container-open-external div.item-open-external {
 	position: relative;
 }
