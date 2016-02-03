@@ -71,4 +71,17 @@ function signout (){
 		return format;
 	}
 })();
+// Parsed Web Messaging
+window.addEventListener('message', function (event) {
+	if (event.origin === location.origin) {
+		var parsed;
+		try {
+			parsed = $.parseJSON(event.data);
+		} catch (e) { return; }
+		if (!parsed) return;
+		var e = new Event('parsedMessage', { bubbles: true, cancelable: false });
+		e.parsedData = parsed;
+		window.dispatchEvent(e);
+	}
+});
 </script>
