@@ -1313,15 +1313,52 @@ $(function(){
 		window.addEventListener('message', function (event) {
 			if (event.data === 'external-soundcloud') {
 				var track_url = sessionStorage.getItem('external-soundcloud-url');
-				SC.oEmbed(track_url, { auto_play: true, maxheight: 166 }).then(function(oEmbed) {
-					$('.h4p_external').html(oEmbed.html);
-				});
+
 			}
 		});
 	})(window.SC);
 
 	// 汎用的な ExternalLinkWindow  Hack.openExternal で制御する
+	(function (SC) {
+		window.SC = undefined;
+		window.addEventListener('message', function (event) {
+			if (event.data === 'open-external') {
+				var url = sessionStorage.getItem('open-external-url') || '';
+				var component;
+				try {
+					component = new URL(url);
+				} catch (e) { return; }
+				var $item = $('.container-open-external .item-open-external:first');
+				$item.addClass('opened visible');
+				switch (component.hostname) {
+					case 'soundcloud.com': openSoundCloud($item.find('.embed-frame'), component.href); break;
+				}
+				autoClose($item);
+			}
+		});
+		function openSoundCloud ($wrapper, track_url) {
+			SC.oEmbed(track_url, { auto_play: true, maxheight: $wrapper.height() }).then(function(oEmbed) {
+				$wrapper.html(oEmbed.html);
+			});
+		}
+		function openLink ($wrapper, param) {
+			$wrapper.html(param.html).children().on('click', function() {
+				alert_on_unload = false; // 警告を出さない
+				location.href = param.href;
+			});
+			$wrapper.append($('<small>').addClass('text-muted').text('Link to ' + param.href));
+		}
+		function autoClose ($item) {
+			var timeoutID = setTimeout(function () {
+				$item.removeClass('opened');
+			}, 2000);
+			$item.hover(function() {
+				clearTimeout(timeoutID);
+			});
+		}
+	})(window.SC);
 	(function () {
+		// Common view and Resize optimiser
 		var oldHeight = 0, timeoutID = null, maxWindowNum = 3;
 		resizeTask();
 		$(window).resize(function(event) {
@@ -1356,7 +1393,7 @@ $(function(){
 	$('.container-open-external .item-open-external').on('click', '.glyphicon-pushpin,.glyphicon-chevron-right', function() {
 		$(this).parents('.item-open-external').toggleClass('opened');
 	}).on('click', '.glyphicon-remove', function() {
-		$(this).parents('.item-open-external').toggleClass('visible');
+		$(this).parents('.item-open-external').toggleClass('visible').find('.embed-frame').children().remove();
 	});
 
 	// YouTube等によるキットの説明

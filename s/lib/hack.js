@@ -668,8 +668,8 @@ window.addEventListener('load', function() {
 			window.parent.postMessage('begin_restaging', '/');
 			break;
 			case 'soundcloud':
-			sessionStorage.setItem('external-soundcloud-url', arguments[1]);
-			window.parent.postMessage('external-soundcloud', '/');
+			sessionStorage.setItem('open-external-url', arguments[1]);
+			window.parent.postMessage('open-external', '/');
 			break;
 			case 'link':
 			if (typeof arguments[1] !== 'string' || arguments[1].match(/^https?\:\/\/.*\.[a-z]+/) === null) {
