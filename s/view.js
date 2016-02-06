@@ -1334,6 +1334,16 @@ $(function(){
 		function openSoundCloud ($wrapper, track_url) {
 			SC.oEmbed(track_url, { auto_play: true, maxheight: $wrapper.height() }).then(function(oEmbed) {
 				$wrapper.html(oEmbed.html);
+			}).catch(function (error) {
+				$wrapper.append(
+					$('<h1>').append(
+						$('<span>').addClass('label label-danger').text(error.status)
+					)
+				).append(
+					$('<h4>').addClass('text-muted').text(error.message)
+				).append(
+					$('<span>').addClass('text-info').text(track_url)
+				);
 			});
 		}
 		function openLink ($wrapper, link_url) {
