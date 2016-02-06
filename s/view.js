@@ -1289,34 +1289,6 @@ $(function(){
 		$('.h4p_publish,.h4p_info-restaging>*,.h4p_share-buttons').addClass('hidden');
 	}
 
-	// ゲーム側から制御可能な埋め込みリンク
-	(function () {
-		window.addEventListener('message', function (event) {
-			if (event.data === 'external-link') {
-				var param_json = sessionStorage.getItem('external-link-param'),
-				param = param_json ? $.parseJSON(param_json) : false;
-				if (param) {
-					$('.h4p_external').children().remove();
-					var $wrapper = $('<div>').addClass('h4p_external-wrapper').appendTo('.h4p_external');
-					$wrapper.html(param.html).children().on('click', function() {
-						alert_on_unload = false; // 警告を出さない
-						location.href = param.href;
-					});
-					$('<small>').addClass('text-muted').text('Link to ' + param.href).appendTo('.h4p_external');
-				}
-			}
-		});
-	})();
-
-	// ゲーム側から制御可能なSoundCloudのプレイヤー
-	(function (SC) {
-		window.addEventListener('message', function (event) {
-			if (event.data === 'external-soundcloud') {
-				var track_url = sessionStorage.getItem('external-soundcloud-url');
-
-			}
-		});
-	})(window.SC);
 
 	// 汎用的な ExternalLinkWindow  Hack.openExternal で制御する
 	(function (SC) {
