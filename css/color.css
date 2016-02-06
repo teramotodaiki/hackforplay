@@ -4,7 +4,8 @@
 
 /* 背景色　*/
 body,
-.container-game {
+.container-game,
+.item-open-external>div {
 	background-color: rgb(220, 220, 220);
 }
 
@@ -141,12 +142,39 @@ nav.navbar {
 	background-color: rgb(216, 255, 250);
 }
 
+.side-menu .glyphicon,
+.item-open-external .glyphicon-play-circle {
+	color: rgb( 80,  80,  80);
+}
+.side-menu .glyphicon:hover,
+.item-open-external.opened .side-menu .glyphicon-pushpin,
+.item-open-external:hover .glyphicon-play-circle {
+	color: rgb(255, 255, 255);
+	cursor: pointer;
+}
 
 .faint-menu {
 	opacity: 0.1;
 }
 .faint-menu:hover {
 	opacity: 1;
+}
+
+.item-open-external .cover-thumbnail {
+	transition: -webkit-filter 0.2s linear 0.4s, filter 0.2s linear 0.4s;
+	-webkit-filter : blur(0px);
+	filter : blur(0px);
+}
+.item-open-external:hover .cover-thumbnail {
+	-webkit-filter : blur(8px);
+	filter : blur(8px);
+}
+.item-open-external .cover-black {
+	transition: background-color 0.1s linear;
+	background-color : rgba(0, 0, 0, 0);
+}
+.item-open-external:hover .cover-black {
+	background-color : rgba(0, 0, 0, 0.6);
 }
 
 /* 影の色 */
@@ -167,3 +195,13 @@ header {
 	-moz-box-shadow: 0 0 10px 2px rgba(0,0,0,0.4) inset;
 	box-shadow: 0 0 10px 2px rgba(0,0,0,0.4) inset;
 }
+
+.directly_floating_shadow,
+.item-open-external>div {
+	box-shadow: 0px 0px 4px -2px rgba(0,0,0,0.5);
+	transition: box-shadow 0.6s;
+}
+.directly_floating_shadow:hover {
+	box-shadow: 0px 10px 20px 4px rgba(0,0,0,0.5);
+}
+

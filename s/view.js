@@ -1289,36 +1289,125 @@ $(function(){
 		$('.h4p_publish,.h4p_info-restaging>*,.h4p_share-buttons').addClass('hidden');
 	}
 
-	// ゲーム側から制御可能な埋め込みリンク
-	(function () {
-		window.addEventListener('message', function (event) {
-			if (event.data === 'external-link') {
-				var param_json = sessionStorage.getItem('external-link-param'),
-				param = param_json ? $.parseJSON(param_json) : false;
-				if (param) {
-					$('.h4p_external').children().remove();
-					var $wrapper = $('<div>').addClass('h4p_external-wrapper').appendTo('.h4p_external');
-					$wrapper.html(param.html).children().on('click', function() {
-						alert_on_unload = false; // 警告を出さない
-						location.href = param.href;
-					});
-					$('<small>').addClass('text-muted').text('Link to ' + param.href).appendTo('.h4p_external');
-				}
-			}
-		});
-	})();
 
-	// ゲーム側から制御可能なSoundCloudのプレイヤー
+	// 汎用的な ExternalLinkWindow  Hack.openExternal で制御する
 	(function (SC) {
-		window.addEventListener('message', function (event) {
-			if (event.data === 'external-soundcloud') {
-				var track_url = sessionStorage.getItem('external-soundcloud-url');
-				SC.oEmbed(track_url, { auto_play: true, maxheight: 166 }).then(function(oEmbed) {
-					$('.h4p_external').html(oEmbed.html);
-				});
+		window.SC = undefined;
+		$(window).on('openExternal.parsedMessage', function(event, data) {
+			var component;
+			try {
+				component = new URL(data.url);
+			} catch (e) { return; }
+			var $all = $('.container-open-external .item-open-external');
+			var $item = $all.filter(function () {
+				// 1.全く同じURL
+				return $(this).hasClass('visible') && $(this).attr('data-href') === component.href;
+			});
+			if ($item.length > 0) return;
+			$item = $all.filter(function() {
+				// 2.同じドメイン ===> Override
+				return $(this).hasClass('visible') && $(this).data('hostname') === component.hostname;
+			}).first();
+			$item = $item.length > 0 ? $item : $all.filter(function() {
+				// 3.空いているところ
+				return !$(this).hasClass('visible');
+			}).first();
+			if ($item.length === 0) return; // No empty
+			var $wrapper = $item.find('.embed-frame');
+			$wrapper.children().remove();
+			$item.attr({
+				'data-href': component.href,
+				'data-hostname': component.hostname
+			});
+			openAndAutoclose($item);
+			switch (component.hostname) {
+				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
+				case 'hackforplay.xyz': openLink($wrapper, component.href); break;
+				case 'restaging.hackforplay':
+				if ( !$('.container.container-game').hasClass('restaging') ) {
+					// ゲーム側からリステージングを開始する
+					$('.begin_restaging').trigger('click');
+				}
+				$item.removeClass('visible');
 			}
 		});
+		function openSoundCloud ($wrapper, track_url) {
+			SC.oEmbed(track_url, { auto_play: true, maxheight: $wrapper.height() }).then(function(oEmbed) {
+				$wrapper.html(oEmbed.html);
+			}).catch(function (error) {
+				$wrapper.append(
+					$('<h1>').append(
+						$('<span>').addClass('label label-danger').text(error.status)
+					)
+				).append(
+					$('<h4>').addClass('text-muted').text(error.message)
+				).append(
+					$('<span>').addClass('text-info').text(track_url)
+				);
+			});
+		}
+		function openLink ($wrapper, link_url) {
+			$wrapper.append(
+				$('<div>').addClass('fit cover-thumbnail').css({
+					backgroundImage: 'url(https://hackforplay.xyz/s/thumbs/237f58a53423ab8b228d7b0970c0660c.png)'
+				})
+			).append(
+				$('<div>').addClass('fit cover-black text-center').append(
+					$('<span>').addClass('glyphicon glyphicon-play-circle')
+				)
+			).on('click', function() {
+				alert_on_unload = false; // 警告を出さない
+				location.href = link_url;
+			});
+		}
+		function openAndAutoclose ($item) {
+			$item.addClass('opened visible');
+			var timeoutID = setTimeout(function () {
+				$item.removeClass('opened');
+			}, 2000);
+			$item.hover(function() {
+				clearTimeout(timeoutID);
+			});
+		}
 	})(window.SC);
+	(function () {
+		// Common view and Resize optimiser
+		var oldHeight = 0, timeoutID = null, maxWindowNum = 3;
+		resizeTask();
+		$(window).resize(function(event) {
+			var height = $('.container-open-external').height();
+			if (oldHeight === height) return;
+			if (timeoutID !== null) {
+				clearTimeout(timeoutID);
+				timeoutID = setTimeout(resizeTask, 100);
+			} else {
+				resizeTask();
+				timeoutID = setTimeout(null, 100);
+			}
+		});
+		function resizeTask () {
+			var $container = $('.container-open-external');
+			var $items = $container.find('.item-open-external');
+			var marginSum = $container.height() - maxWindowNum * $items.height();
+			if (marginSum >= 0) {
+				// 十分なスペースがある
+				var margin = Math.min(marginSum / 3 >> 0, 20);
+				$items.css('margin-top', margin + 'px');
+				$container.css('top', '0px');
+			} else {
+				// スペースが足りない（重なる）
+				var overlap = -marginSum / 2 >> 0;
+				$items.css('margin-top', -overlap + 'px');
+				$container.css('top', overlap + 'px');
+			}
+			timeoutID = null;
+		}
+	})();
+	$('.container-open-external .item-open-external').on('click', '.glyphicon-pushpin,.glyphicon-chevron-right', function() {
+		$(this).parents('.item-open-external').toggleClass('opened');
+	}).on('click', '.glyphicon-remove', function() {
+		$(this).parents('.item-open-external').toggleClass('visible').find('.embed-frame').children().remove();
+	});
 
 	// YouTube等によるキットの説明
 	// ！　暫定的なYouTubeプレイヤー。一般化してゲーム側からコールして制御できる形にする

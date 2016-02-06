@@ -63,7 +63,8 @@
 	left: 0px;
 }
 
-.h4p_item-thumbnail {
+.h4p_item-thumbnail,
+.item-open-external .cover-thumbnail {
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;
@@ -270,6 +271,13 @@ iframe {
 	display: block;
 }
 
+.directly_floating_shadow {
+	z-index: 0;
+}
+.directly_floating_shadow:hover {
+	z-index: 2;
+}
+
 .restaging .h4p_share-buttons {
 	display: none;
 }
@@ -314,6 +322,38 @@ iframe {
 	cursor: pointer;
 }
 
+.container-open-external {
+	z-index: 3;
+}
+.item-open-external,
+.item-open-external .embed-frame *  {
+	visibility: hidden;
+}
+.item-open-external.visible,
+.item-open-external.opened .embed-frame *,
+.item-open-external:hover .embed-frame *  {
+	visibility: visible;
+}
+.container-open-external div.item-open-external {
+	position: relative;
+}
+.item-open-external>div,
+.item-open-external .cover-black {
+	position: absolute;
+	top: 0px;
+}
+.item-open-external .glyphicon-pushpin,
+.item-open-external.opened .glyphicon-chevron-right,
+.item-open-external:hover .glyphicon-chevron-right {
+	display: none;
+}
+.item-open-external .glyphicon-chevron-right,
+.item-open-external.opened .glyphicon-pushpin,
+.item-open-external:hover .glyphicon-pushpin,
+.item-open-external.opened .glyphicon-play-circle,
+.item-open-external:hover .glyphicon-play-circle {
+	display: block;
+}
 
 /* アニメーション */
 
@@ -332,17 +372,6 @@ iframe {
 .h4p_item-transform.transform-on {
 	-webkit-transform: rotateZ(4deg) scale(1.05,1.05);
 	transform: rotateZ(4deg) scale(1.05,1.05);
-}
-
-.directly_floating_shadow {
-	z-index: 0;
-	box-shadow: 0px 0px 4px -2px rgba(0,0,0,0.5);
-	transition: box-shadow 0.6s;
-}
-
-.directly_floating_shadow:hover {
-	z-index: 2;
-	box-shadow: 0px 10px 20px 4px rgba(0,0,0,0.5);
 }
 
 .animation-hover-expand {
