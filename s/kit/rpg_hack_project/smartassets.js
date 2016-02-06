@@ -652,7 +652,7 @@ window.addEventListener('load', function () {
 		query: 'replace',
 		caption: 'サウンドクラウドの埋め込みプレーヤーをつかって、サウンドをならそう！ APIでは再生できない曲も こっちでは再生できることがあるぞ。',
 		identifier: '()',
-		pattern: /Hack\.openExternal\(\'https:\/\/soundcloud\.com.*\)\;?/g.source,
+		pattern: /Hack\.openExternal\(\'https?:\/\/soundcloud\.com.*\)\;?/g.source,
 		code: function () {
 			Hack.openExternal('https://soundcloud.com/john-sevenight/pokemon-dubstep-remix');
 		}
