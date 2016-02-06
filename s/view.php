@@ -362,7 +362,6 @@ if ($mode === 'quest') {
 					<a href="../" title="もどる" class="h4p_publish-return btn btn-lg btn-block">もどる</a>
 				</div>
 			</div>
-			<div class="col-xs-12 h4p_external"></div>
 			<div class="col-xs-12 h4p_my-comment hidden">
 				<h4>おくったメッセージ</h4>
 				<div class="row">
