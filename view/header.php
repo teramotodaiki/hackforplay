@@ -284,6 +284,9 @@ $(function(){
 				<li>
 					<a href="/dashboard/" title="ダッシュボード">ダッシュボード</a>
 				</li>
+				<li>
+					<a href="/fbpage/" title="おしらせ">おしらせ</a>
+				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown notification-icon">
