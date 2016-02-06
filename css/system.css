@@ -325,10 +325,13 @@ iframe {
 .container-open-external {
 	z-index: 3;
 }
-.item-open-external {
+.item-open-external,
+.item-open-external .embed-frame *  {
 	visibility: hidden;
 }
-.item-open-external.visible {
+.item-open-external.visible,
+.item-open-external.opened .embed-frame *,
+.item-open-external:hover .embed-frame *  {
 	visibility: visible;
 }
 .container-open-external div.item-open-external {
@@ -341,8 +344,7 @@ iframe {
 }
 .item-open-external .glyphicon-pushpin,
 .item-open-external.opened .glyphicon-chevron-right,
-.item-open-external:hover .glyphicon-chevron-right,
-.item-open-external .glyphicon-play-circle  {
+.item-open-external:hover .glyphicon-chevron-right {
 	display: none;
 }
 .item-open-external .glyphicon-chevron-right,
