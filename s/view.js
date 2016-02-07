@@ -1323,8 +1323,7 @@ $(function(){
 			$item.attr({
 				'data-href': component.href,
 				'data-domain': domain
-			});
-			openAndAutoclose($item);
+			}).addClass('visible');
 			switch (domain) {
 				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
 				case 'hackforplay.xyz': openLink($wrapper, component.href); break;
@@ -1344,6 +1343,7 @@ $(function(){
 		function openSoundCloud ($wrapper, track_url) {
 			SC.oEmbed(track_url, { auto_play: true, maxheight: $wrapper.height() }).then(function(oEmbed) {
 				$wrapper.html(oEmbed.html);
+				openAndAutoclose($wrapper);
 			}).catch(function (error) {
 				$wrapper.append(
 					$('<h1>').append(
@@ -1369,6 +1369,7 @@ $(function(){
 				alert_on_unload = false; // 警告を出さない
 				location.href = link_url;
 			});
+			openAndAutoclose($wrapper);
 		}
 		function openYouTube ($wrapper, videoId) {
 			var $div = $('<div>').attr('id', 'player-' + videoId).addClass('fit').appendTo($wrapper);
@@ -1387,12 +1388,16 @@ $(function(){
 					width: $div.width(),
 					height: $div.height(),
 					videoId: videoId,
-					playerVars: { autoplay: true }
+					playerVars: { autoplay: true },
+					events: { onReady: function () {
+						openAndAutoclose($wrapper);
+					}}
 				});
 			}
 		}
-		function openAndAutoclose ($item) {
-			$item.addClass('opened visible');
+		function openAndAutoclose ($wrapper) {
+			var $item = $wrapper.parents('.item-open-external');
+			$item.addClass('opened');
 			var timeoutID = setTimeout(function () {
 				$item.removeClass('opened');
 			}, 2000);
