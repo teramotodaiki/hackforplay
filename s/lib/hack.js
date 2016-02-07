@@ -887,20 +887,9 @@ window.addEventListener('load', function() {
      * method of get representative color
     */
     Object.defineProperties(enchant.Sprite.prototype, {
-		colors: {
-			configurable: false, enumerable: false,
-			get: function () {
-				if (!this._representativeColors) {
-					var i = this.image.context ? this.image : this.image.clone();
-					var res = i.context.getImageData(this._frameLeft, this._frameTop, this.width, this.height);
-					this._representativeColors = getRepresentativeColor(res.data);
-				}
-				return this._representativeColors;
-			}
-		},
 		color: {
 			configurable: true, enumerable: true,
-			get: function () { return this._color || this.colors[0]; },
+			get: function () { return this._color || this.originalColor; },
 			set: function (color) {
 				color = Hack.css2rgb(color);
 				if (color.join(' ') !== this.color.join(' ')) {
@@ -910,8 +899,15 @@ window.addEventListener('load', function() {
 		},
 		originalColor: {
 			configurable: true, enumerable: true,
-			get: function () { return this.colors[0]; },
-			set: function (color) { this._representativeColors[0] = Hack.css2rgb(color); }
+			get: function () {
+				if (!this._originalColor) {
+					var i = this.image.context ? this.image : this.image.clone();
+					var res = i.context.getImageData(this._frameLeft, this._frameTop, this.width, this.height);
+					this._originalColor = getRepresentativeColor(res.data);
+				}
+				return this._originalColor;
+			},
+			set: function (color) { this._originalColor = Hack.css2rgb(color); }
 		}
     });
     // 代表色を抽出
@@ -928,15 +924,8 @@ window.addEventListener('load', function() {
 		}
 		var black = palette.indexOf('0 0 0');
 		if (black !== -1) space[black] = 0; // 黒は輪郭線として代表色にはさせない
-		var rep = [];
-		for (var max = Math.max.apply(null, space); max > 0 && rep.length < 16;
-				max = Math.max.apply(null, space)) {
-			var i = space.indexOf(max);
-			space[i] = 0;
-			var color = palette[i].split(' ').map(function (s) { return s >> 0; });
-			rep.push(color);
-		}
-		return rep;
+		var max = Math.max.apply(null, space);
+		return palette[space.indexOf(max)].split(' ').map(function (s) { return s >> 0; });
     }
     /**
      * RGB色空間上で、beforeからafterへ線形変換する
