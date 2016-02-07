@@ -1291,8 +1291,11 @@ $(function(){
 
 
 	// 汎用的な ExternalLinkWindow  Hack.openExternal で制御する
-	(function (SC) {
-		window.SC = undefined;
+	(function (SC, YT) {
+		window.SC = undefined; // SoundCloud
+		window.onYouTubeIframeAPIReady = function () {
+			YT = YT || window.YT; window.YT = undefined; // YouTube
+		};
 		$(window).on('openExternal.parsedMessage', function(event, data) {
 			var component;
 			try {
@@ -1324,6 +1327,11 @@ $(function(){
 			switch (domain) {
 				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
 				case 'hackforplay.xyz': openLink($wrapper, component.href); break;
+				case 'youtu.be': openYouTube($wrapper, component.pathname.substr(1)); break;
+				case 'youtube.com': var getParams = component.search.substr(1).split('&');
+				openYouTube($wrapper, getParams.map(function(item) {
+					return item.split('='); }).filter(function(a) {
+						return a.length === 2 && a[0] === 'v'; })[0][1]); break;
 				case 'restaging.hackforplay':
 				if ( !$('.container.container-game').hasClass('restaging') ) {
 					// ゲーム側からリステージングを開始する
@@ -1361,6 +1369,25 @@ $(function(){
 				location.href = link_url;
 			});
 		}
+		function openYouTube ($wrapper, videoId) {
+			var $div = $('<div>').attr('id', 'player-' + videoId).addClass('fit').appendTo($wrapper);
+			var player;
+			if (YT.Player) task();
+			else window.onYouTubeIframeAPIReady = function () {
+				YT = YT || window.YT; window.YT = undefined;
+				if ($div.get(0)) task();
+			}; // Async load
+			function task () {
+				player = new YT.Player($div.attr('id'), {
+					width: $div.width(),
+					height: $div.height(),
+					videoId: videoId,
+					events: { 'onPlayerReady': function (event) {
+						event.target.playVideo();
+					}}
+				});
+			}
+		}
 		function openAndAutoclose ($item) {
 			$item.addClass('opened visible');
 			var timeoutID = setTimeout(function () {
@@ -1370,7 +1397,7 @@ $(function(){
 				clearTimeout(timeoutID);
 			});
 		}
-	})(window.SC);
+	})(window.SC, window.YT);
 	(function () {
 		// Common view and Resize optimiser
 		var oldHeight = 0, timeoutID = null, maxWindowNum = 3;
