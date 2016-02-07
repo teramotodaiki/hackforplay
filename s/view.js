@@ -1291,13 +1291,18 @@ $(function(){
 
 
 	// 汎用的な ExternalLinkWindow  Hack.openExternal で制御する
-	(function (SC) {
-		window.SC = undefined;
+	(function (SC, YT) {
+		window.SC = undefined; // SoundCloud
+		window.onYouTubeIframeAPIReady = function () {
+			YT = window.YT;
+			window.YT = window.onYouTubeIframeAPIReady = undefined; // YouTube
+		};
 		$(window).on('openExternal.parsedMessage', function(event, data) {
 			var component;
 			try {
 				component = new URL(data.url);
 			} catch (e) { return; }
+			var domain = component.hostname.replace(/^www\./, '');
 			var $all = $('.container-open-external .item-open-external');
 			var $item = $all.filter(function () {
 				// 1.全く同じURL
@@ -1306,7 +1311,7 @@ $(function(){
 			if ($item.length > 0) return;
 			$item = $all.filter(function() {
 				// 2.同じドメイン ===> Override
-				return $(this).hasClass('visible') && $(this).data('hostname') === component.hostname;
+				return $(this).hasClass('visible') && $(this).data('domain') === domain;
 			}).first();
 			$item = $item.length > 0 ? $item : $all.filter(function() {
 				// 3.空いているところ
@@ -1317,12 +1322,16 @@ $(function(){
 			$wrapper.children().remove();
 			$item.attr({
 				'data-href': component.href,
-				'data-hostname': component.hostname
-			});
-			openAndAutoclose($item);
-			switch (component.hostname) {
+				'data-domain': domain
+			}).addClass('visible');
+			switch (domain) {
 				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
 				case 'hackforplay.xyz': openLink($wrapper, component.href); break;
+				case 'youtu.be': openYouTube($wrapper, component.pathname.substr(1)); break;
+				case 'youtube.com': var getParams = component.search.substr(1).split('&');
+				openYouTube($wrapper, getParams.map(function(item) {
+					return item.split('='); }).filter(function(a) {
+						return a.length === 2 && a[0] === 'v'; })[0][1]); break;
 				case 'restaging.hackforplay':
 				if ( !$('.container.container-game').hasClass('restaging') ) {
 					// ゲーム側からリステージングを開始する
@@ -1334,6 +1343,7 @@ $(function(){
 		function openSoundCloud ($wrapper, track_url) {
 			SC.oEmbed(track_url, { auto_play: true, maxheight: $wrapper.height() }).then(function(oEmbed) {
 				$wrapper.html(oEmbed.html);
+				openAndAutoclose($wrapper);
 			}).catch(function (error) {
 				$wrapper.append(
 					$('<h1>').append(
@@ -1359,9 +1369,35 @@ $(function(){
 				alert_on_unload = false; // 警告を出さない
 				location.href = link_url;
 			});
+			openAndAutoclose($wrapper);
 		}
-		function openAndAutoclose ($item) {
-			$item.addClass('opened visible');
+		function openYouTube ($wrapper, videoId) {
+			var $div = $('<div>').attr('id', 'player-' + videoId).addClass('fit').appendTo($wrapper);
+			var player;
+			if (window.onYouTubeIframeAPIReady) {
+				window.onYouTubeIframeAPIReady = function () {
+					YT = window.YT;
+					window.YT = window.onYouTubeIframeAPIReady = undefined; // YouTube
+					if ($div.get(0)) task();
+				};
+			} else {
+				task();
+			}
+			function task () {
+				player = new YT.Player($div.attr('id'), {
+					width: $div.width(),
+					height: $div.height(),
+					videoId: videoId,
+					playerVars: { autoplay: true },
+					events: { onReady: function () {
+						openAndAutoclose($wrapper);
+					}}
+				});
+			}
+		}
+		function openAndAutoclose ($wrapper) {
+			var $item = $wrapper.parents('.item-open-external');
+			$item.addClass('opened');
 			var timeoutID = setTimeout(function () {
 				$item.removeClass('opened');
 			}, 2000);
@@ -1369,7 +1405,7 @@ $(function(){
 				clearTimeout(timeoutID);
 			});
 		}
-	})(window.SC);
+	})(window.SC, window.YT);
 	(function () {
 		// Common view and Resize optimiser
 		var oldHeight = 0, timeoutID = null, maxWindowNum = 3;
