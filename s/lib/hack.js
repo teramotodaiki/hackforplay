@@ -916,21 +916,25 @@ window.addEventListener('load', function() {
     });
     // 代表色を抽出
     function getRepresentativeColor (data) {
-		// RGB色空間を64分割->色空間Viに存在するピクセルの数をカウント
-		var space = new Array(64).fill(0); // 0 ~ 63 ... 6bit [RRGGBB]
+		// RGB色空間Viに存在するピクセルの数をカウント
+		var space = [], palette = [];
 		for (var index = data.length - 4; index >= 0; index -= 4) {
 			if (data[index + 3] > 0) {
-				var rgb = rgb256toNum64(Array.prototype.slice.call(data, index, index + 3));
-				space[rgb] ++;
+				var rgb = Array.prototype.slice.call(data, index, index + 3).join(' ');
+				if (palette.indexOf(rgb) === -1) palette.push(rgb);
+				var i = palette.indexOf(rgb);
+				space[i] = (space[i] >> 0) + 1;
 			}
 		}
-		space[0] = 0; // 黒は輪郭線として代表色にはさせない
+		var black = palette.indexOf('0 0 0');
+		if (black !== -1) space[black] = 0; // 黒は輪郭線として代表色にはさせない
 		var rep = [];
-		for (var max = Math.max.apply(null, space); max > 0;
+		for (var max = Math.max.apply(null, space); max > 0 && rep.length < 16;
 				max = Math.max.apply(null, space)) {
-			var strong = space.indexOf(max);
-			space[strong] = 0;
-			rep.push([strong << 2 & 192, strong << 4 & 192, strong << 6 & 192]);
+			var i = space.indexOf(max);
+			space[i] = 0;
+			var color = palette[i].split(' ').map(function (s) { return s >> 0; });
+			rep.push(color);
 		}
 		return rep;
     }
