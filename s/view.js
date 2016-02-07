@@ -1294,7 +1294,8 @@ $(function(){
 	(function (SC, YT) {
 		window.SC = undefined; // SoundCloud
 		window.onYouTubeIframeAPIReady = function () {
-			YT = YT || window.YT; window.YT = undefined; // YouTube
+			YT = window.YT;
+			window.YT = window.onYouTubeIframeAPIReady = undefined; // YouTube
 		};
 		$(window).on('openExternal.parsedMessage', function(event, data) {
 			var component;
@@ -1372,11 +1373,15 @@ $(function(){
 		function openYouTube ($wrapper, videoId) {
 			var $div = $('<div>').attr('id', 'player-' + videoId).addClass('fit').appendTo($wrapper);
 			var player;
-			if (YT.Player) task();
-			else window.onYouTubeIframeAPIReady = function () {
-				YT = YT || window.YT; window.YT = undefined;
-				if ($div.get(0)) task();
-			}; // Async load
+			if (window.onYouTubeIframeAPIReady) {
+				window.onYouTubeIframeAPIReady = function () {
+					YT = window.YT;
+					window.YT = window.onYouTubeIframeAPIReady = undefined; // YouTube
+					if ($div.get(0)) task();
+				};
+			} else {
+				task();
+			}
 			function task () {
 				player = new YT.Player($div.attr('id'), {
 					width: $div.width(),
