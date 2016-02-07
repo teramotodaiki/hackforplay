@@ -1298,6 +1298,7 @@ $(function(){
 			try {
 				component = new URL(data.url);
 			} catch (e) { return; }
+			var domain = component.hostname.replace(/^www\./, '');
 			var $all = $('.container-open-external .item-open-external');
 			var $item = $all.filter(function () {
 				// 1.全く同じURL
@@ -1306,7 +1307,7 @@ $(function(){
 			if ($item.length > 0) return;
 			$item = $all.filter(function() {
 				// 2.同じドメイン ===> Override
-				return $(this).hasClass('visible') && $(this).data('hostname') === component.hostname;
+				return $(this).hasClass('visible') && $(this).data('domain') === domain;
 			}).first();
 			$item = $item.length > 0 ? $item : $all.filter(function() {
 				// 3.空いているところ
@@ -1317,10 +1318,10 @@ $(function(){
 			$wrapper.children().remove();
 			$item.attr({
 				'data-href': component.href,
-				'data-hostname': component.hostname
+				'data-domain': domain
 			});
 			openAndAutoclose($item);
-			switch (component.hostname) {
+			switch (domain) {
 				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
 				case 'hackforplay.xyz': openLink($wrapper, component.href); break;
 				case 'restaging.hackforplay':
