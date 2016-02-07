@@ -859,16 +859,25 @@ window.addEventListener('load', function() {
     }
 
     /**
-     * Hack.css2rgba
-     * style: CSS Color style
-     * @return [r, g, b, a]
+     * Hack.css2rgb
+     * style: CSS Color style / Array
+     * @return [r, g, b]
      */
     (function () {
 		var ctx = new Surface(1, 1).context;
-		Hack.css2rgba = function (style) {
-			ctx.fillStyle = style;
-			ctx.fillRect(0, 0, 1, 1);
-			return ctx.getImageData(0, 0, 1, 1).data;
+		Hack.css2rgb = function (style) {
+			if (typeof style === 'string') {
+				ctx.fillStyle = style;
+				ctx.fillRect(0, 0, 1, 1);
+				return Array.prototype.slice.call(ctx.getImageData(0, 0, 1, 1).data, 0, 3);
+			} else if (style instanceof Array && style.length !== 3) {
+				return [0, 0, 0].map(function(elem, index) {
+					return Math.min(255, Math.max(0, style[index] || elem)) >> 0;
+				});
+			} else if (style instanceof Array) {
+				return style;
+			}
+			throw new Error('Hack.css2rgb requires CSS style string or Array of number');
 		};
     })();
 
