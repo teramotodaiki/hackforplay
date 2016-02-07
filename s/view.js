@@ -1382,9 +1382,7 @@ $(function(){
 					width: $div.width(),
 					height: $div.height(),
 					videoId: videoId,
-					events: { 'onPlayerReady': function (event) {
-						event.target.playVideo();
-					}}
+					playerVars: { autoplay: true }
 				});
 			}
 		}
