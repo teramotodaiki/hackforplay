@@ -777,6 +777,18 @@ window.addEventListener('load', function () {
 				}
 			};
 		}
+	}, {
+		id: 35,
+		title: 'YouTube 埋め込みプレーヤー',
+		image: 'service/youtube-icon.png',
+		trim: { x: 0, y: 0, width: 128, height: 128 },
+		query: 'replace',
+		caption: 'YouTubeの埋め込みプレーヤーをつかって、ムービーを再生しよう！',
+		identifier: '()',
+		pattern: /Hack\.openExternal\(\'https?:\/\/(www\.)?youtube\.com.*\)\;?/g.source,
+		code: function () {
+			Hack.openExternal('https://www.youtube.com/watch?v=1mJ4X-hoCi8');
+		}
 	}).setCounter({
 		name: '__cnt15',
 		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))
