@@ -514,7 +514,8 @@ div.menu-left {
 	margin: 28px 0px 0px 4px;
 	font-size: 16px;
 }
-.item-open-external .glyphicon-play-circle {
+.item-open-external .glyphicon-play-circle,
+.item-open-external .glyphicon-flash {
 	font-size: 100px;
 	line-height: 180px;
 }

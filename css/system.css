@@ -338,7 +338,8 @@ iframe {
 	position: relative;
 }
 .item-open-external>div,
-.item-open-external .cover-black {
+.item-open-external .cover-black,
+.item-open-external .cover-alert {
 	position: absolute;
 	top: 0px;
 }
