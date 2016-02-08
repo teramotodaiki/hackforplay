@@ -1368,8 +1368,7 @@ $(function(){
 			).on('click', function() {
 				alert_on_unload = false; // 警告を出さない
 				location.href = link_url;
-			});
-			openAndAutoclose($wrapper);
+			}).parents('.item-open-external').addClass('opened');
 		}
 		function openYouTube ($wrapper, videoId) {
 			var $div = $('<div>').attr('id', 'player-' + videoId).addClass('fit').appendTo($wrapper);
