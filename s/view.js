@@ -1355,7 +1355,7 @@ $(function(){
 		}
 		function openLink ($wrapper, stage_id) {
 			$wrapper.append(
-				$('<div>').addClass('fit cover-thumbnail').css('background-image', 'url(../thumbnail/?stage_id=' + stage_id + ')')
+				$('<div>').addClass('fit cover-thumbnail').css('background-image', stage_id ? ('url(../thumbnail/?stage_id=' + stage_id + ')') : 'url(../town/img/ground.png)')
 			).append(
 				$('<div>').addClass('fit cover-black text-center').append(
 					$('<span>').addClass('glyphicon glyphicon-play-circle')
