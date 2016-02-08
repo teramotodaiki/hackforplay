@@ -31,10 +31,9 @@ try {
 
 	// ステージ情報を取得
 	$values = array();
-	$stmt 	= $dbh->prepare('SELECT "ID","Title","Thumbnail","Playcount" FROM "Stage" WHERE "ID"=:stageid AND "State"=:published');
+	$stmt 	= $dbh->prepare('SELECT "ID","Title","Thumbnail","Playcount" FROM "Stage" WHERE "ID"=:stageid');
 	foreach ($stageid as $key => $value) {
 		$stmt->bindValue(":stageid", $value, PDO::PARAM_INT);
-		$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 		$stmt->execute();
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
