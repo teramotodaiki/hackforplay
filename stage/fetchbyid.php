@@ -1,6 +1,6 @@
 <?php
 /*
-IDの配列を受け取り、対応するステージの情報を返す。ただしofficialなステージにのみ取得できる
+IDの配列を受け取り、対応するステージの情報を返す。
 無効なIDは無視する
 Input:	[id (,,,)] カンマ区切りのID , (attendance-token)
 Output:	JSON:{information_of_stages} , parse-error
@@ -31,11 +31,10 @@ try {
 
 	// ステージ情報を取得
 	$values = array();
-	$stmt 	= $dbh->prepare('SELECT "ID","Title","Thumbnail","Playcount" FROM "Stage" WHERE "ID"=:stageid AND "State"=:published AND "Mode"=:official ');
+	$stmt 	= $dbh->prepare('SELECT "ID","Title","Thumbnail","Playcount" FROM "Stage" WHERE "ID"=:stageid AND "State"=:published');
 	foreach ($stageid as $key => $value) {
 		$stmt->bindValue(":stageid", $value, PDO::PARAM_INT);
 		$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
-		$stmt->bindValue(":official", 'official', PDO::PARAM_STR);
 		$stmt->execute();
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
