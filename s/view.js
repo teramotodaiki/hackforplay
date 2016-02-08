@@ -1326,12 +1326,9 @@ $(function(){
 			}).addClass('visible');
 			switch (domain) {
 				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
-				case 'hackforplay.xyz': openLink($wrapper, component.href); break;
+				case 'hackforplay.xyz': openLink($wrapper, parse(component).id); break;
 				case 'youtu.be': openYouTube($wrapper, component.pathname.substr(1)); break;
-				case 'youtube.com': var getParams = component.search.substr(1).split('&');
-				openYouTube($wrapper, getParams.map(function(item) {
-					return item.split('='); }).filter(function(a) {
-						return a.length === 2 && a[0] === 'v'; })[0][1]); break;
+				case 'youtube.com': openYouTube($wrapper, parse(component).v); break;
 				case 'restaging.hackforplay':
 				if ( !$('.container.container-game').hasClass('restaging') ) {
 					// ゲーム側からリステージングを開始する
@@ -1356,18 +1353,16 @@ $(function(){
 				);
 			});
 		}
-		function openLink ($wrapper, link_url) {
+		function openLink ($wrapper, stage_id) {
 			$wrapper.append(
-				$('<div>').addClass('fit cover-thumbnail').css({
-					backgroundImage: 'url(https://hackforplay.xyz/s/thumbs/237f58a53423ab8b228d7b0970c0660c.png)'
-				})
+				$('<div>').addClass('fit cover-thumbnail').css('background-image', 'url(../thumbnail/?stage_id=' + stage_id + ')')
 			).append(
 				$('<div>').addClass('fit cover-black text-center').append(
 					$('<span>').addClass('glyphicon glyphicon-play-circle')
 				)
 			).on('click', function() {
 				alert_on_unload = false; // 警告を出さない
-				location.href = link_url;
+				location.href = 'https://hackforplay.xyz/s/?id=' + stage_id;
 			}).parents('.item-open-external').addClass('opened');
 		}
 		function openYouTube ($wrapper, videoId) {
@@ -1393,6 +1388,16 @@ $(function(){
 					}}
 				});
 			}
+		}
+		function parse (url) {
+			var params = {};
+			if (url.search.length > 0) {
+				url.search.substr(1).split('&').forEach(function (item) {
+					var parts = item.split('=');
+					params[parts[0]] = parts[1];
+				});
+			}
+			return params;
 		}
 		function openAndAutoclose ($wrapper) {
 			var $item = $wrapper.parents('.item-open-external');
