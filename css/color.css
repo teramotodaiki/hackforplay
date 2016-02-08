@@ -176,6 +176,25 @@ nav.navbar {
 .item-open-external:hover .cover-black {
 	background-color : rgba(0, 0, 0, 0.6);
 }
+.item-open-external .cover-alert {
+	transition: background-color 0.1s linear;
+	background-color : rgba(169, 68, 66, 1.0);
+}
+.item-open-external:hover .cover-alert {
+	background-color : rgba(169, 68, 66, 0);
+}
+.item-open-external .glyphicon-flash {
+	transition: -webkit-filter 0.2s linear 0.4s, filter 0.2s linear 0.4s;
+	-webkit-filter : blur(0px);
+	filter : blur(0px);
+	color: rgb(255, 159, 111);
+	opacity: 1.0;
+}
+.item-open-external:hover .glyphicon-flash {
+	-webkit-filter : blur(8px);
+	filter : blur(8px);
+	opacity: 0.5;
+}
 
 /* 影の色 */
 header {
