@@ -134,6 +134,9 @@ window.addEventListener('load', function () {
 			ontouchend: function() {
 				Hack.textarea.hide();
 				Hack.openEditor();
+			},
+			onenterframe: function () {
+				this.opacity = Hack.player && this.intersect(Hack.player) ? Math.max(0.1, this.opacity - 0.1) : this.opacity = Math.min(1.0, this.opacity + 0.1);
 			}
 		});
 
