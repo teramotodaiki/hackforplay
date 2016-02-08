@@ -1335,6 +1335,8 @@ $(function(){
 					$('.begin_restaging').trigger('click');
 				}
 				$item.removeClass('visible');
+				break;
+				case 'error.hackforplay': openError($wrapper, parse(component)); break;
 			}
 		});
 		function openSoundCloud ($wrapper, track_url) {
@@ -1388,6 +1390,21 @@ $(function(){
 					}}
 				});
 			}
+		}
+		function openError ($wrapper, error) {
+			var message = decodeURIComponent(error.message);
+			$wrapper.append(
+				$('<div>').addClass('fit alert alert-danger').append(
+					$('<h3>').text(message).append(
+						$('<span>').addClass('label label-danger')
+					)
+				)
+			).append(
+				$('<div>').addClass('fit cover-alert text-center').append(
+					$('<span>').addClass('glyphicon glyphicon-flash')
+				)
+			);
+			openAndAutoclose($wrapper);
 		}
 		function parse (url) {
 			var params = {};
