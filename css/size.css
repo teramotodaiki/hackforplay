@@ -520,4 +520,17 @@ div.menu-left {
 	line-height: 180px;
 }
 
+.item-dashboard {
+	height: 140px;
+}
+.item-dashboard-layer {
+	line-height: 140px;
+	width: 100%;
+}
+.item-dashboard .glyphicon {
+	font-size: 140px;
+}
+.item-dashboard .item-dashboard-value {
+	font-size: 100px;
+}
 
