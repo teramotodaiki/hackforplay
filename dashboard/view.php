@@ -13,7 +13,6 @@
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
-	<script src="../chartjs/Chart.js" type="text/javascript" charset="utf-8"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<!-- Content -->
 	<div class="container">
