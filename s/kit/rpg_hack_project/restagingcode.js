@@ -15,6 +15,9 @@ window.addEventListener('load', function () {
 			var player = Hack.player = new Player();
 			player.locate(3, 5);
 			player.hp = 3;
+			player.onbecomedead = function () {
+				Hack.gameover();
+			};
 
 		};
 
