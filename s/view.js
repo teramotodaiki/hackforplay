@@ -1365,7 +1365,7 @@ $(function(){
 			).on('click', function() {
 				alert_on_unload = false; // 警告を出さない
 				location.href = 'https://hackforplay.xyz/s/?id=' + stage_id;
-			}).parents('.item-open-external').addClass('opened');
+			}).parents('.item-open-external').addClass('opened').find('.glyphicon-remove').addClass('invisible');
 		}
 		function openYouTube ($wrapper, videoId) {
 			var $div = $('<div>').attr('id', 'player-' + videoId).addClass('fit').appendTo($wrapper);
@@ -1421,7 +1421,7 @@ $(function(){
 			$item.addClass('opened');
 			var timeoutID = setTimeout(function () {
 				$item.removeClass('opened');
-			}, 2000);
+			}, 5000);
 			$item.hover(function() {
 				clearTimeout(timeoutID);
 			});
