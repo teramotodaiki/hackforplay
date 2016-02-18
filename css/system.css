@@ -356,6 +356,11 @@ iframe {
 	display: block;
 }
 
+.item-dashboard .item-dashboard-layer {
+	position: absolute;
+	text-align: center;
+}
+
 /* アニメーション */
 
 .h4p_item-transform {
