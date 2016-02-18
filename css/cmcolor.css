@@ -8,3 +8,7 @@
 .cm-s-default .cm-comment { color: #063; }
 .cm-s-default .cm-string { color: #be5404; }
 .cm-s-default .cm-string-2 { color: #280; }
+/* Prevent an image due to render on Safari */
+.CodeMirror-scroll pre {
+	-webkit-user-drag: element;
+}
