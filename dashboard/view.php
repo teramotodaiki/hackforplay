@@ -44,6 +44,11 @@
 					<span class="item-dashboard-value item-dashboard-restagecount">-</span>
 				</div>
 			</div>
+			<div class="hidden-xs hidden-sm col-md-4 item-dashboard">
+				<div class="item-dashboard-layer">
+					<span class="glyphicon glyphicon-option-horizontal"></span>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>
