@@ -1421,7 +1421,7 @@ $(function(){
 			$item.addClass('opened');
 			var timeoutID = setTimeout(function () {
 				$item.removeClass('opened');
-			}, 2000);
+			}, 5000);
 			$item.hover(function() {
 				clearTimeout(timeoutID);
 			});
