@@ -29,22 +29,14 @@ function __H4PENV__SENDCODE () {
 }
 
 // set eval
-window.addEventListener('message', function (e) {
-	if(e.origin === window.location.protocol + '//' + window.location.host){
+window.addEventListener('message', function (event) {
+	if(event.origin === window.location.protocol + '//' + window.location.host){
 		try {
 			var hint = Hack ? Hack.hint : ''; // 旧RPGとの互換性を維持するための仕様(hintがないとsetHintされた時にエラー)
 			var game = enchant ? enchant.Core.instance : undefined;
-			eval(e.data);
-		} catch (exception) {
-			if (exception.sourceURL && exception.stack.indexOf('eval') !== -1) {
-				// ランタイムエラー
-				Hack.log('Error', exception.message);
-			} else if (!exception.sourceURL) {
-				// 改造コード実行直後のエラー
-				Hack.log('Error', exception.message, '...on line', exception.line);
-			} else {
-				console.log(exception);
-			}
+			eval(event.data);
+		} catch (e) {
+			Hack.openExternal('https://error.hackforplay?message='+e.message);
 		}
 	}
 });

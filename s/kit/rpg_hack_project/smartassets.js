@@ -288,6 +288,7 @@ window.addEventListener('load', function () {
 			var item = new MapObject('box');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
+				delete item.onattacked;
 				this.frame = MapObject.dictionary.openedBox;
 				// 出てくるもの　→
 			};

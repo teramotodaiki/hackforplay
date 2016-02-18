@@ -1335,6 +1335,8 @@ $(function(){
 					$('.begin_restaging').trigger('click');
 				}
 				$item.removeClass('visible');
+				break;
+				case 'error.hackforplay': openError($wrapper, parse(component)); break;
 			}
 		});
 		function openSoundCloud ($wrapper, track_url) {
@@ -1363,7 +1365,7 @@ $(function(){
 			).on('click', function() {
 				alert_on_unload = false; // 警告を出さない
 				location.href = 'https://hackforplay.xyz/s/?id=' + stage_id;
-			}).parents('.item-open-external').addClass('opened');
+			}).parents('.item-open-external').addClass('opened').find('.glyphicon-remove').addClass('invisible');
 		}
 		function openYouTube ($wrapper, videoId) {
 			var $div = $('<div>').attr('id', 'player-' + videoId).addClass('fit').appendTo($wrapper);
@@ -1389,6 +1391,21 @@ $(function(){
 				});
 			}
 		}
+		function openError ($wrapper, error) {
+			var message = decodeURIComponent(error.message);
+			$wrapper.append(
+				$('<div>').addClass('fit alert alert-danger').append(
+					$('<h3>').text(message).append(
+						$('<span>').addClass('label label-danger')
+					)
+				)
+			).append(
+				$('<div>').addClass('fit cover-alert text-center').append(
+					$('<span>').addClass('glyphicon glyphicon-flash')
+				)
+			);
+			openAndAutoclose($wrapper);
+		}
 		function parse (url) {
 			var params = {};
 			if (url.search.length > 0) {
@@ -1404,7 +1421,7 @@ $(function(){
 			$item.addClass('opened');
 			var timeoutID = setTimeout(function () {
 				$item.removeClass('opened');
-			}, 2000);
+			}, 5000);
 			$item.hover(function() {
 				clearTimeout(timeoutID);
 			});
