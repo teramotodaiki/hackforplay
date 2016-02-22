@@ -9,6 +9,7 @@ call_user_func(function($useCDN, $path){
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-1.11.2.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="//j.wovn.io/1" data-wovnio="key=FgyZa" async></script>
 	<?php
 	else:
 		// local environmnt -> it uses local file.
