@@ -12,9 +12,7 @@ try {
 	exit();
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
-	die();
+	var_dump($e);
 }
 
 ?>
