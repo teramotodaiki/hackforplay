@@ -112,8 +112,6 @@
 					<canvas id="canvas" height="300" width="600"></canvas>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="judge">
-			    	<button type="button" class="btn btn-lg" data-query="dequeue" data-loading-text="...">Manually Update</button>
-			    	<hr>
 			    	<div class="row list-judging"></div>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="levelmake">
