@@ -26,14 +26,12 @@ try {
 		exit('invalid-token');
 	}
 
-	$stmt	= $dbh->prepare('SELECT "ID","PublishedStageID" FROM "Project" WHERE "Token"=:token');
+	$stmt	= $dbh->prepare('SELECT "ID" FROM "Project" WHERE "Token"=:token');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
 	if(!$project){
 		exit('invalid-token');
-	}elseif ($project['PublishedStageID'] !== NULL) {
-		exit('already-published');
 	}
 
 	// code
@@ -122,8 +120,7 @@ try {
 
 		// ステージIDをProjectに関連づける
 		$new_stage_id = $dbh->lastInsertId('Stage');
-		$stmt	= $dbh->prepare('UPDATE "Project" SET "PublishedStageID"=:lastinsertid,"SourceStageID"=:source_stage_id WHERE "ID"=:projectid');
-		$stmt->bindValue(":lastinsertid", $new_stage_id, PDO::PARAM_INT);
+		$stmt	= $dbh->prepare('UPDATE "Project" SET "SourceStageID"=:source_stage_id WHERE "ID"=:projectid');
 		$stmt->bindValue(":source_stage_id", $stage_info->source_id, PDO::PARAM_INT);
 		$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
 		$stmt->execute();
