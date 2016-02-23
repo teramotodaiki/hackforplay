@@ -1,5 +1,9 @@
 <?php
 /*
+
+**** 廃止 ****
+**** judge.js では、Stageの情報からRawCodeを得る ****
+
 Project IDからプロジェクトの情報を取得する
 Input:	project_id , (attendance-token)
 Output:	(JSON{information_of_project})
