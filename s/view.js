@@ -1050,6 +1050,7 @@ $(function(){
 				publish : false,
 				'attendance-token' : sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
+				console.log('updateTask', data);
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
@@ -1104,6 +1105,7 @@ $(function(){
 				stage_info: JSON.stringify(stage_info),
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			} , function(data, textStatus, xhr) {
+				console.log('publishTask', data);
 				$('.h4p_publish button').button('reset');
 				switch(data){
 					case 'no-session':
