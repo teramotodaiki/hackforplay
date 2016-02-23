@@ -1042,7 +1042,7 @@ $(function(){
 		}
 		function updateTask (callback) {
 			// Update data
-			$.post('../project/enqueue.php', {
+			$.post('../commit/', {
 				token : sessionStorage.getItem('project-token'),
 				code : jsEditor.getValue(''),
 				timezone : new Date().getTimezoneString(),
@@ -1095,7 +1095,7 @@ $(function(){
 				source_id: getParam('id')
 			};
 			$(".h4p_publish button").button('loading');
-			$.post('../project/enqueue.php', {
+			$.post('../commit/', {
 				token: sessionStorage.getItem('project-token'),
 				code: jsEditor.getValue(''),
 				timezone: new Date().getTimezoneString(),

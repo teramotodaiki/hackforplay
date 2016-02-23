@@ -37,6 +37,12 @@ try {
 		exit('missing-project');
 	}
 
+	// Fetch newest script
+	$stmt	= $dbh->prepare('SELECT "RawCode" FROM "Script" WHERE "ID"=(SELECT MIN("ID") FROM "Script" WHERE "ProjectID"=:project_id)');
+	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
+	$stmt->execute();
+	$rawcode = $stmt->fetch(PDO::FETCH_COLUMN);
+
 	// データを格納
 	require_once '../project/getcurrentcode.php';
 	$item 	= new stdClass();
@@ -44,7 +50,7 @@ try {
 	$item->source_id 	= $project['SourceStageID'];
 	$item->source_title	= $project['Title'];
 	$item->source_mode	= $project['Mode'];
-	$item->data 		= getCurrentCode($project['ID']);
+	$item->data 		= $rawcode;
 	$item->registered 	= $project['Registered'];
 
 	// 出力
