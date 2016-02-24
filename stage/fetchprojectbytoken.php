@@ -38,13 +38,12 @@ try {
 	}
 
 	// Fetch newest script
-	$stmt	= $dbh->prepare('SELECT "RawCode" FROM "Script" WHERE "ID"=(SELECT MIN("ID") FROM "Script" WHERE "ProjectID"=:project_id)');
+	$stmt	= $dbh->prepare('SELECT "RawCode" FROM "Script" WHERE "ID"=(SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id)');
 	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
 	$stmt->execute();
 	$rawcode = $stmt->fetch(PDO::FETCH_COLUMN);
 
 	// データを格納
-	require_once '../project/getcurrentcode.php';
 	$item 	= new stdClass();
 	$item->id 			= $project['ID'];
 	$item->source_id 	= $project['SourceStageID'];
