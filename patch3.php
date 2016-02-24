@@ -46,6 +46,25 @@ try {
 		echo '<p>updated     ' . $updated;
 }
 
-echo('<p>success! ');
+echo('<p id="success"></p>');
 
 ?>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Cache-control" content="no-cache">
+		<meta http-equiv="Expires" content="-1">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			setTimeout(function () {
+				window.location = window.location.href;
+			}, 1000);
+			console.log(document.getElementById('success'));
+			document.getElementById('success').innerHTML = 'success ' + new Date().getTime();
+		</script>
+	</body>
+</html>
