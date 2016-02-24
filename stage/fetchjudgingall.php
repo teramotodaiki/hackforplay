@@ -27,7 +27,7 @@ try {
 
 	// ステージ一覧を取得
 	$result = array();
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Registered",s."State",s."ProjectID","User"."Nickname",s."Title" AS SourceTitle,s."Mode",script."RawCode" FROM "Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID" LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" LEFT OUTER JOIN "Script" AS script ON s."ScriptID"=script."ID" WHERE s."State"=:judging ORDER BY s."Registered" DESC');
+	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Registered",s."State",s."ProjectID","User"."Nickname",source."Title" AS SourceTitle,s."Mode",script."RawCode" FROM "Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID" LEFT OUTER JOIN "Stage" AS source ON s."SourceID"=source."ID" LEFT OUTER JOIN "Script" AS script ON s."ScriptID"=script."ID" WHERE s."State"=:judging ORDER BY s."Registered" DESC');
 	$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
 	$stmt->execute();
 	$result	= $stmt->fetchAll(PDO::FETCH_ASSOC);
