@@ -130,7 +130,7 @@ try {
 	}
 
 	// ステージの情報/制作者の情報/改造元ステージの情報を取得
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Mode",s."ProjectID",s."Path",s."Title",s."Explain",s."State",s."Playcount",s."NextID",s."Src",s."YouTubeID",s."Thumbnail",s."SourceID",u."Nickname",source."Title" AS SourceTitle FROM "Stage" AS s LEFT OUTER JOIN "User" AS u ON s."UserID"=u."ID" LEFT OUTER JOIN "Stage" AS source ON s."SourceID"=source."ID" WHERE s."ID"=:stageid');
+	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Mode",s."ProjectID",s."Path",s."Title",s."Explain",s."State",s."Playcount",s."NextID",s."Src",s."YouTubeID",s."Thumbnail",s."SourceID",u."Nickname",source."Title" AS SourceTitle,script."RawCode" FROM "Stage" AS s LEFT OUTER JOIN "User" AS u ON s."UserID"=u."ID" LEFT OUTER JOIN "Stage" AS source ON s."SourceID"=source."ID" LEFT OUTER JOIN "Script" AS script ON s."ScriptID"=script."ID" WHERE s."ID"=:stageid');
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 	$stmt->execute();
 	$stage	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -156,6 +156,7 @@ try {
 		// リプレイの場合は改造コードを取得
 		require_once '../project/getcurrentcode.php';
 		$project['Data']	= getCurrentCode($stage['ProjectID']);
+		// $project['Data']	= $stage['RawCode'];
 	}
 
 	// もしYouTube IDがない場合, SourceIDのYouTubeIDで上書きする (仮の処理.いずれ複数対応)

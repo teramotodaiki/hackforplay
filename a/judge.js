@@ -40,18 +40,8 @@ $(function () {
 
 		// イベント
 		$item.find('.h4p_code-button').on('click', function() {
-			var project_id = $(this).data('project_id');
-			$.post('../stage/fetchprojectbyid.php',{
-				'project_id': project_id,
-				'attendance-token': sessionStorage.getItem('attendance-token')
-			}, function(data, textStatus, xhr) {
-				if (data === '') {
-					alert('Project is not exist');
-				}else{
-					var result = jQuery.parseJSON(data);
-					$('#codeModal code').text(result.data);
-				}
-			});
+			var rawcode = $(this).data('rawcode');
+			$('#codeModal code').text(rawcode);
 		});
 		$item.find('.h4p_accept-button').on('click', function() {
 			var item = $(this).parents('.panel-body').first();
@@ -113,7 +103,7 @@ $(function () {
 						}else{
 							item.find('.source').text('オリジナルステージ');
 						}
-						item.find('.h4p_code-button').data('project_id', stage.project_id);
+						item.find('.h4p_code-button').data('rawcode', stage.rawcode);
 						item.find('.h4p_accept-button').data('stage_id', stage.id);
 						item.find('.h4p_reject-button').data('stage_id', stage.id);
 
@@ -180,14 +170,6 @@ $(function () {
 			$('#rejectModal').modal('hide');
 		});
 
-		// Manually dequeue
-		$('#judge').on('click', 'button[data-query="dequeue"]', function() {
-			var loading = $(this).button('loading');
-			$.post('../project/dequeue.php', {}, function(data, textStatus, xhr) {
-				loading.button('reset');
-				fetchTask();
-			});
-		});
 	});
 });
 
