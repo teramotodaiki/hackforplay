@@ -1107,7 +1107,6 @@ $(function(){
 			} , function(data, textStatus, xhr) {
 				$('.h4p_publish button').button('reset');
 				switch(data){
-					console.log(data);
 					case 'no-session':
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを投稿するには、ログインしてください');
 						break;
