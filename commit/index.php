@@ -81,6 +81,9 @@ try {
 	$stmt	= $dbh->prepare('UPDATE "Project" SET "Written"=TRUE WHERE "ID"=:project_id');
 	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
 	$result = $stmt->execute();
+	if (!$result) {
+		exit('database-error written flag');
+	}
 
 	// Publish flag
 	$publish = filter_input(INPUT_POST, 'publish', FILTER_VALIDATE_BOOLEAN);

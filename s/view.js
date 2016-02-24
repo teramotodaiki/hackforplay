@@ -1050,6 +1050,7 @@ $(function(){
 				publish : false,
 				'attendance-token' : sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
+				console.log(data);
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
