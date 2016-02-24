@@ -18,7 +18,7 @@ try {
 	}
 
 	// すべてのパビリオン/パビリオンに関する自分の実績情報を取得
-	$stmt		= $dbh->prepare('SELECT p."ID",p."DisplayName",p."RequiredAchievements",p."LocationNumber",m."ID" AS mID,m."Certified",m."Restaged",r."Icon" FROM "Pavilion" AS p LEFT OUTER JOIN "PavilionUserMap" AS m ON p."ID"=m."PavilionID"  AND m."UserID"=:userid LEFT OUTER JOIN "PavilionResourcePath" AS r ON p."ID"=r."PavilionID"');
+	$stmt	= $dbh->prepare('SELECT p."ID",p."DisplayName",p."RequiredAchievements",p."LocationNumber",m."ID" AS mID,m."Certified",m."Restaged",r."Icon" FROM "Pavilion" AS p ' . 'LEFT OUTER JOIN "PavilionUserMap" AS m ON p."ID"=m."PavilionID" AND m."UserID"=:userid LEFT OUTER JOIN "PavilionResourcePath" AS r ON p."ID"=r."PavilionID"');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$pavilions	= $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -77,7 +77,7 @@ try {
 	}
 
 	// もっとも保存時刻のあたらしいプロジェクトの情報を取得
-	$stmt	= $dbh->prepare('SELECT "ProjectID","Thumbnail" FROM "Script" WHERE "ProjectID" IN (SELECT "ID" FROM "Project" WHERE "UserID"=:userid AND "State"=:enabled) ORDER BY "Registered" DESC');
+	$stmt	= $dbh->prepare('SELECT "ProjectID","Thumbnail" FROM "Script" WHERE "ProjectID" IN (SELECT "ID" FROM "Project" WHERE "UserID"=:userid AND "State"=:enabled AND "Written"=TRUE) ORDER BY "Registered" DESC');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":enabled", 'enabled', PDO::PARAM_STR);
 	$stmt->execute();
