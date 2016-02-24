@@ -154,9 +154,7 @@ try {
 		$project['Data'] = '';
 	} elseif ($stage['Mode'] === 'replay') {
 		// リプレイの場合は改造コードを取得
-		require_once '../project/getcurrentcode.php';
-		$project['Data']	= getCurrentCode($stage['ProjectID']);
-		// $project['Data']	= $stage['RawCode'];
+		$project['Data']	= $stage['RawCode'];
 	}
 
 	// もしYouTube IDがない場合, SourceIDのYouTubeIDで上書きする (仮の処理.いずれ複数対応)
