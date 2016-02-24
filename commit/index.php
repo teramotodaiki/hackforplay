@@ -78,11 +78,12 @@ try {
 	$script_id = $dbh->lastInsertId('Script');
 
 	// Rise written flag of project
-	$stmt	= $dbh->prepare('UPDATE "Project" SET "Written"=TRUE WHERE "ID"=:project_id');
+	$stmt	= $dbh->prepare('UPDATE "Project" SET "Written"=:true WHERE "ID"=:project_id');
 	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
+	$stmt->bindValue(":true", true, PDO::PARAM_BOOL);
 	$result = $stmt->execute();
 	if (!$result) {
-		exit('database-error written flag');
+		exit('database-error');
 	}
 
 	// Publish flag
@@ -140,7 +141,6 @@ try {
 	exit('success');
 
 } catch (Exception $e) {
-	var_dump($e);
 	require_once '../exception/tracedata.php';
 	traceData($e);
 	die();
