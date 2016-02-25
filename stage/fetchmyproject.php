@@ -1,6 +1,6 @@
 <?php
 /*
-セッションIDをもとに、自分が作ったプロジェクトのうち、まだ投稿していないもので、enabledステートのものを取得
+セッションIDをもとに、自分が作ったプロジェクトのうち、スクリプトが存在し、利用可能なものををすべて表示
 Input:	length , (attendance-token)
 Output:	no-session , parse-error , JSON:{information_of_projects}
 information_of_projects:
@@ -39,9 +39,10 @@ try {
 	// プロジェクト一覧を取得
 	// SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
 	$result = array();
-	$stmt	= $dbh->prepare('SELECT p."ID",p."Token",p."Registered",p."SourceStageID",s."Title",s."Mode" FROM "Project" AS p LEFT OUTER JOIN "Stage" AS s ON p."SourceStageID"=s."ID" WHERE p."UserID"=:userid AND p."State"=:enabled ORDER BY p."Registered" DESC');
+	$stmt	= $dbh->prepare('SELECT p."ID",p."Token",p."Registered",p."SourceStageID",s."Title",s."Mode" FROM "Project" AS p LEFT OUTER JOIN "Stage" AS s ON p."SourceStageID"=s."ID" WHERE p."UserID"=:userid AND p."State"=:enabled AND p."Written"=:true ORDER BY p."Registered" DESC');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":enabled", 'enabled', PDO::PARAM_STR);
+	$stmt->bindValue(":true", true, PDO::PARAM_BOOL);
 	$stmt->execute();
 
 	for ($i = 0; $i < $max_fetch_length; $i++){

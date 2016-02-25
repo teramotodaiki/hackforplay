@@ -77,6 +77,15 @@ try {
 	}
 	$script_id = $dbh->lastInsertId('Script');
 
+	// Rise written flag of project
+	$stmt	= $dbh->prepare('UPDATE "Project" SET "Written"=:true WHERE "ID"=:project_id');
+	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
+	$stmt->bindValue(":true", true, PDO::PARAM_BOOL);
+	$result = $stmt->execute();
+	if (!$result) {
+		exit('database-error');
+	}
+
 	// Publish flag
 	$publish = filter_input(INPUT_POST, 'publish', FILTER_VALIDATE_BOOLEAN);
 	if ($publish === NULL) $publish = FALSE;
