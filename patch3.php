@@ -43,7 +43,7 @@ try {
 		echo '<p>';
 } finally {
 		echo '<p>empty lines ' . $count;
-		echo '<p>updated     ' . $updated;
+		echo '<p>updated     ' . $update;
 }
 
 echo('<p>success! ');
