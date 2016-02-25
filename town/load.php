@@ -77,9 +77,10 @@ try {
 	}
 
 	// もっとも保存時刻のあたらしいプロジェクトの情報を取得
-	$stmt	= $dbh->prepare('SELECT "ProjectID","Thumbnail" FROM "Script" WHERE "ProjectID" IN (SELECT "ID" FROM "Project" WHERE "UserID"=:userid AND "State"=:enabled AND "Written"=TRUE) ORDER BY "Registered" DESC');
+	$stmt	= $dbh->prepare('SELECT "ProjectID","Thumbnail" FROM "Script" WHERE "ProjectID" IN (SELECT "ID" FROM "Project" WHERE "UserID"=:userid AND "State"=:enabled AND "Written"=:true) ORDER BY "Registered" DESC');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":enabled", 'enabled', PDO::PARAM_STR);
+	$stmt->bindValue(":true", TRUE, PDO::PARAM_BOOL);
 	$stmt->execute();
 	$recent_project	= $stmt->fetch(PDO::FETCH_ASSOC);
 	if ($recent_project) {
