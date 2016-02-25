@@ -179,7 +179,7 @@ window.addEventListener('load', function() {
 	Hack.enchantBook = (function(){
 		// scope: new Entity
 
-		var _hint = '// test value';
+		var _hint = '';
 		Object.defineProperty(Hack, 'hint', {
 			configurable: true,
 			enumerable: true,
@@ -187,12 +187,13 @@ window.addEventListener('load', function() {
 				return _hint;
 			},
 			set: function(code){
-				if (code instanceof Function) {
-					code = Hack.fun2str(code);
-				}
-				_hint = code;
+				_hint = code instanceof Function ? Hack.fun2str(code) : code;
 				sessionStorage.setItem('enchantbook-set-hint', _hint);
 				sendToEditor('setEditor();');
+				var e = new Event('hintset');
+				e.value = _hint;
+				e.rawValue = code;
+				Hack.dispatchEvent(e);
 			}
 		});
 

@@ -131,11 +131,15 @@ window.addEventListener('load', function () {
 		Hack.enchantBookIcon = Hack.createSprite(64, 64, {
 			image: game.assets['hackforplay/enchantbook.png'],
 			defaultParentNode: Hack.menuGroup,
+			visible: !!Hack.hint,
 			ontouchend: function() {
 				Hack.textarea.hide();
 				Hack.openEditor();
 			}
 		});
+		Hack.onhintset = function (event) {
+			Hack.enchantBookIcon.visible = true;
+		};
 
 		// Textarea
 		Hack.textarea.moveTo(64, 0);
