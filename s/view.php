@@ -333,26 +333,6 @@ if ($mode === 'quest') {
 				</div>
 				<iframe src="" frameborder="0"></iframe>
 			</div>
-			<div class="col-xs-12 h4p_clear text-center" style="display:none">
-				<div class="row">
-					<div class="col-xs-12">
-						<img class="h4p_clear-img" src="img/clear.png" alt="">
-					</div>
-					<div class="col-xs-12 h4p_clear-next">
-					<?php if($next !== NULL) : // exist next stage ?>
-						<a href="/s?id=<?php echo $next; ?>" style="display: block;" title="つぎのステージへ">
-							<img src="img/button_next.png" height="48" width="266" alt="">
-						</a>
-					<?php elseif($id == 106) : // last stage of tutirial ?>
-						<div class="">
-							<h3>クリアおめでとうございます！</h3>
-							<p>とっておきの ほうしゅう が とどきました</p>
-							<a href="../getaccount/" class="btn btn-success btn-lg" title="Get"><h3>うけとる</h3></a>
-						</div>
-					<?php endif; ?>
-					</div>
-				</div>
-			</div>
 			<div class="col-xs-12 h4p_publish" style="display:none">
 				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中...">
 					<ruby>完成<rt>かんせい</rt></ruby>

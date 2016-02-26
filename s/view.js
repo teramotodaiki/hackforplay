@@ -27,7 +27,6 @@ $(function(){
 			'width': width,
 			'height': width/1.5
 		});
-	$(".h4p_clear").height(width/1.5);
 	$(".h4p_credit").height(width/1.5);
 	// ゲームクリアの処理
 	window.addEventListener('message', function(e){
