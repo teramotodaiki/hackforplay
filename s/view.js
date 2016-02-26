@@ -1086,7 +1086,6 @@ $(function(){
 			var stage_info = {
 				title: $("#inputModal .stage-name").val(),
 				explain: $('#inputModal .stage-explain').val(),
-				path: getParam('path'),
 				source_id: getParam('id')
 			};
 			$(".h4p_publish button").button('loading');

@@ -109,12 +109,11 @@ try {
 		$stage_src	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
 
 		// ステージを作成
-		$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ScriptID","ProjectID","Path","Title","Explain","State","Thumbnail","SourceID","Src","Registered") VALUES(:userid,:replay,:scriptid,:projectid,:input_path,:input_title,:input_explain,:judging,:thumb_url,:project_sourceid,:stage_src,:gmt)');
+		$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ScriptID","ProjectID","Title","Explain","State","Thumbnail","SourceID","Src","Registered") VALUES(:userid,:replay,:scriptid,:projectid,:input_title,:input_explain,:judging,:thumb_url,:project_sourceid,:stage_src,:gmt)');
 		$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 		$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
 		$stmt->bindValue(":scriptid", $script_id, PDO::PARAM_INT);
 		$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
-		$stmt->bindValue(":input_path", $stage_info->path, PDO::PARAM_STR);
 		$stmt->bindValue(":input_title", $stage_info->title, PDO::PARAM_STR);
 		$stmt->bindValue(":input_explain", $stage_info->explain, PDO::PARAM_STR);
 		$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
