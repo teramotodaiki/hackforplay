@@ -130,7 +130,7 @@ try {
 	}
 
 	// ステージの情報/制作者の情報/改造元ステージの情報を取得
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Mode",s."ProjectID",s."Path",s."Title",s."Explain",s."State",s."Playcount",s."NextID",s."Src",s."YouTubeID",s."Thumbnail",s."SourceID",u."Nickname",source."Title" AS SourceTitle,script."RawCode" FROM "Stage" AS s LEFT OUTER JOIN "User" AS u ON s."UserID"=u."ID" LEFT OUTER JOIN "Stage" AS source ON s."SourceID"=source."ID" LEFT OUTER JOIN "Script" AS script ON s."ScriptID"=script."ID" WHERE s."ID"=:stageid');
+	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Mode",s."ProjectID",s."Path",s."Title",s."Explain",s."State",s."Playcount",s."Src",s."Thumbnail",s."SourceID",u."Nickname",source."Title" AS SourceTitle,script."RawCode" FROM "Stage" AS s LEFT OUTER JOIN "User" AS u ON s."UserID"=u."ID" LEFT OUTER JOIN "Stage" AS source ON s."SourceID"=source."ID" LEFT OUTER JOIN "Script" AS script ON s."ScriptID"=script."ID" WHERE s."ID"=:stageid');
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 	$stmt->execute();
 	$stage	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -155,14 +155,6 @@ try {
 	} elseif ($stage['Mode'] === 'replay') {
 		// リプレイの場合は改造コードを取得
 		$project['Data']	= $stage['RawCode'];
-	}
-
-	// もしYouTube IDがない場合, SourceIDのYouTubeIDで上書きする (仮の処理.いずれ複数対応)
-	if (!$stage['YouTubeID']) {
-		$stmt	= $dbh->prepare('SELECT "YouTubeID" FROM "Stage" WHERE "ID"=:source_id');
-		$stmt->bindValue(":source_id", $stage['SourceID'], PDO::PARAM_INT);
-		$stmt->execute();
-		$stage['YouTubeID'] = $stmt->fetch(PDO::FETCH_COLUMN);
 	}
 
 	// Playcountを更新

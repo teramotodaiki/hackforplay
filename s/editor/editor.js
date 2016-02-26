@@ -22,7 +22,6 @@ window.onload = function(){
 	jsEditor.setSize(440, 320-60);
 	// ヒントメッセージ送信のリクエスト
 	setEditor();
-	setHint();
 	jsEditor.on('beforeChange', function(cm, change) {
 		if (change.origin === "undo" && cm.doc.historySize().undo === 0) {
 			// Ctrl+Zの押し過ぎで、全部消えてしまうのをふせぐ
@@ -83,7 +82,6 @@ window.addEventListener('message', function(e){
 function run(){
 	jsEditor.save();
 	game.postMessage(document.getElementById('editor_js').value, policy); // ここでコードを実行させる
-	game.postMessage("__H4PENV__SENDCODE();", policy); // 直前に実行したコードをログとして送信させる
 	var source =
 	"var e = getEditor();"+
 	"e.tl.scaleTo(0, 1, 3, enchant.Easing.LINEAR);"+
@@ -122,15 +120,6 @@ function redo () {
 function renderUI () {
 	document.getElementById('undo').setAttribute('src', 'img/ui_undo_' + (jsEditor.doc.historySize().undo > 1 ? 'enabled.png':'disabled.png'));
 	document.getElementById('redo').setAttribute('src', 'img/ui_redo_' + (jsEditor.doc.historySize().redo > 0 ? 'enabled.png':'disabled.png'));
-}
-
-// RPG互換性維持のための仕様
-function setHint(){
-	// ゲーム側に、ヒントを送信してセットするようリクエストを送る。
-	// postMessageされることでエスケープ\nが改行になってしまうことを防ぐため、\\nにしている。
-	var source =
-	"sendToEditor('jsEditor.setValue(\"'+(hint).replace(/\\n/g, \"\\\\n\")+'\");');";
-	game.postMessage(source, policy);
 }
 
 function setEditor(){
