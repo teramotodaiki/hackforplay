@@ -4,7 +4,6 @@ $path	= $stage['Path'];
 $state	= $stage['State'];
 $title 	= $stage['Title'];
 $explain= $stage['Explain'];
-$next 	= $stage['NextID'];
 $count 	= $stage['Playcount'];
 $author = $stage['Nickname'];
 $thumbnail	= $stage['Thumbnail'];
