@@ -98,6 +98,7 @@ try {
 	exit($token);
 
 } catch (Exception $e) {
+	var_dump($e);
 	require_once '../exception/tracedata.php';
 	traceData($e);
 	die();
