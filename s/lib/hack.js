@@ -179,7 +179,7 @@ window.addEventListener('load', function() {
 	Hack.enchantBook = (function(){
 		// scope: new Entity
 
-		var _hint = '// test value';
+		var _hint = '';
 		Object.defineProperty(Hack, 'hint', {
 			configurable: true,
 			enumerable: true,
@@ -187,12 +187,13 @@ window.addEventListener('load', function() {
 				return _hint;
 			},
 			set: function(code){
-				if (code instanceof Function) {
-					code = Hack.fun2str(code);
-				}
-				_hint = code;
+				_hint = code instanceof Function ? Hack.fun2str(code) : code;
 				sessionStorage.setItem('enchantbook-set-hint', _hint);
 				sendToEditor('setEditor();');
+				var e = new Event('hintset');
+				e.value = _hint;
+				e.rawValue = code;
+				Hack.dispatchEvent(e);
 			}
 		});
 
@@ -361,28 +362,6 @@ window.addEventListener('load', function() {
 						}
 					}).tl.moveTo(250-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 					break;
-					case 'official':
-					case 'replay':
-					// [RESTAGING]
-					Hack.createSprite(165, 69, {
-						x: 65-game.rootScene.x, y: 320-game.rootScene.y,
-						image: game.assets['hackforplay/new_button_restage.png'],
-						defaultParentNode: game.rootScene,
-						ontouchend: function() {
-							// [RESTAGING] がクリックされたとき
-							window.parent.postMessage('begin_restaging', '*');
-						}
-					}).tl.moveTo(65-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
-					// [RETRY]
-					Hack.createSprite(165, 69, {
-						x: 250-game.rootScene.x, y: 320-game.rootScene.y,
-						image: game.assets['hackforplay/new_button_retry.png'],
-						defaultParentNode: game.rootScene,
-						ontouchend: function() {
-							// [RETRY] がクリックされたとき
-							location.reload(false);
-						}
-					}).tl.moveTo(250-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 				}
 			});
 
@@ -401,6 +380,8 @@ window.addEventListener('load', function() {
 
 				switch (sessionStorage.getItem('stage_param_game_mode')) {
 					case 'quest':
+					case 'official':
+					case 'replay':
 					// [RETRY]
 					Hack.createSprite(165, 69, {
 						x: 157-game.rootScene.x, y: 320-game.rootScene.y,
@@ -412,28 +393,6 @@ window.addEventListener('load', function() {
 						}
 					}).tl.moveTo(157-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 					break;
-					case 'official':
-					case 'replay':
-					// [RESTAGING]
-					Hack.createSprite(165, 69, {
-						x: 65-game.rootScene.x, y: 320-game.rootScene.y,
-						image: game.assets['hackforplay/new_button_restage.png'],
-						defaultParentNode: game.rootScene,
-						ontouchend: function() {
-							// [RESTAGING] がクリックされたとき
-							window.parent.postMessage('begin_restaging', '*');
-						}
-					}).tl.moveTo(65-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
-					// [RETRY]
-					Hack.createSprite(165, 69, {
-						x: 250-game.rootScene.x, y: 320-game.rootScene.y,
-						image: game.assets['hackforplay/new_button_retry.png'],
-						defaultParentNode: game.rootScene,
-						ontouchend: function() {
-							// [RETRY] がクリックされたとき
-							location.reload(false);
-						}
-					}).tl.moveTo(250-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 				}
 			});
 

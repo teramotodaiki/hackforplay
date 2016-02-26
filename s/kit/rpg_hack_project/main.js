@@ -131,6 +131,7 @@ window.addEventListener('load', function () {
 		Hack.enchantBookIcon = Hack.createSprite(64, 64, {
 			image: game.assets['hackforplay/enchantbook.png'],
 			defaultParentNode: Hack.menuGroup,
+			visible: !!Hack.hint,
 			ontouchend: function() {
 				Hack.textarea.hide();
 				Hack.openEditor();
@@ -139,6 +140,9 @@ window.addEventListener('load', function () {
 				this.opacity = Hack.player && this.intersect(Hack.player) ? Math.max(0.1, this.opacity - 0.1) : this.opacity = Math.min(1.0, this.opacity + 0.1);
 			}
 		});
+		Hack.onhintset = function (event) {
+			Hack.enchantBookIcon.visible = true;
+		};
 
 		// Textarea
 		Hack.textarea.moveTo(64, 0);
@@ -163,7 +167,7 @@ window.addEventListener('load', function () {
 			Hack.menuGroup.addChild(this);
 			return this;
 
-		}).call(new LifeLabel(10, 72, 9));
+		}).call(new LifeLabel(Hack.menuGroup.x + 10, Hack.menuGroup.y + 72, 9));
 
 		Hack.scoreLabel = (function (self, source) {
 			Object.keys(source).filter(function(key) {
@@ -174,7 +178,7 @@ window.addEventListener('load', function () {
 			});
 			Hack.menuGroup.addChild(self);
 			return self;
-		})(new ScoreLabel(10, 88), Hack.scoreLabel);
+		})(new ScoreLabel(Hack.menuGroup.x + 10, Hack.menuGroup.y + 88), Hack.scoreLabel);
 	});
 
 	game.onload = game.onload || function () {
