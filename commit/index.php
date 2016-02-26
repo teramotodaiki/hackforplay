@@ -125,16 +125,6 @@ try {
 		if (!$flag) {
 			exit('database-error');
 		}
-
-		// ステージIDをProjectに関連づける
-		$new_stage_id = $dbh->lastInsertId('Stage');
-		$stmt	= $dbh->prepare('UPDATE "Project" SET "SourceStageID"=:source_stage_id WHERE "ID"=:projectid');
-		$stmt->bindValue(":source_stage_id", $stage_info->source_id, PDO::PARAM_INT);
-		$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
-		$stmt->execute();
-		if (!$flag) {
-			exit('database-error');
-		}
 	}
 
 	exit('success');
