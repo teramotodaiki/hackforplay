@@ -57,10 +57,6 @@ $(function(){
 					$('.begin_restaging').trigger('click');
 				}
 				break;
-			case "show_hint":
-				// ゲーム側からヒントを表示すると、モーダルがひらく
-				$('#youtubeModal').modal('show');
-				break;
 			case "show_comment":
 				// ゲーム側からコメントの入力画面を表示する
 				$('#commentModal').modal('show');
@@ -1465,48 +1461,6 @@ $(function(){
 	}).on('click', '.glyphicon-remove', function() {
 		$(this).parents('.item-open-external').toggleClass('visible').find('.embed-frame').children().remove();
 	});
-
-	// YouTube等によるキットの説明
-	// ！　暫定的なYouTubeプレイヤー。一般化してゲーム側からコールして制御できる形にする
-	(function() {
-		// 説明すべきコンテンツが存在するかどうか
-		var embed_content = getParam('youtube');
-		if (embed_content === '') return;
-
-		// 開かれたときにまだYouTubeがロードされていない場合、ロードを開始する
-		var player;
-		var body_width = 270; // 仮の幅 実際はモーダルの幅に合わせる
-		$('#youtubeModal').on('show.bs.modal', function() {
-
-			if (!player) {
-				// YouTube Frame API をロード
-				$('<script>').attr('src', 'https://www.youtube.com/iframe_api').prependTo('body');
-				onYouTubeIframeAPIReady = function() {
-					player = new YT.Player('embed-content', {
-						width: body_width,
-						height: 400,
-						videoId: getParam('youtube')
-					});
-				};
-			}
-		}).on('shown.bs.modal', function() {
-
-			body_width = $(this).find('.modal-body').width();
-			$('#youtubeModal div#embed-content,#youtubeModal iframe#embed-content').attr({
-				width: body_width,
-				height: 400
-			});
-		});
-
-		$('#youtubeModal').on('hide.bs.modal', function(event) {
-
-			// モーダルを閉じた時、再生をストップする
-			if (player && player.pauseVideo) {
-				player.pauseVideo();
-			}
-		});
-
-	})();
 
 });
 if (!Array.prototype.findIndex) {

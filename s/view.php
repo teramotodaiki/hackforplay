@@ -11,7 +11,6 @@ $author_id	= $stage['UserID'];
 $source_id	= $stage['SourceID'];
 $source_title = $stage['SourceTitle'];
 $src	= $stage['Src'];
-$youtube	= $stage['YouTubeID'];
 $origin_id = NULL;
 $mode 	= filter_input(INPUT_GET, "mode");
 if(!isset($mode)){
@@ -138,7 +137,6 @@ if ($mode === 'quest') {
 		s('retry', "<?php echo $retry; ?>");
 		s('origin_id', "<?php echo $origin_id; ?>");
 		s('src', "<?php echo $src;  ?>");
-		s('youtube', "<?php echo $youtube;  ?>");
 		s('title', "<?php echo $title;  ?>");
 		s('author', "<?php echo $author;  ?>");
 		s('directly_restaging', "<?php echo $directly_restaging;  ?>");
@@ -254,21 +252,6 @@ if ($mode === 'quest') {
 				</div>
 			    <div class="modal-body">
 			    	<img class="stage-thumbnail" src="" width="480" height="320" />
-			    </div>
-	    		<div class="modal-footer">
-	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-	    		</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="youtubeModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-	    			<h4>Introduction Video // ステージの せつめい</h4>
-				</div>
-			    <div class="modal-body">
-					<div id="embed-content" src=""></div>
 			    </div>
 	    		<div class="modal-footer">
 	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
