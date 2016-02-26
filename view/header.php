@@ -78,29 +78,6 @@ $(function(){
 
 	$('[data-toggle="tooltip"]').tooltip();
 
-	$('.h4p_need-help').on('click', function() {
-		var storageKeyIdentifier = 'tutorial_tracking_key';
-		var storageLogIdentifier = 'tutorial_tracking_log';
-		var log_json = localStorage.getItem(storageLogIdentifier); // ログのJSON値
-		var log = log_json ? $.parseJSON(log_json) : { values: [] }; // ログオブジェクト(localStorageに値がないとき、新しく作る)
-
-		// 現在の値
-		var helps = log.values.filter(function(element) {
-			return element.field === 'help';
-		});
-		var current_help = log.helpFlag;
-
-		log.helpFlag = window.confirm('need help ? \nnow: ' + current_help);
-		localStorage.setItem(storageLogIdentifier, JSON.stringify(log));
-
-		$.post('../stage/logintutorial.php', {
-			key: localStorage.getItem(storageKeyIdentifier),
-			log: localStorage.getItem(storageLogIdentifier),
-			timezone: new Date().getTimezoneString()
-		});
-		return false;
-	});
-
 	// ヘッダナビ用のTwitter OAuth認証
 	(function() {
 		var authed = '/loginsuccess.php';

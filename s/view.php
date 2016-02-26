@@ -159,9 +159,6 @@ if ($mode === 'quest') {
 	})();
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
-	<?php if ($id >= 101 && $id <= 106) : ?>
-	<script src="tutorialtracking.js" type="text/javascript" charset="utf-8"></script>
-	<?php endif; ?>
 	<script src="/activity/post.js" type="text/javascript"></script>
 	<!-- Modal -->
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
