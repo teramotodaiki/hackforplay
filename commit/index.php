@@ -26,7 +26,7 @@ try {
 		exit('invalid-token');
 	}
 
-	$stmt	= $dbh->prepare('SELECT "ID" FROM "Project" WHERE "Token"=:token');
+	$stmt	= $dbh->prepare('SELECT "ID","ReservedID" FROM "Project" WHERE "Token"=:token');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -102,39 +102,25 @@ try {
 			exit('invalid-stage-info');
 		}
 
-		// Srcを取得
-		$stmt	= $dbh->prepare('SELECT "Src" FROM "Stage" WHERE "ID"=:project_sourceid');
-		$stmt->bindValue(":project_sourceid", $stage_info->source_id, PDO::PARAM_INT);
-		$stmt->execute();
-		$stage_src	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
+		// ステージ情報を更新
+		if (!$project['ReservedID']) {
+			exit('database-error');
+		}
 
-		// ステージを作成
-		$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ScriptID","ProjectID","Title","Explain","State","Thumbnail","SourceID","Src","Registered") VALUES(:userid,:replay,:scriptid,:projectid,:input_title,:input_explain,:judging,:thumb_url,:project_sourceid,:stage_src,:gmt)');
-		$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
-		$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
+		// Reserved -> Judging
+		$stmt	= $dbh->prepare('UPDATE "Stage" SET "ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Thumbnail"=:thumb_url,"Registered"=:gmt WHERE "ID"=:reserved_id');
 		$stmt->bindValue(":scriptid", $script_id, PDO::PARAM_INT);
-		$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
 		$stmt->bindValue(":input_title", $stage_info->title, PDO::PARAM_STR);
 		$stmt->bindValue(":input_explain", $stage_info->explain, PDO::PARAM_STR);
 		$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
 		$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
-		$stmt->bindValue(":project_sourceid", $stage_info->source_id, PDO::PARAM_INT);
-		$stmt->bindValue(":stage_src", $stage_src, PDO::PARAM_STR);
 		$stmt->bindValue(":gmt", $registered, PDO::PARAM_STR);
-		$flag 	= $stmt->execute();
-		if (!$flag) {
+		$stmt->bindValue(":reserved_id", $project['ReservedID'], PDO::PARAM_INT);
+		$result = $stmt->execute();
+		if (!$result) {
 			exit('database-error');
 		}
-
-		// ステージIDをProjectに関連づける
-		$new_stage_id = $dbh->lastInsertId('Stage');
-		$stmt	= $dbh->prepare('UPDATE "Project" SET "SourceStageID"=:source_stage_id WHERE "ID"=:projectid');
-		$stmt->bindValue(":source_stage_id", $stage_info->source_id, PDO::PARAM_INT);
-		$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
-		$stmt->execute();
-		if (!$flag) {
-			exit('database-error');
-		}
+		
 	}
 
 	exit('success');
