@@ -1327,6 +1327,7 @@ $(function(){
 			switch (domain) {
 				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
 				case 'hackforplay.xyz': openLink($wrapper, parse(component).id); break;
+				case 'play.hackforplay': openLink($wrapper, component.pathname.substr(1)); break;
 				case 'youtu.be': openYouTube($wrapper, component.pathname.substr(1)); break;
 				case 'youtube.com': openYouTube($wrapper, parse(component).v); break;
 				case 'restaging.hackforplay':
@@ -1364,7 +1365,7 @@ $(function(){
 				)
 			).on('click', function() {
 				alert_on_unload = false; // 警告を出さない
-				location.href = 'https://hackforplay.xyz/s/?id=' + stage_id;
+				location.href = location.origin + '/s/?id=' + stage_id;
 			}).parents('.item-open-external').addClass('opened').find('.glyphicon-remove').addClass('invisible');
 		}
 		function openYouTube ($wrapper, videoId) {
