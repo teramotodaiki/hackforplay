@@ -29,7 +29,7 @@ try {
 		exit('invalid-stageid');
 	}
 
-	$stmt	= $dbh->prepare('SELECT "ProjectID" FROM "Stage" WHERE "ID"=:stageid');
+	$stmt	= $dbh->prepare('SELECT "ProjectID","Src" FROM "Stage" WHERE "ID"=:stageid');
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 	$stmt->execute();
 	$stage 	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -63,13 +63,36 @@ try {
 	if(!$flag){
 		exit('database-error');
 	}
+	$new_project_id = $dbh->lastInsertId('Project');
 
 	// ParentIDがNULLのとき、自身のIDをRootIDにする
 	if ($stage['ProjectID'] === NULL) {
 		$stmt	= $dbh->prepare('UPDATE "Project" SET "RootID"=:projectid1 WHERE "ID"=:projectid2');
-		$stmt->bindValue(":projectid1", $dbh->lastInsertId('Project'), PDO::PARAM_INT);
-		$stmt->bindValue(":projectid2", $dbh->lastInsertId('Project'), PDO::PARAM_INT);
+		$stmt->bindValue(":projectid1", $new_project_id, PDO::PARAM_INT);
+		$stmt->bindValue(":projectid2", $new_project_id, PDO::PARAM_INT);
 		$stmt->execute();
+	}
+
+	// ステージを事前に作成
+	$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","State","SourceID","Src") VALUES(:userid,:replay,:projectid,:reserved,:source_id,:stage_src)');
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
+	$stmt->bindValue(":projectid", $new_project_id, PDO::PARAM_INT);
+	$stmt->bindValue(":reserved", 'reserved', PDO::PARAM_STR);
+	$stmt->bindValue(":source_id", $stageid, PDO::PARAM_INT);
+	$stmt->bindValue(":stage_src", $stage['Src'], PDO::PARAM_STR);
+	$flag 	= $stmt->execute();
+	if (!$flag) {
+		exit('database-error');
+	}
+	$new_stage_id = $dbh->lastInsertId('Stage');
+
+	$stmt	= $dbh->prepare('UPDATE "Project" SET "ReservedID"=:new_stage_id WHERE "ID"=:projectid');
+	$stmt->bindValue(":new_stage_id", $new_stage_id, PDO::PARAM_INT);
+	$stmt->bindValue(":projectid", $new_project_id, PDO::PARAM_INT);
+	$flag 	= $stmt->execute();
+	if (!$flag) {
+		exit('database-error');
 	}
 
 	exit($token);
