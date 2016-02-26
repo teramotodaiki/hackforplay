@@ -132,32 +132,5 @@ $(function(){
 	});
 
 	$('a[data-toggle="tab"][aria-controls="tutorial"]').on('show.bs.tab', function(event) {
-		$.post('../analytics/tutorialsummary2.php', {}, function(data, textStatus, xhr) {
-			var result = $.parseJSON(data);
-
-			new Chart($('#tutorial canvas').get(0).getContext("2d")).Bar({
-				labels : result.labels,
-				datasets : [
-					{
-						label: 'Last week',
-						fillColor : "rgba(0,180,60,0.2)",
-						strokeColor : "rgba(0,180,60,0.4)",
-						highlightFill: "rgba(0,180,60,0.35)",
-						highlightStroke: "rgba(0,180,60,0.5)",
-						data : result.lastweek
-					},
-					{
-						label: 'This week',
-						fillColor : "rgba(0,180,60,0.5)",
-						strokeColor : "rgba(0,180,60,0.8)",
-						highlightFill: "rgba(0,180,60,0.75)",
-						highlightStroke: "rgba(0,180,60,1)",
-						data : result.thisweek
-					}
-				]
-			}, {
-				responsive: true
-			});
-		});
 	});
 });

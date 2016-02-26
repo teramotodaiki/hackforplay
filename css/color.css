@@ -28,10 +28,6 @@ nav.navbar {
 	background-color: rgb(255,255,255);
 }
 
-.h4p_clear {
-	background-color: rgb(196, 196, 191);;
-}
-
 .page-numbers .btn[disabled] {
 	background-color: rgb(108, 108, 108);
 	color: rgb(255,255,255);
@@ -228,4 +224,3 @@ header {
 .directly_floating_shadow:hover {
 	box-shadow: 0px 10px 20px 4px rgba(0,0,0,0.5);
 }
-
