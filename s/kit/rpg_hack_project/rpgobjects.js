@@ -232,13 +232,13 @@ window.addEventListener('load', function () {
 			return stopInterval.bind(this);
 		},
 		attack: function (count, continuous) {
-			if (!continuous && this.behavior !== BehaviorTypes.Idle) return;
+			if (!continuous && (this.behavior & BehaviorTypes.Attack + BehaviorTypes.Walk)) return;
 			var c = typeof count === 'number' ? count >> 0 : 1;
 			var f = this.forward;
 			if (continuous) {
 				this.frame = [];
 				this.frame = this.getFrame();
-			} else this.behavior = BehaviorTypes.Attack;
+			} else this.behavior |= BehaviorTypes.Attack;
 			Hack.Attack.call(this, this.mapX + f.x, this.mapY + f.y, this.atk, f.x, f.y);
 			this.setTimeout(function () {
 				// next step
@@ -260,10 +260,10 @@ window.addEventListener('load', function () {
 						this.behavior &= ~BehaviorTypes.Damaged;
 					}, this.getFrame().length);
 				}
-            }
+      }
 		},
 		walk: function (distance, continuous) {
-			if (!this.isKinematic || !continuous && this.behavior !== BehaviorTypes.Idle) return;
+			if (!this.isKinematic || !continuous && (this.behavior & BehaviorTypes.Walk + BehaviorTypes.Attack)) return;
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
 			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
 			// Map Collision
@@ -380,12 +380,12 @@ window.addEventListener('load', function () {
 			this.setFrameD9(BehaviorTypes.Dead, [1, null]);
 		},
 		onenterframe: function () {
-			if (this.behavior === BehaviorTypes.Idle) {
+			if (!(this.behavior & BehaviorTypes.Attack + BehaviorTypes.Walk)) {
 				if (game.input.a) {
 					this.attack();
 				}
 			}
-			if (this.behavior === BehaviorTypes.Idle) {
+			if (!(this.behavior & BehaviorTypes.Walk + BehaviorTypes.Attack)) {
 				var hor = game.input.right - game.input.left;
 				var ver = hor ? 0 : game.input.down - game.input.up;
 				if (hor || ver) {
