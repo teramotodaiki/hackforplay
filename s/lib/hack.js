@@ -24,9 +24,6 @@ function sendToEditor(message) {
 		Hack.enchantBook._element.contentWindow.postMessage(message, '*');
 	}
 }
-function __H4PENV__SENDCODE () {
-	// 互換性を残すための関数
-}
 
 // set eval
 window.addEventListener('message', function (event) {
