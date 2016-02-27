@@ -1026,6 +1026,9 @@ $(function(){
 					case 'database-error':
 						showAlert('alert-danger', 'エラーにより改造できませんでした');
 						break;
+					case 'unauthorized-restage':
+						showAlert('alert-danger', 'このステージは改造できません');
+						break;
 					default:
 						sessionStorage.setItem('project-token', data);
 						if(successed !== undefined){
