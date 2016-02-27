@@ -1257,12 +1257,6 @@ $(function(){
 		return sessionStorage.getItem('stage_param_'+key) || '';
 	}
 
-	// State=private
-	if (getParam('state') === 'private') {
-		$('.h4p_publish,.h4p_info-restaging>*,.h4p_share-buttons').addClass('hidden');
-	}
-
-
 	// 汎用的な ExternalLinkWindow  Hack.openExternal で制御する
 	(function (SC, YT) {
 		window.SC = undefined; // SoundCloud
