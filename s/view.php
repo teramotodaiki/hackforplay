@@ -161,6 +161,7 @@ if ($mode === 'quest') {
 	</script>
 	<script type="text/javascript">
 	document.body.classList.add('<?php echo $norestage ? 'option-restage-NG' : 'option-restage-OK'; ?>');
+	document.body.classList.add('<?php echo $session_userid ? 'option-session-OK' : 'option-session-NG'; ?>');
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/activity/post.js" type="text/javascript"></script>
@@ -354,7 +355,7 @@ if ($mode === 'quest') {
 						<?php endif; ?>
 					</div>
 					<div class="col-xs-6 col-sm-3 visible-option-restage padding-top-sm">
-						<button type="button" class="btn btn-restage btn-lg btn-block begin_restaging" title="改造する">
+						<button type="button" class="btn btn-restage btn-lg btn-block begin_restaging visible-option-session" title="改造する">
 							<span class="glyphicon glyphicon-wrench"></span>
 							改造する
 						</button>

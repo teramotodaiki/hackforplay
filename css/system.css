@@ -361,16 +361,20 @@ iframe {
 	text-align: center;
 }
 
+.hidden-option-session,
 .hidden-option-restage {
 	visibility: visible;
 }
-.option-restage-NG .hidden-option-restage {
+.option-session-OK .hidden-option-session,
+.option-restage-OK .hidden-option-restage {
 	visibility: hidden;
 }
 
+.visible-option-session,
 .visible-option-restage {
 	visibility: hidden;
 }
+.option-session-OK .visible-option-session,
 .option-restage-OK .visible-option-restage {
 	visibility: visible;
 }
