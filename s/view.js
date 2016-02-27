@@ -689,7 +689,7 @@ $(function(){
 				});
 			});
 			$(".h4p_info-footer").text("（リステージング中）");
-			$(".h4p_info-restaging>button").hide();
+			$(".visible-option-restage").css('visibility', 'hidden');
 			$(".h4p_restaging_button").on('click', function() {
 				// RUN
 				jsEditor.save();
