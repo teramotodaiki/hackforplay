@@ -495,19 +495,6 @@ window.addEventListener('load', function() {
 				else Hack.openMenu();
 			};
 
-			// 改造を始めるボタン
-			addGUIParts(game.assets['hackforplay/menu-button-restage.png'], function() {
-				var id = sessionStorage.getItem('stage_param_id') >> 0;
-				return sessionStorage.getItem('stage_param_game_mode') !== 'restaging' && !(101 <= id && id <= 106) && sessionStorage.getItem('stage_param_state') !== 'private';
-			}, function() {
-				window.parent.postMessage('begin_restaging', '*');
-			});
-			// ヒントを表示するボタン
-			addGUIParts(game.assets['hackforplay/menu-button-hint.png'], function() {
-				return sessionStorage.getItem('stage_param_youtube');
-			}, function() {
-				window.parent.postMessage('show_hint', '*');
-			});
 			// コメント入力画面を表示するボタン
 			addGUIParts(game.assets['hackforplay/menu-button-comment.png'], function() {
 				return !sessionStorage.getItem('stage_param_comment'); // 存在しない場合は !'' === true

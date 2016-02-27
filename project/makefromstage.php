@@ -2,7 +2,7 @@
 /*
 新たにプロジェクトを作成する
 Input:	stageid , (attendance-token)
-Output: no-session , invalid-stageid , database-error, {project-token}
+Output: no-session , invalid-stageid , unauthorized-restage , database-error, {project-token}
 */
 
 require_once '../preload.php';
@@ -29,12 +29,15 @@ try {
 		exit('invalid-stageid');
 	}
 
-	$stmt	= $dbh->prepare('SELECT "ProjectID","Src" FROM "Stage" WHERE "ID"=:stageid');
+	$stmt	= $dbh->prepare('SELECT "ProjectID","Src","NoRestage" FROM "Stage" WHERE "ID"=:stageid');
 	$stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 	$stmt->execute();
 	$stage 	= $stmt->fetch(PDO::FETCH_ASSOC);
 	if($stage === NULL){
 		exit('invalid-stageid');
+	}
+	if ($stage['NoRestage']) {
+		exit('unauthorized-restage');
 	}
 
 	// プロジェクト情報の取得
