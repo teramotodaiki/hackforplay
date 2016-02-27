@@ -689,7 +689,7 @@ $(function(){
 				});
 			});
 			$(".h4p_info-footer").text("（リステージング中）");
-			$(".h4p_info-restaging>button").hide();
+			$(".visible-option-restage").css('visibility', 'hidden');
 			$(".h4p_restaging_button").on('click', function() {
 				// RUN
 				jsEditor.save();
@@ -1026,6 +1026,9 @@ $(function(){
 					case 'database-error':
 						showAlert('alert-danger', 'エラーにより改造できませんでした');
 						break;
+					case 'unauthorized-restage':
+						showAlert('alert-danger', 'このステージは改造できません');
+						break;
 					default:
 						sessionStorage.setItem('project-token', data);
 						if(successed !== undefined){
@@ -1229,30 +1232,6 @@ $(function(){
 			}
 		}
 	})();
-	(function(){
-		// チュートリアル
-		var stage_id = getParam('id');
-		if(101 <= stage_id && stage_id <= 106){
-			// 改造ボタン非表示
-			$(".h4p_info-restaging>button").hide();
-		}
-		// ステージ改造のチュートリアル
-		if(201 <= stage_id && stage_id <= 206){
-			// この改造ステージを投稿する->次のステージへ
-			$(".h4p_publish button").text('次のステージへ')
-			.attr({
-				'data-toggle': '',
-				'data-target': ''
-			}).on('click', function() {
-				// sessionStorageに保管→EXTENDCODEに送られるように
-				jsEditor.save();
-				var code = jsEditor.getTextArea().value;
-				sessionStorage.setItem('extend_code', code);
-				alert_on_unload = false;
-				location.href = "/s?id=" + getParam('next') + "&mode=extend";
-			});
-		}
-	})();
 
 	// Twitter OAuthログイン
 	$('.login-with-twitter').on('mousedown', function(event) {
@@ -1270,19 +1249,13 @@ $(function(){
 	});
 
 	// ゲームフレームのリロード
-	$('.h4p_info-retry button').on('click', function() {
+	$('.h4p_info .btn-retry').on('click', function() {
 		$(".h4p_game>iframe").get(0).contentWindow.postMessage('window.location.reload();', '/');
 	});
 
 	function getParam(key){
 		return sessionStorage.getItem('stage_param_'+key) || '';
 	}
-
-	// State=private
-	if (getParam('state') === 'private') {
-		$('.h4p_publish,.h4p_info-restaging>*,.h4p_share-buttons').addClass('hidden');
-	}
-
 
 	// 汎用的な ExternalLinkWindow  Hack.openExternal で制御する
 	(function (SC, YT) {

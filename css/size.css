@@ -195,41 +195,44 @@ nav #img-usericon {
 .margin-top-lg {
 	margin-top: 40px;
 }
-
 .margin-bottom-lg {
 	margin-bottom: 40px;
 }
-
 .margin-left-lg {
 	margin-left: 40px;
 }
-
 .margin-right-lg {
 	margin-right: 40px;
 }
-
 .margin-top-sm {
 	margin-top: 10px;
 }
-
 .margin-bottom-sm {
 	margin-bottom: 10px;
 }
-
 .margin-left-sm {
 	margin-left: 10px;
 }
-
 .margin-right-sm {
 	margin-right: 10px;
 }
-
 .margin-right-lg {
 	margin-right: 40px;
 }
-
 .padding-all-sm {
 	padding: 10px;
+}
+.padding-top-sm {
+	padding-top: 10px;
+}
+.padding-right-sm {
+	padding-right: 10px;
+}
+.padding-bottom-sm {
+	padding-bottom: 10px;
+}
+.padding-left-sm {
+	padding-left: 10px;
 }
 
 .no-padding {
@@ -284,11 +287,6 @@ nav #button-loginwithtwitter {
 .h4p_restaging,
 .h4p_my-comment {
 	margin-top: 10px;
-}
-
-.h4p_info-retry,
-.h4p_info-restaging {
-	padding-top: 10px;
 }
 
 .h4p_restaging_editor {

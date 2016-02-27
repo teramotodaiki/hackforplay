@@ -361,6 +361,24 @@ iframe {
 	text-align: center;
 }
 
+.hidden-option-session,
+.hidden-option-restage {
+	visibility: visible;
+}
+.option-session-OK .hidden-option-session,
+.option-restage-OK .hidden-option-restage {
+	visibility: hidden;
+}
+
+.visible-option-session,
+.visible-option-restage {
+	visibility: hidden;
+}
+.option-session-OK .visible-option-session,
+.option-restage-OK .visible-option-restage {
+	visibility: visible;
+}
+
 /* アニメーション */
 
 .h4p_item-transform {

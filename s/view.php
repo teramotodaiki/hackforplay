@@ -13,6 +13,7 @@ $source_title = $stage['SourceTitle'];
 $src	= $stage['Src'];
 $origin_id = NULL;
 $mode 	= filter_input(INPUT_GET, "mode");
+$norestage = $stage['NoRestage'];
 if(!isset($mode)){
 	$mode 	= $stage['Mode'];
 }
@@ -157,6 +158,10 @@ if ($mode === 'quest') {
 		s('replay_code', "<?php echo $code; ?>");
 <?php endif; ?>
 	})();
+	</script>
+	<script type="text/javascript">
+	document.body.classList.add('<?php echo $norestage ? 'option-restage-NG' : 'option-restage-OK'; ?>');
+	document.body.classList.add('<?php echo $session_userid ? 'option-session-OK' : 'option-session-NG'; ?>');
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/activity/post.js" type="text/javascript"></script>
@@ -349,13 +354,13 @@ if ($mode === 'quest') {
 						<p><span>改造元：<b><a href="../s?id=<?php echo $source_id; ?>" target="_blank"><?php echo htmlspecialchars($source_title); ?></a></b></span></p>
 						<?php endif; ?>
 					</div>
-					<div class="col-xs-6 col-sm-3 h4p_info-restaging">
-						<button type="button" class="btn btn-restage btn-lg btn-block begin_restaging" title="改造する">
+					<div class="col-xs-6 col-sm-3 visible-option-restage padding-top-sm">
+						<button type="button" class="btn btn-restage btn-lg btn-block begin_restaging visible-option-session" title="改造する">
 							<span class="glyphicon glyphicon-wrench"></span>
 							改造する
 						</button>
 					</div>
-					<div class="col-xs-6 col-sm-3 h4p_info-retry">
+					<div class="col-xs-6 col-sm-3 padding-top-sm">
 						<button class="btn btn-retry btn-lg btn-block" role="button" href="#" title="もういちど">
 							<span class="glyphicon glyphicon-repeat"></span>
 							もういちど
