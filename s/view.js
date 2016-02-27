@@ -1249,7 +1249,7 @@ $(function(){
 	});
 
 	// ゲームフレームのリロード
-	$('.h4p_info-retry button').on('click', function() {
+	$('.h4p_info .btn-retry').on('click', function() {
 		$(".h4p_game>iframe").get(0).contentWindow.postMessage('window.location.reload();', '/');
 	});
 
