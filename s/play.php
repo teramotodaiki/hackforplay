@@ -139,9 +139,9 @@ try {
 		exit();
 	}
 
-	if ($stage['State'] === 'rejected' && $stage['UserID'] !== $session_userid) {
-		// リジェクトされている場合は、本人しか遊ぶことができない
-		$stage['Explain'] = 'This stage was rejected. (リジェクト・プレイ不可)';
+	if (($stage['State'] === 'rejected' || $stage['State'] === 'private') && $stage['UserID'] !== $session_userid) {
+		// リジェクトor非公開設定されている場合は、本人しか遊ぶことができない
+		$stage['Explain'] = 'You cannot play this stage.';
 		$project['Data'] = '';
 	} elseif ($stage['State'] === 'judging' && $stage['UserID'] !== $session_userid &&
 		($session_userid === NULL || $session_userid > 10)) {
