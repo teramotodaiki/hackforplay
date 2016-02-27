@@ -148,10 +148,6 @@ try {
 		// 審査中の場合は、本人しか遊ぶことができない
 		$stage['Explain'] = 'This stage is been judging. (審査中)';
 		$project['Data'] = '';
-	} elseif ($stage['State'] === 'queue') {
-		// 処理中の場合は、遊ぶことができない
-		$stage['Explain'] = 'This stage is been processing now. (処理中)';
-		$project['Data'] = '';
 	} elseif ($stage['Mode'] === 'replay') {
 		// リプレイの場合は改造コードを取得
 		$project['Data']	= $stage['RawCode'];
