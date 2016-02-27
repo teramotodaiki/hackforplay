@@ -26,8 +26,9 @@ try {
 		exit('invalid-token');
 	}
 
-	$stmt	= $dbh->prepare('SELECT "ID","ReservedID" FROM "Project" WHERE "Token"=:token');
+	$stmt	= $dbh->prepare('SELECT "ID","ReservedID" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid');
 	$stmt->bindValue(":token", $token, PDO::PARAM_STR);
+	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$project = $stmt->fetch(PDO::FETCH_ASSOC);
 	if(!$project){
@@ -90,7 +91,6 @@ try {
 	$publish = filter_input(INPUT_POST, 'publish', FILTER_VALIDATE_BOOLEAN);
 	if ($publish === NULL) $publish = FALSE;
 
-	$new_stage_id = NULL;
 	if ($publish) {
 		// 新しくステージを作成
 		$stage_info_json = filter_input(INPUT_POST, 'stage_info');
@@ -120,7 +120,34 @@ try {
 		if (!$result) {
 			exit('database-error');
 		}
-		
+
+		$stmt	= $dbh->prepare('SELECT "SourceID","Src" FROM "Stage" WHERE "ID"=:reserved_id');
+		$stmt->bindValue(":reserved_id", $project['ReservedID'], PDO::PARAM_INT);
+		$stmt->execute();
+		$stage = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		// 次のステージを事前に作成
+		$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","State","SourceID","Src") VALUES(:userid,:replay,:projectid,:reserved,:source_id,:stage_src)');
+		$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
+		$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
+		$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
+		$stmt->bindValue(":reserved", 'reserved', PDO::PARAM_STR);
+		$stmt->bindValue(":source_id", $stage['SourceID'], PDO::PARAM_INT);
+		$stmt->bindValue(":stage_src", $stage['Src'], PDO::PARAM_STR);
+		$flag 	= $stmt->execute();
+		if (!$flag) {
+			exit('database-error');
+		}
+		$new_stage_id = $dbh->lastInsertId('Stage');
+
+		$stmt	= $dbh->prepare('UPDATE "Project" SET "ReservedID"=:new_stage_id WHERE "ID"=:projectid');
+		$stmt->bindValue(":new_stage_id", $new_stage_id, PDO::PARAM_INT);
+		$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
+		$flag 	= $stmt->execute();
+		if (!$flag) {
+			exit('database-error');
+		}
+
 	}
 
 	exit('success');
