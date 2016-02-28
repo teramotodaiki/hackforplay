@@ -84,24 +84,5 @@ window.addEventListener('load', function () {
 
 		};
 
-		// EnchantBook
-		Hack.hint = function () {
-			//  -            =
-			// -  BASIC CODE  =
-			//  -            =
-			Hack.player.locate(6, 5);  // Teleportation
-			Hack.player.direction = 2; // Turn
-			Hack.player.atk = 10;      // Power Up
-
-
-			//  *            +
-			// *  EXTRA CODE  +  Remove // to use.
-			//  *            +   // をけして つかおう!
-
-			// Hack.changeMap('map1');
-			// Hack.log('wwwwwwww');
-
-		};
-
 	};
 });
