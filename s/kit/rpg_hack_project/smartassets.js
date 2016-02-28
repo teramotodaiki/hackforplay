@@ -805,6 +805,29 @@ window.addEventListener('load', function () {
 
 			};
 		}
+	}, {
+		id: 37,
+		title: 'アイテムになった魔道書',
+		image: 'hackforplay/madosyo_small.png',
+		trim: { x: 0, y: 0, width: 32, height: 32 },
+		query: 'embed',
+		caption: '拾って使える魔道書。',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// アイテムになった魔道書
+			var item = new RPGObject(32, 32, 0, 0);
+			item.image = game.assets['hackforplay/madosyo_small.png'];
+			item.locate(__cnt15, __cnt10);
+			item.onplayerenter = function	() {
+				this.destroy();
+				Hack.hint = function () {
+					// ...まだ なにも かかれていないようだ
+
+				};
+			}
+		}
 	}).setCounter({
 		name: '__cnt15',
 		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))
