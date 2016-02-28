@@ -790,6 +790,21 @@ window.addEventListener('load', function () {
 		code: function () {
 			Hack.openExternal('https://www.youtube.com/watch?v=1mJ4X-hoCi8');
 		}
+	}, {
+		id: 36,
+		title: '魔道書',
+		image: 'hackforplay/enchantbook.png',
+		trim: { x: 0, y: 0, width: 64, height: 64 },
+		query: 'embed',
+		caption: '魔道書を使って、プレイヤーにもプログラミングさせよう！',
+		identifier: '()',
+		code: function () {
+			// 魔道書
+			Hack.hint = function () {
+				// 君はこのステージをクリアできるか？
+
+			};
+		}
 	}).setCounter({
 		name: '__cnt15',
 		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))
