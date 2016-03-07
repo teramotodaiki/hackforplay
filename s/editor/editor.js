@@ -20,8 +20,6 @@ window.onload = function(){
 		autoCloseBrackets: true
 	});
 	jsEditor.setSize(440, 320-60);
-	// ヒントメッセージ送信のリクエスト
-	setEditor();
 	jsEditor.on('beforeChange', function(cm, change) {
 		if (change.origin === "undo" && cm.doc.historySize().undo === 0) {
 			// Ctrl+Zの押し過ぎで、全部消えてしまうのをふせぐ
@@ -73,7 +71,18 @@ window.onload = function(){
 
 window.addEventListener('message', function(e){
 	try {
-		eval(e.data);
+		var data = JSON.parse(e.data);
+		switch (data.query) {
+			case 'set':
+				var code = data.value;
+				if (typeof code === 'string') {
+					if (jsEditor) jsEditor.setValue(code);
+					else document.getElementById('editor_js').value = code;
+				}
+				break;
+			default:
+				break;
+		}
 	} catch (ex) {
 		console.error(ex.message);
 	}
@@ -120,15 +129,6 @@ function redo () {
 function renderUI () {
 	document.getElementById('undo').setAttribute('src', 'img/ui_undo_' + (jsEditor.doc.historySize().undo > 1 ? 'enabled.png':'disabled.png'));
 	document.getElementById('redo').setAttribute('src', 'img/ui_redo_' + (jsEditor.doc.historySize().redo > 0 ? 'enabled.png':'disabled.png'));
-}
-
-function setEditor(){
-	// sessionStorageを用いて渡した値をsetする
-	var code = sessionStorage.getItem('enchantbook-set-hint');
-	if (typeof code === 'string') {
-		if (jsEditor) jsEditor.setValue(code);
-		else document.getElementById('editor_js').value = code;
-	}
 }
 
 function dispatchHackEvent (type) {
