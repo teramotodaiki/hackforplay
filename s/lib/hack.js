@@ -23,7 +23,8 @@ window.addEventListener('message', function (event) {
 			var game = enchant ? enchant.Core.instance : undefined;
 			eval(event.data);
 		} catch (e) {
-			Hack.openExternal('https://error.hackforplay?message='+e.message);
+			console.error(e);
+			Hack.openExternal('https://error.hackforplay?name='+e.name+'&message='+e.message);
 		}
 	}
 });
