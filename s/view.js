@@ -1396,7 +1396,7 @@ $(function(){
 			if (url.search.length > 0) {
 				url.search.substr(1).split('&').forEach(function (item) {
 					var parts = item.split('=');
-					params[parts[0]] = parts[1];
+					params[parts[0]] = decodeURIComponent(parts[1]);
 				});
 			}
 			return params;
