@@ -1381,6 +1381,15 @@ $(function(){
 				)
 			);
 			openAndAutoclose($wrapper);
+			var isRestaging = $('.container.container-game').hasClass('restaging');
+			window.__PostActivity('error', {
+				StageID: isRestaging ? null : +getParam('id'),
+				token: sessionStorage.getItem('project-token'),
+				IsRestaging: isRestaging,
+				Name: error.name,
+				Message: error.message,
+				Registered: new Date().format('Y-m-d H:i:s.u', true)
+			});
 		}
 		function parse (url) {
 			var params = {};
