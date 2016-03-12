@@ -22,6 +22,7 @@ $(function () {
 			var list = fetch.filter(function (row) { return row.Path === path; });
 			$.post(path, { list: JSON.stringify(list) }, function(data, textStatus, xhr) {
 				// Success
+				console.log(data);
 				if (data === 'NG') {
 					enqueue(list);
 				}
