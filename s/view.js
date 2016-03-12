@@ -318,11 +318,19 @@ $(function(){
 		else undo.addClass('disabled');
 		if (jsEditor.historySize().redo) redo.removeClass('disabled');
 		else redo.addClass('disabled');
-		// Run on paste
-		if (change.origin === 'paste') {
-			$('.h4p_restaging_button').trigger('click');
-		}
 	});
+	(function () {
+		var preventDragged = '';
+		jsEditor.on('change', function (cm, change) {
+			// Run on paste
+			if (change.origin === 'paste' && change.text.join() === preventDragged) {
+				$('.h4p_restaging_button').trigger('click');
+			}
+			if (change.origin === 'drag') {
+				preventDragged = change.removed.join();
+			}
+		});
+	})();
 	$('.h4p_restaging_menu').on('click', 'button', function() {
 		switch ($(this).data('query')) {
 			case 'undo':
