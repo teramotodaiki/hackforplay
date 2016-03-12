@@ -1,6 +1,8 @@
 <?php
 /**
- * ***廃止予定***
+ * ユーザーのアセット利用データを時系列で受け取る
+ * Input: list{JSON}
+ * Output: OK , NG
 */
 
 try {

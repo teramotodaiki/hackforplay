@@ -7,7 +7,7 @@ $(function () {
 		get: function () { return _query; }
 	});
 	var _query = function (name, row) {
-		row.Path = row.Path || '/activity/index.php';
+		row.Path = row.Path || '/activity/'+name+'.php';
 		enqueue(row);
 	};
 	var _interval = 1000;
