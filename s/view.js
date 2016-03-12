@@ -1381,13 +1381,22 @@ $(function(){
 				)
 			);
 			openAndAutoclose($wrapper);
+			var isRestaging = $('.container.container-game').hasClass('restaging');
+			window.__PostActivity('error', {
+				StageID: isRestaging ? null : +getParam('id'),
+				token: sessionStorage.getItem('project-token'),
+				IsRestaging: isRestaging,
+				Name: error.name,
+				Message: error.message,
+				Registered: new Date().format('Y-m-d H:i:s.u', true)
+			});
 		}
 		function parse (url) {
 			var params = {};
 			if (url.search.length > 0) {
 				url.search.substr(1).split('&').forEach(function (item) {
 					var parts = item.split('=');
-					params[parts[0]] = parts[1];
+					params[parts[0]] = decodeURIComponent(parts[1]);
 				});
 			}
 			return params;
