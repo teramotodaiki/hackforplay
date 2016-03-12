@@ -52,8 +52,6 @@ try {
 	$flag = $stmt->execute();
 	if (!$flag) exit('NG');
 
-	var_dump($list[0]);
-
 	exit('OK');
 
 } catch (Exception $e) {
