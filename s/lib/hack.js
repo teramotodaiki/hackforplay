@@ -14,16 +14,6 @@ function refocus () {
 function getEditor() {
 	return Hack.enchantBook;
 }
-function sendToEditor(message) {
-	if(Hack.enchantBook === undefined){
-		console.error("sendToEditor関数が呼び出されましたが、Editorが作られていなかったため、イベントリスナに追加します。");
-		Hack.on('loadeditor', function(event) {
-			this.enchantBook._element.contentWindow.postMessage(message, '*');
-		});
-	}else{
-		Hack.enchantBook._element.contentWindow.postMessage(message, '*');
-	}
-}
 
 // set eval
 window.addEventListener('message', function (event) {
@@ -33,7 +23,8 @@ window.addEventListener('message', function (event) {
 			var game = enchant ? enchant.Core.instance : undefined;
 			eval(event.data);
 		} catch (e) {
-			Hack.openExternal('https://error.hackforplay?message='+e.message);
+			console.error(e);
+			Hack.openExternal('https://error.hackforplay?name='+e.name+'&message='+e.message);
 		}
 	}
 });
@@ -185,8 +176,8 @@ window.addEventListener('load', function() {
 			},
 			set: function(code){
 				_hint = code instanceof Function ? Hack.fun2str(code) : code;
-				sessionStorage.setItem('enchantbook-set-hint', _hint);
-				sendToEditor('setEditor();');
+				var json = JSON.stringify({query:'set',value:_hint});
+				Hack.enchantBook._element.contentWindow.postMessage(json, '/');
 				var e = new Event('hintset');
 				e.value = _hint;
 				e.rawValue = code;
