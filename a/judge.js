@@ -154,8 +154,10 @@ $(function () {
 
 			var item = $button.parents('.panel-body').first();
 			var stage_id = $button.data('stage_id');
+			var notice = $(this).find('textarea[name="notice"]').val();
 			$.post('../stage/rejectbyid.php', {
 				'stage_id': stage_id,
+				'notice': notice,
 				'reasons': reasons_json,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			} , function(data, textStatus, xhr) {
@@ -172,4 +174,3 @@ $(function () {
 
 	});
 });
-
