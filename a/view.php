@@ -41,6 +41,7 @@
 		    	</div>
 			    <div class="modal-body">
 			    	<form>
+							<textarea name="notice" rows="8" cols="40" placeholder="A notice to stage author"></textarea>
 			    		<button type="submit" class="btn btn-danger btn-lg btn-block" >リジェクト</button>
 			    	</form>
 			    </div>

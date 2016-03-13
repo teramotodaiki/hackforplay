@@ -1,7 +1,7 @@
 <?php
 /*
 管理者用API。与えられたIDに該当するステージをリジェクトする。そのステージのステートは問わない。ただしデータは削除されない
-Input:	stage_id , reasons:JSON , (attendance-token)
+Input:	stage_id , notice , reasons:JSON , (attendance-token)
 Ouput:	failed , success
 */
 
@@ -20,6 +20,15 @@ try {
 	$stage	= $stmt->fetch(PDO::FETCH_ASSOC);
 	if (empty($stage)) {
 		exit('failed');
+	}
+
+	// A notice
+	$notice	= filter_input(INPUT_POST, 'notice');
+	if ($notice) {
+		$stmt	= $dbh->prepare('UPDATE "Stage" SET "RejectNotice"=:notice WHERE "ID"=:id');
+		$stmt->bindValue(':notice', $notice, PDO::PARAM_STR);
+		$stmt->bindValue(':id', $stage_id, PDO::PARAM_INT);
+		$stmt->execute();
 	}
 
 	// リジェクトの理由
