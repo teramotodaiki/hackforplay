@@ -200,7 +200,10 @@ $(function(){
 				}
 				if (stage.state === 'rejected') {
 					var reason_json = JSON.stringify(stage.reject_reason);
-					item.find('.show_reason').removeClass('hide').data('reason', reason_json);
+					item.find('.show_reason').removeClass('hide').data({
+						reason: reason_json,
+						notice: stage.reject_notice
+					});
 				}
 				item.appendTo($list);
 			});
@@ -222,6 +225,7 @@ $(function(){
 			reasonItem.text(item);
 			reasonItem.appendTo('#reasonModal .modal-body');
 		});
+		$('<pre>').text($button.data('notice')).appendTo('#reasonModal .modal-body');
 	});
 
 	// _level のアラート _text を生成し、jQueryオブジェクトを返す

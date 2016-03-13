@@ -17,6 +17,7 @@ information_of_stages:
 		playcount : 現在のプレイ回数,
 		state : ステージの状態,
 		published : 公開された日付,
+		reject_notice : リジェクトについてのお知らせ,
 		reject_reason : [(リジェクトされた理由),,,]
 	](,,,[])
 }
@@ -48,7 +49,7 @@ try {
 	// ステージ一覧を取得
 	// SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
 	$result = array();
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published",s."State","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."UserID"=:userid ORDER BY s."Registered" DESC');
+	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published",s."State",s."RejectNotice","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."UserID"=:userid ORDER BY s."Registered" DESC');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 
@@ -92,6 +93,7 @@ try {
 		$item->playcount 	= $value['Playcount'];
 		$item->state 	 	= $value['State'];
 		$item->published 	= $value['Published'];
+		$item->reject_notice= $value['RejectNotice'];
 		$item->reject_reason= $value['Reason'];
 		array_push($values, $item);
 	}
