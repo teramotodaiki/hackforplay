@@ -534,26 +534,6 @@ window.addEventListener('load', function() {
 
 	})();
 
-	Object.defineProperty(Hack, 'restagingCode', {
-		configurable: true,
-		enumerable: true,
-		get: function(){
-			return sessionStorage.getItem('restaging_code');
-		},
-		set: function(code){
-			if (code instanceof Function) {
-				code = Hack.fun2str(code);
-			}
-			switch (sessionStorage.getItem('stage_param_game_mode')) {
-				case 'official':
-				case 'extend':
-					sessionStorage.setItem('restaging_code', code);
-					window.parent.postMessage('replace_code', '*');
-					break;
-			}
-		}
-	});
-
 	(function () {
 		var __apps = [], __counters = {};
 		Hack.smartAsset = {
