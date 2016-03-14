@@ -615,4 +615,6 @@ window.addEventListener('load', function () {
         Hack.mouseY = event.clientY / game.scale;
     });
 
+    Hack.start();
+
 });
