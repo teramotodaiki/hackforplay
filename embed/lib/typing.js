@@ -176,4 +176,6 @@ window.addEventListener('load', function() {
 		Hack.textarea.show(words.join(' '));
 	};
 
+	Hack.start();
+
 });
