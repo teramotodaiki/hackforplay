@@ -58,7 +58,7 @@ window.addEventListener('resize', function () {
 
 window.addEventListener('load', function() {
     enchant();
-    var game = new enchant.Core(480, 320);
+    window.game = new enchant.Core(480, 320);
     game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png', 'hackforplay/menu-button-menu.png', 'hackforplay/menu-button-restage.png', 'hackforplay/menu-button-hint.png', 'hackforplay/menu-button-comment.png', 'hackforplay/menu-button-retry.png', 'hackforplay/new_button_next.png', 'hackforplay/new_button_comment.png', 'hackforplay/new_button_restage.png', 'hackforplay/achievement_p.png', 'hackforplay/achievement_n.png', 'hackforplay/new_button_town.png');
 
     // Hackのクラスを生成 インスタンスはget only
@@ -76,15 +76,19 @@ window.addEventListener('load', function() {
 		}
 	});
 
-	// evaluate restaging code
-	switch (sessionStorage.getItem('stage_param_game_mode')) {
-		case 'restaging':
-		case 'replay':
-		case 'extend':
-		case 'quest':
-			window.postMessage(sessionStorage.getItem('restaging_code'), "/");
-			break;
-	}
+	Hack.start = function () {
+			// evaluate restaging code
+			(function () {
+				var element = document.getElementById('hackforplay-embed-script');
+				if (!element) throw new Error('Embed script could not be found');
+
+				var funcName = element.getAttribute('data-func');
+				window[funcName]();
+			})();
+
+			Hack.dispatchEvent(new Event('load'));
+			game.start();
+	};
 
 	Hack.fun2str = function (func) {
 		// 関数の文字列化
@@ -749,9 +753,6 @@ window.addEventListener('load', function() {
 		}
 		Object.defineProperty(obj, prop, descriptor);
 	};
-
-	window.postMessage("Hack.dispatchEvent(new Event('load'));", "/"); // Hack.onloadのコール
-	window.postMessage("enchant.Core.instance.start();", "/"); // game.onloadのコール
 
 	game.addEventListener('load', function(){
 		// smartAssetをsessionStorageに格納する

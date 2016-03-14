@@ -348,4 +348,6 @@ window.addEventListener('load', function () {
 		}
 	};
 
+	Hack.start();
+
 });

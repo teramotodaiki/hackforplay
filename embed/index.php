@@ -27,23 +27,44 @@ try {
 			break;
 		case 'pro':
 			$token	= filter_input(INPUT_GET, 'token') or die('Missing param token. Add "&token={YOUR PROJECT TOKEN}" to url');
-			$stmt	= $dbh->prepare('SELECT "SourceStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:session_userid');
+			$stmt	= $dbh->prepare('SELECT "ID","SourceStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:session_userid');
 			$stmt->bindValue(':token', $token, PDO::PARAM_STR);
 			$stmt->bindValue(':session_userid', $session_userid, PDO::PARAM_INT);
 			$stmt->execute();
-			$id = $stmt->fetch(PDO::FETCH_COLUMN) or die('Failed to open project');
+			$project = $stmt->fetch(PDO::FETCH_ASSOC) or die('Failed to open project');
+			$id = $project['SourceStageID'];
 		default:
 			die("Invalid type $type");
 			break;
 	}
 
 	// Get source element URL
-	$stmt	= $dbh->prepare('SELECT "Src" FROM "Stage" WHERE "ID"=:id');
+	$stmt	= $dbh->prepare('SELECT "Src","ScriptID" FROM "Stage" WHERE "ID"=:id');
 	$stmt->bindValue(':id', $id, PDO::PARAM_INT);
 	$stmt->execute();
 	$stage = $stmt->fetch(PDO::FETCH_ASSOC);
 
   $sourceElement = file_get_contents($stage['Src'], true) or die('Failed to load kit');
+
+	// Get script
+	switch ($type) {
+		case 'ses':
+			$key = filter_input(INPUT_GET, 'key') or die('Missing param key. Add "&key={SESSION STORAGE KEY}" to url');
+			$script = "window.postMessage(sessionStorage.getItem('$key'));\n";
+			break;
+		case 'sta':
+			$stmt	= $dbh->prepare('SELECT "RawCode" FROM "Script" WHERE "ID"=:id');
+			$stmt->bindValue(':id', $stage['ScriptID'], PDO::PARAM_INT);
+			$stmt->execute();
+			$script	= $stmt->fetch(PDO::FETCH_COLUMN) or die('Failed to load script');
+			break;
+		case 'pro':
+			$stmt	= $dbh->prepare('SELECT "RawCode" FROM "Script" WHERE "ID"=(SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id)');
+			$stmt->bindValue(':project_id', $project['ID'], PDO::PARAM_INT);
+			$stmt->execute();
+			$script	= $stmt->fetch(PDO::FETCH_COLUMN) or die('Failed to load script');
+			break;
+	}
 
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';
@@ -61,7 +82,12 @@ try {
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title></title>
-    <?php echo $sourceElement; ?>
+		<script type="text/javascript" id="hackforplay-embed-script" data-func="HackforPlayInitializeRestaging">
+function HackforPlayInitializeRestaging() {
+<?php echo $script; ?>
+}
+		</script>
+		<?php echo $sourceElement; ?>
   </head>
   <body>
   </body>
