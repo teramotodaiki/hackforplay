@@ -1,0 +1,18 @@
+* {
+    margin: 0;
+    border: 0;
+}
+@font-face {
+	/* Web Fontを使用出来る。ただし、フォントのライセンスに注意する */
+    /*font-family: 'font_1_honokamin';
+    src: '../font_1_honokamin.ttf' format(”truetype”);*/
+}
+* {
+	/* 仮に、全てのフォントをほのか明朝に統一 */
+    /*font-family: 'font_1_honokamin';*/
+    /*ゴシック体で統一*/
+    font-family: "Hiragino Kaku Gothic Pro", Verdana, Arial, Helvetica, "ヒラギノ角ゴ Pro W3", "Osaka", "ＭＳ Ｐゴシック", sans-serif;
+}
+body {
+	background-color: black;
+}
