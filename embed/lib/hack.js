@@ -582,7 +582,9 @@ window.addEventListener('load', function() {
 			query: 'openExternal',
 			url: url
 		};
-		window.parent.postMessage(JSON.stringify(message), '/');
+		if (window !== window.parent) {
+			window.parent.postMessage(JSON.stringify(message), '/');
+		}
 	};
 
 	/**
