@@ -182,8 +182,10 @@ window.addEventListener('load', function() {
 			},
 			set: function(code){
 				_hint = code instanceof Function ? Hack.fun2str(code) : code;
-				var json = JSON.stringify({query:'set',value:_hint});
-				Hack.enchantBook._element.contentWindow.postMessage(json, '/');
+				Hack.enchantBook._element.contentWindow.postMessage({
+					query: 'set',
+					value: _hint
+				}, '/');
 				var e = new Event('hintset');
 				e.value = _hint;
 				e.rawValue = code;
