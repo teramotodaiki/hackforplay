@@ -603,4 +603,6 @@ window.addEventListener('load', function() {
 		Hack.dispatchEvent(new enchant.Event('pressstart'));
 	});
 
+	Hack.start();
+
 });
