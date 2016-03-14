@@ -13,8 +13,31 @@ require_once '../preload.php';
 
 try {
 
-	$id	= filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+	session_start();
+	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
+	session_commit();
 
+	$type	= filter_input(INPUT_GET, 'type') or die('Missing param type. Add "&type=(ses|sta|pro)" to url');
+
+	// Get (source) stage ID
+	switch ($type) {
+		case 'ses':
+		case 'sta':
+			$id	= filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) or die('Missing param id. Add "&id={STAGE ID}" to url');
+			break;
+		case 'pro':
+			$token	= filter_input(INPUT_GET, 'token') or die('Missing param token. Add "&token={YOUR PROJECT TOKEN}" to url');
+			$stmt	= $dbh->prepare('SELECT "SourceStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:session_userid');
+			$stmt->bindValue(':token', $token, PDO::PARAM_STR);
+			$stmt->bindValue(':session_userid', $session_userid, PDO::PARAM_INT);
+			$stmt->execute();
+			$id = $stmt->fetch(PDO::FETCH_COLUMN) or die('Failed to open project');
+		default:
+			die("Invalid type $type");
+			break;
+	}
+
+	// Get source element URL
 	$stmt	= $dbh->prepare('SELECT "Src" FROM "Stage" WHERE "ID"=:id');
 	$stmt->bindValue(':id', $id, PDO::PARAM_INT);
 	$stmt->execute();
