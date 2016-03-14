@@ -50,19 +50,17 @@ try {
 	switch ($type) {
 		case 'ses':
 			$key = filter_input(INPUT_GET, 'key') or die('Missing param key. Add "&key={SESSION STORAGE KEY}" to url');
-			$script = "window.postMessage(sessionStorage.getItem('$key'));\n";
+			$script_src = 'script/?key=' . $key;
 			break;
 		case 'sta':
-			$stmt	= $dbh->prepare('SELECT "RawCode" FROM "Script" WHERE "ID"=:id');
-			$stmt->bindValue(':id', $stage['ScriptID'], PDO::PARAM_INT);
-			$stmt->execute();
-			$script	= $stmt->fetch(PDO::FETCH_COLUMN) or die('Failed to load script');
+			$script_src = 'script/?id=' . $stage['ScriptID'];
 			break;
 		case 'pro':
-			$stmt	= $dbh->prepare('SELECT "RawCode" FROM "Script" WHERE "ID"=(SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id)');
+			$stmt	= $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id');
 			$stmt->bindValue(':project_id', $project['ID'], PDO::PARAM_INT);
 			$stmt->execute();
-			$script	= $stmt->fetch(PDO::FETCH_COLUMN) or die('Failed to load script');
+			$script_id	= $stmt->fetch(PDO::FETCH_COLUMN) or die('Failed to load script');
+			$script_src = 'script/?id=' . $script_id;
 			break;
 	}
 
@@ -82,11 +80,7 @@ try {
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title></title>
-		<script type="text/javascript" id="hackforplay-embed-script" data-func="HackforPlayInitializeRestaging">
-function HackforPlayInitializeRestaging() {
-<?php echo $script; ?>
-}
-		</script>
+		<script src="<?php echo $script_src; ?>" id="hackforplay-embed-script" data-func="HackforPlayInitializeRestaging"></script></script>
 		<?php echo $sourceElement; ?>
   </head>
   <body>
