@@ -39,10 +39,17 @@ try {
 	}
 
 	// Get source element URL
-	$stmt	= $dbh->prepare('SELECT "Src","ScriptID" FROM "Stage" WHERE "ID"=:id');
+	$stmt	= $dbh->prepare('SELECT "Src","ScriptID","State","UserID" FROM "Stage" WHERE "ID"=:id');
 	$stmt->bindValue(':id', $id, PDO::PARAM_INT);
 	$stmt->execute();
 	$stage = $stmt->fetch(PDO::FETCH_ASSOC);
+
+	// Check authorization
+	if ($stage['State'] === 'rejected') {
+		die('This stage is rejected');
+	} elseif ($stage['State'] === 'private' && $stage['UserID'] != $session_userid) {
+		die('This stage is private');
+	}
 
   $sourceElement = file_get_contents($stage['Src'], true) or die('Failed to load kit');
 
