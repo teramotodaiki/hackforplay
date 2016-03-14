@@ -196,6 +196,16 @@ window.addEventListener('load', function() {
 			}
 		});
 
+		Hack.on('editend', function () {
+			Hack.enchantBook.tl.scaleTo(0, 1, 3, enchant.Easing.LINEAR);
+			window.focus();
+		});
+
+		Hack.on('editcancel', function () {
+			Hack.enchantBook.tl.scaleTo(0, 1, 7, enchant.Easing.BACK_EASEIN);
+			window.focus();
+		});
+
 		this.width = game.width;
 		this.height = game.height;
 		this.visible = false;

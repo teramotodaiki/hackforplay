@@ -86,30 +86,18 @@ function run(){
 	game.postMessage({
 		query: 'eval',
 		value: jsEditor.getValue()
-	}, policy); // ここでコードを実行させる
-	game.postMessage({
-		query: 'eval',
-		value:
-		"var e = getEditor();"+
-		"e.tl.scaleTo(0, 1, 3, enchant.Easing.LINEAR);"+
-		"window.focus();"
 	}, policy);
-
-	// 魔道書が閉じられたことをゲーム側に伝える
-	dispatchHackEvent('editend');
+	game.postMessage({
+		query: 'dispatch',
+		value: 'editend'
+	}, policy);
 }
 
 function cls(){
 	game.postMessage({
-		query: 'eval',
-		value:
-		"var e = getEditor();"+
-		"e.tl.scaleTo(0, 1, 7, enchant.Easing.BACK_EASEIN);"+
-		"window.focus();"
+		query: 'dispatch',
+		value: 'editcancel'
 	}, policy);
-
-	// 魔道書が閉じられたことをゲーム側に伝える
-	dispatchHackEvent('editcancel');
 }
 
 function undo () {
@@ -127,12 +115,4 @@ function redo () {
 function renderUI () {
 	document.getElementById('undo').setAttribute('src', 'img/ui_undo_' + (jsEditor.doc.historySize().undo > 1 ? 'enabled.png':'disabled.png'));
 	document.getElementById('redo').setAttribute('src', 'img/ui_redo_' + (jsEditor.doc.historySize().redo > 0 ? 'enabled.png':'disabled.png'));
-}
-
-function dispatchHackEvent (type) {
-	// Hack.oneditend , Hack.oneditcancel Event を dispatchする
-	game.postMessage({
-		query: 'eval',
-		value: 'if (Hack && Hack.dispatchEvent) { Hack.dispatchEvent(new Event("' + type + '")); }'
-	}, policy);
 }
