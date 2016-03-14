@@ -27,6 +27,9 @@ window.addEventListener('message', function (event) {
 					console.error(e);
 				}
 				break;
+			case 'dispatch':
+				Hack.dispatchEvent(new Event(event.data.value));
+				break;
 		}
 	}
 });
