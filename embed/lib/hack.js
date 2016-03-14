@@ -17,7 +17,7 @@ function getEditor() {
 
 // Web Messaging Evaluation
 window.addEventListener('message', function (event) {
-	if(event.origin === window.location.protocol + '//' + window.location.host){
+	if(event.origin === window.location.protocol + '//' + window.location.host && event.data && event.data.query){
 		switch (event.data.query) {
 			case 'eval':
 				try {
