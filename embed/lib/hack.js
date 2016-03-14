@@ -15,17 +15,18 @@ function getEditor() {
 	return Hack.enchantBook;
 }
 
-// set eval
+// Web Messaging Evaluation
 window.addEventListener('message', function (event) {
 	if(event.origin === window.location.protocol + '//' + window.location.host){
-		try {
-			var hint = Hack ? Hack.hint : ''; // 旧RPGとの互換性を維持するための仕様(hintがないとsetHintされた時にエラー)
-			var game = enchant ? enchant.Core.instance : undefined;
-			eval(event.data);
-		} catch (e) {
-			console.error(e);
-			throw e;
-			Hack.openExternal('https://error.hackforplay?name='+e.name+'&message='+e.message);
+		switch (event.data.query) {
+			case 'eval':
+				try {
+					eval(event.data.value);
+				} catch (e) {
+					Hack.openExternal('https://error.hackforplay?name='+e.name+'&message='+e.message);
+					console.error(e);
+				}
+				break;
 		}
 	}
 });
