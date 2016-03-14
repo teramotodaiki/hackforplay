@@ -5,7 +5,7 @@ require 'preload.php';
 
 try {
 
-  $stmt = $dbh->prepare('SELECT "ID","Thumbnail","Registered" FROM "Stage" WHERE "Mode"=:official AND "ScriptID" IS NULL');
+  $stmt = $dbh->prepare('SELECT "ID","Thumbnail" FROM "Stage" WHERE "Mode"=:official AND "ScriptID" IS NULL');
   $stmt->bindValue(':official', 'official', PDO::PARAM_STR);
   $stmt->execute();
 
@@ -17,7 +17,7 @@ try {
   while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
     $stmt_in->bindValue(':thumbnail', $row['Thumbnail'], PDO::PARAM_STR);
-    $stmt_in->bindValue(':registered', $row['Registered'], PDO::PARAM_STR);
+    $stmt_in->bindValue(':registered', gmdate('Y-m-d H:i:s'), PDO::PARAM_STR);
     $flag = $stmt_in->execute();
     if (!$flag) exit('Failed to insert');
 
