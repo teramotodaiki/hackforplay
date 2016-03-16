@@ -231,4 +231,12 @@ window.addEventListener('load', function () {
 	}).on('click', '.glyphicon-remove', function() {
 		$(this).parents('.item-open-external').toggleClass('visible').find('.embed-frame').children().remove();
 	});
+  (function () {
+    task();
+    window.addEventListener('resize', task);
+    function task() {
+      var height = window.innerHeight;
+      jsEditor.setSize(null, height);
+    }
+  })();
 });

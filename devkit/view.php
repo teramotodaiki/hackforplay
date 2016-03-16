@@ -34,7 +34,6 @@ $src = '/embed/?type=sta&id=' . $id;
 			left: 0px;
 			background-color: rgb(245,245,245);
 			line-height: 1.2;
-			height: 600px;
 		}
 		.CodeMirror-dialog.CodeMirror-dialog-top {
 			/* box-shadow */
@@ -62,6 +61,7 @@ $src = '/embed/?type=sta&id=' . $id;
 		}
 		.flex-container>div {
 			margin: 0px 5px;
+			overflow-y: scroll;
 		}
 	</style>
 </head>
@@ -71,7 +71,7 @@ $src = '/embed/?type=sta&id=' . $id;
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<!-- contents -->
 	<div class="flex-container">
-    <div style="min-height: 600px; flex-shrink: 1;">
+    <div style="min-height: 100px; flex-shrink: 1;">
 			<h1 class="text-center">Dev Kit Tool</h1>
       <!-- Game -->
       <iframe id="item-embed-iframe" src="<?php echo $src; ?>" frameborder="0" class="fit force-focus"></iframe>
@@ -84,7 +84,7 @@ $src = '/embed/?type=sta&id=' . $id;
 			<!-- Buttons -->
 			<button type="button" name="button" class="btn btn-block btn-primary">Sync</button>
     </div>
-    <div style="min-height: 600px; flex-grow: 1;">
+    <div style="min-height: 100px; flex-grow: 1;">
       <!-- Code -->
 			<div id="item-embed-code" class="hidden"><?php echo $stage['RawCode']; ?></div>
       <textarea id="item-embed-editor" value=""></textarea>
