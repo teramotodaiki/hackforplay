@@ -594,12 +594,11 @@ window.addEventListener('load', function() {
 			if (arguments.length > 1) Hack.openExternal(arguments[1]); // 互換性保持
 			else return false; // 引数にURLが含まれていない
 		}
-		var message = {
-			query: 'openExternal',
-			url: url
-		};
 		if (window !== window.parent) {
-			window.parent.postMessage(JSON.stringify(message), '/');
+			window.parent.postMessage({
+				query: 'openExternal',
+				url: url
+			}, '/');
 		}
 	};
 
