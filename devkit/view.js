@@ -143,7 +143,6 @@ window.addEventListener('load', function () {
 				task();
 			}
 			function task () {
-        console.log('call task');
 				player = new YT.Player($div.attr('id'), {
 					width: $div.width(),
 					height: $div.height(),
