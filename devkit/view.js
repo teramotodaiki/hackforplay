@@ -30,6 +30,7 @@ window.addEventListener('load', function () {
 		},
 		keyMap: 'sublime'
 	});
+  jsEditor.setValue(document.getElementById('item-embed-code').textContent);
 
   // force-focus
 	setInterval(function(){

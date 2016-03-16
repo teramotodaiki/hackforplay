@@ -72,7 +72,8 @@ $src = '/embed/?type=sta&id=' . $id;
       </div>
       <div class="col-md-6" style="min-height: 600px;">
         <!-- Code -->
-        <textarea id="item-embed-editor" value="//"></textarea>
+				<div id="item-embed-code" class="hidden"><?php echo $stage['RawCode']; ?></div>
+        <textarea id="item-embed-editor" value=""></textarea>
       </div>
     </div>
   </div>
