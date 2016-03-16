@@ -20,7 +20,15 @@ try {
 
 	require_once '../preload.php';
 
-	header('Content-Type: text/html; charset=utf-8');
+  $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+  if (isset($id)) {
+    // Tool view
+    $stmt = $dbh->prepare('SELECT "ID","Title" FROM "Stage" WHERE "ID"=:id');
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $stage = $stmt->fetch(PDO::FETCH_ASSOC) or die("Invalid stage id $id");
+    include 'view.php';
+  }
 
 } catch (Exception $e) {
 
