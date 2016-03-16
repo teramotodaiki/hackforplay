@@ -54,6 +54,15 @@ $src = '/embed/?type=sta&id=' . $id;
     #item-embed-editor {
 			visibility: hidden;
 		}
+		.flex-container {
+			display: flex;
+			justify-content: center;
+			align-items: stretch;
+			margin: 0px 30px;
+		}
+		.flex-container>div {
+			margin: 0px 5px;
+		}
 	</style>
 </head>
 <body>
@@ -61,20 +70,24 @@ $src = '/embed/?type=sta&id=' . $id;
 	<script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<!-- contents -->
-	<div class="container">
-		<div class="row">
-      <div class="col-md-12">
-        <h1>Dev Kit Tool</h1>
-      </div>
-      <div class="col-md-6" style="min-height: 600px;">
-        <!-- Game -->
-        <iframe id="item-embed-iframe" src="<?php echo $src; ?>" frameborder="0" class="fit force-focus"></iframe>
-      </div>
-      <div class="col-md-6" style="min-height: 600px;">
-        <!-- Code -->
-				<div id="item-embed-code" class="hidden"><?php echo $stage['RawCode']; ?></div>
-        <textarea id="item-embed-editor" value=""></textarea>
-      </div>
+	<div class="flex-container">
+    <div style="min-height: 600px; flex-shrink: 1;">
+			<h1 class="text-center">Dev Kit Tool</h1>
+      <!-- Game -->
+      <iframe id="item-embed-iframe" src="<?php echo $src; ?>" frameborder="0" class="fit force-focus"></iframe>
+			<!-- information -->
+			<h4>Title: <strong><?php echo $stage['Title']; ?></strong></h4>
+			<hr>
+			<!-- description -->
+			<h5>Ctrl+Enter: RUN with sessionStorage</h5>
+			<hr>
+			<!-- Buttons -->
+			<button type="button" name="button" class="btn btn-block btn-primary">Sync</button>
+    </div>
+    <div style="min-height: 600px; flex-grow: 1;">
+      <!-- Code -->
+			<div id="item-embed-code" class="hidden"><?php echo $stage['RawCode']; ?></div>
+      <textarea id="item-embed-editor" value=""></textarea>
     </div>
   </div>
 	<div class="container-open-external affix">
