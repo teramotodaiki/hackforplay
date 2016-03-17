@@ -44,6 +44,7 @@ window.addEventListener('load', function () {
         value: 'refocus();'
       }, '/');
 		}
+    $('.focused-element').text(tag);
 	}, 100);
 
   // 汎用的な ExternalLinkWindow  Hack.openExternal で制御する

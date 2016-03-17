@@ -88,6 +88,7 @@ $src = '/embed/?type=sta&id=' . $id;
 			<hr>
 			<!-- description -->
 			<h5>Ctrl+Enter: RUN with sessionStorage</h5>
+			<h5>Focued on:  <b class="focused-element"></b></h5>
 			<hr>
 			<!-- Buttons -->
 			<button type="button" name="button" class="btn btn-block btn-primary">Sync</button>
