@@ -8,6 +8,13 @@ $src = '/embed/?type=sta&id=' . $id;
 <head>
 	<meta charset="utf-8">
 	<title><?php echo $title; ?> - HackforPlay</title>
+	<script type="text/javascript">
+	stageInfo = {
+		StageID: <?php echo $id; ?>,
+		ScriptID: <?php echo $stage['ScriptID']; ?>
+		
+	};
+	</script>
 	<?php require_once '../library.php' ?>
 	<!-- HackforPlay RePlay -->
 	<script src="../embed/editor/lib/codemirror.js" type="text/javascript"></script>

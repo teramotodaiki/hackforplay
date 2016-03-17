@@ -242,6 +242,6 @@ window.addEventListener('load', function () {
     var key = 'restaging_code';
     var code = cm.getValue();
     sessionStorage.setItem(key, code);
-    document.getElementById('item-embed-iframe').src = '/embed/?type=ses&id=1&key=' + key;
+    document.getElementById('item-embed-iframe').src = '/embed/?type=ses&id='+stageInfo.StageID+'&key=' + key;
   }
 });
