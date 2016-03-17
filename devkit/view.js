@@ -20,7 +20,8 @@ window.addEventListener('load', function () {
 		foldGutter: true,
 		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
 		extraKeys: {
-			'Ctrl-Q': function(cm){ cm.foldCode(cm.getCursor()); }
+			'Ctrl-Q': function(cm){ cm.foldCode(cm.getCursor()); },
+      'Ctrl-Enter': runWithSessionStorage
 		},
 		foldOptions: {
 			rangeFinder: CodeMirror.fold.auto,
@@ -186,7 +187,6 @@ window.addEventListener('load', function () {
 			var timeoutID = setTimeout(function () {
 				$item.removeClass('opened');
 			}, 5000);
-      console.log($item);
 			$item.hover(function() {
 				clearTimeout(timeoutID);
 			});
@@ -238,4 +238,10 @@ window.addEventListener('load', function () {
       jsEditor.setSize(null, height);
     }
   })();
+  function runWithSessionStorage (cm) {
+    var key = 'restaging_code';
+    var code = cm.getValue();
+    sessionStorage.setItem(key, code);
+    document.getElementById('item-embed-iframe').src = '/embed/?type=ses&id=1&key=' + key;
+  }
 });

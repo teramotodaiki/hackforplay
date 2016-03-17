@@ -15,17 +15,25 @@ function getEditor() {
 	return Hack.enchantBook;
 }
 
+// Eval exception catch
+(function () {
+	var _eval = window.eval;
+	window.eval = function () {
+		try {
+			_eval.apply(window, arguments);
+		} catch (e) {
+			Hack.openExternal('https://error.hackforplay?name='+e.name+'&message='+e.message);
+			console.error(e);
+		}
+	};
+})();
+
 // Web Messaging Evaluation
 window.addEventListener('message', function (event) {
 	if(event.origin === window.location.protocol + '//' + window.location.host && event.data && event.data.query){
 		switch (event.data.query) {
 			case 'eval':
-				try {
-					eval(event.data.value);
-				} catch (e) {
-					Hack.openExternal('https://error.hackforplay?name='+e.name+'&message='+e.message);
-					console.error(e);
-				}
+				eval(event.data.value);
 				break;
 			case 'dispatch':
 				Hack.dispatchEvent(new Event(event.data.value));
@@ -82,14 +90,12 @@ window.addEventListener('load', function() {
 
 	Hack.start = function () {
 			// evaluate restaging code
-			(function () {
-				var element = document.getElementById('hackforplay-embed-script');
-				if (!element) throw new Error('Embed script could not be found');
+			var element = document.getElementById('hackforplay-embed-script');
+			if (!element) throw new Error('Embed script could not be found');
+			var funcName = element.getAttribute('data-func');
+			window[funcName]();
 
-				var funcName = element.getAttribute('data-func');
-				window[funcName]();
-			})();
-
+			// game start
 			Hack.dispatchEvent(new Event('load'));
 			game.start();
 	};
