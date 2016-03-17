@@ -7,12 +7,13 @@ $src = '/embed/?type=sta&id=' . $id;
 <html>
 <head>
 	<meta charset="utf-8">
-	<title><?php echo $title; ?> - HackforPlay</title>
+	<title><?php echo $stage['Title']; ?> - HackforPlay</title>
 	<script type="text/javascript">
 	stageInfo = {
 		StageID: <?php echo $id; ?>,
+		Title: <?php echo $stage['Title']; ?>
 		ScriptID: <?php echo $stage['ScriptID']; ?>
-		
+
 	};
 	</script>
 	<?php require_once '../library.php' ?>
