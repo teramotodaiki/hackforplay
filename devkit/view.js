@@ -32,6 +32,9 @@ window.addEventListener('load', function () {
 		keyMap: 'sublime'
 	});
   jsEditor.setValue(document.getElementById('item-embed-code').textContent);
+  jsEditor.on('change', function (cm, change) {
+    $('button[data-query="sync"]').removeClass('disabled');
+  });
 
   // force-focus
 	setInterval(function(){
@@ -239,6 +242,22 @@ window.addEventListener('load', function () {
       jsEditor.setSize(null, height);
     }
   })();
+
+  // Sync this code
+  $('button[data-query="sync"]').on('click', function () {
+    $(this).addClass('disabled');
+    $.post('private.php', {
+      id: stageInfo.ScriptID,
+      code: jsEditor.getValue()
+    }, function (data, textStatus, xhr) {
+      if (data) {
+        alert(data);
+      } else {
+        document.getElementById('item-embed-iframe').src = '/embed/?type=sta&id='+stageInfo.StageID;
+      }
+    })
+  });
+
   function runWithSessionStorage (cm) {
     var key = 'restaging_code';
     var code = cm.getValue();

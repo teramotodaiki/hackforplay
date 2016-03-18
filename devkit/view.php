@@ -11,7 +11,7 @@ $src = '/embed/?type=sta&id=' . $id;
 	<script type="text/javascript">
 	stageInfo = {
 		StageID: <?php echo $id; ?>,
-		Title: <?php echo $stage['Title']; ?>
+		Title: '<?php echo $stage['Title']; ?>',
 		ScriptID: <?php echo $stage['ScriptID']; ?>
 
 	};
@@ -91,7 +91,7 @@ $src = '/embed/?type=sta&id=' . $id;
 			<h5>Focued on:  <b class="focused-element"></b></h5>
 			<hr>
 			<!-- Buttons -->
-			<button type="button" name="button" class="btn btn-block btn-primary">Sync</button>
+			<button type="button" class="btn btn-block btn-primary disabled" data-query="sync">Sync</button>
     </div>
     <div style="min-height: 100px; flex-grow: 1;">
       <!-- Code -->
