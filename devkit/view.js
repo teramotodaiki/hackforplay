@@ -245,7 +245,6 @@ window.addEventListener('load', function () {
 
   // Sync this code
   $('button[data-query="sync"]').on('click', function () {
-    $(this).addClass('disabled');
     $.post('private.php', {
       id: stageInfo.ScriptID,
       code: jsEditor.getValue()
@@ -254,8 +253,9 @@ window.addEventListener('load', function () {
         alert(data);
       } else {
         document.getElementById('item-embed-iframe').src = '/embed/?type=sta&id='+stageInfo.StageID;
+        updateInfo();
       }
-    })
+    });
   });
 
   function runWithSessionStorage (cm) {
@@ -263,5 +263,16 @@ window.addEventListener('load', function () {
     var code = cm.getValue();
     sessionStorage.setItem(key, code);
     document.getElementById('item-embed-iframe').src = '/embed/?type=ses&id='+stageInfo.StageID+'&key=' + key;
+  }
+
+  function updateInfo() {
+    $.post('info.php', {
+      id: stageInfo.ScriptID
+    }, function (data) {
+      var info = JSON.parse(data);
+      $('.info-latest-update').text(info.Updated);
+      jsEditor.setValue(info.RawCode);
+      $('button[data-query="sync"]').addClass('disabled');
+    });
   }
 });
