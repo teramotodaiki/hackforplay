@@ -85,6 +85,7 @@ $src = '/embed/?type=sta&id=' . $id;
       <iframe id="item-embed-iframe" src="<?php echo $src; ?>" frameborder="0" class="fit force-focus"></iframe>
 			<!-- information -->
 			<h4>Title: <strong><?php echo $stage['Title']; ?></strong></h4>
+			<h4>Latest:<span class="info-latest-update"><?php echo $stage['Updated']; ?></span><small>GMT</small></h4>
 			<hr>
 			<!-- description -->
 			<h5>Ctrl+Enter: RUN with sessionStorage</h5>

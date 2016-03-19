@@ -23,7 +23,7 @@ try {
   $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
   if (isset($id)) {
     // Tool view
-    $stmt = $dbh->prepare('SELECT "Title","ScriptID","RawCode" FROM "Stage" INNER JOIN "Script" ON "Stage"."ScriptID"="Script"."ID" WHERE "Stage"."ID"=:id');
+    $stmt = $dbh->prepare('SELECT "Title","ScriptID","RawCode","Updated" FROM "Stage" INNER JOIN "Script" ON "Stage"."ScriptID"="Script"."ID" WHERE "Stage"."ID"=:id');
     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
     $stage = $stmt->fetch(PDO::FETCH_ASSOC) or die("Invalid stage id $id");
