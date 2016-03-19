@@ -15,11 +15,9 @@ try {
   $stmt = $dbh->prepare('SELECT "RawCode" FROM "Script" WHERE "ID"=:id');
   $stmt->bindValue(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
-  $current = $stmt->fetch(PDO::FETCH_COLUMN) or die("No script has id=$id");
-
-  if ($current === $code) {
-    throw new Exception("Same code posted", 1);
-  }
+  $current = $stmt->fetch(PDO::FETCH_COLUMN);
+  if ($current === FALSE) throw new Exception("No script has id=$id", 1);
+  elseif ($current === $code) throw new Exception("Same code posted", 1);
 
   $stmt = $dbh->prepare('UPDATE "Script" SET "RawCode"=:code,"Updated"=:gmt WHERE "ID"=:id');
   $stmt->bindValue(':code', $code, PDO::PARAM_STR);

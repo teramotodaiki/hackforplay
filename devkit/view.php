@@ -1,5 +1,9 @@
 <?php
 
+$stmt = $dbh->prepare('SELECT "Title","ScriptID","RawCode","Updated" FROM "Stage" INNER JOIN "Script" ON "Stage"."ScriptID"="Script"."ID" WHERE "Stage"."ID"=:id');
+$stmt->bindValue(':id', $id, PDO::PARAM_INT);
+$stmt->execute();
+$stage = $stmt->fetch(PDO::FETCH_ASSOC) or die("Invalid stage id $id");
 $src = '/embed/?type=sta&id=' . $id;
 
 ?>
@@ -63,13 +67,16 @@ $src = '/embed/?type=sta&id=' . $id;
 		}
 		.flex-container {
 			display: flex;
-			justify-content: center;
 			align-items: stretch;
-			margin: 0px 30px;
+			padding: 0px 30px;
 		}
 		.flex-container>div {
-			margin: 0px 5px;
+			flex: 1 1 auto;
+			padding: 0px 5px;
 			overflow-y: scroll;
+		}
+		.flex-container .flex-item-fix {
+			flex: 0 0 auto;
 		}
 	</style>
 </head>
@@ -79,7 +86,7 @@ $src = '/embed/?type=sta&id=' . $id;
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<!-- contents -->
 	<div class="flex-container">
-    <div style="min-height: 100px; flex-shrink: 1;">
+    <div class="flex-item-fix">
 			<h1 class="text-center">Dev Kit Tool</h1>
       <!-- Game -->
       <iframe id="item-embed-iframe" src="<?php echo $src; ?>" frameborder="0" class="fit force-focus"></iframe>
@@ -90,11 +97,12 @@ $src = '/embed/?type=sta&id=' . $id;
 			<!-- description -->
 			<h5>Ctrl+Enter: RUN with sessionStorage</h5>
 			<h5>Focued on:  <b class="focused-element"></b></h5>
+			<h5>Go to menu: <a href="/devkit/">here</a></h5>
 			<hr>
 			<!-- Buttons -->
 			<button type="button" class="btn btn-block btn-primary disabled" data-query="sync">Sync</button>
     </div>
-    <div style="min-height: 100px; flex-grow: 1;">
+    <div>
       <!-- Code -->
 			<div id="item-embed-code" class="hidden"><?php echo $stage['RawCode']; ?></div>
       <textarea id="item-embed-editor" value=""></textarea>
