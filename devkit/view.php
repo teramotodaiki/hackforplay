@@ -94,6 +94,7 @@ $src = '/embed/?type=sta&id=' . $id;
 			<!-- description -->
 			<h5>Ctrl+Enter: RUN with sessionStorage</h5>
 			<h5>Focued on:  <b class="focused-element"></b></h5>
+			<h5>Go to menu: <a href="/devkit/">here</a></h5>
 			<hr>
 			<!-- Buttons -->
 			<button type="button" class="btn btn-block btn-primary disabled" data-query="sync">Sync</button>
