@@ -15,7 +15,7 @@ try {
   $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
   if (isset($key)) {
-    $script = "window.postMessage(sessionStorage.getItem('$key') || {}, '/');\n";
+    $script = "eval(sessionStorage.getItem('$key') || '');\n";
   } elseif (isset($id)) {
     $stmt	= $dbh->prepare('SELECT "RawCode" FROM "Script" WHERE "ID"=:id');
     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
