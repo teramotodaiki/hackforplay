@@ -1261,10 +1261,10 @@ $(function(){
 			YT = window.YT;
 			window.YT = window.onYouTubeIframeAPIReady = undefined; // YouTube
 		};
-		$(window).on('openExternal.parsedMessage', function(event, data) {
+		window.addEventListener('message', function (event) {
 			var component;
 			try {
-				component = new URL(data.url);
+				component = new URL(event.data.url);
 			} catch (e) { return; }
 			var domain = component.hostname.replace(/^www\./, '');
 			var $all = $('.container-open-external .item-open-external');
