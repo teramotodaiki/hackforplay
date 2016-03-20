@@ -50,7 +50,7 @@ try {
     $stmt_ins->execute();
 
     // Notification
-    if (isset($stage['UserID'])) {
+    if (isset($stage['UserID']) && isset($stage['Title'])) {
   		// 通知を生成
   		$stmt_not->bindValue(":author_id", $stage['UserID'], PDO::PARAM_INT);
   		$stmt_not->bindValue(":unread", 'unread', PDO::PARAM_STR);
