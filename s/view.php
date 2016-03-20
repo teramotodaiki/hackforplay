@@ -30,6 +30,7 @@ if ($mode === 'quest') {
 	// 1以上ならつづきをあらわす。0以下なら最後のステージであることをあらわす
 	$next	= $level_next ? $level_next['ID'] : 0;
 }
+$embed = '/embed/?type=sta&id=' . $id;
 ?>
 <!DOCTYPE html>
 <html>
@@ -315,7 +316,7 @@ if ($mode === 'quest') {
 						<h2 class="credit-timeline credit-timeline-1">by <span class="Author"></span></h2>
 					</div>
 				</div>
-				<iframe src="" frameborder="0"></iframe>
+				<iframe id="item-embed-iframe" src="<?php echo $embed; ?>" frameborder="0" class="fit force-focus"></iframe>
 			</div>
 			<div class="col-xs-12 h4p_publish" style="display:none">
 				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中...">
