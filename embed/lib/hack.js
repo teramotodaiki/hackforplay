@@ -181,6 +181,10 @@ window.addEventListener('load', function() {
 	// enchantBook
 	Hack.enchantBook = (function(){
 		// scope: new Entity
+		var isEditorReady = false;
+		Hack.on('editorready', function () {
+			isEditorReady = true;
+		});
 
 		var _hint = '';
 		Object.defineProperty(Hack, 'hint', {
@@ -190,15 +194,22 @@ window.addEventListener('load', function() {
 				return _hint;
 			},
 			set: function(code){
-				_hint = code instanceof Function ? Hack.fun2str(code) : code;
-				Hack.enchantBook._element.contentWindow.postMessage({
-					query: 'set',
-					value: _hint
-				}, '/');
-				var e = new Event('hintset');
-				e.value = _hint;
-				e.rawValue = code;
-				Hack.dispatchEvent(e);
+				if (isEditorReady) {
+					task(code);
+				} else {
+					Hack.oneditorready = task.bind(this, code);
+				}
+				function task (value) {
+					_hint = value instanceof Function ? Hack.fun2str(value) : value;
+					Hack.enchantBook._element.contentWindow.postMessage({
+						query: 'set',
+						value: _hint
+					}, '/');
+					var e = new Event('hintset');
+					e.value = _hint;
+					e.rawValue = value;
+					Hack.dispatchEvent(e);
+				}
 			}
 		});
 
