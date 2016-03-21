@@ -1153,6 +1153,7 @@ $(function(){
 				scrollToAnchor('.h4p_restaging');
 				break;
 			case "quest":
+				sessionStorage.setItem('restaging_code', getParam('replay_code'));
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
 					makeProject();
