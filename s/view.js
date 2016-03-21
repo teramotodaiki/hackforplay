@@ -1218,14 +1218,8 @@ $(function(){
 		if (getParam('directly_restaging')) {
 			switch (getParam('mode')) {
 			case 'official':
-				// replace_code を受けたのち, beginRestaging
-				window.addEventListener('message', function task(event) {
-					if (event.data === 'replace_code') {
-						window.removeEventListener('message', task);
-						beginRestaging();
-						makeProject();
-					}
-				});
+				beginRestaging();
+				makeProject();
 				break;
 			case 'replay':
 			case 'quest':
