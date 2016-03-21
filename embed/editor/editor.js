@@ -66,6 +66,12 @@ window.onload = function(){
 		document.body.classList.remove('focused');
 	});
 
+	// onReadyイベントの発行
+	game.postMessage({
+		query: 'dispatch',
+		value: 'editorready'
+	}, '/');
+
 };
 
 window.addEventListener('message', function(e){
