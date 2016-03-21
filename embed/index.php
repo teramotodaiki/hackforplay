@@ -4,8 +4,8 @@ Embed frame の起点となるスクリプト. 任意のキットをロードし
 Input: type , (id,key|id|token)
   type: 改造コードスクリプトの読み込み方法を表す3文字のアルファベット (ses|sta|pro)
   key: type=local のとき、sessionStorageのキーを表す文字列
-  id: type=stage|ses のとき、ステージのIDを表す数値
-  token: type=pro のとき、プロジェクトトークンの文字列
+  id: type=stage|local のとき、ステージのIDを表す数値
+  token: type=project のとき、プロジェクトトークンの文字列
 */
 
 require_once '../preload.php';
@@ -24,7 +24,7 @@ try {
 		case 'stage':
 			$id	= filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) or die('Missing param id. Add "&id={STAGE ID}" to url');
 			break;
-		case 'pro':
+		case 'project':
 			$token	= filter_input(INPUT_GET, 'token') or die('Missing param token. Add "&token={YOUR PROJECT TOKEN}" to url');
 			$stmt	= $dbh->prepare('SELECT "ID","SourceStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:session_userid');
 			$stmt->bindValue(':token', $token, PDO::PARAM_STR);
@@ -61,7 +61,7 @@ try {
 		case 'stage':
 			$script_src = 'script/?id=' . $stage['ScriptID'];
 			break;
-		case 'pro':
+		case 'project':
 			$stmt	= $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id');
 			$stmt->bindValue(':project_id', $project['ID'], PDO::PARAM_INT);
 			$stmt->execute();
