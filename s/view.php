@@ -17,12 +17,10 @@ $norestage = $stage['NoRestage'];
 if(!isset($mode)){
 	$mode 	= $stage['Mode'];
 }
-if($stage['Mode'] === "replay"){
-	$code = $project['Data'];
-	$code = preg_replace("/\\\\/", "\\\\\\\\", $code);
-	$code = preg_replace("/\n/", "\\n", $code);
-	$code = preg_replace("/\"/", "\\\"", $code);
-}
+$code = $project['Data'];
+$code = preg_replace("/\\\\/", "\\\\\\\\", $code);
+$code = preg_replace("/\n/", "\\n", $code);
+$code = preg_replace("/\"/", "\\\"", $code);
 $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 $directly_restaging	= filter_input(INPUT_GET, 'directly_restaging', FILTER_VALIDATE_BOOLEAN);
 // Questモードの場合、$nextは次のLevel.IDをあらわす
@@ -30,6 +28,7 @@ if ($mode === 'quest') {
 	// 1以上ならつづきをあらわす。0以下なら最後のステージであることをあらわす
 	$next	= $level_next ? $level_next['ID'] : 0;
 }
+$embed = '/embed/?type=stage&id=' . $id;
 ?>
 <!DOCTYPE html>
 <html>
@@ -315,7 +314,7 @@ if ($mode === 'quest') {
 						<h2 class="credit-timeline credit-timeline-1">by <span class="Author"></span></h2>
 					</div>
 				</div>
-				<iframe src="" frameborder="0"></iframe>
+				<iframe id="item-embed-iframe" src="<?php echo $embed; ?>" frameborder="0" class="fit force-focus"></iframe>
 			</div>
 			<div class="col-xs-12 h4p_publish" style="display:none">
 				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中...">

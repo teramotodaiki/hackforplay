@@ -3,11 +3,13 @@ $(function(){
 	var focus_on_game = true; // focus mode -> game
 	// ゲーム画面にフォーカスする
 	setInterval(function(){
-		var game = $(".h4p_game>iframe").get(0);
+		var game = document.getElementById('item-embed-iframe');
 		if(	game !== undefined && game !== document.activeElement && focus_on_game){
 			document.activeElement.blur();
-			var source = "refocus();";	// フォーカスを戻すメソッドをゲーム側で呼び出す
-			game.contentWindow.postMessage(source, '/');
+			game.contentWindow.postMessage({
+				query: 'eval',
+				value: 'refocus();'
+			}, '/');
 		}
 	}, 100);
 	// テキストボックスにフォーカスがあるときはゲームにフォーカスしない
@@ -18,16 +20,7 @@ $(function(){
 	});
 
 	// ゲームフレームを横幅基本で3:2にする
-	var width = $(".h4p_game").width();
-	// frame.phpを経由して、getParam('src')のページをincludeさせる
-	var gameSrc = encodeURIComponent(getParam('src'));
-	$(".h4p_game").height(width/1.5)
-		.children('iframe').attr({
-			'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=' + getParam('mode'),
-			'width': width,
-			'height': width/1.5
-		});
-	$(".h4p_credit").height(width/1.5);
+	$(".h4p_game,.h4p_credit").height($(".h4p_game").width()/1.5);
 	// ゲームクリアの処理
 	window.addEventListener('message', function(e){
 		switch(e.data){
@@ -137,10 +130,10 @@ $(function(){
 	// leave comment then take
 	$('#commentModal').on('show.bs.modal', function () {
 		// canvas to image
-		var game = $(".h4p_game>iframe").get(0);
-		var source = "saveImage('thumbnail');";
-		game.contentWindow.postMessage(source, '/');
-
+		document.getElementById('item-embed-iframe').contentWindow.postMessage({
+			query: 'eval',
+			value: "saveImage('thumbnail');"
+		}, '/');
 		$(this).find('#leave-comment').button('reset');
 	});
 
@@ -205,7 +198,9 @@ $(function(){
 
 					var $comment = $('.h4p_my-comment').removeClass('hidden');
 					$comment.find('.h4p_comment-trash').data('id', result.ID);
-					$comment.find('.comment-tag').text(result.Tags[0].DisplayString).css('background-color', result.Tags[0].LabelColor);
+					if (result.Tags.length > 0) {
+						$comment.find('.comment-tag').text(result.Tags[0].DisplayString).css('background-color', result.Tags[0].LabelColor);
+					}
 					$comment.find('.comment-message').text(result.Message);
 					$comment.find('.comment-thumb').attr('src', result.Thumbnail);
 
@@ -445,14 +440,7 @@ $(function(){
 		var beginRestaging = function(isExtendMode){
 
 			$('.container.container-game').addClass('restaging');
-			// frame.phpを経由して、getParam('src')のページをincludeさせる
-			// モードをRestagingにする
-			var gameSrc = encodeURIComponent(getParam('src'));
-			// hack系統のみ、GETパラメータではmodeを渡せないことがあるので、modeはsessionStorageで渡すようにする.
-			sessionStorage.setItem('stage_param_game_mode', (isExtendMode ? 'extend' : 'restaging'));
-			$(".h4p_game").height(width/1.5).children('iframe').attr({
-				'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=' + (isExtendMode ? 'extend' : 'restaging')
-			});
+			document.getElementById('item-embed-iframe').src = '/embed/?type=local&key=restaging_code&id=' + getParam('id');
 
 			// ロギングを開始
 			(function() {
@@ -653,10 +641,7 @@ $(function(){
 						break;
 					}
 
-					if ($('.h4p_game>iframe').width() !== $('.container-game').width()) {
-						// ゲームの幅を変更
-						$('.h4p_game,.h4p_game>iframe').width($('.container-game').width()).height($('.container-game').width() / 1.5 >> 0);
-					}
+					$('.h4p_game,.h4p_game>iframe').width($('.container-game').width()).height($('.container-game').width() / 1.5 >> 0);
 					$('.container-game').css('float', 'left');
 
 					// エディタの幅を変更
@@ -708,18 +693,10 @@ $(function(){
 				$(".h4p_publish").show();
 				$("#author_alert").hide();
 
-				// ゲームをリロード
-				if (!isExtendMode) {
-					// リロード
-					$('.h4p_game>iframe').get(0).contentWindow.postMessage('window.location.reload();', '/');
-				} else {
-					// Extendモード時はmode=restagingにしてリロード
-					var gameSrc = encodeURIComponent(getParam('src'));
-					sessionStorage.setItem('stage_param_game_mode', 'restaging');
-					$('.h4p_game>iframe').attr({
-						'src': 'frame.php?file=' + gameSrc + '&path=' + getParam('path') + '&next=' + getParam('next') + '&mode=restaging'
-					});
-				}
+				document.getElementById('item-embed-iframe').contentWindow.postMessage({
+					query: 'eval',
+					value: 'window.location.reload();'
+				}, '/');
 			});
 			$('.h4p_save_button').on('click', function() {
 				// Save
@@ -752,8 +729,10 @@ $(function(){
 				}));
 
 				// サムネイルを生成
-				$('.h4p_game>iframe').get(0).contentWindow.postMessage("saveImage('updateProject');", '/');
-
+				document.getElementById('item-embed-iframe').contentWindow.postMessage({
+					query: 'eval',
+					value: "saveImage('updateProject');"
+				}, '/');
 			});
 
 			// ビューの設定
@@ -763,7 +742,10 @@ $(function(){
 			// 投稿時の設定
 			$('#inputModal').on('show.bs.modal', function () {
 				// サムネイルを生成
-				$(".h4p_game>iframe").get(0).contentWindow.postMessage("saveImage('thumbnail');", '/');
+				document.getElementById('item-embed-iframe').contentWindow.postMessage({
+					query: 'eval',
+					value: "saveImage('thumbnail');"
+				}, '/');
 			});
 
 			// 投稿
@@ -1143,6 +1125,7 @@ $(function(){
 		switch(getParam('mode')){
 			case "official":
 				// official mode (load default code from main.js)
+				sessionStorage.setItem('restaging_code', getParam('replay_code'));
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
 					makeProject();
@@ -1171,7 +1154,6 @@ $(function(){
 				scrollToAnchor('.h4p_restaging');
 				break;
 			case "quest":
-				// quest mode (load javascript-code and run it)
 				sessionStorage.setItem('restaging_code', getParam('replay_code'));
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
@@ -1200,7 +1182,18 @@ $(function(){
 					var paused = false, creditVisibility = true;
 					window.addEventListener('message', function(event) {
 						if (event.data === 'game_loaded' && creditVisibility) {
-							$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.pause()', '/');
+							// ---- temporary implement ----
+							var next = getParam('next') > 0 ? 'Hack.__QuestGameclearNext='+getParam('next') + '; ' : '';
+							var report = getParam('reporting_requirements') ? 'Hack.__QuestGameclearNext=true; ' : '';
+							$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage({
+								query: 'eval',
+								value: 'if (Hack.__QuestGameclear) { Hack.ongameclear = Hack.__QuestGameclear; ' + next + report + ' }'
+							}, '/');
+							// ---- temporary implement ----
+							document.getElementById('item-embed-iframe').contentWindow.postMessage({
+								query: 'eval',
+								value: 'game.pause()'
+							}, '/');
 							paused = true;
 						}
 					});
@@ -1210,7 +1203,10 @@ $(function(){
 						$('.container-game .h4p_game iframe').css('opacity', 1);
 						creditVisibility = false;
 						if (paused) {
-							$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage('game.resume()', '/');
+							document.getElementById('item-embed-iframe').contentWindow.postMessage({
+								query: 'eval',
+								value: 'game.resume()'
+							}, '/');
 						}
 					}, 4000);
 				}
@@ -1222,14 +1218,8 @@ $(function(){
 		if (getParam('directly_restaging')) {
 			switch (getParam('mode')) {
 			case 'official':
-				// replace_code を受けたのち, beginRestaging
-				window.addEventListener('message', function task(event) {
-					if (event.data === 'replace_code') {
-						window.removeEventListener('message', task);
-						beginRestaging();
-						makeProject();
-					}
-				});
+				beginRestaging();
+				makeProject();
 				break;
 			case 'replay':
 			case 'quest':
@@ -1258,7 +1248,10 @@ $(function(){
 
 	// ゲームフレームのリロード
 	$('.h4p_info .btn-retry').on('click', function() {
-		$(".h4p_game>iframe").get(0).contentWindow.postMessage('window.location.reload();', '/');
+		document.getElementById('item-embed-iframe').contentWindow.postMessage({
+			query: 'eval',
+			value: 'window.location.reload();'
+		}, '/');
 	});
 
 	function getParam(key){
@@ -1272,10 +1265,10 @@ $(function(){
 			YT = window.YT;
 			window.YT = window.onYouTubeIframeAPIReady = undefined; // YouTube
 		};
-		$(window).on('openExternal.parsedMessage', function(event, data) {
+		window.addEventListener('message', function (event) {
 			var component;
 			try {
-				component = new URL(data.url);
+				component = new URL(event.data.url);
 			} catch (e) { return; }
 			var domain = component.hostname.replace(/^www\./, '');
 			var $all = $('.container-open-external .item-open-external');

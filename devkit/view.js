@@ -252,7 +252,7 @@ window.addEventListener('load', function () {
       if (data) {
         alert(data);
       } else {
-        document.getElementById('item-embed-iframe').src = '/embed/?type=sta&id='+stageInfo.StageID;
+        document.getElementById('item-embed-iframe').src = '/embed/?type=stage&id='+stageInfo.StageID;
         updateInfo();
       }
     });
@@ -262,7 +262,7 @@ window.addEventListener('load', function () {
     var key = 'restaging_code';
     var code = cm.getValue();
     sessionStorage.setItem(key, code);
-    document.getElementById('item-embed-iframe').src = '/embed/?type=ses&id='+stageInfo.StageID+'&key=' + key;
+    document.getElementById('item-embed-iframe').src = '/embed/?type=local&id='+stageInfo.StageID+'&key=' + key;
   }
 
   function updateInfo() {

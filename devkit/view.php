@@ -4,7 +4,7 @@ $stmt = $dbh->prepare('SELECT "Title","ScriptID","RawCode","Updated" FROM "Stage
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
 $stage = $stmt->fetch(PDO::FETCH_ASSOC) or die("Invalid stage id $id");
-$src = '/embed/?type=sta&id=' . $id;
+$src = '/embed/?type=stage&id=' . $id;
 
 ?>
 <!DOCTYPE html>
