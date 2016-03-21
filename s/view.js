@@ -198,7 +198,9 @@ $(function(){
 
 					var $comment = $('.h4p_my-comment').removeClass('hidden');
 					$comment.find('.h4p_comment-trash').data('id', result.ID);
-					$comment.find('.comment-tag').text(result.Tags[0].DisplayString).css('background-color', result.Tags[0].LabelColor);
+					if (result.Tags.length > 0) {
+						$comment.find('.comment-tag').text(result.Tags[0].DisplayString).css('background-color', result.Tags[0].LabelColor);
+					}
 					$comment.find('.comment-message').text(result.Message);
 					$comment.find('.comment-thumb').attr('src', result.Thumbnail);
 
