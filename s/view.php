@@ -30,7 +30,7 @@ if ($mode === 'quest') {
 	// 1以上ならつづきをあらわす。0以下なら最後のステージであることをあらわす
 	$next	= $level_next ? $level_next['ID'] : 0;
 }
-$embed = '/embed/?type=sta&id=' . $id;
+$embed = '/embed/?type=stage&id=' . $id;
 ?>
 <!DOCTYPE html>
 <html>
