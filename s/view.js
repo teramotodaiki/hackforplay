@@ -1151,14 +1151,6 @@ $(function(){
 				scrollToAnchor('.h4p_restaging');
 				break;
 			case "quest":
-				// ---- temporary implement ----
-				var next = getParam('next') > 0 ? 'Hack.__QuestGameclearNext='+getParam('next') + '; ' : '';
-				var report = getParam('reporting_requirements') ? 'Hack.__QuestGameclearNext=true; ' : '';
-				$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage({
-					query: 'eval',
-					value: 'if (Hack.__QuestGameclear) { Hack.ongameclear = Hack.__QuestGameclear; ' + next + report + ' }'
-				}, '/');
-				// ---- temporary implement ----
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
 					makeProject();
@@ -1186,6 +1178,14 @@ $(function(){
 					var paused = false, creditVisibility = true;
 					window.addEventListener('message', function(event) {
 						if (event.data === 'game_loaded' && creditVisibility) {
+							// ---- temporary implement ----
+							var next = getParam('next') > 0 ? 'Hack.__QuestGameclearNext='+getParam('next') + '; ' : '';
+							var report = getParam('reporting_requirements') ? 'Hack.__QuestGameclearNext=true; ' : '';
+							$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage({
+								query: 'eval',
+								value: 'if (Hack.__QuestGameclear) { Hack.ongameclear = Hack.__QuestGameclear; ' + next + report + ' }'
+							}, '/');
+							// ---- temporary implement ----
 							document.getElementById('item-embed-iframe').contentWindow.postMessage({
 								query: 'eval',
 								value: 'game.pause()'
