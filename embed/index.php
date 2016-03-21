@@ -3,8 +3,7 @@
 Embed frame の起点となるスクリプト. 任意のキットをロードし、改造コードスクリプトを埋め込む
 Input: type , (id,key|id|token)
   type: 改造コードスクリプトの読み込み方法を表す3文字のアルファベット (ses|sta|pro)
-  key: type=ses のとき、sessionStorageのキーを表す文字列
-  src: type=ses のとき、キットごとのローカルスクリプトをロードするHTML要素. <head>内に埋め込まれる. /embed/{src}/index.php となるような相対パス.
+  key: type=local のとき、sessionStorageのキーを表す文字列
   id: type=sta|ses のとき、ステージのIDを表す数値
   token: type=pro のとき、プロジェクトトークンの文字列
 */
@@ -21,7 +20,7 @@ try {
 
 	// Get (source) stage ID
 	switch ($type) {
-		case 'ses':
+		case 'local':
 		case 'sta':
 			$id	= filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) or die('Missing param id. Add "&id={STAGE ID}" to url');
 			break;
@@ -55,7 +54,7 @@ try {
 
 	// Get script
 	switch ($type) {
-		case 'ses':
+		case 'local':
 			$key = filter_input(INPUT_GET, 'key') or die('Missing param key. Add "&key={SESSION STORAGE KEY}" to url');
 			$script_src = 'script/?key=' . $key;
 			break;

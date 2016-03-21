@@ -438,7 +438,7 @@ $(function(){
 		var beginRestaging = function(isExtendMode){
 
 			$('.container.container-game').addClass('restaging');
-			document.getElementById('item-embed-iframe').src = '/embed/?type=ses&key=restaging_code&id=' + getParam('id');
+			document.getElementById('item-embed-iframe').src = '/embed/?type=local&key=restaging_code&id=' + getParam('id');
 
 			// ロギングを開始
 			(function() {
