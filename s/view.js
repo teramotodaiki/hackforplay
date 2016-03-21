@@ -1125,6 +1125,7 @@ $(function(){
 		switch(getParam('mode')){
 			case "official":
 				// official mode (load default code from main.js)
+				sessionStorage.setItem('restaging_code', getParam('replay_code'));
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
 					makeProject();
