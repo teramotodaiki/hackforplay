@@ -1151,8 +1151,14 @@ $(function(){
 				scrollToAnchor('.h4p_restaging');
 				break;
 			case "quest":
-				// quest mode (load javascript-code and run it)
-				sessionStorage.setItem('restaging_code', getParam('replay_code'));
+				// ---- temporary implement ----
+				var next = getParam('next') > 0 ? 'Hack.__QuestGameclearNext='+getParam('next') + '; ' : '';
+				var report = getParam('reporting_requirements') ? 'Hack.__QuestGameclearNext=true; ' : '';
+				$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage({
+					query: 'eval',
+					value: 'if (Hack.__QuestGameclear) { Hack.ongameclear = Hack.__QuestGameclear; ' + next + report + ' }'
+				}, '/');
+				// ---- temporary implement ----
 				$(".begin_restaging").on('click', function() {
 					beginRestaging();
 					makeProject();
