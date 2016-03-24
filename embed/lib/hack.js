@@ -8,8 +8,9 @@ function screenShot () {
 	window.saveImage('thumbnail');
 }
 function refocus () {
-    window.document.activeElement.blur();
-    window.focus();
+	window.document.activeElement.blur(); // Blur an enchantBook
+	window.parent.focus(); // Blur an input in parent window
+	window.focus(); // focus game
 }
 function getEditor() {
 	return Hack.enchantBook;
