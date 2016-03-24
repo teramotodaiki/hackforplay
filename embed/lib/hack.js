@@ -16,6 +16,9 @@ function getEditor() {
 	return Hack.enchantBook;
 }
 
+window.addEventListener('click', refocus);
+window.addEventListener('load', refocus);
+
 // Eval exception catch
 (function () {
 	var _eval = window.eval;
@@ -216,12 +219,12 @@ window.addEventListener('load', function() {
 
 		Hack.on('editend', function () {
 			Hack.enchantBook.tl.scaleTo(0, 1, 3, enchant.Easing.LINEAR);
-			window.focus();
+			refocus();
 		});
 
 		Hack.on('editcancel', function () {
 			Hack.enchantBook.tl.scaleTo(0, 1, 7, enchant.Easing.BACK_EASEIN);
-			window.focus();
+			refocus();
 		});
 
 		this.width = game.width;
