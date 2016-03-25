@@ -75,10 +75,10 @@ try {
 		case 'stage':
 			// Tokenを生成
 			$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
-			$token	= bin2hex($bytes); // binaly to hex
+			$playlog_token	= bin2hex($bytes); // binaly to hex
 			// Logging
 			$stmt	= $dbh->prepare('INSERT INTO "PlayLog" ("Token","UserID","StageID","Referrer","Registered") VALUES (:token,:user_id,:stage_id,:referrer,:gmt)');
-			$stmt->bindValue(':token', $token, PDO::PARAM_STR);
+			$stmt->bindValue(':token', $playlog_token, PDO::PARAM_STR);
 			$stmt->bindValue(':user_id', $session_userid, PDO::PARAM_INT);
 			$stmt->bindValue(':stage_id', $id, PDO::PARAM_INT);
 			$stmt->bindValue(':referrer', $_SERVER['HTTP_REFERER'], PDO::PARAM_STR);
@@ -110,7 +110,7 @@ try {
 		<script type="text/javascript">
 		window.addEventListener('load', function () {
 			Hack.stageInfo = {
-				token: '<?php echo $token; ?>'
+				token: '<?php echo $playlog_token; ?>'
 
 			};
 		});
