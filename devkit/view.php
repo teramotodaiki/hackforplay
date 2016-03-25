@@ -89,14 +89,13 @@ $src = '/embed/?type=stage&id=' . $id;
     <div class="flex-item-fix">
 			<h1 class="text-center">Dev Kit Tool</h1>
       <!-- Game -->
-      <iframe id="item-embed-iframe" src="<?php echo $src; ?>" frameborder="0" class="fit force-focus"></iframe>
+      <iframe id="item-embed-iframe" src="<?php echo $src; ?>" frameborder="0" class="fit"></iframe>
 			<!-- information -->
 			<h4>Title: <strong><?php echo $stage['Title']; ?></strong></h4>
 			<h4>Latest:<span class="info-latest-update"><?php echo $stage['Updated']; ?></span><small>GMT</small></h4>
 			<hr>
 			<!-- description -->
 			<h5>Ctrl+Enter: RUN with sessionStorage</h5>
-			<h5>Focued on:  <b class="focused-element"></b></h5>
 			<h5>Go to menu: <a href="/devkit/">here</a></h5>
 			<hr>
 			<!-- Buttons -->
