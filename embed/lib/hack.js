@@ -429,6 +429,12 @@ window.addEventListener('load', function() {
 		};
 	})();
 
+	// ClearedのLogging
+	Hack.on('gameclear', function () {
+		if (!Hack.stageInfo.token) return;
+		postRequest('/stage/putclearedbytoken.php', { token: Hack.stageInfo.token });
+	});
+
 	// ゲームメニュー
 	(function() {
 
