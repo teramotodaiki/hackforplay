@@ -429,6 +429,12 @@ window.addEventListener('load', function() {
 		};
 	})();
 
+	// ClearedのLogging
+	Hack.on('gameclear', function () {
+		if (!Hack.stageInfo.token) return;
+		postRequest('/stage/putclearedbytoken.php', { token: Hack.stageInfo.token });
+	});
+
 	// ゲームメニュー
 	(function() {
 
@@ -792,17 +798,17 @@ window.addEventListener('load', function() {
 		});
     }
 
-    function postRequest (path, params, success, error) {
-		var xhttp = new XMLHttpRequest();
-		xhttp.open('POST', path, true);
-		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		var serialized = Object.keys(params).map(function(key) {
-			return key + '=' + params[key];
-		}).join('&');
-		xhttp.send(serialized);
-		xhttp.onload = success;
-		xhttp.onerror = error;
-    }
+		function postRequest (path, params, success, error) {
+			var xhttp = new XMLHttpRequest();
+			xhttp.open('POST', path, true);
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			var serialized = Object.keys(params).map(function(key) {
+				return key + '=' + params[key];
+			}).join('&');
+			xhttp.send(serialized);
+			xhttp.onload = success;
+			xhttp.onerror = error;
+		}
 
     /**
      * Hack.css2rgb
