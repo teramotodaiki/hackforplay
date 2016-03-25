@@ -314,7 +314,7 @@ $embed = '/embed/?type=stage&id=' . $id;
 						<h2 class="credit-timeline credit-timeline-1">by <span class="Author"></span></h2>
 					</div>
 				</div>
-				<iframe id="item-embed-iframe" src="<?php echo $embed; ?>" frameborder="0" class="fit force-focus"></iframe>
+				<iframe id="item-embed-iframe" src="<?php echo $embed; ?>" frameborder="0" class="fit"></iframe>
 			</div>
 			<div class="col-xs-12 h4p_publish" style="display:none">
 				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中...">

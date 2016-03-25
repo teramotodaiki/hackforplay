@@ -36,20 +36,6 @@ window.addEventListener('load', function () {
     $('button[data-query="sync"]').removeClass('disabled');
   });
 
-  // force-focus
-	setInterval(function(){
-    var frame = document.getElementById('item-embed-iframe');
-    var tag = document.activeElement.tagName;
-		if(['IFRAME', 'INPUT', 'TEXTAREA'].indexOf(tag) < 0 && frame.classList.contains('force-focus')){
-			document.activeElement.blur();
-      frame.contentWindow.postMessage({
-        query: 'eval',
-        value: 'refocus();'
-      }, '/');
-		}
-    $('.focused-element').text(tag);
-	}, 100);
-
   // 汎用的な ExternalLinkWindow  Hack.openExternal で制御する
 	(function (SC, YT) {
 		window.SC = undefined; // SoundCloud
