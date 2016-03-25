@@ -1,23 +1,5 @@
 var onYouTubeIframeAPIReady = null;
 $(function(){
-	var focus_on_game = true; // focus mode -> game
-	// ゲーム画面にフォーカスする
-	setInterval(function(){
-		var game = document.getElementById('item-embed-iframe');
-		if(	game !== undefined && game !== document.activeElement && focus_on_game){
-			document.activeElement.blur();
-			game.contentWindow.postMessage({
-				query: 'eval',
-				value: 'refocus();'
-			}, '/');
-		}
-	}, 100);
-	// テキストボックスにフォーカスがあるときはゲームにフォーカスしない
-	$('input,textarea').focus(function(event) {
-		focus_on_game = false;
-	}).blur(function(event) {
-		focus_on_game = true;
-	});
 
 	// ゲームフレームを横幅基本で3:2にする
 	$(".h4p_game,.h4p_credit").height($(".h4p_game").width()/1.5);
@@ -259,14 +241,8 @@ $(function(){
 			}).click(function(event) {
 				$(this).get(0).selectionStart = 0;
 				$(this).get(0).selectionEnd = URL.length;
-				$(this).focus();
-			}).focus(function(event) {
-				focus_on_game = false;
-			}).blur(function(event) {
-				focus_on_game = true;
 			}).insertAfter(this);
 			$(this).remove();
-			input.focus();
 		});
 	})();
 
@@ -674,12 +650,6 @@ $(function(){
 				if(code !== null){
 					jsEditor.setValue(code);
 				}
-				$(this).hover(function() {
-					focus_on_game = false; // focus on editor
-				});
-				$('.h4p_game').hover(function() {
-					focus_on_game = true;
-				});
 			});
 			$(".h4p_info-footer").text("（リステージング中）");
 			$(".visible-option-restage").css('visibility', 'hidden');
@@ -1115,7 +1085,6 @@ $(function(){
 						$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled').addClass('disabled');
 						$(".h4p_published-info").removeClass('hidden');
 						alert_on_unload = false; // 遷移時の警告を非表示
-						focus_on_game = false; // iframeにfocusできるように
 						if (callback) callback();
 						break;
 				}
