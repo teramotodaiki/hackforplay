@@ -70,6 +70,23 @@ try {
 			break;
 	}
 
+	// Register play log
+	switch ($type) {
+		case 'stage':
+			// Tokenを生成
+			$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
+			$token	= bin2hex($bytes); // binaly to hex
+			// Logging
+			$stmt	= $dbh->prepare('INSERT INTO "PlayLog" ("Token","UserID","StageID","Referrer","Registered") VALUES (:token,:user_id,:stage_id,:referrer,:gmt)');
+			$stmt->bindValue(':token', $token, PDO::PARAM_STR);
+			$stmt->bindValue(':user_id', $session_userid, PDO::PARAM_INT);
+			$stmt->bindValue(':stage_id', $id, PDO::PARAM_INT);
+			$stmt->bindValue(':referrer', $_SERVER['HTTP_REFERER'], PDO::PARAM_STR);
+			$stmt->bindValue(':gmt', gmdate('Y-m-d H:i:s'), PDO::PARAM_STR);
+			$stmt->execute();
+			break;
+	}
+
 } catch (Exception $e) {
 	require_once '../exception/tracedata.php';
 	traceData($e);
@@ -90,5 +107,13 @@ try {
 		<?php echo $sourceElement; ?>
   </head>
   <body>
+		<script type="text/javascript">
+		window.addEventListener('load', function () {
+			Hack.stageInfo = {
+				token: '<?php echo $token; ?>'
+
+			};
+		});
+		</script>
   </body>
 </html>
