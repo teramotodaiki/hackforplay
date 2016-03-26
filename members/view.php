@@ -27,10 +27,12 @@
           <h4>
             <a href="/m/?id=<?php echo $user['UserID']; ?>" target="_blank">
               <?php echo $user['Nickname']; ?>
+              <span class="glyphicon glyphicon-new-window"></span>
             </a>
           </h4>
           <a href="/dashboard/?id=<?php echo $user['UserID']; ?>" target="_blank">
             Dashboard
+            <span class="glyphicon glyphicon-new-window"></span>
           </a>
           <a class="query-on-click" data-query="delete" href="javascript:void(0);"
           data-userid="<?php echo $user['UserID']; ?>"
