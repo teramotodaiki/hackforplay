@@ -37,7 +37,8 @@
         <?php if ($map['MembershipManagement'] && $user['MembershipEmpowered']) : ?>
           <a class="query-on-click" data-query="delete" href="javascript:void(0);"
           data-userid="<?php echo $user['UserID']; ?>"
-          data-communityid="<?php echo $community['ID']; ?>">
+          data-communityid="<?php echo $community['ID']; ?>"
+          data-nickname="<?php echo $user['Nickname']; ?>">
             DELETE
           </a>
         <?php endif; ?>
