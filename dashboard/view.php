@@ -24,7 +24,7 @@
 						<img src="" class="img-circle h4p_own-thumbnail">
 					</div>
 					<div class="text-center">
-						<h3><span class="h4p_own-nickname"></span>のダッシュボード<small class="text-muted">β</small></h3>
+						<h3><?php echo $user['Nickname']; ?>のダッシュボード<small class="text-muted">β</small></h3>
 					</div>
 				</div>
 			</div>
@@ -33,7 +33,7 @@
 					<span class="glyphicon glyphicon-play-circle"></span>
 				</div>
 				<div class="item-dashboard-layer">
-					<span class="item-dashboard-value item-dashboard-playcount">-</span>
+					<span class="item-dashboard-value" data-value="<?php echo $playcount; ?>">-</span>
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 item-dashboard">
@@ -41,7 +41,7 @@
 					<span class="glyphicon glyphicon-wrench"></span>
 				</div>
 				<div class="item-dashboard-layer">
-					<span class="item-dashboard-value item-dashboard-restagecount">-</span>
+					<span class="item-dashboard-value" data-value="<?php echo $restagecount; ?>">-</span>
 				</div>
 			</div>
 			<div class="hidden-xs hidden-sm col-md-4 item-dashboard">
