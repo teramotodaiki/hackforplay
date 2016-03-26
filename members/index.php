@@ -31,7 +31,7 @@ try {
   }
 
   // Check authorization
-  $stmt = $dbh->prepare('SELECT "ID" FROM "UserCommunityMap" WHERE "UserID"=:userid AND "CommunityID"=:communityid AND "Enabled"=:true');
+  $stmt = $dbh->prepare('SELECT "ID","MembershipManagement" FROM "UserCommunityMap" WHERE "UserID"=:userid AND "CommunityID"=:communityid AND "Enabled"=:true');
   $stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
   $stmt->bindValue(':communityid', $community['ID'], PDO::PARAM_INT);
   $stmt->bindValue(':true', true, PDO::PARAM_BOOL);
@@ -44,7 +44,7 @@ try {
   }
 
   // Fetch members
-  $stmt = $dbh->prepare('SELECT m."ID","UserID",u."Nickname" FROM "UserCommunityMap" AS m INNER JOIN "User" AS u ON m."UserID"=u."ID" WHERE "CommunityID"=:communityid AND "Enabled"=:true');
+  $stmt = $dbh->prepare('SELECT m."ID","UserID","MembershipEmpowered",u."Nickname" FROM "UserCommunityMap" AS m INNER JOIN "User" AS u ON m."UserID"=u."ID" WHERE "CommunityID"=:communityid AND "Enabled"=:true');
   $stmt->bindValue(':communityid', $community['ID'], PDO::PARAM_INT);
   $stmt->bindValue(':true', true, PDO::PARAM_BOOL);
   $stmt->execute();

@@ -34,11 +34,13 @@
             Dashboard
             <span class="glyphicon glyphicon-new-window"></span>
           </a>
+        <?php if ($map['MembershipManagement'] && $user['MembershipEmpowered']) : ?>
           <a class="query-on-click" data-query="delete" href="javascript:void(0);"
           data-userid="<?php echo $user['UserID']; ?>"
           data-communityid="<?php echo $community['ID']; ?>">
             DELETE
           </a>
+        <?php endif; ?>
         </div>
       <?php endforeach; ?>
     </div>
