@@ -25,11 +25,11 @@
       <?php foreach ($UCMap as $key => $user) : ?>
         <div class="panel panel-default flex-container">
           <h4>
-            <a href="/m/?id=<?php echo $user['UserID']; ?>">
+            <a href="/m/?id=<?php echo $user['UserID']; ?>" target="_blank">
               <?php echo $user['Nickname']; ?>
             </a>
           </h4>
-          <a href="/dashboard/?id=<?php echo $user['UserID']; ?>">
+          <a href="/dashboard/?id=<?php echo $user['UserID']; ?>" target="_blank">
             Dashboard
           </a>
           <a class="query-on-click" data-query="delete" href="javascript:void(0);"
