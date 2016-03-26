@@ -25,6 +25,9 @@
       <?php foreach ($UCMap as $key => $user) : ?>
         <div class="panel panel-default flex-container">
           <h4><?php echo $user['Nickname']; ?></h4>
+          <a href="/dashboard/?id=<?php echo $user['UserID']; ?>">
+            Dashboard
+          </a>
           <a class="query-on-click" data-query="delete" href="javascript:void(0);"
           data-userid="<?php echo $user['UserID']; ?>"
           data-communityid="<?php echo $community['ID']; ?>">
