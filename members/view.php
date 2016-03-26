@@ -33,6 +33,7 @@
               <span class="glyphicon glyphicon-new-window"></span>
             </a>
           </h4>
+          <h5>Join at <?php echo explode(' ', $user['Registered'])[0]; ?></h5>
           <a href="/dashboard/?id=<?php echo $user['UserID']; ?>" target="_blank">
             Dashboard
             <span class="glyphicon glyphicon-new-window"></span>
