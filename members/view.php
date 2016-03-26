@@ -24,7 +24,11 @@
       <h1><?php echo $community['DisplayName']; ?></h1>
       <?php foreach ($UCMap as $key => $user) : ?>
         <div class="panel panel-default flex-container">
-          <h4><?php echo $user['Nickname']; ?></h4>
+          <h4>
+            <a href="/m/?id=<?php echo $user['UserID']; ?>">
+              <?php echo $user['Nickname']; ?>
+            </a>
+          </h4>
           <a href="/dashboard/?id=<?php echo $user['UserID']; ?>">
             Dashboard
           </a>
