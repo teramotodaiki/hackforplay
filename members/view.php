@@ -9,10 +9,13 @@
       display: flex;
       align-items: baseline;
       padding: 0px 30px;
+      justify-content: space-between;;
     }
     .flex-container>* {
       flex: 1 1 auto;
-      max-width: 200px;
+    }
+    .flex-container .label {
+      flex: 0 1 auto;
     }
     </style>
   </head>
@@ -35,7 +38,7 @@
             <span class="glyphicon glyphicon-new-window"></span>
           </a>
         <?php if ($map['MembershipManagement'] && $user['MembershipEmpowered']) : ?>
-          <a class="query-on-click" data-query="delete" href="javascript:void(0);"
+          <a class="query-on-click label label-danger" data-query="delete" href="javascript:void(0);"
           data-userid="<?php echo $user['UserID']; ?>"
           data-communityid="<?php echo $community['ID']; ?>"
           data-nickname="<?php echo $user['Nickname']; ?>">
