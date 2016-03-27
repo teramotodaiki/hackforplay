@@ -1,5 +1,6 @@
 <?php
 /**
+ **** 廃止予定 ****
  * Sessionユーザーが作成したステージの合計改造回数を求める
 */
 
@@ -25,8 +26,6 @@ try {
 	exit();
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
 	die();
 }
 
