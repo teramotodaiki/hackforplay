@@ -450,5 +450,6 @@ $embed = '/embed/?type=stage&id=' . $id;
 		</div>
 	<?php endfor; ?>
 	</div>
+	<?php include '../intercom.php'; ?>
 </body>
 </html>
