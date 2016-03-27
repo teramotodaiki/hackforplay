@@ -3,7 +3,7 @@
 
 switch ($_SERVER['SERVER_NAME']) {
 	case 'localhost': $environment = 'localhost'; break;
-	case 'localhost': $environment = 'staging'; break;
+	case 'hackforplay-staging.azurewebsites.net': $environment = 'staging'; break;
 	default: $environment = 'production'; break;
 }
 
