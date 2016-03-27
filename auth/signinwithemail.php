@@ -1,7 +1,7 @@
 <?php
 /*
 
-/// 旧仕様 削除対象 ///
+**** 廃止予定 ****
 
 HackforPlayアカウントでサインインを行う。新しくセッションをつくる
 Input:	email , password
@@ -49,8 +49,6 @@ try {
 	exit("success");
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
-	die();
+		die();
 }
 ?>
