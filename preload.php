@@ -19,18 +19,18 @@ Rollbar::init(array(
 $pdo = null;
 $useLocalDB = true;
 try {
-	if(($useLocalDB && $_SERVER['SERVER_NAME'] === 'localhost')){
+	if(($useLocalDB && $environment === 'localhost')){
 		error_reporting(E_ALL);
 		$dbh 	= new PDO("mysql:dbname=hackforplay-localhost;host=localhost;charset=utf8", 'hackforplay', 'RtPF7JRSZ5XzFasc');
 		$dbh->exec("SET sql_mode='ANSI_QUOTES'");
-	}elseif($_SERVER['SERVER_NAME'] === 'hackforplay-staging.azurewebsites.net'){
+	}elseif($environment === 'staging'){
 		error_reporting(0);
-    	$dbh = new PDO ( "sqlsrv:server = tcp:yadw63xtf8.database.secure.windows.net,1433; Database = hackforplay-staging", "hackforplay@yadw63xtf8", "9PFLn21u9TkiqlKx3ceAbawXSGsBPGT");
+  	$dbh = new PDO ( "sqlsrv:server = tcp:yadw63xtf8.database.secure.windows.net,1433; Database = hackforplay-staging", "hackforplay@yadw63xtf8", "9PFLn21u9TkiqlKx3ceAbawXSGsBPGT");
 	}else{
 		error_reporting(0);
-    	$dbh = new PDO ( "sqlsrv:server = tcp:yadw63xtf8.database.secure.windows.net,1433; Database = hackforplay", "hackforplay@yadw63xtf8", "9PFLn21u9TkiqlKx3ceAbawXSGsBPGT");
+  	$dbh = new PDO ( "sqlsrv:server = tcp:yadw63xtf8.database.secure.windows.net,1433; Database = hackforplay", "hackforplay@yadw63xtf8", "9PFLn21u9TkiqlKx3ceAbawXSGsBPGT");
 	}
-    $dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+  $dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 }
 catch ( Exception $e ) {
 	Rollbar::report_exception($e);
