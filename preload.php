@@ -32,9 +32,9 @@ try {
 	}
     $dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 }
-catch ( PDOException $e ) {
-    print( "Error connecting to SQL Server." );
-    die();
+catch ( Exception $e ) {
+	Rollbar::report_exception($e);
+  die('pdo-connection-error');
 }
 
 try {
@@ -42,8 +42,7 @@ try {
 	require_once 'session/sethundler.php';
 
 } catch (Exception $e) {
-	require_once 'exception/tracedata.php';
-	traceData($e);
+	Rollbar::report_exception($e);
 	die;
 }
 
