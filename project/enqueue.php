@@ -1,5 +1,6 @@
 <?php
 /**
+**** 廃止予定 ****
  * enqueue.php
  * CodeStockに未登録のコードを追加する
  * ただし、Project.UserIDと一致するUserIDをもつセッションが必要
@@ -134,8 +135,6 @@ try {
 	exit('success');
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
 	die();
 }
 
