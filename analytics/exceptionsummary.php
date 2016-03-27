@@ -1,5 +1,6 @@
 <?php
 /*
+ **** 廃止予定 ****
 関連付けられたExceptionMap-ExceptionDataのサマリーを取得する
 Input:	begin , end , (attendance-token)
 Output:	parse-error , JSON:{summary_of_exceptions}
@@ -36,8 +37,6 @@ try {
 	echo $json;
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
 	die();
 }
  ?>

@@ -1,5 +1,6 @@
 <?php
 /*
+ **** 廃止予定 ****
  * ユーザーのRestagingLog情報をCSVフォーマットで書き出す
  *
  * 'UserID','StageID','Mode','BeginUnixTime','LastUnixTime','ExecuteCount','SaveCount','InputNumberCount','InputAlphabetCount','InputOtherCount','PasteCount','DeleteCount'\n
@@ -45,8 +46,7 @@ try {
 	}
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
+	die;
 }
 
 
