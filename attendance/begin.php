@@ -1,5 +1,6 @@
 <?php
 /*
+**** 廃止予定 ****
 セッションを取得し、 Attendance レコードを新たに作成し、Tokenを発行する。EndはNULLにしておく
 レコードを作成しなかった場合、何も出力せずに終了する
 Input:	self_path , refferer , query_string , timezone
@@ -55,8 +56,6 @@ try {
 	exit($token);
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
 	die();
 }
 ?>

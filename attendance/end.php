@@ -1,6 +1,6 @@
 <?php
 /*
-+**廃止***
+**** 廃止予定 ****
 トークンを取得し、 Attendance レコードを更新する
 Input:	attendance-token
 */
@@ -12,8 +12,6 @@ try {
 	exit();
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
 	die();
 }
 ?>
