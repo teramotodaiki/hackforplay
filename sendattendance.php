@@ -35,6 +35,5 @@ Attendance 情報を送信する
 			sessionStorage.setItem('attendance-token', result);
 		});
 	});
-	// /attendance/end.phpは廃止
 })();
 </script>
