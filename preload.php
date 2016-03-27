@@ -1,6 +1,20 @@
 <?php
 // Develop: E_ALL, Release: 0
 
+switch ($_SERVER['SERVER_NAME']) {
+	case 'localhost': $environment = 'localhost'; break;
+	case 'localhost': $environment = 'staging'; break;
+	default: $environment = 'production'; break;
+}
+
+// rollbar https://rollbar.com/docs/notifier/rollbar-php/
+require_once 'rollbar-php/src/rollbar.php';
+// installs global error and exception handlers
+Rollbar::init(array(
+	'access_token' => '4e7ac652993446f9b9c93cf379995509',
+	'environment' => $environment,
+));
+
 // 1.Generate PDO object (connecting mysql)
 $pdo = null;
 $useLocalDB = true;
@@ -35,6 +49,5 @@ try {
 
 // 暗号化キーの生成
 $encription_key = pack('H*', "29fdebae5e1d48b54763051cef08bc55abe017e2ffb2a00a3bcb04b7e103a0cd");
-
 
 ?>
