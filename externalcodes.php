@@ -54,6 +54,5 @@
 			sessionStorage.setItem('attendance-token', result);
 		});
 	});
-	//  /attendance/end.php は廃止
 })();
 </script>
