@@ -1,5 +1,6 @@
 <?php
 /**
+ **** 廃止予定 ****
  * チュートリアル上でトラッキングされたClearTimeについてCSV形式で出力する
  * フォーマットは以下のようになる
  * 			\t    '101'\t    '102'\t    '103'\t    '104'\t    '105'\t    '106'\t 'NeedHelp'\t   'Registered'\n
@@ -53,8 +54,6 @@ try {
 
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
 	die();
 }
 

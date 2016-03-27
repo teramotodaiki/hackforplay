@@ -1,5 +1,6 @@
 <?php
 /*
+**** 廃止予定 ****
 ステージプレイのログをつける
 Input:	value , attendance-token
 Output:	(success)
@@ -26,8 +27,6 @@ try {
 	exit('success');
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
 	die();
 }
 ?>

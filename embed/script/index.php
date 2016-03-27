@@ -24,9 +24,8 @@ try {
   }
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
-	exit('Error loading frame');
+  Rollbar::report_exception($e);
+  die;
 }
 ?>
 function HackforPlayInitializeRestaging() {

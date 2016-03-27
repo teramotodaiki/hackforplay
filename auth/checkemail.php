@@ -1,7 +1,7 @@
 <?php
 /*
 
-/// 旧仕様 削除対象 ///
+**** 廃止予定 ****
 
 Sign in/Sign upにかかわらず、ひとまずメールアドレスの存在チェックを行う
 Input:	メールアドレス(POST)
@@ -35,8 +35,6 @@ try {
 	}
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
 	die();
 }
 

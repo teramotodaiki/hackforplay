@@ -1,5 +1,6 @@
 <?php
 /*
+ **** 廃止予定 ****
 ユーザーごとの過去７日間のステージプレイ回数によるユーザー数の分布と、その先週についての同分布
 Output:	JSON{distribution_of_playcount}
 */
@@ -63,8 +64,6 @@ try {
 	echo $json;
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
 	die();
 }
 

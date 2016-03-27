@@ -1,5 +1,6 @@
 <?php
 /*
+ **** 廃止予定 ****
  * ユーザーの実績数をCSVフォーマットで書き出す このデータはすべてUserごとにまとめられている
  *
  * 	    'ID',   'P_CR',  'P_CnR',  'P_nCR', 'P_nCnR',   'Q_CR',  'Q_CnR',  'Q_nCR', 'Q_nCnR',    'L_C',   'L_nC'\n
@@ -93,8 +94,7 @@ try {
 	}
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
+	die()
 }
 
 

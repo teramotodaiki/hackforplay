@@ -1,5 +1,6 @@
 <?php
 /*
+ **** 廃止予定 ****
  * ユーザーのAttendance情報をCSVフォーマットで書き出す
  *
  * 			,  'Begin',    'End',  'SelfPath', 'QueryString'\n
@@ -83,8 +84,7 @@ try {
 	}
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
+	die();
 }
 
 
