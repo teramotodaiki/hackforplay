@@ -89,8 +89,7 @@ try {
 	$stmt->execute();
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
+	Rollbar::report_exception($e);
 	die();
 }
 
