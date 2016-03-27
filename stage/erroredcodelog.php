@@ -1,5 +1,6 @@
 <?php
 /*
+**** 廃止予定 ****
 eval実行時に例外が発生したコードとそのメッセージの全文をJSONで記録する
 Input:	value , attendance-token
 Output:	(success)
@@ -25,8 +26,6 @@ try {
 	exit('success');
 
 } catch (Exception $e) {
-	require_once '../exception/tracedata.php';
-	traceData($e);
 	die();
 }
 ?>
