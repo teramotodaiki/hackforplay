@@ -400,7 +400,6 @@ $(function() {
 			$(this).find('#paper-birth_month').val() + '-' +
 			$(this).find('#paper-birth_day').val();
 		var experience_days = $(this).find('#paper-experience_days').val();
-		var timezone = new Date().getTimezoneString();
 
 		$('#paper-emailsignup .alert').addClass('hide');
 
@@ -409,8 +408,7 @@ $(function() {
 			'gender' : gender,
 			'nickname' : nickname,
 			'birthday' : birthday,
-			'experience_days' : experience_days,
-			'timezone': timezone
+			'experience_days' : experience_days
 		}, function(data, textStatus, xhr) {
 			submit.button('reset');
 			switch(data){
