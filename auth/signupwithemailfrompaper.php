@@ -128,11 +128,11 @@ try {
 	// アカウントと関連づけ
 	$stmt 	= $dbh->prepare('INSERT INTO "Account" ("UserID","Type","State","Email","Hashed","Registered") VALUES(:userid,:hackforplay,:unconfirmed,:email,:hashed,:gmt)');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
-	$stmt->bindValue(":hackforplay", "hackforplay");
-	$stmt->bindValue(":unconfirmed", "unconfirmed");
-	$stmt->bindValue(":email", $email);
-	$stmt->bindValue(":hashed", $hashed);
-	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s"));
+	$stmt->bindValue(":hackforplay", "hackforplay", PDO::PARAM_STR);
+	$stmt->bindValue(":unconfirmed", "unconfirmed", PDO::PARAM_STR);
+	$stmt->bindValue(":email", $email, PDO::PARAM_STR);
+	$stmt->bindValue(":hashed", $hashed, PDO::PARAM_STR);
+	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s"), PDO::PARAM_STR);
 	$stmt->execute();
 
 	exit("success");
