@@ -1,7 +1,7 @@
 <?php
 /*
 メールを送信したのち、新しくユーザーを作成し、アカウントを関連づける。NULLは許されない
-Input: 	email , gender, nickname , password , birthday , experience_days , timezone
+Input: 	email , gender, nickname , password , birthday , experience_days
 Output: JSON:{invalid-inputs} , reserved , sendmail-error , success のいずれか
 */
 
@@ -45,11 +45,6 @@ try {
 		exit(json_encode($invalid_inputs));
 	}
 
-	// Javascriptで取得したブラウザのタイムゾーン
-	$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
-	if($timezone === FALSE || $timezone === NULL){
-		$timezone = '+00:00';
-	}
 	$accept_language	= $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 
 	// 同じメールアドレスでアカウントが作られていないか
@@ -100,7 +95,7 @@ try {
 	$stmt->bindValue(":birthday", $birthday, PDO::PARAM_STR);
 	$stmt->bindValue(":experience_days", $experience_days, PDO::PARAM_INT);
 	$stmt->bindValue(":accept_language", $accept_language, PDO::PARAM_STR);
-	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
+	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s"), PDO::PARAM_STR);
 	$stmt->execute();
 
 	$userid = $dbh->lastInsertId();
@@ -112,7 +107,7 @@ try {
 	$stmt->bindValue(":unconfirmed", "unconfirmed");
 	$stmt->bindValue(":email", $email);
 	$stmt->bindValue(":hashed", $hashed);
-	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone);
+	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s"));
 	$stmt->execute();
 
 	exit("success");

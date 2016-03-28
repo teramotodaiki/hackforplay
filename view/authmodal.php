@@ -81,7 +81,6 @@ $(function() {
 		var gender = $('input[name="gender"]:checked').val();
 		var birthday = $('#birth_year').val() + '-' + $('#birth_month').val() + '-' + $('#birth_day').val();
 		var experience_days = $('#experience_days').val();
-		var timezone = new Date().getTimezoneString();
 
 		$('#signup .alert').addClass('hide');
 
@@ -90,8 +89,7 @@ $(function() {
 			'gender' : gender,
 			'nickname' : nickname,
 			'birthday' : birthday,
-			'experience_days' : experience_days,
-			'timezone': timezone
+			'experience_days' : experience_days
 		}, function(data, textStatus, xhr) {
 			submit.button('reset');
 			switch(data){
