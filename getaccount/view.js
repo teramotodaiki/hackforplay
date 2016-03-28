@@ -26,11 +26,10 @@ $(function () {
 	// ペーパーログイン　サインアップ
 	$('#modal-signup-paper .modal-page-1 .modal-page-next').on('click', function() {
 		// サインアップ
-		var timezone = new Date().getTimezoneString();
 		var loading = $(this).button('loading');
 
 		$.post('../auth/signupwithpaper2.php', {
-			'timezone': timezone
+
 		} , function(data, textStatus, xhr) {
 			loading.button('reset');
 			$('#modal-signup-paper .modal-page-1').addClass('hidden');

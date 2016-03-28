@@ -343,10 +343,8 @@ $(function() {
 
 	$('.login-with-paper').on('click', function() {
 
-		var timezone = new Date().getTimezoneString();
-
 		$.post('../auth/signupwithpaper2.php', {
-			'timezone': timezone
+
 		} , function(data, textStatus, xhr) {
 
 			$('#authModal').modal('hide');
