@@ -15,5 +15,6 @@
 	<div class="container text-center">
 		<img src="../img/maintenance.png" alt="">
 	</div>
+	<?php include_once '../intercom.php'; ?>
 </body>
 </html>
