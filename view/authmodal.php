@@ -81,7 +81,6 @@ $(function() {
 		var gender = $('input[name="gender"]:checked').val();
 		var birthday = $('#birth_year').val() + '-' + $('#birth_month').val() + '-' + $('#birth_day').val();
 		var experience_days = $('#experience_days').val();
-		var timezone = new Date().getTimezoneString();
 
 		$('#signup .alert').addClass('hide');
 
@@ -90,8 +89,7 @@ $(function() {
 			'gender' : gender,
 			'nickname' : nickname,
 			'birthday' : birthday,
-			'experience_days' : experience_days,
-			'timezone': timezone
+			'experience_days' : experience_days
 		}, function(data, textStatus, xhr) {
 			submit.button('reset');
 			switch(data){
@@ -345,10 +343,8 @@ $(function() {
 
 	$('.login-with-paper').on('click', function() {
 
-		var timezone = new Date().getTimezoneString();
-
 		$.post('../auth/signupwithpaper2.php', {
-			'timezone': timezone
+
 		} , function(data, textStatus, xhr) {
 
 			$('#authModal').modal('hide');
@@ -402,7 +398,6 @@ $(function() {
 			$(this).find('#paper-birth_month').val() + '-' +
 			$(this).find('#paper-birth_day').val();
 		var experience_days = $(this).find('#paper-experience_days').val();
-		var timezone = new Date().getTimezoneString();
 
 		$('#paper-emailsignup .alert').addClass('hide');
 
@@ -411,8 +406,7 @@ $(function() {
 			'gender' : gender,
 			'nickname' : nickname,
 			'birthday' : birthday,
-			'experience_days' : experience_days,
-			'timezone': timezone
+			'experience_days' : experience_days
 		}, function(data, textStatus, xhr) {
 			submit.button('reset');
 			switch(data){
