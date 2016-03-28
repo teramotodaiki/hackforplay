@@ -51,5 +51,6 @@
 			</div>
 		</div>
 	</div>
+	<?php include_once '../intercom.php'; ?>
 </body>
 </html>

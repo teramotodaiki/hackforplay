@@ -24,5 +24,6 @@
 		<div class="fb-page" data-href="https://www.facebook.com/hackforplay/" data-tabs="timeline" data-width="500" data-height="1200" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/hackforplay/"><a href="https://www.facebook.com/hackforplay/">HackforPlay</a></blockquote></div></div>
 	</div>
 	<?php require_once '../view/footer.php'; ?>
+	<?php include_once '../intercom.php'; ?>
 </body>
 </html>
