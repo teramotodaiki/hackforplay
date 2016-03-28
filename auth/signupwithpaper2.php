@@ -1,7 +1,7 @@
 <?php
 /*
 IDとパスワードを生成し、新しいユーザーとアカウントを作成する。IDとパスワードをJSONで返す。
-Input: timezone
+Input:
 Output: JSON:{information_of_account} , parse-error
 information_of_account {
 	id: ID
@@ -13,11 +13,6 @@ require_once '../preload.php';
 
 try {
 
-	// Javascriptで取得したブラウザのタイムゾーン
-	$timezone = filter_input(INPUT_POST, 'timezone', FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^(\+|\-)[0-1][0-9]:00$/")));
-	if($timezone === FALSE || $timezone === NULL){
-		$timezone = '+00:00';
-	}
 	$accept_language	= $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 
 	// アカウント情報の生成
@@ -66,7 +61,7 @@ try {
 	$stmt 	= $dbh->prepare('INSERT INTO "User" ("Nickname","AcceptLanguage","Registered") VALUES(:undefined,:accept_language,:gmt)');
 	$stmt->bindValue(":undefined", 'undefined', PDO::PARAM_STR);
 	$stmt->bindValue(":accept_language", $accept_language, PDO::PARAM_STR);
-	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone, PDO::PARAM_STR);
+	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s"), PDO::PARAM_STR);
 	$stmt->execute();
 
 	$userid = $dbh->lastInsertId('User');
@@ -78,7 +73,7 @@ try {
 	$stmt->bindValue(":connected", "connected");
 	$stmt->bindValue(":gen_id", $information_of_account->id);
 	$stmt->bindValue(":hashed", $hashed);
-	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s") . $timezone);
+	$stmt->bindValue(":gmt", gmdate("Y-m-d H:i:s"));
 	$stmt->execute();
 
 	$json	= json_encode($information_of_account);

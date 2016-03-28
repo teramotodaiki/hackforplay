@@ -62,5 +62,6 @@
 		</div>
 	</div>
 	<?php require_once '../view/footer.php' ?>
+	<?php include_once '../intercom.php'; ?>
 </body>
 </html>

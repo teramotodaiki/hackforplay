@@ -26,11 +26,10 @@ $(function () {
 	// ペーパーログイン　サインアップ
 	$('#modal-signup-paper .modal-page-1 .modal-page-next').on('click', function() {
 		// サインアップ
-		var timezone = new Date().getTimezoneString();
 		var loading = $(this).button('loading');
 
 		$.post('../auth/signupwithpaper2.php', {
-			'timezone': timezone
+
 		} , function(data, textStatus, xhr) {
 			loading.button('reset');
 			$('#modal-signup-paper .modal-page-1').addClass('hidden');
@@ -85,7 +84,6 @@ $(function () {
 		var gender = $(this).find('input[name="gender"]:checked').val();
 		var birthday = $(this).find('#birth_year').val() + '-' + $('#birth_month').val() + '-' + $('#birth_day').val();
 		var experience_days = $(this).find('#experience_days').val();
-		var timezone = new Date().getTimezoneString();
 
 		$('#signup .alert').addClass('hidden');
 
@@ -94,8 +92,7 @@ $(function () {
 			'gender' : gender,
 			'nickname' : nickname,
 			'birthday' : birthday,
-			'experience_days' : experience_days,
-			'timezone': timezone
+			'experience_days' : experience_days
 		}, function(data, textStatus, xhr) {
 			loading.button('reset');
 			switch(data){
