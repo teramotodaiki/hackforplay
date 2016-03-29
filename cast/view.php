@@ -26,6 +26,10 @@
       width: 600px;
       height: 400px;
     }
+    .cast-frame-wrapper iframe {
+      width: 100%;
+      height: 100%;
+    }
     </style>
   </head>
   <body>
