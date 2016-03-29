@@ -32,6 +32,7 @@ try {
 			$stmt->execute();
 			$project = $stmt->fetch(PDO::FETCH_ASSOC) or die('Failed to open project');
 			$id = $project['SourceStageID'];
+			break;
 		default:
 			die("Invalid type $type");
 			break;
