@@ -34,6 +34,14 @@
   </head>
   <body>
     <?php require_once '../analyticstracking.php' ?>
+    <script type="text/javascript">
+    window.channelInfo = {
+      type: "project",
+      token: "<?php echo $channel['Token']; ?>"
+
+    };
+    </script>
+    <script src="view.js" charset="utf-8"></script>
     <div class="container container-cast">
       <div class="flex-container">
         <h2><?php echo $channel['ChName']; ?></h2>
@@ -43,7 +51,7 @@
       </div>
       <div class="flex-container">
         <h4><a href="/m/?id=<?php echo $user['ID']; ?>" target="_blank"><?php echo $user['Nickname']; ?></a> is casting now.</h4>
-        <h4><a href="#"><span class="glyphicon glyphicon-refresh"></span></a></h4>
+        <h4><a href="javascript:void(0)" class="refresh-on-click update"><span class="glyphicon glyphicon-refresh"></span></a></h4>
       </div>
     </div>
   </body>

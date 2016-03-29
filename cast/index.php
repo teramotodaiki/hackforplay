@@ -20,7 +20,7 @@ try {
   }
 
   // Channelを取得
-  $stmt = $dbh->prepare('SELECT ch."DisplayName" AS ChName,ch."UserID",ch."Registered",co."DisplayName" AS CoName FROM "Channel" AS ch INNER JOIN "Community" AS co ON ch."CommunityID"=co."ID" WHERE ch."Name"=:name');
+  $stmt = $dbh->prepare('SELECT ch."DisplayName" AS ChName,ch."UserID",ch."Token",ch."Registered",co."DisplayName" AS CoName FROM "Channel" AS ch INNER JOIN "Community" AS co ON ch."CommunityID"=co."ID" WHERE ch."Name"=:name');
   $stmt->bindValue(':name', $name, PDO::PARAM_STR);
   $stmt->execute();
   $channel = $stmt->fetch(PDO::FETCH_ASSOC);
