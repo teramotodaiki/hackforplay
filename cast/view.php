@@ -38,7 +38,7 @@
       <div class="cast-frame-wrapper">
       </div>
       <div class="flex-container">
-        <h4><a href="#">{UserName}</a> is casting now.</h4>
+        <h4><a href="/m/?id=<?php echo $user['ID']; ?>" target="_blank"><?php echo $user['Nickname']; ?></a> is casting now.</h4>
         <h4><a href="#"><span class="glyphicon glyphicon-refresh"></span></a></h4>
       </div>
     </div>

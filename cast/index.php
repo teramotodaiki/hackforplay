@@ -20,7 +20,7 @@ try {
   }
 
   // Channelを取得
-  $stmt = $dbh->prepare('SELECT ch."DisplayName" AS ChName,ch."Registered",co."DisplayName" AS CoName FROM "Channel" AS ch INNER JOIN "Community" AS co ON ch."CommunityID"=co."ID" WHERE ch."Name"=:name');
+  $stmt = $dbh->prepare('SELECT ch."DisplayName" AS ChName,ch."UserID",ch."Registered",co."DisplayName" AS CoName FROM "Channel" AS ch INNER JOIN "Community" AS co ON ch."CommunityID"=co."ID" WHERE ch."Name"=:name');
   $stmt->bindValue(':name', $name, PDO::PARAM_STR);
   $stmt->execute();
   $channel = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -29,6 +29,12 @@ try {
     echo 'Channel not found';
     exit();
   }
+
+  // CastしているUserの情報を取得
+  $stmt = $dbh->prepare('SELECT "ID","Nickname" FROM "User" WHERE "ID"=:userid');
+  $stmt->bindValue('userid', $channel['UserID'], PDO::PARAM_INT);
+  $stmt->execute();
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
   include 'view.php';
 
