@@ -87,6 +87,12 @@ try {
 		exit('database-error');
 	}
 
+	// Update channel if casting
+	$stmt	= $dbh->prepare('UPDATE "Channel" SET "Updated"=:gmt WHERE "ProjectID"=:project_id');
+	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
+	$stmt->bindValue(":gmt", $registered, PDO::PARAM_STR);
+	$stmt->execute();
+
 	// Publish flag
 	$publish = filter_input(INPUT_POST, 'publish', FILTER_VALIDATE_BOOLEAN);
 	if ($publish === NULL) $publish = FALSE;
