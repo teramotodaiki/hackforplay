@@ -36,8 +36,10 @@
     <?php require_once '../analyticstracking.php' ?>
     <script type="text/javascript">
     window.channelInfo = {
+      id: <?php echo $channel['ID']; ?>,
       type: "project",
-      token: "<?php echo $channel['Token']; ?>"
+      token: "<?php echo $channel['Token']; ?>",
+      update: "<?php echo $channel['Updated']; ?>"
 
     };
     </script>
