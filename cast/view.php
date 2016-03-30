@@ -38,7 +38,7 @@
     window.channelInfo = {
       id: <?php echo $channel['ID']; ?>,
       type: "project",
-      token: "<?php echo $channel['Token']; ?>",
+      token: "<?php echo $channel['ProjectToken']; ?>",
       update: "<?php echo $channel['Updated']; ?>"
 
     };
@@ -46,13 +46,17 @@
     <script src="view.js" charset="utf-8"></script>
     <div class="container container-cast">
       <div class="flex-container">
-        <h2><?php echo $channel['ChName']; ?></h2>
+        <h2 class="relative-DisplayName"><?php echo $channel['ChName']; ?></h2>
         <h4><span class="text-muted"><?php echo $channel['CoName']; ?></span></h4>
       </div>
       <div class="cast-frame-wrapper">
       </div>
       <div class="flex-container">
-        <h4><a href="/m/?id=<?php echo $user['ID']; ?>" target="_blank"><?php echo $user['Nickname']; ?></a> is casting now.</h4>
+        <h4>
+          <a href="/m/?id=<?php echo $user['ID']; ?>" class="relative-Nickname" target="_blank">
+            <?php echo $user['Nickname']; ?>
+          </a> is casting now.
+        </h4>
         <h4><a href="javascript:void(0)" class="refresh-on-click update"><span class="glyphicon glyphicon-refresh"></span></a></h4>
       </div>
     </div>

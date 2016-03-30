@@ -20,7 +20,7 @@ try {
   // Datetime string of latest update
   $last_update  = filter_input(INPUT_GET, 'update');
 
-  $stmt = $dbh->prepare('SELECT ch."DisplayName",ch."Token",ch."UserID",ch."Registered",ch."Updated",u."Nickname" FROM "Channel" AS ch LEFT OUTER JOIN "User" AS u ON ch."UserID"=u."ID" WHERE ch."ID"=:id');
+  $stmt = $dbh->prepare('SELECT ch."DisplayName",ch."ProjectToken",ch."UserID",ch."Registered",ch."Updated",u."Nickname" FROM "Channel" AS ch LEFT OUTER JOIN "User" AS u ON ch."UserID"=u."ID" WHERE ch."ID"=:id');
 
   set_time_limit(0);
   while (1) {
