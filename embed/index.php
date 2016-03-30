@@ -2,7 +2,7 @@
 /*
 Embed frame の起点となるスクリプト. 任意のキットをロードし、改造コードスクリプトを埋め込む
 Input: type , (id,key|id|token)
-  type: 改造コードスクリプトの読み込み方法を表す3文字のアルファベット (ses|sta|pro)
+  type: 改造コードスクリプトの読み込み方法を表すキー文字列 (local|stage|project)
   key: type=local のとき、sessionStorageのキーを表す文字列
   id: type=stage|local のとき、ステージのIDを表す数値
   token: type=project のとき、プロジェクトトークンの文字列
