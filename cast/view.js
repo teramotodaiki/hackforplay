@@ -15,6 +15,16 @@ $(function () {
     }
   }
 
+  // Frame size optimise
+  resizeTask();
+  window.addEventListener('resize', resizeTask);
+
+  function resizeTask() {
+    var ratio = 2 / 3;
+    var h = Math.min($(window).width() * ratio, $(window).height());
+    $('.cast-frame-wrapper').height(h).width(h / ratio);
+  }
+
   // Polling
   (function polling () {
 
