@@ -36,6 +36,8 @@
   </head>
   <body>
     <?php require_once '../analyticstracking.php' ?>
+    <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript"></script>
+  	<script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
     <script type="text/javascript">
     window.channelInfo = {
       id: <?php echo $channel['ID']; ?>,
@@ -46,6 +48,7 @@
     };
     </script>
     <script src="view.js" charset="utf-8"></script>
+    <script src="openExternal.js" charset="utf-8"></script>
     <header class="affix flex-container">
       <span class="relative-DisplayName"><?php echo $channel['ChName']; ?></span>
       <span class="text-muted hidden-xs"><?php echo $channel['CoName']; ?></span>
@@ -60,5 +63,17 @@
     </header>
     <div class="cast-frame-wrapper">
     </div>
+    <div class="container-open-external affix">
+  	<?php for ($i = 1; $i <= 3; $i++) : ?>
+  		<div class="item-open-external">
+  			<div class="embed-frame"></div>
+  			<div class="side-menu">
+  				<span class="glyphicon glyphicon-remove"></span>
+  				<span class="glyphicon glyphicon glyphicon-pushpin"></span>
+  				<span class="glyphicon glyphicon-chevron-right"></span>
+  			</div>
+  		</div>
+  	<?php endfor; ?>
+  	</div>
   </body>
 </html>
