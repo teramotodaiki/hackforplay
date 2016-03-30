@@ -73,7 +73,6 @@ $(function () {
         setTimeout(polling, 1000);
       }
     }).fail(function (data) {
-      console.error(data);
       setTimeout(polling, 1000);
     });
 
