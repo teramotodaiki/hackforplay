@@ -6,12 +6,12 @@ $(function () {
   $('.refresh-on-click').on('click', refreshTask.bind(this, frame));
 
   function refreshTask(frame) {
-    var server = $(this).hasClass('update');
+    var server = $('.refresh-on-click').hasClass('update');
     if (server) {
-      frame.contentWindow.reload(true);
-    } else {
       frame.src = '../embed/?type='+channelInfo.type+'&token='+channelInfo.token+'&t='+new Date().getTime();
-      $(this).removeClass('update');
+      $('.refresh-on-click').removeClass('update');
+    } else {
+      frame.contentWindow.location.reload(true);
     }
   }
 
