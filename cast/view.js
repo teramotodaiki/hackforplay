@@ -2,7 +2,7 @@
 if ("Notification" in window) {
   // すでに通知の許可を得ているか確認する
   // 許可を得ていない場合は、ユーザに許可を求めなければならない
-  if (Notification.permission !== 'default') {
+  if (Notification.permission === 'default') {
     Notification.requestPermission();
   }
 }
