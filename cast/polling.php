@@ -35,7 +35,7 @@ try {
       echo 'channel not found';
       die;
 
-    } elseif (!$last_update || $last_update !== $channel['Updated']) {
+    } elseif ($last_update != $channel['Updated']) {
       // Fetch new update
       echo json_encode($channel);
       exit;
