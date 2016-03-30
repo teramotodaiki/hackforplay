@@ -22,7 +22,7 @@ try {
   $id = $stmt->fetch(PDO::FETCH_COLUMN);
 
   if (!$id) {
-    $stmt = $dbh->prepare('INSERT INTO "Channel" ("CoummnunityID","Name","DisplayName","Registered") VALUES(:community_id,:name,:dname,:gmt)');
+    $stmt = $dbh->prepare('INSERT INTO "Channel" ("CommunityID","Name","DisplayName","Registered") VALUES(:community_id,:name,:dname,:gmt)');
     $stmt->bindValue(':community_id', 1, PDO::PARAM_INT);
     $stmt->bindValue(':name', 'test', PDO::PARAM_STR);
     $stmt->bindValue(':dname', 'テストチャンネル', PDO::PARAM_STR);
