@@ -1,3 +1,11 @@
+// ブラウザが通知をサポートしているか確認する
+if ("Notification" in window) {
+  // すでに通知の許可を得ているか確認する
+  // 許可を得ていない場合は、ユーザに許可を求めなければならない
+  if (Notification.permission !== 'default') {
+    Notification.requestPermission();
+  }
+}
 $(function () {
 
   var frame = $('.cast-frame-wrapper iframe').get(0) || $('<iframe>').appendTo('.cast-frame-wrapper').get(0);
@@ -51,6 +59,14 @@ $(function () {
           });
           $('.relative-Nickname').attr('src', '/m/?id=' + fetch['UserID']);
         });
+        // Notificationを作成
+        if (Notification.permission === 'granted') {
+          new Notification('あたらしいバージョンが届きました！', {
+            body: 'クリックして今すぐプレイしよう'
+          }).addEventListener('click', function () {
+            $('.refresh-on-click').trigger('click');
+          });
+        }
       } catch (e) {
         console.error(e);
       } finally {
