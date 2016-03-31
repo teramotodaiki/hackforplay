@@ -366,8 +366,15 @@ $embed = '/embed/?type=stage&id=' . $id;
 						</button>
 					</div>
 					<?php if ($explain !== NULL && $explain !== '') : ?>
-					<div class="col-xs-12 h4p_info-explain">
+					<div class="col-xs-10 h4p_info-explain">
 						<p class="overflow-auto"><?php echo htmlspecialchars($explain); ?></p>
+					</div>
+					<?php endif; ?>
+					<?php if ($cast_enabled) : ?>
+					<div class="col-xs-2 h4p_cast-channel">
+						<button type="button" class="btn btn-default">
+							<span class="glyphicon glyphicon-eject"></span>
+						</button>
 					</div>
 					<?php endif; ?>
 					<div class="col-xs-12 h4p_share-buttons">

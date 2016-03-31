@@ -1413,6 +1413,38 @@ $(function(){
 		$(this).parents('.item-open-external').toggleClass('visible').find('.embed-frame').children().remove();
 	});
 
+	// Cast
+	$('.h4p_cast-channel button').on('click', function () {
+		var channelName = 'test';
+		var castWindow = window.open('about:blank', 'cast');
+		var loading = $(this).button('loading');
+		$.ajax({
+			type: 'POST',
+			url: '../cast/start.php',
+			data: {
+				name: channelName,
+				token: sessionStorage.getItem('project-token')
+			}
+		}).done(function (data) {
+			switch (data) {
+				case 'success':
+					castWindow.location.href = '/cast?name='+channelName+'&t='+new Date().getTime();
+					break;
+				case 'no-commit':
+					$('.h4p_save_button').trigger('click');
+					setTimeout(function () {
+						$('.h4p_cast-channel button').trigger('click');
+					}, 1000);
+					break;
+			}
+		}).fail(function () {
+			castWindow.close();
+		}).always(function () {
+			castWindow = null;
+			loading.button('reset');
+		});
+	});
+
 });
 if (!Array.prototype.findIndex) {
   Array.prototype.findIndex = function(predicate) {

@@ -26,9 +26,8 @@ try {
 			break;
 		case 'project':
 			$token	= filter_input(INPUT_GET, 'token') or die('Missing param token. Add "&token={YOUR PROJECT TOKEN}" to url');
-			$stmt	= $dbh->prepare('SELECT "ID","SourceStageID" FROM "Project" WHERE "Token"=:token AND "UserID"=:session_userid');
+			$stmt	= $dbh->prepare('SELECT "ID","SourceStageID" FROM "Project" WHERE "Token"=:token');
 			$stmt->bindValue(':token', $token, PDO::PARAM_STR);
-			$stmt->bindValue(':session_userid', $session_userid, PDO::PARAM_INT);
 			$stmt->execute();
 			$project = $stmt->fetch(PDO::FETCH_ASSOC) or die('Failed to open project');
 			$id = $project['SourceStageID'];
