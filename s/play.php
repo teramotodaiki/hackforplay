@@ -127,6 +127,12 @@ try {
 		}
 		// 改造することを報告するかどうかのフラグ
 		$reporting_restaged = filter_input(INPUT_GET, 'report', FILTER_VALIDATE_BOOLEAN);
+
+		// Castが可能か
+		$stmt	= $dbh->prepare('SELECT "CastingEmpowered" FROM "UserCommunityMap" WHERE "UserID"=:userid AND "CastingEmpowered"=1');
+		$stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
+		$stmt->execute();
+		$cast_enabled	= (bool)$stmt->fetch(PDO::FETCH_COLUMN);
 	}
 
 	// ステージの情報/制作者の情報/改造元ステージの情報を取得
