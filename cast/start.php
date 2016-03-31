@@ -38,9 +38,9 @@ try {
     die;
   }
 
-  // Update
+  // Fetch project
   $token  = filter_input(INPUT_POST, 'token');
-  $stmt = $dbh->prepare('SELECT "ID" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid AND "State"=:enabled');
+  $stmt = $dbh->prepare('SELECT "ID","Written" FROM "Project" WHERE "Token"=:token AND "UserID"=:userid AND "State"=:enabled');
   $stmt->bindValue(':token', $token, PDO::PARAM_STR);
   $stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
   $stmt->bindValue(':enabled', 'enabled', PDO::PARAM_STR);
@@ -48,6 +48,10 @@ try {
   $project  = $stmt->fetch(PDO::FETCH_ASSOC);
   if (!$project) {
     echo "project-not-found";
+    die;
+  }
+  if (!$project['Written']) {
+    echo "no-commit";
     die;
   }
 
