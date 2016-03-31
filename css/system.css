@@ -282,6 +282,13 @@ iframe {
 	display: none;
 }
 
+.h4p_cast-channel {
+	visibility: hidden;
+}
+.restaging .h4p_cast-channel {
+	visibility: visible;
+}
+
 .smart-asset-sample {
 	display: none;
 }
