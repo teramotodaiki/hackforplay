@@ -458,4 +458,29 @@ $(function(){
 	}, 4000);
 
 
+	// チャンネル
+	$.get('../cast/channels.php', function (data) {
+		try {
+			JSON.parse(data).forEach(function (item) {
+				console.log(item);
+				$('<a>').attr({
+					href: '/cast/?name='+item.Name,
+					target: 'cast'
+				}).append(
+					$('<div>').addClass('cast-thumbnail fit').css({
+						backgroundImage: 'url('+item.Thumbnail+')'
+					})
+				).append(
+					$('<div>').addClass('cast-description').append(
+						$('<h4>').text(item.DisplayName)
+					).append(
+						$('<h5>').text(item.Nickname + '@' + item.Community)
+					)
+				).appendTo('.h4p_topic-cast');
+			});
+		} catch (e) {
+			console.error(e);
+		}
+	})
+
 });

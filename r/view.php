@@ -14,6 +14,51 @@
 	<meta property="og:url" content="http://hackforplay.xyz"/>
 	<meta property="og:type" content="game"/>
 	<meta property="og:site_name" content="あそべるプログラミング HackforPlay"/>
+	<style media="screen">
+	.flex-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+	}
+	.flex-container>a {
+		position: relative;
+		width: 300px;
+		height: 200px;
+		padding: 50px 100px;
+		border-radius: 50%;
+		border: 12px solid transparent;
+		text-align: center;
+		color: rgba(0, 0, 0, 0.2);
+		transition: padding 0.15s linear, border 0.4s linear;
+	}
+	.flex-container>a:hover {
+		padding: 0;
+		border-radius: 10px;
+		border-width: 0;
+		color: rgba(260, 260, 260, 1.0);
+	}
+	.h4p_topic-cast .cast-thumbnail {
+		background-size: cover;
+		background-position: center;
+		border-radius: inherit;
+		border: 0px solid white;
+		border-width: inherit;
+		box-shadow: none;
+	}
+	.h4p_topic-cast .cast-thumbnail:hover {
+		box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.4);
+	}
+	.h4p_topic-cast .cast-description {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+	}
+	.h4p_topic-cast .cast-description * {
+		margin: 0 0 4px 0;
+	}
+	</style>
 </head>
 <body>
 	<?php require_once '../analyticstracking.php' ?>
@@ -48,6 +93,7 @@
 			</div>
 		</div>
 	</div>
+	<div class="h4p_topic-cast flex-container"></div>
 	<div class="container-fluid h4p_stagecontainer">
 		<div class="row">
 			<div class="col-xs-12 h4p_bar-top"></div>
