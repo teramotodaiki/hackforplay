@@ -14,6 +14,13 @@ $(function () {
   $('.refresh-on-click').on('click', refreshTask.bind(this, frame));
 
   function refreshTask(frame) {
+    // 白い点滅を防ぐ
+    frame.style.visibility = 'hidden';
+    frame.onload = visibleFrame.bind(frame);
+    frame.onerror = visibleFrame.bind(frame);
+    function visibleFrame () {
+      this.style.visibility = 'visible';
+    }
     var server = $('.refresh-on-click').hasClass('update');
     if (server) {
       frame.src = '../embed/?type='+channelInfo.type+'&token='+channelInfo.token+'&t='+new Date().getTime();
