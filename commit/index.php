@@ -88,8 +88,9 @@ try {
 	}
 
 	// Update channel if casting
-	$stmt	= $dbh->prepare('UPDATE "Channel" SET "Updated"=:gmt WHERE "ProjectID"=:project_id');
+	$stmt	= $dbh->prepare('UPDATE "Channel" SET "Updated"=:gmt,"Thumbnail"=:thumb_url WHERE "ProjectID"=:project_id');
 	$stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
+	$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", $registered, PDO::PARAM_STR);
 	$stmt->execute();
 
