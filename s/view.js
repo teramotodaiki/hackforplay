@@ -1414,10 +1414,10 @@ $(function(){
 	});
 
 	// Cast
-	$('.h4p_cast-channel button').on('click', function () {
-		var channelName = 'test';
+	$('.h4p_cast-channel .dropdown-menu').on('click', 'a', function () {
+		var target = $(this);
+		var channelName = target.data('name');
 		var castWindow = window.open('about:blank', 'cast');
-		var loading = $(this).button('loading');
 		$.ajax({
 			type: 'POST',
 			url: '../cast/start.php',
@@ -1433,7 +1433,7 @@ $(function(){
 				case 'no-commit':
 					$('.h4p_save_button').trigger('click');
 					setTimeout(function () {
-						$('.h4p_cast-channel button').trigger('click');
+						target.trigger('click');
 					}, 1000);
 					break;
 			}
@@ -1441,9 +1441,26 @@ $(function(){
 			castWindow.close();
 		}).always(function () {
 			castWindow = null;
-			loading.button('reset');
 		});
 	});
+
+	// List of channels
+	$.get('../cast/channels.php', {
+		filter: true
+	}, function (data) {
+		var result;
+		try {
+			result = JSON.parse(data);
+			result.forEach(function (channel) {
+				$('<li>').append(
+					$('<a>').data('name', channel.Name).text(channel.DisplayName+' | '+channel.Community)
+				).appendTo('.h4p_cast-channel .dropdown-menu');
+			});
+		} catch (e) {
+			console.error(e);
+		}
+	});
+
 
 });
 if (!Array.prototype.findIndex) {

@@ -22,6 +22,7 @@
     .flex-container>* {
       flex: 0 0 auto;
       padding: 0px 10px;
+      margin: 0;
     }
     .cast-frame-wrapper {
       margin: 0 auto;
@@ -60,6 +61,9 @@
       <a href="javascript:void(0)" class="refresh-on-click update">
         <span class="glyphicon glyphicon-refresh"></span>
       </a>
+      <label for="cast-auto-reload">
+        <input type="checkbox" id="cast-auto-reload" value=""> auto
+      </label>
     </header>
     <div class="cast-frame-wrapper">
     </div>

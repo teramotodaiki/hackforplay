@@ -371,10 +371,11 @@ $embed = '/embed/?type=stage&id=' . $id;
 					</div>
 					<?php endif; ?>
 					<?php if ($cast_enabled) : ?>
-					<div class="col-xs-2 h4p_cast-channel">
-						<button type="button" class="btn btn-default">
+					<div class="col-xs-2 h4p_cast-channel dropup">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<span class="glyphicon glyphicon-eject"></span>
 						</button>
+						<ul class="dropdown-menu"></ul>
 					</div>
 					<?php endif; ?>
 					<div class="col-xs-12 h4p_share-buttons">

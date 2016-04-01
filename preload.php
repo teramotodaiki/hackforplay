@@ -11,8 +11,9 @@ switch ($_SERVER['SERVER_NAME']) {
 require_once 'rollbar-php/src/rollbar.php';
 // installs global error and exception handlers
 Rollbar::init(array(
-	'access_token' => '4e7ac652993446f9b9c93cf379995509',
+	'access_token' => 'd81c236938a14aea91cc29fad82dd1b4',
 	'environment' => $environment,
+	'root' => $_SERVER['DOCUMENT_ROOT']
 ));
 
 // 1.Generate PDO object (connecting mysql)
