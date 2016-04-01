@@ -397,58 +397,6 @@ $(function(){
 
 	})();
 
-	// フィルター
-	var $fil = $('<a>').addClass('btn btn-lg');
-
-	$fil.hover(function() {
-		$(this).css('opacity', '1.0');
-	}, function() {
-		$(this).css('opacity', '0.65');
-	});
-
-	$.post('../stage/getaglist.php', {
-		'attendance-token' : sessionStorage.getItem('attendance-token')
-	} , function(data, textStatus, xhr) {
-		switch (data) {
-			case '':
-			case 'parse-error':
-				$('.h4p_filtering-buttons').append('Sorry, But load failed // よみこみに しっぱいしました ごめんなさい');
-				break;
-			default:
-				var result = JSON.parse(data);
-
-				// さいしょは ALL // すべて
-				$('.h4p_filtering-buttons').append(
-					$fil.clone(true, true).attr({
-						'title': 'ALL // すべて',
-						'href': '/r/?start=0#page_anchor'
-					}).text('ALL // すべて').css('background-color', 'rgb(148,148,148)').data('filter', '')
-				);
-
-				result.values.forEach(function(item) {
-
-					var fil = $fil.clone(true, true);
-					fil.attr({
-						'title': item.DisplayString,
-						'href': '/r/?start=0&filter=' + item.IdentifierString + '#page_anchor'
-					}).text(item.DisplayString).css({
-						'background-color': item.LabelColor
-					}).data('filter', item.IdentifierString);
-
-					$(this).append(fil);
-
-				}, $('.h4p_filtering-buttons'));
-
-				$('.h4p_filtering-buttons a.btn').each(function(index, el) {
-					if ($(el).data('filter') === sessionStorage.getItem('view_param_filter')) {
-						el.classList.add('disabled');
-					}
-				});
-
-				break;
-		}
-	});
-
 	// トピック
 	var images_index = 0;
 	var images = ['../replay/thumbs/rpg-animation.gif', '../replay/thumbs/rungame-animation.gif', '../replay/thumbs/thesurvive-animation.gif', '../replay/thumbs/puzzleaction-animation.gif'];
