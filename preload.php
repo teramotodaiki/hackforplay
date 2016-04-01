@@ -11,7 +11,7 @@ switch ($_SERVER['SERVER_NAME']) {
 require_once 'rollbar-php/src/rollbar.php';
 // installs global error and exception handlers
 Rollbar::init(array(
-	'access_token' => 'd81c236938a14aea91cc29fad82dd1b4',
+	'access_token' => '4e7ac652993446f9b9c93cf379995509',
 	'environment' => $environment,
 	'root' => $_SERVER['DOCUMENT_ROOT']
 ));
@@ -19,16 +19,16 @@ Rollbar::init(array(
 // 1.Generate PDO object (connecting mysql)
 $pdo = null;
 $useLocalDB = true;
+error_reporting(E_ALL);
 try {
 	if(($useLocalDB && $environment === 'localhost')){
-		error_reporting(E_ALL);
 		$dbh 	= new PDO("mysql:dbname=hackforplay-localhost;host=localhost;charset=utf8", 'hackforplay', 'RtPF7JRSZ5XzFasc');
 		$dbh->exec("SET sql_mode='ANSI_QUOTES'");
 	}elseif($environment === 'staging'){
-		error_reporting(0);
+		// error_reporting(0);
   	$dbh = new PDO ( "sqlsrv:server = tcp:yadw63xtf8.database.secure.windows.net,1433; Database = hackforplay-staging", "hackforplay@yadw63xtf8", "9PFLn21u9TkiqlKx3ceAbawXSGsBPGT");
 	}else{
-		error_reporting(0);
+		// error_reporting(0);
   	$dbh = new PDO ( "sqlsrv:server = tcp:yadw63xtf8.database.secure.windows.net,1433; Database = hackforplay", "hackforplay@yadw63xtf8", "9PFLn21u9TkiqlKx3ceAbawXSGsBPGT");
 	}
   $dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
