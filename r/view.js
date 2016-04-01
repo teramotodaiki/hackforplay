@@ -410,7 +410,6 @@ $(function(){
 	$.get('../cast/channels.php', function (data) {
 		try {
 			JSON.parse(data).forEach(function (item) {
-				console.log(item);
 				$('<a>').attr({
 					href: '/cast/?name='+item.Name,
 					target: 'cast'
