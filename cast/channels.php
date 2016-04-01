@@ -29,7 +29,7 @@ try {
 
   // ChannelをFetch
   $result = array();
-  $stmt = $dbh->prepare('SELECT ch."Name",ch."DisplayName",co."DisplayName" AS Community FROM "Channel" AS ch INNER JOIN "Community" AS co ON ch."CommunityID"=co."ID" WHERE "CommunityID"=:community_id');
+  $stmt = $dbh->prepare('SELECT ch."Name",ch."DisplayName",ch."Thumbnail",co."DisplayName" AS Community FROM "Channel" AS ch INNER JOIN "Community" AS co ON ch."CommunityID"=co."ID" WHERE "CommunityID"=:community_id');
   foreach ($communities as $key => $community_id) {
     $stmt->bindValue(':community_id', $community_id, PDO::PARAM_INT);
     $stmt->execute();
