@@ -73,6 +73,10 @@ $(function () {
           }).addEventListener('click', function () {
             $('.refresh-on-click').trigger('click');
           });
+          // Auto reload
+          if ($('#cast-auto-reload').prop('checked')) {
+            $('.refresh-on-click').trigger('click');
+          }
         }
       } catch (e) {
         console.error(e);
