@@ -21,9 +21,23 @@ switch ($environment) {
 		));
 		break;
 	default:
-		set_exception_handler('var_dump');
-		set_error_handler('var_dump');
-		register_shutdown_function('var_dump');
+		function json_like_dump ($e) {
+			echo "{\n";
+			echo "\ttype: \"{$e['type']}\",\n";
+			echo "\tmessage: \"{$e['message']}\",\n";
+			echo "\tfile: \"{$e['file']}\",\n";
+			echo "\tline: \"{$e['line']}\"\n";
+			echo "}";
+		}
+		set_exception_handler('json_like_dump');
+		set_error_handler(function ($severity, $message, $file, $line) {
+			json_like_dump(new ErrorException($message, 0, $severity, $file, $line));
+		});
+		register_shutdown_function(function(){
+			$e = error_get_last();
+			if ($e !== NULL)
+				json_like_dump($e);
+    });
 		break;
 }
 
