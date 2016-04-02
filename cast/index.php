@@ -14,8 +14,7 @@ try {
 
   $name = filter_input(INPUT_GET, 'name');
   if (!$name) {
-    header("HTTP/1.0 404 Not Found");
-    echo 'Invalid input of name';
+    echo "missing-name";
     exit();
   }
 
@@ -25,8 +24,9 @@ try {
   $stmt->execute();
   $channel = $stmt->fetch(PDO::FETCH_ASSOC);
   if (!$channel) {
-    header("HTTP/1.0 404 Not Found");
-    echo 'Channel not found';
+    echo "channel-not-found";
+    exit();
+  }
     exit();
   }
 
