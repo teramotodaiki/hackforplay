@@ -8,7 +8,7 @@ switch ($_SERVER['SERVER_NAME']) {
 }
 
 // rollbar https://rollbar.com/docs/notifier/rollbar-php/
-require_once 'rollbar-php/src/rollbar.php';
+require_once 'lib/rollbar.php';
 // installs global error and exception handlers
 Rollbar::init(array(
 	'access_token' => '4e7ac652993446f9b9c93cf379995509',
