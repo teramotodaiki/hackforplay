@@ -31,7 +31,8 @@ try {
 	header('Location: ' . $callback_url);
 
 } catch (Exception $e) {
-	Rollbar::report_exception($e);
 	header('Location: e');
+	throw $e;
+	die;
 }
 ?>
