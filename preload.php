@@ -23,10 +23,9 @@ switch ($environment) {
 	default:
 		function json_like_dump ($e) {
 			echo "{\n";
-			echo "\ttype: \"{$e['type']}\",\n";
-			echo "\tmessage: \"{$e['message']}\",\n";
-			echo "\tfile: \"{$e['file']}\",\n";
-			echo "\tline: \"{$e['line']}\"\n";
+			echo "\tmessage: \"{$e->getMessage()}\",\n";
+			echo "\tfile: \"{$e->getFile()}\",\n";
+			echo "\tline: \"{$e->getLine()}\"\n";
 			echo "}";
 		}
 		set_exception_handler('json_like_dump');
