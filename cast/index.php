@@ -11,6 +11,10 @@ try {
   session_start();
 	$session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
 	session_commit();
+  if (!$session_userid) {
+    echo "no-session";
+    exit();
+  }
 
   $name = filter_input(INPUT_GET, 'name');
   if (!$name) {
