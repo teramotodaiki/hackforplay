@@ -58,8 +58,9 @@ try {
 	session_commit();
 
 } catch (Exception $e) {
-	Rollbar::report_exception($e);
 	header('Location: e');
+	throw $e;
+	die;
 }
 ?>
 <!DOCTYPE html>
