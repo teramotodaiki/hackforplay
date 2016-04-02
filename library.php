@@ -23,6 +23,14 @@ call_user_func(function($useCDN, $path){
 	endif;
 }, true, "/lib");
  ?>
+ <!-- less -->
+ <?php $less_client_mode = false; ?>
+ <?php  if ($_SERVER['SERVER_NAME'] === 'localhost' && $less_client_mode): ?>
+ <link rel="stylesheet/less" type="text/css" href="/less/main.less" media="screen" charset="utf-8">
+ <script src="/lib/less.js" charset="utf-8"></script>
+ <?php else : ?>
+ <link rel="stylesheet" href="/css/app.css" media="screen" charset="utf-8">
+ <?php endif; ?>
  <!-- Environment File -->
 <link rel="stylesheet" href="/css/font.css" />
 <link rel="stylesheet" href="/css/size.css" />
