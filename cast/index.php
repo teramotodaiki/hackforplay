@@ -21,7 +21,7 @@ if (!$name) {
 }
 
 // Channelを取得
-$stmt = $dbh->prepare('SELECT ch."ID",ch."DisplayName" AS ChName,ch."UserID",ch."CommunityID",ch."ProjectToken",ch."Registered",ch."Updated",co."DisplayName" AS CoName FROM "Channel" AS ch INNER JOIN "Community" AS co ON ch."CommunityID"=co."ID" WHERE ch."Name"=:name');
+$stmt = $dbh->prepare('SELECT ch."ID",ch."DisplayName" AS ChName,ch."UserID",ch."TeamID",ch."ProjectToken",ch."Registered",ch."Updated",t."DisplayName" AS TeamName FROM "Channel" AS ch INNER JOIN "Team" AS t ON ch."TeamID"=t."ID" WHERE ch."Name"=:name');
 $stmt->bindValue(':name', $name, PDO::PARAM_STR);
 $stmt->execute();
 $channel = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -31,9 +31,9 @@ if (!$channel) {
 }
 
 // Channelの視聴権限を確認
-$stmt = $dbh->prepare('SELECT "ID" FROM "UserCommunityMap" WHERE "UserID"=:userid AND "CommunityID"=:community_id AND "Enabled"=1');
+$stmt = $dbh->prepare('SELECT "ID" FROM "UserTeamMap" WHERE "UserID"=:userid AND "TeamID"=:team_id AND "Enabled"=1');
 $stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
-$stmt->bindValue(':community_id', $channel['CommunityID'], PDO::PARAM_INT);
+$stmt->bindValue(':team_id', $channel['TeamID'], PDO::PARAM_INT);
 $stmt->execute();
 if (!$stmt->fetch()) {
   echo "unauthorized";
