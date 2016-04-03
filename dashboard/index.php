@@ -2,7 +2,7 @@
 /**
 * /dashboard/?id={User.ID}
 * そのアカウントの情報が見られる. 公開は限定的.
-* 当人がSessionUser, あるいはCommunityに許可している場合飲み閲覧可能
+* 当人がSessionUser, あるいはTeamに許可している場合飲み閲覧可能
 */
 
 require_once '../preload.php';
@@ -39,10 +39,10 @@ if (!$user) {
 if ($userid == $session_userid) {
 	// Same user (Authentication is not required)
 } else {
-	// Empowered to community
-	// [SessionUser] <===(Management)==== [Community] <====(Empowered)==== [TargetUser]
+	// Empowered to team
+	// [SessionUser] <===(Management)==== [Team] <====(Empowered)==== [TargetUser]
 	$stmt	= $dbh->prepare(
-	'SELECT "ID" FROM "UserCommunityMap" WHERE "Enabled"=1 AND "DashboardEmpowered"=1 AND "UserID"=:userid AND "CommunityID" IN (SELECT "CommunityID" FROM "UserCommunityMap" WHERE "Enabled"=1 AND "DashboardManagement"=1 AND "UserID"=:session_userid)');
+	'SELECT "ID" FROM "UserTeamMap" WHERE "Enabled"=1 AND "DashboardEmpowered"=1 AND "UserID"=:userid AND "TeamID" IN (SELECT "TeamID" FROM "UserTeamMap" WHERE "Enabled"=1 AND "DashboardManagement"=1 AND "UserID"=:session_userid)');
 	// $stmt->bindValue(':true1', true, PDO::PARAM_BOOL);
 	// $stmt->bindValue(':true2', true, PDO::PARAM_BOOL);
 	// $stmt->bindValue(':true3', true, PDO::PARAM_BOOL);

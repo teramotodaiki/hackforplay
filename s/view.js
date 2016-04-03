@@ -1453,7 +1453,7 @@ $(function(){
 			result = JSON.parse(data);
 			result.forEach(function (channel) {
 				$('<li>').append(
-					$('<a>').data('name', channel.Name).text(channel.DisplayName+' | '+channel.Community)
+					$('<a>').data('name', channel.Name).text(channel.DisplayName+' | '+channel.Team)
 				).appendTo('.h4p_cast-channel .dropdown-menu');
 			});
 		} catch (e) {

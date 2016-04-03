@@ -409,6 +409,7 @@ $(function(){
 	// チャンネル
 	$.get('../cast/channels.php', function (data) {
 		try {
+			console.log(data);
 			JSON.parse(data).forEach(function (item) {
 				$('<a>').attr({
 					href: '/cast/?name='+item.Name,
@@ -421,7 +422,7 @@ $(function(){
 					$('<div>').addClass('cast-description').append(
 						$('<h4>').text(item.DisplayName)
 					).append(
-						$('<h5>').text(item.Nickname + '@' + item.Community)
+						$('<h5>').text(item.Nickname + '@' + item.Team)
 					)
 				).appendTo('.h4p_topic-cast');
 			});

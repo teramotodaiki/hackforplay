@@ -16,15 +16,15 @@ if (!$targetid) {
   die('invalid-input-userid');
 }
 
-$communityid = filter_input(INPUT_POST, 'communityid', FILTER_VALIDATE_INT);
-if (!$communityid) {
-  die('invalid-input-communityid');
+$team_id = filter_input(INPUT_POST, 'team', FILTER_VALIDATE_INT);
+if (!$team_id) {
+  die('invalid-input-team');
 }
 
 // SessionUserの権限を調査する
-$stmt = $dbh->prepare('SELECT "ID","Enabled","MembershipEmpowered","MembershipManagement" FROM "UserCommunityMap" WHERE "UserID"=:userid AND "CommunityID"=:communityid');
+$stmt = $dbh->prepare('SELECT "ID","Enabled","MembershipEmpowered","MembershipManagement" FROM "UserTeamMap" WHERE "UserID"=:userid AND "TeamID"=:team_id');
 $stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
-$stmt->bindValue(':communityid', $communityid, PDO::PARAM_INT);
+$stmt->bindValue(':team_id', $team_id, PDO::PARAM_INT);
 $stmt->execute();
 $doer = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$doer || !$doer['Enabled']) {
@@ -33,7 +33,7 @@ if (!$doer || !$doer['Enabled']) {
 
 // 指定されたユーザの権限を調査する
 $stmt->bindValue(':userid', $targetid, PDO::PARAM_INT);
-$stmt->bindValue(':communityid', $communityid, PDO::PARAM_INT);
+$stmt->bindValue(':team_id', $team_id, PDO::PARAM_INT);
 $stmt->execute();
 $target = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$target || !$target['Enabled']) {
@@ -44,7 +44,7 @@ if (!$target || !$target['Enabled']) {
 ($doer['MembershipManagement'] && $target['MembershipEmpowered']) or die('unauthorized-request');
 
 // 指定されたユーザのメンバーシップを無効化
-$stmt = $dbh->prepare('UPDATE "UserCommunityMap" SET "Enabled"=:false WHERE "ID"=:target');
+$stmt = $dbh->prepare('UPDATE "UserTeamMap" SET "Enabled"=:false WHERE "ID"=:target');
 $stmt->bindValue(':false', false, PDO::PARAM_BOOL);
 $stmt->bindValue(':target', $target['ID'], PDO::PARAM_INT);
 $stmt->execute() or die('database-error');

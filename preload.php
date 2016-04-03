@@ -23,9 +23,9 @@ switch ($environment) {
 	default:
 		function json_like_dump ($e) {
 			echo "{\n";
-			echo "\tmessage: \"{$e->getMessage()}\",\n";
-			echo "\tfile: \"{$e->getFile()}\",\n";
-			echo "\tline: \"{$e->getLine()}\"\n";
+			echo "\t\"message\": \"{$e->getMessage()}\",\n";
+			echo "\t\"file\": \"{$e->getFile()}\",\n";
+			echo "\t\"line\": \"{$e->getLine()}\"\n";
 			echo "}";
 		}
 		set_exception_handler('json_like_dump');

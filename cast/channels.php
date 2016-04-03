@@ -16,20 +16,20 @@ if (!$session_userid) {
   die;
 }
 
-// 加盟しているCommunityをFetch
+// 加盟しているTeamをFetch
 $filter = filter_input(INPUT_GET, 'filter', FILTER_VALIDATE_BOOLEAN);
 $stmt = $filter ?
-  $dbh->prepare('SELECT DISTINCT "CommunityID" FROM "UserCommunityMap" WHERE "UserID"=:userid AND "Enabled"=1 AND "CastingEmpowered"=1') :
-  $dbh->prepare('SELECT DISTINCT "CommunityID" FROM "UserCommunityMap" WHERE "UserID"=:userid AND "Enabled"=1');
+  $dbh->prepare('SELECT DISTINCT "TeamID" FROM "UserTeamMap" WHERE "UserID"=:userid AND "Enabled"=1 AND "CastingEmpowered"=1') :
+  $dbh->prepare('SELECT DISTINCT "TeamID" FROM "UserTeamMap" WHERE "UserID"=:userid AND "Enabled"=1');
 $stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
 $stmt->execute();
-$communities = $stmt->fetchAll(PDO::FETCH_COLUMN);
+$teams = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
 // ChannelをFetch
 $result = array();
-$stmt = $dbh->prepare('SELECT ch."Name",ch."DisplayName",ch."Thumbnail",co."DisplayName" AS Community,u."Nickname" FROM "Channel" AS ch INNER JOIN "Community" AS co ON ch."CommunityID"=co."ID" LEFT OUTER JOIN "User" AS u ON ch."UserID"=u."ID" WHERE "CommunityID"=:community_id');
-foreach ($communities as $key => $community_id) {
-  $stmt->bindValue(':community_id', $community_id, PDO::PARAM_INT);
+$stmt = $dbh->prepare('SELECT ch."Name",ch."DisplayName",ch."Thumbnail",t."DisplayName" AS Team,u."Nickname" FROM "Channel" AS ch INNER JOIN "Team" AS t ON ch."TeamID"=t."ID" LEFT OUTER JOIN "User" AS u ON ch."UserID"=u."ID" WHERE "TeamID"=:team_id');
+foreach ($teams as $key => $team_id) {
+  $stmt->bindValue(':team_id', $team_id, PDO::PARAM_INT);
   $stmt->execute();
   array_push($result, $stmt->fetch(PDO::FETCH_ASSOC));
 }

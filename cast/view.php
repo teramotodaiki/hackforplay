@@ -52,7 +52,7 @@
     <script src="openExternal.js" charset="utf-8"></script>
     <header class="affix flex-container">
       <span class="relative-DisplayName"><?php echo $channel['ChName']; ?></span>
-      <span class="text-muted hidden-xs"><?php echo $channel['CoName']; ?></span>
+      <span class="text-muted hidden-xs"><?php echo $channel['TeamName']; ?></span>
       <span>
         <a href="/m/?id=<?php echo $user['ID']; ?>" class="relative-Nickname" target="_blank">
           <?php echo $user['Nickname']; ?>
