@@ -102,8 +102,9 @@ switch ($type) {
 	<script type="text/javascript">
 	window.addEventListener('load', function () {
 		Hack.stageInfo = {
+			<?php if (isset($playlog_token)) : ?>
 			token: '<?php echo $playlog_token; ?>'
-
+			<?php endif; ?>
 		};
 	});
 	</script>

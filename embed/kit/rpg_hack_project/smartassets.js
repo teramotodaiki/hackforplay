@@ -828,6 +828,41 @@ window.addEventListener('load', function () {
 				};
 			}
 		}
+	}, {
+		id: 38,
+		title: 'ルーレット',
+		image: 'enchantjs/x2/dotmat.gif',
+		trim: { frame: 562, width: 32, height: 32 },
+		query: 'embed',
+		caption: 'こうげきすると、ルーレットがはじまる',
+		identifier: '()',
+		variables: ['item'],
+		counters: ['__cnt15', '__cnt10'],
+		code: function () {
+			// ルーレット
+			var item = new MapObject('ruby');
+			item.locate(__cnt15, __cnt10, 'map1');
+			item.flag = true;
+			item.onattacked = function () {
+				if (this.flag) {
+					// ルーレット開始！
+					this.stop = this.setInterval(function () {
+						this.name = random(['ruby','skull','poo']);
+					}, 4);
+					this.flag = false;
+				} else {
+					// ルーレット停止！
+					this.stop();
+					if (this.name === 'ruby') {
+						Hack.score += 1; // rubyなら、SCORE + 1
+					}
+					if (this.name === 'skull') {
+						Hack.score -= 1; // skullなら、SCORE - 1
+					}
+					this.flag = true;
+				}
+			};
+		}
 	}).setCounter({
 		name: '__cnt15',
 		table: [7].concat(shuffle([0,1,2,3,4,5,6,8,9,10,11,12,13,14]))

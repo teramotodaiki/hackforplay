@@ -324,6 +324,22 @@ window.addEventListener('load', function () {
 		force: function (x, y) {
 			this.accelerationX = x / this.mass;
 			this.accelerationY = y / this.mass;
+		},
+		name: {
+			get: function () {
+				var search = '';
+				Object.keys(MapObject.dictionary).forEach(function (key) {
+					if (MapObject.dictionary[key] === this.frame) {
+						search = key;
+					}
+				}, this);
+				return search;
+			},
+			set: function (key) {
+				if (MapObject.dictionary.hasOwnProperty(key)) {
+					this.frame = MapObject.dictionary[key];
+				}
+			}
 		}
 	});
 
