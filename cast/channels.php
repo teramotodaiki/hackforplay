@@ -31,7 +31,9 @@ $stmt = $dbh->prepare('SELECT ch."Name",ch."DisplayName",ch."Thumbnail",t."Displ
 foreach ($teams as $key => $team_id) {
   $stmt->bindValue(':team_id', $team_id, PDO::PARAM_INT);
   $stmt->execute();
-  array_push($result, $stmt->fetch(PDO::FETCH_ASSOC));
+  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    array_push($result, $row);
+  }
 }
 
 echo json_encode($result);
