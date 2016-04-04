@@ -30,6 +30,7 @@ switch ($environment) {
 		}
 		set_exception_handler('json_like_dump');
 		set_error_handler(function ($severity, $message, $file, $line) {
+			if (error_reporting() === 0) return;
 			json_like_dump(new ErrorException($message, 0, $severity, $file, $line));
 		});
 		register_shutdown_function(function(){
