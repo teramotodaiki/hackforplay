@@ -24,7 +24,7 @@ try {
 	$_SESSION['access_token'] = $connection->oauth("oauth/access_token", array("oauth_verifier" => $_REQUEST['oauth_verifier']));
 
 	//セッションIDをリジェネレート
-	session_regenerate_id();
+	@session_regenerate_id();
 
 	// 認証後のコールバックURL
 	$callback_url = $_SESSION['authed_callback_url'];
