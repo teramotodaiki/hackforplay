@@ -39,7 +39,7 @@ switch ($type) {
 $stmt	= $dbh->prepare('SELECT "Src","ScriptID","State","UserID" FROM "Stage" WHERE "ID"=:id');
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
-$stage = $stmt->fetch(PDO::FETCH_ASSOC);
+$stage = $stmt->fetch(PDO::FETCH_ASSOC) or die('Stage not found');
 
 // Check authorization
 if ($stage['State'] === 'rejected') {
