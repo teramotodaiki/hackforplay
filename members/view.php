@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Members - <?php echo $community['DisplayName']; ?></title>
+    <title>Members - <?php echo $team['DisplayName']; ?></title>
     <?php require_once '../library.php' ?>
     <style media="screen">
     .flex-container {
@@ -24,7 +24,7 @@
   	<?php require_once '../view/header.php'; ?>
     <script src="view.js"></script>
     <div class="container">
-      <h1><?php echo $community['DisplayName']; ?></h1>
+      <h1><?php echo $team['DisplayName']; ?></h1>
       <?php foreach ($UCMap as $key => $user) : ?>
         <div class="panel panel-default flex-container">
           <h4>
@@ -41,7 +41,7 @@
         <?php if ($map['MembershipManagement'] && $user['MembershipEmpowered']) : ?>
           <a class="query-on-click label label-danger" data-query="delete" href="javascript:void(0);"
           data-userid="<?php echo $user['UserID']; ?>"
-          data-communityid="<?php echo $community['ID']; ?>"
+          data-team="<?php echo $team['ID']; ?>"
           data-nickname="<?php echo $user['Nickname']; ?>">
             DELETE
           </a>

@@ -14,9 +14,9 @@ if (!$session_userid) {
   die;
 }
 
-// Channel, CommunityをFetch
+// Channel, TeamをFetch
 $name = filter_input(INPUT_POST, 'name');
-$stmt = $dbh->prepare('SELECT "ID","CommunityID" FROM "Channel" WHERE "Name"=:name');
+$stmt = $dbh->prepare('SELECT "ID","TeamID" FROM "Channel" WHERE "Name"=:name');
 $stmt->bindValue(':name', $name, PDO::PARAM_STR);
 $stmt->execute();
 $channel  = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -26,9 +26,9 @@ if (!$channel) {
 }
 
 // 権限を確認
-$stmt = $dbh->prepare('SELECT "ID" FROM "UserCommunityMap" WHERE "UserID"=:userid AND "CommunityID"=:community_id AND "CastingEmpowered"=1 AND "Enabled"=1');
+$stmt = $dbh->prepare('SELECT "ID" FROM "UserTeamMap" WHERE "UserID"=:userid AND "TeamID"=:team_id AND "CastingEmpowered"=1 AND "Enabled"=1');
 $stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
-$stmt->bindValue(':community_id', $channel['CommunityID'], PDO::PARAM_INT);
+$stmt->bindValue(':team_id', $channel['TeamID'], PDO::PARAM_INT);
 $stmt->execute();
 $map = $stmt->fetch();
 if (!$map) {
