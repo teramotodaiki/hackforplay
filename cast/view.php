@@ -44,6 +44,7 @@
       id: <?php echo $channel['ID']; ?>,
       type: "project",
       token: "<?php echo $channel['ProjectToken']; ?>",
+      script_id: "<?php echo $channel['ScriptID']; ?>",
       update: "<?php echo $channel['Updated']; ?>"
 
     };
@@ -64,7 +65,25 @@
       <label for="cast-auto-reload">
         <input type="checkbox" id="cast-auto-reload" value=""> auto
       </label>
+      <span data-toggle="modal" data-target="#codeModal">
+        <span class="glyphicon glyphicon-file"></span>
+      </span>
     </header>
+  	<div class="modal fade" id="codeModal" tabindex="-1" role="dialog">
+  		<div class="modal-dialog modal-lg">
+  			<div class="modal-content">
+  	    		<div class="modal-header">
+  			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  		    	</div>
+  			    <div class="modal-body">
+  			    	<pre class="overflow-auto"><code></code></pre>
+  			    </div>
+  	    		<div class="modal-footer">
+  	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+  	    		</div>
+  			</div>
+  		</div>
+  	</div>
     <div class="cast-frame-wrapper">
     </div>
     <div class="container-open-external affix">

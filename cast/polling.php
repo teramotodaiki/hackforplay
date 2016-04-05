@@ -17,7 +17,8 @@ if (!$id) {
 // Datetime string of latest update
 $last_update  = filter_input(INPUT_GET, 'update');
 
-$stmt = $dbh->prepare('SELECT ch."DisplayName",ch."ProjectToken",ch."UserID",ch."Registered",ch."Updated",u."Nickname" FROM "Channel" AS ch LEFT OUTER JOIN "User" AS u ON ch."UserID"=u."ID" WHERE ch."ID"=:id');
+$stmt = $dbh->prepare('SELECT ch."DisplayName",ch."ProjectToken",ch."ProjectID",ch."UserID",ch."Registered",ch."Updated",u."Nickname" FROM "Channel" AS ch LEFT OUTER JOIN "User" AS u ON ch."UserID"=u."ID" WHERE ch."ID"=:id');
+$stmt_script  = $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id');
 
 set_time_limit(0);
 while (1) {
@@ -33,6 +34,10 @@ while (1) {
     die;
 
   } elseif ($last_update != $channel['Updated']) {
+
+    $stmt_script->execute($channel['ProjectID']);
+    $channel['ScriptID'] = (int)$stmt_script->fetch(PDO::FETCH_COLUMN);
+
     // Fetch new update
     echo json_encode($channel);
     exit;
