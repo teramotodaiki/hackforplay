@@ -340,6 +340,18 @@ window.addEventListener('load', function () {
 					this.frame = MapObject.dictionary[key];
 				}
 			}
+		},
+		__res : {
+			set: function (path) {
+				var seg = path.split('/');
+				var self = this;
+				Surface.load('/src?author='+seg[0]+'&sub='+seg[1], function () {
+					self.image = this.clone();
+					console.log('successfully loading', path);
+				}, function () {
+					console.log('loading failed', path);
+				});
+			}
 		}
 	});
 
