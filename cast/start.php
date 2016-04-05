@@ -53,11 +53,12 @@ if (!$project['Written']) {
   die;
 }
 
-$stmt = $dbh->prepare('UPDATE "Channel" SET "ProjectID"=:project_id,"ProjectToken"=:project_token,"UserID"=:userid,"Updated"=:gmt');
+$stmt = $dbh->prepare('UPDATE "Channel" SET "ProjectID"=:project_id,"ProjectToken"=:project_token,"UserID"=:userid,"Updated"=:gmt WHERE "ID"=:channel_id');
 $stmt->bindValue(':project_id', $project['ID'], PDO::PARAM_INT);
 $stmt->bindValue(':project_token', $token, PDO::PARAM_STR);
 $stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
 $stmt->bindValue(':gmt', gmdate('Y-m-d H:i:s'), PDO::PARAM_STR);
+$stmt->bindValue(':channel_id', $channel['ID'], PDO::PARAM_INT);
 $stmt->execute();
 
 echo 'success';
