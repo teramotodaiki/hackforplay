@@ -90,4 +90,13 @@ $(function () {
 
   })();
 
+  // code modal
+  $('#codeModal').on('show.bs.modal', function () {
+    $.get('../script/', {
+      id: channelInfo.script_id
+    }, function (data) {
+      $('#codeModal pre').text(data);
+    });
+  });
+
 });
