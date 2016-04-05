@@ -1,7 +1,7 @@
 <?php
 /**
  * /src/?author={AuthorName}&sub={SubName}
- * Put resource data with Content-Type
+ * get resource data with Content-Type
 */
 
 require_once '../preload.php';
