@@ -21,7 +21,7 @@ if (!$name) {
 }
 
 // Channelを取得
-$stmt = $dbh->prepare('SELECT ch."ID",ch."DisplayName" AS ChName,ch."UserID",ch."TeamID",ch."ProjectToken",ch."Registered",ch."Updated",t."DisplayName" AS TeamName FROM "Channel" AS ch INNER JOIN "Team" AS t ON ch."TeamID"=t."ID" WHERE ch."Name"=:name');
+$stmt = $dbh->prepare('SELECT ch."ID",ch."DisplayName" AS ChName,ch."UserID",ch."TeamID",ch."ProjectToken",ch."ProjectID",ch."Registered",ch."Updated",t."DisplayName" AS TeamName FROM "Channel" AS ch INNER JOIN "Team" AS t ON ch."TeamID"=t."ID" WHERE ch."Name"=:name');
 $stmt->bindValue(':name', $name, PDO::PARAM_STR);
 $stmt->execute();
 $channel = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -45,6 +45,10 @@ $stmt = $dbh->prepare('SELECT "ID","Nickname" FROM "User" WHERE "ID"=:userid');
 $stmt->bindValue('userid', $channel['UserID'], PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$stmt_script  = $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=?');
+$stmt_script->execute([$channel['ProjectID']]);
+$channel['ScriptID'] = (int)$stmt_script->fetch(PDO::FETCH_COLUMN);
 
 include 'view.php';
 

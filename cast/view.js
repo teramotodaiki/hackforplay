@@ -57,6 +57,7 @@ $(function () {
         var fetch = JSON.parse(data);
         channelInfo.token = fetch.ProjectToken;
         channelInfo.update = fetch.Updated;
+        channelInfo.script_id = fetch.ScriptID;
         // 次にrefreshをクリックした時、情報を書き換える
         $('.refresh-on-click').addClass('update').on('click', function render () {
           $('body').remove('click', '.refresh-on-click', render);

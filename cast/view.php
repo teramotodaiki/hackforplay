@@ -44,6 +44,7 @@
       id: <?php echo $channel['ID']; ?>,
       type: "project",
       token: "<?php echo $channel['ProjectToken']; ?>",
+      script_id: "<?php echo $channel['ScriptID']; ?>",
       update: "<?php echo $channel['Updated']; ?>"
 
     };
