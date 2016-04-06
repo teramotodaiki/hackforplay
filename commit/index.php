@@ -94,7 +94,6 @@ $stmt->execute();
 
 // Publish flag
 $publish = filter_input(INPUT_POST, 'publish', FILTER_VALIDATE_BOOLEAN);
-if ($publish === NULL) $publish = FALSE;
 
 if ($publish) {
 	// 新しくステージを作成
