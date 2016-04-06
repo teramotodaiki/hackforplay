@@ -97,14 +97,8 @@ $publish = filter_input(INPUT_POST, 'publish', FILTER_VALIDATE_BOOLEAN);
 
 if ($publish) {
 	// 新しくステージを作成
-	$stage_info_json = filter_input(INPUT_POST, 'stage_info');
-	if ($stage_info_json === NULL || $stage_info_json === FALSE) {
-		exit('invalid-stage-info');
-	}
-	$stage_info = json_decode($stage_info_json);
-	if (!$stage_info) {
-		exit('invalid-stage-info');
-	}
+	$stage_info_json = filter_input(INPUT_POST, 'stage_info') or die('invalid-stage-info');
+	$stage_info = json_decode($stage_info_json) or die('invalid-stage-info');
 
 	// ステージ情報を更新
 	if (!$project['ReservedID']) {
