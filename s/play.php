@@ -131,6 +131,12 @@ if ($mode === 'quest') {
 	$stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$cast_enabled	= (bool)$stmt->fetch(PDO::FETCH_COLUMN);
+
+	// チームとして投稿できるチーム
+	$stmt	= $dbh->prepare('SELECT "ID","DisplayName" FROM "Team" WHERE "ID" IN (SELECT "TeamID" FROM "UserTeamMap" WHERE "UserID"=:userid AND "Enabled"=1 AND "PublishingEmpowered"=1)');
+	$stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
+	$stmt->execute();
+	$publishable_teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // ステージの情報/制作者の情報/改造元ステージの情報を取得

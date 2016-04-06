@@ -4,7 +4,8 @@
 * Projectに対して新しいScriptを追加する. また、そのScriptをStageとして投稿する
 * ただし、Project.UserIDと一致するUserIDをもつセッションが必要
 * publish flag がTRUEの時は、stage_infoを指定する
-* Input:	token , code , timezone , thumb , publish , (stage_info) , (attendance-token)
+* team_id を指定することで、チーム名義として投稿できる
+* Input:	token , code , timezone , thumb , publish , (stage_info) , (team_id) , (attendance-token)
 * Output:	no-session , invalid-token , already-published , code-is-null , invalid-stage-info , database-error , success
 */
 
@@ -94,26 +95,34 @@ $stmt->execute();
 
 // Publish flag
 $publish = filter_input(INPUT_POST, 'publish', FILTER_VALIDATE_BOOLEAN);
-if ($publish === NULL) $publish = FALSE;
 
 if ($publish) {
 	// 新しくステージを作成
-	$stage_info_json = filter_input(INPUT_POST, 'stage_info');
-	if ($stage_info_json === NULL || $stage_info_json === FALSE) {
-		exit('invalid-stage-info');
-	}
-	$stage_info = json_decode($stage_info_json);
-	if (!$stage_info) {
-		exit('invalid-stage-info');
-	}
+	$stage_info_json = filter_input(INPUT_POST, 'stage_info') or die('invalid-stage-info');
+	$stage_info = json_decode($stage_info_json) or die('invalid-stage-info');
 
 	// ステージ情報を更新
 	if (!$project['ReservedID']) {
 		exit('database-error');
 	}
 
+	// チームの権限を確認
+	$team_id = filter_input(INPUT_POST, 'team_id', FILTER_VALIDATE_INT);
+	if ($team_id) {
+		$stmt	= $dbh->prepare('SELECT "ID" FROM "UserTeamMap" WHERE "UserID"=:userid AND "TeamID"=:team_id AND "Enabled"=1 AND "PublishingEmpowered"=1');
+		$stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
+		$stmt->bindValue(':team_id', $team_id, PDO::PARAM_INT);
+		$stmt->execute();
+		if ($stmt->fetch() === FALSE) {
+			die('unauthorized-team-publishing');
+		}
+	} else {
+		$team_id = NULL;
+	}
+
 	// Reserved -> Judging
-	$stmt	= $dbh->prepare('UPDATE "Stage" SET "ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Thumbnail"=:thumb_url,"Registered"=:gmt WHERE "ID"=:reserved_id');
+	$stmt	= $dbh->prepare('UPDATE "Stage" SET "TeamID"=:team_id,"ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Thumbnail"=:thumb_url,"Registered"=:gmt WHERE "ID"=:reserved_id');
+	$stmt->bindValue(":team_id", $team_id, PDO::PARAM_INT);
 	$stmt->bindValue(":scriptid", $script_id, PDO::PARAM_INT);
 	$stmt->bindValue(":input_title", $stage_info->title, PDO::PARAM_STR);
 	$stmt->bindValue(":input_explain", $stage_info->explain, PDO::PARAM_STR);
