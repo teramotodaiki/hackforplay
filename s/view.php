@@ -183,6 +183,25 @@ $embed = '/embed/?type=stage&id=' . $id;
 			        		<label class="control-label">ステージの説明:</label>
 			        		<textarea class="form-control stage-explain"></textarea>
 			        	</div>
+								<?php if (isset($publishable_teams)): ?>
+								<div class="form-group">
+									<label class="control-label">チームとして投稿:</label>
+									<div class="radio">
+										<label>
+											<input type="radio" name="input-team" value="" checked>
+											自分のステージとして投稿
+										</label>
+									</div>
+									<?php foreach ($publishable_teams as $key => $team): ?>
+									<div class="radio">
+										<label>
+											<input type="radio" name="input-team" value="<?php echo $team['ID']; ?>">
+											<b><?php echo $team['DisplayName']; ?></b>として投稿
+										</label>
+									</div>
+									<?php endforeach; ?>
+								</div>
+								<?php endif; ?>
 				    </div>
 				    <div class="modal-footer">
 		        		<p class="alert alert-warning">
