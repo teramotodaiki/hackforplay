@@ -183,7 +183,7 @@ $embed = '/embed/?type=stage&id=' . $id;
 			        		<label class="control-label">ステージの説明:</label>
 			        		<textarea class="form-control stage-explain"></textarea>
 			        	</div>
-								<?php if (isset($publishable_teams)): ?>
+								<?php if (isset($publishable_teams) && count($publishable_teams)): ?>
 								<div class="form-group">
 									<label class="control-label">チームとして投稿:</label>
 									<div class="radio">
