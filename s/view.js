@@ -1059,6 +1059,7 @@ $(function(){
 				thumb: sessionStorage.getItem('image') || null,
 				publish: true,
 				stage_info: JSON.stringify(stage_info),
+				team_id: $('#inputModal input[name="input-team"]:checked').val() || null,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			} , function(data, textStatus, xhr) {
 				$('.h4p_publish button').button('reset');
@@ -1080,6 +1081,9 @@ $(function(){
 						break;
 					case 'database-error':
 						showAlert('alert-danger', 'エラーにより投稿できませんでした');
+						break;
+					case 'unauthorized-team-publishing':
+						showAlert('alert-danger', 'そのチームに投稿する権限を持っていません');
 						break;
 					case 'success':
 						$('.h4p_publish button').text('Thank you for your ReStaging!!').attr('disabled', 'disabled').addClass('disabled');
