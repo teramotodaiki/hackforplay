@@ -336,6 +336,10 @@ window.addEventListener('load', function() {
 			lay.opacity = 0;
 			lay.moveTo(-game.rootScene.x, -game.rootScene.y);
 			lay.tl.fadeIn(30, enchant.Easing.LINEAR);
+			// freeze
+			Hack.map.scene.childNodes.forEach(function (node) {
+				node.clearEventListener();
+			});
 		};
 
 		Hack.ongameover = function () {
@@ -353,6 +357,10 @@ window.addEventListener('load', function() {
 						location.reload(false);
 					}
 				}).tl.moveTo(157-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
+			});
+			// freeze
+			Hack.map.scene.childNodes.forEach(function (node) {
+				node.clearEventListener();
 			});
 		};
 
