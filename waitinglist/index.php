@@ -52,6 +52,13 @@ foreach ($list as $key => $stage) {
   $list[$key]['User'] = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+// RawCodeをfetch
+$stmt = $dbh->prepare('SELECT "RawCode" FROM "Script" WHERE "ID"=:stage_scriptid');
+foreach ($list as $key => $stage) {
+  $stmt->bindValue(':stage_scriptid', $stage['ScriptID'], PDO::PARAM_INT);
+  $stmt->execute();
+  $list[$key]['Script'] = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 // ビューを生成
 include './view.php';
