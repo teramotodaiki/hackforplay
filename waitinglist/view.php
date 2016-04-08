@@ -37,6 +37,9 @@
         </div>
       </div>
     <?php endforeach; ?>
+    <?php if (count($list) === 0): ?>
+      <h1>There is no stage waiting</h1>
+    <?php endif; ?>
     </div>
   </body>
 </html>
