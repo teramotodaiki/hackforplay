@@ -31,6 +31,40 @@ class Template extends stdClass
     </a>
     <?php
   }
+
+  public static function RejectModal($reasons)
+  {
+    ?>
+  	<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog">
+  		<div class="modal-dialog">
+  			<div class="modal-content">
+  	    		<div class="modal-header">
+  			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  	    			<h4>リジェクトする理由</h4>
+  		    	</div>
+  			    <div class="modal-body">
+  			    	<form>
+                <?php foreach ($reasons as $key => $value): ?>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" value="<?php echo $value['ID']; ?>">
+                    <span><?php echo $value['Message']; ?></span>
+                  </label>
+                </div>
+                <?php endforeach; ?>
+  							<textarea name="notice" rows="8" cols="40" placeholder="A notice to stage author"></textarea>
+  			    		<button type="submit" class="btn btn-danger btn-lg btn-block" >リジェクト</button>
+  			    	</form>
+  			    </div>
+  	    		<div class="modal-footer">
+  	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+  	    		</div>
+  			</div>
+  		</div>
+  	</div>
+    <?php
+  }
+
 }
 
 ?>
