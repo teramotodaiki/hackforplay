@@ -1,7 +1,7 @@
 $(function () {
-  $('.flex-container-bar').on('click', function () {
-    var opened = $(this).toggleClass('opened').hasClass('opened');
-
+  $('.flex-container-bar').on('click', '.column,.blank', function () {
+    var bar = $(this).parents('.flex-container-bar');
+    bar.toggleClass('opened');
   });
 
   $('.query-publish').on('click', function () {
