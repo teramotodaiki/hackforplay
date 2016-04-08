@@ -26,7 +26,9 @@
         <span class="column"><?php echo $stage['Registered']; ?></span>
         <span class="blank"></span>
         <span class="icon glyphicon glyphicon-file"></span>
-        <span class="icon glyphicon glyphicon-ok"></span>
+        <a href="#" class="icon query-publish" data-id="<?php echo $stage['ID']; ?>">
+          <span class="glyphicon glyphicon-ok"></a>
+        </span>
         <span class="icon glyphicon glyphicon-remove"></span>
         <div class="inner row flex-container">
           <img class="thumbnail" src="<?php echo $stage['Thumbnail'] ?>" alt="" />
