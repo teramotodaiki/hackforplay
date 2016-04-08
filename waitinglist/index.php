@@ -44,6 +44,15 @@ foreach ($list as $key => $stage) {
   $list[$key]['SourceStage'] = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+// User.Nicknameをfetch
+$stmt = $dbh->prepare('SELECT "ID","Nickname" FROM "User" WHERE "ID"=:stage_userid');
+foreach ($list as $key => $stage) {
+  $stmt->bindValue(':stage_userid', $stage['UserID'], PDO::PARAM_INT);
+  $stmt->execute();
+  $list[$key]['User'] = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
 // ビューを生成
 include './view.php';
 
