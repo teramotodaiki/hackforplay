@@ -30,7 +30,10 @@
         <a href="#" class="icon query-publish" data-id="<?php echo $stage['ID']; ?>">
           <span class="glyphicon glyphicon-ok"></a>
         </span>
-        <span class="icon glyphicon glyphicon-remove"></span>
+        <a href="#" class="icon" data-id="<?php echo $stage['ID']; ?>"
+          data-toggle="modal" data-target="#rejectModal">
+          <span class="icon glyphicon glyphicon-remove"></span>
+        </a>
         <div class="inner row flex-container">
           <img class="thumbnail" src="<?php echo $stage['Thumbnail'] ?>" alt="" />
           <p class="column"><?php echo $stage['Explain']; ?></p>
