@@ -14,6 +14,7 @@
   	<?php require_once '../view/authmodal.php'; ?>
   	<?php require_once '../view/header.php'; ?>
     <script src="./view.js" charset="utf-8"></script>
+    <?php Template::RejectModal($reasons); ?>
     <div class="container">
     <?php foreach ($list as $key => $stage): ?>
       <div class="flex-container flex-container-bar">

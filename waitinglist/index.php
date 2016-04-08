@@ -60,6 +60,11 @@ foreach ($list as $key => $stage) {
   $list[$key]['Script'] = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+// RejectReasonをfetch
+$stmt = $dbh->prepare('SELECT "ID","Message" FROM "RejectReasonData" ORDER BY "ID"');
+$stmt->execute();
+$reasons = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 // ビューを生成
 include './view.php';
 
