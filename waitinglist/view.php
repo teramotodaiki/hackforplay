@@ -13,6 +13,7 @@
   	<?php require_once '../analyticstracking.php' ?>
   	<?php require_once '../view/authmodal.php'; ?>
   	<?php require_once '../view/header.php'; ?>
+    <script src="./view.js" charset="utf-8"></script>
     <div class="container">
     <?php foreach ($list as $key => $stage): ?>
       <div class="flex-container flex-container-bar">
@@ -27,6 +28,9 @@
         <span class="icon glyphicon glyphicon-file"></span>
         <span class="icon glyphicon glyphicon-ok"></span>
         <span class="icon glyphicon glyphicon-remove"></span>
+        <div class="inner row flex-container">
+          <img class="thumbnail" src="<?php echo $stage['Thumbnail'] ?>" alt="" />
+        </div>
       </div>
     <?php endforeach; ?>
     </div>
