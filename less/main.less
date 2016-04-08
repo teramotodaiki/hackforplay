@@ -29,8 +29,8 @@ html {
   .column { flex: 0 1 auto; padding: 0 @size-bar/2; }
   .blank { flex: 1 1 auto; }
   .icon { flex: 0 0 @size-bar; }
-  .thumbnail { flex: 0 1 auto; width: @300px; height: @200px; margin: 0; }
-  .code { flex: 1 1 auto; text-align: left; }
+  .thumbnail { flex: 0 0 auto; width: @300px; height: @200px; margin: 0; }
+  .code { flex: 0 0 auto; max-width: @600px; text-align: left; }
   &:not(.opened) .inner { .hidden(); }
 }
 
