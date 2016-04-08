@@ -10,12 +10,15 @@ require_once '../preload.php';
 session_start();
 $session_userid  = isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
 session_commit();
+if (!$session_userid) {
+  die('no-session');
+}
 
-$name = filter_input(INPUT_GET, 'name') or die('invalid team name');
+$team_name = filter_input(INPUT_GET, 'team') or die('invalid team name');
 
 // チームを取得
-$stmt = $dbh->prepare('SELECT "ID" FROM "Team" WHERE "Name"=:name');
-$stmt->bindValue(':name', $name, PDO::PARAM_STR);
+$stmt = $dbh->prepare('SELECT "ID" FROM "Team" WHERE "Name"=:team_name');
+$stmt->bindValue(':team_name', $team_name, PDO::PARAM_STR);
 $stmt->execute();
 $team = $stmt->fetch(PDO::FETCH_ASSOC) or die('team not found');
 
@@ -27,11 +30,19 @@ $stmt->execute();
 $rights = $stmt->fetch(PDO::FETCH_COLUMN) or die('unauthorized-management');
 
 // waitinglistを取得
-$stmt = $dbh->prepare('SELECT "Title" FROM "Stage" WHERE "TeamID"=:team_id AND "State"=:judging');
+$stmt = $dbh->prepare('SELECT * FROM "Stage" WHERE "TeamID"=:team_id AND "State"=:judging');
 $stmt->bindValue(':team_id', $team['ID'], PDO::PARAM_INT);
 $stmt->bindValue(':judging', 'judging', PDO::PARAM_STR);
 $stmt->execute();
 $list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// SourceStageをfetch
+$stmt = $dbh->prepare('SELECT "ID","Title" FROM "Stage" WHERE "ID"=:source_id');
+foreach ($list as $key => $stage) {
+  $stmt->bindValue(':source_id', $stage['SourceID'], PDO::PARAM_INT);
+  $stmt->execute();
+  $list[$key]['SourceStage'] = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 // ビューを生成
 include './view.php';
