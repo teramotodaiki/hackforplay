@@ -30,6 +30,8 @@
         <span class="icon glyphicon glyphicon-remove"></span>
         <div class="inner row flex-container">
           <img class="thumbnail" src="<?php echo $stage['Thumbnail'] ?>" alt="" />
+          <p class="column"><?php echo $stage['Explain']; ?></p>
+          <pre class="code"><?php echo $stage['Script']['RawCode']; ?></pre>
         </div>
       </div>
     <?php endforeach; ?>
