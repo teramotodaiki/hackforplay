@@ -139,7 +139,7 @@ window.addEventListener('load', function () {
 		geneticUpdate: function () {
 			if (!Hack.isPlaying) return;
 			// enter frame
-			if ('hp' in this) {
+			if (typeof this.hp === 'number') {
 				this.damageTime = Math.max(0, this.damageTime - 1);
 				this.opacity = (this.damageTime / 2 + 1 | 0) % 2; // 点滅
 			}
@@ -238,9 +238,10 @@ window.addEventListener('load', function () {
 			}, this.getFrame().length);
 		},
 		onattacked: function (event) {
-			if (this.damageTime > 0 || !('hp' in this)) return; // ダメージ中
-			this.damageTime = this.attackedDamageTime;
-			this.hp -= event.damage;
+			if (!this.damageTime && typeof this.hp === 'number') {
+				this.damageTime = this.attackedDamageTime;
+				this.hp -= event.damage;
+			}
 		},
 		walk: function (distance, continuous) {
 			if (!this.isKinematic || !continuous && this.behavior !== BehaviorTypes.Idle || !Hack.isPlaying) return;
