@@ -92,15 +92,6 @@ window.addEventListener('load', function () {
 					else return parent[0];
 				}
 			});
-			this.getFrameOfBehavior = {}; // BehaviorTypesをキーとしたgetterのオブジェクト
-			// onbecome~ イベントで this.frame を更新するように
-			Object.keys(BehaviorTypes).forEach(function (item) {
-				this.on('become' + item.toLowerCase(), function () {
-					var key = BehaviorTypes[item];
-					var routine = this.getFrameOfBehavior[key];
-					if (routine) this.frame = routine.call(this);
-				});
-			}, this);
 			var collisionFlag = null; // this.collisionFlag (Default:true)
 			Object.defineProperty(this, 'collisionFlag', {
 				get: function () {
@@ -140,6 +131,7 @@ window.addEventListener('load', function () {
 			this.attackedDamageTime = 30; // * 1/30sec
 			this.hpchangeFlag = false;
 			this.on('enterframe', this.geneticUpdate);
+			this.getFrameOfBehavior = {}; // BehaviorTypesをキーとしたgetterのオブジェクト
 			this.behavior = BehaviorTypes.Idle; // call this.onbecomeidle
 
 			Hack.defaultParentNode.addChild(this);
@@ -153,6 +145,9 @@ window.addEventListener('load', function () {
 				this.hpchangeFlag = false;
 			}
 			if (this.isBehaviorChanged) {
+				// begin animation
+				var routine = this.getFrameOfBehavior[this.behavior];
+				if (routine) this.frame = routine.call(this);
 				// becomeイベント内でbehaviorが変更された場合、
 				// 次のフレームで１度だけbecomeイベントが発火します。
 				this.isBehaviorChanged = false;
