@@ -318,6 +318,12 @@ window.addEventListener('load', function() {
 	(function () {
 		var playing = true;
 
+		Object.defineProperty(Hack, 'isPlaying', {
+			configurable: true, enumerable: true,
+			get: function () {
+				return playing;
+			}
+		});
 		// Trigger
 		Hack.gameclear = function() {
 			if (!playing) return;
