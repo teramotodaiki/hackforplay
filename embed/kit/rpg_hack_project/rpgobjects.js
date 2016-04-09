@@ -62,13 +62,14 @@ window.addEventListener('load', function () {
 
   var game = enchant.Core.instance;
 
+	// [注意] BehaviorTypesは排他的なプロパティになりました
 	var __BehaviorTypes = {
-		None :      0,  // 無状態 (デフォルトではEventは発火されません)
-		Idle :		1,	// 立ち状態
-		Walk :		2,	// 歩き状態
-		Attack :	4,	// 攻撃状態
-		Damaged :	8,	// 被撃状態[deprecated]
-		Dead :		16	// 死亡状態
+		None :    '',  // 無状態 (デフォルトではEventは発火されません)
+		Idle :		'idle',	// 立ち状態
+		Walk :		'walk',	// 歩き状態
+		Attack :	'attack',	// 攻撃状態
+		Damaged :	undefined,	// 被撃状態[deprecated]
+		Dead :		'dead'	// 死亡状態
 	};
 
 	var __RPGObject = enchant.Class(enchant.Sprite, {
@@ -91,7 +92,7 @@ window.addEventListener('load', function () {
 					else return parent[0];
 				}
 			});
-			this.getFrameOfBehavior = []; // BehaviorTypesをキーとしたgetterの配列
+			this.getFrameOfBehavior = {}; // BehaviorTypesをキーとしたgetterのオブジェクト
 			// onbecome~ イベントで this.frame を更新するように
 			Object.keys(BehaviorTypes).forEach(function (item) {
 				this.on('become' + item.toLowerCase(), function () {
@@ -108,16 +109,10 @@ window.addEventListener('load', function () {
 				set: function (value) {
 					if (value !== behavior) {
 						behavior = value;
-						Object.keys(BehaviorTypes).filter(function (item) {
-							// 最も大きい桁
-							var contain = behavior & BehaviorTypes[item];
-							return contain && behavior < contain * 2;
-						}).forEach(function (item) {
-							// On Becomeイベントを1フレーム後に発火
-							this.setTimeout(function () {
-								this.dispatchEvent( new Event( 'become' + item.toLowerCase() ) );
-							}, 1);
-						}, this);
+						// On Becomeイベントを1フレーム後に発火
+						this.setTimeout(function () {
+							this.dispatchEvent(new Event('become' + value));
+						}, 1);
 					}
 				}
 			});
@@ -192,29 +187,21 @@ window.addEventListener('load', function () {
 			}
 		},
 		setFrame: function (behavior, frame) {
-			// behavior is Key:number or Type:string
+			// behavior is Type:string
 			// frame is Frames:array or Getter:function
-			var value = typeof behavior === 'number' ? behavior : BehaviorTypes[behavior];
 			(function (_local) {
 				if (typeof frame === 'function') {
-					this.getFrameOfBehavior[value] = _local;
+					this.getFrameOfBehavior[behavior] = _local;
 				} else {
-					this.getFrameOfBehavior[value] = function () {
+					this.getFrameOfBehavior[behavior] = function () {
 						return _local;
 					};
 				}
 			}).call(this, frame);
 		},
 		getFrame: function () {
-			if (this.getFrameOfBehavior[this.behavior]) {
+			if (this.getFrameOfBehavior[this.behavior] instanceof Function) {
 				return this.getFrameOfBehavior[this.behavior].call(this);
-			}
-			// Search nearly state
-			for (var i = 32 - 1; i >= 0; i--) {
-				var getter = this.getFrameOfBehavior[this.behavior & (1 << i)];
-				if (getter) {
-					return getter.call(this);
-				}
 			}
 			return [];
 		},
@@ -248,7 +235,7 @@ window.addEventListener('load', function () {
 			return stopInterval.bind(this);
 		},
 		attack: function (count, continuous) {
-			if (!continuous && (this.behavior & BehaviorTypes.Attack + BehaviorTypes.Walk)) return;
+			if (!continuous && this.behavior !== BehaviorTypes.Idle) return;
 			var c = typeof count === 'number' ? count >> 0 : 1;
 			var f = this.forward;
 			if (continuous) {
@@ -268,7 +255,7 @@ window.addEventListener('load', function () {
 			this.hp -= event.damage;
 		},
 		walk: function (distance, continuous) {
-			if (!this.isKinematic || !continuous && (this.behavior & BehaviorTypes.Walk + BehaviorTypes.Attack)) return;
+			if (!this.isKinematic || !continuous && this.behavior !== BehaviorTypes.Idle) return;
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
 			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
 			// Map Collision
@@ -408,12 +395,12 @@ window.addEventListener('load', function () {
 			this.setFrameD9(BehaviorTypes.Dead, [1, null]);
 		},
 		onenterframe: function () {
-			if (!(this.behavior & BehaviorTypes.Attack + BehaviorTypes.Walk)) {
+			if (this.behavior === BehaviorTypes.Idle) {
 				if (game.input.a) {
 					this.attack();
 				}
 			}
-			if (!(this.behavior & BehaviorTypes.Walk + BehaviorTypes.Attack)) {
+			if (this.behavior === BehaviorTypes.Idle) {
 				var hor = game.input.right - game.input.left;
 				var ver = hor ? 0 : game.input.down - game.input.up;
 				if (hor || ver) {
