@@ -140,6 +140,7 @@ window.addEventListener('load', function () {
 			// enter frame
 			this.damageTime = Math.max(0, this.damageTime - 1);
 			this.opacity = (this.damageTime / 2 + 1 | 0) % 2; // 点滅
+			if (!Hack.isPlaying) return;
 			if (this.hpchangeFlag) {
 				this.dispatchEvent(new Event('hpchange'));
 				this.hpchangeFlag = false;
@@ -220,7 +221,7 @@ window.addEventListener('load', function () {
 			return stopInterval.bind(this);
 		},
 		attack: function (count, continuous) {
-			if (!continuous && this.behavior !== BehaviorTypes.Idle) return;
+			if (!continuous && this.behavior !== BehaviorTypes.Idle || !Hack.isPlaying) return;
 			var c = typeof count === 'number' ? count >> 0 : 1;
 			var f = this.forward;
 			if (continuous) {
@@ -240,7 +241,7 @@ window.addEventListener('load', function () {
 			this.hp -= event.damage;
 		},
 		walk: function (distance, continuous) {
-			if (!this.isKinematic || !continuous && this.behavior !== BehaviorTypes.Idle) return;
+			if (!this.isKinematic || !continuous && this.behavior !== BehaviorTypes.Idle || !Hack.isPlaying) return;
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
 			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
 			// Map Collision
@@ -390,6 +391,7 @@ window.addEventListener('load', function () {
 			this.setFrameD9(BehaviorTypes.Dead, [1, null]);
 		},
 		onenterframe: function () {
+			if (!Hack.isPlaying) return;
 			if (this.behavior === BehaviorTypes.Idle) {
 				if (game.input.a) {
 					this.attack();
