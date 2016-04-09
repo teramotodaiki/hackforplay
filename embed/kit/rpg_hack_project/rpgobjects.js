@@ -328,9 +328,10 @@ window.addEventListener('load', function () {
 				return this._hp;
 			},
 			set: function (value) {
-				if ('_hp' in this) { this.hpchangeFlag = this.hpchangeFlag || value !== this._hp; } // Frame dispatch
-				else { this.hpchangeFlag = true; } // Frame dispatch
-				this._hp = value;
+				if (typeof value === 'number' && value !== this._hp) {
+					this.hpchangeFlag = true;
+					this._hp = value;
+				}
 			}
 		},
 		behavior: {
