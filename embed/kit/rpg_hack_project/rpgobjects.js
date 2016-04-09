@@ -156,7 +156,7 @@ window.addEventListener('load', function () {
 			this.velocityX = this.velocityY = this.accelerationX = this.accelerationY = 0;
 			this.mass = 1;
 			this.damageTime = 0;
-			this._attackedDamageTime = 30; // * 1/30sec
+			this.attackedDamageTime = 30; // * 1/30sec
 			this.on('enterframe', this.geneticUpdate);
 
 			Hack.defaultParentNode.addChild(this);
@@ -256,7 +256,7 @@ window.addEventListener('load', function () {
 		},
 		onattacked: function (event) {
 			if (this.damageTime > 0 || !('hp' in this)) return; // ダメージ中
-			this.damageTime = this._attackedDamageTime;
+			this.damageTime = this.attackedDamageTime;
 			this.hp -= event.damage;
 			if (this.hp <= 0) {
 				this.behavior = BehaviorTypes.Dead;
