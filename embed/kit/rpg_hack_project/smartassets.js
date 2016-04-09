@@ -446,11 +446,11 @@ window.addEventListener('load', function () {
 			var item = new MapObject('trap');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
-				this.frame = MapObject.dictionary.usedTrap;
 				Hack.Attack.call(this, this.mapX, this.mapY, 1);
+				this.name = 'usedTrap';
 			};
 			item.onplayerexit = function () {
-				this.frame = MapObject.dictionary.trap;
+				this.name = 'trap';
 			};
 		}
 	}, {
