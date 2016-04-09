@@ -26,11 +26,10 @@
         </span>
         <span class="column elapsed-timer" data-time="<?php echo $stage['UnixTime']; ?>"></span>
         <span class="blank"></span>
-        <span class="icon glyphicon glyphicon-file"></span>
-        <a href="#" class="icon query-publish" data-id="<?php echo $stage['ID']; ?>">
+        <a href="#" class="icon toggle-false query-publish" data-id="<?php echo $stage['ID']; ?>">
           <span class="glyphicon glyphicon-ok"></a>
         </span>
-        <a href="#" class="icon" data-id="<?php echo $stage['ID']; ?>"
+        <a href="#" class="icon toggle-false" data-id="<?php echo $stage['ID']; ?>"
           data-toggle="modal" data-target="#rejectModal">
           <span class="icon glyphicon glyphicon-remove"></span>
         </a>

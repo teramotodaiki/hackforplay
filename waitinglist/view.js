@@ -1,5 +1,12 @@
 $(function () {
-  $('.flex-container-bar').on('click', '.column,.blank', function () {
+  $('.flex-container-bar').on('click', function () {
+    console.log('click', this);
+    var bar = $(this).hasClass('flex-container-bar') ? $(this) : $(this).parents('.flex-container-bar');
+    var opened = bar.hasClass('opened');
+    if (!opened) $('.flex-container-bar').removeClass('opened');
+    bar.toggleClass('opened');
+  });
+  $('.toggle-false').on('click', function () {
     var bar = $(this).parents('.flex-container-bar');
     bar.toggleClass('opened');
   });
@@ -77,7 +84,6 @@ $(function () {
           elapsed < 86400 ? (elapsed/3600>>0) + ' hours ago' :
           (elapsed/86400>>0) + 'days ago'
         );
-        console.log(elapsed, $(this).text());
       });
     }
   })();
