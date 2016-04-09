@@ -14,6 +14,7 @@
   	<?php require_once '../view/authmodal.php'; ?>
   	<?php require_once '../view/header.php'; ?>
     <script src="./view.js" charset="utf-8"></script>
+    <?php Template::RejectModal($reasons); ?>
     <div class="container">
     <?php foreach ($list as $key => $stage): ?>
       <div class="flex-container flex-container-bar">
@@ -23,11 +24,15 @@
         <span class="column">
           <?php Template::StageLink($stage); ?>
         </span>
-        <span class="column"><?php echo $stage['Registered']; ?></span>
+        <span class="column elapsed-timer" data-time="<?php echo $stage['UnixTime']; ?>"></span>
         <span class="blank"></span>
-        <span class="icon glyphicon glyphicon-file"></span>
-        <span class="icon glyphicon glyphicon-ok"></span>
-        <span class="icon glyphicon glyphicon-remove"></span>
+        <a href="#" class="icon toggle-false query-publish" data-id="<?php echo $stage['ID']; ?>">
+          <span class="glyphicon glyphicon-ok"></a>
+        </span>
+        <a href="#" class="icon toggle-false" data-id="<?php echo $stage['ID']; ?>"
+          data-toggle="modal" data-target="#rejectModal">
+          <span class="icon glyphicon glyphicon-remove"></span>
+        </a>
         <div class="inner row flex-container">
           <img class="thumbnail" src="<?php echo $stage['Thumbnail'] ?>" alt="" />
           <p class="column"><?php echo $stage['Explain']; ?></p>
@@ -35,6 +40,9 @@
         </div>
       </div>
     <?php endforeach; ?>
+    <?php if (count($list) === 0): ?>
+      <h1>There is no stage waiting</h1>
+    <?php endif; ?>
     </div>
   </body>
 </html>
