@@ -148,8 +148,10 @@ window.addEventListener('load', function () {
 			// enter frame
 			this.damageTime = Math.max(0, this.damageTime - 1);
 			this.opacity = (this.damageTime / 2 + 1 | 0) % 2; // 点滅
-			if (this.hpchangeFlag) this.dispatchEvent(new Event('hpchange'));
-			this.hpchangeFlag = false;
+			if (this.hpchangeFlag) {
+				this.dispatchEvent(new Event('hpchange'));
+				this.hpchangeFlag = false;
+			}
 			if (this.isBehaviorChanged) {
 				// becomeイベント内でbehaviorが変更された場合、
 				// 次のフレームで１度だけbecomeイベントが発火します。
@@ -326,7 +328,7 @@ window.addEventListener('load', function () {
 				return this._hp;
 			},
 			set: function (value) {
-				if ('_hp' in this) { this.hpchangeFlag = value !== this._hp; } // Frame dispatch
+				if ('_hp' in this) { this.hpchangeFlag = this.hpchangeFlag || value !== this._hp; } // Frame dispatch
 				else { this.hpchangeFlag = true; } // Frame dispatch
 				this._hp = value;
 			}
