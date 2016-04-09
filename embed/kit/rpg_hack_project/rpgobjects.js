@@ -164,7 +164,7 @@ window.addEventListener('load', function () {
 		geneticUpdate: function () {
 			// enter frame
 			this.damageTime = Math.max(0, this.damageTime - 1);
-			this.opacity = (this.damageTime / 2 + 1 | 0) % 2;
+			this.opacity = (this.damageTime / 2 + 1 | 0) % 2; // 点滅
 		},
 		locate: function (fromLeft, fromTop, mapName) {
 			if (mapName && Hack.maps[mapName]) {
