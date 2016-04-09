@@ -57,10 +57,10 @@ window.addEventListener('load', function () {
 	Object.defineProperty(window, 'Boy',			{ get: function () { return __Boy; }			});
 	Object.defineProperty(window, 'Girl',			{ get: function () { return __Girl; }			});
 	Object.defineProperty(window, 'Woman',			{ get: function () { return __Woman; }			});
-    Object.defineProperty(window, 'MapObject',		{ get: function () { return __MapObject; }		});
-    Object.defineProperty(window, 'Effect',			{ get: function () { return __Effect; }			});
+  Object.defineProperty(window, 'MapObject',		{ get: function () { return __MapObject; }		});
+  Object.defineProperty(window, 'Effect',			{ get: function () { return __Effect; }			});
 
-    var game = enchant.Core.instance;
+  var game = enchant.Core.instance;
 
 	var __BehaviorTypes = {
 		None :      0,  // 無状態 (デフォルトではEventは発火されません)
@@ -343,7 +343,7 @@ window.addEventListener('load', function () {
 		}
 	});
 
-    var __HumanBase = enchant.Class(RPGObject, {
+  var __HumanBase = enchant.Class(RPGObject, {
 		initialize: function (width, height, offsetX, offsetY) {
 			RPGObject.call(this, width, height, offsetX, offsetY);
 			var direction = 0;
@@ -377,7 +377,7 @@ window.addEventListener('load', function () {
 			var i = [3, 2, 0, 1][this.direction] + c; // direction to turn index
 			this.direction = [2, 3, 1, 0][i%4]; // turn index to direction
 		}
-    });
+  });
 
 	var __Player = enchant.Class(HumanBase, {
 		initialize: function () {
