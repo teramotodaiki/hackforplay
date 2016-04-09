@@ -470,7 +470,7 @@ window.addEventListener('load', function () {
 	});
 
 	var __BlueSlime = enchant.Class(EnemyBase, {
-        initialize: function(){
+    initialize: function(){
 			EnemyBase.call(this, 48, 48, -8, -10);
 			this.image = game.assets['enchantjs/monster4.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
@@ -478,8 +478,8 @@ window.addEventListener('load', function () {
 			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 6, 4, 4, 4, 4, 5, 5, 5, 5, 4, 4, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, -1, null]);
-        }
-    });
+    }
+  });
 
 	var __Insect = enchant.Class(EnemyBase, {
         initialize: function(){
