@@ -137,10 +137,12 @@ window.addEventListener('load', function () {
 			Hack.defaultParentNode.addChild(this);
 		},
 		geneticUpdate: function () {
-			// enter frame
-			this.damageTime = Math.max(0, this.damageTime - 1);
-			this.opacity = (this.damageTime / 2 + 1 | 0) % 2; // 点滅
 			if (!Hack.isPlaying) return;
+			// enter frame
+			if ('hp' in this) {
+				this.damageTime = Math.max(0, this.damageTime - 1);
+				this.opacity = (this.damageTime / 2 + 1 | 0) % 2; // 点滅
+			}
 			if (this.hpchangeFlag) {
 				this.dispatchEvent(new Event('hpchange'));
 				this.hpchangeFlag = false;
