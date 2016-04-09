@@ -150,16 +150,10 @@ window.addEventListener('load', function () {
 		Hack.lifeLabel = (function () {
 			var maxhp, hp;
 			maxhp = hp = this.life = Hack.player.hp;
-			Object.defineProperty(Hack.player, 'hp', {
-				enumerable : true,
-				get: function () {
-					return hp;
-				},
-				set: function (value) {
-					maxhp = Math.max(maxhp, value);
-					hp = value;
-					Hack.lifeLabel.life = maxhp < Hack.lifeLabel._maxlife ? hp : (hp / maxhp) * Hack.lifeLabel._maxlife;
-				}
+			Hack.player.on('hpchange', function () {
+				var hp = Hack.player.hp;
+				maxhp = Math.max(maxhp, hp);
+				Hack.lifeLabel.life = maxhp < Hack.lifeLabel._maxlife ? hp : (hp / maxhp) * Hack.lifeLabel._maxlife;
 			});
 			Hack.menuGroup.addChild(this);
 			return this;
@@ -312,15 +306,15 @@ window.addEventListener('load', function () {
 	 * time フレームが経過した時、behavior typeを指定する
 	*/
 	enchant.Timeline.prototype.become = function (type, time) {
-        this.add(new enchant.Action({
-            onactionstart: function() {
+	  this.add(new enchant.Action({
+      onactionstart: function() {
 				var capital = type[0].toUpperCase() + type.substr(1).toLowerCase();
 				if (this instanceof RPGObject && BehaviorTypes.hasOwnProperty(capital)) {
 					this.behavior = BehaviorTypes[capital];
 				}
-            },
-            time: time || 0
-        }));
+      },
+	    time: time || 0
+    }));
 		return this;
 	};
 
