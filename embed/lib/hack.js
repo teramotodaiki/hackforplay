@@ -339,6 +339,11 @@ window.addEventListener('load', function() {
 			// freeze
 			Hack.map.scene.childNodes.forEach(function (node) {
 				node.clearEventListener();
+				for (var prop in node) {
+					if (prop.indexOf('on') === 0 && prop !== 'on' && typeof node[prop] === 'function') {
+						node[prop] = undefined; // delete prototypes
+					}
+				}
 			});
 		};
 
@@ -361,6 +366,11 @@ window.addEventListener('load', function() {
 			// freeze
 			Hack.map.scene.childNodes.forEach(function (node) {
 				node.clearEventListener();
+				for (var prop in node) {
+					if (prop.indexOf('on') === 0 && prop !== 'on' && typeof node[prop] === 'function') {
+						node[prop] = undefined; // delete prototypes
+					}
+				}
 			});
 		};
 
