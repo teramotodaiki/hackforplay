@@ -150,16 +150,10 @@ window.addEventListener('load', function () {
 		Hack.lifeLabel = (function () {
 			var maxhp, hp;
 			maxhp = hp = this.life = Hack.player.hp;
-			Object.defineProperty(Hack.player, 'hp', {
-				enumerable : true,
-				get: function () {
-					return hp;
-				},
-				set: function (value) {
-					maxhp = Math.max(maxhp, value);
-					hp = value;
-					Hack.lifeLabel.life = maxhp < Hack.lifeLabel._maxlife ? hp : (hp / maxhp) * Hack.lifeLabel._maxlife;
-				}
+			Hack.player.on('hpchange', function () {
+				var hp = Hack.player.hp;
+				maxhp = Math.max(maxhp, hp);
+				Hack.lifeLabel.life = maxhp < Hack.lifeLabel._maxlife ? hp : (hp / maxhp) * Hack.lifeLabel._maxlife;
 			});
 			Hack.menuGroup.addChild(this);
 			return this;
