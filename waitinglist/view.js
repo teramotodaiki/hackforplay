@@ -23,4 +23,43 @@ $(function () {
     return false;
   });
 
+  (function () {
+    var $button; // Deprecated
+
+    $('#rejectModal').on('show.bs.modal', function(event) {
+      $button = $(event.relatedTarget);
+      $(this).find('input[type="checkbox"]:checked').prop('checked', false);
+
+    }).find('form').submit(function(event) {
+      event.preventDefault();
+
+      var reasons = [];
+      $(this).find('input[type="checkbox"]:checked').each(function(index, el) {
+        reasons.push(el.value);
+      });
+      var reasons_json = JSON.stringify(reasons);
+
+      var bar = $button.parents('.flex-container-bar');
+      var id = $button.data('id');
+      var notice = $(this).find('textarea[name="notice"]').val();
+      $.post('../stages/', {
+        id: id,
+        query: 'state',
+        state: 'rejected',
+        notice: notice,
+        reasons: reasons_json,
+      } , function(data, textStatus, xhr) {
+        switch (data) {
+          case 'success':
+            bar.fadeOut('slow');
+            break;
+          default:
+            console.error(data);
+        }
+      });
+
+      $('#rejectModal').modal('hide');
+    });
+  })();
+
 });
