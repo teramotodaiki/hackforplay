@@ -285,6 +285,7 @@ window.addEventListener('load', function () {
 	 * Generic scoring property
 	 * Invoke Hack.onscorechange
 	*/
+	var scorechangeFlag = false;
 	Object.defineProperty(Hack, 'score', {
 		enumerable: true, configurable: false,
 		get: function () {
@@ -292,14 +293,19 @@ window.addEventListener('load', function () {
 		},
 		set: function (value) {
 			if (Hack.scoreLabel.score !== value) {
-				var e = new Event('scorechange');
-				e.score = Hack.scoreLabel.score = value;
-				Hack.dispatchEvent(e);
+				Hack.scoreLabel.score = value;
+				scorechangeFlag = true;
 			}
 		}
 	});
 	Hack.scoreLabel = Object.create(null); // 仮オブジェクト
 	Hack.score = 0; // Fire a event and Initialize score
+	game.on('enterframe', function () {
+		if (scorechangeFlag && Hack.isPlaying) {
+			Hack.dispatchEvent(new Event('scorechange'));
+			scorechangeFlag = false;
+		}
+	});
 
 	/* Timeline Extention
 	 * become(type[, time])
