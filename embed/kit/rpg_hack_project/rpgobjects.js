@@ -64,7 +64,7 @@ window.addEventListener('load', function () {
 
 	// [注意] BehaviorTypesは排他的なプロパティになりました
 	var __BehaviorTypes = {
-		None :    '',  // 無状態 (デフォルトではEventは発火されません)
+		None :    '',  // 無状態 (デフォルトではEventは発火されません)[deprecated]
 		Idle :		'idle',	// 立ち状態
 		Walk :		'walk',	// 歩き状態
 		Attack :	'attack',	// 攻撃状態
@@ -101,25 +101,6 @@ window.addEventListener('load', function () {
 					if (routine) this.frame = routine.call(this);
 				});
 			}, this);
-			// このオブジェクトの behavior プロパティと、onbecome~イベントの発火
-			var behavior = BehaviorTypes.None;
-			Object.defineProperty(this, 'behavior', {
-				configurable: true,
-				get: function () { return behavior; },
-				set: function (value) {
-					if (value !== behavior) {
-						behavior = value;
-						// On Becomeイベントを1フレーム後に発火
-						this.setTimeout(function () {
-							this.dispatchEvent(new Event('become' + value));
-						}, 1);
-					}
-				}
-			});
-			this.setTimeout(function () {
-				// 1 frame later, call this.onbecomeidle
-				this.behavior = BehaviorTypes.Idle;
-			}, 1);
 			var collisionFlag = null; // this.collisionFlag (Default:true)
 			Object.defineProperty(this, 'collisionFlag', {
 				get: function () {
@@ -159,6 +140,7 @@ window.addEventListener('load', function () {
 			this.attackedDamageTime = 30; // * 1/30sec
 			this.hpchangeFlag = false;
 			this.on('enterframe', this.geneticUpdate);
+			this.behavior = BehaviorTypes.Idle; // call this.onbecomeidle
 
 			Hack.defaultParentNode.addChild(this);
 		},
@@ -168,6 +150,12 @@ window.addEventListener('load', function () {
 			this.opacity = (this.damageTime / 2 + 1 | 0) % 2; // 点滅
 			if (this.hpchangeFlag) this.dispatchEvent(new Event('hpchange'));
 			this.hpchangeFlag = false;
+			if (this.isBehaviorChanged) {
+				// becomeイベント内でbehaviorが変更された場合、
+				// 次のフレームで１度だけbecomeイベントが発火します。
+				this.isBehaviorChanged = false;
+				this.dispatchEvent(new Event('become' + this.behavior));
+			}
 		},
 		locate: function (fromLeft, fromTop, mapName) {
 			if (mapName && Hack.maps[mapName]) {
@@ -341,6 +329,14 @@ window.addEventListener('load', function () {
 				if ('_hp' in this) { this.hpchangeFlag = value !== this._hp; } // Frame dispatch
 				else { this.hpchangeFlag = true; } // Frame dispatch
 				this._hp = value;
+			}
+		},
+		behavior: {
+			get: function () { return this._behavior; },
+			set: function (value) {
+				this.isBehaviorChanged = this.isBehaviorChanged || value !== this._behavior;
+				this._behavior = value;
+				console.log('set', value, this.isBehaviorChanged, this.behavior);
 			}
 		}
 	});
@@ -716,5 +712,5 @@ window.addEventListener('load', function () {
 			event.mapY = hit.mapY;
 			self.dispatchEvent(event);
 		}
-    }
+  }
 });
