@@ -24,7 +24,7 @@
         <span class="column">
           <?php Template::StageLink($stage); ?>
         </span>
-        <span class="column"><?php echo $stage['Registered']; ?></span>
+        <span class="column elapsed-timer" data-time="<?php echo $stage['UnixTime']; ?>"></span>
         <span class="blank"></span>
         <span class="icon glyphicon glyphicon-file"></span>
         <a href="#" class="icon query-publish" data-id="<?php echo $stage['ID']; ?>">

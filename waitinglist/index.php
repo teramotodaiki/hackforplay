@@ -36,6 +36,13 @@ $stmt->bindValue(':judging', 'judging', PDO::PARAM_STR);
 $stmt->execute();
 $list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Unix time を取得
+foreach ($list as $key => $value) {
+  if (isset($value['Registered'])) {
+    $list[$key]['UnixTime'] = (new DateTime($value['Registered']))->format('U');
+  }
+}
+
 // SourceStageをfetch
 $stmt = $dbh->prepare('SELECT "ID","Title" FROM "Stage" WHERE "ID"=:source_id');
 foreach ($list as $key => $stage) {
