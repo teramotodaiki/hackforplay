@@ -306,22 +306,6 @@ window.addEventListener('load', function () {
 			this.accelerationX = x / this.mass;
 			this.accelerationY = y / this.mass;
 		},
-		name: {
-			get: function () {
-				var search = '';
-				Object.keys(MapObject.dictionary).forEach(function (key) {
-					if (MapObject.dictionary[key] === this.frame) {
-						search = key;
-					}
-				}, this);
-				return search;
-			},
-			set: function (key) {
-				if (MapObject.dictionary.hasOwnProperty(key)) {
-					this.frame = MapObject.dictionary[key];
-				}
-			}
-		},
 		hp: {
 			get: function () {
 				return this._hp;
@@ -568,18 +552,34 @@ window.addEventListener('load', function () {
     });
 
     var __MapObject = enchant.Class(RPGObject, {
-        initialize: function(frame){
-            RPGObject.call(this, 32, 32, 0, 0);
-            this.image = game.assets['enchantjs/x2/dotmat.gif'];
-			if (typeof frame === 'number') {
-				this.frame = frame;
-			} else if (MapObject.dictionary && MapObject.dictionary[frame]) {
-				this.frame = MapObject.dictionary[frame];
-			}
-        },
-        onenterframe: function(){
+	    initialize: function(value){
+        RPGObject.call(this, 32, 32, 0, 0);
+        this.image = game.assets['enchantjs/x2/dotmat.gif'];
+				if (typeof value === 'number') {
+					this.frame = value;
+				} else {
+					this.name = value;
+				}
+      },
+			name: {
+				get: function () {
+					var search = '';
+					Object.keys(MapObject.dictionary).forEach(function (key) {
+						if (MapObject.dictionary[key] === this.frame) {
+							search = key;
+						}
+					}, this);
+					return search;
+				},
+				set: function (key) {
+					if (MapObject.dictionary.hasOwnProperty(key)) {
+						this.frame = MapObject.dictionary[key];
+					}
+				}
+			},
+      onenterframe: function(){
 
-        }
+      }
     });
 
 	var __Effect = enchant.Class(RPGObject, {
