@@ -327,7 +327,7 @@ window.addEventListener('load', function () {
 				return this._hp;
 			},
 			set: function (value) {
-				if (typeof value === 'number' && value !== this._hp) {
+				if (typeof value === 'number' && value !== NaN && value !== this._hp) {
 					this.hpchangeFlag = true;
 					this._hp = value;
 				}
