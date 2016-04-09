@@ -289,7 +289,7 @@ window.addEventListener('load', function () {
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				delete item.onattacked;
-				this.frame = MapObject.dictionary.openedBox;
+				this.name = 'openedBox';
 				// 出てくるもの　→
 			};
 		}
