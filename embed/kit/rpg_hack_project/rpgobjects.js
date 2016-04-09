@@ -157,6 +157,7 @@ window.addEventListener('load', function () {
 			this.mass = 1;
 			this.damageTime = 0;
 			this.attackedDamageTime = 30; // * 1/30sec
+			this.hpchangeFlag = false;
 			this.on('enterframe', this.geneticUpdate);
 
 			Hack.defaultParentNode.addChild(this);
@@ -165,6 +166,8 @@ window.addEventListener('load', function () {
 			// enter frame
 			this.damageTime = Math.max(0, this.damageTime - 1);
 			this.opacity = (this.damageTime / 2 + 1 | 0) % 2; // 点滅
+			if (this.hpchangeFlag) this.dispatchEvent(new Event('hpchange'));
+			this.hpchangeFlag = false;
 		},
 		locate: function (fromLeft, fromTop, mapName) {
 			if (mapName && Hack.maps[mapName]) {
@@ -340,6 +343,16 @@ window.addEventListener('load', function () {
 				if (MapObject.dictionary.hasOwnProperty(key)) {
 					this.frame = MapObject.dictionary[key];
 				}
+			}
+		},
+		hp: {
+			get: function () {
+				return this._hp;
+			},
+			set: function (value) {
+				if ('_hp' in this) { this.hpchangeFlag = value !== this._hp; } // Frame dispatch
+				else { this.dispatchEvent(new Event('hpchange')); } // Sync dispatch
+				this._hp = value;
 			}
 		}
 	});
