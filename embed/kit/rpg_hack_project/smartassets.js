@@ -209,9 +209,7 @@ window.addEventListener('load', function () {
 			// き
 			var item = new MapObject('tree');
 			item.locate(__cnt15, __cnt10, 'map1');
-			item.onattacked = function () {
-				this.destroy();
-			};
+			item.hp = 1;
 		}
 	}, {
 		id: 10,
@@ -289,7 +287,7 @@ window.addEventListener('load', function () {
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				delete item.onattacked;
-				this.frame = MapObject.dictionary.openedBox;
+				this.name = 'openedBox';
 				// 出てくるもの　→
 			};
 		}
@@ -446,11 +444,12 @@ window.addEventListener('load', function () {
 			var item = new MapObject('trap');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
-				this.frame = MapObject.dictionary.usedTrap;
-				Hack.Attack.call(this, this.mapX, this.mapY, 1);
+				this.name = 'usedTrap';
+				Hack.player.hp -= 1;
+				Hack.player.damageTime = 30;
 			};
 			item.onplayerexit = function () {
-				this.frame = MapObject.dictionary.trap;
+				this.name = 'trap';
 			};
 		}
 	}, {
@@ -487,10 +486,10 @@ window.addEventListener('load', function () {
 			var item = new MapObject('skull');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
-				Hack.player.behavior = BehaviorTypes.Dead;
+				Hack.player.hp = 0;
 			};
 			item.onattacked = function (event) {
-				event.attacker.behavior = BehaviorTypes.Dead;
+				event.attacker.hp = 0;
 			};
 		}
 	}, {

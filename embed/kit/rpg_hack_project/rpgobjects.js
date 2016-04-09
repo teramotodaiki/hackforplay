@@ -137,10 +137,12 @@ window.addEventListener('load', function () {
 			Hack.defaultParentNode.addChild(this);
 		},
 		geneticUpdate: function () {
-			// enter frame
-			this.damageTime = Math.max(0, this.damageTime - 1);
-			this.opacity = (this.damageTime / 2 + 1 | 0) % 2; // 点滅
 			if (!Hack.isPlaying) return;
+			// enter frame
+			if (typeof this.hp === 'number') {
+				this.damageTime = Math.max(0, this.damageTime - 1);
+				this.opacity = (this.damageTime / 2 + 1 | 0) % 2; // 点滅
+			}
 			if (this.hpchangeFlag) {
 				this.dispatchEvent(new Event('hpchange'));
 				this.hpchangeFlag = false;
@@ -236,9 +238,10 @@ window.addEventListener('load', function () {
 			}, this.getFrame().length);
 		},
 		onattacked: function (event) {
-			if (this.damageTime > 0 || !('hp' in this)) return; // ダメージ中
-			this.damageTime = this.attackedDamageTime;
-			this.hp -= event.damage;
+			if (!this.damageTime && typeof this.hp === 'number') {
+				this.damageTime = this.attackedDamageTime;
+				this.hp -= event.damage;
+			}
 		},
 		walk: function (distance, continuous) {
 			if (!this.isKinematic || !continuous && this.behavior !== BehaviorTypes.Idle || !Hack.isPlaying) return;
@@ -324,7 +327,7 @@ window.addEventListener('load', function () {
 				return this._hp;
 			},
 			set: function (value) {
-				if (typeof value === 'number' && value !== this._hp) {
+				if (typeof value === 'number' && value !== NaN && value !== this._hp) {
 					this.hpchangeFlag = true;
 					this._hp = value;
 				}
