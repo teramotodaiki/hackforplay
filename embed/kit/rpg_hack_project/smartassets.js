@@ -209,9 +209,7 @@ window.addEventListener('load', function () {
 			// き
 			var item = new MapObject('tree');
 			item.locate(__cnt15, __cnt10, 'map1');
-			item.onattacked = function () {
-				this.destroy();
-			};
+			item.hp = 1;
 		}
 	}, {
 		id: 10,
