@@ -150,6 +150,11 @@ window.addEventListener('load', function () {
 					this.destroy();
 				}, this.getFrame().length);
 			});
+			this.on('hpchange', function () {
+				if (this.hp <= 0) {
+					this.behavior = BehaviorTypes.Dead;
+				}
+			});
 			// 初期化
 			this.direction = 0;
 			this.forward = { x: 0, y: 0 };
@@ -261,10 +266,6 @@ window.addEventListener('load', function () {
 			if (this.damageTime > 0 || !('hp' in this)) return; // ダメージ中
 			this.damageTime = this.attackedDamageTime;
 			this.hp -= event.damage;
-			if (this.hp <= 0) {
-				this.behavior = BehaviorTypes.Dead;
-				Object.defineProperty(this, 'behavior', { set: function () {} }); // an-writable
-			}
 		},
 		walk: function (distance, continuous) {
 			if (!this.isKinematic || !continuous && (this.behavior & BehaviorTypes.Walk + BehaviorTypes.Attack)) return;
