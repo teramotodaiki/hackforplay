@@ -487,10 +487,10 @@ window.addEventListener('load', function () {
 			var item = new MapObject('skull');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
-				Hack.player.behavior = BehaviorTypes.Dead;
+				Hack.player.hp = 0;
 			};
 			item.onattacked = function (event) {
-				event.attacker.behavior = BehaviorTypes.Dead;
+				event.attacker.hp = 0;
 			};
 		}
 	}, {
