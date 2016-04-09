@@ -64,7 +64,7 @@ window.addEventListener('load', function () {
 
 	// [注意] BehaviorTypesは排他的なプロパティになりました
 	var __BehaviorTypes = {
-		None :    '',  // 無状態 (デフォルトではEventは発火されません)[deprecated]
+		None :    null,  // 無状態 (デフォルトではEventは発火されません)[deprecated]
 		Idle :		'idle',	// 立ち状態
 		Walk :		'walk',	// 歩き状態
 		Attack :	'attack',	// 攻撃状態
@@ -336,9 +336,10 @@ window.addEventListener('load', function () {
 		behavior: {
 			get: function () { return this._behavior; },
 			set: function (value) {
-				this.isBehaviorChanged = this.isBehaviorChanged || value !== this._behavior;
-				this._behavior = value;
-				console.log('set', value, this.isBehaviorChanged, this.behavior);
+				if (typeof value === 'string' && value !== this._behavior) {
+					this.isBehaviorChanged = true;
+					this._behavior = value;
+				}
 			}
 		}
 	});
