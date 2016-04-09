@@ -246,7 +246,7 @@ window.addEventListener('load', function () {
 			if (continuous) {
 				this.frame = [];
 				this.frame = this.getFrame();
-			} else this.behavior |= BehaviorTypes.Attack;
+			} else this.behavior = BehaviorTypes.Attack;
 			Hack.Attack.call(this, this.mapX + f.x, this.mapY + f.y, this.atk, f.x, f.y);
 			this.setTimeout(function () {
 				// next step
