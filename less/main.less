@@ -3,6 +3,7 @@
 
 @bgcolor-panel: rgb(255,255,255);
 @size-bar: @40px;
+@color-selected: rgb(51, 122, 183);
 
 html {
     font-size: 14px;
@@ -16,9 +17,12 @@ html {
   flex-flow: row wrap;
   justify-content: space-around;
   padding: @10px 0;
+  margin: 0 0 @10px 0;
   .border-radius();
   text-align: center;
   background-color: @bgcolor-panel;
+  border: @2px solid transparent;
+  &:not(.opened):hover { border-color: @color-selected; }
   &:not(.opened) { cursor: pointer; }
   .row {
     display: flex;
