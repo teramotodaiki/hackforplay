@@ -9,10 +9,8 @@ $(function () {
     var self = $(this);
     $.post('../stages/', {
       id: id,
-      data: JSON.stringify({
-        State: 'published',
-        Published: null
-      })
+      query: 'state',
+      state: 'published'
     }, function (data) {
       switch (data) {
         case 'success':
