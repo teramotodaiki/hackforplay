@@ -446,8 +446,9 @@ window.addEventListener('load', function () {
 			var item = new MapObject('trap');
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
-				Hack.Attack.call(this, this.mapX, this.mapY, 1);
 				this.name = 'usedTrap';
+				Hack.player.hp -= 1;
+				Hack.player.damageTime = 30;
 			};
 			item.onplayerexit = function () {
 				this.name = 'trap';
