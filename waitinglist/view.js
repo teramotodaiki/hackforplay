@@ -62,4 +62,24 @@ $(function () {
     });
   })();
 
+  // Elapsed timer
+  (function () {
+    var ele = $('.elapsed-timer');
+    setInterval(render, 5000);
+    render();
+    function render () {
+      ele.each(function () {
+        var elapsed = new Date().getTime() / 1000 - $(this).data('time');
+        $(this).text(
+          elapsed < 10 ? 'just now' :
+          elapsed < 60 ? (elapsed>>0) + ' seconds ago' :
+          elapsed < 3600 ? (elapsed/60>>0) + ' minutes ago' :
+          elapsed < 86400 ? (elapsed/3600>>0) + ' hours ago' :
+          (elapsed/86400>>0) + 'days ago'
+        );
+        console.log(elapsed, $(this).text());
+      });
+    }
+  })();
+
 });
