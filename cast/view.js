@@ -82,10 +82,16 @@ $(function () {
       } catch (e) {
         console.error(e);
       } finally {
-        setTimeout(polling, 1000);
+        setTimeout(polling, 5000);
       }
-    }).fail(function (data) {
-      setTimeout(polling, 1000);
+    }).fail(function (result) {
+      try {
+        console.log(JSON.parse(result.responseText));
+      } catch (e) {
+        console.error(result);
+      } finally {
+        setTimeout(polling, 5000);
+      }
     });
 
   })();
