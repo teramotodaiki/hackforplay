@@ -253,7 +253,7 @@ window.addEventListener('load', function() {
 		if (!this.enchantBook) return;
 		this.enchantBook.scale(1, 1);
 		this.enchantBook.tl.scaleTo(0, 1, 7, enchant.Easing.BACK_EASEIN).then(function() {
-			this.enchantBook.visible = false;
+			this.visible = false;
 		});
 		this.dispatchEvent(new Event('editcancel'));
 	};
