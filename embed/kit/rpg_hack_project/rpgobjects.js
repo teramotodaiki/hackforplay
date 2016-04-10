@@ -133,6 +133,7 @@ window.addEventListener('load', function () {
 			this.on('enterframe', this.geneticUpdate);
 			this.getFrameOfBehavior = {}; // BehaviorTypesをキーとしたgetterのオブジェクト
 			this.behavior = BehaviorTypes.Idle; // call this.onbecomeidle
+			this._layer = RPGMap.Layer.Middle;
 			// shadow
 			this.shadow = new Sprite(32, 32);
 			this.shadow.visible = false;
@@ -331,6 +332,33 @@ window.addEventListener('load', function () {
 					this._behavior = value;
 				}
 			}
+		},
+		layer: {
+			get: function () { return this._layer; },
+			set: function (value) {
+				if (this === Hack.player) return; // プレイヤーのレイヤー移動を禁止
+				if (value === this._layer) return;
+				if (value === RPGMap.Layer.Player) {
+					// 他オブジェクトはプレイヤーレイヤーに干渉できないようにする
+					value += Math.sign(value - this._layer);
+				}
+				var sortingOrder = Object.keys(RPGMap.Layer).map(function (key) {
+					return RPGMap.Layer[key];
+				});
+				var max = Math.max.apply(null, sortingOrder);
+				var min = Math.min.apply(null, sortingOrder);
+				this._layer = Math.max(Math.min(value, max), min);
+				var map = this.map;
+				Hack.maps[map].layerChangeFlag = true;
+			}
+		},
+		bringOver: function () {
+			this.layer++;
+			return this.layer;
+		},
+		bringUnder: function () {
+			this.layer--;
+			return this.layer;
 		}
 	});
 
@@ -382,6 +410,7 @@ window.addEventListener('load', function () {
 			this.setFrameD9(BehaviorTypes.Attack, [6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, null]);
 			this.setFrameD9(BehaviorTypes.Damaged, [2, -1, -1, -1, 2, 2, 2, -1, -1, -1]);
 			this.setFrameD9(BehaviorTypes.Dead, [1, null]);
+			this._layer = RPGMap.Layer.Player;
 		},
 		onenterframe: function () {
 			if (!Hack.isPlaying) return;

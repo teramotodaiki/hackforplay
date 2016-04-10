@@ -57,7 +57,7 @@ $(function () {
         var fetch = JSON.parse(data);
         channelInfo.token = fetch.ProjectToken;
         channelInfo.update = fetch.Updated;
-        channelInfo.script_id = fetch.ScriptID;
+        channelInfo.script_id = fetch.Script.ID;
         // 次にrefreshをクリックした時、情報を書き換える
         $('.refresh-on-click').addClass('update').on('click', function render () {
           $('body').remove('click', '.refresh-on-click', render);
@@ -82,10 +82,16 @@ $(function () {
       } catch (e) {
         console.error(e);
       } finally {
-        setTimeout(polling, 1000);
+        setTimeout(polling, 5000);
       }
-    }).fail(function (data) {
-      setTimeout(polling, 1000);
+    }).fail(function (result) {
+      try {
+        console.log(JSON.parse(result.responseText));
+      } catch (e) {
+        console.error(result);
+      } finally {
+        setTimeout(polling, 5000);
+      }
     });
 
   })();

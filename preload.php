@@ -22,11 +22,14 @@ switch ($environment) {
 		break;
 	default:
 		function json_like_dump ($e) {
-			echo "{\n";
-			echo "\t\"message\": \"{$e->getMessage()}\",\n";
-			echo "\t\"file\": \"{$e->getFile()}\",\n";
-			echo "\t\"line\": \"{$e->getLine()}\"\n";
-			echo "}";
+			if (!headers_sent()) {
+				header('HTTP/1.0 500 Internal Server Error');
+				echo json_encode([
+					'message' => $e->getMessage(),
+					'file' => $e->getFile(),
+					'line' => $e->getLine()
+				]);
+			}
 		}
 		set_exception_handler('json_like_dump');
 		set_error_handler(function ($severity, $message, $file, $line) {
