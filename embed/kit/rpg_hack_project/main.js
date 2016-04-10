@@ -194,6 +194,7 @@ window.addEventListener('load', function () {
 			this.bmap = new Map(tileWidth, tileHeight); // 他のオブジェクトより奥に表示されるマップ
 			this.fmap = new Map(tileWidth, tileHeight); // 他のオブジェクトより手前に表示されるマップ
 			this.scene = new Group();					// マップ上に存在するオブジェクトをまとめるグループ
+			this.scene.ref = this;
 			// cmap==this.bmap.collisionData
 			this.__defineSetter__('cmap', function(c){ this.bmap.collisionData = c; });
 			this.__defineGetter__('cmap', function(){ return this.bmap.collisionData; });
@@ -202,6 +203,11 @@ window.addEventListener('load', function () {
 			this.__defineGetter__('width', function(){ return this.bmap.width; }); // ==this.bmap.width
 			this.__defineGetter__('height', function(){ return this.bmap.height; }); // ==this.bmap.height
 			this.isLoaded = false;
+			this.layerChangeFlag = false;
+			this.scene.on('enterframe', this.autoSorting);
+			this.scene.on('childadded', function () {
+				this.ref.layerChangeFlag = true;
+			});
 		},
 		load: function () {
 			if (!this.image && this.imagePath) this.image = game.assets[this.imagePath];
@@ -217,11 +223,32 @@ window.addEventListener('load', function () {
 		},
 		hitTest: function (x, y) {
 			return this.bmap.hitTest(x, y);
+		},
+		autoSorting: function () {
+			var ref = this instanceof RPGMap ? this : this.ref;
+			if (ref.layerChangeFlag) {
+				ref.scene.childNodes.sort(function(a, b) {
+					if (!('layer' in a) && !('layer' in b)) return 0;
+					if (!('layer' in a)) return 1;
+					if (!('layer' in b)) return -1;
+					return a.layer - b.layer;
+				});
+				ref.layerChangeFlag = false;
+				ref.scene.childNodes.forEach(function (node) {
+					node.dispatchEvent(new Event('added'));
+				});
+			}
 		}
 	});
 	Object.defineProperty(window, 'RPGMap', {
 		get: function () { return __RPGMap; }
 	});
+	RPGMap.Layer = {
+		Over: 3,
+		Player: 2,
+		Middle: 1,
+		Under: 0,
+	};
 
 	Hack.changeMap = function (mapName){
 		(function (current, next) {
