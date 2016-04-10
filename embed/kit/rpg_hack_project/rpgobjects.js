@@ -183,12 +183,8 @@ window.addEventListener('load', function () {
 				fromTop * 32 + this.offset.y);
 		},
 		destroy: function (delay) {
-			if (delay > 0) this.setTimeout(destroyMe, delay);
-			else destroyMe.call(this);
-			function destroyMe () {
-				if (this.scene) this.scene.removeChild(this);
-				if (this.parentNode) this.parentNode.removeChild(this);
-			}
+			if (delay > 0) this.setTimeout(this.remove, delay);
+			else this.remove();
 		},
 		setFrame: function (behavior, frame) {
 			// behavior is Type:string
