@@ -1,7 +1,7 @@
 window.addEventListener('load', function () {
 
 	var game = enchant.Core.instance;
-	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x2/dotmat.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png', 'enchantjs/icon0.png', 'enchantjs/x2/effect0.png', 'hackforplay/madosyo_small.png');
+	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x2/dotmat.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png', 'enchantjs/icon0.png', 'enchantjs/x2/effect0.png', 'hackforplay/madosyo_small.png', 'enchantjs/shadow.gif');
 	game.keybind(' '.charCodeAt(0), 'a');
 
 	Hack.onload = Hack.onload || function () {
@@ -150,16 +150,10 @@ window.addEventListener('load', function () {
 		Hack.lifeLabel = (function () {
 			var maxhp, hp;
 			maxhp = hp = this.life = Hack.player.hp;
-			Object.defineProperty(Hack.player, 'hp', {
-				enumerable : true,
-				get: function () {
-					return hp;
-				},
-				set: function (value) {
-					maxhp = Math.max(maxhp, value);
-					hp = value;
-					Hack.lifeLabel.life = maxhp < Hack.lifeLabel._maxlife ? hp : (hp / maxhp) * Hack.lifeLabel._maxlife;
-				}
+			Hack.player.on('hpchange', function () {
+				var hp = Hack.player.hp;
+				maxhp = Math.max(maxhp, hp);
+				Hack.lifeLabel.life = maxhp < Hack.lifeLabel._maxlife ? hp : (hp / maxhp) * Hack.lifeLabel._maxlife;
 			});
 			Hack.menuGroup.addChild(this);
 			return this;
@@ -291,6 +285,7 @@ window.addEventListener('load', function () {
 	 * Generic scoring property
 	 * Invoke Hack.onscorechange
 	*/
+	var scorechangeFlag = false;
 	Object.defineProperty(Hack, 'score', {
 		enumerable: true, configurable: false,
 		get: function () {
@@ -298,29 +293,34 @@ window.addEventListener('load', function () {
 		},
 		set: function (value) {
 			if (Hack.scoreLabel.score !== value) {
-				var e = new Event('scorechange');
-				e.score = Hack.scoreLabel.score = value;
-				Hack.dispatchEvent(e);
+				Hack.scoreLabel.score = value;
+				scorechangeFlag = true;
 			}
 		}
 	});
 	Hack.scoreLabel = Object.create(null); // 仮オブジェクト
 	Hack.score = 0; // Fire a event and Initialize score
+	game.on('enterframe', function () {
+		if (scorechangeFlag && Hack.isPlaying) {
+			Hack.dispatchEvent(new Event('scorechange'));
+			scorechangeFlag = false;
+		}
+	});
 
 	/* Timeline Extention
 	 * become(type[, time])
 	 * time フレームが経過した時、behavior typeを指定する
 	*/
 	enchant.Timeline.prototype.become = function (type, time) {
-        this.add(new enchant.Action({
-            onactionstart: function() {
+	  this.add(new enchant.Action({
+      onactionstart: function() {
 				var capital = type[0].toUpperCase() + type.substr(1).toLowerCase();
 				if (this instanceof RPGObject && BehaviorTypes.hasOwnProperty(capital)) {
 					this.behavior = BehaviorTypes[capital];
 				}
-            },
-            time: time || 0
-        }));
+      },
+	    time: time || 0
+    }));
 		return this;
 	};
 
