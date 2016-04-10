@@ -133,6 +133,18 @@ window.addEventListener('load', function () {
 			this.on('enterframe', this.geneticUpdate);
 			this.getFrameOfBehavior = {}; // BehaviorTypesをキーとしたgetterのオブジェクト
 			this.behavior = BehaviorTypes.Idle; // call this.onbecomeidle
+			// shadow
+			this.shadow = new Sprite(32, 32);
+			this.shadow.visible = false;
+			this.shadow.image = game.assets['enchantjs/shadow.gif'];
+			this.shadow.offset = { x: (this.width-this.shadow.width)/2, y: this.height-this.shadow.height };
+			this.shadow.scale(this.width/64, this.height/64);
+			this.on('added', function () {
+				this.parentNode.insertBefore(this.shadow, this);
+			});
+			this.on('removed', function () {
+				this.shadow.remove();
+			});
 
 			Hack.defaultParentNode.addChild(this);
 		},
@@ -156,6 +168,10 @@ window.addEventListener('load', function () {
 				this.isBehaviorChanged = false;
 				this.dispatchEvent(new Event('become' + this.behavior));
 			}
+			if (this.shadow.visible) {
+				var o = this.shadow.offset;
+				this.shadow.moveTo(this.x + o.x, this.y + o.y);
+			}
 		},
 		locate: function (fromLeft, fromTop, mapName) {
 			if (mapName && Hack.maps[mapName]) {
@@ -167,12 +183,8 @@ window.addEventListener('load', function () {
 				fromTop * 32 + this.offset.y);
 		},
 		destroy: function (delay) {
-			if (delay > 0) this.setTimeout(destroyMe, delay);
-			else destroyMe.call(this);
-			function destroyMe () {
-				if (this.scene) this.scene.removeChild(this);
-				if (this.parentNode) this.parentNode.removeChild(this);
-			}
+			if (delay > 0) this.setTimeout(this.remove, delay);
+			else this.remove();
 		},
 		setFrame: function (behavior, frame) {
 			// behavior is Type:string
@@ -477,7 +489,7 @@ window.addEventListener('load', function () {
     });
 
 	var __Bat = enchant.Class(EnemyBase, {
-        initialize: function(){
+    initialize: function(){
 			EnemyBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/monster3.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
@@ -485,8 +497,9 @@ window.addEventListener('load', function () {
 			this.setFrame(BehaviorTypes.Attack, [9, 9, 9, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 4, 4, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, -1, null]);
-        }
-    });
+			this.shadow.visible = true;
+    }
+  });
 
 	var __Dragon = enchant.Class(EnemyBase, {
         initialize: function(){
