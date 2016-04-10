@@ -17,26 +17,39 @@ if (!$id) {
 // Datetime string of latest update
 $last_update  = filter_input(INPUT_GET, 'update');
 
-$stmt = $dbh->prepare('SELECT ch."DisplayName",ch."ProjectToken",ch."ProjectID",ch."UserID",ch."Registered",ch."Updated",u."Nickname" FROM "Channel" AS ch LEFT OUTER JOIN "User" AS u ON ch."UserID"=u."ID" WHERE ch."ID"=:id');
-$stmt_script  = $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id');
+$stmt_ch = $dbh->prepare('SELECT * FROM "Channel" WHERE "ID"=:id');
+$stmt_pr = $dbh->prepare('SELECT "Written" FROM "Project" WHERE "ID"=:project_id');
+$stmt_us = $dbh->prepare('SELECT "ID","Nickname" FROM "User" WHERE "ID"=:user_id');
+$stmt_sc  = $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id');
 
 set_time_limit(0);
 while (1) {
 
-  $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-  $stmt->execute();
-  $channel  = $stmt->fetch(PDO::FETCH_ASSOC);
-
+  $stmt_ch->bindValue(':id', $id, FILTER_VALIDATE_INT);
+  $stmt_ch->execute();
+  $channel  = $stmt_ch->fetch(PDO::FETCH_ASSOC);
   if (!$channel) {
     // Not found
-    header("HTTP/1.0 404 Not Found");
-    echo 'channel not found';
+    if (!headers_sent()) {
+      header("HTTP/1.0 404 Not Found");
+      echo 'channel not found';
+    }
     die;
+  }
 
-  } elseif ($last_update != $channel['Updated']) {
+  $stmt_pr->bindValue(':project_id', $channel['ProjectID'], FILTER_VALIDATE_INT);
+  $stmt_pr->execute();
+  $written  = $stmt_pr->fetch(PDO::FETCH_COLUMN);
 
-    $stmt_script->execute($channel['ProjectID']);
-    $channel['ScriptID'] = (int)$stmt_script->fetch(PDO::FETCH_COLUMN);
+  if ($last_update != $channel['Updated'] && $written) {
+
+    $stmt_us->bindValue(':user_id', $channel['UserID'], PDO::PARAM_INT);
+    $stmt_us->execute($channel['UserID']);
+    $channel['User']  = $stmt_us->fetch(PDO::FETCH_ASSOC);
+
+    $stmt_us->bindValue(':project_id', $channel['ProjectID'], FILTER_VALIDATE_INT);
+    $stmt_sc->execute();
+    $channel['Script'] = $stmt_sc->fetch(PDO::FETCH_ASSOC);
 
     // Fetch new update
     echo json_encode($channel);
