@@ -234,19 +234,13 @@ window.addEventListener('load', function () {
 			this.on('enterframe', task);
 			return stopInterval.bind(this);
 		},
-		attack: function (count, continuous) {
-			if (!continuous && this.behavior !== BehaviorTypes.Idle || !Hack.isPlaying) return;
-			var c = typeof count === 'number' ? count >> 0 : 1;
+		attack: function () {
+			if (this.behavior !== BehaviorTypes.Idle || !Hack.isPlaying) return;
 			var f = this.forward;
-			if (continuous) {
-				this.frame = [];
-				this.frame = this.getFrame();
-			} else this.behavior = BehaviorTypes.Attack;
+			this.behavior = BehaviorTypes.Attack;
 			Hack.Attack.call(this, this.mapX + f.x, this.mapY + f.y, this.atk, f.x, f.y);
 			this.setTimeout(function () {
-				// next step
-				if (count > 1) this.attack(count - 1, true);
-				else this.behavior = BehaviorTypes.Idle;
+				this.behavior = BehaviorTypes.Idle;
 			}, this.getFrame().length);
 		},
 		onattacked: function (event) {
