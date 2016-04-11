@@ -154,7 +154,9 @@ window.addEventListener('load', function () {
 			// enter frame
 			if (typeof this.hp === 'number') {
 				this.damageTime = Math.max(0, this.damageTime - 1);
-				this.opacity = (this.damageTime / 2 + 1 | 0) % 2; // 点滅
+				if (this.damageTime > 0) {
+					this.opacity = (this.damageTime / 2 + 1 | 0) % 2; // 点滅
+				}
 			}
 			if (this.hpchangeFlag) {
 				this.dispatchEvent(new Event('hpchange'));
