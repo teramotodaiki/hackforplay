@@ -409,7 +409,6 @@ $(function(){
 	// チャンネル
 	$.get('../cast/channels.php', function (data) {
 		try {
-			console.log(data);
 			JSON.parse(data).forEach(function (item) {
 				$('<a>').attr({
 					href: '/cast/?name='+item.Name,
