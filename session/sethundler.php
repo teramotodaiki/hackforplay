@@ -51,12 +51,20 @@ class SQLSessionHundler implements SessionHandlerInterface
 			return $stmt->execute();
 
 		} else {
-			// 追加
-			$stmt	= $this->dbh->prepare('INSERT INTO "Sessions"("ID","Data","Timestamp") VALUES(:id,:data,:gmt)');
-			$stmt->bindValue(":id", $session_id, PDO::PARAM_STR);
-			$stmt->bindValue(":data", $session_data, PDO::PARAM_STR);
-			$stmt->bindValue(":gmt", time(), PDO::PARAM_INT);
-			return $stmt->execute();
+			try {
+				// 追加
+				$stmt	= $this->dbh->prepare('INSERT INTO "Sessions"("ID","Data","Timestamp") VALUES(:id,:data,:gmt)');
+				$stmt->bindValue(":id", $session_id, PDO::PARAM_STR);
+				$stmt->bindValue(":data", $session_data, PDO::PARAM_STR);
+				$stmt->bindValue(":gmt", time(), PDO::PARAM_INT);
+				return $stmt->execute();
+			} catch (PDOException $e) {
+				/**
+				 * issue:
+				 * PDOException: SQLSTATE[23000]: [Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Violation of PRIMARY KEY constraint 'PK__Sessions__3214EC2782EACC4B'. Cannot insert duplicate key in object 'dbo.Sessions'. The duplicate key value is (acpn619ekhuj2doopjg67feng5).
+				*/
+				return false;
+			}
 		}
 	}
 
