@@ -31,6 +31,8 @@ call_user_func(function($useCDN, $path){
  <?php else : ?>
  <link rel="stylesheet" href="/css/app.css" media="screen" charset="utf-8">
  <?php endif; ?>
+ <!-- Favicon -->
+ <link rel="shortcut icon" href="/favicon.ico" />
  <!-- Environment File -->
 <link rel="stylesheet" href="/css/font.css" />
 <link rel="stylesheet" href="/css/size.css" />
