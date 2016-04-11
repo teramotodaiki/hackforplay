@@ -53,17 +53,8 @@ $stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 $stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 $stmt->execute();
 
-for ($i=0; $i < $fetch_start; $i++) {
-	$item	= $stmt->fetch();
-}
-for ($i = 0; $i < $max_fetch_length; $i++){
-	$item	= $stmt->fetch(PDO::FETCH_ASSOC);
-	if($item != NULL){
-		array_push($result, $item);
-	}else{
-		break;
-	}
-}
+$result	= $stmt->fetchAll(PDO::FETCH_ASSOC);
+$result = array_slice($result, 0, $max_fetch_length);
 
 // タグのリストを取得
 $stmt			= $dbh->prepare('SELECT "ID","IdentifierString","DisplayString","LabelColor" FROM "StageTagData"');
