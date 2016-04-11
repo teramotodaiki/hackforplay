@@ -36,14 +36,14 @@ $stmt_det	= $dbh->prepare('SELECT "Data","KeyString" FROM "NotificationDetail" W
 $stmt_usr	= $dbh->prepare('SELECT "Nickname" FROM "User" WHERE "ID"=:userid');
 $stmt_stg	= $dbh->prepare('SELECT "Title" FROM "Stage" WHERE "ID"=:stageid');
 
-// Skip
-for ($i = $offset; $i > 0 && $stmt_not->fetch(); $i--)
-	;
+$notifications = $stmt_not->fetchAll(PDO::FETCH_ASSOC);
+$notifications = array_slice($notifications, $offset, $length);
 
 // Fetch
 $result					= new stdClass;
 $result->Notifications	= array();
-for ($i = $length; $i > 0 && $row = $stmt_not->fetch(PDO::FETCH_ASSOC); $i--) {
+
+foreach ($notifications as $key => $row) {
 
 	$row['Detail']	= array();
 	$stmt_det->bindValue(":id", $row['ID'], PDO::FETCH_ASSOC);
