@@ -225,7 +225,8 @@ window.addEventListener('load', function () {
 			return this.bmap.hitTest(x, y);
 		},
 		autoSorting: function () {
-			var ref = this instanceof RPGMap ? this : this.ref;
+			var ref = this instanceof RPGMap ? this :
+									'ref' in this ? this.ref : Hack.map;
 			if (ref.layerChangeFlag) {
 				ref.scene.childNodes.sort(function(a, b) {
 					if (!('layer' in a) && !('layer' in b)) return 0;
