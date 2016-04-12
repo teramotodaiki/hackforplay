@@ -133,6 +133,7 @@ window.addEventListener('load', function () {
 			// かいだん
 			var item = new MapObject('downStair');
 			item.locate(__cnt15, __cnt10, 'map1');
+			item.layer = RPGMap.Layer.Under;
 			item.onplayerenter = function () {
 				Hack.changeMap('map2');
 			};
@@ -151,6 +152,7 @@ window.addEventListener('load', function () {
 			// ワープ
 			var item = new MapObject('warp');
 			item.locate(__cnt15, __cnt10, 'map1');
+			item.layer = RPGMap.Layer.Under;
 			item.onplayerenter = function () {
 				Hack.player.locate(11, 5);
 			};
@@ -190,6 +192,7 @@ window.addEventListener('load', function () {
 			// はな
 			var item = new MapObject('flower');
 			item.locate(__cnt15, __cnt10, 'map1');
+			item.layer = RPGMap.Layer.Under;
 			item.collisionFlag = false;
 			item.onattacked = function () {
 				this.destroy();
@@ -443,6 +446,7 @@ window.addEventListener('load', function () {
 			// トゲのワナ
 			var item = new MapObject('trap');
 			item.locate(__cnt15, __cnt10, 'map1');
+			item.layer = RPGMap.Layer.Under;
 			item.onplayerenter = function () {
 				this.name = 'usedTrap';
 				Hack.player.hp -= 1;
@@ -570,6 +574,7 @@ window.addEventListener('load', function () {
 			// かいだん
 			var item = new MapObject('upStair');
 			item.locate(__cnt15, __cnt10, 'map2');
+			item.layer = RPGMap.Layer.Under;
 			item.onplayerenter = function () {
 				Hack.changeMap('map1');
 			};
@@ -703,6 +708,7 @@ window.addEventListener('load', function () {
 			// まほうじん
 			var item = new MapObject('magic');
 			item.locate(__cnt15, __cnt10, 'map1');
+			item.layer = RPGMap.Layer.Under;
 			item.onplayerenter = function () {
 				if (Hack.score >= 7) {
 					this.frame = MapObject.dictionary.usedMagic;
@@ -771,6 +777,7 @@ window.addEventListener('load', function () {
 					// おはな
 					var item = new MapObject('flower');
 					item.locate(this.mapX, this.mapY + 1, 'map1');
+					item.layer = RPGMap.Layer.Under;
 					item.onplayerenter = function () {
 						this.destroy();
 					};
