@@ -244,9 +244,10 @@ window.addEventListener('load', function () {
 		get: function () { return __RPGMap; }
 	});
 	RPGMap.Layer = {
-		Over: 3,
-		Player: 2,
-		Middle: 1,
+		Over: 4,
+		Player: 3,
+		Middle: 2,
+		Shadow: 1,
 		Under: 0,
 	};
 
