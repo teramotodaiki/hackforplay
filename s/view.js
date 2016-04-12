@@ -1240,13 +1240,11 @@ $(function(){
 		};
 		window.addEventListener('message', function (event) {
 			if (event.data.query !== 'openExternal') return;
-			console.log('openExternal', event.data);
 			var component;
 			try {
 				component = document.createElement('a');
 				component.href = event.data.url;
 			} catch (e) { console.error(e); return; }
-			console.log('component is', component);
 			var domain = component.hostname.replace(/^www\./, '');
 			var pathname = component.pathname.replace(/^\//, '');
 			var $all = $('.container-open-external .item-open-external');
@@ -1263,7 +1261,6 @@ $(function(){
 				// 3.空いているところ
 				return !$(this).hasClass('visible');
 			}).first();
-			console.log('$item.length', $item.length);
 			if ($item.length === 0) return; // No empty
 			var $wrapper = $item.find('.embed-frame');
 			$wrapper.children().remove();
@@ -1271,7 +1268,6 @@ $(function(){
 				'data-href': component.href,
 				'data-domain': domain
 			}).addClass('visible');
-			console.log('domain is', domain);
 			switch (domain) {
 				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
 				case 'hackforplay.xyz': openLink($wrapper, parse(component).id); break;
@@ -1305,7 +1301,6 @@ $(function(){
 			});
 		}
 		function openLink ($wrapper, stage_id) {
-			console.log(stage_id);
 			$wrapper.append(
 				$('<div>').addClass('fit cover-thumbnail').css('background-image', stage_id ? ('url(../thumbnail/?stage_id=' + stage_id + ')') : 'url(../town/img/ground.png)')
 			).append(
