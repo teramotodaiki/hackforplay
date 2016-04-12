@@ -1248,6 +1248,7 @@ $(function(){
 			} catch (e) { console.error(e); return; }
 			console.log('component is', component);
 			var domain = component.hostname.replace(/^www\./, '');
+			var pathname = component.pathname.replace(/^\//, '');
 			var $all = $('.container-open-external .item-open-external');
 			var $item = $all.filter(function () {
 				// 1.全く同じURL
@@ -1274,8 +1275,8 @@ $(function(){
 			switch (domain) {
 				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
 				case 'hackforplay.xyz': openLink($wrapper, parse(component).id); break;
-				case 'play.hackforplay': openLink($wrapper, component.pathname.substr(1)); break;
-				case 'youtu.be': openYouTube($wrapper, component.pathname.substr(1)); break;
+				case 'play.hackforplay': openLink($wrapper, pathname); break;
+				case 'youtu.be': openYouTube($wrapper, pathname); break;
 				case 'youtube.com': openYouTube($wrapper, parse(component).v); break;
 				case 'restaging.hackforplay':
 				if ( !$('.container.container-game').hasClass('restaging') ) {
@@ -1304,6 +1305,7 @@ $(function(){
 			});
 		}
 		function openLink ($wrapper, stage_id) {
+			console.log(stage_id);
 			$wrapper.append(
 				$('<div>').addClass('fit cover-thumbnail').css('background-image', stage_id ? ('url(../thumbnail/?stage_id=' + stage_id + ')') : 'url(../town/img/ground.png)')
 			).append(
