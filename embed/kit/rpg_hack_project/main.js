@@ -197,6 +197,7 @@ window.addEventListener('load', function () {
 			this.scene.ref = this;
 			this.isLoaded = false;
 			this.layerChangeFlag = false;
+			this._name = '';
 			this.scene.on('enterframe', this.autoSorting);
 			this.scene.on('childadded', function () {
 				this.ref.layerChangeFlag = true;
@@ -228,6 +229,18 @@ window.addEventListener('load', function () {
 					return a.layer - b.layer;
 				});
 				ref.layerChangeFlag = false;
+			}
+		},
+		name: {
+			// Key of this map in Hack.maps object
+			get: function () {
+				if (!this._name) {
+					var result = Object.keys(Hack.maps).filter(function (key) {
+						return Hack.maps[key] === this;
+					}, this);
+					this._name = result.length > 0 ? result[0] : '';
+				}
+				return this._name;
 			}
 		},
 		cmap: {
