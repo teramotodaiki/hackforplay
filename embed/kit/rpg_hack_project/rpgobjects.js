@@ -85,11 +85,7 @@ window.addEventListener('load', function () {
 			});
 			Object.defineProperty(this, 'map', {
 				get: function () {
-					var parent = Object.keys(Hack.maps).filter(function (name) {
-						return Hack.maps[name].scene === this.parentNode;
-					}, this);
-					if (parent.length === 0) return undefined;
-					else return parent[0];
+					return this.parentNode.ref;
 				}
 			});
 			var collisionFlag = null; // this.collisionFlag (Default:true)
@@ -350,8 +346,7 @@ window.addEventListener('load', function () {
 				var max = Math.max.apply(null, sortingOrder);
 				var min = Math.min.apply(null, sortingOrder);
 				this._layer = Math.max(Math.min(value, max), min);
-				var map = this.map;
-				Hack.maps[map].layerChangeFlag = true;
+				this.map.layerChangeFlag = true;
 			}
 		},
 		bringOver: function () {
