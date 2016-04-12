@@ -1240,10 +1240,12 @@ $(function(){
 		};
 		window.addEventListener('message', function (event) {
 			if (event.data.query !== 'openExternal') return;
+			console.log('openExternal', event.data);
 			var component;
 			try {
 				component = new URL(event.data.url);
 			} catch (e) { console.error(e); return; }
+			console.log('component is', component);
 			var domain = component.hostname.replace(/^www\./, '');
 			var $all = $('.container-open-external .item-open-external');
 			var $item = $all.filter(function () {
@@ -1259,6 +1261,7 @@ $(function(){
 				// 3.空いているところ
 				return !$(this).hasClass('visible');
 			}).first();
+			console.log('$item.length', $item.length);
 			if ($item.length === 0) return; // No empty
 			var $wrapper = $item.find('.embed-frame');
 			$wrapper.children().remove();
@@ -1266,6 +1269,7 @@ $(function(){
 				'data-href': component.href,
 				'data-domain': domain
 			}).addClass('visible');
+			console.log('domain is', domain);
 			switch (domain) {
 				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
 				case 'hackforplay.xyz': openLink($wrapper, parse(component).id); break;
