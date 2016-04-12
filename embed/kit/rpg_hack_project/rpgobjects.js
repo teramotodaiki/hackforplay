@@ -138,10 +138,8 @@ window.addEventListener('load', function () {
 			this.shadow.offset = { x: (this.width-this.shadow.width)/2, y: this.height-this.shadow.height };
 			this.shadow.scale(this.width/64, this.height/64);
 			this.on('added', function () {
-				this.parentNode.insertBefore(this.shadow, this);
-			});
-			this.on('removed', function () {
-				this.shadow.remove();
+				this.parentNode.addChild(this.shadow);
+				this.map.layerChangeFlag = true;
 			});
 
 			Hack.defaultParentNode.addChild(this);
@@ -183,8 +181,12 @@ window.addEventListener('load', function () {
 				fromTop * 32 + this.offset.y);
 		},
 		destroy: function (delay) {
-			if (delay > 0) this.setTimeout(this.remove, delay);
-			else this.remove();
+			if (delay > 0) this.setTimeout(_remove.bind(this), delay);
+			else _remove.call(this);
+			function _remove () {
+				this.remove();
+				if (this.shadow) this.shadow.remove();
+			}
 		},
 		setFrame: function (behavior, frame) {
 			// behavior is Type:string
