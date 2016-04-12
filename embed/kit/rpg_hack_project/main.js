@@ -234,9 +234,6 @@ window.addEventListener('load', function () {
 					return a.layer - b.layer;
 				});
 				ref.layerChangeFlag = false;
-				ref.scene.childNodes.forEach(function (node) {
-					node.dispatchEvent(new Event('added'));
-				});
 			}
 		}
 	});
