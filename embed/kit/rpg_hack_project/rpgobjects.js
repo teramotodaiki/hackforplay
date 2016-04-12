@@ -132,6 +132,7 @@ window.addEventListener('load', function () {
 			this._layer = RPGMap.Layer.Middle;
 			// shadow
 			this.shadow = new Sprite(32, 32);
+			this.shadow.ref = this;
 			this.shadow.layer = RPGMap.Layer.Shadow;
 			this.shadow.visible = false;
 			this.shadow.image = game.assets['enchantjs/shadow.gif'];
