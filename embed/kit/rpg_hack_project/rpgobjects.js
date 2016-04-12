@@ -614,36 +614,36 @@ window.addEventListener('load', function () {
     }
 	});
 
-    var __MapObject = enchant.Class(RPGObject, {
-	    initialize: function(value){
-        RPGObject.call(this, 32, 32, 0, 0);
-        this.image = game.assets['enchantjs/x2/dotmat.gif'];
-				if (typeof value === 'number') {
-					this.frame = value;
-				} else {
-					this.name = value;
-				}
-      },
-			name: {
-				get: function () {
-					var search = '';
-					Object.keys(MapObject.dictionary).forEach(function (key) {
-						if (MapObject.dictionary[key] === this.frame) {
-							search = key;
-						}
-					}, this);
-					return search;
-				},
-				set: function (key) {
-					if (MapObject.dictionary.hasOwnProperty(key)) {
-						this.frame = MapObject.dictionary[key];
+  var __MapObject = enchant.Class(RPGObject, {
+		initialize: function(value){
+		  RPGObject.call(this, 32, 32, 0, 0);
+		  this.image = game.assets['enchantjs/x2/dotmat.gif'];
+			if (typeof value === 'number') {
+				this.frame = value;
+			} else {
+				this.name = value;
+			}
+		},
+		name: {
+			get: function () {
+				var search = '';
+				Object.keys(MapObject.dictionary).forEach(function (key) {
+					if (MapObject.dictionary[key] === this.frame) {
+						search = key;
 					}
-				}
+				}, this);
+				return search;
 			},
-      onenterframe: function(){
+			set: function (key) {
+				if (MapObject.dictionary.hasOwnProperty(key)) {
+					this.frame = MapObject.dictionary[key];
+				}
+			}
+		},
+    onenterframe: function(){
 
-      }
-    });
+    }
+  });
 
 	var __Effect = enchant.Class(RPGObject, {
 		initialize: function (velocityX, velocityY, lifetime, randomize) {
