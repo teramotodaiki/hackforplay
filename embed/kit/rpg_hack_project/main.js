@@ -71,40 +71,6 @@ window.addEventListener('load', function () {
 				}
 			});
 		}
-
-		// 互換性維持
-		(function () {
-			MapObject.dictionary = MapObject.dictionary || {};
-			Array.prototype.filter.call(arguments, function (dictionary) {
-				return typeof dictionary === 'object';
-			}).forEach(function (dictionary) {
-				Object.keys(dictionary).filter(function (key) {
-					return !MapObject.dictionary.hasOwnProperty(key);
-				}).forEach(function (key) {
-					MapObject.dictionary[key] = dictionary[key];
-				});
-			});
-		})(
-		// 旧仕様ユーザー定義
-		MapObject.Dictionaly,
-		// 新仕様公式定義
-		{
-			clay: 320,		clayWall: 340,	clayFloor: 323,
-			stone: 321,		stoneWall: 341,	stoneFloor: 342,
-			warp: 324,		warpRed: 325,
-			warpGreen: 326,	warpYellow: 327,
-			magic: 328,		usedMagic: 329,
-			pot: 400,		rock: 401,		upStair: 402,
-			box: 420,		flower: 421,	downStair: 422,
-			trap: 440,		usedTrap: 441,	step: 442,
-			castle: 500,	village: 501,	cave: 502,
-			tree: 520,		table: 521,		openedBox: 522,
-			beam: 540,		diamond: 560,	sapphire: 561,
-			ruby: 562,		heart: 563,		skull: 564,
-			coin: 565,		star: 566,		key: 567,
-			bomb: 580,		coldBomb: 581,	egg: 582,
-			poo: 583
-		});
 	});
 
 	game.on('load', function() {
@@ -174,18 +140,52 @@ window.addEventListener('load', function () {
 
 	game.onload = game.onload || function () {
 
-        var map = Hack.maps['map1'];
-        map.load(); // Load Map;  Hack.defaultParentNode == map.scene
+		var map = Hack.maps['map1'];
+		map.load(); // Load Map;  Hack.defaultParentNode == map.scene
 
-        var player = Hack.player = new Player();
-        player.locate(1, 5);
+		var player = Hack.player = new Player();
+		player.locate(1, 5);
 
-    };
+	};
 
-    /*
-	 * RPGMap
-	 * レイヤー化された切り替え可能なマップ
-	 */
+	// 互換性維持
+	MapObject._dictionary = {};
+	Object.defineProperty(MapObject, 'dictionary', {
+		configurable: true, enumerable: true,
+		get: function () { return this._dictionary; },
+		set: function (value) {
+			Object.keys(value).forEach(function (key) {
+				this._dictionary[key] = value[key];
+			}, this);
+		}
+	});
+	MapObject.dictionary = MapObject.Dictionaly || {}; // 旧仕様ユーザー定義
+	MapObject.dictionary = {
+		// 新仕様公式定義
+		clay: 320,		clayWall: 340,	clayFloor: 323,
+		stone: 321,		stoneWall: 341,	stoneFloor: 342,
+		warp: 324,		warpRed: 325,
+		warpGreen: 326,	warpYellow: 327,
+		magic: 328,		usedMagic: 329,
+		pot: 400,		rock: 401,		upStair: 402,
+		box: 420,		flower: 421,	downStair: 422,
+		trap: 440,		usedTrap: 441,	step: 442,
+		castle: 500,	village: 501,	caveGate: 502,
+		tree: 520,		table: 521,		openedBox: 522,
+		beam: 540,		diamond: 560,	sapphire: 561,
+		ruby: 562,		heart: 563,		skull: 564,
+		coin: 565,		star: 566,		key: 567,
+		bomb: 580,		coldBomb: 581,	egg: 582,
+		poo: 583,
+		sandySoil: 45, claySoil: 323,
+		grassland: 322,	waterside: 205,
+		flatGray: 135, squareGray: 93,
+	};
+
+	/*
+	* RPGMap
+	* レイヤー化された切り替え可能なマップ
+	*/
 	var __RPGMap = enchant.Class(EventTarget, {
 		initialize: function(tileWidth, tileHeight) {
 			EventTarget.call(this);
@@ -198,6 +198,7 @@ window.addEventListener('load', function () {
 			this.isLoaded = false;
 			this.layerChangeFlag = false;
 			this._name = '';
+			this._type = '';
 			this.scene.on('enterframe', this.autoSorting);
 			this.scene.on('childadded', function () {
 				this.ref.layerChangeFlag = true;
@@ -220,7 +221,7 @@ window.addEventListener('load', function () {
 		},
 		autoSorting: function () {
 			var ref = this instanceof RPGMap ? this :
-									'ref' in this ? this.ref : Hack.map;
+			'ref' in this ? this.ref : Hack.map;
 			if (ref.layerChangeFlag) {
 				ref.scene.childNodes.sort(function(a, b) {
 					if (!('layer' in a) && !('layer' in b)) return 0;
@@ -241,6 +242,21 @@ window.addEventListener('load', function () {
 					this._name = result.length > 0 ? result[0] : '';
 				}
 				return this._name;
+			}
+		},
+		type: {
+			// set default of bmap
+			get: function () {
+				this._type = this._type || (this.bmap !== null ? this.bmap[0][0] : '');
+				return this._type;
+			},
+			set: function (value) {
+				if (value !== this._type && value in MapObject.dictionary) {
+					this._type = value;
+					var frame = MapObject.dictionary[value];
+					this.bmap.loadData(new Array(10).fill(new Array(15).fill(frame)));
+					this.cmap = this.cmap || new Array(10).fill(new Array(15).fill(0));
+				}
 			}
 		},
 		cmap: {
@@ -295,7 +311,7 @@ window.addEventListener('load', function () {
 	};
 
 	/*  Dir2Vec
-		directionをforwardに変換する。 0/down, 1/left, 2/right, 3/up
+	directionをforwardに変換する。 0/down, 1/left, 2/right, 3/up
 	*/
 	Hack.Dir2Vec = function (dir) {
 		switch(dir){
@@ -307,7 +323,7 @@ window.addEventListener('load', function () {
 		}
 	};
 	/*  Vec2Dir
-		forwardをdirectionに変換する。およそのベクトルをまるめて近い向きに直す
+	forwardをdirectionに変換する。およそのベクトルをまるめて近い向きに直す
 	*/
 	Hack.Vec2Dir = function (vec) {
 		if(vec.x === undefined || vec.y === undefined){ return null; }
@@ -331,9 +347,9 @@ window.addEventListener('load', function () {
 	};
 
 	/**
-	 * Hack.score
-	 * Generic scoring property
-	 * Invoke Hack.onscorechange
+	* Hack.score
+	* Generic scoring property
+	* Invoke Hack.onscorechange
 	*/
 	var scorechangeFlag = false;
 	Object.defineProperty(Hack, 'score', {
@@ -358,30 +374,30 @@ window.addEventListener('load', function () {
 	});
 
 	/* Timeline Extention
-	 * become(type[, time])
-	 * time フレームが経過した時、behavior typeを指定する
+	* become(type[, time])
+	* time フレームが経過した時、behavior typeを指定する
 	*/
 	enchant.Timeline.prototype.become = function (type, time) {
-	  this.add(new enchant.Action({
-      onactionstart: function() {
+		this.add(new enchant.Action({
+			onactionstart: function() {
 				var capital = type[0].toUpperCase() + type.substr(1).toLowerCase();
 				if (this instanceof RPGObject && BehaviorTypes.hasOwnProperty(capital)) {
 					this.behavior = BehaviorTypes[capital];
 				}
-      },
-	    time: time || 0
-    }));
+			},
+			time: time || 0
+		}));
 		return this;
 	};
 
 	/* random
-	 * Random value between min to max (Detection type)
-	 * (int, int) ===> int
-	 * (float, int|float) ====> float
-	 * (value, value) ====> value ~ value
-	 * (value) ====> 0 ~ value
-	 * (Array) ====> value in Array
-	 * () ====> 0 ~ 1
+	* Random value between min to max (Detection type)
+	* (int, int) ===> int
+	* (float, int|float) ====> float
+	* (value, value) ====> value ~ value
+	* (value) ====> 0 ~ value
+	* (Array) ====> value in Array
+	* () ====> 0 ~ 1
 	*/
 	window.random = window.random || function (min, max) {
 		if (arguments.length === 0) return Math.random();
