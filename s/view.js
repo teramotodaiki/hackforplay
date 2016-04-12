@@ -1243,7 +1243,8 @@ $(function(){
 			console.log('openExternal', event.data);
 			var component;
 			try {
-				component = new URL(event.data.url);
+				component = document.createElement('a');
+				component.href = event.data.url;
 			} catch (e) { console.error(e); return; }
 			console.log('component is', component);
 			var domain = component.hostname.replace(/^www\./, '');
