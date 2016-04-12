@@ -340,19 +340,27 @@ window.addEventListener('load', function () {
 		layer: {
 			get: function () { return this._layer; },
 			set: function (value) {
-				if (this === Hack.player) return; // プレイヤーのレイヤー移動を禁止
-				if (value === this._layer) return;
-				if (value === RPGMap.Layer.Player) {
-					// 他オブジェクトはプレイヤーレイヤーに干渉できないようにする
-					value += Math.sign(value - this._layer);
-				}
+				if (this === Hack.player) return this._layer; // プレイヤーのレイヤー移動を禁止
+				if (value === this._layer) return this._layer;
+
+				// Range of layer
 				var sortingOrder = Object.keys(RPGMap.Layer).map(function (key) {
 					return RPGMap.Layer[key];
 				});
 				var max = Math.max.apply(null, sortingOrder);
 				var min = Math.min.apply(null, sortingOrder);
 				this._layer = Math.max(Math.min(value, max), min);
-				this.map.layerChangeFlag = true;
+
+				// 他オブジェクトはプレイヤーレイヤーに干渉できないようにする
+				if (this._layer === RPGMap.Layer.Player) {
+					switch (Math.sign(value - this._layer)) {
+						case 1: return this.bringOver();
+						case -1: return this.bringUnder();
+						default: break;
+					}
+				}
+
+				this.map.layerChangeFlag = true; // レイヤーをソートする
 			}
 		},
 		bringOver: function () {
