@@ -140,13 +140,13 @@ window.addEventListener('load', function () {
 
 	game.onload = game.onload || function () {
 
-        var map = Hack.maps['map1'];
-        map.load(); // Load Map;  Hack.defaultParentNode == map.scene
+		var map = Hack.maps['map1'];
+		map.load(); // Load Map;  Hack.defaultParentNode == map.scene
 
-        var player = Hack.player = new Player();
-        player.locate(1, 5);
+		var player = Hack.player = new Player();
+		player.locate(1, 5);
 
-    };
+	};
 
     /*
 	 * RPGMap
@@ -198,6 +198,7 @@ window.addEventListener('load', function () {
 			this.isLoaded = false;
 			this.layerChangeFlag = false;
 			this._name = '';
+			this._type = '';
 			this.scene.on('enterframe', this.autoSorting);
 			this.scene.on('childadded', function () {
 				this.ref.layerChangeFlag = true;
@@ -220,7 +221,7 @@ window.addEventListener('load', function () {
 		},
 		autoSorting: function () {
 			var ref = this instanceof RPGMap ? this :
-									'ref' in this ? this.ref : Hack.map;
+			'ref' in this ? this.ref : Hack.map;
 			if (ref.layerChangeFlag) {
 				ref.scene.childNodes.sort(function(a, b) {
 					if (!('layer' in a) && !('layer' in b)) return 0;
@@ -295,7 +296,7 @@ window.addEventListener('load', function () {
 	};
 
 	/*  Dir2Vec
-		directionをforwardに変換する。 0/down, 1/left, 2/right, 3/up
+	directionをforwardに変換する。 0/down, 1/left, 2/right, 3/up
 	*/
 	Hack.Dir2Vec = function (dir) {
 		switch(dir){
@@ -307,7 +308,7 @@ window.addEventListener('load', function () {
 		}
 	};
 	/*  Vec2Dir
-		forwardをdirectionに変換する。およそのベクトルをまるめて近い向きに直す
+	forwardをdirectionに変換する。およそのベクトルをまるめて近い向きに直す
 	*/
 	Hack.Vec2Dir = function (vec) {
 		if(vec.x === undefined || vec.y === undefined){ return null; }
@@ -331,9 +332,9 @@ window.addEventListener('load', function () {
 	};
 
 	/**
-	 * Hack.score
-	 * Generic scoring property
-	 * Invoke Hack.onscorechange
+	* Hack.score
+	* Generic scoring property
+	* Invoke Hack.onscorechange
 	*/
 	var scorechangeFlag = false;
 	Object.defineProperty(Hack, 'score', {
@@ -358,30 +359,30 @@ window.addEventListener('load', function () {
 	});
 
 	/* Timeline Extention
-	 * become(type[, time])
-	 * time フレームが経過した時、behavior typeを指定する
+	* become(type[, time])
+	* time フレームが経過した時、behavior typeを指定する
 	*/
 	enchant.Timeline.prototype.become = function (type, time) {
-	  this.add(new enchant.Action({
-      onactionstart: function() {
+		this.add(new enchant.Action({
+			onactionstart: function() {
 				var capital = type[0].toUpperCase() + type.substr(1).toLowerCase();
 				if (this instanceof RPGObject && BehaviorTypes.hasOwnProperty(capital)) {
 					this.behavior = BehaviorTypes[capital];
 				}
-      },
-	    time: time || 0
-    }));
+			},
+			time: time || 0
+		}));
 		return this;
 	};
 
 	/* random
-	 * Random value between min to max (Detection type)
-	 * (int, int) ===> int
-	 * (float, int|float) ====> float
-	 * (value, value) ====> value ~ value
-	 * (value) ====> 0 ~ value
-	 * (Array) ====> value in Array
-	 * () ====> 0 ~ 1
+	* Random value between min to max (Detection type)
+	* (int, int) ===> int
+	* (float, int|float) ====> float
+	* (value, value) ====> value ~ value
+	* (value) ====> 0 ~ value
+	* (Array) ====> value in Array
+	* () ====> 0 ~ 1
 	*/
 	window.random = window.random || function (min, max) {
 		if (arguments.length === 0) return Math.random();
