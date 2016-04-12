@@ -148,10 +148,6 @@ window.addEventListener('load', function () {
 
 	};
 
-    /*
-	 * RPGMap
-	 * レイヤー化された切り替え可能なマップ
-	 */
 	// 互換性維持
 	MapObject._dictionary = {};
 	Object.defineProperty(MapObject, 'dictionary', {
@@ -186,6 +182,10 @@ window.addEventListener('load', function () {
 		flatGray: 135, squareGray: 93,
 	};
 
+	/*
+	* RPGMap
+	* レイヤー化された切り替え可能なマップ
+	*/
 	var __RPGMap = enchant.Class(EventTarget, {
 		initialize: function(tileWidth, tileHeight) {
 			EventTarget.call(this);
