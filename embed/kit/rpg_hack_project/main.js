@@ -244,6 +244,21 @@ window.addEventListener('load', function () {
 				return this._name;
 			}
 		},
+		type: {
+			// set default of bmap
+			get: function () {
+				this._type = this._type || (this.bmap !== null ? this.bmap[0][0] : '');
+				return this._type;
+			},
+			set: function (value) {
+				if (value !== this._type && value in MapObject.dictionary) {
+					this._type = value;
+					var frame = MapObject.dictionary[value];
+					this.bmap.loadData(new Array(10).fill(new Array(15).fill(frame)));
+					this.cmap = this.cmap || new Array(10).fill(new Array(15).fill(0));
+				}
+			}
+		},
 		cmap: {
 			// Collisino Map. (this.bmap.collisionData)
 			get: function () { return this.bmap.collisionData; },
