@@ -618,7 +618,6 @@ window.addEventListener('load', function () {
 	    initialize: function(value){
         RPGObject.call(this, 32, 32, 0, 0);
         this.image = game.assets['enchantjs/x2/dotmat.gif'];
-				this._layer = RPGMap.Layer.Under;
 				if (typeof value === 'number') {
 					this.frame = value;
 				} else {
