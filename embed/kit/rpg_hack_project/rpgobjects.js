@@ -173,7 +173,9 @@ window.addEventListener('load', function () {
 			}
 		},
 		locate: function (fromLeft, fromTop, mapName) {
-			if (mapName && Hack.maps[mapName]) {
+			if (mapName in Hack.maps &&
+						Hack.maps[mapName] instanceof RPGMap &&
+							this.map !== Hack.maps[mapName]) {
 				this.destroy();
 				Hack.maps[mapName].scene.addChild(this);
 			}
