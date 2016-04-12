@@ -195,15 +195,9 @@ window.addEventListener('load', function () {
 			this.fmap = new Map(tileWidth, tileHeight); // 他のオブジェクトより手前に表示されるマップ
 			this.scene = new Group();					// マップ上に存在するオブジェクトをまとめるグループ
 			this.scene.ref = this;
-			// cmap==this.bmap.collisionData
-			this.__defineSetter__('cmap', function(c){ this.bmap.collisionData = c; });
-			this.__defineGetter__('cmap', function(){ return this.bmap.collisionData; });
-			// image==this.bmap.image==this.fmap.image
-			this.__defineSetter__('image', function(i){ this.bmap.image = this.fmap.image = i; });
-			this.__defineGetter__('width', function(){ return this.bmap.width; }); // ==this.bmap.width
-			this.__defineGetter__('height', function(){ return this.bmap.height; }); // ==this.bmap.height
 			this.isLoaded = false;
 			this.layerChangeFlag = false;
+			this._name = '';
 			this.scene.on('enterframe', this.autoSorting);
 			this.scene.on('childadded', function () {
 				this.ref.layerChangeFlag = true;
@@ -225,7 +219,8 @@ window.addEventListener('load', function () {
 			return this.bmap.hitTest(x, y);
 		},
 		autoSorting: function () {
-			var ref = this instanceof RPGMap ? this : this.ref;
+			var ref = this instanceof RPGMap ? this :
+									'ref' in this ? this.ref : Hack.map;
 			if (ref.layerChangeFlag) {
 				ref.scene.childNodes.sort(function(a, b) {
 					if (!('layer' in a) && !('layer' in b)) return 0;
@@ -235,6 +230,36 @@ window.addEventListener('load', function () {
 				});
 				ref.layerChangeFlag = false;
 			}
+		},
+		name: {
+			// Key of this map in Hack.maps object
+			get: function () {
+				if (!this._name) {
+					var result = Object.keys(Hack.maps).filter(function (key) {
+						return Hack.maps[key] === this;
+					}, this);
+					this._name = result.length > 0 ? result[0] : '';
+				}
+				return this._name;
+			}
+		},
+		cmap: {
+			// Collisino Map. (this.bmap.collisionData)
+			get: function () { return this.bmap.collisionData; },
+			set: function (value) { this.bmap.collisionData = value; }
+		},
+		image: {
+			// bmap Image (Surface)
+			get: function () { return this.bmap.image; },
+			set: function (value) { this.bmap.image = this.fmap.image = value; }
+		},
+		width: {
+			// bmap width
+			get: function () { return this.bmap.width; },
+		},
+		height: {
+			// bmap height
+			get: function () { return this.bmap.height; },
 		}
 	});
 	Object.defineProperty(window, 'RPGMap', {
