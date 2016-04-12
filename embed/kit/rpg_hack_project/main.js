@@ -195,13 +195,6 @@ window.addEventListener('load', function () {
 			this.fmap = new Map(tileWidth, tileHeight); // 他のオブジェクトより手前に表示されるマップ
 			this.scene = new Group();					// マップ上に存在するオブジェクトをまとめるグループ
 			this.scene.ref = this;
-			// cmap==this.bmap.collisionData
-			this.__defineSetter__('cmap', function(c){ this.bmap.collisionData = c; });
-			this.__defineGetter__('cmap', function(){ return this.bmap.collisionData; });
-			// image==this.bmap.image==this.fmap.image
-			this.__defineSetter__('image', function(i){ this.bmap.image = this.fmap.image = i; });
-			this.__defineGetter__('width', function(){ return this.bmap.width; }); // ==this.bmap.width
-			this.__defineGetter__('height', function(){ return this.bmap.height; }); // ==this.bmap.height
 			this.isLoaded = false;
 			this.layerChangeFlag = false;
 			this.scene.on('enterframe', this.autoSorting);
@@ -236,6 +229,24 @@ window.addEventListener('load', function () {
 				});
 				ref.layerChangeFlag = false;
 			}
+		},
+		cmap: {
+			// Collisino Map. (this.bmap.collisionData)
+			get: function () { return this.bmap.collisionData; },
+			set: function (value) { this.bmap.collisionData = value; }
+		},
+		image: {
+			// bmap Image (Surface)
+			get: function () { return this.bmap.image; },
+			set: function (value) { this.bmap.image = this.fmap.image = value; }
+		},
+		width: {
+			// bmap width
+			get: function () { return this.bmap.width; },
+		},
+		height: {
+			// bmap height
+			get: function () { return this.bmap.height; },
 		}
 	});
 	Object.defineProperty(window, 'RPGMap', {
