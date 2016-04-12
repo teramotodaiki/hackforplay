@@ -849,9 +849,13 @@ window.addEventListener('load', function() {
 			configurable: true, enumerable: true,
 			get: function () { return this._color || this.originalColor; },
 			set: function (color) {
-				color = Hack.css2rgb(color);
-				if (color.join(' ') !== this.color.join(' ')) {
-					this.moveColor(this.originalColor, this._color = color);
+				if (color === 'original') {
+					this.image = this._origin || this.image;
+				} else {
+					color = Hack.css2rgb(color);
+					if (color.join(' ') !== this.color.join(' ')) {
+						this.moveColor(this.originalColor, this._color = color);
+					}
 				}
 			}
 		},
