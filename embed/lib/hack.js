@@ -37,11 +37,11 @@ window.addEventListener('message', function (event) {
 	if(event.origin === window.location.protocol + '//' + window.location.host && event.data && event.data.query){
 		switch (event.data.query) {
 			case 'eval':
-				eval(event.data.value);
-				break;
+			eval(event.data.value);
+			break;
 			case 'dispatch':
-				Hack.dispatchEvent(new Event(event.data.value));
-				break;
+			Hack.dispatchEvent(new Event(event.data.value));
+			break;
 		}
 	}
 });
@@ -73,17 +73,17 @@ window.addEventListener('resize', function () {
 });
 
 window.addEventListener('load', function() {
-    enchant();
-    window.game = new enchant.Core(480, 320);
-    game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png', 'hackforplay/menu-button-menu.png', 'hackforplay/menu-button-restage.png', 'hackforplay/menu-button-hint.png', 'hackforplay/menu-button-comment.png', 'hackforplay/menu-button-retry.png', 'hackforplay/new_button_next.png', 'hackforplay/new_button_comment.png', 'hackforplay/new_button_restage.png', 'hackforplay/achievement_p.png', 'hackforplay/achievement_n.png', 'hackforplay/new_button_town.png');
+	enchant();
+	window.game = new enchant.Core(480, 320);
+	game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png', 'hackforplay/menu-button-menu.png', 'hackforplay/menu-button-restage.png', 'hackforplay/menu-button-hint.png', 'hackforplay/menu-button-comment.png', 'hackforplay/menu-button-retry.png', 'hackforplay/new_button_next.png', 'hackforplay/new_button_comment.png', 'hackforplay/new_button_restage.png', 'hackforplay/achievement_p.png', 'hackforplay/achievement_n.png', 'hackforplay/new_button_town.png');
 
-    // Hackのクラスを生成 インスタンスはget only
-    var HackEnchant = enchant.Class.create(enchant.EventTarget, {
+	// Hackのクラスを生成 インスタンスはget only
+	var HackEnchant = enchant.Class.create(enchant.EventTarget, {
 		initialize: function(){
 			enchant.EventTarget.call(this);
 		}
-    });
-    var _Hack = new HackEnchant();
+	});
+	var _Hack = new HackEnchant();
 	Object.defineProperty(window, 'Hack', {
 		configurable: true,
 		enumerable: true,
@@ -93,15 +93,15 @@ window.addEventListener('load', function() {
 	});
 
 	Hack.start = function () {
-			// evaluate restaging code
-			var element = document.getElementById('hackforplay-embed-script');
-			if (!element) throw new Error('Embed script could not be found');
-			var funcName = element.getAttribute('data-func');
-			window[funcName]();
+		// evaluate restaging code
+		var element = document.getElementById('hackforplay-embed-script');
+		if (!element) throw new Error('Embed script could not be found');
+		var funcName = element.getAttribute('data-func');
+		window[funcName]();
 
-			// game start
-			Hack.dispatchEvent(new Event('load'));
-			game.start();
+		// game start
+		Hack.dispatchEvent(new Event('load'));
+		game.start();
 	};
 
 	Hack.fun2str = function (func) {
@@ -298,13 +298,13 @@ window.addEventListener('load', function() {
 			for (var i = 0; i < args.length; i++) {
 				var fill = args[i];
 				switch(true){
-				case fill instanceof Surface:
+					case fill instanceof Surface:
 					this.image.draw(fill, 0, 0 ,game.width, game.height);
 					break;
-				case game.assets[fill] instanceof Surface:
+					case game.assets[fill] instanceof Surface:
 					this.image.draw(game.assets[fill], 0, 0 ,game.width, game.height);
 					break;
-				default:
+					default:
 					this.image.context.fillStyle = fill;
 					this.image.context.fillRect(0, 0, game.width, game.height);
 					break;
@@ -634,15 +634,15 @@ window.addEventListener('load', function() {
 	};
 
 	/**
-	 * Hack.openSoundCloud(url:String|id:Number[, successed:Function, failed:Function])
-	 * url: SoundCloud URL (like https://soundcloud.com/......)
-	 * id: resource ID (like 123)
-	 * successed: callback function (if ignore it, do AUTO PLAY)
-	 * failed: callback function
-	 * **** CAUTION This method can be called only once in the playing. ****
-	 *
-	 * Hack.soundCloudCredit
-	 * The group contains credit informations. parentNode === Hack.menuGroup
+	* Hack.openSoundCloud(url:String|id:Number[, successed:Function, failed:Function])
+	* url: SoundCloud URL (like https://soundcloud.com/......)
+	* id: resource ID (like 123)
+	* successed: callback function (if ignore it, do AUTO PLAY)
+	* failed: callback function
+	* **** CAUTION This method can be called only once in the playing. ****
+	*
+	* Hack.soundCloudCredit
+	* The group contains credit informations. parentNode === Hack.menuGroup
 	*/
 	(function (SC) {
 		if (!SC) return;
@@ -731,11 +731,11 @@ window.addEventListener('load', function() {
 	window.SC = null;
 
 	/**
-	 * Hack.define
-	 * obj: targeting object (If omitted: Hack)
-	 * prop: property name (obj.----)
-	 * condition: if (obj.---- === condition) { predicate(); }
-	 */
+	* Hack.define
+	* obj: targeting object (If omitted: Hack)
+	* prop: property name (obj.----)
+	* condition: if (obj.---- === condition) { predicate(); }
+	*/
 	Hack.define = function (obj, prop, condition, predicate) {
 		var _value = null, descriptor = Object.getOwnPropertyDescriptor(obj, prop);
 		if (arguments.length < 4) return Hack.define(Hack, arguments[0], arguments[1], arguments[2]);
@@ -794,34 +794,34 @@ window.addEventListener('load', function() {
 		} else {
 			Hack.defaultParentNode = game.rootScene;
 		}
-    });
+	});
 
-    function postAPILog (service, id) {
+	function postAPILog (service, id) {
 		postRequest('../../analytics/apilog.php', {
 			service: service,
 			id: id,
 			stage: sessionStorage.getItem('stage_param_id')
 		});
-    }
+	}
 
-		function postRequest (path, params, success, error) {
-			var xhttp = new XMLHttpRequest();
-			xhttp.open('POST', path, true);
-			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			var serialized = Object.keys(params).map(function(key) {
-				return key + '=' + params[key];
-			}).join('&');
-			xhttp.send(serialized);
-			xhttp.onload = success;
-			xhttp.onerror = error;
-		}
+	function postRequest (path, params, success, error) {
+		var xhttp = new XMLHttpRequest();
+		xhttp.open('POST', path, true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		var serialized = Object.keys(params).map(function(key) {
+			return key + '=' + params[key];
+		}).join('&');
+		xhttp.send(serialized);
+		xhttp.onload = success;
+		xhttp.onerror = error;
+	}
 
-    /**
-     * Hack.css2rgb
-     * style: CSS Color style / Array
-     * @return [r, g, b]
-     */
-    (function () {
+	/**
+	* Hack.css2rgb
+	* style: CSS Color style / Array
+	* @return [r, g, b]
+	*/
+	(function () {
 		var ctx = new Surface(1, 1).context;
 		Hack.css2rgb = function (style) {
 			if (typeof style === 'string') {
@@ -837,21 +837,25 @@ window.addEventListener('load', function() {
 			}
 			throw new Error('Hack.css2rgb requires CSS style string or Array of number');
 		};
-    })();
+	})();
 
-    /**
-     * Image Processing
-     * argument Surface property mainColor
-     * method of get representative color
-    */
-    Object.defineProperties(enchant.Sprite.prototype, {
+	/**
+	* Image Processing
+	* argument Surface property mainColor
+	* method of get representative color
+	*/
+	Object.defineProperties(enchant.Sprite.prototype, {
 		color: {
 			configurable: true, enumerable: true,
 			get: function () { return this._color || this.originalColor; },
 			set: function (color) {
-				color = Hack.css2rgb(color);
-				if (color.join(' ') !== this.color.join(' ')) {
-					this.moveColor(this.originalColor, this._color = color);
+				if (color === 'original') {
+					this.image = this._origin || this.image;
+				} else {
+					color = Hack.css2rgb(color);
+					if (color.join(' ') !== this.color.join(' ')) {
+						this.moveColor(this.originalColor, this._color = color);
+					}
 				}
 			}
 		},
@@ -867,9 +871,9 @@ window.addEventListener('load', function() {
 			},
 			set: function (color) { this._originalColor = Hack.css2rgb(color); }
 		}
-    });
-    // 代表色を抽出
-    function getRepresentativeColor (data) {
+	});
+	// 代表色を抽出
+	function getRepresentativeColor (data) {
 		// RGB色空間Viに存在するピクセルの数をカウント
 		var space = [], palette = [];
 		for (var index = data.length - 4; index >= 0; index -= 4) {
@@ -884,13 +888,13 @@ window.addEventListener('load', function() {
 		if (black !== -1) space[black] = 0; // 黒は輪郭線として代表色にはさせない
 		var max = Math.max.apply(null, space);
 		return palette[space.indexOf(max)].split(' ').map(function (s) { return s >> 0; });
-    }
-    /**
-     * RGB色空間上で、beforeからafterへ線形変換する
-     * @scope Sprite
-     * before, after: CSS color or [r, g, b]
-	 */
-    enchant.Sprite.prototype.moveColor = function (before, after) {
+	}
+	/**
+	* RGB色空間上で、beforeからafterへ線形変換する
+	* @scope Sprite
+	* before, after: CSS color or [r, g, b]
+	*/
+	enchant.Sprite.prototype.moveColor = function (before, after) {
 		// Color convert
 		before = Hack.css2rgb(before);
 		after = Hack.css2rgb(after);
@@ -914,8 +918,8 @@ window.addEventListener('load', function() {
 			}
 		}
 		this.image.context.putImageData(imageData, 0, 0);
-    };
-    function rgb256toNum64 (r, g, b) {
+	};
+	function rgb256toNum64 (r, g, b) {
 		if (arguments[0] instanceof Array) {
 			return rgb256toNum64.call(null, arguments[0][0], arguments[0][1], arguments[0][2]);
 		}
@@ -926,44 +930,44 @@ window.addEventListener('load', function() {
 	}
 });
 if (!Array.prototype.fill) {
-  Array.prototype.fill = function(value) {
+	Array.prototype.fill = function(value) {
 
-    // Steps 1-2.
-    if (this == null) {
-      throw new TypeError('this is null or not defined');
-    }
+		// Steps 1-2.
+		if (this == null) {
+			throw new TypeError('this is null or not defined');
+		}
 
-    var O = Object(this);
+		var O = Object(this);
 
-    // Steps 3-5.
-    var len = O.length >>> 0;
+		// Steps 3-5.
+		var len = O.length >>> 0;
 
-    // Steps 6-7.
-    var start = arguments[1];
-    var relativeStart = start >> 0;
+		// Steps 6-7.
+		var start = arguments[1];
+		var relativeStart = start >> 0;
 
-    // Step 8.
-    var k = relativeStart < 0 ?
-      Math.max(len + relativeStart, 0) :
-      Math.min(relativeStart, len);
+		// Step 8.
+		var k = relativeStart < 0 ?
+		Math.max(len + relativeStart, 0) :
+		Math.min(relativeStart, len);
 
-    // Steps 9-10.
-    var end = arguments[2];
-    var relativeEnd = end === undefined ?
-      len : end >> 0;
+		// Steps 9-10.
+		var end = arguments[2];
+		var relativeEnd = end === undefined ?
+		len : end >> 0;
 
-    // Step 11.
-    var final = relativeEnd < 0 ?
-      Math.max(len + relativeEnd, 0) :
-      Math.min(relativeEnd, len);
+		// Step 11.
+		var final = relativeEnd < 0 ?
+		Math.max(len + relativeEnd, 0) :
+		Math.min(relativeEnd, len);
 
-    // Step 12.
-    while (k < final) {
-      O[k] = value;
-      k++;
-    }
+		// Step 12.
+		while (k < final) {
+			O[k] = value;
+			k++;
+		}
 
-    // Step 13.
-    return O;
-  };
+		// Step 13.
+		return O;
+	};
 }
