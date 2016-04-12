@@ -85,11 +85,7 @@ window.addEventListener('load', function () {
 			});
 			Object.defineProperty(this, 'map', {
 				get: function () {
-					var parent = Object.keys(Hack.maps).filter(function (name) {
-						return Hack.maps[name].scene === this.parentNode;
-					}, this);
-					if (parent.length === 0) return undefined;
-					else return parent[0];
+					return this.parentNode.ref;
 				}
 			});
 			var collisionFlag = null; // this.collisionFlag (Default:true)
@@ -136,15 +132,15 @@ window.addEventListener('load', function () {
 			this._layer = RPGMap.Layer.Middle;
 			// shadow
 			this.shadow = new Sprite(32, 32);
+			this.shadow.ref = this;
+			this.shadow.layer = RPGMap.Layer.Shadow;
 			this.shadow.visible = false;
 			this.shadow.image = game.assets['enchantjs/shadow.gif'];
 			this.shadow.offset = { x: (this.width-this.shadow.width)/2, y: this.height-this.shadow.height };
 			this.shadow.scale(this.width/64, this.height/64);
 			this.on('added', function () {
-				this.parentNode.insertBefore(this.shadow, this);
-			});
-			this.on('removed', function () {
-				this.shadow.remove();
+				this.parentNode.addChild(this.shadow);
+				this.map.layerChangeFlag = true;
 			});
 
 			Hack.defaultParentNode.addChild(this);
@@ -177,7 +173,9 @@ window.addEventListener('load', function () {
 			}
 		},
 		locate: function (fromLeft, fromTop, mapName) {
-			if (mapName && Hack.maps[mapName]) {
+			if (mapName in Hack.maps &&
+						Hack.maps[mapName] instanceof RPGMap &&
+							this.map !== Hack.maps[mapName]) {
 				this.destroy();
 				Hack.maps[mapName].scene.addChild(this);
 			}
@@ -186,8 +184,12 @@ window.addEventListener('load', function () {
 				fromTop * 32 + this.offset.y);
 		},
 		destroy: function (delay) {
-			if (delay > 0) this.setTimeout(this.remove, delay);
-			else this.remove();
+			if (delay > 0) this.setTimeout(_remove.bind(this), delay);
+			else _remove.call(this);
+			function _remove () {
+				this.remove();
+				if (this.shadow) this.shadow.remove();
+			}
 		},
 		setFrame: function (behavior, frame) {
 			// behavior is Type:string
@@ -350,8 +352,7 @@ window.addEventListener('load', function () {
 				var max = Math.max.apply(null, sortingOrder);
 				var min = Math.min.apply(null, sortingOrder);
 				this._layer = Math.max(Math.min(value, max), min);
-				var map = this.map;
-				Hack.maps[map].layerChangeFlag = true;
+				this.map.layerChangeFlag = true;
 			}
 		},
 		bringOver: function () {
@@ -593,6 +594,7 @@ window.addEventListener('load', function () {
 	    initialize: function(value){
         RPGObject.call(this, 32, 32, 0, 0);
         this.image = game.assets['enchantjs/x2/dotmat.gif'];
+				this.layer = RPGMap.Layer.Under;
 				if (typeof value === 'number') {
 					this.frame = value;
 				} else {
