@@ -1239,11 +1239,14 @@ $(function(){
 			window.YT = window.onYouTubeIframeAPIReady = undefined; // YouTube
 		};
 		window.addEventListener('message', function (event) {
+			if (event.data.query !== 'openExternal') return;
 			var component;
 			try {
-				component = new URL(event.data.url);
-			} catch (e) { return; }
+				component = document.createElement('a');
+				component.href = event.data.url;
+			} catch (e) { console.error(e); return; }
 			var domain = component.hostname.replace(/^www\./, '');
+			var pathname = component.pathname.replace(/^\//, '');
 			var $all = $('.container-open-external .item-open-external');
 			var $item = $all.filter(function () {
 				// 1.全く同じURL
@@ -1268,8 +1271,8 @@ $(function(){
 			switch (domain) {
 				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
 				case 'hackforplay.xyz': openLink($wrapper, parse(component).id); break;
-				case 'play.hackforplay': openLink($wrapper, component.pathname.substr(1)); break;
-				case 'youtu.be': openYouTube($wrapper, component.pathname.substr(1)); break;
+				case 'play.hackforplay': openLink($wrapper, pathname); break;
+				case 'youtu.be': openYouTube($wrapper, pathname); break;
 				case 'youtube.com': openYouTube($wrapper, parse(component).v); break;
 				case 'restaging.hackforplay':
 				if ( !$('.container.container-game').hasClass('restaging') ) {
