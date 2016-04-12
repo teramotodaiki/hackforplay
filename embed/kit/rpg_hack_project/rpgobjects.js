@@ -515,7 +515,7 @@ window.addEventListener('load', function () {
   });
 
 	var __Insect = enchant.Class(EnemyBase, {
-        initialize: function(){
+    initialize: function(){
 			EnemyBase.call(this, 48, 48, -8, -16);
 			this.image = game.assets['enchantjs/monster1.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
@@ -523,11 +523,11 @@ window.addEventListener('load', function () {
 			this.setFrame(BehaviorTypes.Attack, [7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, 7, null]);
-        }
-    });
+    }
+  });
 
 	var __Spider = enchant.Class(EnemyBase, {
-        initialize: function(){
+    initialize: function(){
 			EnemyBase.call(this, 64, 64, -16, -24);
 			this.image = game.assets['enchantjs/monster2.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
@@ -535,8 +535,8 @@ window.addEventListener('load', function () {
 			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 7, 7, 7, 7, 7, 5, 5, 5, 5, 4, 4, 4, 4, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
 			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, 7, null]);
-        }
-    });
+    }
+  });
 
 	var __Bat = enchant.Class(EnemyBase, {
     initialize: function(){
@@ -552,7 +552,7 @@ window.addEventListener('load', function () {
   });
 
 	var __Dragon = enchant.Class(EnemyBase, {
-        initialize: function(){
+    initialize: function(){
 			EnemyBase.call(this, 80, 80, -24, -42);
 			this.image = game.assets['enchantjs/bigmonster1.gif'];
 			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]);
@@ -560,11 +560,11 @@ window.addEventListener('load', function () {
 			this.setFrame(BehaviorTypes.Attack, [8, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, null]);
 			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5]);
 			this.setFrame(BehaviorTypes.Dead, [2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, null]);
-        }
-    });
+    }
+  });
 
 	var __Minotaur = enchant.Class(EnemyBase, {
-        initialize: function(){
+	  initialize: function(){
 			EnemyBase.call(this, 80, 80, -40, -48);
 			this.image = game.assets['enchantjs/bigmonster2.gif'];
 			this.setFrame(BehaviorTypes.Idle, [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]);
@@ -572,8 +572,8 @@ window.addEventListener('load', function () {
 			this.setFrame(BehaviorTypes.Attack, [3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,null]);
 			this.setFrame(BehaviorTypes.Damaged, [7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6]);
 			this.setFrame(BehaviorTypes.Dead, [2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, null]);
-        }
-    });
+    }
+  });
 
 	var __Boy = enchant.Class(HumanBase, {
         initialize: function(){
@@ -589,7 +589,7 @@ window.addEventListener('load', function () {
     });
 
 	var __Girl = enchant.Class(HumanBase, {
-        initialize: function(){
+	  initialize: function(){
 			HumanBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
 			var _0 = 6, _1 = _0 + 1, _2 = _0 + 2;
@@ -598,11 +598,11 @@ window.addEventListener('load', function () {
 			this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
 			this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
 			this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
-        }
-    });
+    }
+  });
 
 	var __Woman = enchant.Class(HumanBase, {
-        initialize: function(){
+    initialize: function(){
 			HumanBase.call(this, 48, 48, -8, -18);
 			this.image = game.assets['enchantjs/x1.5/chara0.png'];
 			var _0 = 3, _1 = _0 + 1, _2 = _0 + 2;
@@ -611,8 +611,8 @@ window.addEventListener('load', function () {
 			this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
 			this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
 			this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
-        }
-    });
+    }
+	});
 
     var __MapObject = enchant.Class(RPGObject, {
 	    initialize: function(value){
