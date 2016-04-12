@@ -364,11 +364,27 @@ window.addEventListener('load', function () {
 			}
 		},
 		bringOver: function () {
-			this.layer++;
+			// 現在のレイヤーより大きいレイヤーのうち最も小さいもの
+			var nearBy = this.layer; // このレイヤーが最大ならレイヤーは変わらない
+			for (var order in RPGMap.Layer) {
+				if (RPGMap.Layer.hasOwnProperty(order) &&
+							this.layer < order && order < nearBy) {
+					nearBy = order;
+				}
+			}
+			this.layer = nearBy;
 			return this.layer;
 		},
 		bringUnder: function () {
-			this.layer--;
+			// 現在のレイヤーより小さいレイヤーのうち最も大きいもの
+			var nearBy = this.layer; // このレイヤーが最小ならレイヤーは変わらない
+			for (var order in RPGMap.Layer) {
+				if (RPGMap.Layer.hasOwnProperty(order) &&
+							this.layer > order && order > nearBy) {
+					nearBy = order;
+				}
+			}
+			this.layer = nearBy;
 			return this.layer;
 		}
 	});
