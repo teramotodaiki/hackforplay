@@ -1239,10 +1239,11 @@ $(function(){
 			window.YT = window.onYouTubeIframeAPIReady = undefined; // YouTube
 		};
 		window.addEventListener('message', function (event) {
+			if (event.data.query !== 'openExternal') return;
 			var component;
 			try {
 				component = new URL(event.data.url);
-			} catch (e) { return; }
+			} catch (e) { console.error(e); return; }
 			var domain = component.hostname.replace(/^www\./, '');
 			var $all = $('.container-open-external .item-open-external');
 			var $item = $all.filter(function () {

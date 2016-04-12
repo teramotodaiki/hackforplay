@@ -11,7 +11,7 @@ $(function () {
   		};
     }
     window.addEventListener('message', function (event) {
-      if (!event.data || event.data.query !== 'openExternal') return;
+      if (event.data.query !== 'openExternal') return;
 			var component;
 			try {
 				component = new URL(event.data.url);
