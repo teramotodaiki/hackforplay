@@ -132,6 +132,7 @@ window.addEventListener('load', function () {
 			this._layer = RPGMap.Layer.Middle;
 			// shadow
 			this.shadow = new Sprite(32, 32);
+			this.shadow.layer = RPGMap.Layer.Shadow;
 			this.shadow.visible = false;
 			this.shadow.image = game.assets['enchantjs/shadow.gif'];
 			this.shadow.offset = { x: (this.width-this.shadow.width)/2, y: this.height-this.shadow.height };
@@ -588,6 +589,7 @@ window.addEventListener('load', function () {
 	    initialize: function(value){
         RPGObject.call(this, 32, 32, 0, 0);
         this.image = game.assets['enchantjs/x2/dotmat.gif'];
+				this.layer = RPGMap.Layer.Under;
 				if (typeof value === 'number') {
 					this.frame = value;
 				} else {
