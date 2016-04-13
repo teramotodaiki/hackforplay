@@ -40,6 +40,20 @@ $(function () {
     $('.cast-frame-wrapper').height(h).width(h / ratio);
   }
 
+  // Ajax abortAll
+  $._reqStack = [];
+  $._reqStack.abortAll = function () {
+    this.forEach(function (req) { req.abort(); });
+    this.splice(0, this.length);
+  };
+  $.ajaxSetup({
+    beforeSend: function(jqXHR) { $._reqStack.push(jqXHR); }, //  annd connection to list
+    complete: function(jqXHR) {
+      var i = $._reqStack.indexOf(jqXHR);   //  get index for current connection completed
+      if (i > -1) $._reqStack.splice(i, 1); //  removes from list by index
+    }
+  });
+
   // Polling
   (function polling () {
 
@@ -55,6 +69,7 @@ $(function () {
     }).done(function (data) {
       try {
         var fetch = JSON.parse(data);
+        if (!fetch.HasUpdate) return;
         channelInfo.token = fetch.ProjectToken;
         channelInfo.update = fetch.Updated;
         channelInfo.script_id = fetch.Script.ID;
@@ -80,11 +95,13 @@ $(function () {
           }
         }
       } catch (e) {
+        console.log(data);
         console.error(e);
       } finally {
         setTimeout(polling, 5000);
       }
-    }).fail(function (result) {
+    }).fail(function (result, textStatus) {
+      if (textStatus === 'abort') return;
       try {
         console.log(JSON.parse(result.responseText));
       } catch (e) {
@@ -103,6 +120,10 @@ $(function () {
     }, function (data) {
       $('#codeModal pre').text(data);
     });
+  });
+
+  $(window).on('beforeunload', function () {
+    $._reqStack.abortAll();
   });
 
 });
