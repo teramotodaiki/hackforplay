@@ -25,7 +25,7 @@ $stmt_sc  = $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:pro
 set_time_limit(0);
 while (1) {
 
-  $stmt_ch->bindValue(':id', $id, FILTER_VALIDATE_INT);
+  $stmt_ch->bindValue(':id', $id, PDO::PARAM_INT);
   $stmt_ch->execute();
   $channel  = $stmt_ch->fetch(PDO::FETCH_ASSOC);
   if (!$channel) {
@@ -37,7 +37,7 @@ while (1) {
     die;
   }
 
-  $stmt_pr->bindValue(':project_id', $channel['ProjectID'], FILTER_VALIDATE_INT);
+  $stmt_pr->bindValue(':project_id', $channel['ProjectID'], PDO::PARAM_INT);
   $stmt_pr->execute();
   $written  = $stmt_pr->fetch(PDO::FETCH_COLUMN);
 
@@ -47,7 +47,7 @@ while (1) {
     $stmt_us->execute();
     $channel['User']  = $stmt_us->fetch(PDO::FETCH_ASSOC);
 
-    $stmt_us->bindValue(':project_id', $channel['ProjectID'], FILTER_VALIDATE_INT);
+    $stmt_sc->bindValue(':project_id', $channel['ProjectID'], PDO::PARAM_INT);
     $stmt_sc->execute();
     $channel['Script'] = $stmt_sc->fetch(PDO::FETCH_ASSOC);
 
