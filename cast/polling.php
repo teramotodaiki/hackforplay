@@ -52,12 +52,20 @@ while (1) {
     $channel['Script'] = $stmt_sc->fetch(PDO::FETCH_ASSOC);
 
     // Fetch new update
+    $channel['HasUpdate'] = true;
     echo json_encode($channel);
     exit;
 
-  } else {
+  } elseif (time() - $_SERVER['REQUEST_TIME'] < 5) {
     // Update time limit
     sleep(1);
+
+  } else {
+    // Try to reconnect
+    echo json_encode([
+      'HasUpdate' => false
+    ]);
+    exit;
 
   }
 

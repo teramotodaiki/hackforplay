@@ -69,6 +69,7 @@ $(function () {
     }).done(function (data) {
       try {
         var fetch = JSON.parse(data);
+        if (!fetch.HasUpdate) return;
         channelInfo.token = fetch.ProjectToken;
         channelInfo.update = fetch.Updated;
         channelInfo.script_id = fetch.Script.ID;
@@ -94,6 +95,7 @@ $(function () {
           }
         }
       } catch (e) {
+        console.log(data);
         console.error(e);
       } finally {
         setTimeout(polling, 5000);
