@@ -489,16 +489,6 @@ $(function(){
 					setTimeout(task, currentInterval);
 				})();
 
-				// 最終送信
-				window.addEventListener('beforeunload', function(event) {
-					updateLog();
-					if (alert_on_unload) {
-						event.returnValue = "せいさくちゅう の ステージ は「マイページ」に ほぞん されています。";
-					} else {
-						event.preventDefault();
-					}
-				});
-
 				function beginLog (successed, failed) {
 					// ロギングの開始をサーバーに伝え、トークンを取得する
 					$.post('../analytics/beginrestaginglog.php', {
