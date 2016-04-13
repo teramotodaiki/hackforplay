@@ -84,6 +84,7 @@ $src = '/embed/?type=stage&id=' . $id;
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript"></script>
 	<script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../s/openExternal.js" type="text/javascript" charset="utf-8"></script>
 	<!-- contents -->
 	<div class="flex-container">
     <div class="flex-item-fix">
@@ -107,17 +108,6 @@ $src = '/embed/?type=stage&id=' . $id;
       <textarea id="item-embed-editor" value=""></textarea>
     </div>
   </div>
-	<div class="container-open-external affix">
-	<?php for ($i = 1; $i <= 3; $i++) : ?>
-		<div class="item-open-external">
-			<div class="embed-frame"></div>
-			<div class="side-menu">
-				<span class="glyphicon glyphicon-remove"></span>
-				<span class="glyphicon glyphicon glyphicon-pushpin"></span>
-				<span class="glyphicon glyphicon-chevron-right"></span>
-			</div>
-		</div>
-	<?php endfor; ?>
-	</div>
+	<div class="container-open-external affix"></div>
 </body>
 </html>

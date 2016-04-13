@@ -12,11 +12,13 @@ $(function () {
     }
     window.addEventListener('message', function (event) {
       if (event.data.query !== 'openExternal') return;
-			var component;
+      var component;
 			try {
-				component = new URL(event.data.url);
+				component = document.createElement('a');
+				component.href = event.data.url;
 			} catch (e) { console.error(e); return; }
 			var domain = component.hostname.replace(/^www\./, '');
+			var pathname = component.pathname.replace(/^\//, '');
 			var $all = $('.container-open-external .item-open-external');
 			var $item = $all.filter(function () {
 				// 1.全く同じURL
@@ -179,10 +181,31 @@ $(function () {
 		}
 	})();
 
-	$('.container-open-external .item-open-external').on('click', '.glyphicon-pushpin,.glyphicon-chevron-right', function() {
+  // Panel
+  var $item =
+  $('<div>').addClass('item-open-external').append(
+    $('<div>').addClass('embed-frame')
+  ).append(
+    $('<div>').addClass('side-menu').append(
+      $('<span>').addClass('glyphicon glyphicon-remove')
+    ).append(
+      $('<span>').addClass('glyphicon glyphicon glyphicon-pushpin')
+    ).append(
+      $('<span>').addClass('glyphicon glyphicon-chevron-right')
+    )
+  ).on('click', '.glyphicon-pushpin,.glyphicon-chevron-right', function() {
 		$(this).parents('.item-open-external').toggleClass('opened');
 	}).on('click', '.glyphicon-remove', function() {
 		$(this).parents('.item-open-external').toggleClass('visible').find('.embed-frame').children().remove();
 	});
+
+  // 3 panels
+  $('.container-open-external').append(
+    $item.clone(true)
+  ).append(
+    $item.clone(true)
+  ).append(
+    $item.clone(true)
+  );
 
 });
