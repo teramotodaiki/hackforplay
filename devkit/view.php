@@ -84,6 +84,7 @@ $src = '/embed/?type=stage&id=' . $id;
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript"></script>
 	<script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../s/openExternal.js" type="text/javascript" charset="utf-8"></script>
 	<!-- contents -->
 	<div class="flex-container">
     <div class="flex-item-fix">
