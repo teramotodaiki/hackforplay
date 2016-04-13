@@ -257,7 +257,8 @@ $(function(){
 		matchBrackets: true,
 		autoCloseBrackets: true,
 		foldGutter: true,
-		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+		gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+		lint: true,
 		extraKeys: {
 			'Ctrl-Enter': function () { $('.h4p_restaging_button').trigger('click'); },
 			'Cmd-Enter': function () { $('.h4p_restaging_button').trigger('click'); },
