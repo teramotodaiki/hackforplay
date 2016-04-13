@@ -256,6 +256,7 @@ window.addEventListener('load', function () {
 		},
 		walk: function (distance, continuous) {
 			if (!this.isKinematic || !continuous && this.behavior !== BehaviorTypes.Idle || !Hack.isPlaying) return;
+			this.behavior = BehaviorTypes.Walk;
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
 			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
 			// Map Collision
@@ -298,14 +299,12 @@ window.addEventListener('load', function () {
 					var e2 = new Event('collided');
 					e2.map = false;
 					e2.hits = [e2.hit = this];
-					this.setTimeout(function () {
-						this.dispatchEvent(e);
-						e.hits.forEach(function (item) {
-							item.dispatchEvent(e2);
-						});
-						if (continuous) this.behavior = BehaviorTypes.Idle;
-					}, 1);
+					this.dispatchEvent(e);
+					e.hits.forEach(function (item) {
+						item.dispatchEvent(e2);
+					});
 				}
+				this.behavior = BehaviorTypes.Idle;
 			}
 			this._preventFrameHits = hits;
 		},
