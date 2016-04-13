@@ -181,10 +181,31 @@ $(function () {
 		}
 	})();
 
-	$('.container-open-external .item-open-external').on('click', '.glyphicon-pushpin,.glyphicon-chevron-right', function() {
+  // Panel
+  var $item =
+  $('<div>').addClass('item-open-external').append(
+    $('<div>').addClass('embed-frame')
+  ).append(
+    $('<div>').addClass('side-menu').append(
+      $('<span>').addClass('glyphicon glyphicon-remove')
+    ).append(
+      $('<span>').addClass('glyphicon glyphicon glyphicon-pushpin')
+    ).append(
+      $('<span>').addClass('glyphicon glyphicon-chevron-right')
+    )
+  ).on('click', '.glyphicon-pushpin,.glyphicon-chevron-right', function() {
 		$(this).parents('.item-open-external').toggleClass('opened');
 	}).on('click', '.glyphicon-remove', function() {
 		$(this).parents('.item-open-external').toggleClass('visible').find('.embed-frame').children().remove();
 	});
+
+  // 3 panels
+  $('.container-open-external').append(
+    $item.clone(true)
+  ).append(
+    $item.clone(true)
+  ).append(
+    $item.clone(true)
+  );
 
 });

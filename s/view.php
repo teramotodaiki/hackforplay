@@ -464,18 +464,7 @@ $embed = '/embed/?type=stage&id=' . $id;
 			</div>
 		</div>
 	</div>
-	<div class="container-open-external affix">
-	<?php for ($i = 1; $i <= 3; $i++) : ?>
-		<div class="item-open-external">
-			<div class="embed-frame"></div>
-			<div class="side-menu">
-				<span class="glyphicon glyphicon-remove"></span>
-				<span class="glyphicon glyphicon glyphicon-pushpin"></span>
-				<span class="glyphicon glyphicon-chevron-right"></span>
-			</div>
-		</div>
-	<?php endfor; ?>
-	</div>
+	<div class="container-open-external affix"></div>
 	<?php include_once '../intercom.php'; ?>
 </body>
 </html>
