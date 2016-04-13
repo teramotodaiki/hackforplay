@@ -20,7 +20,7 @@ $last_update  = filter_input(INPUT_GET, 'update');
 $stmt_ch = $dbh->prepare('SELECT * FROM "Channel" WHERE "ID"=:id');
 $stmt_pr = $dbh->prepare('SELECT "Written" FROM "Project" WHERE "ID"=:project_id');
 $stmt_us = $dbh->prepare('SELECT "ID","Nickname" FROM "User" WHERE "ID"=:user_id');
-$stmt_sc  = $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id');
+$stmt_sc  = $dbh->prepare('SELECT MAX("ID") AS ID FROM "Script" WHERE "ProjectID"=:project_id');
 
 set_time_limit(0);
 while (1) {
