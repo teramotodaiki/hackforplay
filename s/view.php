@@ -59,12 +59,16 @@ $embed = '/embed/?type=stage&id=' . $id;
 	<script src="editor/addon/fold/foldgutter.js" type="text/javascript"></script>
 	<script src="editor/addon/fold/brace-fold.js" type="text/javascript"></script>
 	<script src="editor/addon/comment/comment.js" type="text/javascript"></script>
+	<script src="editor/addon/lint/lint.js" type="text/javascript"></script>
+	<script src="editor/addon/lint/javascript-lint.js" type="text/javascript"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/jshint/r07/jshint.js" charset="utf-8"></script>
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript"></script>
 	<script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
 	<link rel="stylesheet" href="editor/lib/codemirror.css">
 	<link rel="stylesheet" href="editor/addon/dialog/dialog.css">
 	<link rel="stylesheet" href="editor/addon/scroll/simplescrollbars.css">
 	<link rel="stylesheet" href="editor/addon/fold/foldgutter.css">
+	<link rel="stylesheet" href="editor/addon/lint/lint.css">
 	<link rel="stylesheet" href="../css/cmcolor.css">
 	<style type="text/css" media="screen">
 		.CodeMirror {
