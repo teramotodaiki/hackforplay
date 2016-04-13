@@ -50,7 +50,7 @@
     };
     </script>
     <script src="view.js" charset="utf-8"></script>
-    <script src="openExternal.js" charset="utf-8"></script>
+    <script src="../s/openExternal.js" charset="utf-8"></script>
     <header class="affix flex-container">
       <span class="relative-DisplayName"><?php echo $channel['ChName']; ?></span>
       <span class="text-muted hidden-xs"><?php echo $channel['TeamName']; ?></span>
