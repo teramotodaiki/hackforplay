@@ -20,12 +20,12 @@ $last_update  = filter_input(INPUT_GET, 'update');
 $stmt_ch = $dbh->prepare('SELECT * FROM "Channel" WHERE "ID"=:id');
 $stmt_pr = $dbh->prepare('SELECT "Written" FROM "Project" WHERE "ID"=:project_id');
 $stmt_us = $dbh->prepare('SELECT "ID","Nickname" FROM "User" WHERE "ID"=:user_id');
-$stmt_sc  = $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id');
+$stmt_sc  = $dbh->prepare('SELECT MAX("ID") AS ID FROM "Script" WHERE "ProjectID"=:project_id');
 
 set_time_limit(0);
 while (1) {
 
-  $stmt_ch->bindValue(':id', $id, FILTER_VALIDATE_INT);
+  $stmt_ch->bindValue(':id', $id, PDO::PARAM_INT);
   $stmt_ch->execute();
   $channel  = $stmt_ch->fetch(PDO::FETCH_ASSOC);
   if (!$channel) {
@@ -37,17 +37,17 @@ while (1) {
     die;
   }
 
-  $stmt_pr->bindValue(':project_id', $channel['ProjectID'], FILTER_VALIDATE_INT);
+  $stmt_pr->bindValue(':project_id', $channel['ProjectID'], PDO::PARAM_INT);
   $stmt_pr->execute();
   $written  = $stmt_pr->fetch(PDO::FETCH_COLUMN);
 
   if ($last_update != $channel['Updated'] && $written) {
 
     $stmt_us->bindValue(':user_id', $channel['UserID'], PDO::PARAM_INT);
-    $stmt_us->execute($channel['UserID']);
+    $stmt_us->execute();
     $channel['User']  = $stmt_us->fetch(PDO::FETCH_ASSOC);
 
-    $stmt_us->bindValue(':project_id', $channel['ProjectID'], FILTER_VALIDATE_INT);
+    $stmt_sc->bindValue(':project_id', $channel['ProjectID'], PDO::PARAM_INT);
     $stmt_sc->execute();
     $channel['Script'] = $stmt_sc->fetch(PDO::FETCH_ASSOC);
 
