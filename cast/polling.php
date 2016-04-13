@@ -44,7 +44,7 @@ while (1) {
   if ($last_update != $channel['Updated'] && $written) {
 
     $stmt_us->bindValue(':user_id', $channel['UserID'], PDO::PARAM_INT);
-    $stmt_us->execute($channel['UserID']);
+    $stmt_us->execute();
     $channel['User']  = $stmt_us->fetch(PDO::FETCH_ASSOC);
 
     $stmt_us->bindValue(':project_id', $channel['ProjectID'], FILTER_VALIDATE_INT);
