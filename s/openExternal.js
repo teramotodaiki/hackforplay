@@ -43,8 +43,8 @@ $(function () {
 			switch (domain) {
 				case 'soundcloud.com': openSoundCloud($wrapper, component.href); break;
 				case 'hackforplay.xyz': openLink($wrapper, parse(component).id); break;
-				case 'play.hackforplay': openLink($wrapper, component.pathname.substr(1)); break;
-				case 'youtu.be': openYouTube($wrapper, component.pathname.substr(1)); break;
+				case 'play.hackforplay': openLink($wrapper, pathname); break;
+				case 'youtu.be': openYouTube($wrapper, pathname); break;
 				case 'youtube.com': openYouTube($wrapper, parse(component).v); break;
 				case 'restaging.hackforplay':
 				if ( !$('.container.container-game').hasClass('restaging') ) {
