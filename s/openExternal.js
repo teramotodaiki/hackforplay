@@ -7,7 +7,7 @@
 		try {
 			component = document.createElement('a');
 			component.href = event.data.url;
-		} catch (e) { console.error(e); return; }
+		} catch (e) { console.error('invalid url', event.data.url); return; }
 		var domain = component.hostname.replace(/^www\./, '');
 		var pathname = component.pathname.replace(/^\//, '');
 		var $all = $('.container-open-external .item-open-external');
