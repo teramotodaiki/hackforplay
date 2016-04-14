@@ -178,7 +178,7 @@
 		}
 		timeoutID = null;
 	}
-})();
+})(window.SC, window.YT);
 
 // Panel
 var $item =
