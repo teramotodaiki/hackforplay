@@ -48,8 +48,6 @@ if ($stage['State'] === 'rejected') {
 	die('This stage is private');
 }
 
-$sourceElement = file_get_contents($stage['Src'], true) or die('Failed to load kit');
-
 // Get script
 switch ($type) {
 	case 'local':
