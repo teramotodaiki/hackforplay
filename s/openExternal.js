@@ -1,14 +1,6 @@
 // 汎用的な ExternalLinkWindow  Hack.openExternal で制御する
 (function (SC, YT) {
 	window.SC = undefined; // SoundCloud
-  if (YT) {
-    window.YT = window.onYouTubeIframeAPIReady = undefined; // YouTube (already loaded)
-  } else {
-		window.onYouTubeIframeAPIReady = function () {
-			YT = window.YT;
-			window.YT = window.onYouTubeIframeAPIReady = undefined;
-		};
-  }
   window.addEventListener('message', function (event) {
     if (event.data.query !== 'openExternal') return;
     var component;
@@ -86,16 +78,12 @@
 	function openYouTube ($wrapper, videoId) {
 		var $div = $('<div>').attr('id', 'player-' + videoId).addClass('fit').appendTo($wrapper);
 		var player;
-    console.log(window.onYouTubeIframeAPIReady);
-		if (window.onYouTubeIframeAPIReady) {
+		if (typeof YT.Player === 'function') {
+			task();
+		} else {
 			window.onYouTubeIframeAPIReady = function () {
-        console.log('API Ready');
-				YT = window.YT;
-				window.YT = window.onYouTubeIframeAPIReady = undefined; // YouTube
 				if ($div.get(0)) task();
 			};
-		} else {
-			task();
 		}
 		function task () {
 			player = new YT.Player($div.attr('id'), {
@@ -103,10 +91,9 @@
 				height: $div.height(),
 				videoId: videoId,
 				playerVars: { autoplay: true },
-				events: { onReady: function () {
-          console.log(openAndAutoclose, $wrapper);
-					openAndAutoclose($wrapper);
-				}}
+				events: {
+					onReady: function () { openAndAutoclose($wrapper); }
+				}
 			});
 		}
 	}
@@ -178,31 +165,33 @@
 		}
 		timeoutID = null;
 	}
-})(window.SC, window.YT);
+})();
 
-// Panel
-var $item =
-$('<div>').addClass('item-open-external').append(
-  $('<div>').addClass('embed-frame')
-).append(
-  $('<div>').addClass('side-menu').append(
-    $('<span>').addClass('glyphicon glyphicon-remove')
-  ).append(
-    $('<span>').addClass('glyphicon glyphicon glyphicon-pushpin')
-  ).append(
-    $('<span>').addClass('glyphicon glyphicon-chevron-right')
-  )
-).on('click', '.glyphicon-pushpin,.glyphicon-chevron-right', function() {
-	$(this).parents('.item-open-external').toggleClass('opened');
-}).on('click', '.glyphicon-remove', function() {
-	$(this).parents('.item-open-external').toggleClass('visible').find('.embed-frame').children().remove();
+$(function () {
+	// Panel
+	var $item =
+	$('<div>').addClass('item-open-external').append(
+	  $('<div>').addClass('embed-frame')
+	).append(
+	  $('<div>').addClass('side-menu').append(
+	    $('<span>').addClass('glyphicon glyphicon-remove')
+	  ).append(
+	    $('<span>').addClass('glyphicon glyphicon glyphicon-pushpin')
+	  ).append(
+	    $('<span>').addClass('glyphicon glyphicon-chevron-right')
+	  )
+	).on('click', '.glyphicon-pushpin,.glyphicon-chevron-right', function() {
+		$(this).parents('.item-open-external').toggleClass('opened');
+	}).on('click', '.glyphicon-remove', function() {
+		$(this).parents('.item-open-external').toggleClass('visible').find('.embed-frame').children().remove();
+	});
+
+	// 3 panels
+	$('.container-open-external').append(
+	  $item.clone(true)
+	).append(
+	  $item.clone(true)
+	).append(
+	  $item.clone(true)
+	);
 });
-
-// 3 panels
-$('.container-open-external').append(
-  $item.clone(true)
-).append(
-  $item.clone(true)
-).append(
-  $item.clone(true)
-);
