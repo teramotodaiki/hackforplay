@@ -98,7 +98,10 @@ switch ($type) {
 	<script src="./lib/require.js"></script>
   <script type="text/javascript">
 		requirejs.config({
-		  baseUrl: '../'
+		  baseUrl: '../',
+			paths: {
+				restaging: 'modules/~project/<?php echo $token; ?>'
+			}
 		});
 		requirejs(['embed/modules/hack','embed/modules/enchant','embed/modules/ui.enchant','embed/kit/rpg_hack_project/main'], function (Hack) {
 			Hack.stageInfo = {
@@ -106,7 +109,7 @@ switch ($type) {
 				token: '<?php echo $playlog_token; ?>'
 				<?php endif; ?>
 			};
-			requirejs(['modules/~project/<?php echo $token; ?>'], function () {
+			requirejs(['restaging'], function () {
 				Hack.start();
 			});
     });

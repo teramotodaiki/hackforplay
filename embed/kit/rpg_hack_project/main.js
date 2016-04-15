@@ -2,6 +2,7 @@
 // Module check
 (function (mod) {
 	if (typeof define === "function" && define.amd) {
+
 		define(['../../modules/enchant','../../modules/hack','./rpgobjects','./smartassets'], mod);
 	} else {
 		window.addEventListener('load', function () {
