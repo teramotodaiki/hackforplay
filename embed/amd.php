@@ -93,26 +93,19 @@ switch ($type) {
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title></title>
-  <script src="./lib/require.js"></script>
+	<script src="<?php echo $script_src; ?>" id="hackforplay-embed-script" data-func="HackforPlayInitializeRestaging"></script>
+	<script src="./lib/require.js"></script>
   <script type="text/javascript">
-    requirejs(['./lib/enchant'], function () {
-			document.write('all modules loaded!');
+		requirejs(['./modules/hack','./modules/enchant','./modules/ui.enchant','./kit/rpg_hack_project/main'], function (Hack) {
+			Hack.stageInfo = {
+				<?php if (isset($playlog_token)) : ?>
+				token: '<?php echo $playlog_token; ?>'
+				<?php endif; ?>
+			};
+			Hack.start();
     });
   </script>
-
-	<!-- <script src="<?php echo $script_src; ?>" id="hackforplay-embed-script" data-func="HackforPlayInitializeRestaging"></script> -->
-	<!-- <?php echo $sourceElement; ?> -->
 </head>
 <body>
-
-	<!-- <script type="text/javascript">
-	window.addEventListener('load', function () {
-		Hack.stageInfo = {
-			<?php if (isset($playlog_token)) : ?>
-			token: '<?php echo $playlog_token; ?>'
-			<?php endif; ?>
-		};
-	});
-	</script> -->
 </body>
 </html>
