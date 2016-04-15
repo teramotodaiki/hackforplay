@@ -259,10 +259,10 @@
 			// set default of bmap
 			get: function () {
 				if (!this._type) {
-					if (this._bmap === null) return ''; // bmapが初期化されていないので不定
+					if (this.bmap === null) return ''; // bmapが初期化されていないので不定
 					// 初期値は（0,0）のタイル
 					Object.keys(MapObject.dictionary).filter(function (key) {
-						return MapObject.dictionary[key] === this._bmap[0][0];
+						return MapObject.dictionary[key] === this.bmap._data[0][0][0];
 					}, this).forEach(function (key) {
 						this._type = key;
 					}, this);
