@@ -67,21 +67,22 @@ switch ($type) {
 }
 
 // Register play log
-// switch ($type) {
-// 	case 'stage':
-// 		// Tokenを生成
-// 		$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
-// 		$playlog_token	= bin2hex($bytes); // binaly to hex
-// 		// Logging
-// 		$stmt	= $dbh->prepare('INSERT INTO "PlayLog" ("Token","UserID","StageID","Referrer","Registered") VALUES (:token,:user_id,:stage_id,:referrer,:gmt)');
-// 		$stmt->bindValue(':token', $playlog_token, PDO::PARAM_STR);
-// 		$stmt->bindValue(':user_id', $session_userid, PDO::PARAM_INT);
-// 		$stmt->bindValue(':stage_id', $id, PDO::PARAM_INT);
-// 		$stmt->bindValue(':referrer', $_SERVER['HTTP_REFERER'], PDO::PARAM_STR);
-// 		$stmt->bindValue(':gmt', gmdate('Y-m-d H:i:s'), PDO::PARAM_STR);
-// 		$stmt->execute();
-// 		break;
-// }
+$referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : NULL;
+switch ($type) {
+	case 'stage':
+		// Tokenを生成
+		$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
+		$playlog_token	= bin2hex($bytes); // binaly to hex
+		// Logging
+		$stmt	= $dbh->prepare('INSERT INTO "PlayLog" ("Token","UserID","StageID","Referrer","Registered") VALUES (:token,:user_id,:stage_id,:referrer,:gmt)');
+		$stmt->bindValue(':token', $playlog_token, PDO::PARAM_STR);
+		$stmt->bindValue(':user_id', $session_userid, PDO::PARAM_INT);
+		$stmt->bindValue(':stage_id', $id, PDO::PARAM_INT);
+		$stmt->bindValue(':referrer', $referrer, PDO::PARAM_STR);
+		$stmt->bindValue(':gmt', gmdate('Y-m-d H:i:s'), PDO::PARAM_STR);
+		$stmt->execute();
+		break;
+}
 
 ?>
 <!DOCTYPE html>
@@ -96,13 +97,21 @@ switch ($type) {
 	<script src="<?php echo $script_src; ?>" id="hackforplay-embed-script" data-func="HackforPlayInitializeRestaging"></script>
 	<script src="./lib/require.js"></script>
   <script type="text/javascript">
-		requirejs(['./modules/hack','./modules/enchant','./modules/ui.enchant','./kit/rpg_hack_project/main'], function (Hack) {
+		requirejs.config({
+		  baseUrl: '../',
+			paths: {
+				restaging: 'modules/~project/<?php echo $token; ?>'
+			}
+		});
+		requirejs(['embed/modules/hack','embed/modules/enchant','embed/modules/ui.enchant','embed/kit/rpg_hack_project/main'], function (Hack) {
 			Hack.stageInfo = {
 				<?php if (isset($playlog_token)) : ?>
 				token: '<?php echo $playlog_token; ?>'
 				<?php endif; ?>
 			};
-			Hack.start();
+			requirejs(['restaging'], function () {
+				Hack.start();
+			});
     });
   </script>
 </head>
