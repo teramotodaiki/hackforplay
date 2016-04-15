@@ -1,4 +1,11 @@
-window.addEventListener('load', function () {
+// Module check
+(function (mod) {
+	if (typeof define === "function" && define.amd) {
+		define(['../../modules/enchant','../../modules/ui.enchant','../../modules/hack'], mod);
+	} else {
+		window.addEventListener('load', mod);
+	}
+})(function () {
 
 	/**
 	 * RPGObject
@@ -666,8 +673,8 @@ window.addEventListener('load', function () {
 			}
 			Effect.lastNode = this;
 		},
-		locate: function (left, top) {
-			RPGObject.prototype.locate.call(this, left, top);
+		locate: function (left, top, effect) {
+			RPGObject.prototype.locate.call(this, left, top, effect);
 			if (this._random) {
 				this.moveBy(this._random.x, this._random.y);
 			}

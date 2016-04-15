@@ -1,4 +1,15 @@
-window.addEventListener('load', function () {
+
+// Module check
+(function (mod) {
+	if (typeof define === "function" && define.amd) {
+		define(['../../modules/enchant','../../modules/hack','./rpgobjects','./smartassets'], mod);
+	} else {
+		window.addEventListener('load', function () {
+			mod();
+			Hack.start();
+		});
+	}
+})(function () {
 
 	var game = enchant.Core.instance;
 	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x2/dotmat.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png', 'enchantjs/icon0.png', 'enchantjs/x2/effect0.png', 'hackforplay/madosyo_small.png', 'enchantjs/shadow.gif');
@@ -248,10 +259,10 @@ window.addEventListener('load', function () {
 			// set default of bmap
 			get: function () {
 				if (!this._type) {
-					if (this._bmap === null) return ''; // bmapが初期化されていないので不定
+					if (this.bmap === null) return ''; // bmapが初期化されていないので不定
 					// 初期値は（0,0）のタイル
 					Object.keys(MapObject.dictionary).filter(function (key) {
-						return MapObject.dictionary[key] === this._bmap[0][0];
+						return MapObject.dictionary[key] === this.bmap._data[0][0][0];
 					}, this).forEach(function (key) {
 						this._type = key;
 					}, this);
@@ -425,7 +436,5 @@ window.addEventListener('load', function () {
 			return _min + Math.random() * _sub;
 		}
 	};
-
-	Hack.start();
 
 });
