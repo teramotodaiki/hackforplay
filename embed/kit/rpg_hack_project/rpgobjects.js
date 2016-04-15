@@ -673,8 +673,8 @@
 			}
 			Effect.lastNode = this;
 		},
-		locate: function (left, top) {
-			RPGObject.prototype.locate.call(this, left, top);
+		locate: function (left, top, effect) {
+			RPGObject.prototype.locate.call(this, left, top, effect);
 			if (this._random) {
 				this.moveBy(this._random.x, this._random.y);
 			}
