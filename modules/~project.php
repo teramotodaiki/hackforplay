@@ -36,6 +36,5 @@ define(function (require, exports, module) {
 
 <?php echo $script['RawCode']; ?>
 
-  return function() {};
 
 });
