@@ -48,8 +48,6 @@ if ($stage['State'] === 'rejected') {
 	die('This stage is private');
 }
 
-$sourceElement = file_get_contents($stage['Src'], true) or die('Failed to load kit');
-
 // Get script
 switch ($type) {
 	case 'local':
@@ -69,21 +67,21 @@ switch ($type) {
 }
 
 // Register play log
-switch ($type) {
-	case 'stage':
-		// Tokenを生成
-		$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
-		$playlog_token	= bin2hex($bytes); // binaly to hex
-		// Logging
-		$stmt	= $dbh->prepare('INSERT INTO "PlayLog" ("Token","UserID","StageID","Referrer","Registered") VALUES (:token,:user_id,:stage_id,:referrer,:gmt)');
-		$stmt->bindValue(':token', $playlog_token, PDO::PARAM_STR);
-		$stmt->bindValue(':user_id', $session_userid, PDO::PARAM_INT);
-		$stmt->bindValue(':stage_id', $id, PDO::PARAM_INT);
-		$stmt->bindValue(':referrer', $_SERVER['HTTP_REFERER'], PDO::PARAM_STR);
-		$stmt->bindValue(':gmt', gmdate('Y-m-d H:i:s'), PDO::PARAM_STR);
-		$stmt->execute();
-		break;
-}
+// switch ($type) {
+// 	case 'stage':
+// 		// Tokenを生成
+// 		$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
+// 		$playlog_token	= bin2hex($bytes); // binaly to hex
+// 		// Logging
+// 		$stmt	= $dbh->prepare('INSERT INTO "PlayLog" ("Token","UserID","StageID","Referrer","Registered") VALUES (:token,:user_id,:stage_id,:referrer,:gmt)');
+// 		$stmt->bindValue(':token', $playlog_token, PDO::PARAM_STR);
+// 		$stmt->bindValue(':user_id', $session_userid, PDO::PARAM_INT);
+// 		$stmt->bindValue(':stage_id', $id, PDO::PARAM_INT);
+// 		$stmt->bindValue(':referrer', $_SERVER['HTTP_REFERER'], PDO::PARAM_STR);
+// 		$stmt->bindValue(':gmt', gmdate('Y-m-d H:i:s'), PDO::PARAM_STR);
+// 		$stmt->execute();
+// 		break;
+// }
 
 ?>
 <!DOCTYPE html>
@@ -95,26 +93,19 @@ switch ($type) {
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title></title>
-  <script src="./lib/require.js"></script>
+	<script src="<?php echo $script_src; ?>" id="hackforplay-embed-script" data-func="HackforPlayInitializeRestaging"></script>
+	<script src="./lib/require.js"></script>
   <script type="text/javascript">
-    requirejs(['./lib/enchant'], function () {
-			document.write('all modules loaded!');
+		requirejs(['./modules/hack','./modules/enchant','./modules/ui.enchant','./kit/rpg_hack_project/main'], function (Hack) {
+			Hack.stageInfo = {
+				<?php if (isset($playlog_token)) : ?>
+				token: '<?php echo $playlog_token; ?>'
+				<?php endif; ?>
+			};
+			Hack.start();
     });
   </script>
-
-	<!-- <script src="<?php echo $script_src; ?>" id="hackforplay-embed-script" data-func="HackforPlayInitializeRestaging"></script> -->
-	<!-- <?php echo $sourceElement; ?> -->
 </head>
 <body>
-
-	<!-- <script type="text/javascript">
-	window.addEventListener('load', function () {
-		Hack.stageInfo = {
-			<?php if (isset($playlog_token)) : ?>
-			token: '<?php echo $playlog_token; ?>'
-			<?php endif; ?>
-		};
-	});
-	</script> -->
 </body>
 </html>

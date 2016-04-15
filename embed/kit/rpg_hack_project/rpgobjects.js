@@ -1,4 +1,11 @@
-window.addEventListener('load', function () {
+// Module check
+(function (mod) {
+	if (typeof define === "function" && define.amd) {
+		define(['../../modules/enchant','../../modules/ui.enchant','../../modules/hack'], mod);
+	} else {
+		window.addEventListener('load', mod);
+	}
+})(function () {
 
 	/**
 	 * RPGObject
