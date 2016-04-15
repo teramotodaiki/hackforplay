@@ -10,6 +10,9 @@ require_once '../preload.php';
 $bundle = filter_input(INPUT_GET, 'bundle');
 
 switch ($bundle) {
+  case '~project':
+    require_once './~project.php';
+    break;
   default:
     header('HTTP/1.0 404 Not Found');
     echo "Selected bundle $bundle not found";
