@@ -4,6 +4,7 @@
  * Input: module:token (, version)
  * **** versionの設定は未対応 (常に最新版をfetch) ****
  * **** 常に最新版をfetchした場合、モジュール側のスクリプト変更によって呼び出し側がうまく動作しない場合がある ****
+ * **** requireの利用は未対応（コード全体を関数として返す） ****
 */
 
 require_once '../preload.php';
@@ -29,6 +30,12 @@ $stmt = $dbh->prepare('SELECT "ID","RawCode" FROM "Script" WHERE "ProjectID"=:pr
 $stmt->bindValue(':project_id', $project['ID'], PDO::PARAM_INT);
 $stmt->execute();
 $script  = $stmt->fetch(PDO::FETCH_ASSOC);
-echo $script['RawCode'];
 
 ?>
+define(function (require, exports, module) {
+
+<?php echo $script['RawCode']; ?>
+
+  return function() {};
+
+});

@@ -93,13 +93,6 @@ define(['./enchant','./ui.enchant'], function (require, exports, module) {
 	});
 
 	Hack.start = function () {
-		// evaluate restaging code
-		var element = document.getElementById('hackforplay-embed-script');
-		if (!element) throw new Error('Embed script could not be found');
-		var funcName = element.getAttribute('data-func');
-		if (funcName in window)  window[funcName]();
-		else throw new Error('Script file is found, but Restaging Code is not found');
-
 		// game start
 		Hack.dispatchEvent(new Event('load'));
 		game.start();

@@ -97,13 +97,18 @@ switch ($type) {
 	<script src="<?php echo $script_src; ?>" id="hackforplay-embed-script" data-func="HackforPlayInitializeRestaging"></script>
 	<script src="./lib/require.js"></script>
   <script type="text/javascript">
-		requirejs(['./modules/hack','./modules/enchant','./modules/ui.enchant','./kit/rpg_hack_project/main'], function (Hack) {
+		requirejs.config({
+		  baseUrl: '../'
+		});
+		requirejs(['embed/modules/hack','embed/modules/enchant','embed/modules/ui.enchant','embed/kit/rpg_hack_project/main'], function (Hack) {
 			Hack.stageInfo = {
 				<?php if (isset($playlog_token)) : ?>
 				token: '<?php echo $playlog_token; ?>'
 				<?php endif; ?>
 			};
-			Hack.start();
+			requirejs(['modules/~project/<?php echo $token; ?>'], function () {
+				Hack.start();
+			});
     });
   </script>
 </head>
