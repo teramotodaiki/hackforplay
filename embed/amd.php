@@ -106,7 +106,7 @@ switch ($type) {
 		var _modules = ['embed/modules/hack','embed/modules/enchant','embed/modules/ui.enchant','embed/kit/rpg_hack_project/main'];
 		// outer-modules loading
 		var _outer = (sessionStorage.getItem('outer-modules') || '').split(',');
-		if (!_outer[0]) console.error('outer-modules not defined')
+		if (!_outer[0]) console.log('outer-modules not defined')
 		else Array.prototype.push.apply(_modules, _outer);
 
 		// ---- OUTER MODULES ----
@@ -123,7 +123,7 @@ switch ($type) {
 				// inner-modules loading
 				var _inner = (sessionStorage.getItem('inner-modules') || '').split(',');
 				if (!_inner[0]){
-					console.error('inner-modules not defined');
+					console.log('inner-modules not defined');
 					callback();
 				} else {
 					console.log('(inner) modules loaded!', _inner);
