@@ -1310,3 +1310,22 @@ if (!Array.prototype.findIndex) {
     return -1;
   };
 }
+
+// AMD Test function
+function getModule() {
+	return sessionStorage.getItem('project-token');
+}
+
+function setInnerModule() {
+	var prefix = 'modules/~project/';
+	var serial = prefix + Array.prototype.join.call(arguments, ',' + prefix);
+	sessionStorage.setItem('inner-modules', serial);
+	return serial;
+}
+
+function setOuterModule() {
+	var prefix = 'modules/~project/';
+	var serial = prefix + Array.prototype.join.call(arguments, ',' + prefix);
+	sessionStorage.setItem('outer-modules', serial);
+	return serial;
+}
