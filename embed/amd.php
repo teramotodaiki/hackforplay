@@ -109,16 +109,31 @@ switch ($type) {
 		if (!_outer[0]) console.error('outer-modules not defined')
 		else Array.prototype.push.apply(_modules, _outer);
 
+		// ---- OUTER MODULES ----
 		requirejs(_modules, function (Hack) {
-			console.log('modules loaded!', _modules);
+			console.log('(outer) modules loaded!', _modules);
 			Hack.stageInfo = {
 				<?php if (isset($playlog_token)) : ?>
 				token: '<?php echo $playlog_token; ?>'
 				<?php endif; ?>
 			};
-			requirejs(['restaging'], function () {
-				Hack.start();
-			});
+
+			// ---- INNER MODULES ----
+			(function (callback) {
+				// inner-modules loading
+				var _inner = (sessionStorage.getItem('inner-modules') || '').split(',');
+				if (!_inner[0]){
+					console.error('inner-modules not defined');
+					callback();
+				} else {
+					console.log('(inner) modules loaded!', _inner);
+					requirejs(_inner, callback);
+				}
+			})(function () {
+				requirejs(['restaging'], function () {
+					Hack.start();
+				});
+			})
     });
   </script>
 </head>
