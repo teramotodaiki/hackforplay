@@ -103,15 +103,37 @@ switch ($type) {
 				restaging: 'modules/~project/<?php echo $token; ?>'
 			}
 		});
-		requirejs(['embed/modules/hack','embed/modules/enchant','embed/modules/ui.enchant','embed/kit/rpg_hack_project/main'], function (Hack) {
+		var _modules = ['embed/modules/hack','embed/modules/enchant','embed/modules/ui.enchant','embed/kit/rpg_hack_project/main'];
+		// outer-modules loading
+		var _outer = (sessionStorage.getItem('outer-modules') || '').split(',');
+		if (!_outer[0]) console.error('outer-modules not defined')
+		else Array.prototype.push.apply(_modules, _outer);
+
+		// ---- OUTER MODULES ----
+		requirejs(_modules, function (Hack) {
+			console.log('(outer) modules loaded!', _modules);
 			Hack.stageInfo = {
 				<?php if (isset($playlog_token)) : ?>
 				token: '<?php echo $playlog_token; ?>'
 				<?php endif; ?>
 			};
-			requirejs(['restaging'], function () {
-				Hack.start();
-			});
+
+			// ---- INNER MODULES ----
+			(function (callback) {
+				// inner-modules loading
+				var _inner = (sessionStorage.getItem('inner-modules') || '').split(',');
+				if (!_inner[0]){
+					console.error('inner-modules not defined');
+					callback();
+				} else {
+					console.log('(inner) modules loaded!', _inner);
+					requirejs(_inner, callback);
+				}
+			})(function () {
+				requirejs(['restaging'], function () {
+					Hack.start();
+				});
+			})
     });
   </script>
 </head>
