@@ -954,8 +954,6 @@ enchant.EventTarget = enchant.Class.create({
             width = width || 320;
             height = height || 320;
 
-            console.log('core init', document);
-
             var stage = document.getElementById('enchant-stage');
             var scale, sWidth, sHeight;
             if (!stage) {
