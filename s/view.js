@@ -417,7 +417,13 @@ $(function(){
 		var beginRestaging = function(isExtendMode){
 
 			$('.container.container-game').addClass('restaging');
-			document.getElementById('item-embed-iframe').src = '/embed/?type=local&key=restaging_code&id=' + getParam('id');
+			console.log(getParam('amd-test'));
+			if (getParam('amd-test')) {
+				console.log('AMD mode using', sessionStorage.getItem('project-token'));
+				document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token');
+			} else {
+				document.getElementById('item-embed-iframe').src = '/embed/?type=local&key=restaging_code&id=' + getParam('id');
+			}
 
 			// ロギングを開始
 			(function() {
