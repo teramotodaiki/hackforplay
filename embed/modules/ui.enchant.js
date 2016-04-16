@@ -1,3 +1,11 @@
+// Module check
+(function (mod) {
+  if (typeof define === "function" && define.amd) {
+    define(['./enchant'], mod);
+  } else {
+    mod();
+  }
+})(function () {
 /**
  * @fileOverview
  * ui.enchant.js v2 (2012/11/05)
@@ -924,3 +932,5 @@ enchant.ui.VirtualMap = enchant.Class.create(enchant.Group, {
 function rand(num) {
     return Math.floor(Math.random() * num);
 }
+
+});

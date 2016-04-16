@@ -27,6 +27,8 @@ $directly_restaging	= filter_input(INPUT_GET, 'directly_restaging', FILTER_VALID
 // 1以上ならつづきをあらわす。0以下なら最後のステージであることをあらわす
 $next = $mode === 'quest' && $level_next ? $level_next['ID'] : 0;
 $embed = '/embed/?type=stage&id=' . $id;
+// AMD test mode
+$mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
 ?>
 <!DOCTYPE html>
 <html>
@@ -158,6 +160,7 @@ $embed = '/embed/?type=stage&id=' . $id;
 <?php if(isset($code)): ?>
 		s('replay_code', "<?php echo $code; ?>");
 <?php endif; ?>
+		s('amd-test', "<?php echo $mod ? '1' : ''; ?>");
 	})();
 	</script>
 	<script type="text/javascript">
