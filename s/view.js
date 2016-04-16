@@ -417,7 +417,12 @@ $(function(){
 		var beginRestaging = function(isExtendMode){
 
 			$('.container.container-game').addClass('restaging');
-			document.getElementById('item-embed-iframe').src = '/embed/?type=local&key=restaging_code&id=' + getParam('id');
+			if (getParam('amd-test')) {
+				console.log('AMD mode using', sessionStorage.getItem('project-token'));
+				document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token');
+			} else {
+				document.getElementById('item-embed-iframe').src = '/embed/?type=local&key=restaging_code&id=' + getParam('id');
+			}
 
 			// ロギングを開始
 			(function() {
@@ -656,7 +661,7 @@ $(function(){
 
 				document.getElementById('item-embed-iframe').contentWindow.postMessage({
 					query: 'eval',
-					value: 'window.location.reload();'
+					value: getParam('amd-test') ? 'window.location.reload(true);' : 'window.location.reload();'
 				}, '/');
 			});
 			$('.h4p_save_button').on('click', function() {
@@ -963,7 +968,6 @@ $(function(){
 				'timezone': timezone,
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
-
 				switch(data){
 					case 'no-session':
 						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
@@ -984,6 +988,9 @@ $(function(){
 						sessionStorage.setItem('project-token', data);
 						if(successed !== undefined){
 							successed();
+						}
+						if (getParam('amd-test')) {
+							document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token') + '&t=' + new Date().getTime();
 						}
 						break;
 				}
@@ -1029,6 +1036,9 @@ $(function(){
 						break;
 					case 'no-update':
 					case 'success':
+						if (getParam('amd-test')) {
+							document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token');
+						}
 						break;
 				}
 				if (callback !== undefined) {
@@ -1182,8 +1192,14 @@ $(function(){
 		if (getParam('directly_restaging')) {
 			switch (getParam('mode')) {
 			case 'official':
-				beginRestaging();
-				makeProject();
+				if (getParam('amd-test')) {
+					makeProject(function () {
+						updateTask(beginRestaging);
+					});
+				} else {
+					beginRestaging();
+					makeProject();
+				}
 				break;
 			case 'replay':
 			case 'quest':
