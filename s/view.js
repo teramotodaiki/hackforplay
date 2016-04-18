@@ -404,6 +404,19 @@ $(function(){
 			});
 		}
 	})();
+
+	// javascript-hint
+	jsEditor.on("change", function (cm, change) {
+		var token = cm.getTokenAt(cm.getCursor());
+		// 変数名,プロパティ名,キーワード及び「.」入力時のみヘルパー利用
+		if (['variable','property','keyword'].indexOf(token.type) !== -1 ||
+					token.state.lastType === '.') {
+			CodeMirror.showHint(cm, CodeMirror.hint.javascript, {
+				completeSingle: false
+			});
+		}
+	});
+
 	var $div = $("div.h4p_restaging_editor");
 	jsEditor.setSize($div.width(), $div.height());
 	if(getParam('mode') !== "restaging"){
