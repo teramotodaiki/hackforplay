@@ -404,6 +404,38 @@ $(function(){
 			});
 		}
 	})();
+
+	// javascript-hint
+	(function () {
+		var globalScope = {};
+
+		window.addEventListener('message', function (event) {
+			if (!event.data || event.data.query !== 'javascriptHint') return;
+			for (var variable in event.data.globalScope) {
+				globalScope[variable] = event.data.globalScope[variable];
+			}
+		});
+
+		jsEditor.on("change", function (cm, change) {
+			var token = cm.getTokenAt(cm.getCursor());
+			// 変数名,プロパティ名,キーワード及び「.」入力時のみヘルパー利用
+			if (['variable','property','keyword'].indexOf(token.type) !== -1 ||
+						token.state.lastType === '.') {
+				CodeMirror.showHint(cm, function (cm, options) {
+					options.completeSingle = false;
+					options.useGlobalScope = true;
+					options.globalScope = globalScope;
+					var result = CodeMirror.hint.javascript(cm, options);
+					result.list.sort(function (a, b) {
+						return a.toUpperCase() > b.toUpperCase() ? 1 : -1;
+					});
+					return result;
+				});
+			}
+		});
+
+	})();
+
 	var $div = $("div.h4p_restaging_editor");
 	jsEditor.setSize($div.width(), $div.height());
 	if(getParam('mode') !== "restaging"){

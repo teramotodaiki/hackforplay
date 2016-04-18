@@ -148,6 +148,8 @@
 			Hack.menuGroup.addChild(self);
 			return self;
 		})(new ScoreLabel(Hack.menuGroup.x + 10, Hack.menuGroup.y + 88), Hack.scoreLabel);
+
+		Hack._exportJavascriptHint('Hack', 'game', 'RPGObject', 'RPGMap');
 	});
 
 	game.onload = game.onload || function () {
