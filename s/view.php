@@ -64,6 +64,8 @@ $mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
 	<script src="editor/addon/lint/lint.js" type="text/javascript"></script>
 	<script src="editor/addon/lint/javascript-lint.js" type="text/javascript"></script>
 	<script src="https://ajax.aspnetcdn.com/ajax/jshint/r07/jshint.js" charset="utf-8"></script>
+	<script src="editor/addon/hint/show-hint.js" charset="utf-8"></script>
+	<script src="editor/addon/hint/javascript-hint.js" charset="utf-8"></script>
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript"></script>
 	<script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
 	<link rel="stylesheet" href="editor/lib/codemirror.css">
@@ -71,6 +73,7 @@ $mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
 	<link rel="stylesheet" href="editor/addon/scroll/simplescrollbars.css">
 	<link rel="stylesheet" href="editor/addon/fold/foldgutter.css">
 	<link rel="stylesheet" href="editor/addon/lint/lint.css">
+	<link rel="stylesheet" href="editor/addon/hint/show-hint.css">
 	<link rel="stylesheet" href="../css/cmcolor.css">
 	<style type="text/css" media="screen">
 		.CodeMirror {
