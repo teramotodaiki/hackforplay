@@ -934,7 +934,7 @@ window.addEventListener('load', function() {
 
 	// javascript hint
 	function looseCopy (scope, count) {
-		if (typeof scope !== 'object' || count <= 0) return null;
+		if (['object','function'].indexOf(typeof scope) === -1 || count <= 0) return null;
 		var copied = {};
 		for (var prop in scope) {
 			copied[prop] = looseCopy(scope[prop], count - 1);
