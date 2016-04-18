@@ -421,10 +421,15 @@ $(function(){
 			// 変数名,プロパティ名,キーワード及び「.」入力時のみヘルパー利用
 			if (['variable','property','keyword'].indexOf(token.type) !== -1 ||
 						token.state.lastType === '.') {
-				CodeMirror.showHint(cm, CodeMirror.hint.javascript, {
-					completeSingle: false,
-					useGlobalScope: true,
-					globalScope: globalScope
+				CodeMirror.showHint(cm, function (cm, options) {
+					options.completeSingle = false;
+					options.useGlobalScope = true;
+					options.globalScope = globalScope;
+					var result = CodeMirror.hint.javascript(cm, options);
+					result.list.sort(function (a, b) {
+						return a.toUpperCase() > b.toUpperCase() ? 1 : -1;
+					});
+					return result;
 				});
 			}
 		});
