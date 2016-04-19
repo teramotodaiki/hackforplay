@@ -625,6 +625,17 @@
 			} else {
 				this.name = value;
 			}
+			var _forward = { x: 0, y: 1 };
+			Object.defineProperty(this, 'forward', {
+				get: function () { return _forward; },
+				set: function (vec) {
+					var abs = Math.sqrt(vec.x * vec.x + vec.y * vec.y);
+					_forward = { x: vec.x / abs, y: vec.y / abs };
+					var rad = Math.atan2(_forward.y, _forward.x);
+					var enchantRot = 90 - rad / Math.PI * 180; // 基準は上,時計回りの度数法
+					this.rotation = (enchantRot + 360) % 360;
+				}
+			});
 		},
 		name: {
 			get: function () {
