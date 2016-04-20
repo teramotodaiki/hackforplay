@@ -4,6 +4,7 @@
   "description": "hackforplay web app",
   "main": "index.php",
   "scripts": {
+    "build": "babel src -d lib",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
