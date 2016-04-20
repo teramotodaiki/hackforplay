@@ -1,5 +1,6 @@
 .DS_Store
 .htaccess
+node_modules
 
 c/
 codemirror/
