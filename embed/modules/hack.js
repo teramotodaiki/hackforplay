@@ -924,6 +924,30 @@ define(['./enchant','./ui.enchant'], function () {
 		return R2 << 4 | G2 << 2 | B2; // RRGGBB 6bit value
 	}
 
+	// javascript hint
+	function looseCopy (scope, count) {
+		if (['object','function'].indexOf(typeof scope) === -1 || count <= 0) return null;
+		var copied = {};
+		for (var prop in scope) {
+			copied[prop] = looseCopy(scope[prop], count - 1);
+		}
+		return copied;
+	}
+
+	/**
+	 * Hack._exportJavascriptHint(prop1[, prop2[,..propN]])
+	 * propN: String (property in window)
+	*/
+	Hack._exportJavascriptHint = function () {
+		var globalScope = {};
+		Array.prototype.slice.call(arguments).forEach(function (prop) {
+			globalScope[prop] = looseCopy(window[prop], 3);
+		});
+		window.parent.postMessage({
+			query: 'javascriptHint', globalScope: globalScope
+		}, '/');
+	};
+
 	if (!Array.prototype.fill) {
 		Array.prototype.fill = function(value) {
 
