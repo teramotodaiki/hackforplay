@@ -122,6 +122,9 @@
 		    		</button>
 		    		<?php endforeach; ?>
 			    	<div class="pavilion-info row">
+			    		<div class="pavilion-body-3 col-xs-12 margin-top-lg">
+			    			<button type="button" class="btn btn-link query-add-quest">Add Quest</button>
+			    		</div>
 			    		<div class="pavilion-body-1 margin-top-lg col-xs-12 hidden">
 			    			<button type="button" class="btn btn-default type-filter-button active" data-filter="easy">easy</button>
 			    			<button type="button" class="btn btn-default type-filter-button active" data-filter="normal">normal</button>
@@ -168,9 +171,6 @@
 				    				<button type="button" class="btn btn-link query-add-level">Add Level</button>
 				    			</div>
 				    		</div>
-			    		</div>
-			    		<div class="pavilion-body-3 col-xs-12 margin-top-lg">
-			    			<button type="button" class="btn btn-link query-add-quest">Add Quest</button>
 			    		</div>
 			    	</div>
 			    </div>

@@ -78,7 +78,7 @@ $(function () {
 			questEntity.data('type', quest.Type);
 
 			quest.levels.forEach(addLevel, questEntity);
-			questEntity.appendTo('.pavilion-info .pavilion-body-2');
+			questEntity.prependTo('.pavilion-info .pavilion-body-2');
 		}
 
 		function addLevel (level) {
