@@ -444,6 +444,13 @@ $(function(){
 	}
 	// ステージ改造中、画面遷移するとき注意をうながすフラグ
 	var alert_on_unload = false;
+	window.addEventListener('beforeunload', function(event) {
+		if (alert_on_unload) {
+			event.returnValue = "せいさくちゅう の ステージ は「マイページ」に ほぞん されています。";
+		} else {
+			event.preventDefault();
+		}
+	});
 
 	(function(){
 		var beginRestaging = function(isExtendMode){
