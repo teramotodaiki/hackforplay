@@ -15,6 +15,7 @@ values : [
 	source_title : 改造元ステージの名前,
 	source_mode : 改造元ステージのMode (official, replay)
 	playcount : 現在のプレイ回数,
+	(LogCount : PlayLogのCOUNTを格納した連想配列)
 	published : 公開された日付
 ](,,,[])
 }
@@ -33,32 +34,12 @@ if (!$fetch_start) {
 	$fetch_start	= 0;
 }
 
-// フィルターを取得
-$filter = filter_input(INPUT_POST, 'filter');
-$stmt	= $dbh->prepare('SELECT "ID" FROM "StageTagData" WHERE "IdentifierString"=:filter');
-$stmt->bindValue(":filter", $filter, PDO::PARAM_STR);
+// ステージ一覧を取得 (フィルターなし)
+// SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
+$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published ORDER BY "Published" DESC');
+$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
+$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 $stmt->execute();
-$filter_tag_id	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
-
-if (!$filter_tag_id) {
-
-	// ステージ一覧を取得 (フィルターなし)
-	// SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published ORDER BY "Published" DESC');
-	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
-	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
-	$stmt->execute();
-
-} else {
-
-	// ステージ一覧を取得 (フィルターあり)
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published AND s."ID" IN (SELECT DISTINCT "StageID" FROM "StageTagMap" WHERE "TagID"=:filter_tag_id) ORDER BY "Published" DESC');
-	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
-	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
-	$stmt->bindValue(":filter_tag_id", $filter_tag_id, PDO::PARAM_INT);
-	$stmt->execute();
-
-}
 
 $result = array();
 for ($i=0; $i < $fetch_start; $i++) {
@@ -71,6 +52,16 @@ for ($i = 0; $i < $max_fetch_length; $i++){
 	}else{
 		break;
 	}
+}
+
+// PlayLogからclearrateを算出する [高負荷]
+$stmt = $dbh->prepare('SELECT COUNT(*) AS "All",COUNT("Cleared") AS "Cleared" FROM "PlayLog" WHERE "StageID"=:stage_id AND "Registered">:lastmonth');
+$lastmonth = date('Y-m-d H:i:s', strtotime('-1 month'));
+foreach ($result as $key => $value) {
+	$stmt->bindValue(':stage_id', $value['ID']);
+	$stmt->bindValue(':lastmonth', $lastmonth);
+	$stmt->execute();
+	$result[$key]['LogCount'] = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 // 配列のvalueを生成し、データを格納
@@ -86,6 +77,7 @@ foreach ($result as $key => $value) {
 	$item->source_title	= $value['SourceTitle'];
 	$item->source_mode	= $value['Mode'];
 	$item->playcount 	= $value['Playcount'];
+	$item->LogCount = $value['LogCount'];
 	$item->published 	= $value['Published'];
 	array_push($values, $item);
 }

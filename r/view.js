@@ -30,7 +30,11 @@ $(function(){
 			).append(
 				$('<p>').append($('<span>').addClass('author').html('作成者：<b><a></a></b>'))
 			).append(
-				$('<p>').append($('<span>').addClass('playcount').html('プレイ回数：<b>回</b>'))
+				$('<p>').append(
+					$('<span>').addClass('playcount').html('プレイ回数：<b>回</b>')
+				).append(
+					$('<span>').addClass('clearrate label label-sm').text('0%')
+				)
 			).append(
 				$('<p>').append($('<span>').addClass('source').html('改造元：<b><a></a></b>'))
 			)
@@ -93,7 +97,7 @@ $(function(){
 				}else{
 					item.find('.author').text('いにしえのプログラマー');
 				}
-				item.find('.playcount b').prepend(stage.playcount);
+				item.find('.playcount b').prepend(stage.LogCount.All || stage.playcount);
 				if (stage.source_mode === 'replay') {
 					item.find('.source a').attr({
 						href: '/s?id=' + stage.source_id,
@@ -102,6 +106,10 @@ $(function(){
 				}else{
 					item.find('.source').text('オリジナルステージ');
 				}
+				var rate = stage.LogCount.Cleared / stage.LogCount.All;
+				item.find('.clearrate').text(
+					'クリア率 ' + (rate * 100 >> 0) + '%'
+				).addClass(rateToLabelColor(rate, stage.LogCount.All == 0));
 
 				item.appendTo($list);
 			});
@@ -315,11 +323,12 @@ $(function(){
 							$('<p>').addClass('comment-item-padding').text(item)
 						);
 					}, com.find('.comment-body'));
-					if (item.Tags[0]) {
-						com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
-					}
-					$(this).append(com);
+					var rate = item.LogCount.Cleared / item.LogCount.All;
+					com.find('.comment-footer p').text(
+						'クリア率 ' + (rate * 100 >> 0) + '%'
+					).addClass(rateToLabelColor(rate, item.LogCount.All == 0));
 
+					$(this).append(com);
 				}, $('.h4p_topic-comment'));
 		}
 	});
@@ -429,5 +438,13 @@ $(function(){
 			console.error(e);
 		}
 	})
+
+	function rateToLabelColor (rate, isZero) {
+		return isZero ? 'label-default' :
+		rate < 0.06 ? 'label-danger' :
+		rate < 0.11 ? 'label-warning' :
+		rate < 0.26 ? 'label-primary' :
+		rate < 0.51 ? 'label-info' : 'label-success';
+	}
 
 });
