@@ -30,7 +30,11 @@ $(function(){
 			).append(
 				$('<p>').append($('<span>').addClass('author').html('作成者：<b><a></a></b>'))
 			).append(
-				$('<p>').append($('<span>').addClass('playcount').html('プレイ回数：<b>回</b>'))
+				$('<p>').append(
+					$('<span>').addClass('playcount').html('プレイ回数：<b>回</b>')
+				).append(
+					$('<span>').addClass('clearrate label label-sm').text('0%')
+				)
 			).append(
 				$('<p>').append($('<span>').addClass('source').html('改造元：<b><a></a></b>'))
 			)
@@ -102,6 +106,13 @@ $(function(){
 				}else{
 					item.find('.source').text('オリジナルステージ');
 				}
+				item.find('.clearrate').text((stage.clear_rate * 100 >> 0) + '%').addClass(
+					stage.clear_rate < 0.06 ? 'label-danger' :
+					stage.clear_rate < 0.11 ? 'label-warning' :
+					stage.clear_rate < 0.26 ? 'label-primary' :
+					stage.clear_rate < 0.51 ? 'label-info' :
+					stage.clear_rate <= 1 ? 'label-success' : 'label-default'
+				);
 
 				item.appendTo($list);
 			});
