@@ -16,7 +16,8 @@ values : [
 		IdentifierString : タグの識別子
 		DisplayString : タグをラベルとして表示する場合の文字
 		LabelColor : タグをラベルとして表示する場合の背景色
-	](,,,[]),
+	](,,,[]), [deplecated]
+	LogCount: PlayLogによるCOUNTの連想配列
 	Nickname : ユーザーのニックネーム (or NULL),
 	Gender : ユーザーの性別,
 	ProfileImageURL : ユーザーのアイコン画像のURL
@@ -111,6 +112,16 @@ foreach ($result as $key => $value) {
 		$hashtag 				= 'hackforplay';
 	}
 	$result[$key]['Hashtag']	= '#' . $hashtag;
+}
+
+// PlayLogをfetchする [高負荷]
+$stmt = $dbh->prepare('SELECT COUNT(*) AS "All",COUNT("Cleared") AS "Cleared" FROM "PlayLog" WHERE "StageID"=:stage_id AND "Registered">:lastmonth');
+$lastmonth = date('Y-m-d H:i:s', strtotime('-1 month'));
+foreach ($result as $key => $value) {
+	$stmt->bindValue(':stage_id', $value['StageID']);
+	$stmt->bindValue(':lastmonth', $lastmonth);
+	$stmt->execute();
+	$result[$key]['LogCount'] = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 

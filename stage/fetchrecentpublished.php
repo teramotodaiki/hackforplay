@@ -15,6 +15,7 @@ values : [
 	source_title : 改造元ステージの名前,
 	source_mode : 改造元ステージのMode (official, replay)
 	playcount : 現在のプレイ回数,
+	(LogCount : PlayLogのCOUNTを格納した連想配列)
 	published : 公開された日付
 ](,,,[])
 }
@@ -33,44 +34,47 @@ if (!$fetch_start) {
 	$fetch_start	= 0;
 }
 
-// フィルターを取得
-$filter = filter_input(INPUT_POST, 'filter');
-$stmt	= $dbh->prepare('SELECT "ID" FROM "StageTagData" WHERE "IdentifierString"=:filter');
-$stmt->bindValue(":filter", $filter, PDO::PARAM_STR);
+// ステージ一覧を取得
+// SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
+$stmt = $dbh->prepare('SELECT "ID" FROM "Stage" WHERE "Mode"=:replay AND "State"=:published ORDER BY "Published" DESC');
+$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
+$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
 $stmt->execute();
-$filter_tag_id	= $stmt->fetch(PDO::FETCH_COLUMN, 0);
+$result	= array_slice($stmt->fetchAll(PDO::FETCH_ASSOC), $fetch_start, $max_fetch_length);
 
-if (!$filter_tag_id) {
-
-	// ステージ一覧を取得 (フィルターなし)
-	// SQL Serverでは LIMIT 句が使えないので、一旦全データを取得している いずれ直すべき
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published ORDER BY "Published" DESC');
-	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
-	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
+// ステージの詳細を取得
+$stmt = $dbh->prepare('SELECT * FROM "Stage" WHERE "ID"=:id');
+foreach ($result as $key => $value) {
+	$stmt->bindValue(':id', $value['ID'], PDO::PARAM_INT);
 	$stmt->execute();
-
-} else {
-
-	// ステージ一覧を取得 (フィルターあり)
-	$stmt	= $dbh->prepare('SELECT s."ID",s."UserID",s."Title",s."Thumbnail",s."SourceID",s."Playcount",s."Published","User"."Nickname","Stage"."Title" AS SourceTitle,"Stage"."Mode" FROM ("Stage" AS s LEFT OUTER JOIN "User" ON s."UserID"="User"."ID") LEFT OUTER JOIN "Stage" ON s."SourceID"="Stage"."ID" WHERE s."Mode"=:replay AND s."State"=:published AND s."ID" IN (SELECT DISTINCT "StageID" FROM "StageTagMap" WHERE "TagID"=:filter_tag_id) ORDER BY "Published" DESC');
-	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
-	$stmt->bindValue(":published", 'published', PDO::PARAM_STR);
-	$stmt->bindValue(":filter_tag_id", $filter_tag_id, PDO::PARAM_INT);
-	$stmt->execute();
-
+	$result[$key]['Stage'] = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-$result = array();
-for ($i=0; $i < $fetch_start; $i++) {
-	$item	= $stmt->fetch();
+// ユーザーの詳細を取得
+$stmt = $dbh->prepare('SELECT "Nickname" FROM "User" WHERE "ID"=:userid');
+foreach ($result as $key => $value) {
+	$stmt->bindValue(':userid', $value['Stage']['UserID'], PDO::PARAM_INT);
+	$stmt->execute();
+	$result[$key]['User'] = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-for ($i = 0; $i < $max_fetch_length; $i++){
-	$item	= $stmt->fetch(PDO::FETCH_ASSOC);
-	if($item != NULL){
-		array_push($result, $item);
-	}else{
-		break;
-	}
+
+// ソースステージの詳細を取得
+$stmt = $dbh->prepare('SELECT "Title","Mode" FROM "Stage" WHERE "ID"=:sourceid');
+foreach ($result as $key => $value) {
+	$stmt->bindValue(':sourceid', $value['Stage']['SourceID'], PDO::PARAM_INT);
+	$stmt->execute();
+	$result[$key]['Source']	= $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// PlayLogからclearrateを算出する [高負荷]
+$stmt = $dbh->prepare('SELECT COUNT(*) AS "All",COUNT("Cleared") AS "Cleared" FROM "PlayLog" WHERE "StageID"=:stage_id AND "Registered">:lastmonth');
+$lastmonth = date('Y-m-d H:i:s', strtotime('-1 month'));
+foreach ($result as $key => $value) {
+	$stmt->bindValue(':stage_id', $value['ID'], PDO::PARAM_INT);
+	$stmt->bindValue(':lastmonth', $lastmonth, PDO::PARAM_STR);
+	$stmt->execute();
+	$fetch = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$result[$key]['LogCount'] = $fetch ? $fetch[0] : ['All' => 0, 'Cleared' => 0];
 }
 
 // 配列のvalueを生成し、データを格納
@@ -78,15 +82,16 @@ $values = array();
 foreach ($result as $key => $value) {
 	$item 	= new stdClass();
 	$item->id 			= $value['ID'];
-	$item->author_id 	= $value['UserID'];
-	$item->author_name 	= $value['Nickname'];
-	$item->title 		= $value['Title'];
-	$item->thumbnail 	= $value['Thumbnail'];
-	$item->source_id 	= $value['SourceID'];
-	$item->source_title	= $value['SourceTitle'];
-	$item->source_mode	= $value['Mode'];
-	$item->playcount 	= $value['Playcount'];
-	$item->published 	= $value['Published'];
+	$item->author_id 	= $value['Stage']['UserID'];
+	$item->author_name 	= $value['User']['Nickname'];
+	$item->title 		= $value['Stage']['Title'];
+	$item->thumbnail 	= $value['Stage']['Thumbnail'];
+	$item->source_id 	= $value['Stage']['SourceID'];
+	$item->source_title	= $value['Source']['Title'];
+	$item->source_mode	= $value['Source']['Mode'];
+	$item->playcount 	= $value['Stage']['Playcount'];
+	$item->LogCount = $value['LogCount'];
+	$item->published 	= $value['Stage']['Published'];
 	array_push($values, $item);
 }
 
