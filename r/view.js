@@ -323,11 +323,12 @@ $(function(){
 							$('<p>').addClass('comment-item-padding').text(item)
 						);
 					}, com.find('.comment-body'));
-					if (item.Tags[0]) {
-						// com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
-					}
-					$(this).append(com);
+					var rate = item.LogCount.Cleared / item.LogCount.All;
+					com.find('.comment-footer p').text(
+						(rate * 100 >> 0) + '%'
+					).addClass(rateToLabelColor(rate, item.LogCount.All == 0));
 
+					$(this).append(com);
 				}, $('.h4p_topic-comment'));
 		}
 	});
