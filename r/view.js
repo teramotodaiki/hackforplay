@@ -316,7 +316,7 @@ $(function(){
 						);
 					}, com.find('.comment-body'));
 					if (item.Tags[0]) {
-						com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
+						// com.find('.comment-footer p').text(item.Tags[0].DisplayString).css('background-color', item.Tags[0].LabelColor);
 					}
 					$(this).append(com);
 
