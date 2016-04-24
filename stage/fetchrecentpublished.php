@@ -70,10 +70,11 @@ foreach ($result as $key => $value) {
 $stmt = $dbh->prepare('SELECT COUNT(*) AS "All",COUNT("Cleared") AS "Cleared" FROM "PlayLog" WHERE "StageID"=:stage_id AND "Registered">:lastmonth');
 $lastmonth = date('Y-m-d H:i:s', strtotime('-1 month'));
 foreach ($result as $key => $value) {
-	$stmt->bindValue(':stage_id', $value['ID']);
-	$stmt->bindValue(':lastmonth', $lastmonth);
+	$stmt->bindValue(':stage_id', $value['ID'], PDO::PARAM_INT);
+	$stmt->bindValue(':lastmonth', $lastmonth, PDO::PARAM_STR);
 	$stmt->execute();
-	$result[$key]['LogCount'] = $stmt->fetch(PDO::FETCH_ASSOC);
+	$fetch = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$result[$key]['LogCount'] = $fetch ? $fetch[0] : ['All' => 0, 'Cleared' => 0];
 }
 
 // 配列のvalueを生成し、データを格納
