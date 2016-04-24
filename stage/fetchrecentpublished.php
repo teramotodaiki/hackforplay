@@ -15,7 +15,7 @@ values : [
 	source_title : 改造元ステージの名前,
 	source_mode : 改造元ステージのMode (official, replay)
 	playcount : 現在のプレイ回数,
-	clearrate : PlayLogによるクリア率
+	(LogCount : PlayLogのCOUNTを格納した連想配列)
 	published : 公開された日付
 ](,,,[])
 }
@@ -54,7 +54,15 @@ for ($i = 0; $i < $max_fetch_length; $i++){
 	}
 }
 
-
+// PlayLogからclearrateを算出する [高負荷]
+$stmt = $dbh->prepare('SELECT COUNT(*) AS "All",COUNT("Cleared") AS "Cleared" FROM "PlayLog" WHERE "StageID"=:stage_id AND "Registered">:lastmonth');
+$lastmonth = date('Y-m-d H:i:s', strtotime('-1 month'));
+foreach ($result as $key => $value) {
+	$stmt->bindValue(':stage_id', $value['ID']);
+	$stmt->bindValue(':lastmonth', $lastmonth);
+	$stmt->execute();
+	$result[$key]['LogCount'] = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 // 配列のvalueを生成し、データを格納
 $values = array();
@@ -69,6 +77,7 @@ foreach ($result as $key => $value) {
 	$item->source_title	= $value['SourceTitle'];
 	$item->source_mode	= $value['Mode'];
 	$item->playcount 	= $value['Playcount'];
+	$item->LogCount = $value['LogCount'];
 	$item->published 	= $value['Published'];
 	array_push($values, $item);
 }
