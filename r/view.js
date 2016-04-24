@@ -106,13 +106,17 @@ $(function(){
 				}else{
 					item.find('.source').text('オリジナルステージ');
 				}
-				item.find('.clearrate').text((stage.clear_rate * 100 >> 0) + '%').addClass(
-					stage.clear_rate < 0.06 ? 'label-danger' :
-					stage.clear_rate < 0.11 ? 'label-warning' :
-					stage.clear_rate < 0.26 ? 'label-primary' :
-					stage.clear_rate < 0.51 ? 'label-info' :
-					stage.clear_rate <= 1 ? 'label-success' : 'label-default'
-				);
+				(function (rate, isZero) {
+					item.find('.clearrate').text(
+						(rate * 100 >> 0) + '%'
+					).addClass(
+						isZero ? 'label-default' :
+						rate < 0.06 ? 'label-danger' :
+						rate < 0.11 ? 'label-warning' :
+						rate < 0.26 ? 'label-primary' :
+						rate < 0.51 ? 'label-info' : 'label-success'
+					);
+				})(stage.LogCount.Cleared / stage.LogCount.All, stage.LogCount.All == 0);
 
 				item.appendTo($list);
 			});
