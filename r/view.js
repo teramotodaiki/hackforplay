@@ -108,7 +108,7 @@ $(function(){
 				}
 				var rate = stage.LogCount.Cleared / stage.LogCount.All;
 				item.find('.clearrate').text(
-					(rate * 100 >> 0) + '%'
+					'クリア率 ' + (rate * 100 >> 0) + '%'
 				).addClass(rateToLabelColor(rate, stage.LogCount.All == 0));
 
 				item.appendTo($list);
@@ -325,7 +325,7 @@ $(function(){
 					}, com.find('.comment-body'));
 					var rate = item.LogCount.Cleared / item.LogCount.All;
 					com.find('.comment-footer p').text(
-						(rate * 100 >> 0) + '%'
+						'クリア率 ' + (rate * 100 >> 0) + '%'
 					).addClass(rateToLabelColor(rate, item.LogCount.All == 0));
 
 					$(this).append(com);
