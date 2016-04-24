@@ -106,17 +106,10 @@ $(function(){
 				}else{
 					item.find('.source').text('オリジナルステージ');
 				}
-				(function (rate, isZero) {
-					item.find('.clearrate').text(
-						(rate * 100 >> 0) + '%'
-					).addClass(
-						isZero ? 'label-default' :
-						rate < 0.06 ? 'label-danger' :
-						rate < 0.11 ? 'label-warning' :
-						rate < 0.26 ? 'label-primary' :
-						rate < 0.51 ? 'label-info' : 'label-success'
-					);
-				})(stage.LogCount.Cleared / stage.LogCount.All, stage.LogCount.All == 0);
+				var rate = stage.LogCount.Cleared / stage.LogCount.All;
+				item.find('.clearrate').text(
+					(rate * 100 >> 0) + '%'
+				).addClass(rateToLabelColor(rate, stage.LogCount.All == 0));
 
 				item.appendTo($list);
 			});
@@ -444,5 +437,13 @@ $(function(){
 			console.error(e);
 		}
 	})
+
+	function rateToLabelColor (rate, isZero) {
+		return isZero ? 'label-default' :
+		rate < 0.06 ? 'label-danger' :
+		rate < 0.11 ? 'label-warning' :
+		rate < 0.26 ? 'label-primary' :
+		rate < 0.51 ? 'label-info' : 'label-success';
+	}
 
 });
