@@ -121,7 +121,8 @@ foreach ($result as $key => $value) {
 	$stmt->bindValue(':stage_id', $value['StageID']);
 	$stmt->bindValue(':lastmonth', $lastmonth);
 	$stmt->execute();
-	$result[$key]['LogCount'] = $stmt->fetch(PDO::FETCH_ASSOC);
+	$fetch = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$result[$key]['LogCount'] = $fetch ? $fetch[0] : ['All' => 0, 'Cleared' => 0];
 }
 
 
