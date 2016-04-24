@@ -97,7 +97,7 @@ $(function(){
 				}else{
 					item.find('.author').text('いにしえのプログラマー');
 				}
-				item.find('.playcount b').prepend(stage.playcount);
+				item.find('.playcount b').prepend(stage.LogCount.All || stage.playcount);
 				if (stage.source_mode === 'replay') {
 					item.find('.source a').attr({
 						href: '/s?id=' + stage.source_id,
