@@ -23,7 +23,7 @@
 		counters: ['__cntMap'],
 		code: function () {
 			// map__cntMap
-			Hack.maps['map__cntMap'] = new RPGMap(32, 32);
+			Hack.maps['map__cntMap'] = new RPGMap(32, 32, 15, 10);
 			Hack.maps['map__cntMap'].imagePath = 'enchantjs/x2/dotmat.gif';
 			Hack.maps['map__cntMap'].type = 'grassland';
 		}
@@ -38,7 +38,7 @@
 		counters: ['__cntMap'],
 		code: function () {
 			// map__cntMap
-			Hack.maps['map__cntMap'] = new RPGMap(32, 32);
+			Hack.maps['map__cntMap'] = new RPGMap(32, 32, 15, 10);
 			Hack.maps['map__cntMap'].imagePath = 'enchantjs/x2/dotmat.gif';
 			Hack.maps['map__cntMap'].type = 'claySoil';
 		}
@@ -53,7 +53,7 @@
 		counters: ['__cntMap'],
 		code: function () {
 			// map__cntMap
-			Hack.maps['map__cntMap'] = new RPGMap(32, 32);
+			Hack.maps['map__cntMap'] = new RPGMap(32, 32, 15, 10);
 			Hack.maps['map__cntMap'].imagePath = 'enchantjs/x2/dotmat.gif';
 			Hack.maps['map__cntMap'].type = 'flatGray';
 		}
