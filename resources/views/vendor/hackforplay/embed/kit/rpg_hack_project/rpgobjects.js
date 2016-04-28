@@ -293,7 +293,7 @@
 					// next step
 					if (Math.abs(d) > 1) this.walk(Math.sign(d) * (Math.abs(d) - 1), true);
 					else this.behavior = BehaviorTypes.Idle;
-				}, frame);
+				}, frame - 1);
 			} else {
 				// 直前のフレームで collided していたオブジェクトを除外
 				var e = new Event('collided');
