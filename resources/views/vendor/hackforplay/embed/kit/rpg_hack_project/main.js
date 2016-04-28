@@ -201,12 +201,14 @@
 	* レイヤー化された切り替え可能なマップ
 	*/
 	var __RPGMap = enchant.Class(EventTarget, {
-		initialize: function(tileWidth, tileHeight) {
+		initialize: function(tileWidth, tileHeight, mapWidth, mapHeight) {
 			EventTarget.call(this);
 			if (tileWidth === undefined) {tileWidth = 32;}
 			if (tileHeight === undefined) {tileHeight = 32;}
 			this.bmap = new Map(tileWidth, tileHeight); // 他のオブジェクトより奥に表示されるマップ
 			this.fmap = new Map(tileWidth, tileHeight); // 他のオブジェクトより手前に表示されるマップ
+			this._mapWidth = mapWidth !== undefined ? mapWidth : 15;
+			this._mapHeight = mapHeight !== undefined ? mapHeight : 10;
 			this.scene = new Group();					// マップ上に存在するオブジェクトをまとめるグループ
 			this.scene.ref = this;
 			this.isLoaded = false;
@@ -262,7 +264,6 @@
 			// set default of bmap
 			get: function () {
 				if (!this._type) {
-					if (this.bmap === null) return ''; // bmapが初期化されていないので不定
 					// 初期値は（0,0）のタイル
 					Object.keys(MapObject.dictionary).filter(function (key) {
 						return MapObject.dictionary[key] === this.bmap._data[0][0][0];
@@ -275,13 +276,12 @@
 			set: function (value) {
 				if (value !== this._type && MapObject.dictionary.hasOwnProperty(value)) {
 					this._type = value;
-					if (this.bmap === null) {
-						// typeによってbmapを初期化
-						var frame = MapObject.dictionary[value];
-						this.bmap.loadData(new Array(10).fill(new Array(15).fill(frame)));
-						// ついでにcmapも初期化
-						this.cmap = this.cmap || new Array(10).fill(new Array(15).fill(0));
-					}
+					// typeによってbmapを初期化
+					var frame = MapObject.dictionary[value];
+					this.bmap.loadData(new Array(this._mapHeight).fill(new Array(this._mapWidth).fill(frame)));
+
+					// ついでにcmapも初期化
+					this.cmap = this.cmap || new Array(this._mapHeight).fill(new Array(this._mapWidth).fill(0));
 				}
 			}
 		},
@@ -447,5 +447,59 @@
 			return _min + Math.random() * _sub;
 		}
 	};
+
+	/**
+	 * Hack.camera
+	 * 2D, 3Dで動作するカメラの概念
+	 * Mapの概念が絡むためひとまずRPG独自仕様として実装
+	 */
+
+	// カメラ
+	Hack.camera = {
+		// 見る対象
+		target: null
+	};
+
+	// 値を範囲内に収める
+	Math.clamp = function(value, min, max) {
+		return Math.max(min, Math.min(max, value));
+	};
+
+	game.on('enterframe', function() {
+		// ターゲットがいないならプレイヤー
+		var target = Hack.camera.target || Hack.player;
+		if (!target) return;
+		var map = Hack.map;
+
+		// プレイヤーの位置
+		var plX = target.x - target.offset.x + map.tileWidth / 2;
+		var plY = target.y - target.offset.y + map.tileHeight / 2;
+
+		// 画面の中心に
+		var mX = game.width / 2 - plX;
+		var mY = game.height / 2 - plY;
+
+		// 画面外を描画しないように調整
+		mX = Math.clamp(mX, game.width - map.width, 0);
+		mY = Math.clamp(mY, game.height - map.height, 0);
+
+		// マップが画面より小さい場合
+		if (map.width < game.width) {
+			mX = (game.width - map.width) / 2;
+		}
+		if (map.height < game.height) {
+			mY = (game.height - map.height) / 2;
+		}
+
+		// マップの位置をプレイヤーに合わせる
+		var move = function(map, x, y) {
+			map.fmap.x = map.bmap.x = map.scene.x = x;
+			map.fmap.y = map.bmap.y = map.scene.y = y;
+		};
+
+		// マップを移動
+		move(map, mX, mY);
+	});
+
 
 });
