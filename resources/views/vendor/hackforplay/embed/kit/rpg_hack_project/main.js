@@ -457,7 +457,8 @@
 	// カメラ
 	Hack.camera = {
 		// 見る対象
-		target: null
+		target: null,
+		enabled: true
 	};
 
 	// 値を範囲内に収める
@@ -468,6 +469,7 @@
 	game.on('enterframe', function() {
 
 		var map = Hack.map;
+		if (!Hack.camera.enabled) return;
 
 		// ターゲットがいないならプレイヤー
 		var inMap = function (item) { return item && item.map === map && item.parentNode; };
