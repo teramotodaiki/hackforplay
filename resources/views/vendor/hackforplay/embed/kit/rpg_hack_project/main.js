@@ -201,12 +201,14 @@
 	* レイヤー化された切り替え可能なマップ
 	*/
 	var __RPGMap = enchant.Class(EventTarget, {
-		initialize: function(tileWidth, tileHeight) {
+		initialize: function(tileWidth, tileHeight, mapWidth, mapHeight) {
 			EventTarget.call(this);
 			if (tileWidth === undefined) {tileWidth = 32;}
 			if (tileHeight === undefined) {tileHeight = 32;}
 			this.bmap = new Map(tileWidth, tileHeight); // 他のオブジェクトより奥に表示されるマップ
 			this.fmap = new Map(tileWidth, tileHeight); // 他のオブジェクトより手前に表示されるマップ
+			this._mapWidth = mapWidth !== undefined ? mapWidth : 15;
+			this._mapHeight = mapHeight !== undefined ? mapHeight : 10;
 			this.scene = new Group();					// マップ上に存在するオブジェクトをまとめるグループ
 			this.scene.ref = this;
 			this.isLoaded = false;
@@ -262,7 +264,6 @@
 			// set default of bmap
 			get: function () {
 				if (!this._type) {
-					if (this.bmap === null) return ''; // bmapが初期化されていないので不定
 					// 初期値は（0,0）のタイル
 					Object.keys(MapObject.dictionary).filter(function (key) {
 						return MapObject.dictionary[key] === this.bmap._data[0][0][0];
@@ -275,13 +276,11 @@
 			set: function (value) {
 				if (value !== this._type && MapObject.dictionary.hasOwnProperty(value)) {
 					this._type = value;
-					if (this.bmap === null) {
-						// typeによってbmapを初期化
-						var frame = MapObject.dictionary[value];
-						this.bmap.loadData(new Array(10).fill(new Array(15).fill(frame)));
-						// ついでにcmapも初期化
-						this.cmap = this.cmap || new Array(10).fill(new Array(15).fill(0));
-					}
+					// typeによってbmapを初期化
+					var frame = MapObject.dictionary[value];
+					this.bmap.loadData(new Array(this.mapHeight).fill(new Array(this.mapWidth).fill(frame)));
+					// ついでにcmapも初期化
+					this.cmap = this.cmap || new Array(this.mapHeight).fill(new Array(this.mapWidth).fill(0));
 				}
 			}
 		},
