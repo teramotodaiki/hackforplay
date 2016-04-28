@@ -111,24 +111,3 @@ window.addEventListener('message', function (event) {
 	}
 });
 </script>
-<meta name="csrf-token" content="<?php echo csrf_token(); ?>" />
-<script type="text/javascript">
-// Ajax
-$.ajaxSetup({
-	headers: {
-		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	}
-});
-
-// HTML Form
-$(function () {
-	$('form').append(
-		$('<input>').attr({
-			type: 'hidden',
-			name: '_token'
-		}).val(
-			$('meta[name="csrf-token"]').attr('content')
-		)
-	);
-});
-</script>
