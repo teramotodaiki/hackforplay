@@ -457,7 +457,8 @@
 	// カメラ
 	Hack.camera = {
 		// 見る対象
-		target: null
+		target: null,
+		enabled: true
 	};
 
 	// 値を範囲内に収める
@@ -466,10 +467,15 @@
 	};
 
 	game.on('enterframe', function() {
-		// ターゲットがいないならプレイヤー
-		var target = Hack.camera.target || Hack.player;
-		if (!target) return;
+
 		var map = Hack.map;
+		if (!Hack.camera.enabled) return;
+
+		// ターゲットがいないならプレイヤー
+		var inMap = function (item) { return item && item.map === map && item.parentNode; };
+		var target = inMap(Hack.camera.target) 	? Hack.camera.target :
+									inMap(Hack.player) 				? Hack.player : undefined;
+		if (!target) return;
 
 		// プレイヤーの位置
 		var plX = target.x - target.offset.x + map.tileWidth / 2;
