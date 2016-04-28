@@ -265,9 +265,10 @@
 			if (!this.isKinematic || !continuous && this.behavior !== BehaviorTypes.Idle || !Hack.isPlaying) return;
 			this.behavior = BehaviorTypes.Walk;
 			var f = this.forward, d = typeof distance === 'number' ? distance >> 0 : 1, s = Math.sign(d);
-			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s;
+			var _x = this.mapX + f.x * s, _y = this.mapY + f.y * s, tw = Hack.map.tileWidth, th = Hack.map.tileHeight;
 			// Map Collision
-			var mapHit = Hack.map.hitTest(_x * 32, _y * 32) || 0 > _x || _x > 14 || 0 > _y || _y > 9;
+			var mapR = Hack.map.width / tw - 1, mapB = Hack.map.height / th - 1;
+			var mapHit = Hack.map.hitTest(_x * tw, _y * th) || 0 > _x || _x > mapR || 0 > _y || _y > mapB;
 			// RPGObject(s) Collision
 			var hits = RPGObject.collection.filter(function (item) {
 				return item.isKinematic && item.collisionFlag && item.mapX === _x && item.mapY === _y;
@@ -278,7 +279,7 @@
 					this.frame = this.getFrame();
 				} else this.behavior = BehaviorTypes.Walk;
 				this.dispatchEvent(new Event('walkstart'));
-				var move = { x: Math.round(f.x * 32 * s), y: Math.round(f.y * 32 * s) };
+				var move = { x: Math.round(f.x * tw * s), y: Math.round(f.y * th * s) };
 				var target = { x: this.x + move.x, y: this.y + move.y };
 				var frame = this.getFrame().length;
 				var stopInterval = this.setInterval(function () {
