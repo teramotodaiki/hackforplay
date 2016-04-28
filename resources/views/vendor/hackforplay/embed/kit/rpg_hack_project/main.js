@@ -302,6 +302,14 @@
 		height: {
 			// bmap height
 			get: function () { return this.bmap.height; },
+		},
+		tileWidth: {
+			// bmap tile width
+			get: function () { return this.bmap.tileWidth; },
+		},
+		tileHeight: {
+			// bmap tile height
+			get: function () { return this.bmap.tileHeight; },
 		}
 	});
 	Object.defineProperty(window, 'RPGMap', {
