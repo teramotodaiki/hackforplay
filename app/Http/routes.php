@@ -23,4 +23,4 @@ Route::any('{file}.php', [ 'uses' => 'Old\OldController@rawphproot' ])
 
 Route::any('{api}.{ext}', [ 'uses' => 'Old\OldController@statics' ])
 ->where('api', '[a-zA-Z0-9\/\-\_\.]+')
-->where('ext', 'txt|htm|html|css|js|json|xml|png|jpeg|jpg|gif|ico|mp3');
+->where('ext', 'txt|htm|html|css|js|json|xml|png|jpeg|jpg|gif|ico|mp3|wav');
