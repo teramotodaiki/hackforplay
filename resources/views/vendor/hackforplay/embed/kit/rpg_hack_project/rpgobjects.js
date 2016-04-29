@@ -92,7 +92,7 @@
 			});
 			Object.defineProperty(this, 'map', {
 				get: function () {
-					return this.parentNode.ref;
+					return this.parentNode ? this.parentNode.ref : null;
 				}
 			});
 			var collisionFlag = null; // this.collisionFlag (Default:true)
