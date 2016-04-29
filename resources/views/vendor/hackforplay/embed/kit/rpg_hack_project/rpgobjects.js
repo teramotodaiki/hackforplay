@@ -338,7 +338,7 @@
 		behavior: {
 			get: function () { return this._behavior; },
 			set: function (value) {
-				if (typeof value === 'string' && value !== this._behavior) {
+				if (typeof value === 'string') {
 					this.isBehaviorChanged = true;
 					this._behavior = value;
 				}
