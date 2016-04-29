@@ -105,6 +105,7 @@ class OldController extends Controller
         'ico' => 'image/vnd.microsoft.icon',
         // audio/video
         'mp3' => 'audio/mpeg',
+        'wav' => 'audio/wav',
       ][$ext];
       return response($content, 200)
               ->header('Content-Type', $type);
