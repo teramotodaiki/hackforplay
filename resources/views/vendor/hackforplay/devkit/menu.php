@@ -1,7 +1,7 @@
 <?php
 
 // Fetch kit stages
-$stmt	= $dbh->prepare('SELECT "ID","Title","Thumbnail" FROM "Stage" WHERE "Path" IS NULL AND "SourceID" IS NULL');
+$stmt	= $dbh->prepare('SELECT "ID","Title","Thumbnail" FROM "Stage" WHERE "SourceID" IS NULL');
 $stmt->execute();
 
 ?>
