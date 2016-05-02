@@ -11,6 +11,12 @@
 |
 */
 
+
+Route::get('hello', function ()
+{
+  return view('hello');
+});
+
 Route::any('{api}', [ 'uses' => 'Old\OldController@index' ])
 ->where('api', '/?|[a-z\/]+');
 
