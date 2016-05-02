@@ -1,6 +1,5 @@
 <?php
 $id 	= $stage['ID'];
-$path	= $stage['Path'];
 $state	= $stage['State'];
 $title 	= $stage['Title'];
 $explain= $stage['Explain'];
@@ -136,7 +135,6 @@ $mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
 			sessionStorage.setItem('stage_param_'+key, value);
 		};
 		s('id', "<?php echo $id; ?>");
-		s('path', "<?php echo $path; ?>" || '0');
 		s('next', "<?php echo $next; ?>" || '0');
 		s('mode', "<?php echo $mode; ?>");
 		s('game_mode', "<?php echo $mode; ?>");
