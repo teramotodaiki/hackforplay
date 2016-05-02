@@ -11,21 +11,18 @@ var elixir = require('laravel-elixir');
  |
  */
 
-elixir(function(mix) {
-  mix.sass('app.scss')
-    .copy('node_modules/bootstrap-sass/assets/fonts/bootstrap/**', 'public/fonts/bootstrap');
-
-  mix.browserify('app.js')
+elixir((mix) => {
+  mix
+    // Sass CSS
+    .sass('app.scss')
+    .copy('node_modules/bootstrap-sass/assets/fonts/bootstrap/**', 'public/fonts/bootstrap')
+    // browserify JS
+    .browserify('app.js')
     .scripts([
       'node_modules/jquery/dist/jquery.min.js',
       'node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js',
       'public/js/app.js'
-    ], 'public/js/bundle.js', './');
-
-  mix.version(['css/app.css', 'js/bundle.js']);
-
-  mix.browserSync({
-    port: 8000
-  });
-
+    ], 'public/js/bundle.js', './')
+    // Versioning
+    .version(['css/app.css', 'js/bundle.js']);
 });
