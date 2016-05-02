@@ -17,4 +17,8 @@ elixir(function(mix) {
   mix.browserify('app.js')
     .version('js/app.js');
 
+  mix.browserSync({
+    port: 8000
+  });
+
 });
