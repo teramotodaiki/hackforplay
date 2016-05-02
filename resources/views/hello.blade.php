@@ -2,6 +2,6 @@
 <html>
   <body>
     <div id="app"></div>
-    <script src="/js/app.js" charset="utf-8"></script>
+    <script src="{{ elixir('js/app.js') }}"></script>
   </body>
 </html>
