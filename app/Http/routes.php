@@ -12,10 +12,8 @@
 */
 
 
-Route::get('hello/{name}', function ()
-{
-  return view('hello');
-});
+// React (frontend) App
+Route::get('tutorials', 'DefaultAppController@index');
 
 Route::any('{api}', [ 'uses' => 'Old\OldController@index' ])
 ->where('api', '/?|[a-z\/]+');
