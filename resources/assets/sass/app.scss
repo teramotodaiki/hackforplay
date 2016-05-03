@@ -1,4 +1,4 @@
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/bootstrap/scss/bootstrap";
 
 .btn-hello {
   @include button-variant(#f00, #000, #fff);

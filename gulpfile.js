@@ -1,4 +1,4 @@
-var elixir = require('laravel-elixir');
+const elixir = require('laravel-elixir');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,18 +11,14 @@ var elixir = require('laravel-elixir');
  |
  */
 
+const bootstrap = 'node_modules/bootstrap/dist/';
+
 elixir((mix) => {
   mix
     // Sass CSS
     .sass('app.scss')
-    .copy('node_modules/bootstrap-sass/assets/fonts/bootstrap/**', 'public/fonts/bootstrap')
     // browserify JS
     .browserify('app.js')
-    .scripts([
-      'node_modules/jquery/dist/jquery.min.js',
-      'node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js',
-      'public/js/app.js'
-    ], 'public/js/bundle.js', './')
     // Versioning
-    .version(['css/app.css', 'js/bundle.js']);
+    .version(['css/app.css', 'js/app.js']);
 });
