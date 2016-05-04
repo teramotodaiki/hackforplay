@@ -1,4 +1,5 @@
 import React from 'react'
+import Merger from "./merger";
 
 const statics = {
   title: 'The Begining',
@@ -6,7 +7,8 @@ const statics = {
   hintTitle: 'How to solve',
   style: {
     backgroundColor: 'rgb(190,233,213)'
-  }
+  },
+  colorName: 'gray-dark'
 };
 
 // App
@@ -15,17 +17,17 @@ const Tutorials = React.createClass({
     return {
       levels: [
         { id: 1, title: 'Stage 1: Begining', youtube: 'od61KliPeJI', value: 'Next Level',
-          style: { backgroundColor: 'rgb(190,233,213)' } },
+          style: { backgroundColor: 'rgb(190,233,213)' }, colorName: 'gray-dark' },
         { id: 2, title: 'Stage 2: Secondly', youtube: 'od61KliPeJI', value: 'Next Level',
-          style: { backgroundColor: 'rgb(255,251,223)' } },
+          style: { backgroundColor: 'rgb(255,251,223)' }, colorName: 'gray-dark' },
         { id: 3, title: 'Stage 3: Thirdly', youtube: 'od61KliPeJI', value: 'Next Level',
-          style: { backgroundColor: 'rgb(253,180,151)' } },
+          style: { backgroundColor: 'rgb(253,180,151)' }, colorName: 'gray-dark' },
         { id: 4, title: 'Stage 4: Forthly', youtube: 'od61KliPeJI', value: 'Next Level',
-          style: { backgroundColor: 'rgb(255,138,121)' } },
+          style: { backgroundColor: 'rgb(255,138,121)' }, colorName: 'gray-lightest' },
         { id: 5, title: 'Stage 5: Fifthly', youtube: 'od61KliPeJI', value: 'Next Level',
-          style: { backgroundColor: 'rgb(144,71,88)' } },
+          style: { backgroundColor: 'rgb(144,71,88)' }, colorName: 'gray-lightest' },
         { id: 6, title: 'Stage 6: Sixly', youtube: 'od61KliPeJI', value: 'Last Step',
-          style: { backgroundColor: 'rgb(67,26,36)' } },
+          style: { backgroundColor: 'rgb(67,26,36)' }, colorName: 'gray-lightest' },
       ],
       choises: [
         { message: 'If you want to play more stages, click here', value: 'PLAYGROUND' },
@@ -64,16 +66,17 @@ const Header = React.createClass({
 });
 
 const Level = React.createClass({
+  mixins: [Merger],
   render() {
     const info = this.props.info;
     return (
-      <div className="container-fluid" style={info.style}>
+      <div className={'container-fluid text-' + info.colorName} style={info.style}>
         <div className="row">
-          <EmbedStage id={info.id} title={info.title} />
-          <EmbedYoutube youtube={info.youtube} />
+          <EmbedStage info={info} />
+          <EmbedYoutube info={info} />
         </div>
         <div className="row">
-          <NextLevel value={info.value} />
+          <NextLevel info={info} />
         </div>
       </div>
     );
@@ -83,7 +86,7 @@ const Level = React.createClass({
 const Dialog = React.createClass({
   render() {
     const choises = this.props.choises.map((item) => {
-      return <Choise message={item.message} value={item.value} key={item.value}></Choise>;
+      return <Choise info={item} key={item.value}></Choise>;
     });
     return (
       <div className='container'>
@@ -98,10 +101,11 @@ const Dialog = React.createClass({
 // UI Parts
 const EmbedStage = React.createClass({
   render() {
+    const info = this.props.info;
     return (
       <div className="col-xs-7">
-        <h2>{this.props.title}</h2>
-        <iframe id={this.props.id} ></iframe>
+        <h2>{info.title}</h2>
+        <iframe ></iframe>
       </div>
     );
   }
@@ -109,31 +113,36 @@ const EmbedStage = React.createClass({
 
 const EmbedYoutube = React.createClass({
   render() {
+    const info = this.props.info;
     return (
       <div className="col-xs-5">
         <h3>{statics.hintTitle}</h3>
-        <iframe youtube={this.props.youtube}></iframe>
+        <iframe ></iframe>
       </div>
     );
   }
 });
 
 const NextLevel = React.createClass({
+  mixins: [Merger],
   render() {
+    const info = this.props.info;
     return (
       <div className="col-xs-12">
-        <button>{this.props.value}</button>
+        <button className={this.p({'btn': info.colorName + '-outline'})}>{info.value}</button>
       </div>
     );
   }
 });
 
 const Choise = React.createClass({
+  mixins: [Merger],
   render() {
+    const info = this.props.info;
     return (
       <div className="col-xs-12">
-        <p>{this.props.message}</p>
-        <button>{this.props.value}</button>
+        <p>{info.message}</p>
+        <button className={this.p({ btn: statics.colorName + '-outline' })}>{info.value}</button>
       </div>
     );
   }
