@@ -1,5 +1,17 @@
 @import "node_modules/bootstrap/scss/bootstrap";
 
-.btn-hello {
-  @include button-variant(#f00, #000, #fff);
+// Additional buttons
+
+.btn-gray-dark-outline {
+  @include button-outline-variant($gray-dark);
 }
+.btn-gray-lightest-outline {
+  @include button-outline-variant($gray-lightest);
+  @include hover {
+    color: $gray-dark;
+  }
+}
+
+// Additional utilis
+@include text-emphasis-variant('.text-gray-dark', $gray-dark);
+@include text-emphasis-variant('.text-gray-lightest', $gray-lightest);
