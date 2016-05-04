@@ -11,7 +11,9 @@ const elixir = require('laravel-elixir');
  |
  */
 
-const bootstrap = 'node_modules/bootstrap/dist/';
+const bootstrap = 'node_modules/bootstrap/dist/js/bootstrap.js';
+const jquery = 'node_modules/jquery/dist/jquery.js';
+const tether = 'node_modules/tether/dist/js/tether.js';
 
 elixir((mix) => {
   mix
@@ -20,5 +22,12 @@ elixir((mix) => {
     // browserify JS
     .browserify('app.js')
     // Versioning
-    .version(['css/app.css', 'js/app.js']);
+    .version(['css/app.css', 'js/app.js'])
+    // Bootstrap4
+    // .scripts([
+    //   tether,
+    //   jquery,
+    //   bootstrap
+    // ], 'public/js/bootstrap4.0.0-alpha.2.js', './')
+;
 });

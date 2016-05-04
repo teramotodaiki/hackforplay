@@ -5,9 +5,6 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 import Hello from "./hello";
 import Tutorials from "./tutorials";
 
-import Tether from 'tether';
-import jQuery from "jquery";
-import "module";
 
 const App = React.createClass({
 
