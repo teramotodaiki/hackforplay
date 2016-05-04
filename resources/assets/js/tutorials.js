@@ -71,7 +71,7 @@ const Level = React.createClass({
     const info = this.props.info;
     return (
       <div className={'container-fluid text-' + info.colorName} style={info.style}>
-        <div className="row">
+        <div className={this.p({ row: 'xs-bottom' })}>
           <EmbedStage info={info} />
           <EmbedYoutube info={info} />
         </div>
@@ -100,24 +100,30 @@ const Dialog = React.createClass({
 
 // UI Parts
 const EmbedStage = React.createClass({
+  mixins: [Merger],
   render() {
     const info = this.props.info;
     return (
       <div className="col-xs-7">
         <h2>{info.title}</h2>
-        <iframe ></iframe>
+        <div className={this.p({ 'embed-responsive': '4by3' })} style={{backgroundColor: 'black'}}>
+          <iframe ></iframe>
+        </div>
       </div>
     );
   }
 });
 
 const EmbedYoutube = React.createClass({
+  mixins: [Merger],
   render() {
     const info = this.props.info;
     return (
       <div className="col-xs-5">
         <h3>{statics.hintTitle}</h3>
-        <iframe ></iframe>
+        <div className={this.p({ 'embed-responsive': '16by9' })} style={{backgroundColor: 'black'}}>
+          <iframe ></iframe>
+        </div>
       </div>
     );
   }

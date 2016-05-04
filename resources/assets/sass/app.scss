@@ -17,3 +17,8 @@ $enable-flex: true;
 // Additional utilis
 @include text-emphasis-variant('.text-gray-dark', $gray-dark);
 @include text-emphasis-variant('.text-gray-lightest', $gray-lightest);
+
+// Responsive embed
+.embed-responsive-3by2 {
+  padding-bottom: percentage(2 / 3);
+}
