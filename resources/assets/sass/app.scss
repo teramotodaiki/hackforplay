@@ -1,7 +1,9 @@
+// Settings
+$enable-flex: true;
+
 @import "node_modules/bootstrap/scss/bootstrap";
 
 // Additional buttons
-
 .btn-gray-dark-outline {
   @include button-outline-variant($gray-dark);
 }
