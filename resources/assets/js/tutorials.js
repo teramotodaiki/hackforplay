@@ -129,7 +129,7 @@ const NextLevel = React.createClass({
     const info = this.props.info;
     return (
       <div className="col-xs-12">
-        <button className={this.p({'btn': info.colorName + '-outline'})}>{info.value}</button>
+        <button className={this.p({ btn: [info.colorName + '-outline', 'lg'] })}>{info.value}</button>
       </div>
     );
   }
@@ -142,7 +142,7 @@ const Choise = React.createClass({
     return (
       <div className="col-xs-12">
         <p>{info.message}</p>
-        <button className={this.p({ btn: statics.colorName + '-outline' })}>{info.value}</button>
+        <button className={this.p({ btn: [statics.colorName + '-outline', 'lg'] })}>{info.value}</button>
       </div>
     );
   }
