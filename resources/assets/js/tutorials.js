@@ -63,9 +63,10 @@ const Tutorials = React.createClass({
 
 // Containers
 const Header = React.createClass({
+  mixins: [Merger],
   render() {
     return (
-      <div className={'text-' + statics.colors.main}>
+      <div className={this.p({ text: 'xs-center ' + statics.colors.main})}>
         <h1>{statics.title}</h1>
         <h2>{statics.description}</h2>
       </div>
@@ -87,7 +88,7 @@ const Level = React.createClass({
               <EmbedYoutube info={info} />
             </div>
           </div>
-          <div>
+          <div className="text-xs-center">
             <NextLevel info={info} />
           </div>
         </div>
@@ -162,7 +163,7 @@ const Choise = React.createClass({
   render() {
     const info = this.props.info;
     return (
-      <div className={'text-' + statics.colors.main}>
+      <div className={this.p({ text: 'xs-center ' + statics.colors.main })}>
         <p>{info.message}</p>
         <button className={this.p({ btn: statics.colors.main + '-outline lg' })}>{info.value}</button>
       </div>
