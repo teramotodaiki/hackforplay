@@ -39,3 +39,14 @@ $flex-axis-diretion: (
     justify-content: space-around;
   }
 }
+
+// Font Awesome
+
+// Extra rotate
+.#{$fa-css-prefix}-rotate-45  { @include fa-icon-rotate(45deg, 1);  }
+.#{$fa-css-prefix}-rotate-135 { @include fa-icon-rotate(135deg, 1); }
+.#{$fa-css-prefix}-rotate-225 { @include fa-icon-rotate(225deg, 2); }
+.#{$fa-css-prefix}-rotate-315 { @include fa-icon-rotate(315deg, 3); }
+
+// Extra large
+.#{$fa-css-prefix}-10x { font-size: 10em; }

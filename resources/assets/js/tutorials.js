@@ -5,9 +5,7 @@ import Merger from "./merger";
 import { Section, Scroller } from "./section";
 
 const statics = {
-  title: 'The Begining',
-  description: 'Here is a first adventure of HackforPlay! Are you ready?',
-  buttonText: 'Start',
+  title: 'The Beginning',
   hintTitle: 'How to solve',
   style: {
     backgroundColor: 'rgb(190,233,213)'
@@ -33,28 +31,18 @@ const Tutorials = React.createClass({
   getInitialState() {
     return {
       levels: [
-        { id: 1, title: 'Stage 1: Begining', youtube: 'od61KliPeJI',
-          colorName: statics.colors.main,
-          link: { value: 'Next Level', to: 'Level-2' } },
-        { id: 2, title: 'Stage 2: Secondly', youtube: 'od61KliPeJI',
-          colorName: statics.colors.main,
-          link: { value: 'Next Level', to: 'Level-3' } },
-        { id: 3, title: 'Stage 3: Thirdly', youtube: 'od61KliPeJI',
-          colorName: statics.colors.main,
-          link: { value: 'Next Level', to: 'Level-4' } },
-        { id: 4, title: 'Stage 4: Forthly', youtube: 'od61KliPeJI',
-          colorName: statics.colors.sub,
-          link: { value: 'Next Level', to: 'Level-5' } },
-        { id: 5, title: 'Stage 5: Fifthly', youtube: 'od61KliPeJI',
-          colorName: statics.colors.sub,
-          link: { value: 'Next Level', to: 'Level-6' } },
-        { id: 6, title: 'Stage 6: Sixly', youtube: 'od61KliPeJI',
-          colorName: statics.colors.sub,
-          link: { value: 'Last Step', to: 'Dialog' } }
-      ],
-      choises: [
-        { message: 'If you want to play more stages, click here', value: 'PLAYGROUND' },
-        { message: 'If you want to create your stage, click here', value: 'SIGN UP' },
+        { id: 1, title: 'Begining', youtube: 'od61KliPeJI',
+          colorName: statics.colors.main, linkTo: 'Level-2' },
+        { id: 2, title: 'Secondly', youtube: 'od61KliPeJI',
+          colorName: statics.colors.main, linkTo: 'Level-3' },
+        { id: 3, title: 'Thirdly', youtube: 'od61KliPeJI',
+          colorName: statics.colors.main, linkTo: 'Level-4' },
+        { id: 4, title: 'Forthly', youtube: 'od61KliPeJI',
+          colorName: statics.colors.sub, linkTo: 'Level-5' },
+        { id: 5, title: 'Fifthly', youtube: 'od61KliPeJI',
+          colorName: statics.colors.sub, linkTo: 'Level-6' },
+        { id: 6, title: 'Sixly', youtube: 'od61KliPeJI',
+          colorName: statics.colors.sub, linkTo: 'Dialog' }
       ]
     }
   },
@@ -66,7 +54,7 @@ const Tutorials = React.createClass({
       <div style={statics.style}>
         <Header />
         {levels}
-        <Dialog choises={this.state.choises} />
+        <Dialog />
       </div>
     );
   }
@@ -80,12 +68,11 @@ const Header = React.createClass({
       <Section name="Header" height="100vh">
         <div className={this.p({ text: 'xs-center ' + statics.colors.main})}>
           <h1>{statics.title}</h1>
-          <h2>{statics.description}</h2>
         </div>
-        <div className="text-xs-center">
+        <div className={this.p({ text: 'xs-center ' + statics.colors.main})}>
           <Scroller to="Level-1">
-            <span className={this.p({ btn: statics.colors.main + '-outline lg' })}>
-              {statics.buttonText}
+            <span className="btn btn-link">
+              <span className="fa fa-rocket fa-10x fa-rotate-315" />
             </span>
           </Scroller>
         </div>
@@ -108,9 +95,9 @@ const Level = React.createClass({
           </div>
         </div>
         <div className="text-xs-center">
-          <Scroller to={info.link.to}>
+          <Scroller to={info.linkTo}>
             <span className={this.p({ btn: info.colorName + '-outline lg' })}>
-              {info.link.value}
+              <span className="fa fa-arrow-down fa-2x"></span>
             </span>
           </Scroller>
         </div>
@@ -122,12 +109,31 @@ const Level = React.createClass({
 const Dialog = React.createClass({
   mixins: [Merger],
   render() {
-    const choises = this.props.choises.map((item) => {
-      return <Choise info={item} key={item.value}></Choise>;
-    });
     return (
       <Section name="Dialog" height="100vh">
-        {choises}
+        <div className={this.p({ text: 'xs-center ' + statics.colors.main })}>
+          ☆*:.｡.<span className="fa fa-trophy fa-10x" />.｡.:*☆
+        </div>
+        <div className={this.p({ text: 'xs-center ' + statics.colors.main })}>
+          <p>
+            Play more <span className="fa fa-gamepad fa-lg" />
+          </p>
+          <a href="r" className={this.p({ btn: statics.colors.main + '-outline lg' })}>
+            <span className="fa fa-users fa-4x" />
+          </a>
+        </div>
+        <div className={this.p({ text: 'xs-center ' + statics.colors.main })}>
+          <p>
+            or,<br />Make your
+            <span className="fa fa-stack fa-lg">
+              <i className="fa fa-sign-language fa-stack-2x" />
+              <i className="fa fa-gamepad fa-stack-1x fa-inverse" />
+            </span>
+          </p>
+          <a href="getaccount" className={this.p({ btn: statics.colors.main + '-outline lg' })}>
+            <span className="fa fa-user-plus fa-2x" />
+          </a>
+        </div>
       </Section>
     );
   }
@@ -140,7 +146,9 @@ const EmbedStage = React.createClass({
     const info = this.props.info;
     return (
       <div className="col-xs-7">
-        <h2 className={'text-' + info.colorName}>{info.title}</h2>
+        <h2 className={'text-' + info.colorName}>
+          <span className="fa fa-gamepad" />-{info.id} {info.title}
+        </h2>
         <div className={this.p({ 'embed-responsive': '4by3' })} style={{backgroundColor: 'black'}}>
           <iframe ></iframe>
         </div>
@@ -155,7 +163,16 @@ const EmbedYoutube = React.createClass({
     const info = this.props.info;
     return (
       <div className="col-xs-5">
-        <h3 className={'text-' + info.colorName}>{statics.hintTitle}</h3>
+        <h3 className={'text-' + info.colorName}>
+          <span className="fa fa-question"></span>
+          <span className="fa fa-frown-o"></span>
+          <span className="fa fa-long-arrow-right"></span>
+          <span className="fa fa-youtube-play"></span>
+          <span className="fa fa-meh-o"></span>
+          <span className="fa fa-long-arrow-right"></span>
+          <span className="fa fa-lightbulb-o"></span>
+          <span className="fa fa-smile-o"></span>
+        </h3>
         <div className={this.p({ 'embed-responsive': '16by9' })} style={{backgroundColor: 'black'}}>
           <iframe ></iframe>
         </div>
