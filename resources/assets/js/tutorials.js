@@ -1,4 +1,6 @@
-import React from 'react'
+import React from 'react';
+import { Link as ScrollLink, Element as ScrollTarget } from "react-scroll";
+
 import Merger from "./merger";
 
 const statics = {
@@ -16,18 +18,24 @@ const Tutorials = React.createClass({
   getInitialState() {
     return {
       levels: [
-        { id: 1, title: 'Stage 1: Begining', youtube: 'od61KliPeJI', value: 'Next Level',
-          style: { backgroundColor: 'rgb(190,233,213)' }, colorName: 'gray-dark' },
-        { id: 2, title: 'Stage 2: Secondly', youtube: 'od61KliPeJI', value: 'Next Level',
-          style: { backgroundColor: 'rgb(255,251,223)' }, colorName: 'gray-dark' },
-        { id: 3, title: 'Stage 3: Thirdly', youtube: 'od61KliPeJI', value: 'Next Level',
-          style: { backgroundColor: 'rgb(253,180,151)' }, colorName: 'gray-dark' },
-        { id: 4, title: 'Stage 4: Forthly', youtube: 'od61KliPeJI', value: 'Next Level',
-          style: { backgroundColor: 'rgb(255,138,121)' }, colorName: 'gray-lightest' },
-        { id: 5, title: 'Stage 5: Fifthly', youtube: 'od61KliPeJI', value: 'Next Level',
-          style: { backgroundColor: 'rgb(144,71,88)' }, colorName: 'gray-lightest' },
-        { id: 6, title: 'Stage 6: Sixly', youtube: 'od61KliPeJI', value: 'Last Step',
-          style: { backgroundColor: 'rgb(67,26,36)' }, colorName: 'gray-lightest' },
+        { id: 1, title: 'Stage 1: Begining', youtube: 'od61KliPeJI',
+          style: { minHeight: '100vh', backgroundColor: 'rgb(190,233,213)' }, colorName: 'gray-dark',
+          link: { value: 'Next Level', to: 'Level-2' } },
+        { id: 2, title: 'Stage 2: Secondly', youtube: 'od61KliPeJI',
+          style: { minHeight: '100vh', backgroundColor: 'rgb(255,251,223)' }, colorName: 'gray-dark',
+          link: { value: 'Next Level', to: 'Level-3' } },
+        { id: 3, title: 'Stage 3: Thirdly', youtube: 'od61KliPeJI',
+          style: { minHeight: '100vh', backgroundColor: 'rgb(253,180,151)' }, colorName: 'gray-dark',
+          link: { value: 'Next Level', to: 'Level-4' } },
+        { id: 4, title: 'Stage 4: Forthly', youtube: 'od61KliPeJI',
+          style: { minHeight: '100vh', backgroundColor: 'rgb(255,138,121)' }, colorName: 'gray-lightest',
+          link: { value: 'Next Level', to: 'Level-5' } },
+        { id: 5, title: 'Stage 5: Fifthly', youtube: 'od61KliPeJI',
+          style: { minHeight: '100vh', backgroundColor: 'rgb(144,71,88)' }, colorName: 'gray-lightest',
+          link: { value: 'Next Level', to: 'Level-6' } },
+        { id: 6, title: 'Stage 6: Sixly', youtube: 'od61KliPeJI',
+          style: { minHeight: '100vh', backgroundColor: 'rgb(67,26,36)' }, colorName: 'gray-lightest',
+          link: { value: 'Last Step', to: 'Dialog' } }
       ],
       choises: [
         { message: 'If you want to play more stages, click here', value: 'PLAYGROUND' },
@@ -54,12 +62,8 @@ const Header = React.createClass({
   render() {
     return (
       <div className="container-fluid">
-        <div className="row">
-          <div className="col-xs-12">
-            <h1>{statics.title}</h1>
-            <h2>{statics.description}</h2>
-          </div>
-        </div>
+        <h1>{statics.title}</h1>
+        <h2>{statics.description}</h2>
       </div>
     );
   }
@@ -70,30 +74,36 @@ const Level = React.createClass({
   render() {
     const info = this.props.info;
     return (
-      <div className={'container-fluid text-' + info.colorName} style={info.style}>
-        <div className={this.p({ row: 'xs-bottom' })}>
-          <EmbedStage info={info} />
-          <EmbedYoutube info={info} />
+      <ScrollTarget name={'Level-' + info.id}
+        className={'container-fluid text-' + info.colorName}>
+        <div className={this.p({ row: ['vertical-justify'] })} style={info.style}>
+          <div className="container-fluid">
+            <div className={this.p({ row: ['horizontal-justify', 'xs-bottom'] })}>
+              <EmbedStage info={info} />
+              <EmbedYoutube info={info} />
+            </div>
+          </div>
+          <div>
+            <NextLevel info={info} />
+          </div>
         </div>
-        <div className="row">
-          <NextLevel info={info} />
-        </div>
-      </div>
+      </ScrollTarget>
     );
   }
 });
 
 const Dialog = React.createClass({
+  mixins: [Merger],
   render() {
     const choises = this.props.choises.map((item) => {
       return <Choise info={item} key={item.value}></Choise>;
     });
     return (
-      <div className='container'>
-        <div className='row'>
+      <ScrollTarget name="Dialog" className="container">
+        <div className={this.p({ row: ['vertical-justify'] })}>
           {choises}
         </div>
-      </div>
+      </ScrollTarget>
     );
   }
 });
@@ -133,10 +143,12 @@ const NextLevel = React.createClass({
   mixins: [Merger],
   render() {
     const info = this.props.info;
+    const link = info.link;
     return (
-      <div className="col-xs-12">
-        <button className={this.p({ btn: [info.colorName + '-outline', 'lg'] })}>{info.value}</button>
-      </div>
+      <ScrollLink activeClass="active" to={link.to} spy={true} smooth={true} offset={1} duration={500}
+        className={this.p({ btn: [info.colorName + '-outline', 'lg'] })}>
+        {link.value}
+      </ScrollLink>
     );
   }
 });
@@ -146,7 +158,7 @@ const Choise = React.createClass({
   render() {
     const info = this.props.info;
     return (
-      <div className="col-xs-12">
+      <div>
         <p>{info.message}</p>
         <button className={this.p({ btn: [statics.colorName + '-outline', 'lg'] })}>{info.value}</button>
       </div>
