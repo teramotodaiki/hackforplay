@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as ScrollLink, Element as ScrollTarget } from "react-scroll";
+import { scroller } from "react-scroll";
 
 import Merger from "./merger";
 import { Section, Scroller } from "./section";
@@ -46,31 +46,38 @@ const Tutorials = React.createClass({
       ]
     }
   },
+  componentDidMount() {
+    scroller.scrollTo('Landing', {
+      duration: 0,
+      delay: 0,
+      smooth: true,
+    });
+  },
   render () {
     const levels = this.state.levels.map((item) => {
       return <Level info={item} key={item.id} />;
     });
     return (
       <div style={statics.style}>
-        <Header />
         {levels}
         <Dialog />
+        <Landing />
       </div>
     );
   }
 });
 
 // Containers
-const Header = React.createClass({
+const Landing = React.createClass({
   mixins: [Merger],
   render() {
     return (
-      <Section name="Header" height="100vh">
+      <Section name="Landing" height="100vh">
         <div className={this.p({ text: 'xs-center ' + statics.colors.main})}>
           <h1>{statics.title}</h1>
         </div>
         <div className={this.p({ text: 'xs-center ' + statics.colors.main})}>
-          <Scroller to="Level-1">
+          <Scroller to="Level-1" duration={1500}>
             <span className="btn btn-link">
               <span className="fa fa-rocket fa-10x fa-rotate-315" />
             </span>

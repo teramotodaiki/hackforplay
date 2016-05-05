@@ -25,7 +25,7 @@ const Scroller = React.createClass({
   mixins: [Merger],
   render() {
     return (
-      <Link activeClass="active" to={this.props.to} spy={true} smooth={true} offset={1} duration={500}>
+      <Link activeClass="active" to={this.props.to} spy={true} smooth={true} offset={1} duration={this.props.duration || 500}>
         {this.props.children}
       </Link>
     );
