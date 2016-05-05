@@ -10,7 +10,11 @@ const statics = {
   style: {
     backgroundColor: 'rgb(190,233,213)'
   },
-  colorName: 'gray-dark'
+  colors: {
+    main: 'gray-dark',
+    sub: 'gray-lightest'
+  }
+
 };
 
 // App
@@ -19,22 +23,22 @@ const Tutorials = React.createClass({
     return {
       levels: [
         { id: 1, title: 'Stage 1: Begining', youtube: 'od61KliPeJI',
-          style: { minHeight: '100vh', backgroundColor: 'rgb(190,233,213)' }, colorName: 'gray-dark',
+          style: { minHeight: '100vh', backgroundColor: 'rgb(190,233,213)' }, colorName: statics.colors.main,
           link: { value: 'Next Level', to: 'Level-2' } },
         { id: 2, title: 'Stage 2: Secondly', youtube: 'od61KliPeJI',
-          style: { minHeight: '100vh', backgroundColor: 'rgb(255,251,223)' }, colorName: 'gray-dark',
+          style: { minHeight: '100vh', backgroundColor: 'rgb(255,251,223)' }, colorName: statics.colors.main,
           link: { value: 'Next Level', to: 'Level-3' } },
         { id: 3, title: 'Stage 3: Thirdly', youtube: 'od61KliPeJI',
-          style: { minHeight: '100vh', backgroundColor: 'rgb(253,180,151)' }, colorName: 'gray-dark',
+          style: { minHeight: '100vh', backgroundColor: 'rgb(253,180,151)' }, colorName: statics.colors.main,
           link: { value: 'Next Level', to: 'Level-4' } },
         { id: 4, title: 'Stage 4: Forthly', youtube: 'od61KliPeJI',
-          style: { minHeight: '100vh', backgroundColor: 'rgb(255,138,121)' }, colorName: 'gray-lightest',
+          style: { minHeight: '100vh', backgroundColor: 'rgb(255,138,121)' }, colorName: statics.colors.sub,
           link: { value: 'Next Level', to: 'Level-5' } },
         { id: 5, title: 'Stage 5: Fifthly', youtube: 'od61KliPeJI',
-          style: { minHeight: '100vh', backgroundColor: 'rgb(144,71,88)' }, colorName: 'gray-lightest',
+          style: { minHeight: '100vh', backgroundColor: 'rgb(144,71,88)' }, colorName: statics.colors.sub,
           link: { value: 'Next Level', to: 'Level-6' } },
         { id: 6, title: 'Stage 6: Sixly', youtube: 'od61KliPeJI',
-          style: { minHeight: '100vh', backgroundColor: 'rgb(67,26,36)' }, colorName: 'gray-lightest',
+          style: { minHeight: '100vh', backgroundColor: 'rgb(67,26,36)' }, colorName: statics.colors.sub,
           link: { value: 'Last Step', to: 'Dialog' } }
       ],
       choises: [
@@ -61,7 +65,7 @@ const Tutorials = React.createClass({
 const Header = React.createClass({
   render() {
     return (
-      <div className="container-fluid">
+      <div className={'text-' + statics.colors.main}>
         <h1>{statics.title}</h1>
         <h2>{statics.description}</h2>
       </div>
@@ -158,9 +162,9 @@ const Choise = React.createClass({
   render() {
     const info = this.props.info;
     return (
-      <div>
+      <div className={'text-' + statics.colors.main}>
         <p>{info.message}</p>
-        <button className={this.p({ btn: statics.colorName + '-outline lg' })}>{info.value}</button>
+        <button className={this.p({ btn: statics.colors.main + '-outline lg' })}>{info.value}</button>
       </div>
     );
   }
