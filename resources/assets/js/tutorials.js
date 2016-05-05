@@ -76,9 +76,9 @@ const Level = React.createClass({
     return (
       <ScrollTarget name={'Level-' + info.id}
         className={'container-fluid text-' + info.colorName}>
-        <div className={this.p({ row: ['vertical-justify'] })} style={info.style}>
+        <div className={this.p({ row: 'vertical-justify' })} style={info.style}>
           <div className="container-fluid">
-            <div className={this.p({ row: ['horizontal-justify', 'xs-bottom'] })}>
+            <div className={this.p({ row: 'horizontal-justify xs-bottom' })}>
               <EmbedStage info={info} />
               <EmbedYoutube info={info} />
             </div>
@@ -100,7 +100,7 @@ const Dialog = React.createClass({
     });
     return (
       <ScrollTarget name="Dialog" className="container">
-        <div className={this.p({ row: ['vertical-justify'] })}>
+        <div className={this.p({ row: 'vertical-justify' })}>
           {choises}
         </div>
       </ScrollTarget>
@@ -146,7 +146,7 @@ const NextLevel = React.createClass({
     const link = info.link;
     return (
       <ScrollLink activeClass="active" to={link.to} spy={true} smooth={true} offset={1} duration={500}
-        className={this.p({ btn: [info.colorName + '-outline', 'lg'] })}>
+        className={this.p({ btn: info.colorName + '-outline lg' })}>
         {link.value}
       </ScrollLink>
     );
@@ -160,7 +160,7 @@ const Choise = React.createClass({
     return (
       <div>
         <p>{info.message}</p>
-        <button className={this.p({ btn: [statics.colorName + '-outline', 'lg'] })}>{info.value}</button>
+        <button className={this.p({ btn: statics.colorName + '-outline lg' })}>{info.value}</button>
       </div>
     );
   }

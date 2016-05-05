@@ -11,7 +11,7 @@ const Merger = {
       return Object.keys(item).map((key) => {
         // @scope: an each Keys
         const pre = ' ' + key + '-';
-        const attr = item[key] instanceof Array ? pre + item[key].join(pre) : pre + item[key];
+        const attr = pre + item[key].replace(' ', pre);
         return key + attr;
       }).join(' ');
     }).join(' ');
