@@ -14,6 +14,7 @@ const elixir = require('laravel-elixir');
 const bootstrap = 'node_modules/bootstrap/dist/js/bootstrap.js';
 const jquery = 'node_modules/jquery/dist/jquery.js';
 const tether = 'node_modules/tether/dist/js/tether.js';
+const fontAwesome = 'node_modules/font-awesome/fonts';
 
 elixir((mix) => {
   mix
@@ -29,5 +30,7 @@ elixir((mix) => {
     //   jquery,
     //   bootstrap
     // ], 'public/js/bootstrap4.0.0-alpha.2.js', './')
+    // FontAwesome
+    // .copy(fontAwesome, 'public/build/fonts')
 ;
 });
