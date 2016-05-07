@@ -36,15 +36,15 @@ const Tutorials = React.createClass({
       levels: [
         { id: 1, title: 'Begining', youtube: 'od61KliPeJI',
           colorName: statics.colors.main, linkTo: 'Level-2' },
-        { id: 2, title: 'Secondly', youtube: 'od61KliPeJI',
+        { id: 2, title: 'Secondly', youtube: 'mLBb7WQTjoo',
           colorName: statics.colors.main, linkTo: 'Level-3' },
-        { id: 3, title: 'Thirdly', youtube: 'od61KliPeJI',
+        { id: 3, title: 'Thirdly', youtube: 'no7ch0jTHRc',
           colorName: statics.colors.main, linkTo: 'Level-4' },
-        { id: 4, title: 'Forthly', youtube: 'od61KliPeJI',
+        { id: 4, title: 'Forthly', youtube: 'qpjTVkrOvHg',
           colorName: statics.colors.sub, linkTo: 'Level-5' },
-        { id: 5, title: 'Fifthly', youtube: 'od61KliPeJI',
+        { id: 5, title: 'Fifthly', youtube: 'HzDbGgmi0bA',
           colorName: statics.colors.sub, linkTo: 'Level-6' },
-        { id: 6, title: 'Sixly', youtube: 'od61KliPeJI',
+        { id: 6, title: 'Sixly', youtube: '4L0qPyUaH0A',
           colorName: statics.colors.sub, linkTo: 'Dialog' }
       ],
       activeLevelId: null
