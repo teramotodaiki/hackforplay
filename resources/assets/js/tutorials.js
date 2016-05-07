@@ -87,9 +87,9 @@ const Landing = React.createClass({
           <h1>{statics.title}</h1>
         </div>
         <div className={this.p({ text: 'xs-center ' + statics.colors.main})}>
-          <Scroller to="Level-1" duration={1500}>
-            <span className="btn btn-link">
-              <span className="fa fa-rocket fa-10x fa-rotate-315" />
+          <Scroller to="Level-1">
+            <span className={this.p({ btn: statics.colors.main + '-outline lg' })}>
+              <span className="fa fa-arrow-down fa-2x"></span>
             </span>
           </Scroller>
         </div>
