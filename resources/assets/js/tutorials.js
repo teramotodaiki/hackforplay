@@ -22,12 +22,15 @@ const statics = {
       'rgb(144, 71, 88)', // Level-5
       'rgb( 67, 26, 36)'  // Level-6
     ]
-  }
+  },
+  hfp: 'embed/?type=stage&id=',
+  yt: 'https://www.youtube.com/embed/'
 
 };
 
 // App
 const Tutorials = React.createClass({
+  mixins: [Merger],
   getInitialState() {
     return {
       levels: [
@@ -43,7 +46,8 @@ const Tutorials = React.createClass({
           colorName: statics.colors.sub, linkTo: 'Level-6' },
         { id: 6, title: 'Sixly', youtube: 'od61KliPeJI',
           colorName: statics.colors.sub, linkTo: 'Dialog' }
-      ]
+      ],
+      activeLevelId: null
     }
   },
   componentDidMount() {
@@ -53,9 +57,22 @@ const Tutorials = React.createClass({
       smooth: true,
     });
   },
+  changeActiveState(id, state) {
+    // EmbedStage ifame が focus または blus された時のEvent Hundler
+    if (state) {
+      this.setState({ activeLevelId: id });
+    } else if (!state && this.state.activeLevelId === id) {
+      this.setState({ activeLevelId: null });
+    }
+  },
   render () {
     const levels = this.state.levels.map((item) => {
-      return <Level info={item} key={item.id} />;
+      return <Level
+        info={this.m(item, {
+          changeActiveState: this.changeActiveState,
+          isActive: this.state.activeLevelId===item.id
+        })}
+        key={item.id} />;
     });
     return (
       <div style={statics.style}>
@@ -149,6 +166,22 @@ const Dialog = React.createClass({
 // UI Parts
 const EmbedStage = React.createClass({
   mixins: [Merger],
+  componentDidMount() {
+    const info = this.props.info;
+    this.iFrame.contentWindow.onfocus = (event) => {
+      info.changeActiveState(info.id, true);
+    };
+    this.iFrame.contentWindow.onblur = (event) => {
+      info.changeActiveState(info.id, false);
+    };
+    window.addEventListener('scroll', () => {
+      const rect = this.iFrame.getClientRects()[0];
+      if (!info.isActive && rect.top >= 0 && rect.bottom <= window.innerHeight) {
+        // Auto focus when iframe contains viewport
+        this.iFrame.focus();
+      }
+    });
+  },
   render() {
     const info = this.props.info;
     return (
@@ -156,8 +189,10 @@ const EmbedStage = React.createClass({
         <h2 className={'text-' + info.colorName}>
           <span className="fa fa-gamepad" />-{info.id} {info.title}
         </h2>
-        <div className={this.p({ 'embed-responsive': '4by3' })} style={{backgroundColor: 'black'}}>
-          <iframe ></iframe>
+        <div className={info.isActive ? 'pseudo-focus' : ''}>
+          <div className={this.p({ 'embed-responsive': '3by2' })} style={{backgroundColor: 'black'}}>
+            <iframe ref={(ref) => this.iFrame = ref } src={statics.hfp + info.id}></iframe>
+          </div>
         </div>
       </div>
     );
@@ -181,7 +216,7 @@ const EmbedYoutube = React.createClass({
           <span className="fa fa-smile-o"></span>
         </h3>
         <div className={this.p({ 'embed-responsive': '16by9' })} style={{backgroundColor: 'black'}}>
-          <iframe ></iframe>
+          <iframe src={statics.yt + info.youtube}></iframe>
         </div>
       </div>
     );

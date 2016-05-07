@@ -4,6 +4,14 @@ $enable-flex: true;
 @import "node_modules/bootstrap/scss/bootstrap";
 @import "node_modules/font-awesome/scss/font-awesome";
 
+// Focused element
+.pseudo-focus {
+  border: .25rem solid $input-border-focus;
+  @include border-radius();
+  margin: -.25rem;
+}
+
+
 // Additional buttons
 .btn-gray-dark-outline {
   @include button-outline-variant($gray-dark);
