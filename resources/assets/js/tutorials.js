@@ -50,13 +50,6 @@ const Tutorials = React.createClass({
       activeLevelId: null
     }
   },
-  componentDidMount() {
-    scroller.scrollTo('Landing', {
-      duration: 0,
-      delay: 0,
-      smooth: true,
-    });
-  },
   changeActiveState(id, state) {
     // EmbedStage ifame が focus または blus された時のEvent Hundler
     if (state) {
@@ -76,9 +69,9 @@ const Tutorials = React.createClass({
     });
     return (
       <div style={statics.style}>
+        <Landing />
         {levels}
         <Dialog />
-        <Landing />
       </div>
     );
   }
