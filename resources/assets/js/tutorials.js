@@ -7,6 +7,10 @@ import { Section, Scroller } from "./section";
 const statics = {
   title: 'The Beginning',
   hintTitle: 'How to solve',
+  descriptions: {
+    youtube: 'Here is a hint movie',
+    next: "After cleared this stage then let's go to next stage!"
+  },
   style: {
     backgroundColor: 'rgb(190,233,213)'
   },
@@ -34,7 +38,7 @@ const Tutorials = React.createClass({
   getInitialState() {
     return {
       levels: [
-        { id: 1, title: 'Begining', youtube: 'od61KliPeJI',
+        { id: 1, title: 'Begining', youtube: 'od61KliPeJI', showDescription: true,
           colorName: statics.colors.main, linkTo: 'Level-2' },
         { id: 2, title: 'Secondly', youtube: 'mLBb7WQTjoo',
           colorName: statics.colors.main, linkTo: 'Level-3' },
@@ -112,6 +116,11 @@ const Level = React.createClass({
           </div>
         </div>
         <div className="text-xs-center">
+          <p>
+            <small className={info.showDescription ? 'text-muted m-l-1' : 'collapse'}>
+              {statics.descriptions.next}
+            </small>
+          </p>
           <Scroller to={info.linkTo}>
             <span className={this.p({ btn: info.colorName + '-outline lg' })}>
               <span className="fa fa-arrow-down fa-2x"></span>
@@ -208,6 +217,9 @@ const EmbedYoutube = React.createClass({
           <span className="fa fa-long-arrow-right"></span>
           <span className="fa fa-lightbulb-o"></span>
           <span className="fa fa-smile-o"></span>
+          <small className={info.showDescription ? 'text-muted m-l-1' : 'collapse'}>
+            {statics.descriptions.youtube}
+          </small>
         </h3>
         <div className={this.p({ 'embed-responsive': '16by9' })} style={{backgroundColor: 'black'}}>
           <iframe src={statics.yt + info.youtube}></iframe>
