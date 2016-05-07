@@ -1,2 +1,60 @@
-// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+// Settings
+$enable-flex: true;
 
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/font-awesome/scss/font-awesome";
+
+// Focused element
+.pseudo-focus {
+  border: .25rem solid $input-border-focus;
+  @include border-radius();
+  margin: -.25rem;
+}
+
+
+// Additional buttons
+.btn-gray-dark-outline {
+  @include button-outline-variant($gray-dark);
+}
+.btn-gray-lightest-outline {
+  @include button-outline-variant($gray-lightest);
+  @include hover {
+    color: $gray-dark;
+  }
+}
+
+// Additional utilis
+@include text-emphasis-variant('.text-gray-dark', $gray-dark);
+@include text-emphasis-variant('.text-gray-lightest', $gray-lightest);
+
+// Responsive embed
+.embed-responsive-3by2 {
+  padding-bottom: percentage(2 / 3);
+}
+
+// Flex box grid
+
+// Variables
+$flex-axis-diretion: (
+  vertical: column,
+  horizontal: row
+);
+
+// Justify row
+@each $axis, $direction in $flex-axis-diretion {
+  .row-#{$axis}-justify {
+    flex-flow: $direction nowrap;
+    justify-content: space-around;
+  }
+}
+
+// Font Awesome
+
+// Extra rotate
+.#{$fa-css-prefix}-rotate-45  { @include fa-icon-rotate(45deg, 1);  }
+.#{$fa-css-prefix}-rotate-135 { @include fa-icon-rotate(135deg, 1); }
+.#{$fa-css-prefix}-rotate-225 { @include fa-icon-rotate(225deg, 2); }
+.#{$fa-css-prefix}-rotate-315 { @include fa-icon-rotate(315deg, 3); }
+
+// Extra large
+.#{$fa-css-prefix}-10x { font-size: 10em; }
