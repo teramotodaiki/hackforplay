@@ -176,6 +176,7 @@ const EmbedStage = React.createClass({
     };
     window.addEventListener('scroll', () => {
       const rect = this.iFrame.getClientRects()[0];
+      const isActive = document.activeElement === this.iFrame;
       if (!info.isActive && rect.top >= 0 && rect.bottom <= window.innerHeight) {
         // Auto focus when iframe contains viewport
         this.iFrame.focus();
