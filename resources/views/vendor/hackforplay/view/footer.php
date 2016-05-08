@@ -3,13 +3,10 @@
 		<div class="row">
 			<div class="col-md-4 col-xs-8">
 				<ul class="list-inline">
-					<li class="pull-left"><a class="h4p_footer" href="http://hackforplayworkshop.weebly.com" title="Contact" target='_blank'>
+					<li class="pull-left"><a class="h4p_footer" href="http://hackforplay-company.weebly.com" title="company" target='_blank'>
 						運営会社</a></li>
-					<li class="pull-left"><a class="h4p_footer" href="http://hackforplay.weebly.com/contact.html" title="Contact">
+					<li class="pull-left"><a class="h4p_footer" href="http://hackforplay-company.weebly.com/125271254012463124711251912483125032038138972.html" title="Contact">
 						お問い合わせ</a></li>
-					<li class="pull-left"><a class="h4p_footer" href="http://hackforplay.weebly.com/blog/001" title="Blog">
-						ブログ</a></li>
-					<li class="pull-left"><a class="h4p_footer" href="http://goo.gl/forms/vgL5XUT0Ay" title="Request">リクエスト</a></li>
 					<li class="pull-left">
 						<a class="h4p_footer" href="../policies/#anchor-licence" title="ライセンス表記" target='_blank'>
 						ライセンス表記</a>
