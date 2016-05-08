@@ -34,6 +34,10 @@ const statics = {
     header: 'Awesome!!',
     description : 'There are 500+ stages in HackforPlay! Try it out',
     button: 'Play more'
+  },
+  confirm: {
+    title: 'Did you clear this stage?',
+    description: "Let's go to the next stage! Of cource you can return this stage later"
   }
 };
 
@@ -56,11 +60,7 @@ const Tutorials = React.createClass({
         { id: 6, title: 'Sixly', youtube: '4L0qPyUaH0A',
           colorName: statics.colors.sub, linkTo: 'Dialog' }
       ],
-      activeLevelId: null,
-      confirmOptions: {
-        title: 'Did you clear this stage?',
-        description: "Let's go to the next stage! Of cource you can return this stage later"
-      }
+      activeLevelId: null
     }
   },
   changeActiveState(id, state) {
@@ -89,11 +89,11 @@ const Tutorials = React.createClass({
     });
     return (
       <div>
-        <Confirm ref="confirm" {...this.state.confirmOptions} set={this.setConfirmOption} />
+        <Confirm ref="confirm" {...statics.confirm} set={this.setConfirmOption} />
         <div style={statics.style}>
           <Landing />
           {levels}
-          <Dialog {...statics.dialog} colorName={statics.colors.main} />
+          <Dialog {...statics.dialog} />
         </div>
       </div>
     );
@@ -180,8 +180,8 @@ const Dialog = React.createClass({
       <Section name="Dialog" height="100vh" style={backgroundStyle}>
         <div />
         <div />
-        <div className={this.p({ text: 'xs-center ' + this.props.colorName }) + ' col-xs-center'}>
-          <div className="card card-block">
+        <div className='col-xs-center'>
+          <div className="card card-block text-xs-center">
             <h1 className="card-title">{this.props.header}</h1>
             <p className="card-text">{this.props.description}</p>
             <a href="r" className={this.p({ btn: 'primary lg' })}>
