@@ -31,8 +31,9 @@ const statics = {
   hfp: 'embed/?type=stage&id=',
   yt: 'https://www.youtube.com/embed/',
   dialog: {
-    playMore : 'There are 500+ stages in HackforPlay! Try it out',
-    makeYours : 'Or, make yours!! You need registration to become a game creator'
+    header: 'Awesome!!',
+    description : 'There are 500+ stages in HackforPlay! Try it out',
+    button: 'Play more'
   }
 };
 
@@ -92,7 +93,7 @@ const Tutorials = React.createClass({
         <div style={statics.style}>
           <Landing />
           {levels}
-          <Dialog {...statics.dialog} />
+          <Dialog {...statics.dialog} colorName={statics.colors.main} />
         </div>
       </div>
     );
@@ -170,25 +171,22 @@ const Level = React.createClass({
 const Dialog = React.createClass({
   mixins: [Merger],
   render() {
+    const backgroundStyle = {
+      backgroundImage: 'url(image/tutorials-dialog.png)',
+      backgroundPosition: 'center',
+      backgroundSize: 'cover'
+    };
     return (
-      <Section name="Dialog" height="100vh">
-        <div className={this.p({ text: 'xs-center ' + statics.colors.main })}>
-          ☆*:.｡.<span className="fa fa-trophy fa-10x" />.｡.:*☆
-        </div>
-        <div className="container-fluid">
-          <div className={this.p({ row: 'horizontal-justify xs-bottom' })}>
-            <div className={this.p({ text: 'xs-center ' + statics.colors.main }) + ' m-x-3'}>
-              <h4>{this.props.playMore}</h4>
-              <a href="r" className={this.p({ btn: 'primary lg' }) + ' m-y-3'}>
-                <h2>Play more</h2>
-              </a>
-            </div>
-            <div className={this.p({ text: 'xs-center ' + statics.colors.main }) + ' m-x-3'}>
-              <h4>{this.props.makeYours}</h4>
-              <a href="getaccount" className={this.p({ btn: 'secondary lg' }) + ' m-y-3'}>
-                <h3>Register</h3>
-              </a>
-            </div>
+      <Section name="Dialog" height="100vh" style={backgroundStyle}>
+        <div />
+        <div />
+        <div className={this.p({ text: 'xs-center ' + this.props.colorName }) + ' col-xs-center'}>
+          <div className="card card-block">
+            <h1 className="card-title">{this.props.header}</h1>
+            <p className="card-text">{this.props.description}</p>
+            <a href="r" className={this.p({ btn: 'primary lg' })}>
+              <h2>{this.props.button}</h2>
+            </a>
           </div>
         </div>
       </Section>
