@@ -130,6 +130,21 @@ const Level = React.createClass({
   },
   render() {
     const info = this.props.info;
+    const next = info.showDescription ? (
+      <button
+        onClick={this.onClick}
+        className={this.p({ btn: info.colorName + '-outline lg' })}
+        >
+        <span className="fa fa-arrow-down fa-2x"></span>
+      </button>
+    ) : (
+      <Scroller to={info.linkTo}>
+        <span className={this.p({ btn: info.colorName + '-outline lg' })}>
+          <span className="fa fa-arrow-down fa-2x"></span>
+        </span>
+      </Scroller>
+    );
+
     return (
       <Section name={'Level-' + info.id} height="100vh"
         style={{ backgroundColor: statics.colors.levels[info.id] }}>
@@ -145,9 +160,7 @@ const Level = React.createClass({
               {statics.descriptions.next}
             </small>
           </p>
-          <button onClick={this.onClick} className={this.p({ btn: info.colorName + '-outline lg' })}>
-            <span className="fa fa-arrow-down fa-2x"></span>
-          </button>
+          {next}
         </div>
       </Section>
     );
