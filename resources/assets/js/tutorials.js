@@ -1,5 +1,6 @@
 import React from 'react';
 import { scroller } from "react-scroll";
+import Confirm from "./confirm";
 
 import Merger from "./merger";
 import { Section, Scroller } from "./section";
@@ -51,7 +52,11 @@ const Tutorials = React.createClass({
         { id: 6, title: 'Sixly', youtube: '4L0qPyUaH0A',
           colorName: statics.colors.sub, linkTo: 'Dialog' }
       ],
-      activeLevelId: null
+      activeLevelId: null,
+      confirmOptions: {
+        title: 'Did you clear this stage?',
+        description: "Let's go to the next stage! Of cource you can return this stage later"
+      }
     }
   },
   changeActiveState(id, state) {
@@ -62,6 +67,12 @@ const Tutorials = React.createClass({
       this.setState({ activeLevelId: null });
     }
   },
+  confirm(options) {
+    return this.refs.confirm.show(options);
+  },
+  setConfirmOption(options) {
+    this.setState({ confirmOptions: options });
+  },
   render () {
     const levels = this.state.levels.map((item) => {
       return <Level
@@ -69,13 +80,17 @@ const Tutorials = React.createClass({
           changeActiveState: this.changeActiveState,
           isActive: this.state.activeLevelId===item.id
         })}
+        confirm={this.confirm}
         key={item.id} />;
     });
     return (
-      <div style={statics.style}>
-        <Landing />
-        {levels}
-        <Dialog />
+      <div>
+        <Confirm ref="confirm" {...this.state.confirmOptions} set={this.setConfirmOption} />
+        <div style={statics.style}>
+          <Landing />
+          {levels}
+          <Dialog />
+        </div>
       </div>
     );
   }
@@ -104,6 +119,12 @@ const Landing = React.createClass({
 
 const Level = React.createClass({
   mixins: [Merger],
+  onClick() {
+    const confirm = this.props.confirm;
+    confirm().then(() => {
+      scroller.scrollTo(this.props.info.linkTo, { smooth: true });
+    });
+  },
   render() {
     const info = this.props.info;
     return (
@@ -121,11 +142,9 @@ const Level = React.createClass({
               {statics.descriptions.next}
             </small>
           </p>
-          <Scroller to={info.linkTo}>
-            <span className={this.p({ btn: info.colorName + '-outline lg' })}>
-              <span className="fa fa-arrow-down fa-2x"></span>
-            </span>
-          </Scroller>
+          <button onClick={this.onClick} className={this.p({ btn: info.colorName + '-outline lg' })}>
+            <span className="fa fa-arrow-down fa-2x"></span>
+          </button>
         </div>
       </Section>
     );
