@@ -132,12 +132,19 @@ const Level = React.createClass({
   render() {
     const info = this.props.info;
     const next = info.showDescription ? (
-      <button
-        onClick={this.onClick}
-        className={this.p({ btn: info.colorName + '-outline lg' })}
-        >
-        <span className="fa fa-arrow-down fa-2x"></span>
-      </button>
+      <div>
+        <p>
+          <small className="text-muted m-l-1">
+            {statics.descriptions.next}
+          </small>
+        </p>
+        <button
+          onClick={this.onClick}
+          className={this.p({ btn: info.colorName + '-outline lg' })}
+          >
+          <span className="fa fa-arrow-down fa-2x"></span>
+        </button>
+      </div>
     ) : (
       <Scroller to={info.linkTo}>
         <span className={this.p({ btn: info.colorName + '-outline lg' })}>
@@ -156,11 +163,6 @@ const Level = React.createClass({
           </div>
         </div>
         <div className="text-xs-center">
-          <p>
-            <small className={info.showDescription ? 'text-muted m-l-1' : 'collapse'}>
-              {statics.descriptions.next}
-            </small>
-          </p>
           {next}
         </div>
       </Section>
