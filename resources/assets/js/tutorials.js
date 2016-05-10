@@ -38,7 +38,9 @@ const statics = {
   confirm: {
     title: 'Did you clear this stage?',
     description: "Let's go to the next stage! Of cource you can return this stage later"
-  }
+  },
+  shareTweetURL: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent('https://hackforplay.xyz/tutorials'),
+  searchURL: 'https://twitter.com/search?q=hackforplay'
 };
 
 // App
@@ -182,13 +184,21 @@ const Dialog = React.createClass({
       <Section name="Dialog" height="100vh" style={backgroundStyle}>
         <div />
         <div />
-        <div className='col-xs-center'>
-          <div className="card card-block text-xs-center">
+        <div className="col-xs-center">
+          <div className="card card-block text-xs-center p-b-0">
             <h1 className="card-title">{this.props.header}</h1>
             <p className="card-text">{this.props.description}</p>
             <a href="r" className={this.p({ btn: 'primary lg' })}>
               <h2>{this.props.button}</h2>
             </a>
+            <div className="m-t-2">
+              <a target="_blank" href={statics.shareTweetURL}>
+                <span className="fa fa-twitter-square fa-3x" />
+              </a>
+              <a target="_blank" href={statics.searchURL} className="btn btn-link m-b-2">
+                #hackforplay
+              </a>
+            </div>
           </div>
         </div>
       </Section>
