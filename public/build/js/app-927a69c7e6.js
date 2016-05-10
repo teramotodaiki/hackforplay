@@ -24985,7 +24985,139 @@ var App = _react2.default.createClass({
   )
 ), document.getElementById('app'));
 
-},{"./tutorials":237,"react":231,"react-dom":52,"react-router":82}],235:[function(require,module,exports){
+},{"./tutorials":238,"react":231,"react-dom":52,"react-router":82}],235:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _merger = require("./merger");
+
+var _merger2 = _interopRequireDefault(_merger);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Modal = _react2.default.createClass({
+  displayName: "Modal",
+  show: function show() {
+    $(this.refs.modal).modal('show');
+  },
+  hide: function hide() {
+    $(this.refs.modal).modal('hide');
+  },
+  render: function render() {
+    return _react2.default.createElement(
+      "div",
+      { ref: "modal",
+        className: "modal fade",
+        tabIndex: "-1",
+        role: "dialog",
+        "aria-hidden": "false"
+      },
+      _react2.default.createElement(
+        "div",
+        { className: "modal-dialog" },
+        _react2.default.createElement(
+          "div",
+          { className: "modal-content" },
+          this.props.children
+        )
+      )
+    );
+  }
+});
+
+var Confirm = _react2.default.createClass({
+  displayName: "Confirm",
+
+  mixins: [_merger2.default],
+  getDefaultProps: function getDefaultProps() {
+    return {
+      confirmLabel: 'OK',
+      abortLabel: 'Cancel'
+    };
+  },
+  show: function show(message, options) {
+    var _this = this;
+
+    this.refs.modal.show();
+    return new Promise(function (resolve, reject) {
+      _this.resolve = resolve;
+      _this.reject = reject;
+    });
+  },
+  cleanup: function cleanup() {
+    this.refs.modal.hide();
+  },
+  confirm: function confirm() {
+    this.resolve();
+    this.cleanup();
+  },
+  abort: function abort() {
+    this.reject();
+    this.cleanup();
+  },
+
+
+  render: function render() {
+    return _react2.default.createElement(
+      Modal,
+      { ref: "modal" },
+      _react2.default.createElement(
+        "div",
+        { className: "modal-header" },
+        _react2.default.createElement(
+          "h4",
+          { className: "modal-title" },
+          this.props.title
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "modal-body" },
+        this.props.description
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "modal-footer" },
+        _react2.default.createElement(
+          "div",
+          { className: "text-right" },
+          _react2.default.createElement(
+            "button",
+            {
+              role: "abort",
+              type: "button",
+              className: "btn btn-default m-x-1",
+              onClick: this.abort
+            },
+            this.props.abortLabel
+          ),
+          _react2.default.createElement(
+            "button",
+            {
+              role: "confirm",
+              type: "button",
+              className: "btn btn-primary m-x-1",
+              ref: "confirm",
+              onClick: this.confirm
+            },
+            this.props.confirmLabel
+          )
+        )
+      )
+    );
+  }
+});
+
+exports.default = Confirm;
+
+},{"./merger":236,"react":231}],236:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24996,7 +25128,9 @@ var Merger = {
   // Merge styles, props, and others
 
   m: function m() {
-    return Object.assign.apply(null, Array.from(arguments));
+    return Object.assign.apply(null, Array.from(arguments).filter(function (item) {
+      return item != null;
+    }));
   },
 
   // { btn: ['success', 'lg'] } convert to 'btn btn-sucess btn-lg'
@@ -25015,7 +25149,7 @@ var Merger = {
 
 exports.default = Merger;
 
-},{}],236:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25073,18 +25207,24 @@ var Scroller = _react2.default.createClass({
 exports.Section = Section;
 exports.Scroller = Scroller;
 
-},{"./merger":235,"react":231,"react-scroll":94}],237:[function(require,module,exports){
+},{"./merger":236,"react":231,"react-scroll":94}],238:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
 var _reactScroll = require("react-scroll");
+
+var _confirm = require("./confirm");
+
+var _confirm2 = _interopRequireDefault(_confirm);
 
 var _merger = require("./merger");
 
@@ -25097,6 +25237,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var statics = {
   title: 'The Beginning',
   hintTitle: 'How to solve',
+  descriptions: {
+    youtube: 'Here is a hint movie',
+    next: "After cleared this stage then let's go to next stage!"
+  },
   style: {
     backgroundColor: 'rgb(190,233,213)'
   },
@@ -25112,8 +25256,18 @@ var statics = {
     ]
   },
   hfp: 'embed/?type=stage&id=',
-  yt: 'https://www.youtube.com/embed/'
-
+  yt: 'https://www.youtube.com/embed/',
+  dialog: {
+    header: 'Awesome!!',
+    description: 'There are 500+ stages in HackforPlay! Try it out',
+    button: 'Play more'
+  },
+  confirm: {
+    title: 'Did you clear this stage?',
+    description: "Let's go to the next stage! Of cource you can return this stage later"
+  },
+  shareTweetURL: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent('https://hackforplay.xyz/tutorials'),
+  searchURL: 'https://twitter.com/search?q=hackforplay'
 };
 
 // App
@@ -25123,7 +25277,7 @@ var Tutorials = _react2.default.createClass({
   mixins: [_merger2.default],
   getInitialState: function getInitialState() {
     return {
-      levels: [{ id: 1, title: 'Begining', youtube: 'od61KliPeJI',
+      levels: [{ id: 1, title: 'Begining', youtube: 'od61KliPeJI', showDescription: true,
         colorName: statics.colors.main, linkTo: 'Level-2' }, { id: 2, title: 'Secondly', youtube: 'mLBb7WQTjoo',
         colorName: statics.colors.main, linkTo: 'Level-3' }, { id: 3, title: 'Thirdly', youtube: 'no7ch0jTHRc',
         colorName: statics.colors.main, linkTo: 'Level-4' }, { id: 4, title: 'Forthly', youtube: 'qpjTVkrOvHg',
@@ -25133,13 +25287,6 @@ var Tutorials = _react2.default.createClass({
       activeLevelId: null
     };
   },
-  componentDidMount: function componentDidMount() {
-    _reactScroll.scroller.scrollTo('Landing', {
-      duration: 0,
-      delay: 0,
-      smooth: true
-    });
-  },
   changeActiveState: function changeActiveState(id, state) {
     // EmbedStage ifame が focus または blus された時のEvent Hundler
     if (state) {
@@ -25147,6 +25294,12 @@ var Tutorials = _react2.default.createClass({
     } else if (!state && this.state.activeLevelId === id) {
       this.setState({ activeLevelId: null });
     }
+  },
+  confirm: function confirm(options) {
+    return this.refs.confirm.show(options);
+  },
+  setConfirmOption: function setConfirmOption(options) {
+    this.setState({ confirmOptions: options });
   },
   render: function render() {
     var _this = this;
@@ -25157,14 +25310,20 @@ var Tutorials = _react2.default.createClass({
           changeActiveState: _this.changeActiveState,
           isActive: _this.state.activeLevelId === item.id
         }),
+        confirm: _this.confirm,
         key: item.id });
     });
     return _react2.default.createElement(
       "div",
-      { style: statics.style },
-      levels,
-      _react2.default.createElement(Dialog, null),
-      _react2.default.createElement(Landing, null)
+      null,
+      _react2.default.createElement(_confirm2.default, _extends({ ref: "confirm" }, statics.confirm, { set: this.setConfirmOption })),
+      _react2.default.createElement(
+        "div",
+        { style: statics.style },
+        _react2.default.createElement(Landing, null),
+        levels,
+        _react2.default.createElement(Dialog, statics.dialog)
+      )
     );
   }
 });
@@ -25192,11 +25351,11 @@ var Landing = _react2.default.createClass({
         { className: this.p({ text: 'xs-center ' + statics.colors.main }) },
         _react2.default.createElement(
           _section.Scroller,
-          { to: "Level-1", duration: 1500 },
+          { to: "Level-1" },
           _react2.default.createElement(
             "span",
-            { className: "btn btn-link" },
-            _react2.default.createElement("span", { className: "fa fa-rocket fa-10x fa-rotate-315" })
+            { className: this.p({ btn: statics.colors.main + '-outline lg' }) },
+            _react2.default.createElement("span", { className: "fa fa-arrow-down fa-2x" })
           )
         )
       )
@@ -25208,8 +25367,46 @@ var Level = _react2.default.createClass({
   displayName: "Level",
 
   mixins: [_merger2.default],
+  onClick: function onClick() {
+    var _this2 = this;
+
+    var confirm = this.props.confirm;
+    confirm().then(function () {
+      _reactScroll.scroller.scrollTo(_this2.props.info.linkTo, { smooth: true });
+    });
+  },
   render: function render() {
     var info = this.props.info;
+    var next = info.showDescription ? _react2.default.createElement(
+      "div",
+      null,
+      _react2.default.createElement(
+        "p",
+        null,
+        _react2.default.createElement(
+          "small",
+          { className: "text-muted m-l-1" },
+          statics.descriptions.next
+        )
+      ),
+      _react2.default.createElement(
+        "button",
+        {
+          onClick: this.onClick,
+          className: this.p({ btn: info.colorName + '-outline lg' })
+        },
+        _react2.default.createElement("span", { className: "fa fa-arrow-down fa-2x" })
+      )
+    ) : _react2.default.createElement(
+      _section.Scroller,
+      { to: info.linkTo },
+      _react2.default.createElement(
+        "span",
+        { className: this.p({ btn: info.colorName + '-outline lg' }) },
+        _react2.default.createElement("span", { className: "fa fa-arrow-down fa-2x" })
+      )
+    );
+
     return _react2.default.createElement(
       _section.Section,
       { name: 'Level-' + info.id, height: "100vh",
@@ -25219,23 +25416,15 @@ var Level = _react2.default.createClass({
         { className: "container-fluid" },
         _react2.default.createElement(
           "div",
-          { className: this.p({ row: 'horizontal-justify xs-bottom' }) },
-          _react2.default.createElement(EmbedStage, { info: info }),
-          _react2.default.createElement(EmbedYoutube, { info: info })
+          { className: this.p({ row: 'xs-bottom' }) },
+          _react2.default.createElement(EmbedStage, { className: "col-sm-7 col-xs-12", info: info }),
+          _react2.default.createElement(EmbedYoutube, { className: "col-sm-5 col-xs-12", info: info })
         )
       ),
       _react2.default.createElement(
         "div",
         { className: "text-xs-center" },
-        _react2.default.createElement(
-          _section.Scroller,
-          { to: info.linkTo },
-          _react2.default.createElement(
-            "span",
-            { className: this.p({ btn: info.colorName + '-outline lg' }) },
-            _react2.default.createElement("span", { className: "fa fa-arrow-down fa-2x" })
-          )
-        )
+        next
       )
     );
   }
@@ -25246,51 +25435,55 @@ var Dialog = _react2.default.createClass({
 
   mixins: [_merger2.default],
   render: function render() {
+    var backgroundStyle = {
+      backgroundImage: 'url(image/tutorials-dialog.png)',
+      backgroundPosition: 'center',
+      backgroundSize: 'cover'
+    };
     return _react2.default.createElement(
       _section.Section,
-      { name: "Dialog", height: "100vh" },
+      { name: "Dialog", height: "100vh", style: backgroundStyle },
+      _react2.default.createElement("div", null),
+      _react2.default.createElement("div", null),
       _react2.default.createElement(
         "div",
-        { className: this.p({ text: 'xs-center ' + statics.colors.main }) },
-        "☆*:.｡.",
-        _react2.default.createElement("span", { className: "fa fa-trophy fa-10x" }),
-        ".｡.:*☆"
-      ),
-      _react2.default.createElement(
-        "div",
-        { className: this.p({ text: 'xs-center ' + statics.colors.main }) },
+        { className: "col-xs-center" },
         _react2.default.createElement(
-          "p",
-          null,
-          "Play more ",
-          _react2.default.createElement("span", { className: "fa fa-gamepad fa-lg" })
-        ),
-        _react2.default.createElement(
-          "a",
-          { href: "r", className: this.p({ btn: statics.colors.main + '-outline lg' }) },
-          _react2.default.createElement("span", { className: "fa fa-users fa-4x" })
-        )
-      ),
-      _react2.default.createElement(
-        "div",
-        { className: this.p({ text: 'xs-center ' + statics.colors.main }) },
-        _react2.default.createElement(
-          "p",
-          null,
-          "or,",
-          _react2.default.createElement("br", null),
-          "Make your",
+          "div",
+          { className: "card card-block text-xs-center p-b-0" },
           _react2.default.createElement(
-            "span",
-            { className: "fa fa-stack fa-lg" },
-            _react2.default.createElement("i", { className: "fa fa-sign-language fa-stack-2x" }),
-            _react2.default.createElement("i", { className: "fa fa-gamepad fa-stack-1x fa-inverse" })
+            "h1",
+            { className: "card-title" },
+            this.props.header
+          ),
+          _react2.default.createElement(
+            "p",
+            { className: "card-text" },
+            this.props.description
+          ),
+          _react2.default.createElement(
+            "a",
+            { href: "r", className: this.p({ btn: 'primary lg' }) },
+            _react2.default.createElement(
+              "h2",
+              null,
+              this.props.button
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "m-t-2" },
+            _react2.default.createElement(
+              "a",
+              { target: "_blank", href: statics.shareTweetURL },
+              _react2.default.createElement("span", { className: "fa fa-twitter-square fa-3x" })
+            ),
+            _react2.default.createElement(
+              "a",
+              { target: "_blank", href: statics.searchURL, className: "btn btn-link m-b-2" },
+              "#hackforplay"
+            )
           )
-        ),
-        _react2.default.createElement(
-          "a",
-          { href: "getaccount", className: this.p({ btn: statics.colors.main + '-outline lg' }) },
-          _react2.default.createElement("span", { className: "fa fa-user-plus fa-2x" })
         )
       )
     );
@@ -25303,7 +25496,7 @@ var EmbedStage = _react2.default.createClass({
 
   mixins: [_merger2.default],
   componentDidMount: function componentDidMount() {
-    var _this2 = this;
+    var _this3 = this;
 
     var info = this.props.info;
     this.iFrame.contentWindow.onfocus = function (event) {
@@ -25313,21 +25506,21 @@ var EmbedStage = _react2.default.createClass({
       info.changeActiveState(info.id, false);
     };
     window.addEventListener('scroll', function () {
-      var rect = _this2.iFrame.getClientRects()[0];
-      var isActive = document.activeElement === _this2.iFrame;
+      var rect = _this3.iFrame.getClientRects()[0];
+      var isActive = document.activeElement === _this3.iFrame;
       if (!info.isActive && rect.top >= 0 && rect.bottom <= window.innerHeight) {
         // Auto focus when iframe contains viewport
-        _this2.iFrame.focus();
+        _this3.iFrame.focus();
       }
     });
   },
   render: function render() {
-    var _this3 = this;
+    var _this4 = this;
 
     var info = this.props.info;
     return _react2.default.createElement(
       "div",
-      { className: "col-xs-7" },
+      { className: this.props.className },
       _react2.default.createElement(
         "h2",
         { className: 'text-' + info.colorName },
@@ -25344,7 +25537,7 @@ var EmbedStage = _react2.default.createClass({
           "div",
           { className: this.p({ 'embed-responsive': '3by2' }), style: { backgroundColor: 'black' } },
           _react2.default.createElement("iframe", { ref: function ref(_ref) {
-              return _this3.iFrame = _ref;
+              return _this4.iFrame = _ref;
             }, src: statics.hfp + info.id })
         )
       )
@@ -25360,7 +25553,7 @@ var EmbedYoutube = _react2.default.createClass({
     var info = this.props.info;
     return _react2.default.createElement(
       "div",
-      { className: "col-xs-5" },
+      { className: this.props.className },
       _react2.default.createElement(
         "h3",
         { className: 'text-' + info.colorName },
@@ -25371,7 +25564,12 @@ var EmbedYoutube = _react2.default.createClass({
         _react2.default.createElement("span", { className: "fa fa-meh-o" }),
         _react2.default.createElement("span", { className: "fa fa-long-arrow-right" }),
         _react2.default.createElement("span", { className: "fa fa-lightbulb-o" }),
-        _react2.default.createElement("span", { className: "fa fa-smile-o" })
+        _react2.default.createElement("span", { className: "fa fa-smile-o" }),
+        _react2.default.createElement(
+          "small",
+          { className: info.showDescription ? 'text-muted m-l-1' : 'collapse' },
+          statics.descriptions.youtube
+        )
       ),
       _react2.default.createElement(
         "div",
@@ -25407,6 +25605,6 @@ var Choise = _react2.default.createClass({
 
 exports.default = Tutorials;
 
-},{"./merger":235,"./section":236,"react":231,"react-scroll":94}]},{},[234]);
+},{"./confirm":235,"./merger":236,"./section":237,"react":231,"react-scroll":94}]},{},[234]);
 
 //# sourceMappingURL=app.js.map

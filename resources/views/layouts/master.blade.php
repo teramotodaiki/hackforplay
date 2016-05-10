@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="@yield('css')">
   </head>
   <body>
+    @yield('ga')
     <div id="@yield('id')"></div>
     <script src="@yield('bootstrap')"></script>
     <script src="@yield('js')"></script>
