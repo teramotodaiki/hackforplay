@@ -157,9 +157,9 @@ const Level = React.createClass({
       <Section name={'Level-' + info.id} height="100vh"
         style={{ backgroundColor: statics.colors.levels[info.id] }}>
         <div className="container-fluid">
-          <div className={this.p({ row: 'horizontal-justify xs-bottom' })}>
-            <EmbedStage info={info} />
-            <EmbedYoutube info={info} />
+          <div className={this.p({ row: 'xs-bottom' })}>
+            <EmbedStage className="col-sm-7 col-xs-12" info={info} />
+            <EmbedYoutube className="col-sm-5 col-xs-12" info={info} />
           </div>
         </div>
         <div className="text-xs-center">
@@ -219,7 +219,7 @@ const EmbedStage = React.createClass({
   render() {
     const info = this.props.info;
     return (
-      <div className="col-xs-7">
+      <div className={this.props.className}>
         <h2 className={'text-' + info.colorName}>
           <span className="fa fa-gamepad" />-{info.id} {info.title}
         </h2>
@@ -238,7 +238,7 @@ const EmbedYoutube = React.createClass({
   render() {
     const info = this.props.info;
     return (
-      <div className="col-xs-5">
+      <div className={this.props.className}>
         <h3 className={'text-' + info.colorName}>
           <span className="fa fa-question"></span>
           <span className="fa fa-frown-o"></span>
