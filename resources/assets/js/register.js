@@ -1,10 +1,38 @@
 import React from 'react';
-import { scroller } from "react-scroll";
+import { Link as ScrollLink, scroller } from "react-scroll";
 import Confirm from "./confirm";
 
 import Merger from "./merger";
-import { Section, Scroller } from "./section";
+import { Section } from "./section";
 
+const statics = {
+
+  landing: {
+    header: "Creator's License",
+    description: ""
+  },
+  gender: {
+    header: "Choose your icon",
+    description: ""
+  },
+  nickname: {
+    header: "Nickname",
+    description: ""
+  },
+  uID: {
+    header: "ID",
+    description: ""
+  },
+  password: {
+    header: "Password",
+    description: ""
+  },
+  result: {
+    header: "",
+    description: ""
+  }
+
+};
 
 export default class Register extends React.Component {
   constructor(props) {
@@ -14,12 +42,12 @@ export default class Register extends React.Component {
   render() {
     return (
       <div>
-        <Landing />
-        <Gender />
-        <Nickname />
-        <ID />
-        <Password />
-        <Result />
+        <Landing {...statics.landing} />
+        <Gender {...statics.gender } />
+        <Nickname {...statics.nickname } />
+        <UID {...statics.uID } />
+        <Password {...statics.password } />
+        <Result {...statics.result } />
       </div>
     );
   }
@@ -28,7 +56,8 @@ export default class Register extends React.Component {
 const Landing = (props) => {
   return (
     <Section name="Landing">
-
+      <h1>{props.header}</h1>
+      <Arrow to="Gender" />
     </Section>
   );
 };
@@ -36,7 +65,8 @@ const Landing = (props) => {
 const Gender = (props) => {
   return (
     <Section name="Gender">
-
+      <h1>{props.header}</h1>
+      <Arrow to="Nickname" />
     </Section>
   );
 };
@@ -44,15 +74,17 @@ const Gender = (props) => {
 const Nickname = (props) => {
   return (
     <Section name="Nickname">
-
+      <h1>{props.header}</h1>
+      <Arrow to="UID" />
     </Section>
   );
 };
 
-const ID = (props) => {
+const UID = (props) => {
   return (
-    <Section name="ID">
-
+    <Section name="UID">
+      <h1>{props.header}</h1>
+      <Arrow to="Password" />
     </Section>
   );
 };
@@ -60,7 +92,8 @@ const ID = (props) => {
 const Password = (props) => {
   return (
     <Section name="Password">
-
+      <h1>{props.header}</h1>
+      <Arrow to="Result" />
     </Section>
   );
 };
@@ -68,7 +101,17 @@ const Password = (props) => {
 const Result = (props) => {
   return (
     <Section name="Result">
-
+      <h1>{props.header}</h1>
     </Section>
   );
+};
+
+const Arrow = (props) => {
+  return (
+    <ScrollLink to={props.to} smooth={true}>
+      <span className="btn btn-lg">
+        <span className="fa fa-arrow-down fa-2x"></span>
+      </span>
+    </ScrollLink>
+  )
 };
