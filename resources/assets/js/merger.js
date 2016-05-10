@@ -2,7 +2,7 @@
 const Merger = {
   // Merge styles, props, and others
   m() {
-    return Object.assign.apply(null, Array.from(arguments));
+    return Object.assign.apply(null, Array.from(arguments).filter((item) => item != null));
   },
   // { btn: ['success', 'lg'] } convert to 'btn btn-sucess btn-lg'
   p() {

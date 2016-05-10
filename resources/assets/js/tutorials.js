@@ -1,5 +1,6 @@
 import React from 'react';
 import { scroller } from "react-scroll";
+import Confirm from "./confirm";
 
 import Merger from "./merger";
 import { Section, Scroller } from "./section";
@@ -7,6 +8,10 @@ import { Section, Scroller } from "./section";
 const statics = {
   title: 'The Beginning',
   hintTitle: 'How to solve',
+  descriptions: {
+    youtube: 'Here is a hint movie',
+    next: "After cleared this stage then let's go to next stage!"
+  },
   style: {
     backgroundColor: 'rgb(190,233,213)'
   },
@@ -24,8 +29,18 @@ const statics = {
     ]
   },
   hfp: 'embed/?type=stage&id=',
-  yt: 'https://www.youtube.com/embed/'
-
+  yt: 'https://www.youtube.com/embed/',
+  dialog: {
+    header: 'Awesome!!',
+    description : 'There are 500+ stages in HackforPlay! Try it out',
+    button: 'Play more'
+  },
+  confirm: {
+    title: 'Did you clear this stage?',
+    description: "Let's go to the next stage! Of cource you can return this stage later"
+  },
+  shareTweetURL: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent('https://hackforplay.xyz/tutorials'),
+  searchURL: 'https://twitter.com/search?q=hackforplay'
 };
 
 // App
@@ -34,7 +49,7 @@ const Tutorials = React.createClass({
   getInitialState() {
     return {
       levels: [
-        { id: 1, title: 'Begining', youtube: 'od61KliPeJI',
+        { id: 1, title: 'Begining', youtube: 'od61KliPeJI', showDescription: true,
           colorName: statics.colors.main, linkTo: 'Level-2' },
         { id: 2, title: 'Secondly', youtube: 'mLBb7WQTjoo',
           colorName: statics.colors.main, linkTo: 'Level-3' },
@@ -50,13 +65,6 @@ const Tutorials = React.createClass({
       activeLevelId: null
     }
   },
-  componentDidMount() {
-    scroller.scrollTo('Landing', {
-      duration: 0,
-      delay: 0,
-      smooth: true,
-    });
-  },
   changeActiveState(id, state) {
     // EmbedStage ifame が focus または blus された時のEvent Hundler
     if (state) {
@@ -65,6 +73,12 @@ const Tutorials = React.createClass({
       this.setState({ activeLevelId: null });
     }
   },
+  confirm(options) {
+    return this.refs.confirm.show(options);
+  },
+  setConfirmOption(options) {
+    this.setState({ confirmOptions: options });
+  },
   render () {
     const levels = this.state.levels.map((item) => {
       return <Level
@@ -72,13 +86,17 @@ const Tutorials = React.createClass({
           changeActiveState: this.changeActiveState,
           isActive: this.state.activeLevelId===item.id
         })}
+        confirm={this.confirm}
         key={item.id} />;
     });
     return (
-      <div style={statics.style}>
-        {levels}
-        <Dialog />
-        <Landing />
+      <div>
+        <Confirm ref="confirm" {...statics.confirm} set={this.setConfirmOption} />
+        <div style={statics.style}>
+          <Landing />
+          {levels}
+          <Dialog {...statics.dialog} />
+        </div>
       </div>
     );
   }
@@ -94,9 +112,9 @@ const Landing = React.createClass({
           <h1>{statics.title}</h1>
         </div>
         <div className={this.p({ text: 'xs-center ' + statics.colors.main})}>
-          <Scroller to="Level-1" duration={1500}>
-            <span className="btn btn-link">
-              <span className="fa fa-rocket fa-10x fa-rotate-315" />
+          <Scroller to="Level-1">
+            <span className={this.p({ btn: statics.colors.main + '-outline lg' })}>
+              <span className="fa fa-arrow-down fa-2x"></span>
             </span>
           </Scroller>
         </div>
@@ -107,23 +125,47 @@ const Landing = React.createClass({
 
 const Level = React.createClass({
   mixins: [Merger],
+  onClick() {
+    const confirm = this.props.confirm;
+    confirm().then(() => {
+      scroller.scrollTo(this.props.info.linkTo, { smooth: true });
+    });
+  },
   render() {
     const info = this.props.info;
+    const next = info.showDescription ? (
+      <div>
+        <p>
+          <small className="text-muted m-l-1">
+            {statics.descriptions.next}
+          </small>
+        </p>
+        <button
+          onClick={this.onClick}
+          className={this.p({ btn: info.colorName + '-outline lg' })}
+          >
+          <span className="fa fa-arrow-down fa-2x"></span>
+        </button>
+      </div>
+    ) : (
+      <Scroller to={info.linkTo}>
+        <span className={this.p({ btn: info.colorName + '-outline lg' })}>
+          <span className="fa fa-arrow-down fa-2x"></span>
+        </span>
+      </Scroller>
+    );
+
     return (
       <Section name={'Level-' + info.id} height="100vh"
         style={{ backgroundColor: statics.colors.levels[info.id] }}>
         <div className="container-fluid">
-          <div className={this.p({ row: 'horizontal-justify xs-bottom' })}>
-            <EmbedStage info={info} />
-            <EmbedYoutube info={info} />
+          <div className={this.p({ row: 'xs-bottom' })}>
+            <EmbedStage className="col-sm-7 col-xs-12" info={info} />
+            <EmbedYoutube className="col-sm-5 col-xs-12" info={info} />
           </div>
         </div>
         <div className="text-xs-center">
-          <Scroller to={info.linkTo}>
-            <span className={this.p({ btn: info.colorName + '-outline lg' })}>
-              <span className="fa fa-arrow-down fa-2x"></span>
-            </span>
-          </Scroller>
+          {next}
         </div>
       </Section>
     );
@@ -133,30 +175,31 @@ const Level = React.createClass({
 const Dialog = React.createClass({
   mixins: [Merger],
   render() {
+    const backgroundStyle = {
+      backgroundImage: 'url(image/tutorials-dialog.png)',
+      backgroundPosition: 'center',
+      backgroundSize: 'cover'
+    };
     return (
-      <Section name="Dialog" height="100vh">
-        <div className={this.p({ text: 'xs-center ' + statics.colors.main })}>
-          ☆*:.｡.<span className="fa fa-trophy fa-10x" />.｡.:*☆
-        </div>
-        <div className={this.p({ text: 'xs-center ' + statics.colors.main })}>
-          <p>
-            Play more <span className="fa fa-gamepad fa-lg" />
-          </p>
-          <a href="r" className={this.p({ btn: statics.colors.main + '-outline lg' })}>
-            <span className="fa fa-users fa-4x" />
-          </a>
-        </div>
-        <div className={this.p({ text: 'xs-center ' + statics.colors.main })}>
-          <p>
-            or,<br />Make your
-            <span className="fa fa-stack fa-lg">
-              <i className="fa fa-sign-language fa-stack-2x" />
-              <i className="fa fa-gamepad fa-stack-1x fa-inverse" />
-            </span>
-          </p>
-          <a href="getaccount" className={this.p({ btn: statics.colors.main + '-outline lg' })}>
-            <span className="fa fa-user-plus fa-2x" />
-          </a>
+      <Section name="Dialog" height="100vh" style={backgroundStyle}>
+        <div />
+        <div />
+        <div className="col-xs-center">
+          <div className="card card-block text-xs-center p-b-0">
+            <h1 className="card-title">{this.props.header}</h1>
+            <p className="card-text">{this.props.description}</p>
+            <a href="r" className={this.p({ btn: 'primary lg' })}>
+              <h2>{this.props.button}</h2>
+            </a>
+            <div className="m-t-2">
+              <a target="_blank" href={statics.shareTweetURL}>
+                <span className="fa fa-twitter-square fa-3x" />
+              </a>
+              <a target="_blank" href={statics.searchURL} className="btn btn-link m-b-2">
+                #hackforplay
+              </a>
+            </div>
+          </div>
         </div>
       </Section>
     );
@@ -186,7 +229,7 @@ const EmbedStage = React.createClass({
   render() {
     const info = this.props.info;
     return (
-      <div className="col-xs-7">
+      <div className={this.props.className}>
         <h2 className={'text-' + info.colorName}>
           <span className="fa fa-gamepad" />-{info.id} {info.title}
         </h2>
@@ -205,7 +248,7 @@ const EmbedYoutube = React.createClass({
   render() {
     const info = this.props.info;
     return (
-      <div className="col-xs-5">
+      <div className={this.props.className}>
         <h3 className={'text-' + info.colorName}>
           <span className="fa fa-question"></span>
           <span className="fa fa-frown-o"></span>
@@ -215,6 +258,9 @@ const EmbedYoutube = React.createClass({
           <span className="fa fa-long-arrow-right"></span>
           <span className="fa fa-lightbulb-o"></span>
           <span className="fa fa-smile-o"></span>
+          <small className={info.showDescription ? 'text-muted m-l-1' : 'collapse'}>
+            {statics.descriptions.youtube}
+          </small>
         </h3>
         <div className={this.p({ 'embed-responsive': '16by9' })} style={{backgroundColor: 'black'}}>
           <iframe src={statics.yt + info.youtube}></iframe>
