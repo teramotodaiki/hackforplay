@@ -8,7 +8,8 @@ const Section = React.createClass({
   getDefaultProps() {
     return {
       style: {},
-      height: "100vh"
+      height: "100vh",
+      rowClass: "vertical-justify xs-center"
     }
   },
   render () {
@@ -19,7 +20,7 @@ const Section = React.createClass({
         name={this.props.name}
         style={style}>
         <div
-          className={this.p({ row: 'vertical-justify' })}
+          className={this.p({ row: this.props.rowClass })}
           style={{ height: "100%" }}>
           {this.props.children}
         </div>
