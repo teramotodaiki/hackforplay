@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link as ScrollLink, scroller } from "react-scroll";
 import Confirm from "./confirm";
+import classNames from "classNames";
 
 import Merger from "./merger";
 import { Section } from "./section";
