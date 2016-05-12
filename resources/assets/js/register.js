@@ -37,17 +37,26 @@ const statics = {
 export default class Register extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      // Default User
+      user: {
+        gender: 'male',
+        nickname: '',
+        uID: '11111111', // Account.Email
+        password: '1111' // Account.Hashed
+      }
+    }
   }
 
   render() {
     return (
       <div>
-        <Landing {...statics.landing} />
-        <Gender {...statics.gender } />
-        <Nickname {...statics.nickname } />
-        <UID {...statics.uID } />
-        <Password {...statics.password } />
-        <Result {...statics.result } />
+        <Landing {...statics.landing} {...this.state.user} />
+        <Gender {...statics.gender } {...this.state.user} />
+        <Nickname {...statics.nickname } {...this.state.user} />
+        <UID {...statics.uID } {...this.state.user} />
+        <Password {...statics.password } {...this.state.user} />
+        <Result {...statics.result } {...this.state.user} />
       </div>
     );
   }
