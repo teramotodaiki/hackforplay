@@ -120,25 +120,16 @@ const Gender = (props) => {
 const Nickname = (props) => {
   const len = props.nickname.length;
   const contains = props.range[0] <= len && len <= props.range[1];
-  const group = classNames('m-x-auto', 'p-x-1', 'form-group', {
-    'has-success': contains,
-    'has-warning': !contains
-  });
-  const input = classNames('form-control', 'form-control-lg', {
-    'form-control-success': contains,
-    'form-control-warning': !contains
-  });
+  const status = contains ? 'success' : 'warning';
   return (
     <Section name="Nickname">
       <h1>{props.header}</h1>
-      <div className={group} style={{ maxWidth: `${props.range[1]}rem` }} >
-        <label className="form-control-label">{props.description}</label>
-        <input
-          type="text"
-          className={input}
-          value={props.nickname}
-          onChange={(e) => props.update({ nickname: e.target.value })} />
-      </div>
+      <InputGroup
+        status={status}
+        description={props.description}
+        value={props.nickname}
+        updateValue={(value) => props.update({ nickname: value })}
+        />
       <Arrow to="UID" />
     </Section>
   );
@@ -148,29 +139,20 @@ const UID = (props) => {
   const len = props.uID.length;
   const contains = props.range[0] <= len && len <= props.range[1];
   const used = false; // Check in Server
-  const group = classNames('m-x-auto', 'p-x-1', 'form-group', {
-    'has-success': contains && !used,
-    'has-danger': !(contains && !used)
-  });
-  const input = classNames('form-control', 'form-control-lg', {
-    'form-control-success': contains && !used,
-    'form-control-danger': !(contains && !used)
-  });
+  const status = contains && !used ? 'success' : 'danger';
   const hint = classNames('text-danger', {
     'collapse': !used
   });
   return (
     <Section name="UID">
       <h1>{props.header}</h1>
-      <div className={group} style={{ maxWidth: '30rem' }} >
-        <label className="form-control-label">{props.description}</label>
-        <input
-          type="text"
-          className={input}
-          value={props.uID}
-          onChange={(e) => props.update({ uID: e.target.value })} />
-      </div>
-      <p className={hint}>{props.hintWhenUsed}</p>
+      <InputGroup
+        status={status}
+        description={props.description}
+        value={props.uID}
+        updateValue={(value) => props.update({ uID: value })}
+        />
+        <p className={hint}>{props.hintWhenUsed}</p>
       <Arrow to="Password" />
     </Section>
   );
@@ -191,6 +173,28 @@ const Result = (props) => {
       <h1>{props.header}</h1>
     </Section>
   );
+};
+
+const InputGroup = (props) => {
+  const group = classNames('form-group', `has-${props.status}`);
+  const input = classNames('form-control', 'form-control-lg', `form-control-${props.status}`);
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col-xs-12 col-lg-6 col-lg-offset-3">
+          <div className={group}>
+            <label className="form-control-label">{props.description}</label>
+            <input
+              type="text"
+              className={input}
+              value={props.value}
+              onChange={(e) => props.updateValue(e.target.value)} />
+          </div>
+          {props.children}
+        </div>
+      </div>
+    </div>
+  )
 };
 
 const Arrow = (props) => {
