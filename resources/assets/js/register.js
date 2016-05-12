@@ -24,8 +24,11 @@ const statics = {
     range: [3, 30]
   },
   uID: {
-    header: "ID",
-    description: ""
+    header: "Type your login ID",
+    description: "You can use alphabet, numbers and underscore (_)",
+    range: [3, 99],
+    allowed: /\w+/,
+    hintWhenUsed: "This ID has already used by someone, you can't use this"
   },
   password: {
     header: "Password",
@@ -142,9 +145,32 @@ const Nickname = (props) => {
 };
 
 const UID = (props) => {
+  const len = props.uID.length;
+  const contains = props.range[0] <= len && len <= props.range[1];
+  const used = false; // Check in Server
+  const group = classNames('m-x-auto', 'p-x-1', 'form-group', {
+    'has-success': contains && !used,
+    'has-danger': !(contains && !used)
+  });
+  const input = classNames('form-control', 'form-control-lg', {
+    'form-control-success': contains && !used,
+    'form-control-danger': !(contains && !used)
+  });
+  const hint = classNames('text-danger', {
+    'collapse': !used
+  });
   return (
     <Section name="UID">
       <h1>{props.header}</h1>
+      <div className={group} style={{ maxWidth: '30rem' }} >
+        <label className="form-control-label">{props.description}</label>
+        <input
+          type="text"
+          className={input}
+          value={props.uID}
+          onChange={(e) => props.update({ uID: e.target.value })} />
+      </div>
+      <p className={hint}>{props.hintWhenUsed}</p>
       <Arrow to="Password" />
     </Section>
   );
