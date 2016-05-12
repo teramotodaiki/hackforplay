@@ -31,8 +31,9 @@ const statics = {
     hintWhenUsed: "This ID has already used by someone, you can't use this"
   },
   password: {
-    header: "Password",
-    description: ""
+    header: "Set login password",
+    description: "You must keep it secret from anyone! (at least 6 length)",
+    range: [6, 99]
   },
   result: {
     header: "",
@@ -50,7 +51,8 @@ export default class Register extends React.Component {
         gender: 'male',
         nickname: '',
         uID: '11111111', // Account.Email
-        password: '1111' // Account.Hashed
+        password: '', // Account.Hashed
+        hide: false // Hide Password
       }
     }
     this.update = this.update.bind(this);
@@ -159,9 +161,26 @@ const UID = (props) => {
 };
 
 const Password = (props) => {
+  const len = props.password.length;
+  const contains = props.range[0] <= len && len <= props.range[1];
+  const status = contains ? 'success' : 'danger';
+  const hide = (
+    <span
+      className={'fa fa-eye' + (props.hide ? '-slash' : '')}
+      onClick={() => props.update({ hide: !props.hide })}
+       />
+  );
   return (
     <Section name="Password">
       <h1>{props.header}</h1>
+      <InputGroup
+        status={status}
+        description={props.description}
+        value={props.password}
+        updateValue={(value) => props.update({ password: value })}
+        left={hide}
+        type={props.hide ? 'password' : 'text'}
+        />
       <Arrow to="Result" />
     </Section>
   );
@@ -176,19 +195,34 @@ const Result = (props) => {
 };
 
 const InputGroup = (props) => {
-  const group = classNames('form-group', `has-${props.status}`);
-  const input = classNames('form-control', 'form-control-lg', `form-control-${props.status}`);
+  const groupClass = classNames('form-group', `has-${props.status}`);
+  const left = props.left ? (<div className="input-group-addon">{props.left}</div>) : null;
+  const right = props.right ? (<div className="input-group-addon">{props.right}</div>) : null;
+  const inputClass = classNames('form-control', `form-control-${props.status}`, {
+    'form-control-lg': !(left || right)
+  });
+  const input = (
+    <input
+      type={props.type || 'text'}
+      className={inputClass}
+      value={props.value}
+      placeholder={props.description}
+      onChange={(e) => props.updateValue(e.target.value)}
+      />
+  );
+  const line = (left || right) ? (
+    <div className="input-group input-group-lg">
+      {left}
+      {input}
+      {right}
+    </div>
+  ) : input;
   return (
     <div className="container">
       <div className="row">
         <div className="col-xs-12 col-lg-6 col-lg-offset-3">
-          <div className={group}>
-            <label className="form-control-label">{props.description}</label>
-            <input
-              type="text"
-              className={input}
-              value={props.value}
-              onChange={(e) => props.updateValue(e.target.value)} />
+          <div className={groupClass}>
+            {line}
           </div>
           {props.children}
         </div>
