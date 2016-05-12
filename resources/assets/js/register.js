@@ -19,8 +19,9 @@ const statics = {
     female: "m/icon_w.png"
   },
   nickname: {
-    header: "Nickname",
-    description: ""
+    header: "Type your nickname",
+    description: "Should be more than 3 characters and less than 30 characters",
+    range: [3, 30]
   },
   uID: {
     header: "ID",
@@ -114,9 +115,27 @@ const Gender = (props) => {
 };
 
 const Nickname = (props) => {
+  const len = props.nickname.length;
+  const contains = props.range[0] <= len && len <= props.range[1];
+  const group = classNames('m-x-auto', 'p-x-1', 'form-group', {
+    'has-success': contains,
+    'has-warning': !contains
+  });
+  const input = classNames('form-control', 'form-control-lg', {
+    'form-control-success': contains,
+    'form-control-warning': !contains
+  });
   return (
     <Section name="Nickname">
       <h1>{props.header}</h1>
+      <div className={group} style={{ maxWidth: `${props.range[1]}rem` }} >
+        <label className="form-control-label">{props.description}</label>
+        <input
+          type="text"
+          className={input}
+          value={props.nickname}
+          onChange={(e) => props.update({ nickname: e.target.value })} />
+      </div>
       <Arrow to="UID" />
     </Section>
   );
