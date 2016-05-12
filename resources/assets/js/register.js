@@ -14,7 +14,9 @@ const statics = {
   },
   gender: {
     header: "Choose your icon",
-    description: ""
+    description: "",
+    male: "m/icon_m.png",
+    female: "m/icon_w.png"
   },
   nickname: {
     header: "Nickname",
@@ -47,17 +49,26 @@ export default class Register extends React.Component {
         password: '1111' // Account.Hashed
       }
     }
+    this.update = this.update.bind(this);
+  }
+
+  update(value) {
+    this.setState((previous) => {
+      return {
+        user: Object.assign(previous.user, value)
+      }
+    });
   }
 
   render() {
     return (
       <div>
-        <Landing {...statics.landing} {...this.state.user} />
-        <Gender {...statics.gender } {...this.state.user} />
-        <Nickname {...statics.nickname } {...this.state.user} />
-        <UID {...statics.uID } {...this.state.user} />
-        <Password {...statics.password } {...this.state.user} />
-        <Result {...statics.result } {...this.state.user} />
+        <Landing {...statics.landing} {...this.state.user} update={this.update} />
+        <Gender {...statics.gender } {...this.state.user} update={this.update} />
+        <Nickname {...statics.nickname } {...this.state.user} update={this.update} />
+        <UID {...statics.uID } {...this.state.user} update={this.update} />
+        <Password {...statics.password } {...this.state.user} update={this.update} />
+        <Result {...statics.result } {...this.state.user} update={this.update} />
       </div>
     );
   }
@@ -73,9 +84,30 @@ const Landing = (props) => {
 };
 
 const Gender = (props) => {
+  const normal = {
+    borderRadius: "50%",
+    minWidth: "6rem",
+    margin: "2rem",
+    border: ".4rem solid transparent"
+  };
+  const active = Object.assign({}, normal, {
+    border: ".4rem solid #66afe9"
+  });
   return (
     <Section name="Gender">
       <h1>{props.header}</h1>
+      <div>
+        <img
+          src={props.male}
+          style={props.gender === 'male' ? active : normal}
+          onClick={() => props.update({ gender: 'male' })}
+          />
+        <img
+          src={props.female}
+          style={props.gender === 'female' ? active : normal}
+          onClick={() => props.update({ gender: 'female' })}
+          />
+      </div>
       <Arrow to="Nickname" />
     </Section>
   );
