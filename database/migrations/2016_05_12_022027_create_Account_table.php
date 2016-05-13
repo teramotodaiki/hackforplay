@@ -17,8 +17,8 @@ class CreateAccountTable extends Migration
         {
           $table->bigIncrements('ID');
           $table->bigInteger('UserID')->unsigned();
-          $table->string('Type', 10);
-          $table->string('State', 10);
+          $table->string('Type', 20);
+          $table->string('State', 20);
           $table->string('Email', 100);
           $table->string('Hashed', 100);
           $table->bigInteger('ExternalID')->nullable();
