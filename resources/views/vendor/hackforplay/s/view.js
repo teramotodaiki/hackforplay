@@ -89,7 +89,9 @@ $(function(){
 				result.values[0] = result.values[headIndex];
 				result.values[headIndex] = tmp;
 
-				result.values.forEach(function(item) {
+				result.values.filter(function (item) {
+					return !!item;
+				}).forEach(function(item) {
 
 					$(this).append(
 						$('<label>').addClass('radio-inline').append(
