@@ -441,9 +441,6 @@
     // ターゲットが指定されていない場合はHack.playerになる
     Hack.camera.target = Hack.camera.target || Hack.player;
 
-  	// enchant.Map.prototype.redraw 変更前にマップが読み込まれてるので再描画
-  	Hack.map.bmap.redraw();
-
   });
 
 
