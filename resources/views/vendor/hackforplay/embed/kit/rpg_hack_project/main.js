@@ -3,7 +3,7 @@
 (function (mod) {
 	if (typeof define === "function" && define.amd) {
 
-		define(['../../modules/enchant','../../modules/hack','./rpgobjects','./smartassets'], mod);
+		define(['../../modules/enchant','../../modules/hack','./rpgobjects','./smartassets','./camera'], mod);
 	} else {
 		window.addEventListener('load', function () {
 			mod();
@@ -447,65 +447,5 @@
 			return _min + Math.random() * _sub;
 		}
 	};
-
-	/**
-	 * Hack.camera
-	 * 2D, 3Dで動作するカメラの概念
-	 * Mapの概念が絡むためひとまずRPG独自仕様として実装
-	 */
-
-	// カメラ
-	Hack.camera = {
-		// 見る対象
-		target: null,
-		enabled: true
-	};
-
-	// 値を範囲内に収める
-	Math.clamp = function(value, min, max) {
-		return Math.max(min, Math.min(max, value));
-	};
-
-	game.on('enterframe', function() {
-
-		var map = Hack.map;
-		if (!Hack.camera.enabled) return;
-
-		// ターゲットがいないならプレイヤー
-		var inMap = function (item) { return item && item.map === map && item.parentNode; };
-		var target = inMap(Hack.camera.target) 	? Hack.camera.target :
-									inMap(Hack.player) 				? Hack.player : undefined;
-		if (!target) return;
-
-		// プレイヤーの位置
-		var plX = target.x - target.offset.x + map.tileWidth / 2;
-		var plY = target.y - target.offset.y + map.tileHeight / 2;
-
-		// 画面の中心に
-		var mX = game.width / 2 - plX;
-		var mY = game.height / 2 - plY;
-
-		// 画面外を描画しないように調整
-		mX = Math.clamp(mX, game.width - map.width, 0);
-		mY = Math.clamp(mY, game.height - map.height, 0);
-
-		// マップが画面より小さい場合
-		if (map.width < game.width) {
-			mX = (game.width - map.width) / 2;
-		}
-		if (map.height < game.height) {
-			mY = (game.height - map.height) / 2;
-		}
-
-		// マップの位置をプレイヤーに合わせる
-		var move = function(map, x, y) {
-			map.fmap.x = map.bmap.x = map.scene.x = x;
-			map.fmap.y = map.bmap.y = map.scene.y = y;
-		};
-
-		// マップを移動
-		move(map, mX, mY);
-	});
-
 
 });
