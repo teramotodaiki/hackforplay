@@ -3,7 +3,7 @@
 (function (mod) {
 	if (typeof define === "function" && define.amd) {
 
-		define(['../../modules/enchant','../../modules/hack','./rpgobjects','./smartassets'], mod);
+		define(['../../modules/enchant','../../modules/hack','./rpgobjects','./smartassets','./camera'], mod);
 	} else {
 		window.addEventListener('load', function () {
 			mod();
