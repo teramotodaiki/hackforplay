@@ -7,6 +7,10 @@
 	}
 })(function () {
 
+  Math.clamp = function(value, min, max) {
+		return Math.max(min, Math.min(max, value));
+	};
+
 	var for2d = function(x, y, callback) {
 		for (var a = 0; a < x; ++a) {
 			for (var b = 0; b < y; ++b) {
@@ -425,18 +429,17 @@
 
 	});
 
+  var camera = new Camera();
+  camera.resize(game.width, game.height);
+  camera.border = false;
+  camera.zoom = 1.0;
+
+  Hack.camera = camera;
 
   game.on('load', function () {
 
-    Hack.camera.enabled = false;
-
-    var defaultCamera = new Camera();
-  	defaultCamera.resize(480, 320);
-  	defaultCamera.target = Hack.player;
-  	defaultCamera.border = false;
-  	defaultCamera.zoom = 1.0;
-
-  	Hack.defaultCamera = defaultCamera;
+    // ターゲットが指定されていない場合はHack.playerになる
+    Hack.camera.target = Hack.camera.target || Hack.player;
 
   	// enchant.Map.prototype.redraw 変更前にマップが読み込まれてるので再描画
   	Hack.map.bmap.redraw();
