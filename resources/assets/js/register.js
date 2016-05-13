@@ -52,10 +52,13 @@ export default class Register extends React.Component {
         nickname: '',
         uID: '11111111', // Account.Email
         password: '', // Account.Hashed
-        hide: false // Hide Password
+        hide: false, // Hide Password
+        posting: false, // Posting
+        result: null, // Post result
       }
     }
     this.update = this.update.bind(this);
+    this.post = this.post.bind(this);
   }
 
   update(value) {
@@ -66,6 +69,19 @@ export default class Register extends React.Component {
     });
   }
 
+  post() {
+    this.update({ loading: true });
+    // Test 3000ms async
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({ message: 'success!' });
+        this.update({ loading: false });
+      }, 3000);
+    })
+    .then((value) => this.update({ result: value }))
+    .catch((err) => this.update({ result: err }));
+  }
+
   render() {
     return (
       <div>
@@ -73,7 +89,7 @@ export default class Register extends React.Component {
         <Gender {...statics.gender } {...this.state.user} update={this.update} />
         <Nickname {...statics.nickname } {...this.state.user} update={this.update} />
         <UID {...statics.uID } {...this.state.user} update={this.update} />
-        <Password {...statics.password } {...this.state.user} update={this.update} />
+        <Password {...statics.password } {...this.state.user} update={this.update} post={this.post} />
         <Result {...statics.result } {...this.state.user} update={this.update} />
       </div>
     );
@@ -181,15 +197,25 @@ const Password = (props) => {
         left={hide}
         type={props.hide ? 'password' : 'text'}
         />
-      <Arrow to="Result" />
+      <Arrow to="Result" onClick={() => props.post()} />
     </Section>
   );
 };
 
 const Result = (props) => {
+  const loading = props.loading ? (
+    <div>
+      <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
+    </div>
+  ) : null;
+  const dialog = (
+    <div>
+      <h1>{props.result !== null ? props.result.message : 'no result'}</h1>
+    </div>
+  );
   return (
     <Section name="Result">
-      <h1>{props.header}</h1>
+      {loading || dialog}
     </Section>
   );
 };
@@ -233,7 +259,7 @@ const InputGroup = (props) => {
 
 const Arrow = (props) => {
   return (
-    <ScrollLink to={props.to} smooth={true}>
+    <ScrollLink to={props.to} smooth={true} onClick={props.onClick}>
       <span className="btn btn-lg">
         <span className="fa fa-arrow-down fa-2x"></span>
       </span>
