@@ -5,14 +5,23 @@ import Merger from "./merger";
 
 const Section = React.createClass({
   mixins: [Merger],
+  getDefaultProps() {
+    return {
+      style: {},
+      height: "100vh",
+      rowClass: "vertical-justify xs-stretch",
+      className: "text-xs-center"
+    }
+  },
   render () {
+    const style = this.m(this.props.style, { height: this.props.height });
     return (
       <Element
         className="container-fluid"
         name={this.props.name}
-        style={this.m(this.props.style || {}, { height: this.props.height })}>
+        style={style}>
         <div
-          className={this.p({ row: 'vertical-justify' })}
+          className={this.p({ row: this.props.rowClass }) + ' ' + this.props.className}
           style={{ height: "100%" }}>
           {this.props.children}
         </div>

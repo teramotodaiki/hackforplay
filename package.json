@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "bootstrap": ">=4.0.0-alpha",
+    "classnames": "^2.2.5",
     "font-awesome": "^4.6.1",
     "laravel-elixir": "^5.0.0",
     "react-scroll": "^1.0.15",
