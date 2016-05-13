@@ -25779,13 +25779,18 @@ var Landing = _react2.default.createClass({
     return _react2.default.createElement(
       _section.Section,
       { name: "Landing", height: "100vh" },
+      _react2.default.createElement("div", null),
       _react2.default.createElement(
         "div",
-        { className: this.p({ text: 'xs-center ' + statics.colors.main }) },
+        { className: "container" },
         _react2.default.createElement(
-          "h1",
-          null,
-          statics.title
+          "div",
+          { className: "row" },
+          _react2.default.createElement(
+            "div",
+            { className: "col-xs-12 col-lg-6 col-lg-offset-3" },
+            _react2.default.createElement("img", { src: "image/tutorials-landing.png", className: "img-fluid" })
+          )
         )
       ),
       _react2.default.createElement(

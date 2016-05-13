@@ -108,8 +108,13 @@ const Landing = React.createClass({
   render() {
     return (
       <Section name="Landing" height="100vh">
-        <div className={this.p({ text: 'xs-center ' + statics.colors.main})}>
-          <h1>{statics.title}</h1>
+        <div></div>
+        <div className="container">
+          <div className="row">
+            <div className="col-xs-12 col-lg-6 col-lg-offset-3">
+              <img src="image/tutorials-landing.png" className="img-fluid" />
+            </div>
+          </div>
         </div>
         <div className={this.p({ text: 'xs-center ' + statics.colors.main})}>
           <Scroller to="Level-1">
