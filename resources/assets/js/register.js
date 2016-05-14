@@ -2,6 +2,7 @@ import React from 'react';
 import { Link as ScrollLink, scroller } from "react-scroll";
 import Confirm from "./confirm";
 import classNames from "classNames";
+import request from "./promised-xhr.js";
 
 import Merger from "./merger";
 import { Section } from "./section";
@@ -53,9 +54,8 @@ export default class Register extends React.Component {
         uID: '11111111', // Account.Email
         password: '', // Account.Hashed
         hide: false, // Hide Password
-        posting: false, // Posting
-        result: null, // Post result
-      }
+      },
+      response: null, // status, header, body (null is loading)
     }
     this.update = this.update.bind(this);
     this.post = this.post.bind(this);
@@ -70,16 +70,13 @@ export default class Register extends React.Component {
   }
 
   post() {
-    this.update({ loading: true });
-    // Test 3000ms async
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({ message: 'success!' });
-        this.update({ loading: false });
-      }, 3000);
+    this.setState({ response: null });
+    const setter = (value) => this.setState({ response: value });
+
+    return request.post('users', {
+      data: this.state.user
     })
-    .then((value) => this.update({ result: value }))
-    .catch((err) => this.update({ result: err }));
+    .then(setter, setter);
   }
 
   render() {
@@ -90,7 +87,7 @@ export default class Register extends React.Component {
         <Nickname {...statics.nickname } {...this.state.user} update={this.update} />
         <UID {...statics.uID } {...this.state.user} update={this.update} />
         <Password {...statics.password } {...this.state.user} update={this.update} post={this.post} />
-        <Result {...statics.result } {...this.state.user} update={this.update} />
+        <Result {...statics.result } {...this.state.user} response={this.state.response} />
       </div>
     );
   }
@@ -203,19 +200,18 @@ const Password = (props) => {
 };
 
 const Result = (props) => {
-  const loading = props.loading ? (
+  const result = !props.response ? (
     <div>
       <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
     </div>
-  ) : null;
-  const dialog = (
+  ) : (
     <div>
-      <h1>{props.result !== null ? props.result.message : 'no result'}</h1>
+      <h1>{props.response.status + ' ' + props.response.body}</h1>
     </div>
   );
   return (
     <Section name="Result">
-      {loading || dialog}
+      {result}
     </Section>
   );
 };
