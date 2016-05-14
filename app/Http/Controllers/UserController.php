@@ -37,7 +37,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $gender = $request->input('gender');
+      $nickname = $request->input('nickname');
+      $language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+
+      $user = new User;
+      $user->gender = $gender;
+      $user->nickname = $nickname;
+      $user->acceptlanguage = $language;
+      $user->save();
+      return "{}";
     }
 
     /**
