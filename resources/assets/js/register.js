@@ -200,13 +200,15 @@ const Password = (props) => {
 };
 
 const Result = (props) => {
+  const h2 = (obj, key) => <h2 className="text-danger" key={key}>{obj[key]}</h2>;
   const result = !props.response ? (
     <div>
       <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
     </div>
   ) : (
     <div>
-      <h1>{props.response.status + ' ' + props.response.body}</h1>
+      <h1>{props.response.status}</h1>
+      {Object.keys(props.response.body).map((key) => h2(props.response.body, key))}
     </div>
   );
   return (
