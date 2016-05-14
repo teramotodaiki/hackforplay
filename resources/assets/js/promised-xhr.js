@@ -211,7 +211,7 @@ var parseError = function (response) {
 };
 
 module.exports = {
-  base: null,
+  base: '',
   get : function (url, options) {
     options = options || {};
     options.headers = options.headers || {};
