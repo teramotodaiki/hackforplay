@@ -2,25 +2,15 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class User extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+  /**
+   * http://readouble.com/laravel/5/1/ja/eloquent.html
+   */
+  protected $table = 'User';
+  protected $primaryKey = 'ID';
+  public $timestamps = false; // モデルのタイムスタンプを更新しない
+  
 }
