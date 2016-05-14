@@ -24,7 +24,7 @@ const statics = {
     description: "Should be more than 3 characters and less than 30 characters",
     range: [3, 30]
   },
-  uID: {
+  loginID: {
     header: "Type your login ID",
     description: "You can use alphabet, numbers and underscore (_)",
     range: [3, 99],
@@ -51,7 +51,7 @@ export default class Register extends React.Component {
       user: {
         gender: 'male',
         nickname: '',
-        uID: '11111111', // Account.Email
+        loginID: '11111111', // Account.Email
         password: '', // Account.Hashed
         hide: false, // Hide Password
       },
@@ -85,7 +85,7 @@ export default class Register extends React.Component {
         <Landing {...statics.landing} {...this.state.user} update={this.update} />
         <Gender {...statics.gender } {...this.state.user} update={this.update} />
         <Nickname {...statics.nickname } {...this.state.user} update={this.update} />
-        <UID {...statics.uID } {...this.state.user} update={this.update} />
+        <LoginID {...statics.loginID } {...this.state.user} update={this.update} />
         <Password {...statics.password } {...this.state.user} update={this.update} post={this.post} />
         <Result {...statics.result } {...this.state.user} response={this.state.response} />
       </div>
@@ -145,13 +145,13 @@ const Nickname = (props) => {
         value={props.nickname}
         updateValue={(value) => props.update({ nickname: value })}
         />
-      <Arrow to="UID" />
+      <Arrow to="LoginID" />
     </Section>
   );
 };
 
-const UID = (props) => {
-  const len = props.uID.length;
+const LoginID = (props) => {
+  const len = props.loginID.length;
   const contains = props.range[0] <= len && len <= props.range[1];
   const used = false; // Check in Server
   const status = contains && !used ? 'success' : 'danger';
@@ -159,13 +159,13 @@ const UID = (props) => {
     'collapse': !used
   });
   return (
-    <Section name="UID">
+    <Section name="LoginID">
       <h1>{props.header}</h1>
       <InputGroup
         status={status}
         description={props.description}
-        value={props.uID}
-        updateValue={(value) => props.update({ uID: value })}
+        value={props.loginID}
+        updateValue={(value) => props.update({ loginID: value })}
         />
         <p className={hint}>{props.hintWhenUsed}</p>
       <Arrow to="Password" />
