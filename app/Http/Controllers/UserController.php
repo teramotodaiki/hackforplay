@@ -37,14 +37,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-      $gender = $request->input('gender');
-      $nickname = $request->input('nickname');
-      $language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+      $this->validate($request, [
+        'gender'    => 'required|string|in:male,female',
+        'nickname'  => 'required|string|max:99',
+        'loginID'   => 'required|string|between:3,99',
+        'password'  => 'required|string|between:6,99'
+      ]);
 
       $user = new User;
-      $user->gender = $gender;
-      $user->nickname = $nickname;
-      $user->acceptlanguage = $language;
+      $user->gender = $request->input('gender');
+      $user->nickname = $request->input('nickname');
+      $user->acceptlanguage = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
       $user->save();
       return "{}";
     }
