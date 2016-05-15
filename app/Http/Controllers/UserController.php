@@ -41,7 +41,7 @@ class UserController extends Controller
       $this->validate($request, [
         'gender'    => 'required|string|in:male,female',
         'nickname'  => 'required|string|max:99',
-        'loginID'   => 'required|string|between:3,99',
+        'loginID'   => 'required|string|between:3,99|unique:account,email',
         'password'  => 'required|string|between:6,99'
       ]);
 
