@@ -186,9 +186,11 @@ const LoginID = (props) => {
     'collapse': !(contains && used)
   });
   const loading = contains && used === null ? (
-    <span className={'fa fa-spinner fa-pulse'} />
+    <span className="fa fa-spinner fa-pulse" />
+  ) : contains && !used ? (
+    <span className="fa fa-thumbs-o-up" />
   ) : (
-    <span className={'fa fa-spinner'} />
+    <span className="fa fa-hand-o-right" />
   );
   const onUpdate = (value) => {
     props.update({ loginID: value, used: null });
