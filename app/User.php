@@ -10,7 +10,12 @@ class User extends Model
    * http://readouble.com/laravel/5/1/ja/eloquent.html
    */
   protected $table = 'User';
-  protected $primaryKey = 'ID';
   public $timestamps = false; // モデルのタイムスタンプを更新しない
-  
+  protected $guarded = array('id'); // idはcreateに含まない
+
+  public function accounts()
+  {
+    return $this->hasMany('App\Account', 'UserID');
+  }
+
 }
