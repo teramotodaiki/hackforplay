@@ -39,7 +39,15 @@ const statics = {
   result: {
     header: "",
     description: ""
-  }
+  },
+
+  component: {
+    // column key => component.name
+    gender: 'Gender',
+    nickname: 'Nickname',
+    loginID: 'LoginID',
+    password: 'Password',
+  },
 
 };
 
@@ -200,20 +208,14 @@ const Password = (props) => {
 };
 
 const Result = (props) => {
-  const h2 = (key, value) => <h2 className="text-danger" key={key}>{value}</h2>;
   const result = !props.response ? (
     <div>
       <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
     </div>
+  ) : props.response.status >= 400 ? (
+    <Error {...props.response} />
   ) : (
-    <div>
-      <h1>{props.response.status}</h1>
-      {
-        typeof props.response.body === 'object' ?
-        Object.keys(props.response.body).splice(0, 5).map((key) => h2(key, props.response.body[key])) :
-        h2('error', props.response.body)
-      }
-    </div>
+    <div>success</div>
   );
   return (
     <Section name="Result">
@@ -221,6 +223,38 @@ const Result = (props) => {
     </Section>
   );
 };
+
+const Error = (props) => {
+  console.error('Registration api is failed, see this response...', props.status, props.headers, props.body);
+  const errorText =
+    props.status <= 404 ? 'please try sending again' :
+    props.status == 422 ? 'please check below and correct input' :
+    'something went wrong. I tried to dump this error to your console...';
+  const h2 = (key, value) => <h2 key={key}>{value}</h2>;
+  const detail = (key, value) => {
+    return h2(key, (
+      <div>
+        <span>{value}</span>
+        <Arrow to={statics.component[key]} className="fa fa-arrow-up" />
+      </div>
+    ));
+  };
+  const details = typeof props.body === 'object' ?
+    Object.keys(props.body).splice(0, 5).map((key) => detail(key, props.body[key])) :
+    h2('error', props.body);
+
+  return (
+    <div>
+      <h1>
+        <span>Sorry, </span>
+        <span className="text-danger">{errorText}</span>
+      </h1>
+      <div>
+        {details}
+      </div>
+    </div>
+  );
+}
 
 const InputGroup = (props) => {
   const groupClass = classNames('form-group', `has-${props.status}`);
@@ -260,10 +294,11 @@ const InputGroup = (props) => {
 };
 
 const Arrow = (props) => {
+  const className = props.className || 'fa fa-arrow-down fa-2x';
   return (
     <ScrollLink to={props.to} smooth={true} onClick={props.onClick}>
       <span className="btn btn-lg">
-        <span className="fa fa-arrow-down fa-2x"></span>
+        <span className={className}></span>
       </span>
     </ScrollLink>
   )
