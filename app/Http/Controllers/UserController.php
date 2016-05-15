@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\User;
+use App\Account;
 
 class UserController extends Controller
 {
@@ -44,11 +45,24 @@ class UserController extends Controller
         'password'  => 'required|string|between:6,99'
       ]);
 
-      $user = new User;
-      $user->gender = $request->input('gender');
-      $user->nickname = $request->input('nickname');
-      $user->acceptlanguage = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+      $user = new User([
+        'gender' => $request->input('gender'),
+        'nickname' => $request->input('nickname'),
+        'acceptlanguage' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
+        'registered' => gmdate('Y-m-d H:i:s')
+      ]);
       $user->save();
+
+      $account = new Account([
+        'type' => 'paperlogin',
+        'state' => 'connected',
+        'email' => $request->input('loginID'),
+        'hashed' => password_hash($request->input('password'), PASSWORD_DEFAULT),
+        'registered' => gmdate('Y-m-d H:i:s')
+      ]);
+
+      $user->accounts()->save($account);
+
       return "{}";
     }
 
