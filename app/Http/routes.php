@@ -15,6 +15,7 @@
 // React (frontend) App
 Route::get('tutorials', 'DefaultAppController@index');
 Route::get('register', 'DefaultAppController@index');
+Route::get('verify', 'VerifyController@index');
 
 // users/
 Route::resource('users', 'UserController');
