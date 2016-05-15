@@ -200,7 +200,7 @@ const Password = (props) => {
 };
 
 const Result = (props) => {
-  const h2 = (obj, key) => <h2 className="text-danger" key={key}>{obj[key]}</h2>;
+  const h2 = (key, value) => <h2 className="text-danger" key={key}>{value}</h2>;
   const result = !props.response ? (
     <div>
       <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
@@ -208,7 +208,11 @@ const Result = (props) => {
   ) : (
     <div>
       <h1>{props.response.status}</h1>
-      {Object.keys(props.response.body).map((key) => h2(props.response.body, key))}
+      {
+        typeof props.response.body === 'object' ?
+        Object.keys(props.response.body).splice(0, 5).map((key) => h2(key, props.response.body[key])) :
+        h2('error', props.response.body)
+      }
     </div>
   );
   return (
