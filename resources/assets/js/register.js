@@ -59,7 +59,7 @@ export default class Register extends React.Component {
       user: {
         gender: 'male',
         nickname: '',
-        loginID: '11111111', // Account.Email
+        loginID: '', // Account.Email
         password: '', // Account.Hashed
         hide: false, // Hide Password
         used: null, // loginIDがすでに使われているか
@@ -69,6 +69,12 @@ export default class Register extends React.Component {
     this.update = this.update.bind(this);
     this.post = this.post.bind(this);
     this.verify = this.verify.bind(this);
+
+    // Default LoginID value
+    request.get('random', {
+      data: { keys: 'login_id' }
+    })
+    .then((value) => this.update({ loginID: value.body.login_id, used: false }));
   }
 
   update(value) {
