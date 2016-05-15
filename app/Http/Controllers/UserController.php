@@ -10,6 +10,11 @@ use App\Account;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+      $this->middleware('App\Http\Middleware\VerifyCsrfToken'); 
+    }
+
     /**
      * Display a listing of the resource.
      *

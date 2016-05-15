@@ -8,7 +8,8 @@
 const __addDefaultOptions = (options) => {
   Object.assign(options, {
     headers: {
-      'X-Requested-With': 'XMLHttpRequest' // Determinate ajax request in server
+      'X-Requested-With': 'XMLHttpRequest', // Determinate ajax request in server
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
     }
   });
 };
