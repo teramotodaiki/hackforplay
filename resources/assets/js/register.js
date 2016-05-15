@@ -59,14 +59,22 @@ export default class Register extends React.Component {
       user: {
         gender: 'male',
         nickname: '',
-        loginID: '11111111', // Account.Email
+        loginID: '', // Account.Email
         password: '', // Account.Hashed
         hide: false, // Hide Password
+        used: null, // loginIDがすでに使われているか
       },
       response: null, // status, header, body (null is loading)
     }
     this.update = this.update.bind(this);
     this.post = this.post.bind(this);
+    this.verify = this.verify.bind(this);
+
+    // Default LoginID value
+    request.get('random', {
+      data: { keys: 'login_id' }
+    })
+    .then((value) => this.update({ loginID: value.body.login_id, used: false }));
   }
 
   update(value) {
@@ -87,13 +95,21 @@ export default class Register extends React.Component {
     .then(setter, setter);
   }
 
+  verify(id) {
+    return request.get('verify', {
+      data: { login_id: id }
+    })
+    .then((value) => this.update({ used: false }))
+    .catch((err) => this.update({ used: true }));
+  }
+
   render() {
     return (
       <div>
         <Landing {...statics.landing} {...this.state.user} update={this.update} />
         <Gender {...statics.gender } {...this.state.user} update={this.update} />
         <Nickname {...statics.nickname } {...this.state.user} update={this.update} />
-        <LoginID {...statics.loginID } {...this.state.user} update={this.update} />
+        <LoginID {...statics.loginID } {...this.state.user} update={this.update} verify={this.verify} />
         <Password {...statics.password } {...this.state.user} update={this.update} post={this.post} />
         <Result {...statics.result } {...this.state.user} response={this.state.response} />
       </div>
@@ -161,11 +177,26 @@ const Nickname = (props) => {
 const LoginID = (props) => {
   const len = props.loginID.length;
   const contains = props.range[0] <= len && len <= props.range[1];
-  const used = false; // Check in Server
-  const status = contains && !used ? 'success' : 'danger';
+  const used = props.used;
+  const status =
+  !contains || used === null ? '':
+  contains && !used ? 'success' : 'danger';
+
   const hint = classNames('text-danger', {
-    'collapse': !used
+    'collapse': !(contains && used)
   });
+  const loading = contains && used === null ? (
+    <span className="fa fa-spinner fa-pulse" />
+  ) : contains && !used ? (
+    <span className="fa fa-thumbs-o-up" />
+  ) : (
+    <span className="fa fa-hand-o-right" />
+  );
+  const onUpdate = (value) => {
+    props.update({ loginID: value, used: null });
+    if (contains) props.verify(value);
+  };
+
   return (
     <Section name="LoginID">
       <h1>{props.header}</h1>
@@ -173,7 +204,8 @@ const LoginID = (props) => {
         status={status}
         description={props.description}
         value={props.loginID}
-        updateValue={(value) => props.update({ loginID: value })}
+        updateValue={onUpdate}
+        left={loading}
         />
         <p className={hint}>{props.hintWhenUsed}</p>
       <Arrow to="Password" />
