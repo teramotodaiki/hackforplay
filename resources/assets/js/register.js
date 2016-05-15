@@ -24,7 +24,7 @@ const statics = {
     description: "Should be more than 3 characters and less than 30 characters",
     range: [3, 30]
   },
-  uID: {
+  loginID: {
     header: "Type your login ID",
     description: "You can use alphabet, numbers and underscore (_)",
     range: [3, 99],
@@ -39,7 +39,15 @@ const statics = {
   result: {
     header: "",
     description: ""
-  }
+  },
+
+  component: {
+    // column key => component.name
+    gender: 'Gender',
+    nickname: 'Nickname',
+    loginID: 'LoginID',
+    password: 'Password',
+  },
 
 };
 
@@ -51,7 +59,7 @@ export default class Register extends React.Component {
       user: {
         gender: 'male',
         nickname: '',
-        uID: '11111111', // Account.Email
+        loginID: '11111111', // Account.Email
         password: '', // Account.Hashed
         hide: false, // Hide Password
       },
@@ -85,7 +93,7 @@ export default class Register extends React.Component {
         <Landing {...statics.landing} {...this.state.user} update={this.update} />
         <Gender {...statics.gender } {...this.state.user} update={this.update} />
         <Nickname {...statics.nickname } {...this.state.user} update={this.update} />
-        <UID {...statics.uID } {...this.state.user} update={this.update} />
+        <LoginID {...statics.loginID } {...this.state.user} update={this.update} />
         <Password {...statics.password } {...this.state.user} update={this.update} post={this.post} />
         <Result {...statics.result } {...this.state.user} response={this.state.response} />
       </div>
@@ -145,13 +153,13 @@ const Nickname = (props) => {
         value={props.nickname}
         updateValue={(value) => props.update({ nickname: value })}
         />
-      <Arrow to="UID" />
+      <Arrow to="LoginID" />
     </Section>
   );
 };
 
-const UID = (props) => {
-  const len = props.uID.length;
+const LoginID = (props) => {
+  const len = props.loginID.length;
   const contains = props.range[0] <= len && len <= props.range[1];
   const used = false; // Check in Server
   const status = contains && !used ? 'success' : 'danger';
@@ -159,13 +167,13 @@ const UID = (props) => {
     'collapse': !used
   });
   return (
-    <Section name="UID">
+    <Section name="LoginID">
       <h1>{props.header}</h1>
       <InputGroup
         status={status}
         description={props.description}
-        value={props.uID}
-        updateValue={(value) => props.update({ uID: value })}
+        value={props.loginID}
+        updateValue={(value) => props.update({ loginID: value })}
         />
         <p className={hint}>{props.hintWhenUsed}</p>
       <Arrow to="Password" />
@@ -204,10 +212,10 @@ const Result = (props) => {
     <div>
       <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
     </div>
+  ) : props.response.status >= 400 ? (
+    <Error {...props.response} />
   ) : (
-    <div>
-      <h1>{props.response.status + ' ' + props.response.body}</h1>
-    </div>
+    <div>success</div>
   );
   return (
     <Section name="Result">
@@ -215,6 +223,38 @@ const Result = (props) => {
     </Section>
   );
 };
+
+const Error = (props) => {
+  console.error('Registration api is failed, see this response...', props.status, props.headers, props.body);
+  const errorText =
+    props.status <= 404 ? 'please try sending again' :
+    props.status == 422 ? 'please check below and correct input' :
+    'something went wrong. I tried to dump this error to your console...';
+  const h2 = (key, value) => <h2 key={key}>{value}</h2>;
+  const detail = (key, value) => {
+    return h2(key, (
+      <div>
+        <span>{value}</span>
+        <Arrow to={statics.component[key]} className="fa fa-arrow-up" />
+      </div>
+    ));
+  };
+  const details = typeof props.body === 'object' ?
+    Object.keys(props.body).splice(0, 5).map((key) => detail(key, props.body[key])) :
+    h2('error', props.body);
+
+  return (
+    <div>
+      <h1>
+        <span>Sorry, </span>
+        <span className="text-danger">{errorText}</span>
+      </h1>
+      <div>
+        {details}
+      </div>
+    </div>
+  );
+}
 
 const InputGroup = (props) => {
   const groupClass = classNames('form-group', `has-${props.status}`);
@@ -254,10 +294,11 @@ const InputGroup = (props) => {
 };
 
 const Arrow = (props) => {
+  const className = props.className || 'fa fa-arrow-down fa-2x';
   return (
     <ScrollLink to={props.to} smooth={true} onClick={props.onClick}>
       <span className="btn btn-lg">
-        <span className="fa fa-arrow-down fa-2x"></span>
+        <span className={className}></span>
       </span>
     </ScrollLink>
   )

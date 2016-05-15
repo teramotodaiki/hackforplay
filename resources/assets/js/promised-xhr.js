@@ -4,6 +4,17 @@
 */
 
 
+// Deafult header
+const __addDefaultOptions = (options) => {
+  Object.assign(options, {
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest', // Determinate ajax request in server
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+    }
+  });
+};
+
+
 // https://github.com/frikille/promised-xhr/blob/master/lib/xhr-object.js
 var xhrObject = function () {
   if (window.XMLHttpRequest) return new XMLHttpRequest();
@@ -52,6 +63,10 @@ var sendRequest = function (options) {
 
   var client = xhrObject();
   var url = options.url;
+
+  if (__addDefaultOptions) {
+    __addDefaultOptions(options);
+  }
 
   if (options.method == 'GET') {
     url += buildParamsAsQueryString(options.data);
