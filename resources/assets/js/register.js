@@ -24,7 +24,7 @@ const statics = {
     description: "Should be more than 3 characters and less than 30 characters",
     range: [3, 30]
   },
-  loginID: {
+  login_id: {
     header: "Type your login ID",
     description: "You can use alphabet, numbers and underscore (_)",
     range: [3, 99],
@@ -45,7 +45,7 @@ const statics = {
     // column key => component.name
     gender: 'Gender',
     nickname: 'Nickname',
-    loginID: 'LoginID',
+    login_id: 'LoginId',
     password: 'Password',
   },
 
@@ -59,10 +59,10 @@ export default class Register extends React.Component {
       user: {
         gender: 'male',
         nickname: '',
-        loginID: '', // Account.Email
+        login_id: '', // Account.Email
         password: '', // Account.Hashed
         hide: false, // Hide Password
-        used: null, // loginIDがすでに使われているか
+        used: null, // login_idがすでに使われているか
       },
       response: null, // status, header, body (null is loading)
     }
@@ -70,11 +70,11 @@ export default class Register extends React.Component {
     this.post = this.post.bind(this);
     this.verify = this.verify.bind(this);
 
-    // Default LoginID value
+    // Default LoginId value
     request.get('random', {
       data: { keys: 'login_id' }
     })
-    .then((value) => this.update({ loginID: value.body.login_id, used: false }));
+    .then((value) => this.update({ login_id: value.body.login_id, used: false }));
   }
 
   update(value) {
@@ -109,7 +109,7 @@ export default class Register extends React.Component {
         <Landing {...statics.landing} {...this.state.user} update={this.update} />
         <Gender {...statics.gender } {...this.state.user} update={this.update} />
         <Nickname {...statics.nickname } {...this.state.user} update={this.update} />
-        <LoginID {...statics.loginID } {...this.state.user} update={this.update} verify={this.verify} />
+        <LoginId {...statics.login_id } {...this.state.user} update={this.update} verify={this.verify} />
         <Password {...statics.password } {...this.state.user} update={this.update} post={this.post} />
         <Result {...statics.result } {...this.state.user} response={this.state.response} />
       </div>
@@ -169,13 +169,13 @@ const Nickname = (props) => {
         value={props.nickname}
         updateValue={(value) => props.update({ nickname: value })}
         />
-      <Arrow to="LoginID" />
+      <Arrow to="LoginId" />
     </Section>
   );
 };
 
-const LoginID = (props) => {
-  const len = props.loginID.length;
+const LoginId = (props) => {
+  const len = props.login_id.length;
   const contains = props.range[0] <= len && len <= props.range[1];
   const used = props.used;
   const status =
@@ -194,18 +194,18 @@ const LoginID = (props) => {
   );
   const onUpdate = (value) => {
     if (props.allowed.test(value)) {
-      props.update({ loginID: value, used: null });
+      props.update({ login_id: value, used: null });
       if (contains) props.verify(value);
     }
   };
 
   return (
-    <Section name="LoginID">
+    <Section name="LoginId">
       <h1>{props.header}</h1>
       <InputGroup
         status={status}
         description={props.description}
-        value={props.loginID}
+        value={props.login_id}
         updateValue={onUpdate}
         left={loading}
         />
