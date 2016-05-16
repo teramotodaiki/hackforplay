@@ -345,8 +345,11 @@ const InputGroup = (props) => {
 
 const Arrow = (props) => {
   const className = props.className || 'fa fa-arrow-down fa-2x';
+  const addDefault = Object.assign({
+    smooth: true
+  }, props);
   return (
-    <ScrollLink to={props.to} smooth={true} onClick={props.onClick}>
+    <ScrollLink {...addDefault}>
       <span className="btn btn-lg">
         <span className={className}></span>
       </span>
