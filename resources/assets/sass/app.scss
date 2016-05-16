@@ -7,7 +7,6 @@
 // _bootstrap.scssの一部をコメントアウトしただけの単純なローダ
 @import "bs-loader";
 
-@import "border-radius";
 @import "buttons";
 @import "hover";
 @import "variables";
@@ -15,7 +14,7 @@
 // Focused element
 .pseudo-focus {
   border: .25rem solid $input-border-focus;
-  @include border-radius();
+  border-radius: $border-radius;
   margin: -.25rem;
 }
 
