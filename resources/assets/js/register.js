@@ -109,8 +109,13 @@ export default class Register extends React.Component {
         <Landing {...statics.landing} {...this.state.user} update={this.update} />
         <Gender {...statics.gender } {...this.state.user} update={this.update} />
         <Nickname {...statics.nickname } {...this.state.user} update={this.update} />
-        <LoginId {...statics.login_id } {...this.state.user} update={this.update} verify={this.verify} />
-        <Password {...statics.password } {...this.state.user} update={this.update} post={this.post} />
+        <Login
+          login_id={statics.login_id}
+          password={statics.password}
+          user={this.state.user}
+          update={this.update}
+          verify={this.verify}
+          post={this.post} />
         <Result {...statics.result } {...this.state.user} response={this.state.response} />
       </div>
     );
@@ -169,10 +174,20 @@ const Nickname = (props) => {
         value={props.nickname}
         updateValue={(value) => props.update({ nickname: value })}
         />
-      <Arrow to="LoginId" />
+      <Arrow to="Login" />
     </Section>
   );
 };
+
+const Login = (props) => {
+  return (
+    <Section name="Login">
+      <LoginId {...props.login_id} {...props.user} update={props.update} verify={props.verify} />
+      <Password {...props.password} {...props.user} update={props.update} />
+      <Arrow to="Result" onClick={() => props.post()} />
+    </Section>
+  )
+}
 
 const LoginId = (props) => {
   const len = props.login_id.length;
@@ -200,7 +215,7 @@ const LoginId = (props) => {
   };
 
   return (
-    <Section name="LoginId">
+    <div>
       <h1>{props.header}</h1>
       <InputGroup
         status={status}
@@ -210,8 +225,7 @@ const LoginId = (props) => {
         left={loading}
         />
         <p className={hint}>{props.hintWhenUsed}</p>
-      <Arrow to="Password" />
-    </Section>
+    </div>
   );
 };
 
@@ -226,7 +240,7 @@ const Password = (props) => {
        />
   );
   return (
-    <Section name="Password">
+    <div>
       <h1>{props.header}</h1>
       <InputGroup
         status={status}
@@ -236,8 +250,7 @@ const Password = (props) => {
         left={hide}
         type={props.hide ? 'password' : 'text'}
         />
-      <Arrow to="Result" onClick={() => props.post()} />
-    </Section>
+    </div>
   );
 };
 
