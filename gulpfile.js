@@ -26,10 +26,10 @@ elixir((mix) => {
     // Versioning
     .version(['css/app.css', 'js/app.js'])
     // Bootstrap3
-    .scripts([
-      jquery,
-      bootstrap_sass
-    ], 'public/js/bootstrap.js', './')
+    // .scripts([
+    //   jquery,
+    //   bootstrap_sass
+    // ], 'public/js/bootstrap.js', './')
     // Bootstrap4
     // .scripts([
     //   tether,
