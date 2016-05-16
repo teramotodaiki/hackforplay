@@ -7,7 +7,7 @@
 	}
 })(function () {
 
-  Math.clamp = function(value, min, max) {
+	Math.clamp = function(value, min, max) {
 		return Math.max(min, Math.min(max, value));
 	};
 
@@ -174,13 +174,8 @@
 
 			if (!this.enabled) return;
 
-			var surface = this.surface;
-			// surface.resize(this.width, this.height);
-
-
 			var target = this.target;
 			var map = Hack.map;
-
 			if (!map || !target) return;
 
 			// ターゲットが別のマップなら
@@ -193,69 +188,67 @@
 				this.dispatchEvent(new enchant.Event(Camera.Event.DEAD_TARGET));
 			}
 
-
-			var plX = target.x - target.offset.x + map.tileWidth / 2;
-			var plY = target.y - target.offset.y + map.tileHeight / 2;
+			// ターゲットの中心座標
+			var targetX = target.x - target.offset.x + map.tileWidth / 2;
+			var targetY = target.y - target.offset.y + map.tileHeight / 2;
 
 
 			// ターゲットがマップ外なら
-			if (plX < 0 || plY < 0 || plX >= map.width || plY >= map.height) {
-				return this.dispatchEvent(new enchant.Event(Camera.Event.LOSE_TARGET));
+			if (targetX < 0 || targetY < 0 || targetX > map.width || targetY > map.height) {
+				this.dispatchEvent(new enchant.Event(Camera.Event.LOSE_TARGET));
 			}
 
 
+			var zoom = this.zoom;
 
-			var zoom = Math.max(1.0 / this.zoom, 0);
 
 			// 画面外を表示しないように zoom を調整する
 			if (this.clamp) {
 
-				if (this.width * zoom > map.width) {
-					zoom = map.width / this.width;
+				if (this.width > map.width * zoom) {
+					zoom = this.width / map.width;
 				}
-				if (this.height * zoom > map.height) {
-					zoom = map.height / this.height;
+				if (this.height > map.height * zoom) {
+					zoom = this.height / map.height;
 				}
 
 			}
 
-			var width = this.width * zoom;
-			var height = this.height * zoom;
+			zoom = Math.max(0, zoom);
 
 
-			var left = plX - (width) / 2;
-			var top = plY - (height) / 2;
+			var mapWidth = map.width * zoom;
+			var mapHeight = map.height * zoom;
 
-			var mapWidth = map.width;
-			var mapHeight = map.height;
+			// 描画位置を計算
+			var x = -targetX * zoom + (this.width / 2);
+			var y = -targetY * zoom + (this.height / 2);
 
-
-
-
-			left = Math.clamp(left, 0, mapWidth - width);
-			top = Math.clamp(top, 0, mapHeight - height);
+			x = Math.min(x, 0);
+			x = Math.max(x, this.width - mapWidth);
+			y = Math.min(y, 0);
+			y = Math.max(y, this.height - mapHeight);
 
 
 			// カメラの領域よりマップが小さいなら位置を調整
-			if (mapWidth < width) {
-				left = (mapWidth - width) / 2;
+			if (mapWidth < this.width) {
+				x = (this.width - mapWidth) / 2;
 			}
-			if (mapHeight < height) {
-				top = (mapHeight - height) / 2;
+			if (mapHeight < this.height) {
+				y = (this.height - mapHeight) / 2;
 			}
 
+			var surface = this.surface;
 			surface.context.clearRect(0, 0, this.width, this.height);
-
-
 
 
 			var drawEvent = new enchant.Event(Camera.Event.DRAW);
 			drawEvent.context = surface.context;
 			this.dispatchEvent(drawEvent);
 
-
-			surface.context.drawImage(Camera.surface._element, left, top, width, height, 0, 0, this.width, this.height);
-
+			var cw = Camera.surface.width;
+			var ch = Camera.surface.height;
+			surface.context.drawImage(Camera.surface._element, 0, 0, cw, ch, x, y, mapWidth, mapHeight);
 
 		}
 
@@ -427,19 +420,19 @@
 
 	});
 
-  var camera = new Camera();
-  camera.resize(game.width, game.height);
-  camera.border = false;
-  camera.zoom = 1.0;
+	var camera = new Camera();
+	camera.resize(game.width, game.height);
+	camera.border = false;
+	camera.zoom = 1.0;
 
-  Hack.camera = camera;
+	Hack.camera = camera;
 
-  game.on('load', function () {
+	game.on('load', function () {
 
-    // ターゲットが指定されていない場合はHack.playerになる
-    Hack.camera.target = Hack.camera.target || Hack.player;
+		// ターゲットが指定されていない場合はHack.playerになる
+		Hack.camera.target = Hack.camera.target || Hack.player;
 
-  });
+	});
 
 
 });
