@@ -28,7 +28,7 @@ const statics = {
     header: "Type your login ID",
     description: "You can use alphabet, numbers and underscore (_)",
     range: [3, 99],
-    allowed: /\w+/,
+    allowed: /^\w+$/,
     hintWhenUsed: "This ID has already used by someone, you can't use this"
   },
   password: {
@@ -193,8 +193,10 @@ const LoginID = (props) => {
     <span className="fa fa-hand-o-right" />
   );
   const onUpdate = (value) => {
-    props.update({ loginID: value, used: null });
-    if (contains) props.verify(value);
+    if (props.allowed.test(value)) {
+      props.update({ loginID: value, used: null });
+      if (contains) props.verify(value);
+    }
   };
 
   return (
