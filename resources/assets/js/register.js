@@ -24,11 +24,11 @@ const statics = {
     description: "Should be more than 3 characters and less than 30 characters",
     range: [3, 30]
   },
-  loginID: {
+  login_id: {
     header: "Type your login ID",
     description: "You can use alphabet, numbers and underscore (_)",
     range: [3, 99],
-    allowed: /\w+/,
+    allowed: /^\w+$/,
     hintWhenUsed: "This ID has already used by someone, you can't use this"
   },
   password: {
@@ -45,8 +45,8 @@ const statics = {
     // column key => component.name
     gender: 'Gender',
     nickname: 'Nickname',
-    loginID: 'LoginID',
-    password: 'Password',
+    login_id: 'Login',
+    password: 'Login',
   },
 
 };
@@ -54,27 +54,28 @@ const statics = {
 export default class Register extends React.Component {
   constructor(props) {
     super(props);
+    const gen = (Math.random() * 900000 + 100000 >> 0) + '';
     this.state = {
       // Default User
       user: {
         gender: 'male',
         nickname: '',
-        loginID: '', // Account.Email
-        password: '', // Account.Hashed
+        login_id: '', // Account.Email
+        password: gen, // Account.Hashed
         hide: false, // Hide Password
-        used: null, // loginIDがすでに使われているか
+        used: null, // login_idがすでに使われているか
       },
-      response: null, // status, header, body (null is loading)
+      response: undefined, // status, header, body (null is loading)
     }
     this.update = this.update.bind(this);
     this.post = this.post.bind(this);
     this.verify = this.verify.bind(this);
 
-    // Default LoginID value
+    // Default LoginId value
     request.get('random', {
       data: { keys: 'login_id' }
     })
-    .then((value) => this.update({ loginID: value.body.login_id, used: false }));
+    .then((value) => this.update({ login_id: value.body.login_id, used: false }));
   }
 
   update(value) {
@@ -109,8 +110,13 @@ export default class Register extends React.Component {
         <Landing {...statics.landing} {...this.state.user} update={this.update} />
         <Gender {...statics.gender } {...this.state.user} update={this.update} />
         <Nickname {...statics.nickname } {...this.state.user} update={this.update} />
-        <LoginID {...statics.loginID } {...this.state.user} update={this.update} verify={this.verify} />
-        <Password {...statics.password } {...this.state.user} update={this.update} post={this.post} />
+        <Login
+          login_id={statics.login_id}
+          password={statics.password}
+          user={this.state.user}
+          update={this.update}
+          verify={this.verify}
+          post={this.post} />
         <Result {...statics.result } {...this.state.user} response={this.state.response} />
       </div>
     );
@@ -169,13 +175,23 @@ const Nickname = (props) => {
         value={props.nickname}
         updateValue={(value) => props.update({ nickname: value })}
         />
-      <Arrow to="LoginID" />
+      <Arrow to="Login" />
     </Section>
   );
 };
 
-const LoginID = (props) => {
-  const len = props.loginID.length;
+const Login = (props) => {
+  return (
+    <Section name="Login">
+      <LoginId {...props.login_id} {...props.user} update={props.update} verify={props.verify} />
+      <Password {...props.password} {...props.user} update={props.update} />
+      <Arrow to="Result" onClick={() => props.post()} />
+    </Section>
+  )
+}
+
+const LoginId = (props) => {
+  const len = props.login_id.length;
   const contains = props.range[0] <= len && len <= props.range[1];
   const used = props.used;
   const status =
@@ -193,23 +209,24 @@ const LoginID = (props) => {
     <span className="fa fa-hand-o-right" />
   );
   const onUpdate = (value) => {
-    props.update({ loginID: value, used: null });
-    if (contains) props.verify(value);
+    if (props.allowed.test(value)) {
+      props.update({ login_id: value, used: null });
+      if (contains) props.verify(value);
+    }
   };
 
   return (
-    <Section name="LoginID">
+    <div>
       <h1>{props.header}</h1>
       <InputGroup
         status={status}
         description={props.description}
-        value={props.loginID}
+        value={props.login_id}
         updateValue={onUpdate}
         left={loading}
         />
         <p className={hint}>{props.hintWhenUsed}</p>
-      <Arrow to="Password" />
-    </Section>
+    </div>
   );
 };
 
@@ -224,7 +241,7 @@ const Password = (props) => {
        />
   );
   return (
-    <Section name="Password">
+    <div>
       <h1>{props.header}</h1>
       <InputGroup
         status={status}
@@ -234,12 +251,12 @@ const Password = (props) => {
         left={hide}
         type={props.hide ? 'password' : 'text'}
         />
-      <Arrow to="Result" onClick={() => props.post()} />
-    </Section>
+    </div>
   );
 };
 
 const Result = (props) => {
+  const collapse = classNames({ collapse: props.response === undefined });
   const result = !props.response ? (
     <div>
       <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
@@ -247,11 +264,16 @@ const Result = (props) => {
   ) : props.response.status >= 400 ? (
     <Error {...props.response} />
   ) : (
-    <div>success</div>
+    <div>
+      <h1>License Created</h1>
+      <a href="login" className="btn btn-primary btn-lg m-y-3">Login</a>
+    </div>
   );
   return (
     <Section name="Result">
-      {result}
+      <div className={collapse}>
+        {result}
+      </div>
     </Section>
   );
 };
@@ -267,7 +289,7 @@ const Error = (props) => {
     return h2(key, (
       <div>
         <span>{value}</span>
-        <Arrow to={statics.component[key]} className="fa fa-arrow-up" />
+        <Arrow to={statics.component[key]} faClass="fa fa-arrow-up" />
       </div>
     ));
   };
@@ -326,11 +348,14 @@ const InputGroup = (props) => {
 };
 
 const Arrow = (props) => {
-  const className = props.className || 'fa fa-arrow-down fa-2x';
+  const faClass = props.faClass || 'fa fa-arrow-down fa-2x';
+  const addDefault = Object.assign({
+    smooth: true
+  }, props);
   return (
-    <ScrollLink to={props.to} smooth={true} onClick={props.onClick}>
+    <ScrollLink {...addDefault}>
       <span className="btn btn-lg">
-        <span className={className}></span>
+        <span className={faClass}></span>
       </span>
     </ScrollLink>
   )

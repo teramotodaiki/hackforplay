@@ -10,7 +10,6 @@ const Section = React.createClass({
       style: {},
       height: "100vh",
       rowClass: "vertical-justify xs-stretch",
-      className: "text-xs-center"
     }
   },
   render () {
@@ -19,9 +18,11 @@ const Section = React.createClass({
       <Element
         className="container-fluid"
         name={this.props.name}
-        style={style}>
+        style={style}
+        className={this.props.className}
+        >
         <div
-          className={this.p({ row: this.props.rowClass }) + ' ' + this.props.className}
+          className={this.p({ row: this.props.rowClass }) + ' text-xs-center'}
           style={{ height: "100%" }}>
           {this.props.children}
         </div>
