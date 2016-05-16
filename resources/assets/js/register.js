@@ -45,8 +45,8 @@ const statics = {
     // column key => component.name
     gender: 'Gender',
     nickname: 'Nickname',
-    login_id: 'LoginId',
-    password: 'Password',
+    login_id: 'Login',
+    password: 'Login',
   },
 
 };
@@ -286,7 +286,7 @@ const Error = (props) => {
     return h2(key, (
       <div>
         <span>{value}</span>
-        <Arrow to={statics.component[key]} className="fa fa-arrow-up" />
+        <Arrow to={statics.component[key]} faClass="fa fa-arrow-up" />
       </div>
     ));
   };
@@ -345,14 +345,14 @@ const InputGroup = (props) => {
 };
 
 const Arrow = (props) => {
-  const className = props.className || 'fa fa-arrow-down fa-2x';
+  const faClass = props.faClass || 'fa fa-arrow-down fa-2x';
   const addDefault = Object.assign({
     smooth: true
   }, props);
   return (
     <ScrollLink {...addDefault}>
       <span className="btn btn-lg">
-        <span className={className}></span>
+        <span className={faClass}></span>
       </span>
     </ScrollLink>
   )
