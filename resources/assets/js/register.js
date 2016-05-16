@@ -64,7 +64,7 @@ export default class Register extends React.Component {
         hide: false, // Hide Password
         used: null, // login_idがすでに使われているか
       },
-      response: null, // status, header, body (null is loading)
+      response: undefined, // status, header, body (null is loading)
     }
     this.update = this.update.bind(this);
     this.post = this.post.bind(this);
@@ -255,6 +255,7 @@ const Password = (props) => {
 };
 
 const Result = (props) => {
+  const collapse = classNames({ collapse: props.response === undefined });
   const result = !props.response ? (
     <div>
       <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
@@ -266,7 +267,9 @@ const Result = (props) => {
   );
   return (
     <Section name="Result">
-      {result}
+      <div className={collapse}>
+        {result}
+      </div>
     </Section>
   );
 };
