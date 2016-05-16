@@ -54,13 +54,14 @@ const statics = {
 export default class Register extends React.Component {
   constructor(props) {
     super(props);
+    const gen = (Math.random() * 900000 + 100000 >> 0) + '';
     this.state = {
       // Default User
       user: {
         gender: 'male',
         nickname: '',
         login_id: '', // Account.Email
-        password: '', // Account.Hashed
+        password: gen, // Account.Hashed
         hide: false, // Hide Password
         used: null, // login_idがすでに使われているか
       },
