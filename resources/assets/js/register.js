@@ -264,7 +264,10 @@ const Result = (props) => {
   ) : props.response.status >= 400 ? (
     <Error {...props.response} />
   ) : (
-    <div>success</div>
+    <div>
+      <h1>License Created</h1>
+      <a href="login" className="btn btn-primary btn-lg m-y-3">Login</a>
+    </div>
   );
   return (
     <Section name="Result">
