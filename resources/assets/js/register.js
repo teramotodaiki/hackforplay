@@ -17,7 +17,7 @@ const statics = {
   gender: {
     header: "Icon",
     label: "Choose your icon",
-    description: "",
+    description: (<span><span className="fa fa-mouse-pointer"></span>Click to select</span>),
     male: "m/icon_m.png",
     female: "m/icon_w.png"
   },
