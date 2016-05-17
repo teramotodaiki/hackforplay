@@ -10,7 +10,7 @@ const statics = {
   title: 'The Beginning',
   hintTitle: 'How to solve',
   descriptions: {
-    youtube: 'Here is a hint movie',
+    youtube: 'Hint movie',
     next: "After cleared this stage then let's go to next stage!"
   },
   style: {
@@ -50,17 +50,17 @@ const Tutorials = React.createClass({
   getInitialState() {
     return {
       levels: [
-        { id: 1, title: 'Begining', youtube: 'od61KliPeJI', showDescription: true,
+        { id: 1, title: '決意の森', youtube: 'od61KliPeJI', showDescription: true,
           colorName: statics.colors.main, linkTo: 'Level-2' },
-        { id: 2, title: 'Secondly', youtube: 'mLBb7WQTjoo',
+        { id: 2, title: '不思議な本', youtube: 'mLBb7WQTjoo',
           colorName: statics.colors.main, linkTo: 'Level-3' },
-        { id: 3, title: 'Thirdly', youtube: 'no7ch0jTHRc',
+        { id: 3, title: 'おかしな行き止まり', youtube: 'no7ch0jTHRc',
           colorName: statics.colors.main, linkTo: 'Level-4' },
-        { id: 4, title: 'Forthly', youtube: 'qpjTVkrOvHg',
+        { id: 4, title: '閉じられた群青の輝き', youtube: 'qpjTVkrOvHg',
           colorName: statics.colors.sub, linkTo: 'Level-5' },
-        { id: 5, title: 'Fifthly', youtube: 'HzDbGgmi0bA',
+        { id: 5, title: '大グモ荒野', youtube: 'HzDbGgmi0bA',
           colorName: statics.colors.sub, linkTo: 'Level-6' },
-        { id: 6, title: 'Sixly', youtube: '4L0qPyUaH0A',
+        { id: 6, title: '守りし者', youtube: '4L0qPyUaH0A',
           colorName: statics.colors.sub, linkTo: 'Dialog' }
       ],
       activeLevelId: null
@@ -242,7 +242,7 @@ const EmbedStage = React.createClass({
     return (
       <div className={this.props.className}>
         <h2 className={'text-' + info.colorName}>
-          <span className="fa fa-gamepad" />-{info.id} {info.title}
+          Stage.{info.id} {info.title}
         </h2>
         <div className={info.isActive ? 'pseudo-focus' : ''}>
           <div className={this.p({ 'embed-responsive': '3by2' })} style={{backgroundColor: 'black'}}>
