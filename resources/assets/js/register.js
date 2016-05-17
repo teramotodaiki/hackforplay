@@ -140,7 +140,11 @@ const Gender = (props) => {
     border: ".4rem solid #66afe9"
   });
   return (
-    <CardSection name="Gender" header={props.header} next="Nickname">
+    <CardSection name="Gender"
+      header={props.header}
+      next="Nickname"
+      descriptions={[props.description]}
+      >
       <div>
         <img
           src={props.male}
@@ -162,14 +166,17 @@ const Nickname = (props) => {
   const contains = props.range[0] <= len && len <= props.range[1];
   const status = contains ? 'success' : 'warning';
   return (
-    <CardSection name="Nickname" header={props.header} next="Login">
+    <CardSection name="Nickname"
+      header={props.header}
+      next="Login"
+      descriptions={[props.description]}
+      >
       <Form>
         <FormGroup bsSize="large" validationState={status}>
           <FormControl
             value={props.nickname}
             onChange={(e) => props.update({ nickname: e.target.value })}
             />
-          <HelpBlock>{props.description}</HelpBlock>
         </FormGroup>
       </Form>
     </CardSection>
@@ -178,7 +185,12 @@ const Nickname = (props) => {
 
 const Login = (props) => {
   return (
-    <CardSection name="Login" header="Login" next="Result" onMoveNext={() => props.post()}>
+    <CardSection name="Login"
+      header="Login"
+      next="Result"
+      onMoveNext={() => props.post()}
+      descriptions={[statics.login_id.description, statics.password.description]}
+      >
       <Form>
         <LoginId {...statics.login_id} {...props.user} update={props.update} verify={props.verify} />
         <Password {...statics.password} {...props.user} update={props.update} />
@@ -221,7 +233,6 @@ const LoginId = (props) => {
           onChange={(e) => onUpdate(e.target.value)}
           />
       </InputGroup>
-      <HelpBlock>{props.description}</HelpBlock>
       {hint}
     </FormGroup>
   );
@@ -247,7 +258,6 @@ const Password = (props) => {
           onChange={(e) => props.update({ password: e.target.value })}
           />
       </InputGroup>
-      <HelpBlock>{props.description}</HelpBlock>
     </FormGroup>
   );
 };
@@ -310,12 +320,17 @@ const Error = (props) => {
 const CardSection = (props) => {
 
   const header = <h1>{props.header}</h1>
+  const footer = props.descriptions ? (
+    <ul style={{ textAlign: 'left' }}>
+      {props.descriptions.filter(i => i).map(i => <li>{i}</li>)}
+    </ul>
+  ) : null;
 
   return (
     <Section name={props.name}>
       <div />
       <Col xs={11} sm={9} md={8} lg={7}>
-        <Panel header={header}>
+        <Panel header={header} footer={footer}>
           {props.children}
         </Panel>
       </Col>
