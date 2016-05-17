@@ -219,7 +219,9 @@ class LoginId extends React.Component {
 
   constructor(props) {
     super(props);
-
+    this.state = {
+      changed: false
+    };
   }
 
   render() {
@@ -229,6 +231,7 @@ class LoginId extends React.Component {
     const status =
     !contains || used === null ? undefined:
     contains && !used ? 'success' : 'error';
+    const inputStyle = this.state.changed ? {} : { color: 'gray' };
 
     const hint = contains && used ? (
       <HelpBlock>{this.props.hintWhenUsed}</HelpBlock>
@@ -244,6 +247,7 @@ class LoginId extends React.Component {
       if (this.props.allowed.test(value)) {
         this.props.update({ login_id: value, used: null });
         if (contains) this.props.verify(value);
+        this.setState({ changed: true });
       }
     };
 
@@ -256,6 +260,7 @@ class LoginId extends React.Component {
             placeholder={this.props.placeholder}
             value={this.props.login_id}
             onChange={(e) => onUpdate(e.target.value)}
+            style={inputStyle}
             />
         </InputGroup>
         {hint}
@@ -268,6 +273,9 @@ class Password extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      changed: false
+    };
   }
 
   render() {
@@ -280,6 +288,8 @@ class Password extends React.Component {
         onClick={() => this.props.update({ hide: !this.props.hide })}
          />
     );
+    const inputStyle = this.state.changed ? {} : { color: 'gray' };
+
     return (
       <FormGroup bsSize="large" validationState={status}>
         <ControlLabel>{this.props.label}</ControlLabel>
@@ -290,6 +300,7 @@ class Password extends React.Component {
             type={this.props.hide ? 'password' : 'text'}
             value={this.props.password}
             onChange={(e) => this.props.update({ password: e.target.value })}
+            style={inputStyle}
             />
         </InputGroup>
       </FormGroup>
