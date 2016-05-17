@@ -256,8 +256,9 @@ const EmbedYoutube = React.createClass({
   mixins: [Merger],
   render() {
     const info = this.props.info;
+    const responsiveAlign = { paddingTop: '18%' }; // Bad CSS
     return (
-      <div className={this.props.className}>
+      <div className={this.props.className} style={responsiveAlign}>
         <small className={info.showDescription ? 'text-muted m-l-1' : 'collapse'}>
           {statics.descriptions.youtube}
         </small>
