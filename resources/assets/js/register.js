@@ -3,7 +3,7 @@ import { Link as ScrollLink, scroller } from "react-scroll";
 import Confirm from "./confirm";
 import classNames from "classNames";
 import request from "./promised-xhr.js";
-import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup } from "react-bootstrap";
+import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, ControlLabel } from "react-bootstrap";
 
 import Merger from "./merger";
 import { Section } from "./section";
@@ -15,26 +15,33 @@ const statics = {
     description: ""
   },
   gender: {
-    header: "Choose your icon",
+    header: "Icon",
+    label: "Choose your icon",
     description: "",
     male: "m/icon_m.png",
     female: "m/icon_w.png"
   },
   nickname: {
-    header: "Type your nickname",
+    header: "Nickname",
+    label: "Type your nickname",
     description: "Should be more than 3 characters and less than 30 characters",
+    placeholder: 'superhacker',
     range: [3, 30]
   },
   login_id: {
-    header: "Type your login ID",
+    header: "Login",
+    label: "Remember this number or Change login ID",
     description: "You can use alphabet, numbers and underscore (_)",
+    placeholder: 'hacker9999',
     range: [3, 99],
     allowed: /^\w+$/,
     hintWhenUsed: "This ID has already used by someone, you can't use this"
   },
   password: {
-    header: "Set login password",
-    description: "You must keep it secret from anyone! (at least 6 length)",
+    header: "Login",
+    label: "Remember this number or Change password",
+    description: "You must keep it secret from anyone!",
+    placeholder: '99Hack99er',
     range: [6, 99]
   },
   result: {
@@ -173,7 +180,9 @@ const Nickname = (props) => {
       >
       <Form>
         <FormGroup bsSize="large" validationState={status}>
+          <ControlLabel>{props.label}</ControlLabel>
           <FormControl
+            placeholder={props.placeholder}
             value={props.nickname}
             onChange={(e) => props.update({ nickname: e.target.value })}
             />
@@ -226,9 +235,11 @@ const LoginId = (props) => {
 
   return (
     <FormGroup bsSize="large" validationState={status}>
+      <ControlLabel>{props.label}</ControlLabel>
       <InputGroup>
         <InputGroup.Addon>{loading}</InputGroup.Addon>
         <FormControl
+          placeholder={props.placeholder}
           value={props.login_id}
           onChange={(e) => onUpdate(e.target.value)}
           />
@@ -250,9 +261,11 @@ const Password = (props) => {
   );
   return (
     <FormGroup bsSize="large" validationState={status}>
+      <ControlLabel>{props.label}</ControlLabel>
       <InputGroup>
         <InputGroup.Addon>{hide}</InputGroup.Addon>
         <FormControl
+          placeholder={props.placeholder}
           type={props.hide ? 'password' : 'text'}
           value={props.password}
           onChange={(e) => props.update({ password: e.target.value })}
