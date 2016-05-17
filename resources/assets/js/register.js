@@ -12,26 +12,30 @@ const statics = {
 
   landing: {
     header: "Creator's License",
-    description: ""
+    descriptions: []
   },
   gender: {
     header: "Icon",
     label: "Choose your icon",
-    description: (<span><span className="fa fa-mouse-pointer"></span>Click to select</span>),
+    descriptions: [(<span><span className="fa fa-mouse-pointer"></span>Click to select</span>)],
     male: "m/icon_m.png",
     female: "m/icon_w.png"
   },
   nickname: {
     header: "Nickname",
     label: "Type your nickname",
-    description: "Should be more than 3 characters and less than 30 characters",
+    descriptions: [
+      "Should be more than 3 characters and less than 30 characters",
+    ],
     placeholder: 'superhacker',
     range: [3, 30]
   },
   login_id: {
     header: "Login",
     label: "(ID) Remember this number or Change into your usual ID",
-    description: "You can use alphabet, numbers and underscore (_)",
+    descriptions: [
+      "You can use alphabet, numbers and underscore (_)",
+    ],
     placeholder: 'hacker9999',
     range: [3, 99],
     allowed: /^\w+$/,
@@ -40,13 +44,15 @@ const statics = {
   password: {
     header: "Login",
     label: "(Password) Remember this number or Change into your usual password",
-    description: "You must keep it secret from anyone!",
+    descriptions: [
+      "You must keep it secret from anyone!",
+    ],
     placeholder: '99Hack99er',
     range: [6, 99]
   },
   result: {
     header: "",
-    description: ""
+    descriptions: []
   },
 
   component: {
@@ -150,7 +156,7 @@ const Gender = (props) => {
     <CardSection name="Gender"
       header={props.header}
       next="Nickname"
-      descriptions={[props.description]}
+      descriptions={props.descriptions}
       >
       <div style={{ textAlign: 'center' }}>
         <img
@@ -176,7 +182,7 @@ const Nickname = (props) => {
     <CardSection name="Nickname"
       header={props.header}
       next="Login"
-      descriptions={[props.description]}
+      descriptions={props.descriptions}
       >
       <Form>
         <FormGroup bsSize="large" validationState={status}>
@@ -198,7 +204,7 @@ const Login = (props) => {
       header="Login"
       next="Result"
       onMoveNext={() => props.post()}
-      descriptions={[statics.login_id.description, statics.password.description]}
+      descriptions={statics.login_id.descriptions.concat(statics.password.descriptions)}
       >
       <Form>
         <LoginId {...statics.login_id} {...props.user} update={props.update} verify={props.verify} />
@@ -337,7 +343,7 @@ const CardSection = (props) => {
   );
   const footer = props.descriptions ? (
     <ul>
-      {props.descriptions.filter(i => i).map(i => <li>{i}</li>)}
+      {props.descriptions.filter(i => i).map(i => <li key={i}>{i}</li>)}
     </ul>
   ) : null;
   const spacer = <div style={{ height: '1.5rem' }} />;
