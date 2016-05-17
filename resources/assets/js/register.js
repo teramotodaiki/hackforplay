@@ -152,7 +152,7 @@ const Gender = (props) => {
       next="Nickname"
       descriptions={[props.description]}
       >
-      <div>
+      <div style={{ textAlign: 'center' }}>
         <img
           src={props.male}
           style={props.gender === 'male' ? active : normal}
@@ -332,15 +332,17 @@ const Error = (props) => {
 
 const CardSection = (props) => {
 
-  const header = <h1>{props.header}</h1>
+  const header = (
+    <h1 style={{ textAlign: 'center' }}>{props.header}</h1>
+  );
   const footer = props.descriptions ? (
-    <ul style={{ textAlign: 'left' }}>
+    <ul>
       {props.descriptions.filter(i => i).map(i => <li>{i}</li>)}
     </ul>
   ) : null;
 
   return (
-    <Section name={props.name}>
+    <Section name={props.name} style={{ textAlign: 'left' }}>
       <div />
       <Col xs={11} sm={9} md={8} lg={7}>
         <Panel header={header} footer={footer}>
