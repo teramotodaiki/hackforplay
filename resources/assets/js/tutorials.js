@@ -1,6 +1,7 @@
 import React from 'react';
 import { scroller } from "react-scroll";
 import Confirm from "./confirm";
+import classNames from "classNames";
 
 import Merger from "./merger";
 import { Section, Scroller } from "./section";
@@ -159,6 +160,9 @@ const Level = React.createClass({
         </span>
       </Scroller>
     );
+    const youtubeClass = classNames('col-sm-5', 'col-xs-12', {
+      'hidden-xs': window && window.innerHeight < 568
+    });
 
     return (
       <Section name={'Level-' + info.id}
@@ -166,7 +170,7 @@ const Level = React.createClass({
         <div className="container-fluid">
           <div className={this.p({ row: 'xs-bottom' })}>
             <EmbedStage className="col-sm-7 col-xs-12" info={info} />
-            <EmbedYoutube className="col-sm-5 col-xs-12" info={info} />
+            <EmbedYoutube className={youtubeClass} info={info} />
           </div>
         </div>
         <div className="text-xs-center">
@@ -254,19 +258,9 @@ const EmbedYoutube = React.createClass({
     const info = this.props.info;
     return (
       <div className={this.props.className}>
-        <h3 className={'text-' + info.colorName}>
-          <span className="fa fa-question"></span>
-          <span className="fa fa-frown-o"></span>
-          <span className="fa fa-long-arrow-right"></span>
-          <span className="fa fa-youtube-play"></span>
-          <span className="fa fa-meh-o"></span>
-          <span className="fa fa-long-arrow-right"></span>
-          <span className="fa fa-lightbulb-o"></span>
-          <span className="fa fa-smile-o"></span>
-          <small className={info.showDescription ? 'text-muted m-l-1' : 'collapse'}>
-            {statics.descriptions.youtube}
-          </small>
-        </h3>
+        <small className={info.showDescription ? 'text-muted m-l-1' : 'collapse'}>
+          {statics.descriptions.youtube}
+        </small>
         <div className={this.p({ 'embed-responsive': '16by9' })} style={{backgroundColor: 'black'}}>
           <iframe src={statics.yt + info.youtube}></iframe>
         </div>
