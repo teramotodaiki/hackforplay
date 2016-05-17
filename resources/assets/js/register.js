@@ -30,7 +30,7 @@ const statics = {
   },
   login_id: {
     header: "Login",
-    label: "Remember this number or Change login ID",
+    label: "(ID) Remember this number or Change into your usual ID",
     description: "You can use alphabet, numbers and underscore (_)",
     placeholder: 'hacker9999',
     range: [3, 99],
@@ -39,7 +39,7 @@ const statics = {
   },
   password: {
     header: "Login",
-    label: "Remember this number or Change password",
+    label: "(Password) Remember this number or Change into your usual password",
     description: "You must keep it secret from anyone!",
     placeholder: '99Hack99er',
     range: [6, 99]
