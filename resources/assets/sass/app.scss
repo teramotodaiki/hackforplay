@@ -1,13 +1,21 @@
 // Settings
-$enable-flex: true;
+// $enable-flex: true;
 
-@import "node_modules/bootstrap/scss/bootstrap";
+
 @import "node_modules/font-awesome/scss/font-awesome";
+
+@import "bootstrap-em";
+// _bootstrap.scssの一部をコメントアウトしただけの単純なローダ
+@import "bs-loader";
+
+@import "buttons";
+@import "hover";
+@import "variables";
 
 // Focused element
 .pseudo-focus {
   border: .25rem solid $input-border-focus;
-  @include border-radius();
+  border-radius: $border-radius;
   margin: -.25rem;
 }
 
@@ -30,22 +38,6 @@ $enable-flex: true;
 // Responsive embed
 .embed-responsive-3by2 {
   padding-bottom: percentage(2 / 3);
-}
-
-// Flex box grid
-
-// Variables
-$flex-axis-diretion: (
-  vertical: column,
-  horizontal: row
-);
-
-// Justify row
-@each $axis, $direction in $flex-axis-diretion {
-  .row-#{$axis}-justify {
-    flex-flow: $direction nowrap;
-    justify-content: space-around;
-  }
 }
 
 // Font Awesome

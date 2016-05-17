@@ -15,6 +15,7 @@ const bootstrap = 'node_modules/bootstrap/dist/js/bootstrap.js';
 const jquery = 'node_modules/jquery/dist/jquery.js';
 const tether = 'node_modules/tether/dist/js/tether.js';
 const fontAwesome = 'node_modules/font-awesome/fonts';
+const bootstrap_sass = 'node_modules/bootstrap-sass/assets/javascripts/bootstrap.js';
 
 elixir((mix) => {
   mix
@@ -24,6 +25,11 @@ elixir((mix) => {
     .browserify('app.js')
     // Versioning
     .version(['css/app.css', 'js/app.js'])
+    // Bootstrap3
+    // .scripts([
+    //   jquery,
+    //   bootstrap_sass
+    // ], 'public/js/bootstrap.js', './')
     // Bootstrap4
     // .scripts([
     //   tether,

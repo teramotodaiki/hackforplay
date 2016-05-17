@@ -1,6 +1,8 @@
 import React from 'react';
 import { scroller } from "react-scroll";
 import Confirm from "./confirm";
+import classNames from "classNames";
+import { Panel } from "react-bootstrap";
 
 import Merger from "./merger";
 import { Section, Scroller } from "./section";
@@ -9,7 +11,7 @@ const statics = {
   title: 'The Beginning',
   hintTitle: 'How to solve',
   descriptions: {
-    youtube: 'Here is a hint movie',
+    youtube: 'Hint movie',
     next: "After cleared this stage then let's go to next stage!"
   },
   style: {
@@ -49,17 +51,17 @@ const Tutorials = React.createClass({
   getInitialState() {
     return {
       levels: [
-        { id: 1, title: 'Begining', youtube: 'od61KliPeJI', showDescription: true,
+        { id: 1, title: '決意の森', youtube: 'od61KliPeJI', showDescription: true,
           colorName: statics.colors.main, linkTo: 'Level-2' },
-        { id: 2, title: 'Secondly', youtube: 'mLBb7WQTjoo',
+        { id: 2, title: '不思議な本', youtube: 'mLBb7WQTjoo',
           colorName: statics.colors.main, linkTo: 'Level-3' },
-        { id: 3, title: 'Thirdly', youtube: 'no7ch0jTHRc',
+        { id: 3, title: 'おかしな行き止まり', youtube: 'no7ch0jTHRc',
           colorName: statics.colors.main, linkTo: 'Level-4' },
-        { id: 4, title: 'Forthly', youtube: 'qpjTVkrOvHg',
+        { id: 4, title: '閉じられた群青の輝き', youtube: 'qpjTVkrOvHg',
           colorName: statics.colors.sub, linkTo: 'Level-5' },
-        { id: 5, title: 'Fifthly', youtube: 'HzDbGgmi0bA',
+        { id: 5, title: '大グモ荒野', youtube: 'HzDbGgmi0bA',
           colorName: statics.colors.sub, linkTo: 'Level-6' },
-        { id: 6, title: 'Sixly', youtube: '4L0qPyUaH0A',
+        { id: 6, title: '守りし者', youtube: '4L0qPyUaH0A',
           colorName: statics.colors.sub, linkTo: 'Dialog' }
       ],
       activeLevelId: null
@@ -107,12 +109,12 @@ const Landing = React.createClass({
   mixins: [Merger],
   render() {
     return (
-      <Section name="Landing" height="100vh">
+      <Section name="Landing">
         <div></div>
         <div className="container">
           <div className="row">
             <div className="col-xs-12 col-lg-6 col-lg-offset-3">
-              <img src="image/tutorials-landing.png" className="img-fluid" />
+              <img src="image/tutorials-landing.png" className="img-responsive" />
             </div>
           </div>
         </div>
@@ -159,17 +161,22 @@ const Level = React.createClass({
         </span>
       </Scroller>
     );
+    const youtubeClass = classNames('col-sm-5', 'col-xs-12', {
+      'hidden-xs': window && window.innerHeight < 568
+    });
 
     return (
-      <Section name={'Level-' + info.id} height="100vh"
-        style={{ backgroundColor: statics.colors.levels[info.id] }}>
+      <Section name={'Level-' + info.id}
+        style={{ backgroundColor: statics.colors.levels[info.id] }}
+        rowStyle={{ textAlign: 'left', alignItems: 'stretch' }}
+        >
         <div className="container-fluid">
           <div className={this.p({ row: 'xs-bottom' })}>
             <EmbedStage className="col-sm-7 col-xs-12" info={info} />
-            <EmbedYoutube className="col-sm-5 col-xs-12" info={info} />
+            <EmbedYoutube className={youtubeClass} info={info} />
           </div>
         </div>
-        <div className="text-xs-center">
+        <div className="text-center">
           {next}
         </div>
       </Section>
@@ -186,25 +193,30 @@ const Dialog = React.createClass({
       backgroundSize: 'cover'
     };
     return (
-      <Section name="Dialog" height="100vh" style={backgroundStyle}>
+      <Section name="Dialog" style={backgroundStyle}>
         <div />
         <div />
-        <div className="col-xs-center">
-          <div className="card card-block text-xs-center p-b-0">
-            <h1 className="card-title">{this.props.header}</h1>
-            <p className="card-text">{this.props.description}</p>
+        <div>
+          <Panel>
+            <h1>{this.props.header}</h1>
+            <p>{this.props.description}</p>
             <a href="r" className={this.p({ btn: 'primary lg' })}>
-              <h2>{this.props.button}</h2>
+              <span style={{ fontSize: '2.5rem' }}>{this.props.button}</span>
             </a>
-            <div className="m-t-2">
+            <div style={{ marginTop: '1rem' }}>
               <a target="_blank" href={statics.shareTweetURL}>
                 <span className="fa fa-twitter-square fa-3x" />
               </a>
-              <a target="_blank" href={statics.searchURL} className="btn btn-link m-b-2">
+              <a
+                target="_blank"
+                href={statics.searchURL}
+                className="btn btn-link"
+                style={{ marginTop: '-1.5rem' }}
+                >
                 #hackforplay
               </a>
             </div>
-          </div>
+          </Panel>
         </div>
       </Section>
     );
@@ -236,7 +248,7 @@ const EmbedStage = React.createClass({
     return (
       <div className={this.props.className}>
         <h2 className={'text-' + info.colorName}>
-          <span className="fa fa-gamepad" />-{info.id} {info.title}
+          Stage.{info.id} {info.title}
         </h2>
         <div className={info.isActive ? 'pseudo-focus' : ''}>
           <div className={this.p({ 'embed-responsive': '3by2' })} style={{backgroundColor: 'black'}}>
@@ -252,21 +264,12 @@ const EmbedYoutube = React.createClass({
   mixins: [Merger],
   render() {
     const info = this.props.info;
+    const responsiveAlign = { paddingTop: '18%' }; // Bad CSS
     return (
-      <div className={this.props.className}>
-        <h3 className={'text-' + info.colorName}>
-          <span className="fa fa-question"></span>
-          <span className="fa fa-frown-o"></span>
-          <span className="fa fa-long-arrow-right"></span>
-          <span className="fa fa-youtube-play"></span>
-          <span className="fa fa-meh-o"></span>
-          <span className="fa fa-long-arrow-right"></span>
-          <span className="fa fa-lightbulb-o"></span>
-          <span className="fa fa-smile-o"></span>
-          <small className={info.showDescription ? 'text-muted m-l-1' : 'collapse'}>
-            {statics.descriptions.youtube}
-          </small>
-        </h3>
+      <div className={this.props.className} style={responsiveAlign}>
+        <small className={info.showDescription ? 'text-muted m-l-1' : 'collapse'}>
+          {statics.descriptions.youtube}
+        </small>
         <div className={this.p({ 'embed-responsive': '16by9' })} style={{backgroundColor: 'black'}}>
           <iframe src={statics.yt + info.youtube}></iframe>
         </div>
