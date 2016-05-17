@@ -18,6 +18,7 @@ const Section = React.createClass({
       justifyContent: 'space-around',
       height: '100%',
       textAlign: 'center',
+      alignItems: 'center',
     }, this.props.rowStyle);
 
     return (

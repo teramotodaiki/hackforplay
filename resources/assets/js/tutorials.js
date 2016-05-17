@@ -168,7 +168,7 @@ const Level = React.createClass({
     return (
       <Section name={'Level-' + info.id}
         style={{ backgroundColor: statics.colors.levels[info.id] }}
-        rowStyle={{ textAlign: 'left' }}
+        rowStyle={{ textAlign: 'left', alignItems: 'stretch' }}
         >
         <div className="container-fluid">
           <div className={this.p({ row: 'xs-bottom' })}>
