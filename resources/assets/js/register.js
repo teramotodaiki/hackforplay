@@ -12,7 +12,10 @@ const statics = {
 
   landing: {
     header: "Creator's License",
-    descriptions: []
+    descriptions: [
+      "You can make a game after get this license",
+      "It's free",
+    ]
   },
   gender: {
     header: "Icon",
@@ -137,8 +140,12 @@ export default class Register extends React.Component {
 }
 
 const Landing = (props) => {
+
+  const list = props.descriptions.map((item) => <li>{item}</li>);
+
   return (
     <CardSection name="Landing" header={props.header} next="Gender">
+      <ul>{list}</ul>
     </CardSection>
   );
 };
