@@ -12,6 +12,10 @@
 @import "hover";
 @import "variables";
 
+html {
+  font-size: $font-size-root;
+}
+
 // Focused element
 .pseudo-focus {
   border: .25rem solid $input-border-focus;
