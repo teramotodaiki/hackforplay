@@ -3,6 +3,7 @@ import { Link as ScrollLink, scroller } from "react-scroll";
 import Confirm from "./confirm";
 import classNames from "classNames";
 import request from "./promised-xhr.js";
+import { Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup } from "react-bootstrap";
 
 import Merger from "./merger";
 import { Section } from "./section";
@@ -169,12 +170,15 @@ const Nickname = (props) => {
   return (
     <Section name="Nickname">
       <h1>{props.header}</h1>
-      <InputGroup
-        status={status}
-        description={props.description}
-        value={props.nickname}
-        updateValue={(value) => props.update({ nickname: value })}
-        />
+      <Form>
+        <FormGroup bsSize="large" validationState={status}>
+          <FormControl
+            value={props.nickname}
+            onChange={(e) => props.update({ nickname: e.target.value })}
+            />
+          <HelpBlock>{props.description}</HelpBlock>
+        </FormGroup>
+      </Form>
       <Arrow to="Login" />
     </Section>
   );
@@ -195,12 +199,12 @@ const LoginId = (props) => {
   const contains = props.range[0] <= len && len <= props.range[1];
   const used = props.used;
   const status =
-  !contains || used === null ? '':
-  contains && !used ? 'success' : 'danger';
+  !contains || used === null ? undefined:
+  contains && !used ? 'success' : 'error';
 
-  const hint = classNames('text-danger', {
-    'collapse': !(contains && used)
-  });
+  const hint = contains && used ? (
+    <HelpBlock>{props.hintWhenUsed}</HelpBlock>
+  ) : null;
   const loading = contains && used === null ? (
     <span className="fa fa-spinner fa-pulse" />
   ) : contains && !used ? (
@@ -218,14 +222,19 @@ const LoginId = (props) => {
   return (
     <div>
       <h1>{props.header}</h1>
-      <InputGroup
-        status={status}
-        description={props.description}
-        value={props.login_id}
-        updateValue={onUpdate}
-        left={loading}
-        />
-        <p className={hint}>{props.hintWhenUsed}</p>
+      <Form>
+        <FormGroup bsSize="large" validationState={status}>
+          <InputGroup>
+            <InputGroup.Addon>{loading}</InputGroup.Addon>
+            <FormControl
+              value={props.login_id}
+              onChange={(e) => onUpdate(e.target.value)}
+              />
+          </InputGroup>
+          <HelpBlock>{props.description}</HelpBlock>
+          {hint}
+        </FormGroup>
+      </Form>
     </div>
   );
 };
@@ -233,7 +242,7 @@ const LoginId = (props) => {
 const Password = (props) => {
   const len = props.password.length;
   const contains = props.range[0] <= len && len <= props.range[1];
-  const status = contains ? 'success' : 'danger';
+  const status = contains ? 'success' : 'error';
   const hide = (
     <span
       className={'fa fa-eye' + (props.hide ? '-slash' : '')}
@@ -243,14 +252,19 @@ const Password = (props) => {
   return (
     <div>
       <h1>{props.header}</h1>
-      <InputGroup
-        status={status}
-        description={props.description}
-        value={props.password}
-        updateValue={(value) => props.update({ password: value })}
-        left={hide}
-        type={props.hide ? 'password' : 'text'}
-        />
+      <Form>
+        <FormGroup bsSize="large" validationState={status}>
+          <InputGroup>
+            <InputGroup.Addon>{hide}</InputGroup.Addon>
+            <FormControl
+              type={props.hide ? 'password' : 'text'}
+              value={props.password}
+              onChange={(e) => props.update({ password: e.target.value })}
+              />
+          </InputGroup>
+          <HelpBlock>{props.description}</HelpBlock>
+        </FormGroup>
+      </Form>
     </div>
   );
 };
@@ -309,43 +323,6 @@ const Error = (props) => {
     </div>
   );
 }
-
-const InputGroup = (props) => {
-  const groupClass = classNames('form-group', `has-${props.status}`);
-  const left = props.left ? (<div className="input-group-addon">{props.left}</div>) : null;
-  const right = props.right ? (<div className="input-group-addon">{props.right}</div>) : null;
-  const inputClass = classNames('form-control', `form-control-${props.status}`, {
-    'form-control-lg': !(left || right)
-  });
-  const input = (
-    <input
-      type={props.type || 'text'}
-      className={inputClass}
-      value={props.value}
-      placeholder={props.description}
-      onChange={(e) => props.updateValue(e.target.value)}
-      />
-  );
-  const line = (left || right) ? (
-    <div className="input-group input-group-lg">
-      {left}
-      {input}
-      {right}
-    </div>
-  ) : input;
-  return (
-    <div className="container">
-      <div className="row">
-        <div className="col-xs-12 col-lg-6 col-lg-offset-3">
-          <div className={groupClass}>
-            {line}
-          </div>
-          {props.children}
-        </div>
-      </div>
-    </div>
-  )
-};
 
 const Arrow = (props) => {
   const faClass = props.faClass || 'fa fa-arrow-down fa-2x';
