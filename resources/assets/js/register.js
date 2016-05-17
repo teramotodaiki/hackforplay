@@ -261,7 +261,7 @@ const Password = (props) => {
 };
 
 const Result = (props) => {
-  const collapse = classNames({ collapse: props.response === undefined });
+  const collapse = classNames({ hidden: props.response === undefined });
   const result = !props.response ? (
     <div>
       <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
