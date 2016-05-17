@@ -107,7 +107,7 @@ const Landing = React.createClass({
   mixins: [Merger],
   render() {
     return (
-      <Section name="Landing" height="100vh">
+      <Section name="Landing">
         <div></div>
         <div className="container">
           <div className="row">
@@ -161,7 +161,7 @@ const Level = React.createClass({
     );
 
     return (
-      <Section name={'Level-' + info.id} height="100vh"
+      <Section name={'Level-' + info.id}
         style={{ backgroundColor: statics.colors.levels[info.id] }}>
         <div className="container-fluid">
           <div className={this.p({ row: 'xs-bottom' })}>
@@ -186,7 +186,7 @@ const Dialog = React.createClass({
       backgroundSize: 'cover'
     };
     return (
-      <Section name="Dialog" height="100vh" style={backgroundStyle}>
+      <Section name="Dialog" style={backgroundStyle}>
         <div />
         <div />
         <div className="col-xs-center">
