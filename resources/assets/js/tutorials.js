@@ -2,6 +2,7 @@ import React from 'react';
 import { scroller } from "react-scroll";
 import Confirm from "./confirm";
 import classNames from "classNames";
+import { Panel } from "react-bootstrap";
 
 import Merger from "./merger";
 import { Section, Scroller } from "./section";
@@ -195,22 +196,27 @@ const Dialog = React.createClass({
       <Section name="Dialog" style={backgroundStyle}>
         <div />
         <div />
-        <div className="col-xs-center">
-          <div className="card card-block text-xs-center p-b-0">
-            <h1 className="card-title">{this.props.header}</h1>
-            <p className="card-text">{this.props.description}</p>
+        <div>
+          <Panel>
+            <h1>{this.props.header}</h1>
+            <p>{this.props.description}</p>
             <a href="r" className={this.p({ btn: 'primary lg' })}>
-              <h2>{this.props.button}</h2>
+              <span style={{ fontSize: '2.5rem' }}>{this.props.button}</span>
             </a>
-            <div className="m-t-2">
+            <div style={{ marginTop: '1rem' }}>
               <a target="_blank" href={statics.shareTweetURL}>
                 <span className="fa fa-twitter-square fa-3x" />
               </a>
-              <a target="_blank" href={statics.searchURL} className="btn btn-link m-b-2">
+              <a
+                target="_blank"
+                href={statics.searchURL}
+                className="btn btn-link"
+                style={{ marginTop: '-1.5rem' }}
+                >
                 #hackforplay
               </a>
             </div>
-          </div>
+          </Panel>
         </div>
       </Section>
     );
