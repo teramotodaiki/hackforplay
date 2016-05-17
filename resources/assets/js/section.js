@@ -1,29 +1,34 @@
 import React from "react";
 import { Element, Link } from "react-scroll";
+import classNames from "classNames";
 
 import Merger from "./merger";
 
 const Section = React.createClass({
   mixins: [Merger],
-  getDefaultProps() {
-    return {
-      style: {},
-      height: "100vh",
-      rowClass: "vertical-justify xs-stretch",
-    }
-  },
   render () {
-    const style = this.m(this.props.style, { height: this.props.height });
+
+    const style = this.m({
+      height: '100vh',
+    }, this.props.style);
+
+    const rowStyle = this.m({
+      display: 'flex',
+      flexFlow: 'column nowrap',
+      justifyContent: 'space-around',
+      height: '100%',
+      textAlign: 'center',
+      alignItems: 'center',
+    }, this.props.rowStyle);
+
     return (
       <Element
-        className="container-fluid"
         name={this.props.name}
         style={style}
         className={this.props.className}
         >
         <div
-          className={this.p({ row: this.props.rowClass }) + ' text-xs-center'}
-          style={{ height: "100%" }}>
+          style={rowStyle}>
           {this.props.children}
         </div>
       </Element>
