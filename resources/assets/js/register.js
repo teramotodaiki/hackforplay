@@ -26,6 +26,7 @@ const statics = {
     label: "Type your nickname",
     descriptions: [
       "Should be more than 3 characters and less than 30 characters",
+      "Don't use your real name. Save personal information yourself :-)",
     ],
     placeholder: 'superhacker',
     range: [3, 30]
