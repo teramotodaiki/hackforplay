@@ -166,14 +166,16 @@ const Level = React.createClass({
 
     return (
       <Section name={'Level-' + info.id}
-        style={{ backgroundColor: statics.colors.levels[info.id] }}>
+        style={{ backgroundColor: statics.colors.levels[info.id] }}
+        rowStyle={{ textAlign: 'left' }}
+        >
         <div className="container-fluid">
           <div className={this.p({ row: 'xs-bottom' })}>
             <EmbedStage className="col-sm-7 col-xs-12" info={info} />
             <EmbedYoutube className={youtubeClass} info={info} />
           </div>
         </div>
-        <div className="text-xs-center">
+        <div className="text-center">
           {next}
         </div>
       </Section>
