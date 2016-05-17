@@ -340,13 +340,16 @@ const CardSection = (props) => {
       {props.descriptions.filter(i => i).map(i => <li>{i}</li>)}
     </ul>
   ) : null;
+  const spacer = <div style={{ height: '1.5rem' }} />;
 
   return (
     <Section name={props.name} style={{ textAlign: 'left' }}>
       <div />
       <Col xs={11} sm={9} md={8} lg={7}>
         <Panel header={header} footer={footer}>
+          {spacer}
           {props.children}
+          {spacer}
         </Panel>
       </Col>
       <Arrow to={props.next} onClick={props.onMoveNext} />
