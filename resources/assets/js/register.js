@@ -215,72 +215,87 @@ const Login = (props) => {
   )
 }
 
-const LoginId = (props) => {
-  const len = props.login_id.length;
-  const contains = props.range[0] <= len && len <= props.range[1];
-  const used = props.used;
-  const status =
-  !contains || used === null ? undefined:
-  contains && !used ? 'success' : 'error';
+class LoginId extends React.Component {
 
-  const hint = contains && used ? (
-    <HelpBlock>{props.hintWhenUsed}</HelpBlock>
-  ) : null;
-  const loading = contains && used === null ? (
-    <span className="fa fa-spinner fa-pulse" />
-  ) : contains && !used ? (
-    <span className="fa fa-thumbs-o-up" />
-  ) : (
-    <span className="fa fa-hand-o-right" />
-  );
-  const onUpdate = (value) => {
-    if (props.allowed.test(value)) {
-      props.update({ login_id: value, used: null });
-      if (contains) props.verify(value);
-    }
-  };
+  constructor(props) {
+    super(props);
 
-  return (
-    <FormGroup bsSize="large" validationState={status}>
-      <ControlLabel>{props.label}</ControlLabel>
-      <InputGroup>
-        <InputGroup.Addon>{loading}</InputGroup.Addon>
-        <FormControl
-          placeholder={props.placeholder}
-          value={props.login_id}
-          onChange={(e) => onUpdate(e.target.value)}
-          />
-      </InputGroup>
-      {hint}
-    </FormGroup>
-  );
-};
+  }
 
-const Password = (props) => {
-  const len = props.password.length;
-  const contains = props.range[0] <= len && len <= props.range[1];
-  const status = contains ? 'success' : 'error';
-  const hide = (
-    <span
-      className={'fa fa-eye' + (props.hide ? '-slash' : '')}
-      onClick={() => props.update({ hide: !props.hide })}
-       />
-  );
-  return (
-    <FormGroup bsSize="large" validationState={status}>
-      <ControlLabel>{props.label}</ControlLabel>
-      <InputGroup>
-        <InputGroup.Addon>{hide}</InputGroup.Addon>
-        <FormControl
-          placeholder={props.placeholder}
-          type={props.hide ? 'password' : 'text'}
-          value={props.password}
-          onChange={(e) => props.update({ password: e.target.value })}
-          />
-      </InputGroup>
-    </FormGroup>
-  );
-};
+  render() {
+    const len = this.props.login_id.length;
+    const contains = this.props.range[0] <= len && len <= this.props.range[1];
+    const used = this.props.used;
+    const status =
+    !contains || used === null ? undefined:
+    contains && !used ? 'success' : 'error';
+
+    const hint = contains && used ? (
+      <HelpBlock>{this.props.hintWhenUsed}</HelpBlock>
+    ) : null;
+    const loading = contains && used === null ? (
+      <span className="fa fa-spinner fa-pulse" />
+    ) : contains && !used ? (
+      <span className="fa fa-thumbs-o-up" />
+    ) : (
+      <span className="fa fa-hand-o-right" />
+    );
+    const onUpdate = (value) => {
+      if (this.props.allowed.test(value)) {
+        this.props.update({ login_id: value, used: null });
+        if (contains) this.props.verify(value);
+      }
+    };
+
+    return (
+      <FormGroup bsSize="large" validationState={status}>
+        <ControlLabel>{this.props.label}</ControlLabel>
+        <InputGroup>
+          <InputGroup.Addon>{loading}</InputGroup.Addon>
+          <FormControl
+            placeholder={this.props.placeholder}
+            value={this.props.login_id}
+            onChange={(e) => onUpdate(e.target.value)}
+            />
+        </InputGroup>
+        {hint}
+      </FormGroup>
+    );
+  }
+}
+
+class Password extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const len = this.props.password.length;
+    const contains = this.props.range[0] <= len && len <= this.props.range[1];
+    const status = contains ? 'success' : 'error';
+    const hide = (
+      <span
+        className={'fa fa-eye' + (this.props.hide ? '-slash' : '')}
+        onClick={() => this.props.update({ hide: !this.props.hide })}
+         />
+    );
+    return (
+      <FormGroup bsSize="large" validationState={status}>
+        <ControlLabel>{this.props.label}</ControlLabel>
+        <InputGroup>
+          <InputGroup.Addon>{hide}</InputGroup.Addon>
+          <FormControl
+            placeholder={this.props.placeholder}
+            type={this.props.hide ? 'password' : 'text'}
+            value={this.props.password}
+            onChange={(e) => this.props.update({ password: e.target.value })}
+            />
+        </InputGroup>
+      </FormGroup>
+    );
+  }
+}
 
 const Result = (props) => {
   const collapse = classNames({ hidden: props.response === undefined });
