@@ -3,7 +3,7 @@ import { Link as ScrollLink, scroller } from "react-scroll";
 import Confirm from "./confirm";
 import classNames from "classNames";
 import request from "./promised-xhr.js";
-import { Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup } from "react-bootstrap";
+import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup } from "react-bootstrap";
 
 import Merger from "./merger";
 import { Section } from "./section";
@@ -181,8 +181,10 @@ const Nickname = (props) => {
 const Login = (props) => {
   return (
     <CardSection name="Login" header="Login" next="Result" onMoveNext={() => props.post()}>
-      <LoginId {...props.login_id} {...props.user} update={props.update} verify={props.verify} />
-      <Password {...props.password} {...props.user} update={props.update} />
+      <Form>
+        <LoginId {...props.login_id} {...props.user} update={props.update} verify={props.verify} />
+        <Password {...props.password} {...props.user} update={props.update} />
+      </Form>
     </CardSection>
   )
 }
@@ -213,21 +215,17 @@ const LoginId = (props) => {
   };
 
   return (
-    <div>
-      <Form>
-        <FormGroup bsSize="large" validationState={status}>
-          <InputGroup>
-            <InputGroup.Addon>{loading}</InputGroup.Addon>
-            <FormControl
-              value={props.login_id}
-              onChange={(e) => onUpdate(e.target.value)}
-              />
-          </InputGroup>
-          <HelpBlock>{props.description}</HelpBlock>
-          {hint}
-        </FormGroup>
-      </Form>
-    </div>
+    <FormGroup bsSize="large" validationState={status}>
+      <InputGroup>
+        <InputGroup.Addon>{loading}</InputGroup.Addon>
+        <FormControl
+          value={props.login_id}
+          onChange={(e) => onUpdate(e.target.value)}
+          />
+      </InputGroup>
+      <HelpBlock>{props.description}</HelpBlock>
+      {hint}
+    </FormGroup>
   );
 };
 
@@ -242,21 +240,17 @@ const Password = (props) => {
        />
   );
   return (
-    <div>
-      <Form>
-        <FormGroup bsSize="large" validationState={status}>
-          <InputGroup>
-            <InputGroup.Addon>{hide}</InputGroup.Addon>
-            <FormControl
-              type={props.hide ? 'password' : 'text'}
-              value={props.password}
-              onChange={(e) => props.update({ password: e.target.value })}
-              />
-          </InputGroup>
-          <HelpBlock>{props.description}</HelpBlock>
-        </FormGroup>
-      </Form>
-    </div>
+    <FormGroup bsSize="large" validationState={status}>
+      <InputGroup>
+        <InputGroup.Addon>{hide}</InputGroup.Addon>
+        <FormControl
+          type={props.hide ? 'password' : 'text'}
+          value={props.password}
+          onChange={(e) => props.update({ password: e.target.value })}
+          />
+      </InputGroup>
+      <HelpBlock>{props.description}</HelpBlock>
+    </FormGroup>
   );
 };
 
@@ -322,9 +316,11 @@ const CardSection = (props) => {
   return (
     <Section name={props.name}>
       <div />
-      <Panel header={header}>
-        {props.children}
-      </Panel>
+      <Col xs={11} sm={9} md={8} lg={7}>
+        <Panel header={header}>
+          {props.children}
+        </Panel>
+      </Col>
       <Arrow to={props.next} onClick={props.onMoveNext} />
     </Section>
   );
