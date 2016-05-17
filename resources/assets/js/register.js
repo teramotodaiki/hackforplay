@@ -126,10 +126,8 @@ export default class Register extends React.Component {
 
 const Landing = (props) => {
   return (
-    <Section name="Landing">
-      <h1>{props.header}</h1>
-      <Arrow to="Gender" />
-    </Section>
+    <CardSection name="Landing" header={props.header} next="Gender">
+    </CardSection>
   );
 };
 
@@ -144,8 +142,7 @@ const Gender = (props) => {
     border: ".4rem solid #66afe9"
   });
   return (
-    <Section name="Gender">
-      <h1>{props.header}</h1>
+    <CardSection name="Gender" header={props.header} next="Nickname">
       <div>
         <img
           src={props.male}
@@ -158,8 +155,7 @@ const Gender = (props) => {
           onClick={() => props.update({ gender: 'female' })}
           />
       </div>
-      <Arrow to="Nickname" />
-    </Section>
+    </CardSection>
   );
 };
 
@@ -168,8 +164,7 @@ const Nickname = (props) => {
   const contains = props.range[0] <= len && len <= props.range[1];
   const status = contains ? 'success' : 'warning';
   return (
-    <Section name="Nickname">
-      <h1>{props.header}</h1>
+    <CardSection name="Nickname" header={props.header} next="Login">
       <Form>
         <FormGroup bsSize="large" validationState={status}>
           <FormControl
@@ -179,18 +174,16 @@ const Nickname = (props) => {
           <HelpBlock>{props.description}</HelpBlock>
         </FormGroup>
       </Form>
-      <Arrow to="Login" />
-    </Section>
+    </CardSection>
   );
 };
 
 const Login = (props) => {
   return (
-    <Section name="Login">
+    <CardSection name="Login" header="Login" next="Result" onMoveNext={() => props.post()}>
       <LoginId {...props.login_id} {...props.user} update={props.update} verify={props.verify} />
       <Password {...props.password} {...props.user} update={props.update} />
-      <Arrow to="Result" onClick={() => props.post()} />
-    </Section>
+    </CardSection>
   )
 }
 
@@ -221,7 +214,6 @@ const LoginId = (props) => {
 
   return (
     <div>
-      <h1>{props.header}</h1>
       <Form>
         <FormGroup bsSize="large" validationState={status}>
           <InputGroup>
@@ -251,7 +243,6 @@ const Password = (props) => {
   );
   return (
     <div>
-      <h1>{props.header}</h1>
       <Form>
         <FormGroup bsSize="large" validationState={status}>
           <InputGroup>
@@ -323,6 +314,21 @@ const Error = (props) => {
     </div>
   );
 }
+
+const CardSection = (props) => {
+
+  const header = <h1>{props.header}</h1>
+
+  return (
+    <Section name={props.name}>
+      <div />
+      <Panel header={header}>
+        {props.children}
+      </Panel>
+      <Arrow to={props.next} onClick={props.onMoveNext} />
+    </Section>
+  );
+};
 
 const Arrow = (props) => {
   const faClass = props.faClass || 'fa fa-arrow-down fa-2x';
