@@ -7,7 +7,7 @@
 * Use em or rem font-size in Bootstrap 3
 * Ported from Less version here: https://gist.github.com/jasny/9731895
 */
-$font-size-root: 18px;
+$font-size-root: 16px;
 $font-unit: 1rem; // Pick em or rem here
 
 
@@ -67,9 +67,8 @@ $screen-sm-min:     768px;
 // Set root font size
 
 html {
-font-size: $font-size-root;
+font-size: $font-size-root !important;
 }
-
 
 // Change styling for elements that mix pixels and ems
 
