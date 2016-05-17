@@ -112,8 +112,6 @@ export default class Register extends React.Component {
         <Gender {...statics.gender } {...this.state.user} update={this.update} />
         <Nickname {...statics.nickname } {...this.state.user} update={this.update} />
         <Login
-          login_id={statics.login_id}
-          password={statics.password}
           user={this.state.user}
           update={this.update}
           verify={this.verify}
@@ -182,8 +180,8 @@ const Login = (props) => {
   return (
     <CardSection name="Login" header="Login" next="Result" onMoveNext={() => props.post()}>
       <Form>
-        <LoginId {...props.login_id} {...props.user} update={props.update} verify={props.verify} />
-        <Password {...props.password} {...props.user} update={props.update} />
+        <LoginId {...statics.login_id} {...props.user} update={props.update} verify={props.verify} />
+        <Password {...statics.password} {...props.user} update={props.update} />
       </Form>
     </CardSection>
   )
