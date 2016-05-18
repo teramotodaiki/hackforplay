@@ -36,7 +36,7 @@ const Confirm = React.createClass({
     };
   },
 
-  show(message, options) {
+  show() {
     this.refs.modal.show();
     return new Promise((resolve, reject) => {
       this.resolve = resolve;

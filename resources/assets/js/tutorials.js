@@ -75,8 +75,8 @@ const Tutorials = React.createClass({
       this.setState({ activeLevelId: null });
     }
   },
-  confirm(options) {
-    return this.refs.confirm.show(options);
+  confirm() {
+    return this.refs.confirm.show();
   },
   render () {
     const levels = this.state.levels.map((item) => {
