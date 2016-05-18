@@ -41,6 +41,7 @@ const statics = {
     label: "(ID) Remember this number or Change into your usual ID",
     descriptions: [
       "You can use alphabet, numbers and underscore (_)",
+      "Login ID should be more than 3 characters",
     ],
     placeholder: 'hacker9999',
     range: [3, 99],
@@ -51,6 +52,7 @@ const statics = {
     header: "Login",
     label: "(Password) Remember this number or Change into your usual password",
     descriptions: [
+      "Password should be more than 6 characters",
       "You must keep it secret from anyone!",
     ],
     placeholder: '99Hack99er',
