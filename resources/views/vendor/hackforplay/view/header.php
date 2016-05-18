@@ -224,7 +224,7 @@ $(function(){
 					</a>
 				</li>
 				<li>
-					<a href="../getaccount/" class="btn btn-link" title="Register">
+					<a href="../register" class="btn btn-link" title="Register">
 						<small>新規登録</small>
 					</a>
 				</li>
