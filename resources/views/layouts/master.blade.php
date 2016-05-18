@@ -5,12 +5,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('ogp')
     <link rel="stylesheet" href="@yield('css')">
+    @yield('wovn')
   </head>
   <body>
     @yield('ga')
     <div id="@yield('id')"></div>
     <script src="@yield('bootstrap')"></script>
     <script src="@yield('js')"></script>
-    @yield('wovn')
   </body>
 </html>
