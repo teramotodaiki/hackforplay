@@ -20,3 +20,7 @@
 
   </script>
 @endsection
+
+@section('wovn')
+  <script src="//j.wovn.io/1" data-wovnio="key=FgyZa" async></script>
+@endsection
