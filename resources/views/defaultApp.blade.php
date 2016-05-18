@@ -2,6 +2,15 @@
 
 @extends('layouts/master')
 
+@section('ogp')
+
+  <meta property="og:title" content="{{ $title or 'HackforPlay' }}" />
+  <meta property="og:type" content="{{ $type or 'website' }}" />
+  <meta property="og:url" content="{{ $url or url()->full() }}" />
+  <meta property="og:image" content="{{ $image or 'img/1024/topback.jpg' }}" />
+
+@endsection
+
 @section('css', elixir('css/app.css'))
 @section('js',  elixir('js/app.js'))
 @section('bootstrap', 'js/bootstrap.js')
