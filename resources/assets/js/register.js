@@ -191,7 +191,7 @@ export default class Register extends React.Component {
 const Landing = (props) => {
 
   const list = props.descriptions.map((item) => (
-    <p>
+    <p key={item}>
       <span className="fa fa-check-circle-o text-success" />
       <span> {item}</span>
     </p>
