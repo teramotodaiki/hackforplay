@@ -97,11 +97,13 @@ export default class Register extends React.Component {
         used: null, // login_idがすでに使われているか
       },
       response: undefined, // status, header, body (null is loading)
+      showResult: false,
     }
     this.update = this.update.bind(this);
     this.post = this.post.bind(this);
     this.verify = this.verify.bind(this);
     this.confirm = this.confirm.bind(this);
+    this.showResult = this.showResult.bind(this);
 
     // Default LoginId value
     request.get('random', {
@@ -116,6 +118,10 @@ export default class Register extends React.Component {
         user: Object.assign(previous.user, value)
       }
     });
+  }
+
+  showResult() {
+    this.setState({ showResult: true });
   }
 
   post() {
@@ -142,6 +148,7 @@ export default class Register extends React.Component {
 
   render() {
     const user = this.state.user;
+    const resultClass = classNames({ 'hidden': !this.state.showResult });
     return (
       <div>
         <Confirm ref="confirm" {...statics.confirm}>
@@ -168,8 +175,14 @@ export default class Register extends React.Component {
           verify={this.verify}
           post={this.post}
           confirm={this.confirm}
+          showResult={this.showResult}
            />
-        <Result {...statics.result } {...user} response={this.state.response} />
+        <Result
+          className={resultClass}
+          {...statics.result }
+          {...user}
+          response={this.state.response}
+          />
       </div>
     );
   }
@@ -257,7 +270,10 @@ const Login = (props) => {
     <CardSection name="Login"
       header="Login"
       next="Login"
-      onMoveNext={() => props.confirm().then(moveNext)}
+      onMoveNext={() => {
+        props.showResult();
+        props.confirm().then(moveNext);
+      }}
       descriptions={statics.login_id.descriptions.concat(statics.password.descriptions)}
       >
       <Form>
@@ -276,8 +292,6 @@ class LoginId extends React.Component {
       changed: false
     };
   }
-
-
 
   render() {
     const con = contains(this.props.login_id, this.props.range);
@@ -382,7 +396,6 @@ const PasswordEye = (props) => {
 };
 
 const Result = (props) => {
-  const collapse = classNames({ hidden: props.response === undefined });
   const result = !props.response ? (
     <div>
       <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
@@ -396,10 +409,8 @@ const Result = (props) => {
     </div>
   );
   return (
-    <Section name="Result">
-      <div className={collapse}>
-        {result}
-      </div>
+    <Section name="Result" className={props.className}>
+      {result}
     </Section>
   );
 };
