@@ -11,7 +11,7 @@ const statics = {
   title: 'The Beginning',
   hintTitle: 'How to solve',
   descriptions: {
-    youtube: 'Hint movie',
+    youtube: 'Hints',
     next: "After cleared this stage then let's go to next stage!"
   },
   style: {
@@ -34,11 +34,11 @@ const statics = {
   yt: 'https://www.youtube.com/embed/',
   dialog: {
     header: 'Awesome!!',
-    description : 'There are 500+ stages in HackforPlay! Try it out',
+    description : 'There are 500+ stages in HackforPlay! Try it out!',
     button: 'Play more'
   },
   confirm: {
-    title: 'Did you clear this stage?',
+    title: "Did you clear the 1st stage? Let's go to the next stage!",
     description: "Let's go to the next stage! Of cource you can return this stage later"
   },
   shareTweetURL: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent('https://hackforplay.xyz/tutorials'),
