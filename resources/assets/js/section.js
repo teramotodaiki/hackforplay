@@ -10,6 +10,7 @@ const Section = React.createClass({
 
     const style = this.m({
       height: '100vh',
+      textAlign: 'center',
     }, this.props.style);
 
     const rowStyle = this.m({
@@ -17,7 +18,6 @@ const Section = React.createClass({
       flexFlow: 'column nowrap',
       justifyContent: 'space-around',
       height: '100%',
-      textAlign: 'center',
       alignItems: 'center',
     }, this.props.rowStyle);
 

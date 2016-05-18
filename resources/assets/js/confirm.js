@@ -36,7 +36,7 @@ const Confirm = React.createClass({
     };
   },
 
-  show(message, options) {
+  show() {
     this.refs.modal.show();
     return new Promise((resolve, reject) => {
       this.resolve = resolve;
@@ -68,6 +68,7 @@ const Confirm = React.createClass({
         </div>
         <div className='modal-body'>
           {this.props.description}
+          {this.props.children}
         </div>
         <div className='modal-footer'>
           <div className='text-right'>

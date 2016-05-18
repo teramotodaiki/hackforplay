@@ -3,6 +3,7 @@ import { Link as ScrollLink, scroller } from "react-scroll";
 import Confirm from "./confirm";
 import classNames from "classNames";
 import request from "./promised-xhr.js";
+import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, ControlLabel } from "react-bootstrap";
 
 import Merger from "./merger";
 import { Section } from "./section";
@@ -11,34 +12,57 @@ const statics = {
 
   landing: {
     header: "Creator's License",
-    description: ""
+    label: "If you have this license,",
+    descriptions: [
+      "You can make a game to code",
+      "You can provide it everyone",
+      "Somebody will learn from your code",
+    ]
   },
   gender: {
-    header: "Choose your icon",
-    description: "",
+    header: "Icon",
+    label: "Choose your icon",
+    descriptions: [(<span><span className="fa fa-mouse-pointer"></span>Click to select</span>)],
     male: "m/icon_m.png",
     female: "m/icon_w.png"
   },
   nickname: {
-    header: "Type your nickname",
-    description: "Should be more than 3 characters and less than 30 characters",
+    header: "Nickname",
+    label: "Type your nickname",
+    descriptions: [
+      "Should be more than 3 characters and less than 30 characters",
+      "Don't use your real name. Save personal information by yourself :-)",
+    ],
+    placeholder: 'superhacker',
     range: [3, 30]
   },
   login_id: {
-    header: "Type your login ID",
-    description: "You can use alphabet, numbers and underscore (_)",
+    header: "Login",
+    label: "(ID) Remember this number or Change into your usual ID",
+    descriptions: [
+      "You can use alphabet, numbers and underscore (_)",
+    ],
+    placeholder: 'hacker9999',
     range: [3, 99],
     allowed: /^\w+$/,
     hintWhenUsed: "This ID has already used by someone, you can't use this"
   },
   password: {
-    header: "Set login password",
-    description: "You must keep it secret from anyone! (at least 6 length)",
+    header: "Login",
+    label: "(Password) Remember this number or Change into your usual password",
+    descriptions: [
+      "You must keep it secret from anyone!",
+    ],
+    placeholder: '99Hack99er',
     range: [6, 99]
+  },
+  confirm: {
+    title: "Confirm your login information",
+    description: "Please take a note of phrase below. It is required to log in.",
   },
   result: {
     header: "",
-    description: ""
+    descriptions: []
   },
 
   component: {
@@ -70,6 +94,7 @@ export default class Register extends React.Component {
     this.update = this.update.bind(this);
     this.post = this.post.bind(this);
     this.verify = this.verify.bind(this);
+    this.confirm = this.confirm.bind(this);
 
     // Default LoginId value
     request.get('random', {
@@ -104,31 +129,61 @@ export default class Register extends React.Component {
     .catch((err) => this.update({ used: true }));
   }
 
+  confirm() {
+    return this.refs.confirm.show();
+  }
+
   render() {
+    const user = this.state.user;
     return (
       <div>
-        <Landing {...statics.landing} {...this.state.user} update={this.update} />
-        <Gender {...statics.gender } {...this.state.user} update={this.update} />
-        <Nickname {...statics.nickname } {...this.state.user} update={this.update} />
+        <Confirm ref="confirm" {...statics.confirm}>
+          <Form>
+            <FormGroup>
+              <ControlLabel>Login ID</ControlLabel>
+              <FormControl readOnly value={user.login_id} />
+            </FormGroup>
+            <FormGroup>
+              <ControlLabel>Password</ControlLabel>
+              <InputGroup>
+                <PasswordEye hide={user.hide} update={user.update} />
+                <FormControl readOnly value={user.password} type={user.hide ? 'password' : 'text'} />
+              </InputGroup>
+            </FormGroup>
+          </Form>
+        </Confirm>
+        <Landing {...statics.landing} {...user} update={this.update} />
+        <Gender {...statics.gender } {...user} update={this.update} />
+        <Nickname {...statics.nickname } {...user} update={this.update} />
         <Login
-          login_id={statics.login_id}
-          password={statics.password}
-          user={this.state.user}
+          user={user}
           update={this.update}
           verify={this.verify}
-          post={this.post} />
-        <Result {...statics.result } {...this.state.user} response={this.state.response} />
+          post={this.post}
+          confirm={this.confirm}
+           />
+        <Result {...statics.result } {...user} response={this.state.response} />
       </div>
     );
   }
 }
 
 const Landing = (props) => {
+
+  const list = props.descriptions.map((item) => (
+    <p>
+      <span className="fa fa-check-circle-o text-success" />
+      <span> {item}</span>
+    </p>
+  ));
+
   return (
-    <Section name="Landing">
-      <h1>{props.header}</h1>
-      <Arrow to="Gender" />
-    </Section>
+    <CardSection name="Landing" header={props.header} next="Gender">
+      <div style={{ textAlign: 'center' }}>
+        <h3>{props.label}</h3>
+        {list}
+      </div>
+    </CardSection>
   );
 };
 
@@ -143,9 +198,12 @@ const Gender = (props) => {
     border: ".4rem solid #66afe9"
   });
   return (
-    <Section name="Gender">
-      <h1>{props.header}</h1>
-      <div>
+    <CardSection name="Gender"
+      header={props.header}
+      next="Nickname"
+      descriptions={props.descriptions}
+      >
+      <div style={{ textAlign: 'center' }}>
         <img
           src={props.male}
           style={props.gender === 'male' ? active : normal}
@@ -157,8 +215,7 @@ const Gender = (props) => {
           onClick={() => props.update({ gender: 'female' })}
           />
       </div>
-      <Arrow to="Nickname" />
-    </Section>
+    </CardSection>
   );
 };
 
@@ -167,96 +224,158 @@ const Nickname = (props) => {
   const contains = props.range[0] <= len && len <= props.range[1];
   const status = contains ? 'success' : 'warning';
   return (
-    <Section name="Nickname">
-      <h1>{props.header}</h1>
-      <InputGroup
-        status={status}
-        description={props.description}
-        value={props.nickname}
-        updateValue={(value) => props.update({ nickname: value })}
-        />
-      <Arrow to="Login" />
-    </Section>
+    <CardSection name="Nickname"
+      header={props.header}
+      next="Login"
+      descriptions={props.descriptions}
+      >
+      <Form>
+        <FormGroup bsSize="large" validationState={status}>
+          <ControlLabel>{props.label}</ControlLabel>
+          <FormControl
+            placeholder={props.placeholder}
+            value={props.nickname}
+            onChange={(e) => props.update({ nickname: e.target.value })}
+            />
+        </FormGroup>
+      </Form>
+    </CardSection>
   );
 };
 
 const Login = (props) => {
+  const moveNext = () => {
+    scroller.scrollTo('Result', { smooth: true });
+    props.post();
+  }
   return (
-    <Section name="Login">
-      <LoginId {...props.login_id} {...props.user} update={props.update} verify={props.verify} />
-      <Password {...props.password} {...props.user} update={props.update} />
-      <Arrow to="Result" onClick={() => props.post()} />
-    </Section>
+    <CardSection name="Login"
+      header="Login"
+      next="Login"
+      onMoveNext={() => props.confirm().then(moveNext)}
+      descriptions={statics.login_id.descriptions.concat(statics.password.descriptions)}
+      >
+      <Form>
+        <LoginId {...statics.login_id} {...props.user} update={props.update} verify={props.verify} />
+        <Password {...statics.password} {...props.user} update={props.update} />
+      </Form>
+    </CardSection>
   )
 }
 
-const LoginId = (props) => {
-  const len = props.login_id.length;
-  const contains = props.range[0] <= len && len <= props.range[1];
-  const used = props.used;
-  const status =
-  !contains || used === null ? '':
-  contains && !used ? 'success' : 'danger';
+class LoginId extends React.Component {
 
-  const hint = classNames('text-danger', {
-    'collapse': !(contains && used)
-  });
-  const loading = contains && used === null ? (
-    <span className="fa fa-spinner fa-pulse" />
-  ) : contains && !used ? (
-    <span className="fa fa-thumbs-o-up" />
-  ) : (
-    <span className="fa fa-hand-o-right" />
-  );
-  const onUpdate = (value) => {
-    if (props.allowed.test(value)) {
-      props.update({ login_id: value, used: null });
-      if (contains) props.verify(value);
+  constructor(props) {
+    super(props);
+    this.state = {
+      changed: false
+    };
+  }
+
+  render() {
+    const len = this.props.login_id.length;
+    const contains = this.props.range[0] <= len && len <= this.props.range[1];
+    const used = this.props.used;
+    const status =
+    !contains || used === null ? undefined:
+    contains && !used ? 'success' : 'error';
+    const inputStyle = this.state.changed ? {} : { color: 'gray' };
+
+    const hint = contains && used ? (
+      <HelpBlock>{this.props.hintWhenUsed}</HelpBlock>
+    ) : null;
+    const loading = contains && used === null ? (
+      <span className="fa fa-spinner fa-pulse" />
+    ) : contains && !used ? (
+      <span className="fa fa-thumbs-o-up" />
+    ) : (
+      <span className="fa fa-hand-o-right" />
+    );
+    const onUpdate = (value) => {
+      if (this.props.allowed.test(value) || !value) {
+        this.props.update({ login_id: value, used: null });
+        if (contains) this.props.verify(value);
+        this.setState({ changed: true });
+      }
+    };
+    const onFocus = (target) => {
+      if (!this.state.changed) {
+        window.setTimeout(() => target.select(), 100);
+      }
     }
-  };
 
-  return (
-    <div>
-      <h1>{props.header}</h1>
-      <InputGroup
-        status={status}
-        description={props.description}
-        value={props.login_id}
-        updateValue={onUpdate}
-        left={loading}
-        />
-        <p className={hint}>{props.hintWhenUsed}</p>
-    </div>
-  );
-};
+    return (
+      <FormGroup bsSize="large" validationState={status}>
+        <ControlLabel>{this.props.label}</ControlLabel>
+        <InputGroup>
+          <InputGroup.Addon>{loading}</InputGroup.Addon>
+          <FormControl
+            placeholder={this.props.placeholder}
+            value={this.props.login_id}
+            onChange={(e) => onUpdate(e.target.value)}
+            onFocus={(e) => onFocus(e.target)}
+            style={inputStyle}
+            />
+        </InputGroup>
+        {hint}
+      </FormGroup>
+    );
+  }
+}
 
-const Password = (props) => {
-  const len = props.password.length;
-  const contains = props.range[0] <= len && len <= props.range[1];
-  const status = contains ? 'success' : 'danger';
-  const hide = (
-    <span
-      className={'fa fa-eye' + (props.hide ? '-slash' : '')}
-      onClick={() => props.update({ hide: !props.hide })}
-       />
-  );
+class Password extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      changed: false
+    };
+  }
+
+  render() {
+    const len = this.props.password.length;
+    const contains = this.props.range[0] <= len && len <= this.props.range[1];
+    const status = contains ? 'success' : 'error';
+    const inputStyle = this.state.changed ? {} : { color: 'gray' };
+    const onFocus = (target) => {
+      if (!this.state.changed) {
+        window.setTimeout(() => target.select(), 100);
+      }
+    }
+
+    return (
+      <FormGroup bsSize="large" validationState={status}>
+        <ControlLabel>{this.props.label}</ControlLabel>
+        <InputGroup>
+          <PasswordEye hide={this.props.hide} update={this.props.update} />
+          <FormControl
+            placeholder={this.props.placeholder}
+            type={this.props.hide ? 'password' : 'text'}
+            value={this.props.password}
+            onChange={(e) => this.props.update({ password: e.target.value })}
+            onFocus={(e) => onFocus(e.target)}
+            style={inputStyle}
+            />
+        </InputGroup>
+      </FormGroup>
+    );
+  }
+}
+
+const PasswordEye = (props) => {
+  const className = classNames('fa', {
+    'fa-eye': !props.hide,
+    'fa-eye-slash': props.hide
+  });
   return (
-    <div>
-      <h1>{props.header}</h1>
-      <InputGroup
-        status={status}
-        description={props.description}
-        value={props.password}
-        updateValue={(value) => props.update({ password: value })}
-        left={hide}
-        type={props.hide ? 'password' : 'text'}
-        />
-    </div>
+    <InputGroup.Addon>
+      <span className={className} onClick={() => props.update({ hide: !props.hide })} />
+    </InputGroup.Addon>
   );
 };
 
 const Result = (props) => {
-  const collapse = classNames({ collapse: props.response === undefined });
+  const collapse = classNames({ hidden: props.response === undefined });
   const result = !props.response ? (
     <div>
       <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
@@ -310,41 +429,31 @@ const Error = (props) => {
   );
 }
 
-const InputGroup = (props) => {
-  const groupClass = classNames('form-group', `has-${props.status}`);
-  const left = props.left ? (<div className="input-group-addon">{props.left}</div>) : null;
-  const right = props.right ? (<div className="input-group-addon">{props.right}</div>) : null;
-  const inputClass = classNames('form-control', `form-control-${props.status}`, {
-    'form-control-lg': !(left || right)
-  });
-  const input = (
-    <input
-      type={props.type || 'text'}
-      className={inputClass}
-      value={props.value}
-      placeholder={props.description}
-      onChange={(e) => props.updateValue(e.target.value)}
-      />
+const CardSection = (props) => {
+
+  const header = (
+    <h1 style={{ textAlign: 'center' }}>{props.header}</h1>
   );
-  const line = (left || right) ? (
-    <div className="input-group input-group-lg">
-      {left}
-      {input}
-      {right}
-    </div>
-  ) : input;
+  const footer = props.descriptions ? (
+    <ul>
+      {props.descriptions.filter(i => i).map(i => <li key={i}>{i}</li>)}
+    </ul>
+  ) : null;
+  const spacer = <div style={{ height: '1.5rem' }} />;
+
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-xs-12 col-lg-6 col-lg-offset-3">
-          <div className={groupClass}>
-            {line}
-          </div>
+    <Section name={props.name} style={{ textAlign: 'left' }}>
+      <div />
+      <Col xs={11} sm={9} md={8} lg={7}>
+        <Panel header={header} footer={footer}>
+          {spacer}
           {props.children}
-        </div>
-      </div>
-    </div>
-  )
+          {spacer}
+        </Panel>
+      </Col>
+      <Arrow to={props.next} onClick={props.onMoveNext} />
+    </Section>
+  );
 };
 
 const Arrow = (props) => {
