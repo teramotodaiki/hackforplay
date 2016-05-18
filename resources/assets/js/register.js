@@ -56,6 +56,10 @@ const statics = {
     placeholder: '99Hack99er',
     range: [6, 99]
   },
+  confirm: {
+    title: "Confirm your login information",
+    description: "Please take a note of phrase below. It is required to log in.",
+  },
   result: {
     header: "",
     descriptions: []
@@ -90,6 +94,7 @@ export default class Register extends React.Component {
     this.update = this.update.bind(this);
     this.post = this.post.bind(this);
     this.verify = this.verify.bind(this);
+    this.confirm = this.confirm.bind(this);
 
     // Default LoginId value
     request.get('random', {
@@ -124,18 +129,40 @@ export default class Register extends React.Component {
     .catch((err) => this.update({ used: true }));
   }
 
+  confirm() {
+    return this.refs.confirm.show();
+  }
+
   render() {
+    const user = this.state.user;
     return (
       <div>
-        <Landing {...statics.landing} {...this.state.user} update={this.update} />
-        <Gender {...statics.gender } {...this.state.user} update={this.update} />
-        <Nickname {...statics.nickname } {...this.state.user} update={this.update} />
+        <Confirm ref="confirm" {...statics.confirm}>
+          <Form>
+            <FormGroup>
+              <ControlLabel>Login ID</ControlLabel>
+              <FormControl readOnly value={user.login_id} />
+            </FormGroup>
+            <FormGroup>
+              <ControlLabel>Password</ControlLabel>
+              <InputGroup>
+                <PasswordEye hide={user.hide} update={user.update} />
+                <FormControl readOnly value={user.password} type={user.hide ? 'password' : 'text'} />
+              </InputGroup>
+            </FormGroup>
+          </Form>
+        </Confirm>
+        <Landing {...statics.landing} {...user} update={this.update} />
+        <Gender {...statics.gender } {...user} update={this.update} />
+        <Nickname {...statics.nickname } {...user} update={this.update} />
         <Login
-          user={this.state.user}
+          user={user}
           update={this.update}
           verify={this.verify}
-          post={this.post} />
-        <Result {...statics.result } {...this.state.user} response={this.state.response} />
+          post={this.post}
+          confirm={this.confirm}
+           />
+        <Result {...statics.result } {...user} response={this.state.response} />
       </div>
     );
   }
@@ -217,11 +244,15 @@ const Nickname = (props) => {
 };
 
 const Login = (props) => {
+  const moveNext = () => {
+    scroller.scrollTo('Result', { smooth: true });
+    props.post();
+  }
   return (
     <CardSection name="Login"
       header="Login"
-      next="Result"
-      onMoveNext={() => props.post()}
+      next="Login"
+      onMoveNext={() => props.confirm().then(moveNext)}
       descriptions={statics.login_id.descriptions.concat(statics.password.descriptions)}
       >
       <Form>
@@ -305,12 +336,6 @@ class Password extends React.Component {
     const len = this.props.password.length;
     const contains = this.props.range[0] <= len && len <= this.props.range[1];
     const status = contains ? 'success' : 'error';
-    const hide = (
-      <span
-        className={'fa fa-eye' + (this.props.hide ? '-slash' : '')}
-        onClick={() => this.props.update({ hide: !this.props.hide })}
-         />
-    );
     const inputStyle = this.state.changed ? {} : { color: 'gray' };
     const onFocus = (target) => {
       if (!this.state.changed) {
@@ -322,7 +347,7 @@ class Password extends React.Component {
       <FormGroup bsSize="large" validationState={status}>
         <ControlLabel>{this.props.label}</ControlLabel>
         <InputGroup>
-          <InputGroup.Addon>{hide}</InputGroup.Addon>
+          <PasswordEye hide={this.props.hide} update={this.props.update} />
           <FormControl
             placeholder={this.props.placeholder}
             type={this.props.hide ? 'password' : 'text'}
@@ -336,6 +361,18 @@ class Password extends React.Component {
     );
   }
 }
+
+const PasswordEye = (props) => {
+  const className = classNames('fa', {
+    'fa-eye': !props.hide,
+    'fa-eye-slash': props.hide
+  });
+  return (
+    <InputGroup.Addon>
+      <span className={className} onClick={() => props.update({ hide: !props.hide })} />
+    </InputGroup.Addon>
+  );
+};
 
 const Result = (props) => {
   const collapse = classNames({ hidden: props.response === undefined });
