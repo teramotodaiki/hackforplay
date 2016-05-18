@@ -51,17 +51,17 @@ const Tutorials = React.createClass({
   getInitialState() {
     return {
       levels: [
-        { id: 1, title: '決意の森', youtube: 'od61KliPeJI', showDescription: true,
+        { id: 1, title: 'The Forest of Decision', youtube: 'od61KliPeJI', showDescription: true,
           colorName: statics.colors.main, linkTo: 'Level-2' },
-        { id: 2, title: '不思議な本', youtube: 'mLBb7WQTjoo',
+        { id: 2, title: 'The Grimoire', youtube: 'mLBb7WQTjoo',
           colorName: statics.colors.main, linkTo: 'Level-3' },
-        { id: 3, title: 'おかしな行き止まり', youtube: 'no7ch0jTHRc',
+        { id: 3, title: 'Dead End', youtube: 'no7ch0jTHRc',
           colorName: statics.colors.main, linkTo: 'Level-4' },
-        { id: 4, title: '閉じられた群青の輝き', youtube: 'qpjTVkrOvHg',
+        { id: 4, title: 'Sapphire the Sealed One', youtube: 'qpjTVkrOvHg',
           colorName: statics.colors.sub, linkTo: 'Level-5' },
-        { id: 5, title: '大グモ荒野', youtube: 'HzDbGgmi0bA',
+        { id: 5, title: 'The Monster Spider', youtube: 'HzDbGgmi0bA',
           colorName: statics.colors.sub, linkTo: 'Level-6' },
-        { id: 6, title: '守りし者', youtube: '4L0qPyUaH0A',
+        { id: 6, title: 'The Guardian', youtube: '4L0qPyUaH0A',
           colorName: statics.colors.sub, linkTo: 'Dialog' }
       ],
       activeLevelId: null
