@@ -396,10 +396,10 @@ const PasswordEye = (props) => {
 };
 
 const Result = (props) => {
-  const result = !props.response ? (
-    <div>
-      <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
-    </div>
+  const result = props.response === undefined ? (
+    <span />
+  ) : !props.response ? (
+    <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
   ) : props.response.status >= 400 ? (
     <Error {...props.response} />
   ) : (
