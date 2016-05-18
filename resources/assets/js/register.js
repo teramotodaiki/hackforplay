@@ -8,6 +8,11 @@ import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, Contro
 import Merger from "./merger";
 import { Section } from "./section";
 
+const contains = (text, range) => { // Contains check.
+  const len = text.length;
+  return range[0] <= len && len <= range[1];
+}
+
 const statics = {
 
   landing: {
@@ -222,9 +227,7 @@ const Gender = (props) => {
 };
 
 const Nickname = (props) => {
-  const len = props.nickname.length;
-  const contains = props.range[0] <= len && len <= props.range[1];
-  const status = contains ? 'success' : 'warning';
+  const status = contains(props.nickname, props.range) ? 'success' : 'warning';
   return (
     <CardSection name="Nickname"
       header={props.header}
@@ -274,21 +277,22 @@ class LoginId extends React.Component {
     };
   }
 
+
+
   render() {
-    const len = this.props.login_id.length;
-    const contains = this.props.range[0] <= len && len <= this.props.range[1];
+    const con = contains(this.props.login_id, this.props.range);
     const used = this.props.used;
     const status =
-    !contains || used === null ? undefined:
-    contains && !used ? 'success' : 'error';
+    !con || used === null ? undefined:
+    con && !used ? 'success' : 'error';
     const inputStyle = this.state.changed ? {} : { color: 'gray' };
 
-    const hint = contains && used ? (
+    const hint = con && used ? (
       <HelpBlock>{this.props.hintWhenUsed}</HelpBlock>
     ) : null;
-    const loading = contains && used === null ? (
+    const loading = con && used === null ? (
       <span className="fa fa-spinner fa-pulse" />
-    ) : contains && !used ? (
+    ) : con && !used ? (
       <span className="fa fa-thumbs-o-up" />
     ) : (
       <span className="fa fa-hand-o-right" />
@@ -296,8 +300,11 @@ class LoginId extends React.Component {
     const onUpdate = (value) => {
       if (this.props.allowed.test(value) || !value) {
         this.props.update({ login_id: value, used: null });
-        if (contains) this.props.verify(value);
         this.setState({ changed: true });
+
+        if (contains(value, this.props.range)) {
+          this.props.verify(value);
+        }
       }
     };
     const onFocus = (target) => {
@@ -335,9 +342,7 @@ class Password extends React.Component {
   }
 
   render() {
-    const len = this.props.password.length;
-    const contains = this.props.range[0] <= len && len <= this.props.range[1];
-    const status = contains ? 'success' : 'error';
+    const status = contains(this.props.password, this.props.range) ? 'success' : 'error';
     const inputStyle = this.state.changed ? {} : { color: 'gray' };
     const onFocus = (target) => {
       if (!this.state.changed) {
