@@ -188,7 +188,7 @@ $(function(){
 });
 </script>
 <nav class="navbar navbar-default">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav-collapse" aria-expanded="false">
 				<span class="sr-only">Toggle navigation</span>
@@ -208,12 +208,12 @@ $(function(){
 		?>
 			<form class="navbar-form navbar-left" action="../auth/signin.php" method="post" accept-charset="utf-8">
 				<div class="form-group">
-					<label for="navbarLoginEmail"><small>メールまたはID</small></label>
-					<input class="form-control" name="email" id="navbarLoginEmail" type="text">
+					<input class="form-control" name="email" id="navbarLoginEmail" type="text"
+									placeholder="12345678 (ログインID)">
 				</div>
 				<div class="form-group">
-					<label for="navbarLoginPassword"><small>パスワード</small></label>
-					<input class="form-control" name="password" id="navbarLoginPassword" type="password">
+					<input class="form-control" name="password" id="navbarLoginPassword" type="password"
+									placeholder="999999 (パスワード)">
 				</div>
 				<button class="btn btn-default" type="submit"><small>ログイン</small></button>
 			</form>
