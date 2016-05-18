@@ -251,7 +251,7 @@ class LoginId extends React.Component {
       <span className="fa fa-hand-o-right" />
     );
     const onUpdate = (value) => {
-      if (this.props.allowed.test(value)) {
+      if (this.props.allowed.test(value) || !value) {
         this.props.update({ login_id: value, used: null });
         if (contains) this.props.verify(value);
         this.setState({ changed: true });
