@@ -8,6 +8,11 @@ import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, Contro
 import Merger from "./merger";
 import { Section } from "./section";
 
+const contains = (text, range) => { // Contains check.
+  const len = text.length;
+  return range[0] <= len && len <= range[1];
+}
+
 const statics = {
 
   landing: {
@@ -41,6 +46,7 @@ const statics = {
     label: "(ID) Remember this number or Change into your usual ID",
     descriptions: [
       "You can use alphabet, numbers and underscore (_)",
+      "Login ID should be more than 3 characters",
     ],
     placeholder: 'hacker9999',
     range: [3, 99],
@@ -51,6 +57,7 @@ const statics = {
     header: "Login",
     label: "(Password) Remember this number or Change into your usual password",
     descriptions: [
+      "Password should be more than 6 characters",
       "You must keep it secret from anyone!",
     ],
     placeholder: '99Hack99er',
@@ -90,11 +97,13 @@ export default class Register extends React.Component {
         used: null, // login_idがすでに使われているか
       },
       response: undefined, // status, header, body (null is loading)
+      showResult: false,
     }
     this.update = this.update.bind(this);
     this.post = this.post.bind(this);
     this.verify = this.verify.bind(this);
     this.confirm = this.confirm.bind(this);
+    this.showResult = this.showResult.bind(this);
 
     // Default LoginId value
     request.get('random', {
@@ -109,6 +118,10 @@ export default class Register extends React.Component {
         user: Object.assign(previous.user, value)
       }
     });
+  }
+
+  showResult() {
+    this.setState({ showResult: true });
   }
 
   post() {
@@ -135,6 +148,7 @@ export default class Register extends React.Component {
 
   render() {
     const user = this.state.user;
+    const resultClass = classNames({ 'hidden': !this.state.showResult });
     return (
       <div>
         <Confirm ref="confirm" {...statics.confirm}>
@@ -161,8 +175,14 @@ export default class Register extends React.Component {
           verify={this.verify}
           post={this.post}
           confirm={this.confirm}
+          showResult={this.showResult}
            />
-        <Result {...statics.result } {...user} response={this.state.response} />
+        <Result
+          className={resultClass}
+          {...statics.result }
+          {...user}
+          response={this.state.response}
+          />
       </div>
     );
   }
@@ -171,7 +191,7 @@ export default class Register extends React.Component {
 const Landing = (props) => {
 
   const list = props.descriptions.map((item) => (
-    <p>
+    <p key={item}>
       <span className="fa fa-check-circle-o text-success" />
       <span> {item}</span>
     </p>
@@ -220,9 +240,7 @@ const Gender = (props) => {
 };
 
 const Nickname = (props) => {
-  const len = props.nickname.length;
-  const contains = props.range[0] <= len && len <= props.range[1];
-  const status = contains ? 'success' : 'warning';
+  const status = contains(props.nickname, props.range) ? 'success' : 'warning';
   return (
     <CardSection name="Nickname"
       header={props.header}
@@ -252,7 +270,10 @@ const Login = (props) => {
     <CardSection name="Login"
       header="Login"
       next="Login"
-      onMoveNext={() => props.confirm().then(moveNext)}
+      onMoveNext={() => {
+        props.showResult();
+        props.confirm().then(moveNext);
+      }}
       descriptions={statics.login_id.descriptions.concat(statics.password.descriptions)}
       >
       <Form>
@@ -273,20 +294,19 @@ class LoginId extends React.Component {
   }
 
   render() {
-    const len = this.props.login_id.length;
-    const contains = this.props.range[0] <= len && len <= this.props.range[1];
+    const con = contains(this.props.login_id, this.props.range);
     const used = this.props.used;
     const status =
-    !contains || used === null ? undefined:
-    contains && !used ? 'success' : 'error';
+    !con || used === null ? undefined:
+    con && !used ? 'success' : 'error';
     const inputStyle = this.state.changed ? {} : { color: 'gray' };
 
-    const hint = contains && used ? (
+    const hint = con && used ? (
       <HelpBlock>{this.props.hintWhenUsed}</HelpBlock>
     ) : null;
-    const loading = contains && used === null ? (
+    const loading = con && used === null ? (
       <span className="fa fa-spinner fa-pulse" />
-    ) : contains && !used ? (
+    ) : con && !used ? (
       <span className="fa fa-thumbs-o-up" />
     ) : (
       <span className="fa fa-hand-o-right" />
@@ -294,8 +314,11 @@ class LoginId extends React.Component {
     const onUpdate = (value) => {
       if (this.props.allowed.test(value) || !value) {
         this.props.update({ login_id: value, used: null });
-        if (contains) this.props.verify(value);
         this.setState({ changed: true });
+
+        if (contains(value, this.props.range)) {
+          this.props.verify(value);
+        }
       }
     };
     const onFocus = (target) => {
@@ -333,9 +356,7 @@ class Password extends React.Component {
   }
 
   render() {
-    const len = this.props.password.length;
-    const contains = this.props.range[0] <= len && len <= this.props.range[1];
-    const status = contains ? 'success' : 'error';
+    const status = contains(this.props.password, this.props.range) ? 'success' : 'error';
     const inputStyle = this.state.changed ? {} : { color: 'gray' };
     const onFocus = (target) => {
       if (!this.state.changed) {
@@ -375,11 +396,10 @@ const PasswordEye = (props) => {
 };
 
 const Result = (props) => {
-  const collapse = classNames({ hidden: props.response === undefined });
-  const result = !props.response ? (
-    <div>
-      <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
-    </div>
+  const result = props.response === undefined ? (
+    <span />
+  ) : !props.response ? (
+    <span className="fa fa-spinner fa-pulse fa-10x fa-fw margin-bottom"></span>
   ) : props.response.status >= 400 ? (
     <Error {...props.response} />
   ) : (
@@ -389,10 +409,8 @@ const Result = (props) => {
     </div>
   );
   return (
-    <Section name="Result">
-      <div className={collapse}>
-        {result}
-      </div>
+    <Section name="Result" className={props.className}>
+      {result}
     </Section>
   );
 };
