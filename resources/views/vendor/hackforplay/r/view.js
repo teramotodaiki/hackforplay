@@ -441,10 +441,9 @@ $(function(){
 
 	function rateToLabelColor (rate, isZero) {
 		return isZero ? 'label-default' :
-		rate < 0.06 ? 'label-danger' :
-		rate < 0.11 ? 'label-warning' :
-		rate < 0.26 ? 'label-primary' :
-		rate < 0.51 ? 'label-info' : 'label-success';
+		rate < 0.15 ? 'label-hard' :
+		rate < 0.3 ? 'label-normal' :
+		'label-easy';
 	}
 
 });

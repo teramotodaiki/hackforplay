@@ -75,11 +75,8 @@ const Tutorials = React.createClass({
       this.setState({ activeLevelId: null });
     }
   },
-  confirm(options) {
-    return this.refs.confirm.show(options);
-  },
-  setConfirmOption(options) {
-    this.setState({ confirmOptions: options });
+  confirm() {
+    return this.refs.confirm.show();
   },
   render () {
     const levels = this.state.levels.map((item) => {
@@ -93,7 +90,7 @@ const Tutorials = React.createClass({
     });
     return (
       <div>
-        <Confirm ref="confirm" {...statics.confirm} set={this.setConfirmOption} />
+        <Confirm ref="confirm" {...statics.confirm} />
         <div style={statics.style}>
           <Landing />
           {levels}
