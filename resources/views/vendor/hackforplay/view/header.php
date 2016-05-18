@@ -188,7 +188,7 @@ $(function(){
 });
 </script>
 <nav class="navbar navbar-default">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav-collapse" aria-expanded="false">
 				<span class="sr-only">Toggle navigation</span>
@@ -197,8 +197,9 @@ $(function(){
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" title="ハックフォープレイ" href="/?rewrite=true">
-	        	<img alt="hackforplay" src="/logo.png">
-	     	</a>
+				<img alt="hackforplay" src="/logo.png">
+			</a>
+			<a class="navbar-brand" title="みんなのステージ" href="/r/">みんなのステージ</a>
 		</div>
 		<div class="collapse navbar-collapse" id="header-nav-collapse">
 		<?php
@@ -207,12 +208,12 @@ $(function(){
 		?>
 			<form class="navbar-form navbar-left" action="../auth/signin.php" method="post" accept-charset="utf-8">
 				<div class="form-group">
-					<label for="navbarLoginEmail"><small>メールまたはID</small></label>
-					<input class="form-control" name="email" id="navbarLoginEmail" type="text">
+					<input class="form-control" name="email" id="navbarLoginEmail" type="text"
+									placeholder="12345678 (ログインID)">
 				</div>
 				<div class="form-group">
-					<label for="navbarLoginPassword"><small>パスワード</small></label>
-					<input class="form-control" name="password" id="navbarLoginPassword" type="password">
+					<input class="form-control" name="password" id="navbarLoginPassword" type="password"
+									placeholder="999999 (パスワード)">
 				</div>
 				<button class="btn btn-default" type="submit"><small>ログイン</small></button>
 			</form>
@@ -223,7 +224,7 @@ $(function(){
 					</a>
 				</li>
 				<li>
-					<a href="../getaccount/" class="btn btn-link" title="Register">
+					<a href="../register" class="btn btn-link" title="Register">
 						<small>新規登録</small>
 					</a>
 				</li>
