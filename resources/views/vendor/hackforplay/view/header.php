@@ -197,8 +197,9 @@ $(function(){
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" title="ハックフォープレイ" href="/?rewrite=true">
-	        	<img alt="hackforplay" src="/logo.png">
-	     	</a>
+				<img alt="hackforplay" src="/logo.png">
+			</a>
+			<a class="navbar-brand" title="みんなのステージ" href="/r/">みんなのステージ</a>
 		</div>
 		<div class="collapse navbar-collapse" id="header-nav-collapse">
 		<?php
