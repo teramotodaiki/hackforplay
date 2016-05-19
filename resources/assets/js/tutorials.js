@@ -110,7 +110,7 @@ const Landing = React.createClass({
         <div></div>
         <div className="container">
           <div className="row">
-            <div className="col-xs-12 col-lg-6 col-lg-offset-3">
+            <div className="col-xs-12 col-md-6 col-md-offset-3">
               <img src="image/tutorials-landing.png" className="img-responsive" />
             </div>
           </div>
