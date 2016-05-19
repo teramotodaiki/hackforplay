@@ -435,8 +435,7 @@ const Error = (props) => {
     ));
   };
   const details = typeof props.body === 'object' ?
-    Object.keys(props.body).splice(0, 5).map((key) => detail(key, props.body[key])) :
-    h2('error', props.body);
+    Object.keys(props.body).splice(0, 5).map((key) => detail(key, props.body[key])) : null;
 
   return (
     <div>
