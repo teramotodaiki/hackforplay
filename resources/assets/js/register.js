@@ -152,7 +152,7 @@ export default class Register extends React.Component {
     return (
       <div>
         <Confirm ref="confirm" {...statics.confirm}>
-          <Form>
+          <Form onSubmit={(e) => e.preventDefault()}>
             <FormGroup>
               <ControlLabel>Login ID</ControlLabel>
               <FormControl readOnly value={user.login_id} />
@@ -247,7 +247,7 @@ const Nickname = (props) => {
       next="Login"
       descriptions={props.descriptions}
       >
-      <Form>
+      <Form onSubmit={(e) => e.preventDefault()}>
         <FormGroup bsSize="large" validationState={status}>
           <ControlLabel>{props.label}</ControlLabel>
           <FormControl
@@ -276,7 +276,7 @@ const Login = (props) => {
       }}
       descriptions={statics.login_id.descriptions.concat(statics.password.descriptions)}
       >
-      <Form>
+      <Form onSubmit={(e) => e.preventDefault()}>
         <LoginId {...statics.login_id} {...props.user} update={props.update} verify={props.verify} />
         <Password {...statics.password} {...props.user} update={props.update} />
       </Form>
