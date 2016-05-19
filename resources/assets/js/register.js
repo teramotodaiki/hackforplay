@@ -363,6 +363,10 @@ class Password extends React.Component {
         window.setTimeout(() => target.select(), 100);
       }
     }
+    const onChange = (value) => {
+      this.props.update({ password: value });
+      this.setState({ changed: true });
+    };
 
     return (
       <FormGroup bsSize="large" validationState={status}>
@@ -373,7 +377,7 @@ class Password extends React.Component {
             placeholder={this.props.placeholder}
             type={this.props.hide ? 'password' : 'text'}
             value={this.props.password}
-            onChange={(e) => this.props.update({ password: e.target.value })}
+            onChange={(e) => onChange(e.target.value)}
             onFocus={(e) => onFocus(e.target)}
             style={inputStyle}
             />
@@ -431,8 +435,7 @@ const Error = (props) => {
     ));
   };
   const details = typeof props.body === 'object' ?
-    Object.keys(props.body).splice(0, 5).map((key) => detail(key, props.body[key])) :
-    h2('error', props.body);
+    Object.keys(props.body).splice(0, 5).map((key) => detail(key, props.body[key])) : null;
 
   return (
     <div>

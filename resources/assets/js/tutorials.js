@@ -110,7 +110,7 @@ const Landing = React.createClass({
         <div></div>
         <div className="container">
           <div className="row">
-            <div className="col-xs-12 col-lg-6 col-lg-offset-3">
+            <div className="col-xs-12 col-md-6 col-md-offset-3">
               <img src="image/tutorials-landing.png" className="img-responsive" />
             </div>
           </div>
@@ -167,7 +167,7 @@ const Level = React.createClass({
         style={{ backgroundColor: statics.colors.levels[info.id] }}
         rowStyle={{ textAlign: 'left', alignItems: 'stretch' }}
         >
-        <div className="container-fluid">
+        <div className="container-fluid" style={{ width: "100%" }}>
           <div className={this.p({ row: 'xs-bottom' })}>
             <EmbedStage className="col-sm-7 col-xs-12" info={info} />
             <EmbedYoutube className={youtubeClass} info={info} />
