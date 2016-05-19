@@ -167,7 +167,7 @@ const Level = React.createClass({
         style={{ backgroundColor: statics.colors.levels[info.id] }}
         rowStyle={{ textAlign: 'left', alignItems: 'stretch' }}
         >
-        <div className="container-fluid">
+        <div className="container-fluid" style={{ width: "100%" }}>
           <div className={this.p({ row: 'xs-bottom' })}>
             <EmbedStage className="col-sm-7 col-xs-12" info={info} />
             <EmbedYoutube className={youtubeClass} info={info} />
