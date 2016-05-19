@@ -29,7 +29,7 @@
 			<div class="h4p_landing-main">
 				<div class="h4p_landing-header"></div>
 				<div class="h4p_landing-footer">
-					<a href="s?id=1" title="Play Now"></a>
+					<a href="/tutorials" title="Play Now"></a>
 				</div>
 			</div>
 		</div>
