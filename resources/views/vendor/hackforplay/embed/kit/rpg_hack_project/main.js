@@ -149,7 +149,7 @@
 			return self;
 		})(new ScoreLabel(Hack.menuGroup.x + 10, Hack.menuGroup.y + 88), Hack.scoreLabel);
 
-		Hack._exportJavascriptHint('Hack', 'game', 'RPGObject', 'RPGMap', 'MapObject');
+		Hack._exportJavascriptHint('Hack', 'game', 'RPGObject', 'RPGMap', 'MapObject', 'console');
 	});
 
 	game.onload = game.onload || function () {
