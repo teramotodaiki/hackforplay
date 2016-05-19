@@ -12,7 +12,7 @@ const statics = {
   hintTitle: 'How to solve',
   descriptions: {
     youtube: 'Hints',
-    next: "After cleared this stage then let's go to next stage!"
+    next: "Did you clear the 1st stage? Let's go to the next stage!"
   },
   style: {
     backgroundColor: 'rgb(190,233,213)'
@@ -38,7 +38,7 @@ const statics = {
     button: 'Play more'
   },
   confirm: {
-    title: "Did you clear the 1st stage? Let's go to the next stage!",
+    title: "Did you clear the 1st stage?",
     description: "Let's go to the next stage! Of cource you can return this stage later"
   },
   shareTweetURL: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent('https://hackforplay.xyz/tutorials'),
