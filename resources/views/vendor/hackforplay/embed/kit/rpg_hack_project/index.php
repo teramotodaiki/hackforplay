@@ -3,6 +3,7 @@
 <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript" charset="utf-8"></script>
 <script src="lib/hack.js" type="text/javascript" charset="utf-8"></script>
 <script src="kit/rpg_hack_project/camera.js" type="text/javascript" charset="utf-8"></script>
+<script src="kit/rpg_hack_project/color.js" type="text/javascript" charset="utf-8"></script>
 <script src="kit/rpg_hack_project/rpgobjects.js" type="text/javascript" charset="utf-8"></script>
 <script src="kit/rpg_hack_project/main.js" type="text/javascript" charset="utf-8"></script>
 <script src="kit/rpg_hack_project/smartassets.js" type="text/javascript" charset="utf-8"></script>
