@@ -25,6 +25,7 @@ foreach ($list as $index => $row) {
 	if ($token === NULL) {
 		$list[$index]['ProjectID'] = NULL;
 		$list[$index]['ReservedID'] = NULL;
+		$list[$index]['StageID'] = NULL;
 	} elseif (isset($cache[$token])) {
 		$list[$index]['ProjectID'] = $cache[$token]['ID'];
 		$list[$index]['StageID'] = $cache[$token]['ReservedID'];
