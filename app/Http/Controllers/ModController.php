@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Project;
+use App\Script;
 
 class ModController extends Controller
 {
@@ -60,15 +62,16 @@ class ModController extends Controller
     public function showByProject($name)
     {
       // Temporary implement
-      return 'show by project';
-
+      $project = Project::where('Token', $name)->firstOrFail();
+      $script = $project->scripts()->orderBy('ID', 'desc')->firstOrFail();
+      return $script->RawCode;
     }
 
     public function showByProduct($bundle, $name)
     {
       // Temporary implement
       return 'show by product';
-      
+
     }
 
     /**
