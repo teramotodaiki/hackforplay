@@ -64,7 +64,13 @@ class ModController extends Controller
       // Temporary implement
       $project = Project::where('Token', $name)->firstOrFail();
       $script = $project->scripts()->orderBy('ID', 'desc')->firstOrFail();
-      return $script->RawCode;
+
+      // no-dependencies
+      return implode("\n", [
+        'define(function (require, exports, module) {',
+        $script->RawCode,
+        '});'
+      ]);
     }
 
     public function showByProduct($bundle, $name)
