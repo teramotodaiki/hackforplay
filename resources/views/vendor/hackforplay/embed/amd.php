@@ -96,8 +96,8 @@ switch ($type) {
   <title></title>
 	<script type="text/javascript">
 	var require = {
-		baseUrl : '../',
-		deps: ["mods/~project/<?php echo $token; ?>"],
+		baseUrl : '../mods/',
+		deps: ["~project/<?php echo $token; ?>"],
 		callback: function () {
 
 			Hack.stageInfo = {
