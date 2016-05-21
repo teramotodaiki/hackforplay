@@ -12,6 +12,7 @@ class User extends Model
   protected $table = 'User';
   public $timestamps = false; // モデルのタイムスタンプを更新しない
   protected $guarded = array('id'); // idはcreateに含まない
+  protected $primaryKey = 'ID';
 
   public function accounts()
   {
