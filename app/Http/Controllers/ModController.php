@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use App\Project;
+use App\Script;
+
+class ModController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $bundle
+     * @param  string  $name
+     * @param  string  $ext
+     * @return \Illuminate\Http\Response
+     */
+    public function show($bundle, $name, $ext = '')
+    {
+      // Temporary implement
+      $result = $bundle === '~project' ?
+        $this->showByProject($name) :
+        $this->showByProduct($bundle, $name);
+
+      return response($result, 200)->header('Content-Type', 'application/javascript');
+    }
+
+    public function showByProject($name)
+    {
+      // Temporary implement
+      $project = Project::where('Token', $name)->firstOrFail();
+      $script = $project->scripts()->orderBy('ID', 'desc')->firstOrFail();
+
+      // no-dependencies
+      return implode("\n", [
+        'define(function (require, exports, module) {',
+        $script->RawCode,
+        '});'
+      ]);
+    }
+
+    public function showByProduct($bundle, $name)
+    {
+      // Temporary implement
+      return 'show by product';
+
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}

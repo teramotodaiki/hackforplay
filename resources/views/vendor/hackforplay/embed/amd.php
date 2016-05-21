@@ -100,7 +100,7 @@ switch ($type) {
 		requirejs.config({
 		  baseUrl: '../',
 			paths: {
-				restaging: 'modules/~project/<?php echo $token; ?>'
+				restaging: 'mods/~project/<?php echo $token; ?>'
 			}
 		});
 		var _modules = ['embed/modules/hack','embed/modules/enchant','embed/modules/ui.enchant','embed/kit/rpg_hack_project/main'];
