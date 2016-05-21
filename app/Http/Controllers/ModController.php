@@ -49,8 +49,26 @@ class ModController extends Controller
      */
     public function show($bundle, $name, $ext = '')
     {
-        //
-        return response("View $bundle $name $ext", 200);
+      // Temporary implement
+      $result = $bundle === '~project' ?
+        $this->showByProject($name) :
+        $this->showByProduct($bundle, $name);
+
+      return response($result, 200)->header('Content-Type', 'application/javascript');
+    }
+
+    public function showByProject($name)
+    {
+      // Temporary implement
+      return 'show by project';
+
+    }
+
+    public function showByProduct($bundle, $name)
+    {
+      // Temporary implement
+      return 'show by product';
+      
     }
 
     /**
