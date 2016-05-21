@@ -97,7 +97,7 @@ switch ($type) {
 	<script type="text/javascript">
 	var require = {
 		baseUrl : '../',
-		deps: ['embed/rpg-kit-loader'],
+		deps: ["mods/~project/<?php echo $token; ?>"],
 		callback: function () {
 
 			Hack.stageInfo = {
@@ -105,8 +105,6 @@ switch ($type) {
 				token: '<?php echo $playlog_token; ?>'
 				<?php endif; ?>
 			};
-
-			require(["mods/~project/<?php echo $token; ?>"]);
 			Hack.start();
 
 		}

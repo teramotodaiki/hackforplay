@@ -64,10 +64,12 @@ class ModController extends Controller
       // Temporary implement
       $project = Project::where('Token', $name)->firstOrFail();
       $script = $project->scripts()->orderBy('ID', 'desc')->firstOrFail();
+      $dependency = 'embed/rpg-kit-loader'; // Temporary
 
       // no-dependencies
       return implode("\n", [
-        'define(function (require, exports, module) {',
+        "define(function (require, exports, module) {",
+        "require('{$dependency}');",
         $script->RawCode,
         '});'
       ]);
