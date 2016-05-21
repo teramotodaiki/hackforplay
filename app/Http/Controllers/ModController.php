@@ -42,13 +42,15 @@ class ModController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $bundle
+     * @param  string  $name
+     * @param  string  $ext
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($bundle, $name, $ext = '')
     {
         //
-        return response("View $id", 200);
+        return response("View $bundle $name $ext", 200);
     }
 
     /**

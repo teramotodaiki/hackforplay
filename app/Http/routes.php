@@ -21,6 +21,12 @@ Route::get('random', 'RandomController@index');
 // users/
 Route::resource('users', 'UserController');
 
+// mods/
+Route::get('mods/{bundle}/{name}{ext?}', [ 'uses' => 'ModController@show' ])
+->where('bundle', '[\w\~\-]+')
+->where('name', '[\w\~\-]+')
+->where('ext', '\.[\w]+');
+
 Route::any('{api}', [ 'uses' => 'Old\OldController@index' ])
 ->where('api', '/?|[a-z\/]+');
 
