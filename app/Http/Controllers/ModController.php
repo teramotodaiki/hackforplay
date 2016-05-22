@@ -74,18 +74,41 @@ class ModController extends Controller
       $dependency = '../embed/rpg-kit-loader'; // Temporary
 
       // no-dependencies
-      return implode("\n", [
+      $result = implode("\n", [
         "define(function (require, exports, module) {",
         "require('../{$dependency}');",
         $script->RawCode,
         '});'
       ]);
+
+      return response($result, 200)->header('Content-Type', 'application/javascript');
     }
 
-    public function showByProduct($bundle, $name)
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $bundle
+     * @param  string  $ext
+     * @return \Illuminate\Http\Response
+     */
+    public function showByProduct($bundle, $ext = '')
     {
       // Temporary implement
-      return 'show by product';
+      $filepaths = [
+        'hackforplay/hack'            => 'modules/hack.js',
+        'hackforplay/rpg-kit-loader'  => 'kit/rpg_hack_project/main.js',
+        'enchantjs/enchant'           => 'modules/enchant.js',
+        'enchantjs/ui.enchant'        => 'modules/ui.enchant.js'
+      ];
+
+      if (!array_key_exists($bundle, $filepaths)) return response('Not Found', 404);
+
+      // Document root
+      $path = '../resources/views/vendor/hackforplay/embed/' . $filepaths[$bundle];
+      if (!file_exists($path)) return response('Not Found', 404);
+
+      $result = file_get_contents($path);
+      return response($result, 200)->header('Content-Type', 'application/javascript');
 
     }
 
