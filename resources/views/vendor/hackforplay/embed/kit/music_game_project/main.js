@@ -1,4 +1,21 @@
-window.addEventListener('load', function () {
+// Module check
+(function (mod) {
+  if (typeof define === "function" && define.amd) {
+    define(function (require, exports, module) {
+
+      require('enchantjs/enchant');
+      require('hackforplay/hack');
+      require('soundcloud/sdk-3.0.0');
+      mod();
+
+    });
+  } else {
+    window.addEventListener('load', function () {
+      mod();
+      Hack.start();
+    });
+  }
+})(function () {
 
     var game = enchant.Core.instance;
 
@@ -10,6 +27,7 @@ window.addEventListener('load', function () {
         Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         Hack.music = Hack.music || {};
 
+
         if (Hack.music.name) {
             // Open music file
             Hack.music.type = 'WebAudioSound';
@@ -20,7 +38,7 @@ window.addEventListener('load', function () {
             // Sound Cloud file
             Hack.music.type = 'SoundCloud';
         } else {
-            Hack.log('Hack.music が指定されていません name または track プロパティが必要です');
+            throw new Error('Hack.music が指定されていません name または track プロパティが必要です');
         }
 
         Hack.soundEffectPath = (['osa/bosu19.wav','osa/clap00.wav', 'osa/coin03.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav', 'osa/swing14.wav', 'osa/whistle00.wav'])[Hack.hitSE];
@@ -614,7 +632,5 @@ window.addEventListener('load', function () {
         Hack.mouseX = event.clientX / game.scale;
         Hack.mouseY = event.clientY / game.scale;
     });
-
-    Hack.start();
 
 });

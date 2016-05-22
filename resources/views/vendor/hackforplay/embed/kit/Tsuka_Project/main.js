@@ -1,4 +1,21 @@
-window.addEventListener('load', function() {
+// Module check
+(function (mod) {
+	if (typeof define === "function" && define.amd) {
+		define(function (require, exports, module) {
+
+			require('enchantjs/enchant');
+			require('enchantjs/ui.enchant');
+			require('hackforplay/hack');
+			mod();
+
+		});
+	} else {
+		window.addEventListener('load', function () {
+			mod();
+			Hack.start();
+		});
+	}
+})(function () {
 
 	var game = enchant.Core.instance;
 	game.preload(['kurage-koubou/lifeup.mp3','kurage-koubou/speedup.mp3','kurage-koubou/damage.mp3','kurage-koubou/attack.mp3','rengoku-teien/BGM.mp3','enchantjs/font1.png','enchantjs/x2/icon0.png','enchantjs/x2/map1.png','enchantjs/x2/map0.png','enchantjs/chara1.png','enchantjs/bigmonster1.gif','enchantjs/bigmonster2.gif','enchantjs/monster1.gif','enchantjs/monster2.gif','enchantjs/monster3.gif', 'enchantjs/monster4.gif','enchantjs/monster7.gif','hackforplay/enchantbook.png']);
@@ -1194,7 +1211,5 @@ window.addEventListener('load', function() {
 		if (Hack.started) return;
 		Hack.dispatchEvent(new enchant.Event('pressstart'));
 	});
-
-	Hack.start();
 
 });
