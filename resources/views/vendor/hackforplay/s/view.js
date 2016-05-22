@@ -459,7 +459,7 @@ $(function(){
 
 			$('.container.container-game').addClass('restaging');
 			if (getParam('amd-test')) {
-				console.log('AMD mode using', sessionStorage.getItem('project-token'));
+				console.log('AMD mode using', "require('~project/" + sessionStorage.getItem('project-token') + "')");
 				document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token');
 			} else {
 				document.getElementById('item-embed-iframe').src = '/embed/?type=local&key=restaging_code&id=' + getParam('id');
@@ -1030,9 +1030,6 @@ $(function(){
 						if(successed !== undefined){
 							successed();
 						}
-						if (getParam('amd-test')) {
-							document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token') + '&t=' + new Date().getTime();
-						}
 						break;
 				}
 			});
@@ -1041,7 +1038,7 @@ $(function(){
 			// Update data
 			$.post('../commit/', {
 				token : sessionStorage.getItem('project-token'),
-				code : jsEditor.getValue(''),
+				code : jsEditor.getValue('') || sessionStorage.getItem('restaging_code'),
 				timezone : new Date().getTimezoneString(),
 				thumb : sessionStorage.getItem('image') || null,
 				publish : false,
@@ -1077,13 +1074,10 @@ $(function(){
 						break;
 					case 'no-update':
 					case 'success':
-						if (getParam('amd-test')) {
-							document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token');
+						if (callback) {
+							callback();
 						}
 						break;
-				}
-				if (callback !== undefined) {
-					callback();
 				}
 			});
 		}
@@ -1159,8 +1153,16 @@ $(function(){
 				// replay mode (load javascript-code and run it)
 				sessionStorage.setItem('restaging_code', getParam('replay_code'));
 				$(".begin_restaging").on('click', function() {
-					beginRestaging();
-					makeProject();
+
+					// AMD need project has a script
+					makeProject(function () {
+						updateTask(function () {
+
+							// Begin restaging
+							beginRestaging();
+
+						});
+					});
 				});
 				break;
 			case "extend":
