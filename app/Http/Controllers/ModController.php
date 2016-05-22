@@ -102,7 +102,8 @@ class ModController extends Controller
         'hackforplay/rpg-kit-rpgobjects'  => 'kit/rpg_hack_project/rpgobjects.js',
         'hackforplay/rpg-kit-smartassets' => 'kit/rpg_hack_project/smartassets.js',
         'enchantjs/enchant'               => 'modules/enchant.js',
-        'enchantjs/ui.enchant'            => 'modules/ui.enchant.js'
+        'enchantjs/ui.enchant'            => 'modules/ui.enchant.js',
+        'soundcloud/sdk-3.0.0'            => 'modules/sdk-3.0.0.js'
       ];
 
       if (!array_key_exists($bundle, $filepaths)) return response('Not Found', 404);
