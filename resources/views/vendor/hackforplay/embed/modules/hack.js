@@ -15,10 +15,23 @@ function refocus () {
 function getEditor() {
 	return Hack.enchantBook;
 }
-define(function (require, exports, module) {
 
-	require('enchantjs/enchant');
-	require('enchantjs/ui.enchant');
+// Module check
+(function (mod) {
+	if (typeof define === "function" && define.amd) {
+
+		define(function (require, exports, module) {
+
+			require('enchantjs/enchant');
+			require('enchantjs/ui.enchant');
+			mod();
+
+		});
+
+	} else {
+    mod();
+	}
+})(function () {
 
 	window.addEventListener('click', refocus);
 
