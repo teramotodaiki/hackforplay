@@ -22,10 +22,14 @@ Route::get('random', 'RandomController@index');
 Route::resource('users', 'UserController');
 
 // mods/
-Route::get('mods/{bundle}/{name}{ext?}', [ 'uses' => 'ModController@show' ])
-->where('bundle', '[\w\~\-]+')
-->where('name', '[\w\~\-]+')
-->where('ext', '\.[\w]+');
+Route::get('mods/~project/{name}{ext?}', [ 'uses' => 'ModController@showByProject' ])
+->where('name', '\w+')
+->where('ext', '\.(js)');
+
+Route::get('mods/{bundle}{ext?}', [ 'uses' => 'ModController@showByProduct' ])
+->where('bundle', '[\w\~\-\/\.]+')
+->where('ext', '\.(js)');
+
 
 Route::any('{api}', [ 'uses' => 'Old\OldController@index' ])
 ->where('api', '/?|[a-z\/]+');

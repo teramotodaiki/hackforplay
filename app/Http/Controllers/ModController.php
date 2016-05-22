@@ -59,7 +59,14 @@ class ModController extends Controller
       return response($result, 200)->header('Content-Type', 'application/javascript');
     }
 
-    public function showByProject($name)
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $name
+     * @param  string  $ext
+     * @return \Illuminate\Http\Response
+     */
+    public function showByProject($name, $ext = '')
     {
       // Temporary implement
       $project = Project::where('Token', $name)->firstOrFail();
