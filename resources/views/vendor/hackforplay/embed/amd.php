@@ -94,48 +94,23 @@ switch ($type) {
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title></title>
-	<script src="<?php echo $script_src; ?>" id="hackforplay-embed-script" data-func="HackforPlayInitializeRestaging"></script>
-	<script src="./lib/require.js"></script>
-  <script type="text/javascript">
-		requirejs.config({
-		  baseUrl: '../',
-			paths: {
-				restaging: 'mods/~project/<?php echo $token; ?>'
-			}
-		});
-		var _modules = ['embed/modules/hack','embed/modules/enchant','embed/modules/ui.enchant','embed/kit/rpg_hack_project/main'];
-		// outer-modules loading
-		var _outer = (sessionStorage.getItem('outer-modules') || '').split(',');
-		if (!_outer[0]) console.log('outer-modules not defined')
-		else Array.prototype.push.apply(_modules, _outer);
+	<script type="text/javascript">
+	var require = {
+		baseUrl : '../mods/',
+		deps: ["~project/<?php echo $token; ?>"],
+		callback: function () {
 
-		// ---- OUTER MODULES ----
-		requirejs(_modules, function (Hack) {
-			console.log('(outer) modules loaded!', _modules);
 			Hack.stageInfo = {
 				<?php if (isset($playlog_token)) : ?>
 				token: '<?php echo $playlog_token; ?>'
 				<?php endif; ?>
 			};
+			Hack.start();
 
-			// ---- INNER MODULES ----
-			(function (callback) {
-				// inner-modules loading
-				var _inner = (sessionStorage.getItem('inner-modules') || '').split(',');
-				if (!_inner[0]){
-					console.log('inner-modules not defined');
-					callback();
-				} else {
-					console.log('(inner) modules loaded!', _inner);
-					requirejs(_inner, callback);
-				}
-			})(function () {
-				requirejs(['restaging'], function () {
-					Hack.start();
-				});
-			})
-    });
-  </script>
+		}
+	};
+	</script>
+	<script src="./lib/require.js"></script>
 </head>
 <body style="margin: 0">
 </body>
