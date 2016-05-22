@@ -36,7 +36,7 @@ switch ($type) {
 }
 
 // Get source element URL
-$stmt	= $dbh->prepare('SELECT "Src","ScriptID","State","UserID" FROM "Stage" WHERE "ID"=:id');
+$stmt	= $dbh->prepare('SELECT "Src","ScriptID","State","UserID","ProjectID" FROM "Stage" WHERE "ID"=:id');
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
 $stage = $stmt->fetch(PDO::FETCH_ASSOC) or die('Stage not found');
@@ -48,14 +48,17 @@ if ($stage['State'] === 'rejected') {
 	die('This stage is private');
 }
 
-// Get script
+// Get project token
 switch ($type) {
 	case 'local':
 		$key = filter_input(INPUT_GET, 'key') or die('Missing param key. Add "&key={SESSION STORAGE KEY}" to url');
 		$script_src = 'script/?key=' . $key;
 		break;
 	case 'stage':
-		$script_src = 'script/?id=' . $stage['ScriptID'];
+		$stmt = $dbh->prepare('SELECT "Token" FROM "Project" WHERE "ID"=:id');
+		$stmt->bindValue(':id', $stage['ProjectID'], PDO::PARAM_INT);
+		$stmt->execute();
+		$token = $stmt->fetch(PDO::FETCH_COLUMN);
 		break;
 	case 'project':
 		$stmt	= $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id');
