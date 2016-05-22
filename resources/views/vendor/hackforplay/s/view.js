@@ -691,21 +691,28 @@ $(function(){
 			$(".h4p_info-footer").text("（リステージング中）");
 			$(".visible-option-restage").css('visibility', 'hidden');
 			$(".h4p_restaging_button").on('click', function() {
-				// RUN
-				jsEditor.save();
-				var code = jsEditor.getTextArea().value;
-				sessionStorage.setItem('restaging_code', code);
 
-				// 投稿可能状態に
-				$(".h4p_publish").show();
-				$("#author_alert").hide();
+				__saveTask.call(this, function () {
 
-				document.getElementById('item-embed-iframe').contentWindow.postMessage({
-					query: 'eval',
-					value: getParam('amd-test') ? 'window.location.reload(true);' : 'window.location.reload();'
-				}, '/');
+					// 投稿可能状態に
+					$(".h4p_publish").show();
+					$("#author_alert").hide();
+
+					document.getElementById('item-embed-iframe').contentWindow.postMessage({
+						query: 'eval',
+						value: getParam('amd-test') ? 'window.location.reload(true);' : 'window.location.reload();'
+					}, '/');
+
+				});
+
 			});
-			$('.h4p_save_button').on('click', function() {
+
+			$(".h4p_save_button").on("click", __saveTask);
+
+			function __saveTask (callback) {
+
+				callback = callback || function () {};
+
 				// Save
 				var loading = $(this).find('button');
 
@@ -723,6 +730,7 @@ $(function(){
 						makeProject(function() {
 							updateTask(function() {
 								loading.button('reset');
+								callback();
 							});
 						}, function() {
 							loading.button('reset');
@@ -731,6 +739,7 @@ $(function(){
 						loading.button('loading');
 						updateTask(function() {
 							loading.button('reset');
+							callback();
 						});
 					}
 				}));
@@ -740,7 +749,8 @@ $(function(){
 					query: 'eval',
 					value: "saveImage('updateProject');"
 				}, '/');
-			});
+
+			}
 
 			// ビューの設定
 			$(".h4p_while-restaging").show(); // UI

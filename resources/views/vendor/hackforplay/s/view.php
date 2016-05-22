@@ -29,6 +29,7 @@ $embed = '/embed/?type=stage&id=' . $id;
 // AMD test mode
 // $mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
 $mod = true;
+$require = isset($token) ? "require('~project/$token');" : 'Error';
 ?>
 <!DOCTYPE html>
 <html>
@@ -315,14 +316,14 @@ $mod = true;
 					<div class="col-xs-12 h4p_restaging_editor">
 						<textarea name="restaging_code" value="// ステージ改造コードを書いて、このステージを改造してやろう!!"></textarea>
 					</div>
-					<div class="col-xs-10 h4p_restaging_button">
-						<button type="button" class="btn btn-block btn-lg btn-primary">
+					<div class="col-xs-12 h4p_restaging_button">
+						<button type="button" class="btn btn-block btn-lg btn-primary" data-loading-text="...">
 							<span class="glyphicon glyphicon-console"></span>
 							<span>うごかす</span>
 						</button>
 					</div>
-					<div class="col-xs-2 h4p_save_button">
-						<button type="button" class="btn btn-block btn-lg btn-info" data-loading-text="...">
+					<div class="col-xs-2 h4p_save_button" style="display: none">
+						<button type="button" class="btn btn-block btn-lg btn-info" >
 							<span class="glyphicon glyphicon-save"></span>
 						</button>
 					</div>
@@ -405,6 +406,18 @@ $mod = true;
 						<ul class="dropdown-menu"></ul>
 					</div>
 					<?php endif; ?>
+					<div class="col-xs-12">
+						<!-- require code -->
+						<span>MOD</span>
+						<input
+							class="h4p_info-require"
+							type="text"
+							value="<?php echo $require; ?>"
+							rows="1"
+							onClick="this.select();"
+							readonly
+							/>
+					</div>
 					<div class="col-xs-12 h4p_share-buttons">
 						<ul class="list-inline">
 							<li><a class="twitter-share-button" data-count="none">Tweet</a></li>
