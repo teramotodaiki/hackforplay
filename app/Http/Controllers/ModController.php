@@ -101,6 +101,11 @@ class ModController extends Controller
         'hackforplay/rpg-kit-color'       => 'kit/rpg_hack_project/color.js',
         'hackforplay/rpg-kit-rpgobjects'  => 'kit/rpg_hack_project/rpgobjects.js',
         'hackforplay/rpg-kit-smartassets' => 'kit/rpg_hack_project/smartassets.js',
+        'hackforplay/ap-kit-main'         => 'kit/ap_project/main.js',
+        'hackforplay/commet-kit-main'     => 'kit/music_game_project/main.js',
+        'hackforplay/survive-kit-main'    => 'kit/Tsuka_Project/main.js',
+        'hackforplay/run-kit-main'        => 'lib/run.js',
+        'hackforplay/typing-kit-main'     => 'lib/typing.js',
         'enchantjs/enchant'               => 'modules/enchant.js',
         'enchantjs/ui.enchant'            => 'modules/ui.enchant.js',
         'soundcloud/sdk-3.0.0'            => 'modules/sdk-3.0.0.js'
