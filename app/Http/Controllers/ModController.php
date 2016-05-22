@@ -71,7 +71,7 @@ class ModController extends Controller
       // Temporary implement
       $project = Project::where('Token', $name)->firstOrFail();
       $script = $project->scripts()->orderBy('ID', 'desc')->firstOrFail();
-      $dependency = 'hackforplay/rpg-kit-loader'; // Temporary
+      $dependency = 'hackforplay/rpg-kit-main'; // Temporary
 
       // no-dependencies
       $result = implode("\n", [
@@ -96,7 +96,6 @@ class ModController extends Controller
       // Temporary implement
       $filepaths = [
         'hackforplay/hack'                => 'modules/hack.js',
-        'hackforplay/rpg-kit-loader'      => 'rpg-kit-loader.js',
         'hackforplay/rpg-kit-main'        => 'kit/rpg_hack_project/main.js',
         'hackforplay/rpg-kit-camera'      => 'kit/rpg_hack_project/camera.js',
         'hackforplay/rpg-kit-color'       => 'kit/rpg_hack_project/color.js',
