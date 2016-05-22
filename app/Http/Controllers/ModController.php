@@ -118,7 +118,9 @@ class ModController extends Controller
       if (!file_exists($path)) return response('Not Found', 404);
 
       $result = file_get_contents($path);
-      return response($result, 200)->header('Content-Type', 'application/javascript');
+      return response($result, 200)
+              ->header('Content-Type', 'application/javascript')
+              ->header('Cache-Control', 'max-age=86400');
 
     }
 

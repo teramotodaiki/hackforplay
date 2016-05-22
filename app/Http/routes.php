@@ -24,14 +24,17 @@ Route::resource('users', 'UserController');
 // mods/
 Route::get('mods/~project/{name}{ext?}', [ 'uses' => 'ModController@showByProject' ])
 ->where('name', '\w+')
-->where('ext', '\.(js)');
+->where('ext', '\.(js)')
+->middleware('etag');
 
 Route::get('mods/{bundle}{ext}', [ 'uses' => 'ModController@showByProduct' ])
 ->where('bundle', '[\w\-\/\.]+')
-->where('ext', '\.(js)');
+->where('ext', '\.(js)')
+->middleware('etag');
 
 Route::get('mods/{bundle}', [ 'uses' => 'ModController@showByProduct' ])
-->where('bundle', '[\w\-\/\.]+');
+->where('bundle', '[\w\-\/\.]+')
+->middleware('etag');
 
 
 Route::any('{api}', [ 'uses' => 'Old\OldController@index' ])
@@ -46,4 +49,5 @@ Route::any('{file}.php', [ 'uses' => 'Old\OldController@rawphproot' ])
 
 Route::any('{api}.{ext}', [ 'uses' => 'Old\OldController@statics' ])
 ->where('api', '[a-zA-Z0-9\/\-\_\.\~]+')
-->where('ext', 'txt|htm|html|css|js|json|xml|png|jpeg|jpg|gif|ico|mp3|wav');
+->where('ext', 'txt|htm|html|css|js|json|xml|png|jpeg|jpg|gif|ico|mp3|wav')
+->middleware('etag');
