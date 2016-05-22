@@ -29,6 +29,7 @@ $embed = '/embed/?type=stage&id=' . $id;
 // AMD test mode
 // $mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
 $mod = true;
+$require = isset($token) ? "require('~project/$token');" : 'Error';
 ?>
 <!DOCTYPE html>
 <html>
@@ -405,6 +406,18 @@ $mod = true;
 						<ul class="dropdown-menu"></ul>
 					</div>
 					<?php endif; ?>
+					<div class="col-xs-12">
+						<!-- require code -->
+						<span>MOD</span>
+						<input
+							class="h4p_info-require"
+							type="text"
+							value="<?php echo $require; ?>"
+							rows="1"
+							onClick="this.select();"
+							readonly
+							/>
+					</div>
 					<div class="col-xs-12 h4p_share-buttons">
 						<ul class="list-inline">
 							<li><a class="twitter-share-button" data-count="none">Tweet</a></li>
