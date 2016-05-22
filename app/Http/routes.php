@@ -27,7 +27,7 @@ Route::get('mods/~project/{name}{ext?}', [ 'uses' => 'ModController@showByProjec
 ->where('ext', '\.(js)');
 
 Route::get('mods/{bundle}{ext?}', [ 'uses' => 'ModController@showByProduct' ])
-->where('bundle', '[\w\~\-\/\.]+')
+->where('bundle', '[\w\-\/\.]+')
 ->where('ext', '\.(js)');
 
 
