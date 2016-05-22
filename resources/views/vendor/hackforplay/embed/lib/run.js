@@ -1,4 +1,21 @@
-window.addEventListener('load', function() {
+// Module check
+(function (mod) {
+  if (typeof define === "function" && define.amd) {
+    define(function (require, exports, module) {
+
+			require('enchantjs/enchant');
+      require('enchantjs/ui.enchant');
+      require('hackforplay/hack');
+      mod();
+
+    });
+  } else {
+    window.addEventListener('load', function () {
+      mod();
+      Hack.start();
+    });
+  }
+})(function () {
 
 	var game = enchant.Core.instance;
 	game.preload(['enchantjs/x2/map2.png', 'enchantjs/x1.5/chara0.png', 'enchantjs/monster1.gif', 'hackforplay/enchantbook.png']);
@@ -248,7 +265,5 @@ window.addEventListener('load', function() {
 		if (Hack.started) return;
 		Hack.dispatchEvent(new enchant.Event('pressstart'));
 	});
-
-	Hack.start();
 
 });
