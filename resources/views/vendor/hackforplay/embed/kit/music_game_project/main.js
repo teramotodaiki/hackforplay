@@ -27,6 +27,7 @@
         Hack.notes = Hack.notes || [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
         Hack.music = Hack.music || {};
 
+
         if (Hack.music.name) {
             // Open music file
             Hack.music.type = 'WebAudioSound';
@@ -37,7 +38,7 @@
             // Sound Cloud file
             Hack.music.type = 'SoundCloud';
         } else {
-            Hack.log('Hack.music が指定されていません name または track プロパティが必要です');
+            throw new Error('Hack.music が指定されていません name または track プロパティが必要です');
         }
 
         Hack.soundEffectPath = (['osa/bosu19.wav','osa/clap00.wav', 'osa/coin03.wav', 'osa/metal03.wav', 'osa/metal05.wav', 'osa/on06.wav', 'osa/pi06.wav', 'osa/wood05.wav', 'osa/swing14.wav', 'osa/whistle00.wav'])[Hack.hitSE];
