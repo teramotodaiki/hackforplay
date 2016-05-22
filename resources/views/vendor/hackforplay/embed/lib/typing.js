@@ -1,11 +1,26 @@
+// Module check
+(function (mod) {
+  if (typeof define === "function" && define.amd) {
+    define(function (require, exports, module) {
+
+			require('enchantjs/enchant');
+      require('hackforplay/hack');
+      mod();
+
+    });
+  } else {
+    window.addEventListener('load', function () {
+      mod();
+      Hack.start();
+    });
+  }
+})(function () {
 // Typing game
 
 // とりあえず実装も全部書いてしまうが、このへんは改造コードに書くべき
 // textarea拡張用のメソッドをいくつか用意してやるといいかもしれない（splitやjoinは複雑だしfor文を必須にしたくない）
 // スペース区切りのやつをシャッフルしてN個表示とか。
 // 大文字小文字の区別付きで、入力された「文字」をとるのとかいいかも
-
-window.addEventListener('load', function() {
 
 	enchant.ENV.PREVENT_DEFAULT_KEY_CODES = [];
 	var game = enchant.Core.instance;
@@ -87,7 +102,5 @@ window.addEventListener('load', function() {
 		}
 		Hack.textarea.show(words.join(' '));
 	};
-
-	Hack.start();
 
 });
