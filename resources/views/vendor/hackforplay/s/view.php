@@ -315,14 +315,14 @@ $mod = true;
 					<div class="col-xs-12 h4p_restaging_editor">
 						<textarea name="restaging_code" value="// ステージ改造コードを書いて、このステージを改造してやろう!!"></textarea>
 					</div>
-					<div class="col-xs-10 h4p_restaging_button">
-						<button type="button" class="btn btn-block btn-lg btn-primary">
+					<div class="col-xs-12 h4p_restaging_button">
+						<button type="button" class="btn btn-block btn-lg btn-primary" data-loading-text="...">
 							<span class="glyphicon glyphicon-console"></span>
 							<span>うごかす</span>
 						</button>
 					</div>
-					<div class="col-xs-2 h4p_save_button">
-						<button type="button" class="btn btn-block btn-lg btn-info" data-loading-text="...">
+					<div class="col-xs-2 h4p_save_button" style="display: none">
+						<button type="button" class="btn btn-block btn-lg btn-info" >
 							<span class="glyphicon glyphicon-save"></span>
 						</button>
 					</div>
