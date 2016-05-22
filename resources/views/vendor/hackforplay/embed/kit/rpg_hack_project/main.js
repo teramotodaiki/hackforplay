@@ -2,8 +2,15 @@
 // Module check
 (function (mod) {
 	if (typeof define === "function" && define.amd) {
-
-		define(['../../modules/enchant','../../modules/hack','./rpgobjects','./smartassets','./camera', './color'], mod);
+		define([
+			'enchantjs/enchant',
+			'enchantjs/ui.enchant',
+			'hackforplay/hack',
+			'hackforplay/rpg-kit-rpgobjects',
+			'hackforplay/rpg-kit-color',
+			'hackforplay/rpg-kit-camera',
+			'hackforplay/rpg-kit-smartassets',
+		], mod);
 	} else {
 		window.addEventListener('load', function () {
 			mod();

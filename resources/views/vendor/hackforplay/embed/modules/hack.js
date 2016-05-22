@@ -16,7 +16,7 @@ function getEditor() {
 	return Hack.enchantBook;
 }
 
-define(['./enchant','./ui.enchant'], function () {
+define(['enchantjs/enchant','enchantjs/ui.enchant'], function () {
 
 	window.addEventListener('click', refocus);
 

@@ -71,12 +71,12 @@ class ModController extends Controller
       // Temporary implement
       $project = Project::where('Token', $name)->firstOrFail();
       $script = $project->scripts()->orderBy('ID', 'desc')->firstOrFail();
-      $dependency = '../embed/rpg-kit-loader'; // Temporary
+      $dependency = 'hackforplay/rpg-kit-loader'; // Temporary
 
       // no-dependencies
       $result = implode("\n", [
         "define(function (require, exports, module) {",
-        "require('../{$dependency}');",
+        "require('{$dependency}');",
         $script->RawCode,
         '});'
       ]);
@@ -95,10 +95,15 @@ class ModController extends Controller
     {
       // Temporary implement
       $filepaths = [
-        'hackforplay/hack'            => 'modules/hack.js',
-        'hackforplay/rpg-kit-loader'  => 'kit/rpg_hack_project/main.js',
-        'enchantjs/enchant'           => 'modules/enchant.js',
-        'enchantjs/ui.enchant'        => 'modules/ui.enchant.js'
+        'hackforplay/hack'                => 'modules/hack.js',
+        'hackforplay/rpg-kit-loader'      => 'rpg-kit-loader.js',
+        'hackforplay/rpg-kit-main'        => 'kit/rpg_hack_project/main.js',
+        'hackforplay/rpg-kit-camera'      => 'kit/rpg_hack_project/camera.js',
+        'hackforplay/rpg-kit-color'       => 'kit/rpg_hack_project/color.js',
+        'hackforplay/rpg-kit-rpgobjects'  => 'kit/rpg_hack_project/rpgobjects.js',
+        'hackforplay/rpg-kit-smartassets' => 'kit/rpg_hack_project/smartassets.js',
+        'enchantjs/enchant'               => 'modules/enchant.js',
+        'enchantjs/ui.enchant'            => 'modules/ui.enchant.js'
       ];
 
       if (!array_key_exists($bundle, $filepaths)) return response('Not Found', 404);

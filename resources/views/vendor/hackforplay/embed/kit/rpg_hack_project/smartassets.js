@@ -1,7 +1,7 @@
 // Module check
 (function (mod) {
 	if (typeof define === "function" && define.amd) {
-		define(['../../modules/enchant','../../modules/ui.enchant','../../modules/hack'], mod);
+		define(['enchantjs/enchant','enchantjs/ui.enchant','hackforplay/hack'], mod);
 	} else {
 		window.addEventListener('load', mod);
 	}
