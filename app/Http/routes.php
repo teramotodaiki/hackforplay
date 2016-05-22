@@ -26,9 +26,12 @@ Route::get('mods/~project/{name}{ext?}', [ 'uses' => 'ModController@showByProjec
 ->where('name', '\w+')
 ->where('ext', '\.(js)');
 
-Route::get('mods/{bundle}{ext?}', [ 'uses' => 'ModController@showByProduct' ])
+Route::get('mods/{bundle}{ext}', [ 'uses' => 'ModController@showByProduct' ])
 ->where('bundle', '[\w\-\/\.]+')
 ->where('ext', '\.(js)');
+
+Route::get('mods/{bundle}', [ 'uses' => 'ModController@showByProduct' ])
+->where('bundle', '[\w\-\/\.]+');
 
 
 Route::any('{api}', [ 'uses' => 'Old\OldController@index' ])
