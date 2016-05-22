@@ -1038,7 +1038,7 @@ $(function(){
 			// Update data
 			$.post('../commit/', {
 				token : sessionStorage.getItem('project-token'),
-				code : jsEditor.getValue(''),
+				code : jsEditor.getValue('') || sessionStorage.getItem('restaging_code'),
 				timezone : new Date().getTimezoneString(),
 				thumb : sessionStorage.getItem('image') || null,
 				publish : false,
@@ -1153,16 +1153,13 @@ $(function(){
 				// replay mode (load javascript-code and run it)
 				sessionStorage.setItem('restaging_code', getParam('replay_code'));
 				$(".begin_restaging").on('click', function() {
-					beginRestaging();
 
 					// AMD need project has a script
 					makeProject(function () {
 						updateTask(function () {
 
-							// Load frame with AMD
-							if (getParam('amd-test')) {
-								document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token');
-							}
+							// Begin restaging
+							beginRestaging();
 
 						});
 					});
