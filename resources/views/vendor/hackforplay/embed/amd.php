@@ -92,6 +92,20 @@ switch ($type) {
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title></title>
+	<style type="text/css">
+	body {
+		margin: 0;
+		background-color: #000;
+	}
+	textarea.log {
+		color: #fff;
+		font: bold large sans-serif;
+		border: 3px solid #fff;
+		border-radius: 10px;
+		padding: 10px;
+		margin: 3px;
+	}
+	</style>
 	<script type="text/javascript">
 	var require = {
 		baseUrl : '../mods/',
@@ -110,6 +124,6 @@ switch ($type) {
 	</script>
 	<script src="./lib/require.js"></script>
 </head>
-<body style="margin: 0">
+<body>
 </body>
 </html>
