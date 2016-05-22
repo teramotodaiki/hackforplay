@@ -1030,9 +1030,6 @@ $(function(){
 						if(successed !== undefined){
 							successed();
 						}
-						if (getParam('amd-test')) {
-							document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token') + '&t=' + new Date().getTime();
-						}
 						break;
 				}
 			});
@@ -1077,13 +1074,10 @@ $(function(){
 						break;
 					case 'no-update':
 					case 'success':
-						if (getParam('amd-test')) {
-							document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token');
+						if (callback) {
+							callback();
 						}
 						break;
-				}
-				if (callback !== undefined) {
-					callback();
 				}
 			});
 		}
