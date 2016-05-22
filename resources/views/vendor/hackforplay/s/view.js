@@ -459,7 +459,7 @@ $(function(){
 
 			$('.container.container-game').addClass('restaging');
 			if (getParam('amd-test')) {
-				console.log('AMD mode using', sessionStorage.getItem('project-token'));
+				console.log('AMD mode using', "require('~project/" + sessionStorage.getItem('project-token') + "')");
 				document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token');
 			} else {
 				document.getElementById('item-embed-iframe').src = '/embed/?type=local&key=restaging_code&id=' + getParam('id');
