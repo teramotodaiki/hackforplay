@@ -1,4 +1,21 @@
-window.addEventListener('load', function () {
+// Module check
+(function (mod) {
+  if (typeof define === "function" && define.amd) {
+    define(function (require, exports, module) {
+
+      require('enchantjs/enchant');
+      require('hackforplay/hack');
+      require('soundcloud/sdk-3.0.0');
+      mod();
+
+    });
+  } else {
+    window.addEventListener('load', function () {
+      mod();
+      Hack.start();
+    });
+  }
+})(function () {
 
     var game = enchant.Core.instance;
 
@@ -614,7 +631,5 @@ window.addEventListener('load', function () {
         Hack.mouseX = event.clientX / game.scale;
         Hack.mouseY = event.clientY / game.scale;
     });
-
-    Hack.start();
 
 });
