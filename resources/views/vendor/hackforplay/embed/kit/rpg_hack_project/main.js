@@ -2,15 +2,18 @@
 // Module check
 (function (mod) {
 	if (typeof define === "function" && define.amd) {
-		define([
-			'enchantjs/enchant',
-			'enchantjs/ui.enchant',
-			'hackforplay/hack',
-			'hackforplay/rpg-kit-rpgobjects',
-			'hackforplay/rpg-kit-color',
-			'hackforplay/rpg-kit-camera',
-			'hackforplay/rpg-kit-smartassets',
-		], mod);
+		define(function (require, exports, module) {
+			
+			require('enchantjs/enchant');
+			require('enchantjs/ui.enchant');
+			require('hackforplay/hack');
+			require('hackforplay/rpg-kit-rpgobjects');
+			require('hackforplay/rpg-kit-color');
+			require('hackforplay/rpg-kit-camera');
+			require('hackforplay/rpg-kit-smartassets');
+			mod();
+
+		});
 	} else {
 		window.addEventListener('load', function () {
 			mod();

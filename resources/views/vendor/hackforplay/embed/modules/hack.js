@@ -15,8 +15,10 @@ function refocus () {
 function getEditor() {
 	return Hack.enchantBook;
 }
+define(function (require, exports, module) {
 
-define(['enchantjs/enchant','enchantjs/ui.enchant'], function () {
+	require('enchantjs/enchant');
+	require('enchantjs/ui.enchant');
 
 	window.addEventListener('click', refocus);
 
