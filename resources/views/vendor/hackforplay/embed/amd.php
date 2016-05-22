@@ -61,11 +61,6 @@ switch ($type) {
 		$token = $stmt->fetch(PDO::FETCH_COLUMN);
 		break;
 	case 'project':
-		$stmt	= $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id');
-		$stmt->bindValue(':project_id', $project['ID'], PDO::PARAM_INT);
-		$stmt->execute();
-		$script_id	= $stmt->fetch(PDO::FETCH_COLUMN) or die('Failed to load script');
-		$script_src = 'script/?id=' . $script_id;
 		break;
 }
 
