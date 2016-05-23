@@ -119,8 +119,15 @@ if ($publish) {
 		$team_id = NULL;
 	}
 
+	// 次のバージョンを取得
+	$stmt = $dbh->prepare('SELECT MAX("MajorVersion") FROM "Stage" WHERE "ProjectID"=:id');
+	$stmt->bindValue(':id', $project['ID'], PDO::PARAM_INT);
+	$stmt->execute();
+	$version = $stmt->fetch(PDO::FETCH_COLUMN) + 1;
+
 	// Reserved -> Judging
-	$stmt	= $dbh->prepare('UPDATE "Stage" SET "TeamID"=:team_id,"ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Thumbnail"=:thumb_url,"Registered"=:gmt WHERE "ID"=:reserved_id');
+	// Versionは常にMajorUpdate
+	$stmt	= $dbh->prepare('UPDATE "Stage" SET "TeamID"=:team_id,"ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Thumbnail"=:thumb_url,"Registered"=:gmt,"MajorVersion"=:version,"MinorVersion"=0 WHERE "ID"=:reserved_id');
 	$stmt->bindValue(":team_id", $team_id, PDO::PARAM_INT);
 	$stmt->bindValue(":scriptid", $script_id, PDO::PARAM_INT);
 	$stmt->bindValue(":input_title", $stage_info->title, PDO::PARAM_STR);
@@ -128,6 +135,7 @@ if ($publish) {
 	$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
 	$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", $registered, PDO::PARAM_STR);
+	$stmt->bindValue(':version', $version, PDO::PARAM_INT);
 	$stmt->bindValue(":reserved_id", $project['ReservedID'], PDO::PARAM_INT);
 	$result = $stmt->execute();
 	if (!$result) {
