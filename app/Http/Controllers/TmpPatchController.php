@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Stage;
+use App\Project;
 
 class TmpPatchController extends Controller
 {
@@ -37,6 +38,30 @@ class TmpPatchController extends Controller
 
   public function versioning()
   {
-    
+
+    // Minor versioning
+    Stage::where('State', '!=', 'reserved')->update(['MinorVersion' => 0]);
+
+    Project::chunk(100, function ($projects)
+    {
+      foreach ($projects as $project) {
+
+        $postedStages = $project->stages()
+                                ->where('State', '!=', 'reserved')
+                                ->orderBy('ID')
+                                ->get();
+
+        $version = 0;
+        foreach ($postedStages as $stage) {
+
+          $stage->MajorVersion = ++$version;
+          $stage->save();
+
+        }
+
+      }
+    });
+
+    return response('success', 200);
   }
 }
