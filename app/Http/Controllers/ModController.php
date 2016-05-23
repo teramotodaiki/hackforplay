@@ -71,7 +71,10 @@ class ModController extends Controller
       // Temporary implement
       $project = Project::where('Token', $name)->firstOrFail();
       $script = $project->scripts()->orderBy('ID', 'desc')->firstOrFail();
-      $dependency = 'hackforplay/rpg-kit-main'; // Temporary
+      $dependency = $project->stages()
+                            ->where('State', 'reserved')
+                            ->firstOrFail()
+                            ->ImplicitMod;
 
       // no-dependencies
       $result = implode("\n", [
