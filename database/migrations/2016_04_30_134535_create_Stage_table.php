@@ -32,7 +32,7 @@ class CreateStageTable extends Migration
           $table->datetime('Registered')->nullable();
           $table->datetime('Published')->nullable();
           $table->string('Explain', 1000)->nullable();
-          $table->string('ImplictMod', 100)->nullable();
+          $table->string('ImplicitMod', 100)->nullable();
           $table->integer('MajorVersion')->nullable();
           $table->integer('MinorVersion')->nullable();
 

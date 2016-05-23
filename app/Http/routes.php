@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('p1', 'TmpPatchController@implictMod');
+Route::get('p1', 'TmpPatchController@implicitMod');
 Route::get('p2', 'TmpPatchController@versioning');
 
 

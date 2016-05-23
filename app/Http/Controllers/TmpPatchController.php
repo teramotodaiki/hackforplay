@@ -9,7 +9,7 @@ use App\Stage;
 
 class TmpPatchController extends Controller
 {
-  public function implictMod()
+  public function implicitMod()
   {
     // Src => mod
     $mods = [
@@ -28,7 +28,7 @@ class TmpPatchController extends Controller
 
     foreach ($mods as $src => $mod) {
 
-      Stage::where('Src', $src)->update(['ImplictMod' => $mod]);
+      Stage::where('Src', $src)->update(['ImplicitMod' => $mod]);
 
     }
 
