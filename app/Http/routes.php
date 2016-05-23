@@ -11,6 +11,9 @@
 |
 */
 
+Route::get('p1', 'TmpPatchController@implictMod');
+Route::get('p2', 'TmpPatchController@versioning');
+
 
 // React (frontend) App
 Route::get('tutorials', 'DefaultAppController@index');
