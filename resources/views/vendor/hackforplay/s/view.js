@@ -1037,6 +1037,7 @@ $(function(){
 						break;
 					default:
 						sessionStorage.setItem('project-token', data);
+						$('.h4p_info-require').val("require('~project/"+data+"');");
 						if(successed !== undefined){
 							successed();
 						}
@@ -1257,8 +1258,9 @@ $(function(){
 			case 'replay':
 			case 'quest':
 				// 直後にbeginRestaging
-				beginRestaging();
-				sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
+				makeProject(function () {
+					updateTask(beginRestaging);
+				});
 				break;
 			}
 		}
