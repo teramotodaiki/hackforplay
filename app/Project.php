@@ -18,4 +18,9 @@ class Project extends Model
   {
     return $this->hasMany('App\Script', 'ProjectID');
   }
+
+  public function stages()
+  {
+    return $this->hasMany('App\Stage', 'ProjectID');
+  }
 }
