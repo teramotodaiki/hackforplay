@@ -1037,6 +1037,7 @@ $(function(){
 						break;
 					default:
 						sessionStorage.setItem('project-token', data);
+						$('.h4p_info-require').val("require('~project/"+data+"');");
 						if(successed !== undefined){
 							successed();
 						}
