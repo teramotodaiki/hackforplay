@@ -32,6 +32,9 @@ class CreateStageTable extends Migration
           $table->datetime('Registered')->nullable();
           $table->datetime('Published')->nullable();
           $table->string('Explain', 1000)->nullable();
+          $table->string('ImplicitMod', 100)->nullable();
+          $table->integer('MajorVersion')->nullable();
+          $table->integer('MinorVersion')->nullable();
 
           // $table->foreign('UserID')->references('ID')->on('User')->onDelete('cascade');
           // $table->foreign('TeamID')->references('ID')->on('Team')->onDelete('cascade');
