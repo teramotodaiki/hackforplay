@@ -1257,8 +1257,9 @@ $(function(){
 			case 'replay':
 			case 'quest':
 				// 直後にbeginRestaging
-				beginRestaging();
-				sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
+				makeProject(function () {
+					updateTask(beginRestaging);
+				});
 				break;
 			}
 		}
