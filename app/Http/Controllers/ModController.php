@@ -76,7 +76,11 @@ class ModController extends Controller
 
       }, array_keys($versioner), array_values($versioner));
 
-      $conditions = array_filter($filtered);
+
+      $conditions = array_filter($filtered, function ($value)
+      {
+        return $value !== null;
+      });
       return array_shift($conditions);
     }
 
