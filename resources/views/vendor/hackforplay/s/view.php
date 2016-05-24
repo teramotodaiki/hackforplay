@@ -26,6 +26,18 @@ $directly_restaging	= filter_input(INPUT_GET, 'directly_restaging', FILTER_VALID
 // 1以上ならつづきをあらわす。0以下なら最後のステージであることをあらわす
 $next = $mode === 'quest' && $level_next ? $level_next['ID'] : 0;
 $embed = '/embed/?type=stage&id=' . $id;
+
+// Version
+$version =
+
+$mode === 'restaging' ? ['*'] : // 改造中は常にLatest Versionをfetch
+(
+isset($stage['MajorVersion'], $stage['MinorVersion']) ?
+[$stage['MajorVersion'], $stage['MinorVersion']] :
+
+['*']
+);
+
 // AMD test mode
 // $mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
 $mod = true;
@@ -164,6 +176,7 @@ $require = isset($token) ? "require('~project/$token');" : 'Error';
 		s('replay_code', "<?php echo $code; ?>");
 <?php endif; ?>
 		s('amd-test', "<?php echo $mod ? '1' : ''; ?>");
+		s('mod-version', "<?php echo implode('.', $version); ?>");
 	})();
 	</script>
 	<script type="text/javascript">
@@ -372,7 +385,12 @@ $require = isset($token) ? "require('~project/$token');" : 'Error';
 			<div class="col-xs-12 h4p_info">
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 h4p_info-datail">
-						<p><h3 class="h4p_info-title"><?php echo htmlspecialchars($title); ?></h3></p>
+						<p>
+							<h3 class="h4p_info-title">
+								<?php echo htmlspecialchars($title); ?>
+								<span class="label label-info"><?php echo implode('.', $version); ?></span>
+							</h3>
+						</p>
 						<p><span>プレイ回数：<b><?php echo $count."回"; ?></b></span></p>
 						<?php if ($author_id === NULL) : ?>
 						<p><span><b>公式ステージ</b></span></p>
