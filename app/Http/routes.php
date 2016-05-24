@@ -25,19 +25,21 @@ Route::get('random', 'RandomController@index');
 Route::resource('users', 'UserController');
 
 // mods/
-Route::get('mods/~project/{name}{ext?}', [ 'uses' => 'ModController@showByProject' ])
-->where('name', '\w+')
-->where('ext', '\.(js)')
-->middleware('etag');
+Route::group(['middleware' => 'etag'], function()
+{
+  
+  Route::get('mods/~project/{name}{ext?}', [ 'uses' => 'ModController@showByProject' ])
+  ->where('name', '\w+')
+  ->where('ext', '\.(js)');
 
-Route::get('mods/{bundle}{ext}', [ 'uses' => 'ModController@showByProduct' ])
-->where('bundle', '[\w\-\/\.]+')
-->where('ext', '\.(js)')
-->middleware('etag');
+  Route::get('mods/{bundle}{ext}', [ 'uses' => 'ModController@showByProduct' ])
+  ->where('bundle', '[\w\-\/\.]+')
+  ->where('ext', '\.(js)');
 
-Route::get('mods/{bundle}', [ 'uses' => 'ModController@showByProduct' ])
-->where('bundle', '[\w\-\/\.]+')
-->middleware('etag');
+  Route::get('mods/{bundle}', [ 'uses' => 'ModController@showByProduct' ])
+  ->where('bundle', '[\w\-\/\.]+');
+
+});
 
 
 Route::any('{api}', [ 'uses' => 'Old\OldController@index' ])
