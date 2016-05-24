@@ -41,24 +41,6 @@ class ModController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  string  $bundle
-     * @param  string  $name
-     * @param  string  $ext
-     * @return \Illuminate\Http\Response
-     */
-    public function show($bundle, $name, $ext = '')
-    {
-      // Temporary implement
-      $result = $bundle === '~project' ?
-        $this->showByProject($name) :
-        $this->showByProduct($bundle, $name);
-
-      return response($result, 200)->header('Content-Type', 'application/javascript');
-    }
-
     function versioningConditions($version)
     {
       $versioner = [
