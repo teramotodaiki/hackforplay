@@ -44,8 +44,6 @@ class TmpPatchController extends Controller
     // Stage::where('State', '!=', 'reserved')->update(['MinorVersion' => 0]);
     Stage::where('State', '!=', 'reserved')->update(['MajorVersion' => null]);
 
-    return response('success', 200);
-
     DB::table('Stage')
     ->where('State', '!=', 'reserved')
     ->whereNull('MajorVersion')
