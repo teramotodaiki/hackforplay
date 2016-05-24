@@ -40,22 +40,24 @@ class TmpPatchController extends Controller
   {
 
     // Minor versioning
-    Stage::where('State', '!=', 'reserved')->update(['MinorVersion' => 0]);
+    // Stage::where('State', '!=', 'reserved')->update(['MinorVersion' => 0]);
 
-    Project::chunk(100, function ($projects)
+    Stage::chunk(100, function ($stages)
     {
-      foreach ($projects as $project) {
+      $yet = $stages->whereNull('MajorVersion')->get();
+      foreach ($yet as $stage) {
 
-        $postedStages = $project->stages()
-                                ->where('State', '!=', 'reserved')
-                                ->orderBy('ID')
-                                ->get();
+        $postedStages = Project::find($stage->ProjectID)
+        ->stages()
+        ->where('State', '!=', 'reserved')
+        ->orderBy('ID')
+        ->get();
 
         $version = 0;
-        foreach ($postedStages as $stage) {
+        foreach ($postedStages as $posted) {
 
-          $stage->MajorVersion = ++$version;
-          $stage->save();
+          $posted->MajorVersion = ++$version;
+          $posted->save();
 
         }
 
