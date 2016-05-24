@@ -24,6 +24,7 @@ function getEditor() {
 
 			require('enchantjs/enchant');
 			require('enchantjs/ui.enchant');
+			window.SC = require('soundcloud/sdk-3.0.0');
 			mod();
 
 		});
