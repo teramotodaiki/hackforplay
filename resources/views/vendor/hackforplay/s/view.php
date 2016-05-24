@@ -26,13 +26,16 @@ $directly_restaging	= filter_input(INPUT_GET, 'directly_restaging', FILTER_VALID
 // 1以上ならつづきをあらわす。0以下なら最後のステージであることをあらわす
 $next = $mode === 'quest' && $level_next ? $level_next['ID'] : 0;
 $embed = '/embed/?type=stage&id=' . $id;
+
+
+// Version
+$version = isset($stage['MajorVersion'], $stage['MinorVersion']) ?
+[$stage['MajorVersion'], $stage['MinorVersion']] : ['*'];
+
 // AMD test mode
 // $mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
 $mod = true;
 $require = isset($token) ? "require('~project/$token');" : 'Error';
-// Version
-$version = isset($stage['MajorVersion'], $stage['MinorVersion']) ?
-[$stage['MajorVersion'], $stage['MinorVersion']] : ['*'];
 ?>
 <!DOCTYPE html>
 <html>
