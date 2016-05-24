@@ -29,6 +29,7 @@ class CreateRestagingLogTable extends Migration
           $table->integer('InputOtherCount')->default(0);
           $table->integer('PasteCount')->default(0);
           $table->integer('DeleteCount')->default(0);
+          $table->integer('PublishCount')->default(0);
 
           // $table->foreign('UserID')->references('ID')->on('User')->onDelete('cascade');
           // $table->foreign('StageID')->references('ID')->on('Stage')->onDelete('cascade');

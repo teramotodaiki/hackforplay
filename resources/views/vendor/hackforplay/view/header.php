@@ -246,12 +246,6 @@ $(function(){
 						<ruby>一覧<rt>いちらん</rt></ruby>
 					</a>
 				</li>
-				<li>
-					<a href="/r" title="New games">
-						<ruby>最新<rt>さいしん</rt></ruby>のステージ
-						<ruby>一覧<rt>いちらん</rt></ruby>
-					</a>
-				</li>
 				<?php if (isset($author_id)) : ?>
 				<li>
 					<a href="/m?id=<?php echo $author_id; ?>" title="Other stages made by this user">

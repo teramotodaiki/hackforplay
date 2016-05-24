@@ -1,5 +1,20 @@
-//actionpuzzlea.js
-window.addEventListener('load', function() {
+// Module check
+(function (mod) {
+	if (typeof define === "function" && define.amd) {
+		define(function (require, exports, module) {
+
+			require('enchantjs/enchant');
+			require('hackforplay/hack');
+			mod();
+
+		});
+	} else {
+		window.addEventListener('load', function () {
+			mod();
+			Hack.start();
+		});
+	}
+})(function () {
 
 	var game = enchant.Core.instance;
 	// New Resourses :
@@ -565,7 +580,5 @@ window.addEventListener('load', function() {
 			Hack.height = map.length * 32;
 		}
 	};
-
-	Hack.start();
 
 });

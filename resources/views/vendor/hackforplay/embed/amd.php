@@ -36,7 +36,7 @@ switch ($type) {
 }
 
 // Get source element URL
-$stmt	= $dbh->prepare('SELECT "Src","ScriptID","State","UserID" FROM "Stage" WHERE "ID"=:id');
+$stmt	= $dbh->prepare('SELECT "Src","ScriptID","State","UserID","ProjectID","MajorVersion","MinorVersion" FROM "Stage" WHERE "ID"=:id');
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
 $stage = $stmt->fetch(PDO::FETCH_ASSOC) or die('Stage not found');
@@ -48,21 +48,21 @@ if ($stage['State'] === 'rejected') {
 	die('This stage is private');
 }
 
-// Get script
+// Get project token
 switch ($type) {
 	case 'local':
 		$key = filter_input(INPUT_GET, 'key') or die('Missing param key. Add "&key={SESSION STORAGE KEY}" to url');
 		$script_src = 'script/?key=' . $key;
 		break;
 	case 'stage':
-		$script_src = 'script/?id=' . $stage['ScriptID'];
+		$stmt = $dbh->prepare('SELECT "Token" FROM "Project" WHERE "ID"=:id');
+		$stmt->bindValue(':id', $stage['ProjectID'], PDO::PARAM_INT);
+		$stmt->execute();
+		$token = $stmt->fetch(PDO::FETCH_COLUMN);
+		$version = implode('.', [$stage['MajorVersion'], $stage['MinorVersion']]);
 		break;
 	case 'project':
-		$stmt	= $dbh->prepare('SELECT MAX("ID") FROM "Script" WHERE "ProjectID"=:project_id');
-		$stmt->bindValue(':project_id', $project['ID'], PDO::PARAM_INT);
-		$stmt->execute();
-		$script_id	= $stmt->fetch(PDO::FETCH_COLUMN) or die('Failed to load script');
-		$script_src = 'script/?id=' . $script_id;
+		$version = '*';
 		break;
 }
 
@@ -94,49 +94,38 @@ switch ($type) {
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title></title>
-	<script src="<?php echo $script_src; ?>" id="hackforplay-embed-script" data-func="HackforPlayInitializeRestaging"></script>
-	<script src="./lib/require.js"></script>
-  <script type="text/javascript">
-		requirejs.config({
-		  baseUrl: '../',
-			paths: {
-				restaging: 'modules/~project/<?php echo $token; ?>'
-			}
-		});
-		var _modules = ['embed/modules/hack','embed/modules/enchant','embed/modules/ui.enchant','embed/kit/rpg_hack_project/main'];
-		// outer-modules loading
-		var _outer = (sessionStorage.getItem('outer-modules') || '').split(',');
-		if (!_outer[0]) console.log('outer-modules not defined')
-		else Array.prototype.push.apply(_modules, _outer);
+	<style type="text/css">
+	body {
+		margin: 0;
+		background-color: #000;
+	}
+	textarea.log {
+		color: #fff;
+		font: bold large sans-serif;
+		border: 3px solid #fff;
+		border-radius: 10px;
+		padding: 10px;
+		margin: 3px;
+	}
+	</style>
+	<script type="text/javascript">
+	var require = {
+		baseUrl : '../mods/',
+		deps: ["~project/<?php echo $token; ?>/<?php echo $version; ?>"],
+		callback: function () {
 
-		// ---- OUTER MODULES ----
-		requirejs(_modules, function (Hack) {
-			console.log('(outer) modules loaded!', _modules);
 			Hack.stageInfo = {
 				<?php if (isset($playlog_token)) : ?>
 				token: '<?php echo $playlog_token; ?>'
 				<?php endif; ?>
 			};
+			Hack.start();
 
-			// ---- INNER MODULES ----
-			(function (callback) {
-				// inner-modules loading
-				var _inner = (sessionStorage.getItem('inner-modules') || '').split(',');
-				if (!_inner[0]){
-					console.log('inner-modules not defined');
-					callback();
-				} else {
-					console.log('(inner) modules loaded!', _inner);
-					requirejs(_inner, callback);
-				}
-			})(function () {
-				requirejs(['restaging'], function () {
-					Hack.start();
-				});
-			})
-    });
-  </script>
+		}
+	};
+	</script>
+	<script src="./lib/require.js"></script>
 </head>
-<body style="margin: 0">
+<body>
 </body>
 </html>

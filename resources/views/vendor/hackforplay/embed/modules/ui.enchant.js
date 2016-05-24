@@ -1,7 +1,12 @@
 // Module check
 (function (mod) {
   if (typeof define === "function" && define.amd) {
-    define(['./enchant'], mod);
+    define(function (require, exports, module) {
+
+      require('enchantjs/enchant');
+      mod();
+
+    });
   } else {
     mod();
   }

@@ -11,6 +11,9 @@
 |
 */
 
+Route::get('p1', 'TmpPatchController@implicitMod');
+Route::get('p2', 'TmpPatchController@versioning');
+
 
 // React (frontend) App
 Route::get('tutorials', 'DefaultAppController@index');
@@ -20,6 +23,22 @@ Route::get('random', 'RandomController@index');
 
 // users/
 Route::resource('users', 'UserController');
+
+// mods/
+Route::group(['middleware' => 'etag', 'prefix' => 'mods'], function()
+{
+  Route::get('~project/{name}/{version}{ext?}', [ 'uses' => 'ModController@showByProject' ])
+  ->where('name', '\w+')
+  ->where('ext', '\.(js)');
+
+  // 公式(bundle)を使う場合で、バージョン指定子を使わなかった場合(Tmp)
+  Route::get('{bundle}{ext}', [ 'uses' => 'ModController@showByProduct' ])
+  ->where('ext', '\.(js)');
+
+  Route::get('{bundle}/{version?}{ext?}', [ 'uses' => 'ModController@showByProduct' ])
+  ->where('ext', '\.(js)');
+});
+
 
 Route::any('{api}', [ 'uses' => 'Old\OldController@index' ])
 ->where('api', '/?|[a-z\/]+');
@@ -32,5 +51,6 @@ Route::any('{file}.php', [ 'uses' => 'Old\OldController@rawphproot' ])
 ->where('file', '[a-zA-Z0-9\-\_]+');
 
 Route::any('{api}.{ext}', [ 'uses' => 'Old\OldController@statics' ])
-->where('api', '[a-zA-Z0-9\/\-\_\.]+')
-->where('ext', 'txt|htm|html|css|js|json|xml|png|jpeg|jpg|gif|ico|mp3|wav');
+->where('api', '[a-zA-Z0-9\/\-\_\.\~]+')
+->where('ext', 'txt|htm|html|css|js|json|xml|png|jpeg|jpg|gif|ico|mp3|wav')
+->middleware('etag');

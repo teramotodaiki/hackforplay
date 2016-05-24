@@ -459,8 +459,15 @@ $(function(){
 
 			$('.container.container-game').addClass('restaging');
 			if (getParam('amd-test')) {
-				console.log('AMD mode using', sessionStorage.getItem('project-token'));
-				document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token');
+				var token = sessionStorage.getItem('project-token');
+				var version = '*';
+				var reqCode = ["require('~project/", token, '/', version, "');"].join('');
+				console.log('AMD mode using', reqCode);
+				document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + token;
+
+				$('.h4p_info-require').val(reqCode);
+				$('.h4p_info-version').text(version);
+
 			} else {
 				document.getElementById('item-embed-iframe').src = '/embed/?type=local&key=restaging_code&id=' + getParam('id');
 			}
@@ -691,21 +698,28 @@ $(function(){
 			$(".h4p_info-footer").text("（リステージング中）");
 			$(".visible-option-restage").css('visibility', 'hidden');
 			$(".h4p_restaging_button").on('click', function() {
-				// RUN
-				jsEditor.save();
-				var code = jsEditor.getTextArea().value;
-				sessionStorage.setItem('restaging_code', code);
 
-				// 投稿可能状態に
-				$(".h4p_publish").show();
-				$("#author_alert").hide();
+				__saveTask.call(this, function () {
 
-				document.getElementById('item-embed-iframe').contentWindow.postMessage({
-					query: 'eval',
-					value: getParam('amd-test') ? 'window.location.reload(true);' : 'window.location.reload();'
-				}, '/');
+					// 投稿可能状態に
+					$(".h4p_publish").show();
+					$("#author_alert").hide();
+
+					document.getElementById('item-embed-iframe').contentWindow.postMessage({
+						query: 'eval',
+						value: getParam('amd-test') ? 'window.location.reload(true);' : 'window.location.reload();'
+					}, '/');
+
+				});
+
 			});
-			$('.h4p_save_button').on('click', function() {
+
+			$(".h4p_save_button").on("click", __saveTask);
+
+			function __saveTask (callback) {
+
+				callback = callback || function () {};
+
 				// Save
 				var loading = $(this).find('button');
 
@@ -723,6 +737,7 @@ $(function(){
 						makeProject(function() {
 							updateTask(function() {
 								loading.button('reset');
+								callback();
 							});
 						}, function() {
 							loading.button('reset');
@@ -731,6 +746,7 @@ $(function(){
 						loading.button('loading');
 						updateTask(function() {
 							loading.button('reset');
+							callback();
 						});
 					}
 				}));
@@ -740,7 +756,8 @@ $(function(){
 					query: 'eval',
 					value: "saveImage('updateProject');"
 				}, '/');
-			});
+
+			}
 
 			// ビューの設定
 			$(".h4p_while-restaging").show(); // UI
@@ -1030,9 +1047,6 @@ $(function(){
 						if(successed !== undefined){
 							successed();
 						}
-						if (getParam('amd-test')) {
-							document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token') + '&t=' + new Date().getTime();
-						}
 						break;
 				}
 			});
@@ -1041,7 +1055,7 @@ $(function(){
 			// Update data
 			$.post('../commit/', {
 				token : sessionStorage.getItem('project-token'),
-				code : jsEditor.getValue(''),
+				code : jsEditor.getValue('') || sessionStorage.getItem('restaging_code'),
 				timezone : new Date().getTimezoneString(),
 				thumb : sessionStorage.getItem('image') || null,
 				publish : false,
@@ -1077,13 +1091,10 @@ $(function(){
 						break;
 					case 'no-update':
 					case 'success':
-						if (getParam('amd-test')) {
-							document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + sessionStorage.getItem('project-token');
+						if (callback) {
+							callback();
 						}
 						break;
-				}
-				if (callback !== undefined) {
-					callback();
 				}
 			});
 		}
@@ -1102,6 +1113,7 @@ $(function(){
 				publish: true,
 				stage_info: JSON.stringify(stage_info),
 				team_id: $('#inputModal input[name="input-team"]:checked').val() || null,
+				minor_update: $('#inputModal input[name="minor-update"]').prop('checked'),
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			} , function(data, textStatus, xhr) {
 				$('.h4p_publish button').button('reset');
@@ -1159,8 +1171,16 @@ $(function(){
 				// replay mode (load javascript-code and run it)
 				sessionStorage.setItem('restaging_code', getParam('replay_code'));
 				$(".begin_restaging").on('click', function() {
-					beginRestaging();
-					makeProject();
+
+					// AMD need project has a script
+					makeProject(function () {
+						updateTask(function () {
+
+							// Begin restaging
+							beginRestaging();
+
+						});
+					});
 				});
 				break;
 			case "extend":
@@ -1245,8 +1265,9 @@ $(function(){
 			case 'replay':
 			case 'quest':
 				// 直後にbeginRestaging
-				beginRestaging();
-				sessionStorage.removeItem('project-token'); // プロジェクトキーをリセット
+				makeProject(function () {
+					updateTask(beginRestaging);
+				});
 				break;
 			}
 		}

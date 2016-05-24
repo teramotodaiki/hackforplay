@@ -5,7 +5,7 @@
 * ただし、Project.UserIDと一致するUserIDをもつセッションが必要
 * publish flag がTRUEの時は、stage_infoを指定する
 * team_id を指定することで、チーム名義として投稿できる
-* Input:	token , code , timezone , thumb , publish , (stage_info) , (team_id) , (attendance-token)
+* Input:	token , code , timezone , thumb , publish , (stage_info) , (team_id) , (minor_update) (attendance-token)
 * Output:	no-session , invalid-token , already-published , code-is-null , invalid-stage-info , database-error , success
 */
 
@@ -119,8 +119,32 @@ if ($publish) {
 		$team_id = NULL;
 	}
 
+	// 最新のバージョンを取得
+	$stmt = $dbh->prepare('SELECT "MajorVersion","MinorVersion" FROM "Stage" WHERE "ProjectID"=:id AND "MajorVersion" IS NOT NULL ORDER BY "ID" DESC');
+	$stmt->bindValue(':id', $project['ID'], PDO::PARAM_INT);
+	$stmt->execute();
+	$versions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$version = array_shift($versions);
+	if ($version === NULL) {
+		$version = [
+			'MajorVersion' => 0,
+			'MinorVersion' => 0
+		];
+	}
+
+	// 現在のバージョンを設定
+	$minor_update = filter_input(INPUT_POST, 'minor_update', FILTER_VALIDATE_BOOLEAN);
+	if ($minor_update) {
+		// マイナーアップデート
+		$version['MinorVersion'] ++;
+	} else {
+		// メジャーアップデート
+		$version['MajorVersion'] ++;
+		$version['MinorVersion'] = 0;
+	}
+
 	// Reserved -> Judging
-	$stmt	= $dbh->prepare('UPDATE "Stage" SET "TeamID"=:team_id,"ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Thumbnail"=:thumb_url,"Registered"=:gmt WHERE "ID"=:reserved_id');
+	$stmt	= $dbh->prepare('UPDATE "Stage" SET "TeamID"=:team_id,"ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Thumbnail"=:thumb_url,"Registered"=:gmt,"MajorVersion"=:major,"MinorVersion"=:minor WHERE "ID"=:reserved_id');
 	$stmt->bindValue(":team_id", $team_id, PDO::PARAM_INT);
 	$stmt->bindValue(":scriptid", $script_id, PDO::PARAM_INT);
 	$stmt->bindValue(":input_title", $stage_info->title, PDO::PARAM_STR);
@@ -128,25 +152,28 @@ if ($publish) {
 	$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
 	$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", $registered, PDO::PARAM_STR);
+	$stmt->bindValue(':major', $version['MajorVersion'], PDO::PARAM_INT);
+	$stmt->bindValue(':minor', $version['MinorVersion'], PDO::PARAM_INT);
 	$stmt->bindValue(":reserved_id", $project['ReservedID'], PDO::PARAM_INT);
 	$result = $stmt->execute();
 	if (!$result) {
 		exit('database-error');
 	}
 
-	$stmt	= $dbh->prepare('SELECT "SourceID","Src" FROM "Stage" WHERE "ID"=:reserved_id');
+	$stmt	= $dbh->prepare('SELECT "SourceID","Src","ImplicitMod" FROM "Stage" WHERE "ID"=:reserved_id');
 	$stmt->bindValue(":reserved_id", $project['ReservedID'], PDO::PARAM_INT);
 	$stmt->execute();
 	$stage = $stmt->fetch(PDO::FETCH_ASSOC);
 
 	// 次のステージを事前に作成
-	$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","State","SourceID","Src") VALUES(:userid,:replay,:projectid,:reserved,:source_id,:stage_src)');
+	$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","State","SourceID","Src","ImplicitMod") VALUES(:userid,:replay,:projectid,:reserved,:source_id,:stage_src,:implicitMod)');
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
 	$stmt->bindValue(":projectid", $project['ID'], PDO::PARAM_INT);
 	$stmt->bindValue(":reserved", 'reserved', PDO::PARAM_STR);
 	$stmt->bindValue(":source_id", $stage['SourceID'], PDO::PARAM_INT);
 	$stmt->bindValue(":stage_src", $stage['Src'], PDO::PARAM_STR);
+	$stmt->bindValue(":implicitMod", $stage['ImplicitMod'], PDO::PARAM_STR);
 	$flag 	= $stmt->execute();
 	if (!$flag) {
 		exit('database-error');

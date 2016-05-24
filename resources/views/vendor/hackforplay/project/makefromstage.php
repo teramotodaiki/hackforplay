@@ -27,7 +27,7 @@ if($stageid === FALSE || $stageid === NULL){
 	exit('invalid-stageid');
 }
 
-$stmt	= $dbh->prepare('SELECT "ProjectID","Src","NoRestage" FROM "Stage" WHERE "ID"=:stageid');
+$stmt	= $dbh->prepare('SELECT "ProjectID","Src","NoRestage","ImplicitMod" FROM "Stage" WHERE "ID"=:stageid');
 $stmt->bindValue(":stageid", $stageid, PDO::PARAM_INT);
 $stmt->execute();
 $stage 	= $stmt->fetch(PDO::FETCH_ASSOC);
@@ -75,13 +75,14 @@ if ($stage['ProjectID'] === NULL) {
 }
 
 // ステージを事前に作成
-$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","State","SourceID","Src") VALUES(:userid,:replay,:projectid,:reserved,:source_id,:stage_src)');
+$stmt	= $dbh->prepare('INSERT INTO "Stage" ("UserID","Mode","ProjectID","State","SourceID","Src","ImplicitMod") VALUES(:userid,:replay,:projectid,:reserved,:source_id,:stage_src,:implicitMod)');
 $stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 $stmt->bindValue(":replay", 'replay', PDO::PARAM_STR);
 $stmt->bindValue(":projectid", $new_project_id, PDO::PARAM_INT);
 $stmt->bindValue(":reserved", 'reserved', PDO::PARAM_STR);
 $stmt->bindValue(":source_id", $stageid, PDO::PARAM_INT);
 $stmt->bindValue(":stage_src", $stage['Src'], PDO::PARAM_STR);
+$stmt->bindValue(":implicitMod", $stage['ImplicitMod'], PDO::PARAM_STR);
 $flag 	= $stmt->execute();
 if (!$flag) {
 	exit('database-error');

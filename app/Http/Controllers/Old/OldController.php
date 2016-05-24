@@ -108,7 +108,8 @@ class OldController extends Controller
         'wav' => 'audio/wav',
       ][$ext];
       return response($content, 200)
-              ->header('Content-Type', $type);
+              ->header('Content-Type', $type)
+              ->header('Cache-Control', 'max-age=86400');
     }
 }
 
