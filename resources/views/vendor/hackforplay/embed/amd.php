@@ -62,6 +62,7 @@ switch ($type) {
 		$version = implode('.', [$stage['MajorVersion'], $stage['MinorVersion']]);
 		break;
 	case 'project':
+		$version = '*';
 		break;
 }
 
