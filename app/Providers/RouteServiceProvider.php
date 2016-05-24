@@ -24,7 +24,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        //
+        $router->pattern('version', '\*|[\~][0-9]|[0-9]\.[0-9]');
+        $router->pattern('bundle', '[\w\-\/\.]+');
 
         parent::boot($router);
     }

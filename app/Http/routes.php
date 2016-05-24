@@ -25,19 +25,19 @@ Route::get('random', 'RandomController@index');
 Route::resource('users', 'UserController');
 
 // mods/
-Route::get('mods/~project/{name}{ext?}', [ 'uses' => 'ModController@showByProject' ])
-->where('name', '\w+')
-->where('ext', '\.(js)')
-->middleware('etag');
+Route::group(['middleware' => 'etag', 'prefix' => 'mods'], function()
+{
+  Route::get('~project/{name}/{version}{ext?}', [ 'uses' => 'ModController@showByProject' ])
+  ->where('name', '\w+')
+  ->where('ext', '\.(js)');
 
-Route::get('mods/{bundle}{ext}', [ 'uses' => 'ModController@showByProduct' ])
-->where('bundle', '[\w\-\/\.]+')
-->where('ext', '\.(js)')
-->middleware('etag');
+  // 公式(bundle)を使う場合で、バージョン指定子を使わなかった場合(Tmp)
+  Route::get('{bundle}{ext}', [ 'uses' => 'ModController@showByProduct' ])
+  ->where('ext', '\.(js)');
 
-Route::get('mods/{bundle}', [ 'uses' => 'ModController@showByProduct' ])
-->where('bundle', '[\w\-\/\.]+')
-->middleware('etag');
+  Route::get('{bundle}/{version?}{ext?}', [ 'uses' => 'ModController@showByProduct' ])
+  ->where('ext', '\.(js)');
+});
 
 
 Route::any('{api}', [ 'uses' => 'Old\OldController@index' ])

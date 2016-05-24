@@ -460,10 +460,13 @@ $(function(){
 			$('.container.container-game').addClass('restaging');
 			if (getParam('amd-test')) {
 				var token = sessionStorage.getItem('project-token');
-				console.log('AMD mode using', "require('~project/" + token + "')");
+				var version = '*';
+				var reqCode = ["require('~project/", token, '/', version, "');"].join('');
+				console.log('AMD mode using', reqCode);
 				document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + token;
 
-				$('.h4p_info-require').val("require('~project/" + token + "')");
+				$('.h4p_info-require').val(reqCode);
+				$('.h4p_info-version').text(version);
 
 			} else {
 				document.getElementById('item-embed-iframe').src = '/embed/?type=local&key=restaging_code&id=' + getParam('id');
@@ -1041,7 +1044,6 @@ $(function(){
 						break;
 					default:
 						sessionStorage.setItem('project-token', data);
-						$('.h4p_info-require').val("require('~project/"+data+"');");
 						if(successed !== undefined){
 							successed();
 						}
@@ -1111,6 +1113,7 @@ $(function(){
 				publish: true,
 				stage_info: JSON.stringify(stage_info),
 				team_id: $('#inputModal input[name="input-team"]:checked').val() || null,
+				minor_update: $('#inputModal input[name="minor-update"]').prop('checked'),
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			} , function(data, textStatus, xhr) {
 				$('.h4p_publish button').button('reset');

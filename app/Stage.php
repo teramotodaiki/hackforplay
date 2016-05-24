@@ -14,4 +14,9 @@ class Stage extends Model
   protected $guarded = array('id'); // idはcreateに含まない
   protected $primaryKey = 'ID';
 
+  public function script()
+  {
+    return $this->belongsTo('App\Script', 'ScriptID');
+  }
+
 }

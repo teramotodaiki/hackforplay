@@ -5,7 +5,7 @@
 * ただし、Project.UserIDと一致するUserIDをもつセッションが必要
 * publish flag がTRUEの時は、stage_infoを指定する
 * team_id を指定することで、チーム名義として投稿できる
-* Input:	token , code , timezone , thumb , publish , (stage_info) , (team_id) , (attendance-token)
+* Input:	token , code , timezone , thumb , publish , (stage_info) , (team_id) , (minor_update) (attendance-token)
 * Output:	no-session , invalid-token , already-published , code-is-null , invalid-stage-info , database-error , success
 */
 
@@ -119,15 +119,32 @@ if ($publish) {
 		$team_id = NULL;
 	}
 
-	// 次のバージョンを取得
-	$stmt = $dbh->prepare('SELECT MAX("MajorVersion") FROM "Stage" WHERE "ProjectID"=:id');
+	// 最新のバージョンを取得
+	$stmt = $dbh->prepare('SELECT "MajorVersion","MinorVersion" FROM "Stage" WHERE "ProjectID"=:id AND "MajorVersion" IS NOT NULL ORDER BY "ID" DESC');
 	$stmt->bindValue(':id', $project['ID'], PDO::PARAM_INT);
 	$stmt->execute();
-	$version = $stmt->fetch(PDO::FETCH_COLUMN) + 1;
+	$versions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$version = array_shift($versions);
+	if ($version === NULL) {
+		$version = [
+			'MajorVersion' => 0,
+			'MinorVersion' => 0
+		];
+	}
+
+	// 現在のバージョンを設定
+	$minor_update = filter_input(INPUT_POST, 'minor_update', FILTER_VALIDATE_BOOLEAN);
+	if ($minor_update) {
+		// マイナーアップデート
+		$version['MinorVersion'] ++;
+	} else {
+		// メジャーアップデート
+		$version['MajorVersion'] ++;
+		$version['MinorVersion'] = 0;
+	}
 
 	// Reserved -> Judging
-	// Versionは常にMajorUpdate
-	$stmt	= $dbh->prepare('UPDATE "Stage" SET "TeamID"=:team_id,"ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Thumbnail"=:thumb_url,"Registered"=:gmt,"MajorVersion"=:version,"MinorVersion"=0 WHERE "ID"=:reserved_id');
+	$stmt	= $dbh->prepare('UPDATE "Stage" SET "TeamID"=:team_id,"ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Thumbnail"=:thumb_url,"Registered"=:gmt,"MajorVersion"=:major,"MinorVersion"=:minor WHERE "ID"=:reserved_id');
 	$stmt->bindValue(":team_id", $team_id, PDO::PARAM_INT);
 	$stmt->bindValue(":scriptid", $script_id, PDO::PARAM_INT);
 	$stmt->bindValue(":input_title", $stage_info->title, PDO::PARAM_STR);
@@ -135,7 +152,8 @@ if ($publish) {
 	$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
 	$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", $registered, PDO::PARAM_STR);
-	$stmt->bindValue(':version', $version, PDO::PARAM_INT);
+	$stmt->bindValue(':major', $version['MajorVersion'], PDO::PARAM_INT);
+	$stmt->bindValue(':minor', $version['MinorVersion'], PDO::PARAM_INT);
 	$stmt->bindValue(":reserved_id", $project['ReservedID'], PDO::PARAM_INT);
 	$result = $stmt->execute();
 	if (!$result) {

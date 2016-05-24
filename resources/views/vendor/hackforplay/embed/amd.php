@@ -36,7 +36,7 @@ switch ($type) {
 }
 
 // Get source element URL
-$stmt	= $dbh->prepare('SELECT "Src","ScriptID","State","UserID","ProjectID" FROM "Stage" WHERE "ID"=:id');
+$stmt	= $dbh->prepare('SELECT "Src","ScriptID","State","UserID","ProjectID","MajorVersion","MinorVersion" FROM "Stage" WHERE "ID"=:id');
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
 $stage = $stmt->fetch(PDO::FETCH_ASSOC) or die('Stage not found');
@@ -59,8 +59,10 @@ switch ($type) {
 		$stmt->bindValue(':id', $stage['ProjectID'], PDO::PARAM_INT);
 		$stmt->execute();
 		$token = $stmt->fetch(PDO::FETCH_COLUMN);
+		$version = implode('.', [$stage['MajorVersion'], $stage['MinorVersion']]);
 		break;
 	case 'project':
+		$version = '*';
 		break;
 }
 
@@ -109,7 +111,7 @@ switch ($type) {
 	<script type="text/javascript">
 	var require = {
 		baseUrl : '../mods/',
-		deps: ["~project/<?php echo $token; ?>"],
+		deps: ["~project/<?php echo $token; ?>/<?php echo $version; ?>"],
 		callback: function () {
 
 			Hack.stageInfo = {

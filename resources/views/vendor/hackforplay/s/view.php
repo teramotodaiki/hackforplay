@@ -30,18 +30,18 @@ $embed = '/embed/?type=stage&id=' . $id;
 // Version
 $version =
 
-$mode === 'restaging' ? ['*'] : // 改造中は常にLatest Versionをfetch
+$mode === 'restaging' ? '*' : // 改造中は常にLatest Versionをfetch
 (
 isset($stage['MajorVersion'], $stage['MinorVersion']) ?
-[$stage['MajorVersion'], $stage['MinorVersion']] :
+$stage['MajorVersion'] . '.' . $stage['MinorVersion'] :
 
-['*']
+'*'
 );
 
 // AMD test mode
 // $mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
 $mod = true;
-$require = isset($token) ? "require('~project/$token');" : 'Error';
+$require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 ?>
 <!DOCTYPE html>
 <html>
@@ -176,7 +176,6 @@ $require = isset($token) ? "require('~project/$token');" : 'Error';
 		s('replay_code', "<?php echo $code; ?>");
 <?php endif; ?>
 		s('amd-test', "<?php echo $mod ? '1' : ''; ?>");
-		s('mod-version', "<?php echo implode('.', $version); ?>");
 	})();
 	</script>
 	<script type="text/javascript">
@@ -226,6 +225,11 @@ $require = isset($token) ? "require('~project/$token');" : 'Error';
 									<?php endforeach; ?>
 								</div>
 								<?php endif; ?>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="minor-update">前のバージョンと互換性があるMODとして投稿する場合はチェックしてください
+									</label>
+								</div>
 				    </div>
 				    <div class="modal-footer">
 		        		<p class="alert alert-warning">
@@ -388,7 +392,7 @@ $require = isset($token) ? "require('~project/$token');" : 'Error';
 						<p>
 							<h3 class="h4p_info-title">
 								<?php echo htmlspecialchars($title); ?>
-								<span class="label label-info"><?php echo implode('.', $version); ?></span>
+								<span class="h4p_info-version label label-info"><?php echo $version; ?></span>
 							</h3>
 						</p>
 						<p><span>プレイ回数：<b><?php echo $count."回"; ?></b></span></p>
