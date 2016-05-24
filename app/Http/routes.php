@@ -29,17 +29,13 @@ Route::group(['middleware' => 'etag', 'prefix' => 'mods'], function()
 {
   Route::get('~project/{name}/{version}{ext?}', [ 'uses' => 'ModController@showByProject' ])
   ->where('name', '\w+')
-  ->where('version', '\*|[\~][0-9]|[0-9]\.[0-9]')
   ->where('ext', '\.(js)');
 
   // 公式(bundle)を使う場合で、バージョン指定子を使わなかった場合(Tmp)
   Route::get('{bundle}{ext}', [ 'uses' => 'ModController@showByProduct' ])
-  ->where('bundle', '[\w\-\/\.]+')
   ->where('ext', '\.(js)');
 
   Route::get('{bundle}/{version?}{ext?}', [ 'uses' => 'ModController@showByProduct' ])
-  ->where('bundle', '[\w\-\/\.]+')
-  ->where('version', '\*|[\~][0-9]|[0-9]\.[0-9]')
   ->where('ext', '\.(js)');
 });
 
