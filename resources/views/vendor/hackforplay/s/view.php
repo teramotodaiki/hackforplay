@@ -225,6 +225,11 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 									<?php endforeach; ?>
 								</div>
 								<?php endif; ?>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="minor-update">前のバージョンと互換性があるMODとして投稿する場合はチェックしてください
+									</label>
+								</div>
 				    </div>
 				    <div class="modal-footer">
 		        		<p class="alert alert-warning">
