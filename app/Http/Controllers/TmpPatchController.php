@@ -41,6 +41,8 @@ class TmpPatchController extends Controller
 
     // Minor versioning
     // Stage::where('State', '!=', 'reserved')->update(['MinorVersion' => 0]);
+    Stage::where('State', '!=', 'reserved')->update(['MajorVersion' => 0]);
+
 
     Stage::chunk(100, function ($stages)
     {
