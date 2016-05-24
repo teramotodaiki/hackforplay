@@ -27,10 +27,16 @@ $directly_restaging	= filter_input(INPUT_GET, 'directly_restaging', FILTER_VALID
 $next = $mode === 'quest' && $level_next ? $level_next['ID'] : 0;
 $embed = '/embed/?type=stage&id=' . $id;
 
-
 // Version
-$version = isset($stage['MajorVersion'], $stage['MinorVersion']) ?
-[$stage['MajorVersion'], $stage['MinorVersion']] : ['*'];
+$version =
+
+$mode === 'restaging' ? ['*'] : // 改造中は常にLatest Versionをfetch
+(
+isset($stage['MajorVersion'], $stage['MinorVersion']) ?
+[$stage['MajorVersion'], $stage['MinorVersion']] :
+
+['*']
+);
 
 // AMD test mode
 // $mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
