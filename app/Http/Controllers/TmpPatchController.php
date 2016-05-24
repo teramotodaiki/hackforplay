@@ -46,6 +46,7 @@ class TmpPatchController extends Controller
     DB::table('Stage')
     ->where('State', '!=', 'reserved')
     ->whereNull('MajorVersion')
+    ->whereNotNull('ProjectID')
     ->chunk(100, function ($stages)
     {
 
