@@ -112,7 +112,7 @@ class ModController extends Controller
       // ImplicitModがある場合/ない場合
       // NOTE: 本来は ImplicitMod にもバージョンが必要
       $require = $stage->ImplicitMod ?
-      "require('~project/{$stage->ImplicitMod}');" :
+      "require('{$stage->ImplicitMod}');" :
       "";
 
       // no-dependencies
