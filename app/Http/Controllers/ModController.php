@@ -59,28 +59,85 @@ class ModController extends Controller
       return response($result, 200)->header('Content-Type', 'application/javascript');
     }
 
+    function versioningConditions($version)
+    {
+      $versioner = [
+        // * ... latest version
+        '/^\*$/' => [
+        ],
+        // ~N ... latest version in N.*
+        '/^\~([0-9])$/' => [
+          ['MajorVersion', 1],
+        ],
+        // N.M ... N.M version stage
+        '/^([0-9])\.([0-9])$/' => [
+          ['MajorVersion', 1],
+          ['MinorVersion', 2],
+        ],
+      ];
+
+      $filtered = array_map(function ($regExp, $conditions) use ($version)
+      {
+        $matches = [];
+        $flag = preg_match($regExp, $version, $matches);
+
+        return $flag ?
+        // 値を確定
+        array_map(function ($condition) use ($matches)
+        {
+          // [Column, Value or Index]
+          return is_int($condition[1]) ?
+          [$condition[0], $matches[$condition[1]]] :
+          $condition;
+
+        }, $conditions) : null;
+
+      }, array_keys($versioner), array_values($versioner));
+
+      $conditions = array_filter($filtered);
+      return array_shift($conditions);
+    }
+
     /**
      * Display the specified resource.
      *
      * @param  string  $name
+     * @param  string  $version
      * @param  string  $ext
      * @return \Illuminate\Http\Response
      */
-    public function showByProject($name, $ext = '')
+    public function showByProject($name, $version, $ext = '')
     {
-      // Temporary implement
       $project = Project::where('Token', $name)->firstOrFail();
-      $script = $project->scripts()->orderBy('ID', 'desc')->firstOrFail();
-      $dependency = $project->stages()
-                            ->where('State', 'reserved')
-                            ->firstOrFail()
-                            ->ImplicitMod;
+
+      $conditions = $this->versioningConditions($version);
+      if ($conditions === NULL) return response('NotFound', 404);
+
+      // versioning
+      $stages = array_reduce($conditions, function ($stages, $condition)
+      {
+        return $stages->where($condition[0], $condition[1]);
+      },
+      $project->stages());
+
+      $stage = $stages->orderBy('ID', 'desc')->firstOrFail();
+
+      // Script ID がない場合のための措置 (reserved stageにもScript IDを追加すべきか？)
+      $rawcode = $stage->ScriptID ?
+      $stage->script->RawCode :
+      $project->scripts()->orderBy('ID', 'desc')->firstOrFail()->RawCode;
+
+      // ImplicitModがある場合/ない場合
+      // NOTE: 本来は ImplicitMod にもバージョンが必要
+      $require = $stage->ImplicitMod ?
+      "require('~project/{$stage->ImplicitMod}');" :
+      "";
 
       // no-dependencies
       $result = implode("\n", [
         "define(function (require, exports, module) {",
-        "require('{$dependency}');",
-        $script->RawCode,
+        $require,
+        $rawcode,
         '});'
       ]);
 
@@ -91,10 +148,11 @@ class ModController extends Controller
      * Display the specified resource.
      *
      * @param  string  $bundle
+     * @param  string  $version
      * @param  string  $ext
      * @return \Illuminate\Http\Response
      */
-    public function showByProduct($bundle, $ext = '')
+    public function showByProduct($bundle, $version = '', $ext = '')
     {
       // Temporary implement
       $filepaths = [
