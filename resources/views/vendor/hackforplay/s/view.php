@@ -30,6 +30,9 @@ $embed = '/embed/?type=stage&id=' . $id;
 // $mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
 $mod = true;
 $require = isset($token) ? "require('~project/$token');" : 'Error';
+// Version
+$version = isset($stage['MajorVersion'], $stage['MinorVersion']) ?
+[$stage['MajorVersion'], $stage['MinorVersion']] : ['*'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -164,6 +167,7 @@ $require = isset($token) ? "require('~project/$token');" : 'Error';
 		s('replay_code', "<?php echo $code; ?>");
 <?php endif; ?>
 		s('amd-test', "<?php echo $mod ? '1' : ''; ?>");
+		s('mod-version', "<?php echo implode('.', $version); ?>");
 	})();
 	</script>
 	<script type="text/javascript">
