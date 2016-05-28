@@ -84,6 +84,13 @@ switch ($type) {
 		break;
 }
 
+$deps = empty($token) ?
+[] :
+["~project/$token/$version"];
+
+var_dump($deps);
+var_dump(json_encode($deps, JSON_UNESCAPED_SLASHES));
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -111,15 +118,18 @@ switch ($type) {
 	<script type="text/javascript">
 	var require = {
 		baseUrl : '../mods/',
-		deps: ["~project/<?php echo $token; ?>/<?php echo $version; ?>"],
+		deps: <?php echo json_encode($deps, JSON_UNESCAPED_SLASHES); ?>,
 		callback: function () {
 
-			Hack.stageInfo = {
-				<?php if (isset($playlog_token)) : ?>
-				token: '<?php echo $playlog_token; ?>'
-				<?php endif; ?>
-			};
-			Hack.start();
+			// Temporary implementation
+			if ('Hack' in window) {
+				Hack.stageInfo = {
+					<?php if (isset($playlog_token)) : ?>
+					token: '<?php echo $playlog_token; ?>'
+					<?php endif; ?>
+				};
+				Hack.start();
+			}
 
 		}
 	};
