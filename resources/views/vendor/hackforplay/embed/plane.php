@@ -103,7 +103,7 @@ switch ($type) {
 <body>
 	<script type="text/javascript">
 	window.addEventListener('load', function () {
-		Hack.stageInfo = {
+		(window.Hack || window).stageInfo = {
 			<?php if (isset($playlog_token)) : ?>
 			token: '<?php echo $playlog_token; ?>'
 			<?php endif; ?>
