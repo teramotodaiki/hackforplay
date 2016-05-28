@@ -88,9 +88,6 @@ $deps = empty($token) ?
 [] :
 ["~project/$token/$version"];
 
-var_dump($deps);
-var_dump(json_encode($deps, JSON_UNESCAPED_SLASHES));
-
 ?>
 <!DOCTYPE html>
 <html>
