@@ -705,10 +705,7 @@ $(function(){
 					$(".h4p_publish").show();
 					$("#author_alert").hide();
 
-					document.getElementById('item-embed-iframe').contentWindow.postMessage({
-						query: 'eval',
-						value: getParam('amd-test') ? 'window.location.reload(true);' : 'window.location.reload();'
-					}, '/');
+					document.getElementById('item-embed-iframe').contentWindow.location.reload(true);
 
 				});
 
@@ -723,12 +720,9 @@ $(function(){
 				// Save
 				var loading = $(this).find('button');
 
-				// サムネイル生成のコールバックとしてタスクを準備
-				window.addEventListener('message', (function task(e) {
-					// onmessageのリスナとして登録するので識別をおこなう
-					if (e.data !== 'updateProject') return;
-					// 即座にリスナを解放する
-					window.removeEventListener('message', task);
+				setTimeout(function () {
+					// Temporary implementation
+					// サムネイル生成待ちの時間合わせ
 
 					loading.find('.glyphicon').toggleClass('glyphicon-save glyphicon-saved');
 					if(sessionStorage.getItem('project-token') === null){
@@ -749,7 +743,8 @@ $(function(){
 							callback();
 						});
 					}
-				}));
+
+				}, 500);
 
 				// サムネイルを生成
 				document.getElementById('item-embed-iframe').contentWindow.postMessage({
