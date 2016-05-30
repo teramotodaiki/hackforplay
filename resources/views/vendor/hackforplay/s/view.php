@@ -157,7 +157,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 		s('origin_id', "<?php echo $origin_id; ?>");
 		s('src', "<?php echo $src;  ?>");
 		s('title', "<?php echo $title;  ?>");
-		s('author', "<?php echo $author;  ?>");
+		s('author', "<?php echo htmlspecialchars($author);  ?>");
 		s('directly_restaging', "<?php echo $directly_restaging;  ?>");
 <?php if(isset($level)): ?>
 		s('level', "<?php echo $level['ID']; ?>");
