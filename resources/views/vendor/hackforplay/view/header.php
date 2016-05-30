@@ -321,7 +321,7 @@ $(function(){
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 						<img src="<?php echo $icon_url; ?>" class="img-circle" id="img-usericon">
-						<?php echo $user_info['Nickname']; ?>
+						<?php echo htmlspecialchars($user_info['Nickname']); ?>
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
