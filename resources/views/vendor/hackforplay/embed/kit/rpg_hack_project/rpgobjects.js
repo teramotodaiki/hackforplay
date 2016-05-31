@@ -396,7 +396,51 @@
 			}, this);
 			this.layer = unders.length > 0 ? Math.max.apply(null, unders) : this.layer;
 			return this.layer;
+		},
+		shoot: function (node, vector, speed) {
+			node.collisionFlag = false;
+
+			// 置くだけ
+			if (arguments.length === 1) {
+				return node.locate(this.mapX, this.mapY);
+			}
+
+			// 配列ならベクトル化
+			if (Array.isArray(vector)) {
+				vector = { x: vector[0], y: vector[1] };
+			}
+
+			// 正規化
+			var length = Math.pow(vector.x, 2) + Math.pow(vector.y, 2);
+			if (length > 0) length = 1 / length;
+			vector = {
+				x : vector.x * length,
+				y : vector.y * length
+			};
+
+			node.locate(Math.round(this.mapX + vector.x), Math.round(this.mapY + vector.y));
+
+			// 速度をかける
+			speed = arguments.length < 3 ? 1 : speed;
+			vector.x *= speed;
+			vector.y *= speed;
+			node.velocity(vector.x, vector.y);
+
+			var angle = 0;
+
+			// 対象が MapObject かつベクトルの長さが 0.0 より大きいなら
+			if (node instanceof MapObject && !(vector.x === 0 && vector.y === 0)) {
+				angle = 90 - Math.atan2(-vector.y, vector.x) * 180 / Math.PI;
+			}
+
+			// 速度がマイナスなら角度はそのままにする
+			if (speed < 0) angle += 180;
+
+			node._rotation = angle;
+
+			return this;
 		}
+
 	});
 
   var __HumanBase = enchant.Class(RPGObject, {
