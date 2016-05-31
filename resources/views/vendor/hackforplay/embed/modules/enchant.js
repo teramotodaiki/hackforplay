@@ -910,7 +910,12 @@ enchant.EventTarget = enchant.Class.create({
       } catch (error) {
         // [HackforPlay] 非同期でサーバにエラーをPOSTする
         if (Hack && typeof Hack.openExternal === 'function') {
-          Hack.openExternal('http://error.hackforplay?name='+error.name+'&message='+error.message);
+					Hack.openExternal('https://error.hackforplay'+
+														'?name='+error.name+
+														'&message='+error.message+
+														'&line='+error.line+
+														'&column='+error.column+
+														'&sourceURL='+encodeURIComponent(error.sourceURL));
         }
         throw error;
       }
