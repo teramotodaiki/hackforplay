@@ -123,7 +123,10 @@ $deps = empty($token) ?
 		if ('Hack' in window && typeof Hack.openExternal === 'function') {
 			Hack.openExternal('https://error.hackforplay'+
 												'?name='+e.name+
-												'&message='+e.message);
+												'&message='+e.message+
+												'&line='+e.line+
+												'&column='+e.column+
+												'&sourceURL='+encodeURIComponent(e.sourceURL));
 		}
 	};
 	require(<?php echo json_encode($deps, JSON_UNESCAPED_SLASHES); ?>,

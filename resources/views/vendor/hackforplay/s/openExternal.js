@@ -98,12 +98,29 @@
 		}
 	}
 	function openError ($wrapper, error) {
-		var message = decodeURIComponent(error.message);
+		var message = error.message && error.message.length > 100 ?
+			(error.message.substr(0, 50) + '…' + error.message.substr(-49)) :
+			error.message;
+		var file = error.sourceURL && error.sourceURL.length > 20 ?
+			('…' + error.sourceURL.substr(-19)) :
+			error.sourceURL;
+		// mods/~project から始まるURLはユーザー定義MOD
+		// define()を最初に埋め込んでいるためlineを1引いている
+		var line = /\/mods\/\~project\//.test(error.sourceURL) ? error.line - 1 : error.line;
+		var pos = ':' + line + ' (' + error.column + ')';
 		$wrapper.append(
 			$('<div>').addClass('fit alert alert-danger').append(
-				$('<h3>').text(message).append(
-					$('<span>').addClass('label label-danger')
-				)
+				$('<h4>').text(error.name).css('margin-top', '0px')
+			).append(
+				$('<p>').text(message)
+			).append(
+				$('<a>').text(file + pos).addClass('btn btn-link').attr({
+					'href': error.sourceURL,
+					'target': '_blank'
+				}).css({
+					'position': 'absolute',
+					'bottom': 0
+				})
 			)
 		).append(
 			$('<div>').addClass('fit cover-alert text-center').append(
