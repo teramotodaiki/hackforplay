@@ -50,7 +50,7 @@ $(function(){
 	});
 
 	// 一覧取得（１つ多く取得して、次のページがあるかどうか調べる）
-	var view_param_length = 15;
+	var view_param_length = 18;
 	$.post('../stage/fetchrecentpublished.php', {
 		'start': sessionStorage.getItem('view_param_start'),
 		'length': view_param_length + 1,
