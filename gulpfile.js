@@ -37,6 +37,6 @@ elixir((mix) => {
     //   bootstrap
     // ], 'public/js/bootstrap4.0.0-alpha.2.js', './')
     // FontAwesome
-    // .copy(fontAwesome, 'public/build/fonts')
+    // .copy(fontAwesome, 'public/build/fonts/font-awesome')
 ;
 });
