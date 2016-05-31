@@ -112,12 +112,22 @@ $deps = empty($token) ?
 		margin: 3px;
 	}
 	</style>
-	<script type="text/javascript">
-	var require = {
-		baseUrl : '../mods/',
-		deps: <?php echo json_encode($deps, JSON_UNESCAPED_SLASHES); ?>,
-		callback: function () {
+	<script src="./lib/require.js"></script>
 
+	<script type="text/javascript">
+
+	require.config({
+		baseUrl : '../mods/',
+	});
+	require.onError = function (e) {
+		if ('Hack' in window && typeof Hack.openExternal === 'function') {
+			Hack.openExternal('https://error.hackforplay'+
+												'?name='+e.name+
+												'&message='+e.message);
+		}
+	};
+	require(<?php echo json_encode($deps, JSON_UNESCAPED_SLASHES); ?>,
+		function () {
 			// Temporary implementation
 			if ('Hack' in window) {
 				Hack.stageInfo = {
@@ -129,9 +139,8 @@ $deps = empty($token) ?
 			}
 
 		}
-	};
+	);
 	</script>
-	<script src="./lib/require.js"></script>
 </head>
 <body>
 </body>
