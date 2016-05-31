@@ -5251,14 +5251,7 @@ enchant.Surface.load = function(src, callback, onerror) {
     image.onload = function() {
         surface.width = image.width;
         surface.height = image.height;
-        try {
-          surface.dispatchEvent(new enchant.Event('load'));
-        } catch (e) {
-          console.error(e);
-          console.log(surface);
-        } finally {
-
-        }
+        surface.dispatchEvent(new enchant.Event('load'));
     };
     image.src = src;
     return surface;
