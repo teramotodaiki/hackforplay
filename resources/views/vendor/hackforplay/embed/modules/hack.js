@@ -43,8 +43,14 @@ function getEditor() {
 			try {
 				_eval.apply(window, arguments);
 			} catch (e) {
-				Hack.openExternal('https://error.hackforplay?name='+e.name+'&message='+e.message);
-				console.error(e);
+				if (Hack && typeof Hack.openExternal === 'function') {
+					Hack.openExternal('https://error.hackforplay'+
+														'?name='+e.name+
+														'&message='+e.message+
+														'&line='+e.line+
+														'&column='+e.column+
+														'&sourceURL='+encodeURIComponent(e.sourceURL));
+        }
 			}
 		};
 	})();
