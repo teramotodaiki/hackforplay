@@ -1,4 +1,4 @@
-﻿PixelMplus（ピクセル・エムプラス）
+PixelMplus（ピクセル・エムプラス）
 =================================
 
 Copyright (C) 2002-2013 M+ FONTS PROJECT
