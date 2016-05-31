@@ -63,7 +63,9 @@
     var black = palette.indexOf('0 0 0');
     if (black !== -1) space[black] = 0; // 黒は輪郭線として代表色にはさせない
     var max = Math.max.apply(null, space);
-    return palette[space.indexOf(max)].split(' ').map(function (s) { return s >> 0; });
+    return space.length > 0 ?
+		palette[space.indexOf(max)].split(' ').map(function (s) { return s >> 0; }) :
+		null;
   }
   /**
   * RGB色空間上で、beforeからafterへ線形変換する
