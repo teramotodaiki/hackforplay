@@ -910,7 +910,12 @@ enchant.EventTarget = enchant.Class.create({
       } catch (error) {
         // [HackforPlay] 非同期でサーバにエラーをPOSTする
         if (Hack && typeof Hack.openExternal === 'function') {
-          Hack.openExternal('http://error.hackforplay?name='+error.name+'&message='+error.message);
+					Hack.openExternal('https://error.hackforplay'+
+														'?name='+error.name+
+														'&message='+error.message+
+														'&line='+error.line+
+														'&column='+error.column+
+														'&sourceURL='+encodeURIComponent(error.sourceURL));
         }
         throw error;
       }
@@ -5246,14 +5251,7 @@ enchant.Surface.load = function(src, callback, onerror) {
     image.onload = function() {
         surface.width = image.width;
         surface.height = image.height;
-        try {
-          surface.dispatchEvent(new enchant.Event('load'));
-        } catch (e) {
-          console.error(e);
-          console.log(surface);
-        } finally {
-
-        }
+        surface.dispatchEvent(new enchant.Event('load'));
     };
     image.src = src;
     return surface;
@@ -5368,9 +5366,14 @@ if (window.Deferred) {
                 queue.call(result);
             } else if (arg instanceof Error) {
                 // [HackforPlay] 非同期でサーバにエラーをPOSTする
-                if (Hack && typeof Hack.openExternal === 'function') {
-                  Hack.openExternal('http://error.hackforplay?name='+arg.name+'&message='+arg.message);
-                }
+								if (Hack && typeof Hack.openExternal === 'function') {
+									Hack.openExternal('https://error.hackforplay'+
+																		'?name='+arg.name+
+																		'&message='+arg.message+
+																		'&line='+arg.line+
+																		'&column='+arg.column+
+																		'&sourceURL='+encodeURIComponent(arg.sourceURL));
+				        }
                 throw arg;
             } else {
                 err = new Error('failed in Deferred');

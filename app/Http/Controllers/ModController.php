@@ -119,10 +119,8 @@ class ModController extends Controller
       "require('{$stage->ImplicitMod}');" :
       "";
 
-      // no-dependencies
       $result = implode("\n", [
-        "define(function (require, exports, module) {",
-        $require,
+        "define(function (require, exports, module) { $require",
         $rawcode,
         '});'
       ]);
