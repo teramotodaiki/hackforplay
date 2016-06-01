@@ -709,6 +709,22 @@ $(function(){
 
 				});
 
+				// jsHintで syntax error を見つける
+				if ('JSHINT' in window) {
+					JSHINT(jsEditor.getValue(''));
+					if (JSHINT.data().errors) {
+						var e = JSHINT.data().errors[0];
+						window.postMessage({
+							query: 'openExternal',
+							url:	'https://error.hackforplay'+
+										'?name=SyntaxError'+
+										'&message='+e.reason+
+										'&line='+e.line+
+										'&column='+e.character
+						}, '/');
+					}
+				}
+
 			});
 
 			$(".h4p_save_button").on("click", __saveTask);
