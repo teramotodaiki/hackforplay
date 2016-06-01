@@ -74,9 +74,9 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 	<script src="editor/addon/fold/foldgutter.js" type="text/javascript"></script>
 	<script src="editor/addon/fold/brace-fold.js" type="text/javascript"></script>
 	<script src="editor/addon/comment/comment.js" type="text/javascript"></script>
+	<script src="lib/jshint.js" type="text/javascript"></script>
 	<script src="editor/addon/lint/lint.js" type="text/javascript"></script>
 	<script src="editor/addon/lint/javascript-lint.js" type="text/javascript"></script>
-	<script src="https://ajax.aspnetcdn.com/ajax/jshint/r07/jshint.js" charset="utf-8"></script>
 	<script src="editor/addon/hint/show-hint.js" charset="utf-8"></script>
 	<script src="editor/addon/hint/javascript-hint.js" charset="utf-8"></script>
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript"></script>
