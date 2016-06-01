@@ -132,9 +132,9 @@ $deps = empty($token) ?
 			Hack.openExternal('https://error.hackforplay'+
 												'?name='+e.name+
 												'&message='+e.message+
-												'&line='+e.line+
-												'&column='+e.column+
-												'&sourceURL='+encodeURIComponent(e.sourceURL));
+												'&line='+(e.line || e.stack.lineNumber || '?')+
+												'&column='+(e.column || '?')+
+												'&sourceURL='+encodeURIComponent(e.sourceURL || '?'));
 		}
 	};
 	require(<?php echo json_encode($deps, JSON_UNESCAPED_SLASHES); ?>,
