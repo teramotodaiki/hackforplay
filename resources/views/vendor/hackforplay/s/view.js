@@ -1161,14 +1161,6 @@ $(function(){
 		}
 
 		switch(getParam('mode')){
-			case "official":
-				// official mode (load default code from main.js)
-				sessionStorage.setItem('restaging_code', getParam('replay_code'));
-				$(".begin_restaging").on('click', function() {
-					beginRestaging();
-					makeProject();
-				});
-				break;
 			case "restaging":
 				// restaging mode (load javascript-code from sessionStorage)
 				beginRestaging();
@@ -1178,6 +1170,7 @@ $(function(){
 
 				scrollToAnchor();
 				break;
+			case "official":
 			case "replay":
 				// replay mode (load javascript-code and run it)
 				sessionStorage.setItem('restaging_code', getParam('replay_code'));
@@ -1264,15 +1257,6 @@ $(function(){
 		if (getParam('directly_restaging')) {
 			switch (getParam('mode')) {
 			case 'official':
-				if (getParam('amd-test')) {
-					makeProject(function () {
-						updateTask(beginRestaging);
-					});
-				} else {
-					beginRestaging();
-					makeProject();
-				}
-				break;
 			case 'replay':
 			case 'quest':
 				// 直後にbeginRestaging
