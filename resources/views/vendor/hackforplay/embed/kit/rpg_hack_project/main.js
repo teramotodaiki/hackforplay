@@ -288,10 +288,14 @@
 					this._type = value;
 					// typeによってbmapを初期化
 					var frame = MapObject.dictionary[value];
-					this.bmap.loadData(new Array(this._mapHeight).fill(new Array(this._mapWidth).fill(frame)));
+					this.bmap.loadData(new Array(this._mapHeight).fill(0).map(function () {
+						return new Array(this._mapWidth).fill(frame);
+					}, this));
 
 					// ついでにcmapも初期化
-					this.cmap = this.cmap || new Array(this._mapHeight).fill(new Array(this._mapWidth).fill(0));
+					this.cmap = this.cmap || new Array(this._mapHeight).fill(0).map(function () {
+						return new Array(this._mapWidth).fill(0);
+					}, this);
 				}
 			}
 		},
