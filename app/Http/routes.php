@@ -17,6 +17,9 @@ Route::get('register', 'DefaultAppController@index');
 Route::get('verify', 'VerifyController@index');
 Route::get('random', 'RandomController@index');
 
+// channels/
+Route::resource('channels', 'ChannelController');
+
 // users/
 Route::resource('users', 'UserController');
 
