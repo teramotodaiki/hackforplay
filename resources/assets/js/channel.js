@@ -1,5 +1,7 @@
 import React from 'react'
 
+import IframeEmbed from './iframe-embed';
+
 class Channel extends React.Component {
 
   constructor(props) {
@@ -8,7 +10,9 @@ class Channel extends React.Component {
 
   render () {
     return (
-      <div>Hey, {this.props.params.projectToken}</div>
+      <div>
+        <IframeEmbed type="project" token={this.props.params.projectToken} />
+      </div>
     );
   }
 
