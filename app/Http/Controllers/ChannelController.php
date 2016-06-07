@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Channel;
+use App\Project;
+use Carbon\Carbon;
 
 class ChannelController extends Controller
 {
@@ -37,7 +39,19 @@ class ChannelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      // get project id from token
+      $token = $request->input('project_token');
+      $project = Project::where('Token', $token)->firstOrFail();
+
+      $channel = Channel::create([
+        'ProjectID'     => $project->ID,
+        'ProjectToken'  => $token,
+        'UserID'        => $request->input('user_id'),
+        'DisplayName'   => $request->input('display_name'),
+        'Registered'    => Carbon::now(),
+        'Updated'       => Carbon::now(),
+      ]);
+      return response($channel, 200);
     }
 
     /**
