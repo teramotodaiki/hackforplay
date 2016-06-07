@@ -6,6 +6,7 @@ import { Panel } from "react-bootstrap";
 
 import Merger from "./merger";
 import { Section, Scroller } from "./section";
+import IframeEmbed from './iframe-embed';
 
 const statics = {
   title: 'The Beginning',
@@ -224,19 +225,12 @@ const Dialog = React.createClass({
 const EmbedStage = React.createClass({
   mixins: [Merger],
   componentDidMount() {
-    const info = this.props.info;
-    this.iFrame.contentWindow.onfocus = (event) => {
-      info.changeActiveState(info.id, true);
-    };
-    this.iFrame.contentWindow.onblur = (event) => {
-      info.changeActiveState(info.id, false);
-    };
+    const iframe = this.refs.embed.iframe;
     window.addEventListener('scroll', () => {
-      const rect = this.iFrame.getClientRects()[0];
-      const isActive = document.activeElement === this.iFrame;
-      if (!info.isActive && rect.top >= 0 && rect.bottom <= window.innerHeight) {
+      const rect = iframe.getClientRects()[0];
+      if (!iframe.isFocused && rect.top >= 0 && rect.bottom <= window.innerHeight) {
         // Auto focus when iframe contains viewport
-        this.iFrame.focus();
+        iframe.focus();
       }
     });
   },
@@ -247,11 +241,7 @@ const EmbedStage = React.createClass({
         <h2 className={'text-' + info.colorName}>
           Stage.{info.id} {info.title}
         </h2>
-        <div className={info.isActive ? 'pseudo-focus' : ''}>
-          <div className={this.p({ 'embed-responsive': '3by2' })} style={{backgroundColor: 'black'}}>
-            <iframe ref={(ref) => this.iFrame = ref } src={statics.hfp + info.id}></iframe>
-          </div>
-        </div>
+        <IframeEmbed id={info.id} visibleFocus ref="embed"></IframeEmbed>
       </div>
     );
   }
