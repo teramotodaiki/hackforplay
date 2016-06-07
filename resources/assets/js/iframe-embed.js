@@ -6,13 +6,6 @@ class IframeEmbed extends React.Component {
   constructor (props) {
     super(props);
 
-    const params = [
-      'type=' + (props.type || 'stage'),
-      'id' in props     ? 'id=' + props.id        : undefined,
-      'token' in props  ? 'token=' + props.token  : undefined,
-    ];
-
-    this.uri = '/embed/?' + params.filter((p) => p).join('&');
     this.isFocused = false;
   }
 
@@ -42,10 +35,24 @@ class IframeEmbed extends React.Component {
       'pseudo-focus': this.isFocused && this.props.visibleFocus
     });
 
+    const {
+      type,
+      id,
+      token
+    } = this.props;
+
+    const params = [
+      type  ? `type=${type}`    : 'type=stage',
+      id    ? `id=${id}`        : null,
+      token ? `token=${token}`  : null,
+    ];
+
+    const uri = '/embed/?' + params.filter((p) => p).join('&');
+
     return (
       <div className={classname} style={this.props.style}>
         <div className='embed-responsive embed-responsive-3by2' style={{backgroundColor: 'black'}}>
-          <iframe ref={(ref) => this.iframe = ref } src={this.uri}></iframe>
+          <iframe ref={(ref) => this.iframe = ref } src={uri}></iframe>
         </div>
       </div>
     );
