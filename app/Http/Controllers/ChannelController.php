@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Channel;
 
 class ChannelController extends Controller
 {
@@ -47,7 +48,8 @@ class ChannelController extends Controller
      */
     public function show($id)
     {
-
+      $channel = Channel::findOrFail($id);
+      return response($channel, 200);
     }
 
     /**
