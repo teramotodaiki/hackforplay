@@ -35,12 +35,19 @@ class ChatController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param int $channelId
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($channelId, Request $request)
     {
-        //
+      $chat = Channel::findOrFail($channelId)
+      ->chats()
+      ->create([
+        'message' => $request->input('message')
+      ]);
+
+      return response($chat, 200);
     }
 
     /**
