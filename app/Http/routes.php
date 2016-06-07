@@ -21,6 +21,9 @@ Route::get('random', 'RandomController@index');
 Route::get('channels/{id}/watch', 'DefaultAppController@index');
 Route::resource('channels', 'ChannelController');
 
+// channels.chats/
+Route::resource('channels.chats', 'ChatController');
+
 // users/
 Route::resource('users', 'UserController');
 

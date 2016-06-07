@@ -19,4 +19,9 @@ class Channel extends Model
     return $this->belongsTo('App\Project', 'ProjectID');
   }
 
+  public function chats()
+  {
+    return $this->hasMany('App\Chat');
+  }
+
 }
