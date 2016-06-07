@@ -6,7 +6,13 @@ class IframeEmbed extends React.Component {
   constructor (props) {
     super(props);
 
-    this.uri = '/embed/?type=stage&id=' + props.id;
+    const params = [
+      'type=' + (props.type || 'stage'),
+      'id' in props     ? 'id=' + props.id        : undefined,
+      'token' in props  ? 'token=' + props.token  : undefined,
+    ];
+
+    this.uri = '/embed/?' + params.filter((p) => p).join('&');
     this.isFocused = false;
   }
 
