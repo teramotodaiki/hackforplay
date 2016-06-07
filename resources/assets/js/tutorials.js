@@ -65,15 +65,6 @@ const Tutorials = React.createClass({
         { id: 6, title: 'The Guardian', youtube: '4L0qPyUaH0A',
           colorName: statics.colors.sub, linkTo: 'Dialog' }
       ],
-      activeLevelId: null
-    }
-  },
-  changeActiveState(id, state) {
-    // EmbedStage ifame が focus または blus された時のEvent Hundler
-    if (state) {
-      this.setState({ activeLevelId: id });
-    } else if (!state && this.state.activeLevelId === id) {
-      this.setState({ activeLevelId: null });
     }
   },
   confirm() {
@@ -82,10 +73,7 @@ const Tutorials = React.createClass({
   render () {
     const levels = this.state.levels.map((item) => {
       return <Level
-        info={this.m(item, {
-          changeActiveState: this.changeActiveState,
-          isActive: this.state.activeLevelId===item.id
-        })}
+        info={item}
         confirm={this.confirm}
         key={item.id} />;
     });
@@ -223,7 +211,6 @@ const Dialog = React.createClass({
 
 // UI Parts
 const EmbedStage = React.createClass({
-  mixins: [Merger],
   componentDidMount() {
     const iframe = this.refs.embed.iframe;
     window.addEventListener('scroll', () => {
