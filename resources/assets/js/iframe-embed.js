@@ -7,14 +7,19 @@ class IframeEmbed extends React.Component {
     super(props);
 
     this.uri = '/embed/?type=stage&id=' + props.id;
+    this.isFocused = false;
   }
 
   componentDidMount () {
 
     // focus binding
     const e = this.iframe.contentWindow.addEventListener;
+    // focus process
+    e('focus', () => this.isFocused = true);
     e('focus', this.props.onFocus);
     e('focus', () => this.forceUpdate());
+    // blur process
+    e('blur', () => this.isFocused = false);
     e('blur', this.props.onBlur);
     e('blur', () => this.forceUpdate());
 
@@ -27,13 +32,9 @@ class IframeEmbed extends React.Component {
 
   render () {
 
-    // iframeがfoucsされているか？
-    const isFocused = document.activeElement === this.iframe;
-
     const classname = classNames(this.props.className, {
-      'pseudo-focus': isFocused && this.props.visibleFocus
+      'pseudo-focus': this.isFocused && this.props.visibleFocus
     });
-
 
     return (
       <div className={classname} style={this.props.style}>
