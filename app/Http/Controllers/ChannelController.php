@@ -47,7 +47,7 @@ class ChannelController extends Controller
      */
     public function show($id)
     {
-      return view('defaultApp');
+
     }
 
     /**
