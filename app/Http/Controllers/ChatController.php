@@ -5,17 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Channel;
+use App\Chat;
 
 class ChatController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param int $channelId
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($channelId)
     {
-        //
+      $chats = Channel::findOrFail($channelId)->chats;
+      return response($chats, 200);
     }
 
     /**
