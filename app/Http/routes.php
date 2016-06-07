@@ -18,6 +18,7 @@ Route::get('verify', 'VerifyController@index');
 Route::get('random', 'RandomController@index');
 
 // channels/
+Route::get('channels/{id}/watch', 'DefaultAppController@index');
 Route::resource('channels', 'ChannelController');
 
 // users/
