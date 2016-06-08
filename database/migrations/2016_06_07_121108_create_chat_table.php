@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChatsTable extends Migration
+class CreateChatTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class CreateChatsTable extends Migration
      */
     public function up()
     {
-      if (!Schema::hasTable('chats')) {
-        Schema::create('chats', function (Blueprint $table)
+      if (!Schema::hasTable('chat')) {
+        Schema::create('chat', function (Blueprint $table)
         {
           $table->bigIncrements('id');
 
@@ -37,6 +37,6 @@ class CreateChatsTable extends Migration
      */
     public function down()
     {
-      Schema::drop('chats');
+      Schema::drop('chat');
     }
 }

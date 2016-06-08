@@ -6,19 +6,21 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Channel;
-use App\Project;
+use App\Chat;
 use Carbon\Carbon;
 
-class ChannelController extends Controller
+class ChatController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param int $channelId
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($channelId)
     {
-        //
+      $chats = Channel::findOrFail($channelId)->chats;
+      return response($chats, 200);
     }
 
     /**
@@ -34,24 +36,25 @@ class ChannelController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param int $channelId
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($channelId, Request $request)
     {
-      // get project id from token
-      $token = $request->input('project_token');
-      $project = Project::where('Token', $token)->firstOrFail();
+      $channel = Channel::findOrFail($channelId);
 
-      $channel = Channel::create([
-        'ProjectID'     => $project->ID,
-        'ProjectToken'  => $token,
-        'UserID'        => $request->input('user_id'),
-        'DisplayName'   => $request->input('display_name'),
-        'Registered'    => Carbon::now(),
-        'Updated'       => Carbon::now(),
+      $chat = $channel
+      ->chats()
+      ->create([
+        'message' => $request->input('message')
       ]);
-      return response($channel, 200);
+
+      // update channel
+      $channel->Updated = Carbon::now();
+      $channel->save();
+
+      return response($chat, 200);
     }
 
     /**
@@ -62,8 +65,7 @@ class ChannelController extends Controller
      */
     public function show($id)
     {
-      $channel = Channel::findOrFail($id);
-      return response($channel, 200);
+        //
     }
 
     /**

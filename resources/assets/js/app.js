@@ -26,7 +26,7 @@ render((
       <Route path="tutorials" component={Tutorials}></Route>
       <Route path="register" component={Register}></Route>
       <Route path="channels">
-        <Route path=":projectToken" component={Channel}></Route>
+        <Route path=":id/watch" component={Channel}></Route>
       </Route>
     </Route>
   </Router>

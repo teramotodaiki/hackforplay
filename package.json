@@ -11,6 +11,7 @@
     "laravel-elixir": "^5.0.0",
     "react-bootstrap": "^0.29.4",
     "react-router": "^2.4.0",
-    "react-scroll": "^1.0.15"
+    "react-scroll": "^1.0.15",
+    "superagent": "^2.0.0"
   }
 }
