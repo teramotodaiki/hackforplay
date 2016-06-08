@@ -1,25 +1,26 @@
 import React from 'react'
 import request from 'superagent';
 
-import IframeEmbed from './iframe-embed';
+import { connect } from 'react-redux';
 import { Row, Col } from "react-bootstrap";
+
+import IframeEmbed from './iframe-embed';
+import { fetchChannel } from './actions/';
 
 class Channel extends React.Component {
 
   constructor(props) {
     super(props);
 
+    const { dispatch } = this.props;
+    const id = this.props.params.id;
+
     this.state = {
       projectToken: ''
     };
-    request
-    .get('/channels/' + props.params.id)
-    .then((value) => {
-      const result = JSON.parse(value.text);
-      this.setState({
-        projectToken: result.ProjectToken,
-      });
-    });
+
+    dispatch(fetchChannel(id));
+
   }
 
   render () {
@@ -38,4 +39,4 @@ class Channel extends React.Component {
 
 }
 
-export default Channel;
+export default connect()(Channel);
