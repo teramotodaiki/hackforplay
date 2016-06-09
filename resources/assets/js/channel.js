@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import request from 'superagent';
 
 import { connect } from 'react-redux';
@@ -7,7 +7,7 @@ import { Row, Col } from "react-bootstrap";
 import IframeEmbed from './iframe-embed';
 import { fetchChannel } from './actions/';
 
-class Channel extends React.Component {
+class Channel extends Component {
 
   constructor(props) {
     super(props);
