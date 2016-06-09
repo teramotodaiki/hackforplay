@@ -1,13 +1,20 @@
 import React from "react";
 import { render } from "react-dom";
 import { Router, Route, Link, browserHistory } from 'react-router';
-import { Providor, createStore } from 'react-redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunkMiddleware from 'redux-thunk';
 
+import * as reducers from './reducers/';
 import Tutorials from "./tutorials";
 import Register from "./register";
 import Channel from "./channel";
 
-const store = createStore();
+const store = createStore(
+  combineReducers(reducers),
+  applyMiddleware(thunkMiddleware)
+);
+
 
 const App = React.createClass({
 
