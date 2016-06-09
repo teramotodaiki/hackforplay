@@ -12,7 +12,7 @@ class Channel extends React.Component {
   constructor(props) {
     super(props);
 
-    const { dispatch } = this.props;
+    const { dispatch, channel } = this.props;
     const id = this.props.params.id;
 
     this.state = {
@@ -39,4 +39,8 @@ class Channel extends React.Component {
 
 }
 
-export default connect()(Channel);
+const mapStateToProps = (state) => {
+  return Object.assign({}, state);
+};
+
+export default connect(mapStateToProps)(Channel);
