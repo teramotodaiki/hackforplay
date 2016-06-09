@@ -6,7 +6,7 @@ import { Row, Col } from "react-bootstrap";
 import Pusher from 'pusher-js';
 
 import IframeEmbed from './iframe-embed';
-import { fetchChannel } from './actions/';
+import { addChat, fetchChannel } from './actions/';
 
 class Channel extends Component {
 
@@ -28,8 +28,8 @@ class Channel extends Component {
     });
 
     const channel = pusher.subscribe('channel-' + id);
-    channel.bind('new_message', function(data) {
-      alert(data.message);
+    channel.bind('new_message', (data) => {
+      dispatch(addChat(id, data));
     });
   }
 
