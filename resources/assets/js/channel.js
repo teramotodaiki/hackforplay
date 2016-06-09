@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import request from 'superagent';
 
 import { connect } from 'react-redux';
@@ -7,28 +7,32 @@ import { Row, Col } from "react-bootstrap";
 import IframeEmbed from './iframe-embed';
 import { fetchChannel } from './actions/';
 
-class Channel extends React.Component {
+class Channel extends Component {
 
   constructor(props) {
     super(props);
 
-    const { dispatch, channel } = this.props;
-    const id = this.props.params.id;
+    const { dispatch, channels } = this.props;
+    const id = +this.props.params.id;
 
-    this.state = {
-      projectToken: ''
-    };
-
-    dispatch(fetchChannel(id));
-
+    if (!channels[id]) {
+      dispatch(fetchChannel(id));
+    }
   }
 
   render () {
 
+    const id = +this.props.params.id;
+    const channel = this.props.channels[id];
+
+    const iframe = channel ? (
+      <IframeEmbed type="project" token={channel.ProjectToken} />
+    ) : null;
+
     return (
       <div style={{height: '100vh', backgroundColor: 'black'}}>
         <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
-          <IframeEmbed type="project" token={this.state.projectToken} />
+          {iframe}
         </Col>
         <Col lg={3} md={4} sm={5} xs={12} style={{'padding': '0'}}>
           <div style={{height: '100vh', backgroundColor: 'white'}}></div>
