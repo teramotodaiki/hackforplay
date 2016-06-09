@@ -16,7 +16,7 @@ class Channel extends Component {
     const id = +this.props.params.id;
 
     if (!channels[id]) {
-      dispatch(fetchChannel(id));
+      dispatch(fetchChannel({ id, chats: true }));
     }
   }
 
