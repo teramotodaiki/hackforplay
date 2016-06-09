@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Channel;
 use App\Chat;
 use Carbon\Carbon;
+use Pusher;
 
 class ChatController extends Controller
 {
@@ -30,7 +31,21 @@ class ChatController extends Controller
      */
     public function create()
     {
-        //
+      // Test
+
+      // pusher
+      $pusher = new Pusher(
+        env('PUSHER_APP_KEY'),
+        env('PUSHER_APP_SECRET'),
+        env('PUSHER_APP_ID'),
+        [
+          'encrypted' => true
+        ]
+      );
+
+      $pusher->trigger('test_channel', 'my_event', [ 'message' => 'test message :-)' ]);
+
+      return response($pusher, 200);
     }
 
     /**
