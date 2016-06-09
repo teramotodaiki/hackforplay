@@ -6,8 +6,10 @@ var policy = "/";
 window.addEventListener('click', function(e){
 	// クリック時、ゲームウィンドウにフォーカスを戻す
 	if(!jsEditor.state.focused){	// テキストエリアにフォーカスが当たっていないときのみ
-		var source = "refocus();";	// フォーカスを戻すメソッドをゲーム側で呼び出す
-		game.postMessage(source, policy);
+		game.postMessage({
+			query: 'eval',
+			value: 'refocus();'
+		}, policy);
 	}
 });
 
@@ -56,9 +58,6 @@ window.onload = function(){
 	});
 	jsEditor.on('change', function(cm, change) {
 		renderUI();
-		// 魔道書が書き換えられたことをゲーム側に伝える
-		var source = "if(window.editorTextChanged) editorTextChanged();";
-		game.postMessage(source, policy);
 	});
 	jsEditor.on('focus', function() {
 		document.body.classList.add('focused');
@@ -67,51 +66,44 @@ window.onload = function(){
 		document.body.classList.remove('focused');
 	});
 
+	// onReadyイベントの発行
+	game.postMessage({
+		query: 'dispatch',
+		value: 'editorready'
+	}, '/');
+
 };
 
 window.addEventListener('message', function(e){
-	try {
-		var data = JSON.parse(e.data);
-		switch (data.query) {
-			case 'set':
-				var code = data.value;
-				if (typeof code === 'string') {
-					if (jsEditor) jsEditor.setValue(code);
-					else document.getElementById('editor_js').value = code;
-				}
-				break;
-			default:
-				break;
-		}
-	} catch (ex) {
-		console.error(ex.message);
+	switch (e.data.query) {
+		case 'set':
+			var code = e.data.value;
+			if (typeof code === 'string') {
+				if (jsEditor) jsEditor.setValue(code);
+				else document.getElementById('editor_js').value = code;
+			}
+			break;
+		default:
+			break;
 	}
 });
 
 function run(){
-	jsEditor.save();
-	game.postMessage(document.getElementById('editor_js').value, policy); // ここでコードを実行させる
-	var source =
-	"var e = getEditor();"+
-	"e.tl.scaleTo(0, 1, 3, enchant.Easing.LINEAR);"+
-	"window.focus();";
-	game.postMessage(source, policy);
-
-	// 魔道書が閉じられたことをゲーム側に伝える
-	game.postMessage("if(window.editorWindowClosed) editorWindowClosed();", policy);
-	dispatchHackEvent('editend');
+	game.postMessage({
+		query: 'eval',
+		value: jsEditor.getValue()
+	}, policy);
+	game.postMessage({
+		query: 'dispatch',
+		value: 'editend'
+	}, policy);
 }
 
 function cls(){
-	var source =
-	"var e = getEditor();"+
-	"e.tl.scaleTo(0, 1, 7, enchant.Easing.BACK_EASEIN);"+
-	"window.focus();";
-	game.postMessage(source, policy);
-
-	// 魔道書が閉じられたことをゲーム側に伝える
-	game.postMessage("if(window.editorWindowClosed) editorWindowClosed();", policy);
-	dispatchHackEvent('editcancel');
+	game.postMessage({
+		query: 'dispatch',
+		value: 'editcancel'
+	}, policy);
 }
 
 function undo () {
@@ -129,11 +121,4 @@ function redo () {
 function renderUI () {
 	document.getElementById('undo').setAttribute('src', 'img/ui_undo_' + (jsEditor.doc.historySize().undo > 1 ? 'enabled.png':'disabled.png'));
 	document.getElementById('redo').setAttribute('src', 'img/ui_redo_' + (jsEditor.doc.historySize().redo > 0 ? 'enabled.png':'disabled.png'));
-}
-
-function dispatchHackEvent (type) {
-	// Hack.oneditend , Hack.oneditcancel Event を dispatchする
-	var source =
-	"if (Hack && Hack.dispatchEvent) { Hack.dispatchEvent(new Event('" + type + "')); }";
-	game.postMessage(source, policy);
 }
