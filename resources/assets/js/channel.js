@@ -22,7 +22,7 @@ class Channel extends React.Component {
   render () {
 
     const id = +this.props.params.id;
-    const channel = this.props.channel.channels.find((item) => item.ID == id);
+    const channel = this.props.channels[id];
 
     const iframe = channel ? (
       <IframeEmbed type="project" token={channel.ProjectToken} />

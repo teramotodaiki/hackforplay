@@ -21,8 +21,7 @@ const fetchChannel = (id) => {
 export const fetchChannelIfNeeded = (id) => {
   return (dispatch, getState) => {
 
-    const channel = getState().channel.channels.find((item) => item.ID === +id);
-    if (!channel) {
+    if (!getState().channels[id]) {
       dispatch(fetchChannel(id));
     }
   }
