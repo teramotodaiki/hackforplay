@@ -7,7 +7,7 @@ import { Form, InputGroup, FormControl, Button } from "react-bootstrap";
 import Pusher from 'pusher-js';
 
 import IframeEmbed from './iframe-embed';
-import { addChat, fetchChannel } from './actions/';
+import { addChat, postChat, fetchChannel } from './actions/';
 
 class Channel extends Component {
 
@@ -33,6 +33,11 @@ class Channel extends Component {
     channel.bind('new_message', (data) => {
       dispatch(addChat(id, data));
     });
+  }
+
+  postChat (message) {
+    const { dispatch, params } = this.props;
+    dispatch(postChat(params.id, { message }));
   }
 
   render () {
@@ -61,7 +66,9 @@ class Channel extends Component {
                   onChange={(e) => this.setState({ inputValue: e.target.value})}
                 />
                 <InputGroup.Button>
-                  <Button type="submit" onClick={() => this.postChat(this.state.inputValue)}>Send</Button>
+                  <Button onClick={() => this.postChat(this.state.inputValue)}>
+                    Send
+                  </Button>
                 </InputGroup.Button>
               </InputGroup>
             </Form>
