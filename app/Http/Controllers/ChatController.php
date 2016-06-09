@@ -58,17 +58,15 @@ class ChatController extends Controller
     {
       $channel = Channel::findOrFail($channelId);
 
-      // Push message
-      $this->pusher->trigger('channel-' . $channelId, 'new_message', [
-        'message' => $request->input('message')
-      ]);
-
       // Store message
       $chat = $channel
       ->chats()
       ->create([
         'message' => $request->input('message'),
       ]);
+
+      // Push message
+      $this->pusher->trigger('channel-' . $channelId, 'new_message', $chat);
 
       // update channel
       $channel->Updated = Carbon::now();
