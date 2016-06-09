@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ADD_CHANNEL } from '../actions/';
+import { ADD_CHANNEL, ADD_CHAT  } from '../actions/';
 
 // state { [id]: { channel object has id }, ... }
 export const channels = (state = {}, action) => {
@@ -9,6 +9,17 @@ export const channels = (state = {}, action) => {
 
       return Object.assign({}, state, {
         [action.channel.ID]: action.channel
+      });
+
+    case ADD_CHAT:
+
+      const channel = state[action.channelId];
+      if (!channel) return state;
+      const merged = Object.assign({}, channel, {
+        Chats: (channel.Chats || []).concat(action.chat)
+      });
+      return Object.assign({}, state, {
+        [action.channelId]: merged
       });
 
     default:
