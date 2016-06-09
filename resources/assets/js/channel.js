@@ -6,7 +6,7 @@ import { Row, Col } from "react-bootstrap";
 import Pusher from 'pusher-js';
 
 import IframeEmbed from './iframe-embed';
-import { fetchChannel } from './actions/';
+import { addChat, fetchChannel } from './actions/';
 
 class Channel extends Component {
 
@@ -27,9 +27,9 @@ class Channel extends Component {
       encrypted: true
     });
 
-    const channel = pusher.subscribe('test_channel');
-    channel.bind('my_event', function(data) {
-      alert(data.message);
+    const channel = pusher.subscribe('channel-' + id);
+    channel.bind('new_message', (data) => {
+      dispatch(addChat(id, data));
     });
   }
 
@@ -48,7 +48,9 @@ class Channel extends Component {
           {iframe}
         </Col>
         <Col lg={3} md={4} sm={5} xs={12} style={{'padding': '0'}}>
-          <div style={{height: '100vh', backgroundColor: 'white'}}></div>
+          <div style={{height: '100vh', backgroundColor: 'white'}}>
+          {channel ? channel.Chats.map((item) => <p key={item.id}>{item.message}</p>) : null}
+          </div>
         </Col>
       </div>
     );
