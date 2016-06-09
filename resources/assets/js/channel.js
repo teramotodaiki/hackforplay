@@ -3,6 +3,7 @@ import request from 'superagent';
 
 import { connect } from 'react-redux';
 import { Row, Col } from "react-bootstrap";
+import { Form, InputGroup, FormControl, Button } from "react-bootstrap";
 import Pusher from 'pusher-js';
 
 import IframeEmbed from './iframe-embed';
@@ -12,6 +13,7 @@ class Channel extends Component {
 
   constructor(props) {
     super(props);
+    this.state = { inputValue: '' };
 
     const { dispatch, channels } = this.props;
     const id = +this.props.params.id;
@@ -49,7 +51,20 @@ class Channel extends Component {
         </Col>
         <Col lg={3} md={4} sm={5} xs={12} style={{'padding': '0'}}>
           <div style={{height: '100vh', backgroundColor: 'white'}}>
-          {channel ? channel.Chats.map((item) => <p key={item.id}>{item.message}</p>) : null}
+            {channel ? channel.chats.map((item) => <p key={item.id}>{item.message}</p>) : null}
+            <Form inline>
+              <InputGroup>
+                <FormControl
+                  type="text"
+                  value={this.state.inputValue}
+                  placeholder="type here"
+                  onChange={(e) => this.setState({ inputValue: e.target.value})}
+                />
+                <InputGroup.Button>
+                  <Button type="submit" onClick={() => this.postChat(this.state.inputValue)}>Send</Button>
+                </InputGroup.Button>
+              </InputGroup>
+            </Form>
           </div>
         </Col>
       </div>
