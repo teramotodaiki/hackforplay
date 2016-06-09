@@ -5,18 +5,19 @@ import { connect } from 'react-redux';
 import { Row, Col } from "react-bootstrap";
 
 import IframeEmbed from './iframe-embed';
-import { fetchChannelIfNeeded } from './actions/';
+import { fetchChannel } from './actions/';
 
 class Channel extends React.Component {
 
   constructor(props) {
     super(props);
 
-    const { dispatch } = this.props;
+    const { dispatch, channels } = this.props;
     const id = +this.props.params.id;
 
-    dispatch(fetchChannelIfNeeded(id));
-
+    if (!channels[id]) {
+      dispatch(fetchChannel(id));
+    }
   }
 
   render () {
