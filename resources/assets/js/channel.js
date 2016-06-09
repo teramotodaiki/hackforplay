@@ -3,6 +3,7 @@ import request from 'superagent';
 
 import { connect } from 'react-redux';
 import { Row, Col } from "react-bootstrap";
+import Pusher from 'pusher-js';
 
 import IframeEmbed from './iframe-embed';
 import { fetchChannel } from './actions/';
@@ -18,6 +19,18 @@ class Channel extends Component {
     if (!channels[id]) {
       dispatch(fetchChannel({ id, chats: true }));
     }
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    const pusher = new Pusher('4ca30417cb9ff30cc3f0', {
+      encrypted: true
+    });
+
+    const channel = pusher.subscribe('test_channel');
+    channel.bind('my_event', function(data) {
+      alert(data.message);
+    });
   }
 
   render () {
