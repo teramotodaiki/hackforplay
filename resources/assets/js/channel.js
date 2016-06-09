@@ -27,8 +27,8 @@ class Channel extends Component {
       encrypted: true
     });
 
-    const channel = pusher.subscribe('test_channel');
-    channel.bind('my_event', function(data) {
+    const channel = pusher.subscribe('channel-' + id);
+    channel.bind('new_message', function(data) {
       alert(data.message);
     });
   }
