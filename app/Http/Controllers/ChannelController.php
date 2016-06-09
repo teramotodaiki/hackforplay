@@ -64,7 +64,7 @@ class ChannelController extends Controller
     {
       $channel = Channel::findOrFail($id);
       if ($request->input('chats')) {
-        $channel->Chats = $channel->chats;
+        $channel->chats;
       }
       return response($channel, 200);
     }

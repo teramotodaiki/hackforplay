@@ -16,7 +16,7 @@ export const channels = (state = {}, action) => {
       const channel = state[action.channelId];
       if (!channel) return state;
       const merged = Object.assign({}, channel, {
-        Chats: (channel.Chats || []).concat(action.chat)
+        Chats: (channel.chats || []).concat(action.chat)
       });
       return Object.assign({}, state, {
         [action.channelId]: merged
