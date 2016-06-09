@@ -48,7 +48,9 @@ class Channel extends Component {
           {iframe}
         </Col>
         <Col lg={3} md={4} sm={5} xs={12} style={{'padding': '0'}}>
-          <div style={{height: '100vh', backgroundColor: 'white'}}></div>
+          <div style={{height: '100vh', backgroundColor: 'white'}}>
+          {channel ? channel.Chats.map((item) => <p key={item.id}>{item.message}</p>) : null}
+          </div>
         </Col>
       </div>
     );
