@@ -39,6 +39,7 @@ class Channel extends Component {
   postChat (message) {
     const { dispatch, params } = this.props;
     dispatch(postChat(params.id, { message }));
+    this.setState({ inputValue: '' });
   }
 
   render () {
