@@ -20,7 +20,7 @@ class ChatController extends Controller
         env('PUSHER_SECRET'),
         env('PUSHER_APP_ID'),
         [
-          'encrypted' => true
+          'encrypted' => false
         ]
       );
     }
