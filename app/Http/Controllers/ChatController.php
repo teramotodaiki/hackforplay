@@ -44,19 +44,22 @@ class ChatController extends Controller
      */
     public function create()
     {
-      
-      $channel = Channel::findOrFail(1);
-      $chat = $channel
-      ->chats()
-      ->create([
-        'message' => 'testmessage',
-      ]);
 
-      $this->pusher->trigger('channel-1', 'new_message', $chat);
+      // $channel = Channel::findOrFail(1);
+      // $chat = $channel
+      // ->chats()
+      // ->create([
+      //   'message' => 'testmessage',
+      // ]);
+      //
+      // $this->pusher->trigger('channel-1', 'new_message', $chat);
+      //
+      // var_dump($this->pusher);
 
-      var_dump($this->pusher);
+      $response = $this->pusher->get('/channels');
 
-      return response($chat, 200);
+
+      return response($response, 200);
 
     }
 
