@@ -60,9 +60,12 @@ class ChannelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
       $channel = Channel::findOrFail($id);
+      if ($request->input('chats')) {
+        $channel->chats;
+      }
       return response($channel, 200);
     }
 
