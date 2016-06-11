@@ -8,6 +8,9 @@ export default class Timeline extends Component {
 
     this.style = {
       overflow: 'scroll',
+      fontFamily: 'monospace',
+      whiteSpace: 'pre-wrap',
+      wordWrap: 'break-word',
     };
 
     this.state = { isAutoScroll: true };
@@ -30,7 +33,7 @@ export default class Timeline extends Component {
   render() {
     const { chats, style } = this.props;
 
-    const tl = chats.map((item) => <p key={item.id}>{item.message}</p>);
+    const tl = chats.map((item) => <Chat key={item.id} {...item}></Chat>);
 
     return (<div ref="container" style={Object.assign({}, this.style, style)}>
       {tl}
