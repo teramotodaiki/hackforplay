@@ -7,6 +7,8 @@ import { Form, InputGroup, FormControl, Button } from "react-bootstrap";
 import Pusher from 'pusher-js';
 
 import IframeEmbed from './iframe-embed';
+import Timeline from './components/timeline';
+import ActionBar from './components/action-bar';
 import { addChat, postChat, fetchChannel } from './actions/';
 
 class Channel extends Component {
@@ -57,24 +59,8 @@ class Channel extends Component {
           {iframe}
         </Col>
         <Col lg={3} md={4} sm={5} xs={12} style={{'padding': '0'}}>
-          <div style={{height: '100vh', backgroundColor: 'white'}}>
-            {channel ? channel.chats.map((item) => <p key={item.id}>{item.message}</p>) : null}
-            <Form inline>
-              <InputGroup>
-                <FormControl
-                  type="text"
-                  value={this.state.inputValue}
-                  placeholder="type here"
-                  onChange={(e) => this.setState({ inputValue: e.target.value})}
-                />
-                <InputGroup.Button>
-                  <Button onClick={() => this.postChat(this.state.inputValue)}>
-                    Send
-                  </Button>
-                </InputGroup.Button>
-              </InputGroup>
-            </Form>
-          </div>
+          <Timeline chats={channel ? channel.chats : []} />
+          <ActionBar />
         </Col>
       </div>
     );
