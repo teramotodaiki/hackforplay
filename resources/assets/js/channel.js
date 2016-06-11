@@ -41,7 +41,6 @@ class Channel extends Component {
   postChat (message) {
     const { dispatch, params } = this.props;
     dispatch(postChat(params.id, { message }));
-    this.setState({ inputValue: '' });
   }
 
   render () {
@@ -66,6 +65,7 @@ class Channel extends Component {
             style={{ height: window.innerHeight - actionBarHeight }}
             />
           <ActionBar
+            postChat={this.postChat.bind(this)}
             style={{ height: actionBarHeight }}
             />
         </Col>

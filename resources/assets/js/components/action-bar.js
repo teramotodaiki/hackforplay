@@ -5,6 +5,8 @@ export default class ActionBar extends Component {
   constructor(props) {
     super(props);
 
+    this.state = { inputValue: '' };
+
     this.style = {
       position: 'absolute',
       bottom: 0,
@@ -35,10 +37,19 @@ export default class ActionBar extends Component {
         <span>😄</span>
       </Col>
       <Col xs={10} style={colStyle}>
-        <textarea style={inputStyle}></textarea>
+        <textarea
+          value={this.state.inputValue}
+          onChange={(e) => this.setState({ inputValue: e.target.value })}
+          style={inputStyle}></textarea>
       </Col>
       <Col xs={1} style={colStyle}>
-        <span className="fa fa-paper-plane-o"></span>
+        <span
+          onClick={() => {
+            this.props.postChat(this.state.inputValue);
+            this.setState({ inputValue: '' });
+          }}
+          className="fa fa-paper-plane-o"
+          ></span>
       </Col>
     </Row>);
   }
