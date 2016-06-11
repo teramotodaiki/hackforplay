@@ -53,14 +53,21 @@ class Channel extends Component {
       <IframeEmbed type="project" token={channel.ProjectToken} />
     ) : null;
 
+    const actionBarHeight = 32;
+
     return (
-      <div style={{height: '100vh', backgroundColor: 'black'}}>
+      <div style={{height: window.innerHeight, backgroundColor: 'black'}}>
         <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
           {iframe}
         </Col>
-        <Col lg={3} md={4} sm={5} xs={12} style={{'padding': '0'}}>
-          <Timeline chats={channel ? channel.chats : []} />
-          <ActionBar />
+        <Col lg={3} md={4} sm={5} xs={12} style={{'padding': '0', height: '100%'}}>
+          <Timeline
+            chats={channel ? channel.chats : []}
+            style={{ height: window.innerHeight - actionBarHeight }}
+            />
+          <ActionBar
+            style={{ height: actionBarHeight }}
+            />
         </Col>
       </div>
     );
