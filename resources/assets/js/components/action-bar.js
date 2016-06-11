@@ -13,6 +13,23 @@ export default class ActionBar extends Component {
       width: '100%',
       margin: 0,
     };
+
+    this.postChatAndClear = this.postChatAndClear.bind(this);
+    this.postChatByKey = this.postChatByKey.bind(this);
+  }
+
+  postChatAndClear() {
+    if (this.state.inputValue) {
+      this.props.postChat(this.state.inputValue);
+      this.setState({ inputValue: '' });
+    }
+  }
+
+  postChatByKey({ nativeEvent }) {
+    if (nativeEvent.keyCode === 13 && !nativeEvent.shiftKey) {
+      this.postChatAndClear();
+      nativeEvent.preventDefault();
+    }
   }
 
   render() {
@@ -40,14 +57,12 @@ export default class ActionBar extends Component {
         <textarea
           value={this.state.inputValue}
           onChange={(e) => this.setState({ inputValue: e.target.value })}
+          onKeyPress={this.postChatByKey}
           style={inputStyle}></textarea>
       </Col>
       <Col xs={1} style={colStyle}>
         <span
-          onClick={() => {
-            this.props.postChat(this.state.inputValue);
-            this.setState({ inputValue: '' });
-          }}
+          onClick={this.postChatAndClear}
           className="fa fa-paper-plane-o"
           ></span>
       </Col>
