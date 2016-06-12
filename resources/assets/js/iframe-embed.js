@@ -32,7 +32,8 @@ class IframeEmbed extends React.Component {
   render () {
 
     const classname = classNames(this.props.className, {
-      'pseudo-focus': this.isFocused && this.props.visibleFocus
+      'pseudo-focus': this.props.visibleFocus,
+      'pseudo-focus-on': this.isFocused && this.props.visibleFocus,
     });
 
     const {
