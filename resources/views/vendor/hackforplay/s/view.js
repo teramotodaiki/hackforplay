@@ -1358,6 +1358,13 @@ $(function(){
 						var uri = '/channels/'+channel.ID;
 						castWindow.location.href = uri+'/watch';
 
+						[
+							'チャンネルができたよ✨\n他の人も呼んでみよう❗️→'+location.origin+uri+'/watch'
+						]
+						.forEach(function (message) {
+							$.post(uri+'/chats', { message: message });
+						});
+
 					}).fail(function (data) {
 						console.error(data);
 						castWindow.close();
