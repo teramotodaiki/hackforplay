@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Button } from 'react-bootstrap';
 
 export default class ActionBar extends Component {
   constructor(props) {
@@ -47,7 +47,7 @@ export default class ActionBar extends Component {
       height: style.height - 4,
       overflowY: 'scroll',
       paddingTop: 4,
-    }
+    };
 
     return (<Row style={Object.assign({}, this.style, style)}>
       <Col xs={10} style={colStyle}>
@@ -58,10 +58,9 @@ export default class ActionBar extends Component {
           style={inputStyle}></textarea>
       </Col>
       <Col xs={2} style={colStyle}>
-        <span
-          onClick={this.postChatAndClear}
-          className="fa fa-paper-plane-o"
-          ></span>
+       <Button bsStyle="link" onClick={this.postChatAndClear} style={{ borderWidth: 0 }}>
+         <span className="fa fa-paper-plane-o"></span>
+       </Button>
       </Col>
     </Row>);
   }

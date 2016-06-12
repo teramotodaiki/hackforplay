@@ -54,15 +54,20 @@ class Channel extends Component {
 
     const actionBarHeight = 32;
 
+    const timelineStyle = {
+      height: window.innerHeight - actionBarHeight,
+      backgroundColor: '#f7fafb',
+    };
+
     return (
-      <div style={{height: window.innerHeight, backgroundColor: 'black'}}>
+      <div style={{height: window.innerHeight }}>
         <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
           {iframe}
         </Col>
         <Col lg={3} md={4} sm={5} xs={12} style={{'padding': '0', height: '100%'}}>
           <Timeline
             chats={channel ? channel.chats : []}
-            style={{ height: window.innerHeight - actionBarHeight }}
+            style={timelineStyle}
             />
           <ActionBar
             postChat={this.postChat.bind(this)}
