@@ -9,6 +9,7 @@ import Pusher from 'pusher-js';
 import IframeEmbed from './iframe-embed';
 import Timeline from './components/timeline';
 import ActionBar from './components/action-bar';
+import ChannelMenu from './components/channel-menu';
 import { addChat, postChat, fetchChannel } from './actions/';
 
 class Channel extends Component {
@@ -67,6 +68,7 @@ class Channel extends Component {
       <div style={{height: window.innerHeight }}>
         <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
           {iframe}
+          <ChannelMenu />
         </Col>
         <Col
           lg={3} md={4} sm={5} xs={11}
