@@ -37,11 +37,18 @@ class Channel extends Component {
     channel.bind('new_message', (data) => {
       dispatch(addChat(id, data));
     });
+
+    this.reload = this.reload.bind(this);
   }
 
   postChat (message) {
     const { dispatch, params } = this.props;
     dispatch(postChat(params.id, { message }));
+  }
+
+  reload () {
+    this.iframe.contentWindow.location.reload(true);
+    this.iframe.focus();
   }
 
   render () {
@@ -51,6 +58,7 @@ class Channel extends Component {
 
     const iframe = channel ? (
       <IframeEmbed
+        ref={({ iframe }) => this.iframe = iframe}
         type="project"
         token={channel.ProjectToken}
         visibleFocus
@@ -68,7 +76,9 @@ class Channel extends Component {
       <div style={{height: window.innerHeight }}>
         <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
           {iframe}
-          <ChannelMenu />
+          <ChannelMenu
+            reload={this.reload}
+            />
         </Col>
         <Col
           lg={3} md={4} sm={5} xs={11}
