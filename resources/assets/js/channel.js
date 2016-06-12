@@ -48,8 +48,17 @@ class Channel extends Component {
     const id = +this.props.params.id;
     const channel = this.props.channels[id];
 
+    const borderStyle = {
+      boxSizing: 'border-box',
+      border: '1px solid #eceeef',
+    };
+
     const iframe = channel ? (
-      <IframeEmbed type="project" token={channel.ProjectToken} />
+      <IframeEmbed
+        type="project"
+        token={channel.ProjectToken}
+        style={borderStyle}
+        />
     ) : null;
 
     const actionBarHeight = 32;
@@ -64,7 +73,10 @@ class Channel extends Component {
         <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
           {iframe}
         </Col>
-        <Col lg={3} md={4} sm={5} xs={12} style={{'padding': '0', height: '100%'}}>
+        <Col
+          lg={3} md={4} sm={5} xs={12}
+          style={Object.assign({'padding': '0', height: '100%'}, borderStyle)}
+          >
           <Timeline
             chats={channel ? channel.chats : []}
             style={timelineStyle}
