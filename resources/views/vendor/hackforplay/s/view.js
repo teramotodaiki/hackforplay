@@ -1346,6 +1346,22 @@ $(function(){
 			$('<li>').append(
 				$('<a>').text('Create new channel').on('click', function () {
 
+					var castWindow = window.open('about:blank', 'cast');
+					$.ajax({
+						type: 'POST',
+						url: '/channels',
+						data: {
+							project_token: sessionStorage.getItem('project-token'),
+						},
+					}).done(function (channel) {
+
+						var uri = '/channels/'+channel.ID;
+						castWindow.location.href = uri+'/watch';
+
+					}).fail(function (data) {
+						console.error(data);
+						castWindow.close();
+					});
 					return false;
 
 				})
