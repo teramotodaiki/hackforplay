@@ -1,5 +1,9 @@
 import request from 'superagent';
 
+const API = {
+  github: 'https://api.github.com'
+};
+
 
 export const ADD_CHANNEL = 'ADD_CHANNEL';
 
@@ -33,6 +37,21 @@ export const postChat = (channelId, chat) => {
       .post('/channels/' + channelId + '/chats')
       .query(chat)
       .then((result) => {})
+      .catch((err) => alert(err));
+
+  };
+};
+
+// export const CREATE_GIST = 'CREATE_GIST';
+
+export const createGist = (files) => {
+  return (dispatch) => {
+
+    return request
+      .post(API.github + '/gists')
+      .set('Accept', 'application/vnd.github.v3+json')
+      .query({ public: true, files })
+      .then((result) => console.log(result))
       .catch((err) => alert(err));
 
   };
