@@ -48,16 +48,11 @@ class Channel extends Component {
     const id = +this.props.params.id;
     const channel = this.props.channels[id];
 
-    const borderStyle = {
-      boxSizing: 'border-box',
-      border: '1px solid #eceeef',
-    };
-
     const iframe = channel ? (
       <IframeEmbed
         type="project"
         token={channel.ProjectToken}
-        style={borderStyle}
+        visibleFocus
         />
     ) : null;
 
@@ -75,7 +70,7 @@ class Channel extends Component {
         </Col>
         <Col
           lg={3} md={4} sm={5} xs={11}
-          style={Object.assign({'padding': '0', height: '100%'}, borderStyle)}
+          style={{'padding': '0', height: '100%', border: '1px solid #eceeef' }}
           >
           <Timeline
             chats={channel ? channel.chats : []}
