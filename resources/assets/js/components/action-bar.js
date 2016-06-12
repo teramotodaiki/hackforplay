@@ -36,7 +36,7 @@ export default class ActionBar extends Component {
     const { style } = this.props;
     const colStyle = {
       margin: 0,
-      padding: 0,
+      padding: '0 0 0 .25rem',
       height: style.height,
     };
     const inputStyle = {
@@ -50,9 +50,6 @@ export default class ActionBar extends Component {
     }
 
     return (<Row style={Object.assign({}, this.style, style)}>
-      <Col xs={1} style={colStyle}>
-        <span>😄</span>
-      </Col>
       <Col xs={10} style={colStyle}>
         <textarea
           value={this.state.inputValue}
@@ -60,7 +57,7 @@ export default class ActionBar extends Component {
           onKeyPress={this.postChatByKey}
           style={inputStyle}></textarea>
       </Col>
-      <Col xs={1} style={colStyle}>
+      <Col xs={2} style={colStyle}>
         <span
           onClick={this.postChatAndClear}
           className="fa fa-paper-plane-o"
