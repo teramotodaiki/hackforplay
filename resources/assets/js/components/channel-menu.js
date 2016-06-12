@@ -19,6 +19,9 @@ export default class ChannelMenu extends Component {
       <Button bsStyle="link" bsSize="large" onClick={reload}>
         <span className="fa fa-refresh fa-3x"></span>
       </Button>
+      <Button bsStyle="link" bsSize="large">
+        <span className="fa fa-github fa-3x"></span>
+      </Button>
     </div>);
   }
 }
