@@ -1342,6 +1342,15 @@ $(function(){
 					$('<a>').data('name', channel.Name).text(channel.DisplayName+' | '+channel.Team)
 				).appendTo('.h4p_cast-channel .dropdown-menu');
 			});
+
+			$('<li>').append(
+				$('<a>').text('Create new channel').on('click', function () {
+
+					return false;
+
+				})
+			).appendTo('.h4p_cast-channel .dropdown-menu');
+
 		} catch (e) {
 			console.error(e);
 		}
