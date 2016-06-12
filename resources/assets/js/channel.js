@@ -7,6 +7,8 @@ import { Form, InputGroup, FormControl, Button } from "react-bootstrap";
 import Pusher from 'pusher-js';
 
 import IframeEmbed from './iframe-embed';
+import Timeline from './components/timeline';
+import ActionBar from './components/action-bar';
 import { addChat, postChat, fetchChannel } from './actions/';
 
 class Channel extends Component {
@@ -39,7 +41,6 @@ class Channel extends Component {
   postChat (message) {
     const { dispatch, params } = this.props;
     dispatch(postChat(params.id, { message }));
-    this.setState({ inputValue: '' });
   }
 
   render () {
@@ -48,33 +49,37 @@ class Channel extends Component {
     const channel = this.props.channels[id];
 
     const iframe = channel ? (
-      <IframeEmbed type="project" token={channel.ProjectToken} />
+      <IframeEmbed
+        type="project"
+        token={channel.ProjectToken}
+        visibleFocus
+        />
     ) : null;
 
+    const actionBarHeight = 48;
+
+    const timelineStyle = {
+      height: window.innerHeight - actionBarHeight,
+      backgroundColor: '#f7fafb',
+    };
+
     return (
-      <div style={{height: '100vh', backgroundColor: 'black'}}>
+      <div style={{height: window.innerHeight }}>
         <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
           {iframe}
         </Col>
-        <Col lg={3} md={4} sm={5} xs={12} style={{'padding': '0'}}>
-          <div style={{height: '100vh', backgroundColor: 'white'}}>
-            {channel ? channel.chats.map((item) => <p key={item.id}>{item.message}</p>) : null}
-            <Form inline>
-              <InputGroup>
-                <FormControl
-                  type="text"
-                  value={this.state.inputValue}
-                  placeholder="type here"
-                  onChange={(e) => this.setState({ inputValue: e.target.value})}
-                />
-                <InputGroup.Button>
-                  <Button onClick={() => this.postChat(this.state.inputValue)}>
-                    Send
-                  </Button>
-                </InputGroup.Button>
-              </InputGroup>
-            </Form>
-          </div>
+        <Col
+          lg={3} md={4} sm={5} xs={11}
+          style={{'padding': '0', height: '100%', border: '1px solid #eceeef' }}
+          >
+          <Timeline
+            chats={channel ? channel.chats : []}
+            style={timelineStyle}
+            />
+          <ActionBar
+            postChat={this.postChat.bind(this)}
+            style={{ height: actionBarHeight }}
+            />
         </Col>
       </div>
     );
