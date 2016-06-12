@@ -36,7 +36,8 @@ export default class ActionBar extends Component {
     const { style } = this.props;
     const colStyle = {
       margin: 0,
-      padding: '0 0 0 .25rem',
+      boxSizing: 'border-box',
+      padding: '.25rem 0 0 .25rem',
       height: style.height,
     };
     const inputStyle = {
@@ -44,9 +45,9 @@ export default class ActionBar extends Component {
       outline: 'none',
       resize: 'none',
       width: '100%',
-      height: style.height - 4,
+      height: style.height - 8,
       overflowY: 'scroll',
-      paddingTop: 4,
+      paddingTop: '.5rem',
     };
 
     return (<Row style={Object.assign({}, this.style, style)}>
@@ -58,7 +59,7 @@ export default class ActionBar extends Component {
           style={inputStyle}></textarea>
       </Col>
       <Col xs={2} style={colStyle}>
-       <Button bsStyle="link" onClick={this.postChatAndClear} style={{ borderWidth: 0 }}>
+       <Button bsStyle="link" onClick={this.postChatAndClear}>
          <span className="fa fa-paper-plane-o"></span>
        </Button>
       </Col>

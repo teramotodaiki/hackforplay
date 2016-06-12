@@ -61,7 +61,7 @@ class Channel extends Component {
         />
     ) : null;
 
-    const actionBarHeight = 32;
+    const actionBarHeight = 48;
 
     const timelineStyle = {
       height: window.innerHeight - actionBarHeight,
