@@ -16,7 +16,7 @@ class CreateChannelTable extends Migration
         Schema::create('Channel', function (Blueprint $table)
         {
           $table->bigIncrements('ID');
-          $table->bigInteger('CommunityID')->nullable();
+          $table->bigInteger('TeamID')->nullable();
           $table->string('Name', 100)->nullable();
           $table->string('DisplayName', 100)->nullable();
           $table->bigInteger('ProjectID')->nullable();
