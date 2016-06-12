@@ -39,13 +39,16 @@ class ChannelController extends Controller
      */
     public function store(Request $request)
     {
+      $this->validate($request, [
+        'project_token' => 'required'
+      ]);
       // get project id from token
-      $token = $request->input('project_token');
-      $project = Project::where('Token', $token)->firstOrFail();
+      $project = Project::where('Token', $request->input('project_token'))
+        ->firstOrFail();
 
       $channel = Channel::create([
         'ProjectID'     => $project->ID,
-        'ProjectToken'  => $token,
+        'ProjectToken'  => $request->input('project_token'),
         'UserID'        => $request->input('user_id'),
         'DisplayName'   => $request->input('display_name'),
         'Registered'    => Carbon::now(),
