@@ -74,7 +74,7 @@ class Channel extends Component {
           {iframe}
         </Col>
         <Col
-          lg={3} md={4} sm={5} xs={12}
+          lg={3} md={4} sm={5} xs={11}
           style={Object.assign({'padding': '0', height: '100%'}, borderStyle)}
           >
           <Timeline
