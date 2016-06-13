@@ -78,7 +78,7 @@ class Channel extends Component {
 
     const iframe = channel ? (
       <IframeEmbed
-        ref={({ iframe }) => this.iframe = iframe}
+        ref={(embed) => this.iframe = embed ? embed.iframe : null}
         type="project"
         token={channel.ProjectToken}
         visibleFocus
