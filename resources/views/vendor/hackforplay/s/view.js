@@ -713,9 +713,7 @@ $(function(){
 
 				// jsHintで syntax error を見つける
 				if ('JSHINT' in window) {
-					JSHINT(jsEditor.getValue(''), {
-						sub: true
-					});
+					JSHINT(jsEditor.getValue(''), jsEditor.state.lint.options);
 					if (JSHINT.data().errors) {
 						var e = JSHINT.data().errors[0];
 						window.postMessage({
