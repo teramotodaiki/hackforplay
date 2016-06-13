@@ -14,9 +14,12 @@ $fa-font-path: '../fonts/font-awesome';
 
 // Focused element
 .pseudo-focus {
-  border: .25rem solid $input-border-focus;
+  box-sizing: border-box;
+  border: .25rem solid $gray-lighter;
   border-radius: $border-radius;
-  margin: -.25rem;
+  #{&}-on {
+    border-color: $input-border-focus;
+  }
 }
 
 
