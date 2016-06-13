@@ -56,7 +56,7 @@ class Channel extends Component {
     const { dispatch, params, channels } = this.props;
     const channel = channels[params.id];
 
-    const gistName = `channel-${params.id}.id`;
+    const gistName = `channel-${params.id}.js`;
     const gistWindow = window.open('about:blank', gistName);
     dispatch(createGist({
       [gistName]: {
