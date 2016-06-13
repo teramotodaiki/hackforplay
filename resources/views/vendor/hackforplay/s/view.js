@@ -261,7 +261,11 @@ $(function(){
 		foldGutter: true,
 		gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
 		lint: {
-			sub: true
+			sub: true,
+			loopfunc: true,
+			eqnull: true,
+			esversion: 5,
+			multistr: true,
 		},
 		extraKeys: {
 			'Ctrl-Enter': function () { $('.h4p_restaging_button').trigger('click'); },
@@ -713,7 +717,18 @@ $(function(){
 
 				// jsHintで syntax error を見つける
 				if ('JSHINT' in window) {
-					JSHINT(jsEditor.getValue(''), jsEditor.state.lint.options);
+					JSHINT(
+						jsEditor.getValue(''),
+						$.extend(jsEditor.state.lint.options, {
+							shadow: true,
+							expr: true,
+							asi: true,
+							elision: true,
+							funcscope: true,
+							notypeof: true,
+							boss: true,
+							supernew: true,
+						}));
 					if (JSHINT.data().errors) {
 						var e = JSHINT.data().errors[0];
 						window.postMessage({
