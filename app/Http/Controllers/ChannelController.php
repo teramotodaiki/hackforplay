@@ -54,6 +54,8 @@ class ChannelController extends Controller
         'Registered'    => Carbon::now(),
         'Updated'       => Carbon::now(),
       ]);
+      $channel->script = $channel->project->scripts()->orderBy('ID', 'DESC')->first();
+      
       return response($channel, 200);
     }
 
@@ -69,6 +71,7 @@ class ChannelController extends Controller
       if ($request->input('chats')) {
         $channel->chats;
       }
+      $channel->script = $channel->project->scripts()->orderBy('ID', 'DESC')->first();
       return response($channel, 200);
     }
 
