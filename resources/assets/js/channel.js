@@ -53,13 +53,21 @@ class Channel extends Component {
   }
 
   createGist () {
-    const { dispatch, params } = this.props;
+    const { dispatch, params, channels } = this.props;
+    const channel = channels[params.id];
 
+    const gistName = `channel-${params.id}.id`;
+    const gistWindow = window.open('about:blank', gistName);
     dispatch(createGist({
-      'test.js': {
-        'content': 'const f = () => {}',
+      [gistName]: {
+        'content': channel.script.RawCode,
       }
-    }));
+    }))
+    .then(({ body }) => {
+      gistWindow.location.href = body.html_url;
+      this.postChat('Created new gist!→' + body.html_url);
+    })
+    .catch(() => gistWindow.close());
 
   }
 

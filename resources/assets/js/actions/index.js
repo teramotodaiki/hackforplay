@@ -51,7 +51,7 @@ export const createGist = (files) => {
       .post(API.github + '/gists')
       .set('Accept', 'application/vnd.github.v3+json')
       .send({ public: true, files })
-      .then((result) => console.log(result))
+      .then((result) => result)
       .catch((err) => alert(err));
 
   };
