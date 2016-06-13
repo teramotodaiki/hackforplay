@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+const URL_REGEX = /(https?:\/\/\S*)/g;
+
 export default class Chat extends Component {
   constructor(props) {
     super(props);
@@ -12,9 +14,12 @@ export default class Chat extends Component {
   render() {
 
     const { style, message } = this.props;
+    const body = message
+      .split(URL_REGEX).map((item) =>
+        URL_REGEX.test(item) ? <a key={item} href={item} target="_blank">{item}</a> : item);
 
     return (<div style={Object.assign({}, this.style, style)}>
-      {message}
+      {body}
     </div>);
   }
 }
