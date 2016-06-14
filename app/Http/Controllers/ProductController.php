@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Mod;
 
 class ProductController extends Controller
 {
@@ -36,7 +37,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $this->validate($request, [
+        'bundle' => 'required|unique:mod|max:50',
+        'paths' => 'required',
+      ]);
+
+      $mod = Mod::create($request->only(['bundle', 'paths']));
+
+      return response($mod, 200);
     }
 
     /**
