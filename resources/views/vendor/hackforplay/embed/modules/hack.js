@@ -25,7 +25,8 @@ function getEditor() {
 			require('enchantjs/enchant');
 			require('enchantjs/ui.enchant');
 			window.SC = require('soundcloud/sdk-3.0.0');
-			mod();
+
+			return mod();
 
 		});
 
@@ -99,20 +100,16 @@ function getEditor() {
 	window.game = new enchant.Core(480, 320);
 	game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png', 'hackforplay/menu-button-menu.png', 'hackforplay/menu-button-restage.png', 'hackforplay/menu-button-hint.png', 'hackforplay/menu-button-comment.png', 'hackforplay/menu-button-retry.png', 'hackforplay/new_button_next.png', 'hackforplay/new_button_comment.png', 'hackforplay/new_button_restage.png', 'hackforplay/achievement_p.png', 'hackforplay/achievement_n.png', 'hackforplay/new_button_town.png');
 
-	// Hackのクラスを生成 インスタンスはget only
-	var HackEnchant = enchant.Class.create(enchant.EventTarget, {
-		initialize: function(){
-			enchant.EventTarget.call(this);
-		}
-	});
-	var _Hack = new HackEnchant();
-	Object.defineProperty(window, 'Hack', {
-		configurable: true,
-		enumerable: true,
-		get: function(){
-			return _Hack;
-		}
-	});
+	// Hack を override
+	// enchant.EventTarget.prototype のメソッドを全てHackに移植
+	(function (fake) {
+
+		Object.keys(enchant.EventTarget.prototype).forEach(function (key) {
+			Hack[key] = fake[key];
+		});
+		Hack.initialize();
+
+	})(new enchant.EventTarget());
 
 	Hack.start = function () {
 		// game start
@@ -924,6 +921,6 @@ function getEditor() {
 		};
 	}
 
-	return _Hack;
+	return Hack;
 
 });
