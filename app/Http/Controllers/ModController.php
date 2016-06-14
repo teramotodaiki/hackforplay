@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Project;
 use App\Script;
+use App\Mod;
 
 class ModController extends Controller
 {
@@ -138,34 +139,14 @@ class ModController extends Controller
      */
     public function showByProduct($bundle, $version = '', $ext = '')
     {
-      // Temporary implement
-      $filepaths = [
-        'hackforplay/hack'                => 'modules/hack.js',
-        'hackforplay/rpg-kit-main'        => 'kit/rpg_hack_project/main.js',
-        'hackforplay/rpg-kit-camera'      => 'kit/rpg_hack_project/camera.js',
-        'hackforplay/rpg-kit-color'       => 'kit/rpg_hack_project/color.js',
-        'hackforplay/rpg-kit-rpgobjects'  => 'kit/rpg_hack_project/rpgobjects.js',
-        'hackforplay/rpg-kit-smartassets' => 'kit/rpg_hack_project/smartassets.js',
-        'hackforplay/ap-kit-main'         => 'kit/ap_project/main.js',
-        'hackforplay/commet-kit-main'     => 'kit/music_game_project/main.js',
-        'hackforplay/survive-kit-main'    => 'kit/Tsuka_Project/main.js',
-        'hackforplay/run-kit-main'        => 'lib/run.js',
-        'hackforplay/typing-kit-main'     => 'lib/typing.js',
-        'enchantjs/enchant'               => 'modules/enchant.js',
-        'enchantjs/ui.enchant'            => 'modules/ui.enchant.js',
-        'soundcloud/sdk-3.0.0'            => 'modules/sdk-3.0.0.js'
-      ];
 
-      if (!array_key_exists($bundle, $filepaths)) return response('Not Found', 404);
+      $mod = Mod::where('bundle', $bundle)->firstOrFail();
 
-      // Document root
-      $path = '../resources/views/vendor/hackforplay/embed/' . $filepaths[$bundle];
-      if (!file_exists($path)) return response('Not Found', 404);
+      $require = "require('{$mod->paths}')";
 
-      $result = file_get_contents($path);
-      return response($result, 200)
+      return response("define(function (require, exports, module) { module.exports = $require; });", 200)
               ->header('Content-Type', 'application/javascript')
-              ->header('Cache-Control', 'max-age=86400');
+              ->header('Cache-Control', 'max-age=3600');
 
     }
 
