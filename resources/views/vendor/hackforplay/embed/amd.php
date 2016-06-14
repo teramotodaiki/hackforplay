@@ -134,6 +134,11 @@ $deps = empty($token) ?
 				writable: false,
 				value: {}
 			});
+			Hack.stageInfo = {
+				<?php if (isset($playlog_token)) : ?>
+				token: '<?php echo $playlog_token; ?>'
+				<?php endif; ?>
+			};
 		})();
 	</script>
 	<script type="text/javascript">
@@ -154,16 +159,7 @@ $deps = empty($token) ?
 	};
 	require(<?php echo json_encode($deps, JSON_UNESCAPED_SLASHES); ?>,
 		function () {
-			// Temporary implementation
-			if ('Hack' in window) {
-				Hack.stageInfo = {
-					<?php if (isset($playlog_token)) : ?>
-					token: '<?php echo $playlog_token; ?>'
-					<?php endif; ?>
-				};
-				Hack.start();
-			}
-
+			Hack.start();
 		}
 	);
 	</script>
