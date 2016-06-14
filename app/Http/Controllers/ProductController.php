@@ -78,7 +78,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $old = Mod::findOrFail($id);
+
+      $this->validate($request, [
+        'bundle' => "string|unique:mod,bundle,{$old->id}|max:50",
+        'paths' => 'string',
+      ]);
+
+      $old->bundle = $request->input('bundle', $old->bundle);
+      $old->paths = $request->input('paths', $old->paths);
+      $old->save();
+
+      return response($old, 200);
     }
 
     /**
