@@ -128,6 +128,7 @@ $deps = empty($token) ?
 		baseUrl : '../mods/',
 	});
 	require.onError = function (e) {
+		console.error(e);
 		if ('Hack' in window && typeof Hack.openExternal === 'function') {
 			Hack.openExternal('https://error.hackforplay'+
 												'?name='+e.name+
