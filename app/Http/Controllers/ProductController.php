@@ -55,7 +55,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+      return response(Mod::findOrFail($id), 200);
     }
 
     /**
