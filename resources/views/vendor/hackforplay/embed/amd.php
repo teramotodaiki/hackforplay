@@ -122,7 +122,20 @@ $deps = empty($token) ?
 	}
 	</style>
 	<script src="./lib/require.js"></script>
-
+	<script type="text/javascript">
+		(function () {
+			/**
+			 * global object
+			 * (read only)
+			 */
+			Object.defineProperty(window, 'Hack', {
+				configurable: false,
+				enumerable: true,
+				writable: false,
+				value: {}
+			});
+		})();
+	</script>
 	<script type="text/javascript">
 
 	require.config({
