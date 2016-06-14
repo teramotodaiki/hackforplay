@@ -106,6 +106,7 @@ $deps = empty($token) ?
 	.PixelMplus {
 		font-family: PixelMplus;
 		visibility: collapse;
+		position: absolute;
 	}
 	body {
 		margin: 0;
