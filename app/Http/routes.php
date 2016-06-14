@@ -17,15 +17,14 @@ Route::get('register', 'DefaultAppController@index');
 Route::get('verify', 'VerifyController@index');
 Route::get('random', 'RandomController@index');
 
+Route::resource('users', 'UserController');
+
+Route::resource('products', 'ProductController');
+
 // channels/
 Route::get('channels/{id}/watch', 'DefaultAppController@index');
 Route::resource('channels', 'ChannelController');
-
-// channels.chats/
 Route::resource('channels.chats', 'ChatController');
-
-// users/
-Route::resource('users', 'UserController');
 
 // mods/
 Route::group(['middleware' => 'etag', 'prefix' => 'mods'], function()
@@ -41,7 +40,6 @@ Route::group(['middleware' => 'etag', 'prefix' => 'mods'], function()
   Route::get('{bundle}/{version?}{ext?}', [ 'uses' => 'ModController@showByProduct' ])
   ->where('ext', '\.(js)');
 });
-
 
 Route::any('{api}', [ 'uses' => 'Old\OldController@index' ])
 ->where('api', '/?|[a-z\/]+');
