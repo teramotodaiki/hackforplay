@@ -136,8 +136,10 @@ $deps = empty($token) ?
 			});
 			Hack.stageInfo = {
 				<?php if (isset($playlog_token)) : ?>
-				token: '<?php echo $playlog_token; ?>'
+				token: '<?php echo $playlog_token; ?>',
 				<?php endif; ?>
+				width: 480,
+				height: 320,
 			};
 		})();
 	</script>
