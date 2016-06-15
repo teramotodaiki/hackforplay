@@ -14,14 +14,6 @@ $(function(){
 					location.href = '/getaccount/';
 				}
 				break;
-			case "thumbnail":
-				var data = sessionStorage.getItem('image');
-				if (data) $(".stage-thumbnail").attr('src', data);
-				break;
-			case "screenshot":
-				$("#screenshotModal").modal("show");
-				// このあと"thumbnail"を呼び出す
-				break;
 			case "replace_code":
 				var code = sessionStorage.getItem('restaging_code');
 				jsEditor.setValue(code);
@@ -114,10 +106,7 @@ $(function(){
 	// leave comment then take
 	$('#commentModal').on('show.bs.modal', function () {
 		// canvas to image
-		document.getElementById('item-embed-iframe').contentWindow.postMessage({
-			query: 'eval',
-			value: "saveImage('thumbnail');"
-		}, '/');
+		capture();
 		$(this).find('#leave-comment').button('reset');
 	});
 
@@ -134,7 +123,7 @@ $(function(){
 			'stageid' : getParam('id'),
 			'message': message_value,
 			'tags': tag_value,
-			'thumb': sessionStorage.getItem('image') || null,
+			'thumb': $('#commentModal .stage-thumbnail').attr('src'),
 			'timezone': timezone,
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
@@ -753,37 +742,25 @@ $(function(){
 				// Save
 				var loading = $(this).find('button');
 
-				setTimeout(function () {
-					// Temporary implementation
-					// サムネイル生成待ちの時間合わせ
-
-					loading.find('.glyphicon').toggleClass('glyphicon-save glyphicon-saved');
-					if(sessionStorage.getItem('project-token') === null){
-						// プロジェクトが作られていないので、作成
-						loading.button('loading');
-						makeProject(function() {
-							updateTask(function() {
-								loading.button('reset');
-								callback();
-							});
-						}, function() {
-							loading.button('reset');
-						});
-					}else{
-						loading.button('loading');
+				loading.find('.glyphicon').toggleClass('glyphicon-save glyphicon-saved');
+				if(sessionStorage.getItem('project-token') === null){
+					// プロジェクトが作られていないので、作成
+					loading.button('loading');
+					makeProject(function() {
 						updateTask(function() {
 							loading.button('reset');
 							callback();
 						});
-					}
-
-				}, 500);
-
-				// サムネイルを生成
-				document.getElementById('item-embed-iframe').contentWindow.postMessage({
-					query: 'eval',
-					value: "saveImage('updateProject');"
-				}, '/');
+					}, function() {
+						loading.button('reset');
+					});
+				}else{
+					loading.button('loading');
+					updateTask(function() {
+						loading.button('reset');
+						callback();
+					});
+				}
 
 			}
 
@@ -794,10 +771,7 @@ $(function(){
 			// 投稿時の設定
 			$('#inputModal').on('show.bs.modal', function () {
 				// サムネイルを生成
-				document.getElementById('item-embed-iframe').contentWindow.postMessage({
-					query: 'eval',
-					value: "saveImage('thumbnail');"
-				}, '/');
+				capture();
 			});
 
 			// 投稿
@@ -1079,13 +1053,27 @@ $(function(){
 				}
 			});
 		}
-		function updateTask (callback) {
+		function updateTask (callback, resolveObject) {
+			if (resolveObject === undefined) {
+				capture().done(function (dataUrl) {
+					updateTask(callback, {
+						thumb: dataUrl,
+					});
+				}).fail(function (error) {
+					console.log(error);
+					updateTask(callback, {
+						thumb: null,
+					});
+				});
+				return;
+			}
+
 			// Update data
 			$.post('../commit/', {
 				token : sessionStorage.getItem('project-token'),
 				code : jsEditor.getValue('') || sessionStorage.getItem('restaging_code'),
 				timezone : new Date().getTimezoneString(),
-				thumb : sessionStorage.getItem('image') || null,
+				thumb : resolveObject.thumb,
 				publish : false,
 				'attendance-token' : sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
@@ -1137,7 +1125,7 @@ $(function(){
 				token: sessionStorage.getItem('project-token'),
 				code: jsEditor.getValue(''),
 				timezone: new Date().getTimezoneString(),
-				thumb: sessionStorage.getItem('image') || null,
+				thumb: $('#inputModal .stage-thumbnail').attr('src'),
 				publish: true,
 				stage_info: JSON.stringify(stage_info),
 				team_id: $('#inputModal input[name="input-team"]:checked').val() || null,
@@ -1434,4 +1422,39 @@ function setOuterModule() {
 	var serial = prefix + Array.prototype.join.call(arguments, ',' + prefix);
 	sessionStorage.setItem('outer-modules', serial);
 	return serial;
+}
+
+// capture the frame
+function capture (value) {
+	var deferred = new $.Deferred();
+	var game = (document.getElementById('item-embed-iframe') || {}).contentWindow;
+	var request = {
+		query: 'capture',
+		value: value,
+		responseQuery: 'capture-' + (new Date()).getTime(),
+	}
+
+	function task (e) {
+		if (typeof e.data === 'object' && e.data.query === request.responseQuery) {
+			window.removeEventListener('message', task);
+			deferred.resolve(e.data.value);
+		}
+	}
+
+	window.addEventListener('message', task);
+
+	// Timeout
+	window.setTimeout(function () {
+		if (deferred.state() === 'pending') {
+			deferred.reject('Screen capture timeout. スクリーンキャプチャがタイムアウトしました');
+			window.removeEventListener('message', task);
+		}
+	}, 2000);
+
+	game.postMessage(request, '*');
+
+	return deferred.done(function (dataUrl) {
+		$(".stage-thumbnail").attr('src', dataUrl);
+		return dataUrl;
+	});
 }
