@@ -4,8 +4,32 @@ function saveImage (callbackText) {
 	window.parent.postMessage(callbackText, '*');
 }
 function screenShot () {
-	window.parent.postMessage('screenshot', '*');
-	window.saveImage('thumbnail');
+	var request = {
+		query: 'capture',
+		responseQuery: 'screenShot-' + (new Date()).getTime(),
+	}
+	window.addEventListener('message', function task (e) {
+		if (e.origin === window.location.origin &&
+				typeof e.data === 'object' &&
+				e.data.query === request.responseQuery
+			) {
+			var image = new Image(e.data.width, e.data.height);
+			image.src = e.data.value;
+			var px = function (num) { return ' ' + (num >> 0) + 'px '; }
+			console.log(image);
+			console.log('%c+', [
+				'font-size: 0px',
+				'padding:' + px(image.height / 2) + px(image.width / 2),
+				'line-height: ' + px(image.height),
+				'color: transparent',
+				'background: url(' + image.src + ')',
+				'background-size:' + px(image.width) + px(image.height),
+			].join(';'));
+
+			window.removeEventListener('message', task);
+		}
+	});
+	window.postMessage(request, '/');
 }
 function refocus () {
 	window.document.activeElement.blur(); // Blur an enchantBook
@@ -70,6 +94,8 @@ function getEditor() {
 				event.source.postMessage({
 					query: event.data.responseQuery,
 					value: canvas.toDataURL(),
+					width: canvas.width,
+					height: canvas.height,
 				}, event.origin);
 				break;
 		}
