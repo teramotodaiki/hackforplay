@@ -1,8 +1,3 @@
-function saveImage (callbackText) {
-	var canvas = document.getElementById('enchant-stage').firstChild.firstChild;
-	sessionStorage.setItem('image', canvas ? canvas.toDataURL() : null);
-	window.parent.postMessage(callbackText, '*');
-}
 function screenShot () {
 	var request = {
 		query: 'capture',

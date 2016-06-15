@@ -14,14 +14,6 @@ $(function(){
 					location.href = '/getaccount/';
 				}
 				break;
-			case "thumbnail":
-				var data = sessionStorage.getItem('image');
-				if (data) $(".stage-thumbnail").attr('src', data);
-				break;
-			case "screenshot":
-				$("#screenshotModal").modal("show");
-				// このあと"thumbnail"を呼び出す
-				break;
 			case "replace_code":
 				var code = sessionStorage.getItem('restaging_code');
 				jsEditor.setValue(code);
