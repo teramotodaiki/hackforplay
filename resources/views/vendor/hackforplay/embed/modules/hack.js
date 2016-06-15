@@ -58,15 +58,13 @@ function getEditor() {
 
 	// Web Messaging Evaluation
 	window.addEventListener('message', function (event) {
-		if(event.origin === window.location.protocol + '//' + window.location.host && event.data && event.data.query){
-			switch (event.data.query) {
-				case 'eval':
-				eval(event.data.value);
-				break;
-				case 'dispatch':
-				Hack.dispatchEvent(new Event(event.data.value));
-				break;
-			}
+		switch (event.data.query) {
+			case 'eval':
+			eval(event.data.value);
+			break;
+			case 'dispatch':
+			Hack.dispatchEvent(new Event(event.data.value));
+			break;
 		}
 	});
 
