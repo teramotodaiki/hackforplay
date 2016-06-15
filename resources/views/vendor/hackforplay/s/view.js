@@ -753,37 +753,25 @@ $(function(){
 				// Save
 				var loading = $(this).find('button');
 
-				setTimeout(function () {
-					// Temporary implementation
-					// サムネイル生成待ちの時間合わせ
-
-					loading.find('.glyphicon').toggleClass('glyphicon-save glyphicon-saved');
-					if(sessionStorage.getItem('project-token') === null){
-						// プロジェクトが作られていないので、作成
-						loading.button('loading');
-						makeProject(function() {
-							updateTask(function() {
-								loading.button('reset');
-								callback();
-							});
-						}, function() {
-							loading.button('reset');
-						});
-					}else{
-						loading.button('loading');
+				loading.find('.glyphicon').toggleClass('glyphicon-save glyphicon-saved');
+				if(sessionStorage.getItem('project-token') === null){
+					// プロジェクトが作られていないので、作成
+					loading.button('loading');
+					makeProject(function() {
 						updateTask(function() {
 							loading.button('reset');
 							callback();
 						});
-					}
-
-				}, 500);
-
-				// サムネイルを生成
-				document.getElementById('item-embed-iframe').contentWindow.postMessage({
-					query: 'eval',
-					value: "saveImage('updateProject');"
-				}, '/');
+					}, function() {
+						loading.button('reset');
+					});
+				}else{
+					loading.button('loading');
+					updateTask(function() {
+						loading.button('reset');
+						callback();
+					});
+				}
 
 			}
 
@@ -1079,13 +1067,24 @@ $(function(){
 				}
 			});
 		}
-		function updateTask (callback) {
+		function updateTask (callback, resolveObject) {
+			if (resolveObject === undefined) {
+				capture().done(function (dataUrl) {
+					updateTask(callback, {
+						thumb: dataUrl,
+					});
+				}).fail(function (error) {
+					alert(error);
+				});
+				return;
+			}
+
 			// Update data
 			$.post('../commit/', {
 				token : sessionStorage.getItem('project-token'),
 				code : jsEditor.getValue('') || sessionStorage.getItem('restaging_code'),
 				timezone : new Date().getTimezoneString(),
-				thumb : sessionStorage.getItem('image') || null,
+				thumb : resolveObject.thumb,
 				publish : false,
 				'attendance-token' : sessionStorage.getItem('attendance-token')
 			}, function(data, textStatus, xhr) {
