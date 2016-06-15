@@ -1443,20 +1443,23 @@ function capture (value) {
 	var request = {
 		query: 'capture',
 		value: value,
-		responseQuery: 'screenShotResult',
+		responseQuery: 'capture-' + (new Date()).getTime(),
 	}
 
-	window.addEventListener('message', function task (e) {
+	function task (e) {
 		if (typeof e.data === 'object' && e.data.query === request.responseQuery) {
 			window.removeEventListener('message', task);
 			deferred.resolve(e.data.value);
 		}
-	});
+	}
+
+	window.addEventListener('message', task);
 
 	// Timeout
 	window.setTimeout(function () {
 		if (deferred.state() === 'pending') {
 			deferred.reject('Screen capture timeout. スクリーンキャプチャがタイムアウトしました');
+			window.removeEventListener('message', task);
 		}
 	}, 2000);
 
