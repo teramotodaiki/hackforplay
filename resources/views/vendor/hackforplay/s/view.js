@@ -114,10 +114,7 @@ $(function(){
 	// leave comment then take
 	$('#commentModal').on('show.bs.modal', function () {
 		// canvas to image
-		document.getElementById('item-embed-iframe').contentWindow.postMessage({
-			query: 'eval',
-			value: "saveImage('thumbnail');"
-		}, '/');
+		capture();
 		$(this).find('#leave-comment').button('reset');
 	});
 
@@ -134,7 +131,7 @@ $(function(){
 			'stageid' : getParam('id'),
 			'message': message_value,
 			'tags': tag_value,
-			'thumb': sessionStorage.getItem('image') || null,
+			'thumb': $('#commentModal .stage-thumbnail').attr('src'),
 			'timezone': timezone,
 			'attendance-token': sessionStorage.getItem('attendance-token')
 		}, function(data, textStatus, xhr) {
