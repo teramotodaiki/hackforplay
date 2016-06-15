@@ -122,7 +122,27 @@ $deps = empty($token) ?
 	}
 	</style>
 	<script src="./lib/require.js"></script>
-
+	<script type="text/javascript">
+		(function () {
+			/**
+			 * global object
+			 * (read only)
+			 */
+			Object.defineProperty(window, 'Hack', {
+				configurable: false,
+				enumerable: true,
+				writable: false,
+				value: {}
+			});
+			Hack.stageInfo = {
+				<?php if (isset($playlog_token)) : ?>
+				token: '<?php echo $playlog_token; ?>',
+				<?php endif; ?>
+				width: 480,
+				height: 320,
+			};
+		})();
+	</script>
 	<script type="text/javascript">
 
 	require.config({
@@ -141,16 +161,7 @@ $deps = empty($token) ?
 	};
 	require(<?php echo json_encode($deps, JSON_UNESCAPED_SLASHES); ?>,
 		function () {
-			// Temporary implementation
-			if ('Hack' in window) {
-				Hack.stageInfo = {
-					<?php if (isset($playlog_token)) : ?>
-					token: '<?php echo $playlog_token; ?>'
-					<?php endif; ?>
-				};
-				Hack.start();
-			}
-
+			Hack.start();
 		}
 	);
 	</script>
