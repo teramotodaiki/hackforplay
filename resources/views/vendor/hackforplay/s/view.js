@@ -1465,5 +1465,8 @@ function capture (value) {
 
 	game.postMessage(request, '*');
 
-	return deferred;
+	return deferred.done(function (dataUrl) {
+		$(".stage-thumbnail").attr('src', dataUrl);
+		return dataUrl;
+	});
 }
