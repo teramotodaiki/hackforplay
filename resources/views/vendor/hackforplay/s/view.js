@@ -1068,7 +1068,10 @@ $(function(){
 						thumb: dataUrl,
 					});
 				}).fail(function (error) {
-					alert(error);
+					console.log(error);
+					updateTask(callback, {
+						thumb: null,
+					});
 				});
 				return;
 			}
