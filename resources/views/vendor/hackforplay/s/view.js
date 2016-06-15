@@ -782,10 +782,7 @@ $(function(){
 			// 投稿時の設定
 			$('#inputModal').on('show.bs.modal', function () {
 				// サムネイルを生成
-				document.getElementById('item-embed-iframe').contentWindow.postMessage({
-					query: 'eval',
-					value: "saveImage('thumbnail');"
-				}, '/');
+				capture();
 			});
 
 			// 投稿
@@ -1136,7 +1133,7 @@ $(function(){
 				token: sessionStorage.getItem('project-token'),
 				code: jsEditor.getValue(''),
 				timezone: new Date().getTimezoneString(),
-				thumb: sessionStorage.getItem('image') || null,
+				thumb: $('#inputModal .stage-thumbnail').attr('src'),
 				publish: true,
 				stage_info: JSON.stringify(stage_info),
 				team_id: $('#inputModal input[name="input-team"]:checked').val() || null,
