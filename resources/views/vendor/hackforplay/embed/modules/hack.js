@@ -60,11 +60,11 @@ function getEditor() {
 	window.addEventListener('message', function (event) {
 		switch (event.data.query) {
 			case 'eval':
-			eval(event.data.value);
-			break;
+				eval(event.data.value);
+				break;
 			case 'dispatch':
-			Hack.dispatchEvent(new Event(event.data.value));
-			break;
+				Hack.dispatchEvent(new Event(event.data.value));
+				break;
 			case 'capture': // Screen Capture
 				var canvas = enchant.Core.instance.currentScene._layers.Canvas._element;
 				event.source.postMessage({
