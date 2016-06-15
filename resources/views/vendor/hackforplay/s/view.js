@@ -1435,3 +1435,32 @@ function setOuterModule() {
 	sessionStorage.setItem('outer-modules', serial);
 	return serial;
 }
+
+// capture the frame
+function capture (value) {
+	var deferred = new $.Deferred();
+	var game = (document.getElementById('item-embed-iframe') || {}).contentWindow;
+	var request = {
+		query: 'capture',
+		value: value,
+		responseQuery: 'screenShotResult',
+	}
+
+	window.addEventListener('message', function task (e) {
+		if (typeof e.data === 'object' && e.data.query === request.responseQuery) {
+			window.removeEventListener('message', task);
+			deferred.resolve(e.data.value);
+		}
+	});
+
+	// Timeout
+	window.setTimeout(function () {
+		if (deferred.state() === 'pending') {
+			deferred.reject('Screen capture timeout. スクリーンキャプチャがタイムアウトしました');
+		}
+	}, 2000);
+
+	game.postMessage(request, '*');
+
+	return deferred;
+}
