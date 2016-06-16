@@ -38,7 +38,20 @@ Hack.start = function () {
 // enchant.ActionEventTarget.prototype.distpatchEvent
 // を try-catch で囲み、すべての例外を親ウィンドウに投げる
 
-// TODO: リサイズ時にゲームの scale を調節
+// リサイズ時にゲームの scale を調節
+document.documentElement.style.overflow = 'hidden';
+window.addEventListener('resize', function () {
+	var fWidth = parseInt(window.innerWidth, 10),
+	fHeight = parseInt(window.innerHeight, 10);
+	if (fWidth && fHeight) {
+		game.scale =  Math.min(
+			fWidth / game.width,
+			fHeight / game.height
+		);
+	} else {
+		game.scale = 1;
+	}
+});
 
 // TODO: クリック時に再度フォーカス
 

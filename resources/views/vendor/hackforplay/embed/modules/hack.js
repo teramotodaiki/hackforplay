@@ -104,23 +104,6 @@ function getEditor() {
 		return x > 0 ? 1 : -1;
 	};
 
-	// resize
-	window.addEventListener('resize', function () {
-		(function () {
-			document.documentElement.style.overflow = 'hidden';
-			var fWidth = parseInt(window.innerWidth, 10),
-			fHeight = parseInt(window.innerHeight, 10);
-			if (fWidth && fHeight) {
-				this.scale =  Math.min(
-					fWidth / this.width,
-					fHeight / this.height
-				);
-			} else {
-				this.scale = 1;
-			}
-		}).call(enchant.Core.instance);
-	});
-
 	game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png', 'hackforplay/menu-button-menu.png', 'hackforplay/menu-button-restage.png', 'hackforplay/menu-button-hint.png', 'hackforplay/menu-button-comment.png', 'hackforplay/menu-button-retry.png', 'hackforplay/new_button_next.png', 'hackforplay/new_button_comment.png', 'hackforplay/new_button_restage.png', 'hackforplay/achievement_p.png', 'hackforplay/achievement_n.png', 'hackforplay/new_button_town.png');
 
 	// Hack を override
