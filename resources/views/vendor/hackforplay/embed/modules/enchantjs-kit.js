@@ -60,7 +60,31 @@ window.addEventListener('click', function () {
 	window.focus(); // focus game
 });
 
-// TODO: 'capture' メッセージを受けてcanvasの画像を返す
+// 'capture' メッセージを受けてcanvasの画像を返す
+window.addEventListener('message', function (event) {
+  if (typeof event.data === 'object' && event.data.query === 'capture') {
+    var canvas;
+    try {
+      canvas = enchant.Core.instance.currentScene._layers.Canvas._element;
+    } catch (e) {
+      if (!game.ready) {
+        game.on('load', send);
+      }
+      return;
+    }
+  }
+  send();
+  
+  function send () {
+    var canvas = enchant.Core.instance.currentScene._layers.Canvas._element;
+    event.source.postMessage({
+      query: event.data.responseQuery,
+      value: canvas.toDataURL(),
+      width: canvas.width,
+      height: canvas.height,
+    }, event.origin);
+  }
+});
 
 // TODO: enchant.jsで利用するメンバのヒントを親ウィンドウに投げる
 

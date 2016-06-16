@@ -81,15 +81,6 @@ function getEditor() {
 			case 'dispatch':
 				Hack.dispatchEvent(new Event(event.data.value));
 				break;
-			case 'capture': // Screen Capture
-				var canvas = enchant.Core.instance.currentScene._layers.Canvas._element;
-				event.source.postMessage({
-					query: event.data.responseQuery,
-					value: canvas.toDataURL(),
-					width: canvas.width,
-					height: canvas.height,
-				}, event.origin);
-				break;
 		}
 	});
 
