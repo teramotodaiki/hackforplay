@@ -19,7 +19,10 @@ Route::get('random', 'RandomController@index');
 
 Route::resource('users', 'UserController');
 
-Route::resource('products', 'ProductController');
+Route::group(['middleware' => 'auth.private'], function()
+{
+  Route::resource('products', 'ProductController');
+});
 
 // channels/
 Route::get('channels/{id}/watch', 'DefaultAppController@index');

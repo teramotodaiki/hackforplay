@@ -50,5 +50,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'etag' => \App\Http\Middleware\ETagMiddleware::class,
+        'auth.private' => \App\Http\Middleware\AuthenticateWithPrivateAuth::class,
     ];
 }
