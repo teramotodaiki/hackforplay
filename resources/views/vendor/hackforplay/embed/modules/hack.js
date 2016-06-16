@@ -134,13 +134,6 @@ function getEditor() {
 
 	})(new enchant.EventTarget());
 
-	Hack.start = function () {
-		// game start
-		Hack.dispatchEvent(new Event('load'));
-		game.start();
-		refocus();
-	};
-
 	Hack.fun2str = function (func) {
 		// 関数の文字列化
 		if (func instanceof Function) {

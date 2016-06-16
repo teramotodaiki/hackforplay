@@ -25,7 +25,13 @@ enchant();
 // コアインスタンスを生成
 window.game = new Core(Hack.stageInfo.width, Hack.stageInfo.height);
 
-// TODO: Hack.start
+// Hack.start
+Hack.start = function () {
+  // game start
+  Hack.dispatchEvent(new Event('load'));
+  game.start();
+  window.focus();
+};
 
 // TODO:
 // enchant.EventTarget.prototype.distpatchEvent
