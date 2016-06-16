@@ -19,9 +19,11 @@
 // v0.0.1
 
 
-// TODO: すべてのenchantモジュールをグローバルにエクスポート
+// すべてのenchantモジュールをグローバルにエクスポート
+enchant();
 
-// TODO: コアインスタンスを生成
+// コアインスタンスを生成
+window.game = new Core(Hack.stageInfo.width, Hack.stageInfo.height);
 
 // TODO: Hack.start
 
