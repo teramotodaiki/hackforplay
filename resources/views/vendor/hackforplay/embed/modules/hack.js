@@ -41,8 +41,7 @@ function getEditor() {
 
 		define(function (require, exports, module) {
 
-			require('enchantjs/enchant');
-			require('enchantjs/ui.enchant');
+			require('hackforplay/enchantjs-kit');
 			window.SC = require('soundcloud/sdk-3.0.0');
 
 			return mod();
