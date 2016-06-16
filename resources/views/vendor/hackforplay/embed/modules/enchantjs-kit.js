@@ -53,7 +53,12 @@ window.addEventListener('resize', function () {
 	}
 });
 
-// TODO: クリック時に再度フォーカス
+// クリック時に再度フォーカス
+window.addEventListener('click', function () {
+  window.document.activeElement.blur(); // Blur an enchantBook
+	window.parent.focus(); // Blur an input in parent window
+	window.focus(); // focus game
+});
 
 // TODO: 'capture' メッセージを受けてcanvasの画像を返す
 

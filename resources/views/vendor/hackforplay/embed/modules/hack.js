@@ -53,8 +53,6 @@ function getEditor() {
 	}
 })(function () {
 
-	window.addEventListener('click', refocus);
-
 	// Eval exception catch
 	(function () {
 		var _eval = window.eval;
