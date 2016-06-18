@@ -3,9 +3,8 @@
 (function (mod) {
 	if (typeof define === "function" && define.amd) {
 		define(function (require, exports, module) {
-			
-			require('enchantjs/enchant');
-			require('enchantjs/ui.enchant');
+
+			require('hackforplay/enchantjs-kit');
 			require('hackforplay/hack');
 			require('hackforplay/rpg-kit-rpgobjects');
 			require('hackforplay/rpg-kit-color');
