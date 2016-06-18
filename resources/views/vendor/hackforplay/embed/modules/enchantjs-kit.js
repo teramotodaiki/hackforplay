@@ -33,10 +33,18 @@ Hack.start = function () {
   window.focus();
 };
 
-// TODO:
-// enchant.EventTarget.prototype.distpatchEvent
-// enchant.ActionEventTarget.prototype.distpatchEvent
-// を try-catch で囲み、すべての例外を親ウィンドウに投げる
+// 実行中、すべての例外を親ウィンドウに投げる
+function tryCatchWrap (func) {
+  return function () {
+    try {
+      return func.apply(this, arguments);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+}
+EventTarget.prototype.dispatchEvent = tryCatchWrap(EventTarget.prototype.dispatchEvent);
+ActionEventTarget.prototype.dispatchEvent = tryCatchWrap(ActionEventTarget.prototype.dispatchEvent);
 
 // リサイズ時にゲームの scale を調節
 document.documentElement.style.overflow = 'hidden';
