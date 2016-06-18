@@ -211,3 +211,21 @@ $(function () {
 		timeoutID = null;
 	}
 });
+
+
+// error を error.hackforplayに変換する
+// 古い仕様に無理やり当てはめている
+window.addEventListener('message', function (e) {
+	if (typeof e.data !== 'object' || e.data.query !== 'error') return;
+	var error = e.data.value;
+	console.log(error);
+	window.postMessage({
+		query: 'openExternal',
+		url: 	'https://error.hackforplay'+
+					'?name='+error.name+
+					'&message='+error.message+
+					'&line='+error.line+
+					'&column='+error.column+
+					'&sourceURL='+encodeURIComponent(error.sourceURL)
+	}, '/');
+});

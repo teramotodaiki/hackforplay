@@ -41,8 +41,7 @@ function getEditor() {
 
 		define(function (require, exports, module) {
 
-			require('enchantjs/enchant');
-			require('enchantjs/ui.enchant');
+			require('hackforplay/enchantjs-kit');
 			window.SC = require('soundcloud/sdk-3.0.0');
 
 			return mod();
@@ -53,8 +52,6 @@ function getEditor() {
     mod();
 	}
 })(function () {
-
-	window.addEventListener('click', refocus);
 
 	// Eval exception catch
 	(function () {
@@ -84,15 +81,6 @@ function getEditor() {
 			case 'dispatch':
 				Hack.dispatchEvent(new Event(event.data.value));
 				break;
-			case 'capture': // Screen Capture
-				var canvas = enchant.Core.instance.currentScene._layers.Canvas._element;
-				event.source.postMessage({
-					query: event.data.responseQuery,
-					value: canvas.toDataURL(),
-					width: canvas.width,
-					height: canvas.height,
-				}, event.origin);
-				break;
 		}
 	});
 
@@ -105,25 +93,6 @@ function getEditor() {
 		return x > 0 ? 1 : -1;
 	};
 
-	// resize
-	window.addEventListener('resize', function () {
-		(function () {
-			document.documentElement.style.overflow = 'hidden';
-			var fWidth = parseInt(window.innerWidth, 10),
-			fHeight = parseInt(window.innerHeight, 10);
-			if (fWidth && fHeight) {
-				this.scale =  Math.min(
-					fWidth / this.width,
-					fHeight / this.height
-				);
-			} else {
-				this.scale = 1;
-			}
-		}).call(enchant.Core.instance);
-	});
-
-	enchant('ui');
-	window.game = new enchant.Core(480, 320);
 	game.preload('hackforplay/clear.png', 'hackforplay/gameover.png', 'hackforplay/button_retry.png', 'hackforplay/new_button_replay.png', 'hackforplay/new_button_retry.png', 'hackforplay/menu-button-menu.png', 'hackforplay/menu-button-restage.png', 'hackforplay/menu-button-hint.png', 'hackforplay/menu-button-comment.png', 'hackforplay/menu-button-retry.png', 'hackforplay/new_button_next.png', 'hackforplay/new_button_comment.png', 'hackforplay/new_button_restage.png', 'hackforplay/achievement_p.png', 'hackforplay/achievement_n.png', 'hackforplay/new_button_town.png');
 
 	// Hack を override
@@ -136,13 +105,6 @@ function getEditor() {
 		Hack.initialize();
 
 	})(new enchant.EventTarget());
-
-	Hack.start = function () {
-		// game start
-		Hack.dispatchEvent(new Event('load'));
-		game.start();
-		refocus();
-	};
 
 	Hack.fun2str = function (func) {
 		// 関数の文字列化

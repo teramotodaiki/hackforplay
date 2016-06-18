@@ -5,14 +5,6 @@
  * Copyright Ubiquitous Entertainment Inc.
  * Released under the MIT license.
  */
-// Module check
-(function (mod) {
-	if (typeof define === "function" && define.amd) {
-		define(mod);
-	} else {
-    mod();
-	}
-})(function () {
 
 (function(window, undefined) {
 
@@ -893,7 +885,6 @@ enchant.EventTarget = enchant.Class.create({
      * @param {enchant.Event} e Event to be issued.
      */
     dispatchEvent: function(e) {
-      try {
         e.target = this;
         e.localX = e.x - this._offsetX;
         e.localY = e.y - this._offsetY;
@@ -907,18 +898,6 @@ enchant.EventTarget = enchant.Class.create({
                 listeners[i].call(this, e);
             }
         }
-      } catch (error) {
-        // [HackforPlay] 非同期でサーバにエラーをPOSTする
-        if (Hack && typeof Hack.openExternal === 'function') {
-					Hack.openExternal('https://error.hackforplay'+
-														'?name='+error.name+
-														'&message='+error.message+
-														'&line='+error.line+
-														'&column='+error.column+
-														'&sourceURL='+encodeURIComponent(error.sourceURL));
-        }
-        throw error;
-      }
     }
 });
 
@@ -5365,15 +5344,6 @@ if (window.Deferred) {
                 result = queue._fail(arg);
                 queue.call(result);
             } else if (arg instanceof Error) {
-                // [HackforPlay] 非同期でサーバにエラーをPOSTする
-								if (Hack && typeof Hack.openExternal === 'function') {
-									Hack.openExternal('https://error.hackforplay'+
-																		'?name='+arg.name+
-																		'&message='+arg.message+
-																		'&line='+arg.line+
-																		'&column='+arg.column+
-																		'&sourceURL='+encodeURIComponent(arg.sourceURL));
-				        }
                 throw arg;
             } else {
                 err = new Error('failed in Deferred');
@@ -6314,7 +6284,6 @@ enchant.ActionEventTarget = enchant.Class.create(enchant.EventTarget, {
         enchant.EventTarget.apply(this, arguments);
     },
     dispatchEvent: function(e) {
-      try {
         var target;
         if (this.node) {
             target = this.node;
@@ -6335,13 +6304,6 @@ enchant.ActionEventTarget = enchant.Class.create(enchant.EventTarget, {
                 listeners[i].call(target, e);
             }
         }
-      } catch (error) {
-        // [HackforPlay] 非同期でサーバにエラーをPOSTする
-        if (Hack && typeof Hack.openExternal === 'function') {
-          Hack.openExternal('http://error.hackforplay?name='+error.name+'&message='+error.message);
-        }
-        throw error;
-      }
     }
 });
 
@@ -7099,6 +7061,4 @@ enchant.Tween = enchant.Class.create(enchant.Action, {
     }
 });
 
-})(window);
-
-});
+}(window));
