@@ -36,15 +36,12 @@ Hack.start = function () {
 // 実行中、すべての例外を親ウィンドウに投げる
 function postError (error) {
   var parent = window.parent || window;
-  var e = Object.assign({}, error);
   parent.postMessage({
     query: 'error',
-    value: e,
-    name: e.name,
-    message: e.message,
-    line: e.line,
-    column: e.column,
-    sourceURL: e.sourceURL
+    value: Object.assign({}, error, {
+      name: error.name || 'Error',
+      message: error.message || error,
+    }),
   }, parent.location.origin);
 }
 function tryCatchWrap (func) {
