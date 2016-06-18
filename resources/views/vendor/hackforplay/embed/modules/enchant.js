@@ -893,7 +893,6 @@ enchant.EventTarget = enchant.Class.create({
      * @param {enchant.Event} e Event to be issued.
      */
     dispatchEvent: function(e) {
-      try {
         e.target = this;
         e.localX = e.x - this._offsetX;
         e.localY = e.y - this._offsetY;
@@ -907,18 +906,6 @@ enchant.EventTarget = enchant.Class.create({
                 listeners[i].call(this, e);
             }
         }
-      } catch (error) {
-        // [HackforPlay] 非同期でサーバにエラーをPOSTする
-        if (Hack && typeof Hack.openExternal === 'function') {
-					Hack.openExternal('https://error.hackforplay'+
-														'?name='+error.name+
-														'&message='+error.message+
-														'&line='+error.line+
-														'&column='+error.column+
-														'&sourceURL='+encodeURIComponent(error.sourceURL));
-        }
-        throw error;
-      }
     }
 });
 
@@ -6314,7 +6301,6 @@ enchant.ActionEventTarget = enchant.Class.create(enchant.EventTarget, {
         enchant.EventTarget.apply(this, arguments);
     },
     dispatchEvent: function(e) {
-      try {
         var target;
         if (this.node) {
             target = this.node;
@@ -6335,13 +6321,6 @@ enchant.ActionEventTarget = enchant.Class.create(enchant.EventTarget, {
                 listeners[i].call(target, e);
             }
         }
-      } catch (error) {
-        // [HackforPlay] 非同期でサーバにエラーをPOSTする
-        if (Hack && typeof Hack.openExternal === 'function') {
-          Hack.openExternal('http://error.hackforplay?name='+error.name+'&message='+error.message);
-        }
-        throw error;
-      }
     }
 });
 
