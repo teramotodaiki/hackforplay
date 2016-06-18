@@ -5,14 +5,6 @@
  * Copyright Ubiquitous Entertainment Inc.
  * Released under the MIT license.
  */
-// Module check
-(function (mod) {
-	if (typeof define === "function" && define.amd) {
-		define(mod);
-	} else {
-    mod();
-	}
-})(function () {
 
 (function(window, undefined) {
 
@@ -7069,6 +7061,4 @@ enchant.Tween = enchant.Class.create(enchant.Action, {
     }
 });
 
-})(window);
-
-});
+}(window));
