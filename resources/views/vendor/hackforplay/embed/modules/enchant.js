@@ -5352,15 +5352,6 @@ if (window.Deferred) {
                 result = queue._fail(arg);
                 queue.call(result);
             } else if (arg instanceof Error) {
-                // [HackforPlay] 非同期でサーバにエラーをPOSTする
-								if (Hack && typeof Hack.openExternal === 'function') {
-									Hack.openExternal('https://error.hackforplay'+
-																		'?name='+arg.name+
-																		'&message='+arg.message+
-																		'&line='+arg.line+
-																		'&column='+arg.column+
-																		'&sourceURL='+encodeURIComponent(arg.sourceURL));
-				        }
                 throw arg;
             } else {
                 err = new Error('failed in Deferred');
