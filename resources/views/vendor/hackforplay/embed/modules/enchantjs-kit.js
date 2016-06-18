@@ -34,12 +34,26 @@ Hack.start = function () {
 };
 
 // 実行中、すべての例外を親ウィンドウに投げる
+function postError (error) {
+  var parent = window.parent || window;
+  var e = Object.assign({}, error);
+  parent.postMessage({
+    query: 'error',
+    value: e,
+    name: e.name,
+    message: e.message,
+    line: e.line,
+    column: e.column,
+    sourceURL: e.sourceURL
+  }, parent.location.origin);
+}
 function tryCatchWrap (func) {
   return function () {
     try {
       return func.apply(this, arguments);
     } catch (e) {
       console.error(e);
+      postError(e);
     }
   };
 }
@@ -82,7 +96,7 @@ window.addEventListener('message', function (event) {
     }
   }
   send();
-  
+
   function send () {
     var canvas = enchant.Core.instance.currentScene._layers.Canvas._element;
     event.source.postMessage({
