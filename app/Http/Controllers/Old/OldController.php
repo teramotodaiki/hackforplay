@@ -3,8 +3,8 @@ namespace App\Http\Controllers\Old;
 
 use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 
 class OldController extends Controller
 {
@@ -14,15 +14,7 @@ class OldController extends Controller
      */
     public function __construct()
     {
-      // Get PDO connection
-      $this->dbh = DB::connection()->getPdo();
-      if (env('DB_CONNECTION') === 'mysql') {
-        $this->dbh->exec("SET sql_mode='ANSI_QUOTES'");
-      }
-      $this->dbh->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
-
-      // Document root
-      $this->root = $_SERVER['DOCUMENT_ROOT'] . '/../resources/views/vendor/hackforplay/';
+      $this->middleware(['old']);
     }
 
     /**
@@ -31,8 +23,11 @@ class OldController extends Controller
      * @param   $api (ex: s )
      * @return  View
      */
-    public function index($api)
+    public function index(Request $request, $api)
     {
+      $dbh = $request->oldConnection->dbh;
+      $root = $request->oldConnection->root;
+
       // Trail slash (/someApi?id=1 のようなURLを /someApi/?id=1 と変換する)
       if (array_key_exists('REQUEST_URI', $_SERVER)) {
         $path = explode('?', $_SERVER['REQUEST_URI'])[0];
@@ -46,12 +41,12 @@ class OldController extends Controller
 
       if (view()->exists("vendor.hackforplay.$api.index")) {
         // PHP
-        chdir("{$this->root}{$api}");
-        return view("vendor.hackforplay.$api.index", ['dbh' => $this->dbh ]);
+        chdir("{$root}{$api}");
+        return view("vendor.hackforplay.$api.index", ['dbh' => $dbh ]);
 
-      } else if (file_exists("{$this->root}{$api}/index.html")) {
+      } else if (file_exists("{$root}{$api}/index.html")) {
         // html
-        $content = file_get_contents("{$this->root}{$api}/index.html");
+        $content = file_get_contents("{$root}{$api}/index.html");
         return response($content, 200)
                 ->header('Content-Type', 'text/html');
       }
@@ -64,10 +59,13 @@ class OldController extends Controller
      * @param   $file (ex: begin )
      * @return  View
      */
-    public function rawphp($dir, $file)
+    public function rawphp(Request $request, $dir, $file)
     {
-      chdir("{$this->root}{$dir}");
-      return view("vendor.hackforplay.$dir.$file", ['dbh' => $this->dbh ]);
+      $dbh = $request->oldConnection->dbh;
+      $root = $request->oldConnection->root;
+
+      chdir("{$root}{$dir}");
+      return view("vendor.hackforplay.$dir.$file", ['dbh' => $dbh ]);
     }
 
     public function rawphproot($file)
@@ -81,9 +79,11 @@ class OldController extends Controller
      * @param   $api $ext
      * @return  Raw content with Content-Type
      */
-    public function statics($api, $ext)
+    public function statics(Request $request, $api, $ext)
     {
-      $path = "{$this->root}{$api}.{$ext}";
+      $root = $request->oldConnection->root;
+
+      $path = "{$root}{$api}.{$ext}";
       if (!file_exists($path)) {
         return response('', 404);
       }
