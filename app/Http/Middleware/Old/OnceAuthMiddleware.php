@@ -27,7 +27,9 @@ class OnceAuthMiddleware
       session_commit();
 
       if (isset($_SESSION['UserID'])) {
-        Auth::loginUsingId($_SESSION['UserID'], false);
+        Auth::loginUsingId($_SESSION['UserID']);
+      } else {
+        Auth::logout();
       }
 
       return $next($request);
