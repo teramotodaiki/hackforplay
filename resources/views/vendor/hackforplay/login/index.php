@@ -10,7 +10,8 @@ try {
 
 	// セッションがある場合は / に遷移する
 	if ($session_userid) {
-		header('Location: /');
+		header('Location: /r/');
+		die;
 	} else {
 		include 'view.php';
 	}
