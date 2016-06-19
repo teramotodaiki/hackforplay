@@ -26,7 +26,7 @@ class Channel extends Component {
     }
 
     // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
+    Pusher.logToConsole = false;
 
     const pusherKey = document.querySelector('meta[name="pusher-key"]').getAttribute('content');
     const pusher = new Pusher(pusherKey, {
