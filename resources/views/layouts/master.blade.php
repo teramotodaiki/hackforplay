@@ -7,6 +7,9 @@
     @yield('ogp')
     <link rel="stylesheet" href="@yield('css')">
     @yield('wovn')
+    @if (Auth::check() && isset($user))
+      <meta name="login-user-id" content="{{ $user->ID }}">
+    @endif
   </head>
   <body>
     @yield('ga')
