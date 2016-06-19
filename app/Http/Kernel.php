@@ -51,5 +51,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'etag' => \App\Http\Middleware\ETagMiddleware::class,
         'auth.private' => \App\Http\Middleware\AuthenticateWithPrivateAuth::class,
+        'old' => \App\Http\Middleware\Old\OldMiddleware::class,
     ];
 }
