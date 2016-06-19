@@ -21,7 +21,9 @@ class OnceAuthMiddleware
       // Once auth from OLD AUTH WITH SESSION from cookie
       session_start();
       $session = Session::find(session_id());
-      session_decode($session->Data);
+      if ($session) {
+        session_decode($session->Data);
+      }
       session_commit();
 
       if (isset($_SESSION['UserID'])) {
