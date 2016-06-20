@@ -24,6 +24,9 @@ Route::group(['middleware' => 'auth.private'], function()
   Route::resource('products', 'ProductController');
 });
 
+// teams/
+Route::resource('teams', 'TeamController');
+
 // channels/
 Route::get('channels/{id}/watch', 'DefaultAppController@index');
 Route::resource('channels', 'ChannelController');
