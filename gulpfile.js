@@ -1,5 +1,9 @@
 const elixir = require('laravel-elixir');
 
+// Add envify (convert NODE_ENV in production) to browserify
+// ...use browserify2
+require('./elixir-extention');
+
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -22,7 +26,7 @@ elixir((mix) => {
     // Sass CSS
     .sass('app.scss')
     // browserify JS
-    .browserify('app.js')
+    .browserify2('app.js')
     // Versioning
     .version(['css/app.css', 'js/app.js'])
     // Bootstrap3
