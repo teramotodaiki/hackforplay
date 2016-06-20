@@ -147,6 +147,9 @@ $deps = empty($token) ?
 
 	require.config({
 		baseUrl : '../mods/',
+		shim: {
+			'enchantjs/ui.enchant': ['enchantjs/enchant']
+		}
 	});
 	require.onError = function (e) {
 		console.error(e);
