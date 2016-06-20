@@ -25,7 +25,12 @@ class BellController extends Controller
      */
     public function create()
     {
-        //
+      $slackApiKey = 'xoxb-52383757650-YgHgHxGEQuRSrOBjvOsJWSwV';
+      $text = ':japanese_ogre:';
+      $text = urlencode($text);
+      $channel = 'test';
+      $url = "https://slack.com/api/chat.postMessage?token=${slackApiKey}&channel=${channel}&text=${text}&as_user=true";
+      file_get_contents($url);
     }
 
     /**
