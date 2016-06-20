@@ -1343,41 +1343,41 @@ $(function(){
 					$('<a>').data('name', channel.Name).text(channel.DisplayName+' | '+channel.Team)
 				).appendTo('.h4p_cast-channel .dropdown-menu');
 			});
-
-			$('<li>').append(
-				$('<a>').text('Create new channel').on('click', function () {
-
-					var castWindow = window.open('about:blank', 'cast');
-					$.ajax({
-						type: 'POST',
-						url: '/channels',
-						data: {
-							project_token: sessionStorage.getItem('project-token'),
-						},
-					}).done(function (channel) {
-
-						var uri = '/channels/'+channel.ID;
-						castWindow.location.href = uri+'/watch';
-
-						[
-							'チャンネルができたよ✨\n他の人も呼んでみよう❗️→'+location.origin+uri+'/watch'
-						]
-						.forEach(function (message) {
-							$.post(uri+'/chats', { message: message });
-						});
-
-					}).fail(function (data) {
-						console.error(data);
-						castWindow.close();
-					});
-					return false;
-
-				})
-			).appendTo('.h4p_cast-channel .dropdown-menu');
-
 		} catch (e) {
 			console.error(e);
 		}
+
+		$('<li>').append(
+			$('<a>').text('Create new channel').on('click', function () {
+
+				var castWindow = window.open('about:blank', 'cast');
+				$.ajax({
+					type: 'POST',
+					url: '/channels',
+					data: {
+						project_token: sessionStorage.getItem('project-token'),
+					},
+				}).done(function (channel) {
+
+					var uri = '/channels/'+channel.ID;
+					castWindow.location.href = uri+'/watch';
+
+					[
+						'チャンネルができたよ✨\n他の人も呼んでみよう❗️→'+location.origin+uri+'/watch'
+					]
+					.forEach(function (message) {
+						$.post(uri+'/chats', { message: message });
+					});
+
+				}).fail(function (data) {
+					console.error(data);
+					castWindow.close();
+				});
+				return false;
+
+			})
+		).appendTo('.h4p_cast-channel .dropdown-menu');
+
 	});
 
 
