@@ -15,6 +15,6 @@ class Team extends Model
   protected $primaryKey = 'ID';
   protected $hidden = [
     'slack_api_token',
-    'slack_api_channel',
+    'slack_channel_name',
   ];
 }
