@@ -27,7 +27,7 @@ class QcardController extends Controller
      */
     public function create(Request $request, $channelId)
     {
-      $channel = Channel::find($channelId)->firstOrFail();
+      $channel = Channel::findOrFail($channelId);
       $qcard = $channel->qcards()
       ->create([
         'article' => '{"message":"yeah!"}',
