@@ -28,15 +28,12 @@ export const channels = (state = {}, action) => {
 };
 
 // state { [id]: { q card object has id }, ... }]
-const defaultQcard = {
-  article: {},
-};
 export const qcards = (state = {}, { type, qcard }) => {
   switch (type) {
     case ADD_QCARD:
 
       return Object.assign({}, state, {
-        [qcard.id]: Object.assign({}, defaultQcard, qcard)
+        [qcard.id]: Object.assign({}, qcard)
       });
 
       break;
