@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth.old', 'auth']], function()
 Route::get('channels/{id}/watch', 'DefaultAppController@index');
 Route::resource('channels', 'ChannelController');
 Route::resource('channels.chats', 'ChatController');
+Route::resource('channels.qcards', 'QcardController');
 
 // mods/
 Route::group(['middleware' => 'etag', 'prefix' => 'mods'], function()
