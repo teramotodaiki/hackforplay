@@ -40,6 +40,14 @@ Route::group(['middleware' => ['auth.old']], function()
 
   Route::resource('channels', 'ChannelController');
   Route::resource('channels.chats', 'ChatController');
+
+});
+
+Route::group(['middleware' => ['auth.old', 'auth']], function()
+{
+  // qcards
+  Route::get('qcards/{id}/edit', 'DefaultAppController@index');
+
   Route::resource('channels.qcards', 'QcardController');
 
 });
