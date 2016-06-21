@@ -44,6 +44,12 @@ class BellController extends Controller
       )->firstOrFail();
 
       $user = $request->user();
+      if (!$user->isConnected($team)) {
+        return response([
+          'ok' => false,
+          'error' => 'not_in_team'
+        ], 200);
+      }
 
       $bell = $team->bells()
       ->create([
