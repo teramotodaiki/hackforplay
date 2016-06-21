@@ -10,7 +10,7 @@ import IframeEmbed from './iframe-embed';
 import Timeline from './components/timeline';
 import ActionBar from './components/action-bar';
 import ChannelMenu from './components/channel-menu';
-import { addChat, postChat, fetchChannel, createGist } from './actions/';
+import { addChat, postChat, fetchChannel, createGist, postBell } from './actions/';
 
 class Channel extends Component {
 
@@ -40,6 +40,7 @@ class Channel extends Component {
 
     this.reload = this.reload.bind(this);
     this.createGist = this.createGist.bind(this);
+    this.raiseHand = this.raiseHand.bind(this);
   }
 
   postChat (message) {
@@ -71,6 +72,12 @@ class Channel extends Component {
 
   }
 
+  raiseHand () {
+    const { dispatch, params } = this.props;
+    dispatch(postBell(1, params.id))
+    .then((value) => console.log(value));
+  }
+
   render () {
 
     const id = +this.props.params.id;
@@ -99,6 +106,7 @@ class Channel extends Component {
           <ChannelMenu
             reload={this.reload}
             createGist={this.createGist}
+            raiseHand={this.raiseHand}
             />
         </Col>
         <Col
