@@ -31,19 +31,19 @@ export const channels = (state = {}, action) => {
 const defaultQcard = {
   article: {},
 };
-export const qcards = (state = {}, action) => {
-  switch (action.type) {
+export const qcards = (state = {}, { type, qcard }) => {
+  switch (type) {
     case ADD_QCARD:
 
       return Object.assign({}, state, {
-        [action.qcard.id]: Object.assign({}, defaultQcard, action.qcard)
+        [qcard.id]: Object.assign({}, defaultQcard, qcard)
       });
 
       break;
     case UPDATE_QCARD:
 
       return Object.assign({}, state, {
-        [action.qcard.id]: Object.assign({}, state[action.qcard.id], action.qcard)
+        [qcard.id]: Object.assign({}, state[qcard.id], qcard)
       });
 
       break;
