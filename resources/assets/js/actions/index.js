@@ -74,3 +74,14 @@ export const ADD_QCARD = 'ADD_QCARD';
 export const addQcard = (qcard) => {
   return { type: ADD_QCARD, qcard };
 };
+
+export const fetchQcard = ({ id }) => {
+  return (dispatch) => {
+
+    return request
+      .get(`/qcards/${id}`)
+      .then((result) => dispatch(addQcard(result.body)))
+      .catch((err) => alert(arr.message));
+
+  }
+};
