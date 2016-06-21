@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Team;
+use App\Bell;
 
 class BellController extends Controller
 {
@@ -40,18 +41,24 @@ class BellController extends Controller
       $column = ctype_digit($team_id) ? 'id' : 'name';
       $team = Team::where($column, $team_id)->firstOrFail();
 
+      $bell = $team->bells()
+      ->create([
+        
+      ]);
+
       try {
         // slack notification
         $text = ':sushi:';
         $text = urlencode($text);
         $url = "https://slack.com/api/chat.postMessage?token={$team->slack_api_token}&channel={$team->slack_channel_name}&text=$text&as_user=true";
 
-        $result = file_get_contents($url);
-        return response($result, 200);
+        file_get_contents($url);
 
       } catch (Exception $e) {
         return response($e, 200);
       }
+
+      return response($bell, 200);
     }
 
     /**
