@@ -40,6 +40,13 @@ export const qcards = (state = {}, action) => {
       });
 
       break;
+    case UPDATE_QCARD:
+
+      return Object.assign({}, state, {
+        [action.qcard.id]: Object.assign({}, state[action.qcard.id], action.qcard)
+      });
+
+      break;
     default:
       return state;
   }
