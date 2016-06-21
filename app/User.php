@@ -22,4 +22,19 @@ class User extends Authenticatable
     return $this->hasMany('App\Account', 'UserID');
   }
 
+  public function teams()
+  {
+    return $this->belongsToMany('App\Team', 'UserTeamMap', 'UserID', 'TeamID')
+    ->withPivot('Enabled');
+  }
+
+  public function isConnected($team)
+  {
+    $connection = $this->teams
+    ->where('ID', $team->ID)
+    ->first();
+
+    return $connection !== NULL && $connection->pivot->Enabled;
+  }
+
 }

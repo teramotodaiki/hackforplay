@@ -38,17 +38,27 @@ class BellController extends Controller
      */
     public function store(Request $request, $team_id)
     {
-      $column = ctype_digit($team_id) ? 'id' : 'name';
-      $team = Team::where($column, $team_id)->firstOrFail();
+      $team = Team::where(
+        ctype_digit($team_id) ? 'id' : 'name',
+        $team_id
+      )->firstOrFail();
+
+      $user = $request->user();
+      if (!$user->isConnected($team)) {
+        return response([
+          'ok' => false,
+          'error' => 'not_in_team'
+        ], 200);
+      }
 
       $bell = $team->bells()
       ->create([
-        
+        'user_id' => $user->ID,
       ]);
 
       try {
         // slack notification
-        $text = ':sushi:';
+        $text = ":bellhop_bell::point_right:{$user->Nickname}";
         $text = urlencode($text);
         $url = "https://slack.com/api/chat.postMessage?token={$team->slack_api_token}&channel={$team->slack_channel_name}&text=$text&as_user=true";
 
