@@ -68,9 +68,9 @@ class OldController extends Controller
       return view("vendor.hackforplay.$dir.$file", ['dbh' => $dbh ]);
     }
 
-    public function rawphproot($file)
+    public function rawphproot(Request $request, $file)
     {
-      return $this->rawphp('', $file);
+      return $this->rawphp($request, '', $file);
     }
 
     /**
