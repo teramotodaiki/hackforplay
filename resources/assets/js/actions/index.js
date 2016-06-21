@@ -85,3 +85,9 @@ export const fetchQcard = ({ id }) => {
 
   }
 };
+
+export const UPDATE_QCARD = 'UPDATE_QCARD';
+
+export const updateQcard = (qcard) => {
+  return { type: UPDATE_QCARD, qcard };
+};

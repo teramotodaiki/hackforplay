@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ADD_CHANNEL, ADD_CHAT, ADD_QCARD  } from '../actions/';
+import { ADD_CHANNEL, ADD_CHAT, ADD_QCARD, UPDATE_QCARD  } from '../actions/';
 
 // state { [id]: { channel object has id }, ... }
 export const channels = (state = {}, action) => {
