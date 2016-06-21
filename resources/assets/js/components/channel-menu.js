@@ -22,6 +22,9 @@ export default class ChannelMenu extends Component {
       <Button bsStyle="link" bsSize="large" onClick={createGist}>
         <span className="fa fa-github fa-3x"></span>
       </Button>
+      <Button bsStyle="link" bsSize="large">
+        <span className="fa fa-hand-paper-o fa-3x"></span>
+      </Button>
     </div>);
   }
 }
