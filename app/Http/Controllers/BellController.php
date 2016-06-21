@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Team;
 
 class BellController extends Controller
 {
@@ -25,12 +26,7 @@ class BellController extends Controller
      */
     public function create()
     {
-      $slackApiKey = 'xoxb-52383757650-YgHgHxGEQuRSrOBjvOsJWSwV';
-      $text = ':japanese_ogre:';
-      $text = urlencode($text);
-      $channel = 'test';
-      $url = "https://slack.com/api/chat.postMessage?token=${slackApiKey}&channel=${channel}&text=${text}&as_user=true";
-      file_get_contents($url);
+
     }
 
     /**
@@ -39,9 +35,23 @@ class BellController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $team_id)
     {
-        //
+      $column = ctype_digit($team_id) ? 'id' : 'name';
+      $team = Team::where($column, $team_id)->firstOrFail();
+
+      try {
+        // slack notification
+        $text = ':sushi:';
+        $text = urlencode($text);
+        $url = "https://slack.com/api/chat.postMessage?token={$team->slack_api_token}&channel={$team->slack_channel_name}&text=$text&as_user=true";
+
+        $result = file_get_contents($url);
+        return response($result, 200);
+
+      } catch (Exception $e) {
+        return response($e, 200);
+      }
     }
 
     /**
