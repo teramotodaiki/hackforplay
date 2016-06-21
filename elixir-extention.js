@@ -26,7 +26,7 @@ var envify = require('gulp-envify');
 Elixir.extend('browserify2', function(src, output, baseDir, options) {
     var paths = prepGulpPaths(src, baseDir, output);
 
-    new Elixir.Task('browserify2', function() {
+    new Elixir.Task('browserify', function() {
         var stream = config.js.browserify.watchify.enabled
             ? watchifyStream
             : browserifyStream;
