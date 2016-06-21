@@ -38,12 +38,16 @@ class BellController extends Controller
      */
     public function store(Request $request, $team_id)
     {
-      $column = ctype_digit($team_id) ? 'id' : 'name';
-      $team = Team::where($column, $team_id)->firstOrFail();
+      $team = Team::where(
+        ctype_digit($team_id) ? 'id' : 'name',
+        $team_id
+      )->firstOrFail();
+
+      $user = $request->user();
 
       $bell = $team->bells()
       ->create([
-        
+        'user_id' => $user->ID,
       ]);
 
       try {
