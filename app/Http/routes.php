@@ -24,6 +24,14 @@ Route::group(['middleware' => 'auth.private'], function()
   Route::resource('products', 'ProductController');
 });
 
+Route::group(['middleware' => ['auth.old', 'auth']], function()
+{
+  // teams/
+  Route::resource('teams', 'TeamController');
+  Route::resource('teams.bells', 'BellController');
+  
+});
+
 // channels/
 Route::get('channels/{id}/watch', 'DefaultAppController@index');
 Route::resource('channels', 'ChannelController');
