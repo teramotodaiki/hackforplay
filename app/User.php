@@ -27,4 +27,14 @@ class User extends Authenticatable
     return $this->belongsToMany('App\Team', 'UserTeamMap', 'UserID', 'TeamID')
     ->withPivot('Enabled');
   }
+
+  public function isConnected($team)
+  {
+    $connection = $this->teams
+    ->where('ID', $team->ID)
+    ->first();
+
+    return $connection !== NULL && $connection->pivot->Enabled;
+  }
+
 }
