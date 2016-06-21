@@ -28,10 +28,17 @@ class QcardController extends Controller
     public function create(Request $request, $channelId)
     {
       $channel = Channel::findOrFail($channelId);
-      $qcard = $channel->qcards()
-      ->create([
-        'article' => '{"message":"yeah!"}',
-      ]);
+      $user = $request->user();
+
+      if ($channel->UserID !== $user->ID) {
+        return response([
+          'message' => 'cant_create_qcard',
+        ], 403);
+      }
+
+      $qcard = $channel->qcards()->create([]);
+      $qcard->user_id = $user->ID;
+      $qcard->save();
       return response($qcard, 200);
     }
 
