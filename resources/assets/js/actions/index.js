@@ -68,3 +68,9 @@ export const postBell = (teamId, channelId) => {
 
   };
 };
+
+export const ADD_QCARD = 'ADD_QCARD';
+
+export const addQcard = (qcard) => {
+  return { type: ADD_QCARD, qcard };
+};
