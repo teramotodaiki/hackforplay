@@ -17,4 +17,9 @@ class Team extends Model
     'slack_api_token',
     'slack_channel_name',
   ];
+
+  public function bells()
+  {
+    return $this->hasMany('App\Bell');
+  }
 }
