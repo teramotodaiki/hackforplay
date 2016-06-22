@@ -39,7 +39,7 @@ class BellController extends Controller
     public function store(Request $request, $team_id)
     {
       $team = Team::where(
-        ctype_digit($team_id) ? 'id' : 'name',
+        ctype_digit((string)$team_id) ? 'id' : 'name',
         $team_id
       )->firstOrFail();
 
