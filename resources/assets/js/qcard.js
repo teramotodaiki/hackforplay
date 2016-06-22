@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchQcard } from './actions/';
+import { fetchQcard, updateQcard } from './actions/';
 
 class Qcard extends Component {
   constructor(props) {
@@ -9,6 +9,18 @@ class Qcard extends Component {
 
     const { dispatch, params } = this.props;
     dispatch(fetchQcard({ id: params.id }));
+
+    this.updateArticle = this.updateArticle.bind(this);
+  }
+
+  updateArticle(article) {
+    const { params: { id }, qcards, dispatch } = this.props;
+
+    const qcard = Object.assign({}, qcards[id], {
+      article: Object.assign({}, qcards[id].article, article)
+    });
+
+    dispatch(updateQcard(qcard));
   }
 
   render() {
@@ -21,10 +33,12 @@ class Qcard extends Component {
 
     return (<div>
       <textarea
-        value={article.left}>
+        value={article.left}
+        onChange={({ target }) => this.updateArticle({ left: target.value })}>
       </textarea>
       <textarea
-        value={article.right}}>
+        value={article.right}
+        onChange={({ target }) => this.updateArticle({ right: target.value })}>
       </textarea>
     </div>);
   }
