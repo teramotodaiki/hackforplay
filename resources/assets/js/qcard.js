@@ -34,6 +34,7 @@ class Qcard extends Component {
     }, qcard ? qcard.article : null);
 
     return (<div>
+      <p>HackforPlay Question Card</p>
       <textarea
         value={article.left}
         onChange={({ target }) => this.updateArticle({ left: target.value })}>
@@ -42,6 +43,7 @@ class Qcard extends Component {
         type="checkbox"
         checked={article.checkedLeft}
         onChange={() => this.updateArticle({ checkedLeft: !article.checkedLeft })} />
+      then
       <textarea
         value={article.right}
         onChange={({ target }) => this.updateArticle({ right: target.value })}>
@@ -50,6 +52,7 @@ class Qcard extends Component {
         type="checkbox"
         checked={article.checkedRight}
         onChange={() => this.updateArticle({ checkedRight: !article.checkedRight })} />
+      <button type="button">Submit</button>
     </div>);
   }
 }
