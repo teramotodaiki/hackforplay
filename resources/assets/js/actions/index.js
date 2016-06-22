@@ -69,6 +69,18 @@ export const postBell = (teamId, channelId) => {
   };
 };
 
+export const createBell = ({ team, channel, qcard }) => {
+  return (dispatch) => {
+
+    return request
+      .post(`/teams/${team}/bells`)
+      .send({ channel, qcard })
+      .then((result) => result)
+      .catch((err) => alert(err.message));
+
+  };
+};
+
 export const ADD_QCARD = 'ADD_QCARD';
 
 export const addQcard = (qcard) => {
