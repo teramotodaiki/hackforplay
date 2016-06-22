@@ -29,6 +29,8 @@ class Qcard extends Component {
     const article = Object.assign({
       left: '',
       right: '',
+      checkedLeft: true,
+      checkedRight: false,
     }, qcard ? qcard.article : null);
 
     return (<div>
@@ -36,10 +38,18 @@ class Qcard extends Component {
         value={article.left}
         onChange={({ target }) => this.updateArticle({ left: target.value })}>
       </textarea>
+      <input
+        type="checkbox"
+        checked={article.checkedLeft}
+        onChange={() => this.updateArticle({ checkedLeft: !article.checkedLeft })} />
       <textarea
         value={article.right}
         onChange={({ target }) => this.updateArticle({ right: target.value })}>
       </textarea>
+      <input
+        type="checkbox"
+        checked={article.checkedRight}
+        onChange={() => this.updateArticle({ checkedRight: !article.checkedRight })} />
     </div>);
   }
 }
