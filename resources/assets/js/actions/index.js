@@ -101,5 +101,12 @@ export const fetchQcard = ({ id }) => {
 export const UPDATE_QCARD = 'UPDATE_QCARD';
 
 export const updateQcard = (qcard) => {
-  return { type: UPDATE_QCARD, qcard };
+  return (dispatch) => {
+
+    return new Promise((resolve, reject) => {
+      dispatch({ type: UPDATE_QCARD, qcard });
+      resolve();
+    });
+
+  };
 };
