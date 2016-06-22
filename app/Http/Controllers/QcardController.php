@@ -25,7 +25,7 @@ class QcardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request, $channelId)
+    public function createWithChannel(Request $request, $channelId)
     {
       $channel = Channel::findOrFail($channelId);
       $user = $request->user();
@@ -59,9 +59,10 @@ class QcardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+      $qcard = Qcard::findOrFail($id);
+      return response($qcard, 200);
     }
 
     /**
