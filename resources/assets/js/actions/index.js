@@ -81,7 +81,7 @@ export const fetchQcard = ({ id }) => {
     return request
       .get(`/qcards/${id}`)
       .then((result) => dispatch(addQcard(result.body)))
-      .catch((err) => alert(arr.message));
+      .catch((err) => alert(err.message));
 
   }
 };
