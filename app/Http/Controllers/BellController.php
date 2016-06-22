@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Team;
 use App\Bell;
+use App\Channel;
 
 class BellController extends Controller
 {
@@ -50,9 +51,18 @@ class BellController extends Controller
         ], 403);
       }
 
+      $channel = $request->input('channel') ? (
+        Channel::where(
+          ctype_digit((string)$request->input('channel')) ? 'id' : 'name',
+          $request->input('channel')
+        )->firstOrFail()
+      ) : NULL;
+
       $bell = $team->bells()
       ->create([
         'user_id' => $user->ID,
+        'channel_id' => $channel ? $channel->ID : NULL,
+        'qcard_id' => $request->input('qcard'),
       ]);
 
       try {
