@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchQcard, updateQcard } from './actions/';
+import { fetchQcard, updateQcard, createBell } from './actions/';
 
 class Qcard extends Component {
   constructor(props) {
@@ -28,7 +28,14 @@ class Qcard extends Component {
 
     const qcard = Object.assign({}, qcards[id], { is_active: false });
 
-    dispatch(updateQcard(qcard));
+    dispatch(updateQcard(qcard))
+    .then((result) => {
+      return dispatch(createBell({
+        team: 'test',
+        channel: qcard.channel_id,
+        qcard: qcard.id,
+      }));
+    });
   }
 
   render() {

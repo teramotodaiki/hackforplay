@@ -69,6 +69,18 @@ export const postBell = (teamId, channelId) => {
   };
 };
 
+export const createBell = ({ team, channel, qcard }) => {
+  return (dispatch) => {
+
+    return request
+      .post(`/teams/${team}/bells`)
+      .send({ channel, qcard })
+      .then((result) => result)
+      .catch((err) => alert(err.message));
+
+  };
+};
+
 export const ADD_QCARD = 'ADD_QCARD';
 
 export const addQcard = (qcard) => {
@@ -81,7 +93,7 @@ export const fetchQcard = ({ id }) => {
     return request
       .get(`/qcards/${id}`)
       .then((result) => dispatch(addQcard(result.body)))
-      .catch((err) => alert(arr.message));
+      .catch((err) => alert(err.message));
 
   }
 };
@@ -89,5 +101,12 @@ export const fetchQcard = ({ id }) => {
 export const UPDATE_QCARD = 'UPDATE_QCARD';
 
 export const updateQcard = (qcard) => {
-  return { type: UPDATE_QCARD, qcard };
+  return (dispatch) => {
+
+    return new Promise((resolve, reject) => {
+      dispatch({ type: UPDATE_QCARD, qcard });
+      resolve();
+    });
+
+  };
 };
