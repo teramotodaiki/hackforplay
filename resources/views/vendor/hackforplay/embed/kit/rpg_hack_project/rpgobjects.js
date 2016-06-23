@@ -92,18 +92,22 @@
 			this.offset = { x: offsetX, y: offsetY };
 			this.moveTo(game.width, game.height);
 			Object.defineProperty(this, 'mapX', {
+				configurable: true, enumerable: true,
 				get: function () { return (this.x - this.offset.x + 16) / 32 >> 0; }
 			});
 			Object.defineProperty(this, 'mapY', {
+				configurable: true, enumerable: true,
 				get: function () { return (this.y - this.offset.y + 16) / 32 >> 0; }
 			});
 			Object.defineProperty(this, 'map', {
+				configurable: true, enumerable: true,
 				get: function () {
 					return this.parentNode ? this.parentNode.ref : null;
 				}
 			});
 			var collisionFlag = null; // this.collisionFlag (Default:true)
 			Object.defineProperty(this, 'collisionFlag', {
+				configurable: true, enumerable: true,
 				get: function () {
 					return collisionFlag !== null ? collisionFlag :
 						!(this.onplayerenter || this._listeners['playerenter'] ||
@@ -114,6 +118,7 @@
 			});
 			var isKinematic = null; // this.isKinematic (Default: true)
 			Object.defineProperty(this, 'isKinematic', {
+				configurable: true, enumerable: true,
 				get: function () {
 					return isKinematic !== null ? isKinematic :
 						!(this.velocityX || this.velocityY ||
@@ -448,6 +453,7 @@
 			RPGObject.call(this, width, height, offsetX, offsetY);
 			var direction = 0;
 			Object.defineProperty(this, 'direction', {
+				configurable: true, enumerable: true,
 				get: function () { return direction; },
 				set: function (value) {
 					direction = value;
@@ -455,6 +461,7 @@
 				}
 			});
 			Object.defineProperty(this, 'forward', {
+				configurable: true, enumerable: true,
 				get: function () { return Hack.Dir2Vec(direction); },
 				set: function (value) { this.direction = Hack.Vec2Dir(value); }
 			});
@@ -538,11 +545,13 @@
 			RPGObject.call(this, width, height, offsetX, offsetY);
 			var direction = -1; // -1: Left, 1: Right
 			Object.defineProperty(this, 'direction', {
+				configurable: true, enumerable: true,
 				get: function () { return direction; },
 				set: function (value) { this.scaleX = value === 0 ? this.scaleX :
 					-(direction = Math.sign(value)) * Math.abs(this.scaleX); }
 			});
 			Object.defineProperty(this, 'forward', {
+				configurable: true, enumerable: true,
 				get: function () { return { x: direction, y: 0 }; },
 				set: function (value) { this.direction = value.x; }
 			});
@@ -679,6 +688,7 @@
 			}
 			var _forward;
 			Object.defineProperty(this, 'forward', {
+				configurable: true, enumerable: true,
 				get: function () { return _forward; },
 				set: function (vec) {
 					var abs = Math.sqrt(vec.x * vec.x + vec.y * vec.y);
