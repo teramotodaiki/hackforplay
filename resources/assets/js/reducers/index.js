@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ADD_CHANNEL, ADD_CHAT  } from '../actions/';
+import { ADD_CHANNEL, ADD_CHAT, ADD_QCARD, UPDATE_QCARD  } from '../actions/';
 
 // state { [id]: { channel object has id }, ... }
 export const channels = (state = {}, action) => {
@@ -22,6 +22,28 @@ export const channels = (state = {}, action) => {
         [action.channelId]: merged
       });
 
+    default:
+      return state;
+  }
+};
+
+// state { [id]: { q card object has id }, ... }]
+export const qcards = (state = {}, { type, qcard }) => {
+  switch (type) {
+    case ADD_QCARD:
+
+      return Object.assign({}, state, {
+        [qcard.id]: Object.assign({}, qcard)
+      });
+
+      break;
+    case UPDATE_QCARD:
+
+      return Object.assign({}, state, {
+        [qcard.id]: Object.assign({}, state[qcard.id], qcard)
+      });
+
+      break;
     default:
       return state;
   }

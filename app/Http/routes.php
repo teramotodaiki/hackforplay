@@ -14,6 +14,7 @@
 // React (frontend) App
 Route::get('tutorials', 'DefaultAppController@index');
 Route::get('register', 'DefaultAppController@index');
+
 Route::get('verify', 'VerifyController@index');
 Route::get('random', 'RandomController@index');
 
@@ -32,10 +33,25 @@ Route::group(['middleware' => ['auth.old', 'auth']], function()
   
 });
 
-// channels/
-Route::get('channels/{id}/watch', 'DefaultAppController@index');
-Route::resource('channels', 'ChannelController');
-Route::resource('channels.chats', 'ChatController');
+Route::group(['middleware' => ['auth.old']], function()
+{
+  // channels/
+  Route::get('channels/{id}/watch', 'DefaultAppController@index');
+
+  Route::resource('channels', 'ChannelController');
+  Route::resource('channels.chats', 'ChatController');
+
+});
+
+Route::group(['middleware' => ['auth.old', 'auth']], function()
+{
+  // qcards
+  Route::get('qcards/{id}/edit', 'DefaultAppController@index');
+  Route::resource('qcards', 'QcardController');
+
+  Route::get('channels/{channel_id}/qcards/create', [ 'uses' => 'QcardController@createWithChannel']);
+
+});
 
 // mods/
 Route::group(['middleware' => 'etag', 'prefix' => 'mods'], function()

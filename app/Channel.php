@@ -24,4 +24,9 @@ class Channel extends Model
     return $this->hasMany('App\Chat');
   }
 
+  public function qcards()
+  {
+    return $this->hasMany('App\Qcard');
+  }
+
 }

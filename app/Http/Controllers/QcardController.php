@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Team;
-use App\Bell;
 use App\Channel;
+use App\Qcard;
 
-class BellController extends Controller
+class QcardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,9 +25,21 @@ class BellController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function createWithChannel(Request $request, $channelId)
     {
+      $channel = Channel::findOrFail($channelId);
+      $user = $request->user();
 
+      if ($channel->UserID !== $user->ID) {
+        return response([
+          'message' => 'cant_create_qcard',
+        ], 403);
+      }
+
+      $qcard = $channel->qcards()->create([]);
+      $qcard->user_id = $user->ID;
+      $qcard->save();
+      return response($qcard, 200);
     }
 
     /**
@@ -37,47 +48,9 @@ class BellController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $team_id)
+    public function store(Request $request)
     {
-      $team = Team::where(
-        ctype_digit((string)$team_id) ? 'id' : 'name',
-        $team_id
-      )->firstOrFail();
-
-      $user = $request->user();
-      if (!$user->isConnected($team)) {
-        return response([
-          'error' => 'not_in_team'
-        ], 403);
-      }
-
-      $channel = $request->input('channel') ? (
-        Channel::where(
-          ctype_digit((string)$request->input('channel')) ? 'id' : 'name',
-          $request->input('channel')
-        )->firstOrFail()
-      ) : NULL;
-
-      $bell = $team->bells()
-      ->create([
-        'user_id' => $user->ID,
-        'channel_id' => $channel ? $channel->ID : NULL,
-        'qcard_id' => $request->input('qcard'),
-      ]);
-
-      try {
-        // slack notification
-        $text = ":bellhop_bell::point_right:{$user->Nickname}";
-        $text = urlencode($text);
-        $url = "https://slack.com/api/chat.postMessage?token={$team->slack_api_token}&channel={$team->slack_channel_name}&text=$text&as_user=true";
-
-        file_get_contents($url);
-
-      } catch (Exception $e) {
-        return response($e, 200);
-      }
-
-      return response($bell, 200);
+        //
     }
 
     /**
@@ -86,9 +59,10 @@ class BellController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+      $qcard = Qcard::findOrFail($id);
+      return response($qcard, 200);
     }
 
     /**
