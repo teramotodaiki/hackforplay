@@ -85,7 +85,17 @@ class QcardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $qcard = Qcard::findOrFail($id);
+      $user = $request->user();
+
+      if ($qcard->user_id !== $user->ID) {
+        return response([
+          'message' => 'cant_update_qcard',
+        ], 403);
+      }
+
+      $qcard->update($request->all());
+      return response($qcard, 200);
     }
 
     /**
