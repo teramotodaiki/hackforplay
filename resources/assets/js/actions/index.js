@@ -81,10 +81,12 @@ export const createBell = ({ team, channel, qcard }) => {
   };
 };
 
-export const ADD_QCARD = 'ADD_QCARD';
+export const PUT_QCARD_LOCAL = 'PUT_QCARD_LOCAL';
+export const PUT_QCARD_ORIGIN = 'PUT_QCARD_ORIGIN';
+export const PUT_QCARD_BOTH = 'PUT_QCARD_BOTH';
 
-export const addQcard = (qcard) => {
-  return { type: ADD_QCARD, qcard };
+export const updateQcard = (qcard) => {
+  return { type: PUT_QCARD_LOCAL, qcard };
 };
 
 export const fetchQcard = ({ id }) => {
@@ -96,17 +98,4 @@ export const fetchQcard = ({ id }) => {
       .catch((err) => alert(err.message));
 
   }
-};
-
-export const UPDATE_QCARD = 'UPDATE_QCARD';
-
-export const updateQcard = (qcard) => {
-  return (dispatch) => {
-
-    return new Promise((resolve, reject) => {
-      dispatch({ type: UPDATE_QCARD, qcard });
-      resolve();
-    });
-
-  };
 };
