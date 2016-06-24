@@ -53,7 +53,8 @@ class Qcard extends Component {
       return dispatch(postChat(channel, {
         message: `🔔🎵 ...${team}'s bell rang`
       }));
-    });
+    })
+    .then(() => window.close());
   }
 
   render() {
