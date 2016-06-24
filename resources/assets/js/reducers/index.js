@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ADD_CHANNEL, ADD_CHAT, ADD_QCARD, UPDATE_QCARD  } from '../actions/';
+import { ADD_CHANNEL, ADD_CHAT, PUT_QCARD_LOCAL, PUT_QCARD_ORIGIN, PUT_QCARD_BOTH  } from '../actions/';
 
 // state { [id]: { channel object has id }, ... }
 export const channels = (state = {}, action) => {
@@ -27,24 +27,30 @@ export const channels = (state = {}, action) => {
   }
 };
 
-// state { [id]: { q card object has id }, ... }]
-export const qcards = (state = {}, { type, qcard }) => {
+// state { local: { [id]: { q card object has id }, ... }, origin: { same as local } }
+export const qcards = ({ local, origin } = {
+  local: {},
+  origin: {},
+}, { type, qcard }) => {
+  const node = qcard ? { [qcard.id]: qcard } : null;
   switch (type) {
-    case ADD_QCARD:
+    case PUT_QCARD_LOCAL:
 
-      return Object.assign({}, state, {
-        [qcard.id]: Object.assign({}, qcard)
-      });
+      local = Object.assign({}, local, node);
+      return { local, origin };
 
-      break;
-    case UPDATE_QCARD:
+    case PUT_QCARD_ORIGIN:
 
-      return Object.assign({}, state, {
-        [qcard.id]: Object.assign({}, state[qcard.id], qcard)
-      });
+      origin = Object.assign({}, origin, node);
+      return { local, origin };
 
-      break;
+    case PUT_QCARD_BOTH:
+
+      local = Object.assign({}, local, node);
+      origin = Object.assign({}, origin, node);
+      return { local, origin };
+
     default:
-      return state;
+      return { local, origin };
   }
 };

@@ -1,34 +1,45 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchQcard, updateQcard, createBell } from './actions/';
+import { updateQcard, pullQcard, pushQcard, createBell } from './actions/';
 
 class Qcard extends Component {
   constructor(props) {
     super(props);
 
-    const { dispatch, params } = this.props;
-    dispatch(fetchQcard({ id: params.id }));
+    const { dispatch, params: { id }, qcards: { local } } = this.props;
+    if (!local[id]) {
+      dispatch(pullQcard(id));
+    }
 
     this.updateArticle = this.updateArticle.bind(this);
+
+
+    setInterval(() => {
+      let { dispatch, params: { id }, qcards: { local } } = this.props;
+      if (local[id]) {
+        dispatch(pushQcard(id));
+      }
+    }, 3000);
+
   }
 
   updateArticle(article) {
-    const { params: { id }, qcards, dispatch } = this.props;
+    const { params: { id }, qcards: { local }, dispatch } = this.props;
 
-    const qcard = Object.assign({}, qcards[id], {
-      article: Object.assign({}, qcards[id].article, article)
-    });
+    const qcard = {
+      id,
+      article : Object.assign({}, local[id].article, article)
+    }
 
     dispatch(updateQcard(qcard));
   }
 
   createBellWithQcard() {
-    const { params: { id }, qcards, dispatch } = this.props;
+    const { params: { id }, dispatch } = this.props;
 
-    const qcard = Object.assign({}, qcards[id], { is_active: false });
-
-    dispatch(updateQcard(qcard))
+    dispatch(updateQcard({ id, is_active: false }));
+    dispatch(pushQcard(id))
     .then((result) => {
       return dispatch(createBell({
         team: 'test',
@@ -39,8 +50,8 @@ class Qcard extends Component {
   }
 
   render() {
-    const id = +this.props.params.id;
-    const qcard = this.props.qcards[id];
+    const { params: { id }, qcards: { local } } = this.props;
+    const qcard = local[id];
     const article = Object.assign({
       left: '',
       right: '',

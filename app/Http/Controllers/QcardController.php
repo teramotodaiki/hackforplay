@@ -62,6 +62,11 @@ class QcardController extends Controller
     public function show(Request $request, $id)
     {
       $qcard = Qcard::findOrFail($id);
+
+      if ($qcard->article) {
+        $qcard->article = json_decode($qcard->article);
+      }
+
       return response($qcard, 200);
     }
 
@@ -85,7 +90,22 @@ class QcardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $qcard = Qcard::findOrFail($id);
+      $user = $request->user();
+
+      if ($qcard->user_id !== $user->ID) {
+        return response([
+          'message' => 'cant_update_qcard',
+        ], 403);
+      }
+
+      $qcard->update($request->except('article'));
+      if ($request->has('article')) {
+        $qcard->article = json_encode($request->input('article'));
+        $qcard->save();
+      }
+      $qcard->article = $request->input('article');
+      return response($qcard, 200);
     }
 
     /**
