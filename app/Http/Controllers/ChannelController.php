@@ -49,13 +49,13 @@ class ChannelController extends Controller
       $channel = Channel::create([
         'ProjectID'     => $project->ID,
         'ProjectToken'  => $request->input('project_token'),
-        'UserID'        => $request->input('user_id'),
+        'UserID'        => $request->user()->ID,
         'DisplayName'   => $request->input('display_name'),
         'Registered'    => Carbon::now(),
         'Updated'       => Carbon::now(),
       ]);
       $channel->script = $channel->project->scripts()->orderBy('ID', 'DESC')->first();
-      
+
       return response($channel, 200);
     }
 

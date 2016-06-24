@@ -10,7 +10,7 @@ import IframeEmbed from './iframe-embed';
 import Timeline from './components/timeline';
 import ActionBar from './components/action-bar';
 import ChannelMenu from './components/channel-menu';
-import { addChat, postChat, fetchChannel, createGist, postBell } from './actions/';
+import { addChat, postChat, fetchChannel, createGist, fetchQcard } from './actions/';
 
 class Channel extends Component {
 
@@ -73,9 +73,21 @@ class Channel extends Component {
   }
 
   raiseHand () {
-    const { dispatch, params } = this.props;
-    dispatch(postBell(1, params.id))
-    .then((value) => console.log(value));
+    const { dispatch, params: { id } } = this.props;
+
+    const tab = window.open('', 'qcard');
+    dispatch(fetchQcard({
+      channel: id,
+      is_active: 1
+    }))
+    .then(({ body }) => {
+      if (body.length === 0) {
+        tab.location.href = `${location.origin}/channels/${id}/qcards/create`;
+      } else {
+        const qcard = body[body.length - 1].id;
+        tab.location.href = `${location.origin}/qcards/${qcard}/edit`;
+      }
+    });
   }
 
   render () {
