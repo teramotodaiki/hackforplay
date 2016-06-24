@@ -41,8 +41,8 @@ class Qcard extends Component {
   }
 
   render() {
-    const id = +this.props.params.id;
-    const qcard = this.props.qcards[id];
+    const { params: { id }, qcards: { local } } = this.props;
+    const qcard = local[id];
     const article = Object.assign({
       left: '',
       right: '',
