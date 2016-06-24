@@ -67,7 +67,9 @@ class BellController extends Controller
 
       try {
         // slack notification
-        $text = ":bellhop_bell::point_right:{$user->Nickname}";
+        $qcard = $request->input('qcard');
+        $qcardUrl = url("qcards/{$qcard}/view");
+        $text = ":bellhop_bell::point_right:{$user->Nickname}{$qcardUrl}";
         $text = urlencode($text);
         $url = "https://slack.com/api/chat.postMessage?token={$team->slack_api_token}&channel={$team->slack_channel_name}&text=$text&as_user=true";
 
