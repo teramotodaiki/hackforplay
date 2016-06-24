@@ -62,6 +62,11 @@ class QcardController extends Controller
     public function show(Request $request, $id)
     {
       $qcard = Qcard::findOrFail($id);
+
+      if ($qcard->article) {
+        $qcard->article = json_decode($qcard->article);
+      }
+
       return response($qcard, 200);
     }
 
@@ -94,7 +99,11 @@ class QcardController extends Controller
         ], 403);
       }
 
-      $qcard->update($request->all());
+      $qcard->update($request->except('article'));
+      if ($request->has('article')) {
+        $qcard->article = json_encode($request->input('article'));
+        $qcard->save();
+      }
       return response($qcard, 200);
     }
 
