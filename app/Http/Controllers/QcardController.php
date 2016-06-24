@@ -51,7 +51,8 @@ class QcardController extends Controller
       $qcard = $channel->qcards()->create([]);
       $qcard->user_id = $user->ID;
       $qcard->save();
-      return response($qcard, 200);
+
+      return redirect("qcards/{$qcard->id}/edit");
     }
 
     /**
