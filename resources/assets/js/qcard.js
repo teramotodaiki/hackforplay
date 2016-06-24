@@ -13,6 +13,15 @@ class Qcard extends Component {
     }
 
     this.updateArticle = this.updateArticle.bind(this);
+
+
+    setInterval(() => {
+      let { dispatch, params: { id }, qcards: { local } } = this.props;
+      if (local[id]) {
+        dispatch(pushQcard(id));
+      }
+    }, 3000);
+
   }
 
   updateArticle(article) {
