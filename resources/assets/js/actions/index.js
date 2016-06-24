@@ -86,7 +86,13 @@ export const PUT_QCARD_ORIGIN = 'PUT_QCARD_ORIGIN';
 export const PUT_QCARD_BOTH = 'PUT_QCARD_BOTH';
 
 export const updateQcard = (qcard) => {
-  return { type: PUT_QCARD_LOCAL, qcard };
+  return (dispatch, getState) => {
+
+    const { qcards: { local } } = getState();
+    qcard = Object.assign({}, local[qcard.id], qcard);
+    return dispatch({ type: PUT_QCARD_LOCAL, qcard });
+
+  }
 };
 
 export const pullQcard = (id) => {
