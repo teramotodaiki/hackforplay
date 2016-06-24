@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Channel;
 use App\Qcard;
+use DB;
 
 class QcardController extends Controller
 {
@@ -15,9 +16,20 @@ class QcardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $this->validate($request, [
+        'channel' => 'numeric',
+        'is_active' => 'boolean',
+      ]);
+      $table = DB::table('qcard');
+      if ($request->has('channel')) {
+        $table = $table->where('channel_id', $request->input('channel'));
+      }
+      if ($request->has('is_active')) {
+        $table = $table->where('is_active', $request->input('is_active'));
+      }
+      return response($table->get(), 200);
     }
 
     /**
