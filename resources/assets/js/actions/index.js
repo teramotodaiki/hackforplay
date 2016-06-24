@@ -101,9 +101,14 @@ export const pushQcard = (id) => {
 
 
     const { qcards: { local, origin } } = getState();
-    return equal(local, origin) ? Promise.resolve() :
+
+    // Expect timestamp
+    const localNode = Object.assign({}, local[id], { updated_at: undefined });
+    const originNode = Object.assign({}, origin[id], { updated_at: undefined });
+
+    return equal(localNode, originNode) ? Promise.resolve() :
       request.put(`/qcards/${id}`)
-      .send(local[id])
+      .send(localNode)
       .then((result) => {
         dispatch({ type: PUT_QCARD_ORIGIN, qcard: result.body });
         return result.body;
