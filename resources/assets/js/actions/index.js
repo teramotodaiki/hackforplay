@@ -131,3 +131,15 @@ export const pullQcard = (id) => {
 
   };
 };
+
+export const fetchQcard = (filter) => {
+  return (dispatch) => {
+
+    return request
+      .get(`/qcards`)
+      .query(filter)
+      .then((result) => result)
+      .catch((err) => alert(err.message));
+
+  };
+};
