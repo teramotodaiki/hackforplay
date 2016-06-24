@@ -42,7 +42,7 @@ class QcardController extends Controller
       $channel = Channel::findOrFail($channelId);
       $user = $request->user();
 
-      if ($channel->UserID !== $user->ID) {
+      if ($channel->UserID != $user->ID) {
         return response([
           'message' => 'cant_create_qcard',
         ], 403);
@@ -117,7 +117,7 @@ class QcardController extends Controller
       $qcard = Qcard::findOrFail($id);
       $user = $request->user();
 
-      if ($qcard->user_id !== $user->ID) {
+      if ($qcard->user_id != $user->ID) {
         return response([
           'message' => 'cant_update_qcard',
         ], 403);
