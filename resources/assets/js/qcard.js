@@ -7,8 +7,10 @@ class Qcard extends Component {
   constructor(props) {
     super(props);
 
-    const { dispatch, params } = this.props;
-    dispatch(fetchQcard({ id: params.id }));
+    const { dispatch, params: { id }, qcards: { local } } = this.props;
+    if (!local[id]) {
+      dispatch(pullQcard(id));
+    }
 
     this.updateArticle = this.updateArticle.bind(this);
   }
