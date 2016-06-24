@@ -32,7 +32,7 @@ export const qcards = ({ local, origin } = {
   local: {},
   origin: {},
 }, { type, qcard }) => {
-  const node = { [qcard.id]: qcard };
+  const node = qcard ? { [qcard.id]: qcard } : null;
   switch (type) {
     case PUT_QCARD_LOCAL:
 
@@ -51,6 +51,6 @@ export const qcards = ({ local, origin } = {
       return { local, origin };
 
     default:
-      return state;
+      return { local, origin };
   }
 };
