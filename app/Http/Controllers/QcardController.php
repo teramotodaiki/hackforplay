@@ -104,6 +104,7 @@ class QcardController extends Controller
         $qcard->article = json_encode($request->input('article'));
         $qcard->save();
       }
+      $qcard->article = $request->input('article');
       return response($qcard, 200);
     }
 
