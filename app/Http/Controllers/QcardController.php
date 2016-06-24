@@ -70,6 +70,17 @@ class QcardController extends Controller
       return response($qcard, 200);
     }
 
+    public function view(Request $request, $id)
+    {
+      $qcard = Qcard::findOrFail($id);
+
+      if ($qcard->article) {
+        $qcard->article = json_decode($qcard->article);
+      }
+
+      return view('json', ['value' => $qcard]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

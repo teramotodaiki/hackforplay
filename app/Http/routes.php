@@ -47,6 +47,7 @@ Route::group(['middleware' => ['auth.old', 'auth']], function()
 {
   // qcards
   Route::get('qcards/{id}/edit', 'DefaultAppController@index');
+  Route::get('qcards/{id}/view', 'QcardController@view');
   Route::resource('qcards', 'QcardController');
 
   Route::get('channels/{channel_id}/qcards/create', [ 'uses' => 'QcardController@createWithChannel']);
