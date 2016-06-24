@@ -27,11 +27,10 @@ class Qcard extends Component {
   }
 
   createBellWithQcard() {
-    const { params: { id }, qcards, dispatch } = this.props;
+    const { params: { id }, dispatch } = this.props;
 
-    const qcard = Object.assign({}, qcards[id], { is_active: false });
-
-    dispatch(updateQcard(qcard))
+    dispatch(updateQcard({ id, is_active: false }));
+    dispatch(pushQcard(id))
     .then((result) => {
       return dispatch(createBell({
         team: 'test',
