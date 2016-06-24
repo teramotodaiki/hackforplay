@@ -51,7 +51,7 @@ class Qcard extends Component {
     })
     .then((result) => {
       return dispatch(postChat(channel, {
-        message: `🔔🎵 ...${team}'s bell rang`
+        message: `♪♪ ...${team}'s bell rang`
       }));
     })
     .then(() => window.close());
