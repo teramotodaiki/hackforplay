@@ -18,6 +18,11 @@ Route::get('register', 'DefaultAppController@index');
 Route::get('verify', 'VerifyController@index');
 Route::get('random', 'RandomController@index');
 
+Route::group(['middleware' => ['auth.old', 'auth']], function()
+{
+  Route::get('users/auth', 'UserController@getAuth');
+});
+
 Route::resource('users', 'UserController');
 
 Route::group(['middleware' => 'auth.private'], function()
