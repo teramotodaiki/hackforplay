@@ -15,7 +15,7 @@ class AddQcardColumn extends Migration
       Schema::table('bell', function (Blueprint $table)
       {
         $table->bigInteger('qcard_id')->unsigned()->nullable();
-        $table->foreign('qcard_id')->references('id')->on('qcard')->onDelete('cascade');
+        $table->foreign('qcard_id')->references('id');
       });
     }
 
@@ -28,7 +28,7 @@ class AddQcardColumn extends Migration
     {
       Schema::table('bell', function (Blueprint $table)
       {
-        $table->dropColumn(['qcard']);
+        $table->dropColumn(['qcard_id']);
       });
     }
 }
