@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchQcard, updateQcard, createBell } from './actions/';
+import { updateQcard, pullQcard, pushQcard, createBell } from './actions/';
 
 class Qcard extends Component {
   constructor(props) {
