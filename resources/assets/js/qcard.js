@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { updateQcard, pullQcard, pushQcard, createBell } from './actions/';
+import { updateQcard, pullQcard, pushQcard, createBell, postChat } from './actions/';
 
 class Qcard extends Component {
   constructor(props) {
@@ -36,15 +36,22 @@ class Qcard extends Component {
   }
 
   createBellWithQcard() {
-    const { params: { id }, dispatch } = this.props;
+    const { params: { id }, dispatch, qcards: { local } } = this.props;
+    const team = 'hackit';
+    const channel = local[id].channel_id;
 
     dispatch(updateQcard({ id, is_active: false }));
     dispatch(pushQcard(id))
     .then((result) => {
       return dispatch(createBell({
-        team: 'test',
-        channel: qcard.channel_id,
-        qcard: qcard.id,
+        team,
+        channel,
+        qcard: id,
+      }));
+    })
+    .then((result) => {
+      return dispatch(postChat(channel, {
+        message: `🔔🎵 ...${team}'s bell rang`
       }));
     });
   }
