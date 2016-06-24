@@ -1,4 +1,5 @@
 import request from 'superagent';
+import equal from 'deep-equal';
 
 const API = {
   github: 'https://api.github.com'
@@ -93,6 +94,23 @@ export const updateQcard = (qcard) => {
     return dispatch({ type: PUT_QCARD_LOCAL, qcard });
 
   }
+};
+
+export const pushQcard = (id) => {
+  return (dispatch, getState) => {
+
+
+    const { qcards: { local, origin } } = getState();
+    return equal(local, origin) ? Promise.resolve() :
+      request.put(`/qcards/${id}`)
+      .send(local[id])
+      .then((result) => {
+        dispatch({ type: PUT_QCARD_ORIGIN, qcard: result.body });
+        return result.body;
+      })
+      .catch((err) => alert(err.message));
+
+  };
 };
 
 export const pullQcard = (id) => {
