@@ -89,13 +89,16 @@ export const updateQcard = (qcard) => {
   return { type: PUT_QCARD_LOCAL, qcard };
 };
 
-export const fetchQcard = ({ id }) => {
+export const pullQcard = (id) => {
   return (dispatch) => {
 
     return request
       .get(`/qcards/${id}`)
-      .then((result) => dispatch(addQcard(result.body)))
+      .then((result) => {
+        dispatch({ type: PUT_QCARD_BOTH, qcard: result.body });
+        return result.body;
+      })
       .catch((err) => alert(err.message));
 
-  }
+  };
 };
