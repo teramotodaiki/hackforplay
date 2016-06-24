@@ -14,8 +14,10 @@ class AddQcardColumn extends Migration
     {
       Schema::table('bell', function (Blueprint $table)
       {
-        $table->bigInteger('qcard_id')->unsigned()->nullable();
-        $table->foreign('qcard_id')->references('id');
+        if (!Schema::hasColumn('bell', 'qcard_id')) {
+          $table->bigInteger('qcard_id')->unsigned()->nullable();
+          $table->foreign('qcard_id')->references('id')->on('qcard');
+        }
       });
     }
 
