@@ -16,11 +16,12 @@ class Qcard extends Component {
   }
 
   updateArticle(article) {
-    const { params: { id }, qcards, dispatch } = this.props;
+    const { params: { id }, qcards: { local }, dispatch } = this.props;
 
-    const qcard = Object.assign({}, qcards[id], {
-      article: Object.assign({}, qcards[id].article, article)
-    });
+    const qcard = {
+      id,
+      article : Object.assign({}, local[id].article, article)
+    }
 
     dispatch(updateQcard(qcard));
   }
