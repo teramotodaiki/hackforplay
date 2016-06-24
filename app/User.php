@@ -15,7 +15,7 @@ class User extends Authenticatable
   public $timestamps = false; // モデルのタイムスタンプを更新しない
   protected $guarded = array('id'); // idはcreateに含まない
   protected $primaryKey = 'ID';
-  protected $hidden = ['remember_token'];
+  protected $hidden = ['remember_token', 'private_token', 'private_secret'];
 
   public function accounts()
   {

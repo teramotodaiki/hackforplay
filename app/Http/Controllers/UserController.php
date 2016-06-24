@@ -116,4 +116,9 @@ class UserController extends Controller
     {
         //
     }
+
+    public function getAuth(Request $request)
+    {
+      return response($request->user(), 200);
+    }
 }
