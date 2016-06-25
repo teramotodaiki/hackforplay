@@ -36,10 +36,7 @@ Route::group(['middleware' => ['auth.old']], function()
   Route::resource('teams', 'TeamController');
   Route::resource('teams.bells', 'BellController');
 
-});
 
-Route::group(['middleware' => ['auth.old']], function()
-{
   // channels/
   Route::get('channels/{id}/watch', 'DefaultAppController@index');
 
