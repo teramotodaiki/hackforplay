@@ -30,12 +30,12 @@ Route::group(['middleware' => 'auth.private'], function()
   Route::resource('products', 'ProductController');
 });
 
-Route::group(['middleware' => ['auth.old', 'auth']], function()
+Route::group(['middleware' => ['auth.old']], function()
 {
   // teams/
   Route::resource('teams', 'TeamController');
   Route::resource('teams.bells', 'BellController');
-  
+
 });
 
 Route::group(['middleware' => ['auth.old']], function()
