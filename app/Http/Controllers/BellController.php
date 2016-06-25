@@ -37,7 +37,7 @@ class BellController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $team_id)
+    public function storeWithTeam(Request $request, $team_id)
     {
       $team = Team::where(
         ctype_digit((string)$team_id) ? 'id' : 'name',
