@@ -76,6 +76,13 @@ class TeamController extends Controller
         $id
       )->firstOrFail();
 
+      $user = $request->user();
+      if (!$user || !$user->isConnected($team)) {
+        return response([
+          'messsage' => 'cant_update_team'
+        ], 401);
+      }
+
       $team->update(
         $request->all()
       );
