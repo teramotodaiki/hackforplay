@@ -68,6 +68,7 @@ class BellController extends Controller
       // slack notification
       $this->postToSlack([
         ":bellhop_bell::point_right:{$user->Nickname}",
+        $channel ? "channel " . url("channels/{$channel->ID}/watch") : null,
         $request->has('qcard') ? url('qcards/' . $request->input('qcard') . '/view') : null,
       ], $team);
 
