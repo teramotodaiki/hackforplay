@@ -71,7 +71,23 @@ class TeamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $team = Team::where(
+        ctype_digit((string)$id) ? 'id' : 'name',
+        $id
+      )->firstOrFail();
+
+      $user = $request->user();
+      if (!$user || !$user->isConnected($team)) {
+        return response([
+          'messsage' => 'cant_update_team'
+        ], 401);
+      }
+
+      $team->update(
+        $request->all()
+      );
+
+      return response($team, 200);
     }
 
     /**

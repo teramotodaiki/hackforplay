@@ -30,21 +30,21 @@ Route::group(['middleware' => 'auth.private'], function()
   Route::resource('products', 'ProductController');
 });
 
-Route::group(['middleware' => ['auth.old', 'auth']], function()
-{
-  // teams/
-  Route::resource('teams', 'TeamController');
-  Route::resource('teams.bells', 'BellController');
-  
-});
-
 Route::group(['middleware' => ['auth.old']], function()
 {
+  // teams/
+  Route::post('teams/{id}/bells', 'BellController@storeWithTeam');
+
+  Route::resource('teams', 'TeamController');
+
   // channels/
   Route::get('channels/{id}/watch', 'DefaultAppController@index');
 
   Route::resource('channels', 'ChannelController');
   Route::resource('channels.chats', 'ChatController');
+
+  // bells/
+  Route::resource('bells', 'BellController');
 
 });
 
