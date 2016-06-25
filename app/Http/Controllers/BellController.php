@@ -70,16 +70,26 @@ class BellController extends Controller
         $qcard = $request->input('qcard');
         $qcardUrl = url("qcards/{$qcard}/view");
         $text = ":bellhop_bell::point_right:{$user->Nickname}{$qcardUrl}";
-        $text = urlencode($text);
-        $url = "https://slack.com/api/chat.postMessage?token={$team->slack_api_token}&channel={$team->slack_channel_name}&text=$text&as_user=true";
 
-        file_get_contents($url);
+        $this->postToSlack([$text], $team);
 
       } catch (Exception $e) {
         return response($e, 200);
       }
 
       return response($bell, 200);
+    }
+
+    public function postToSlack($texts, $team)
+    {
+      $api = "https://slack.com/api/chat.postMessage?token={$team->slack_api_token}&channel={$team->slack_channel_name}&as_user=true";
+
+      foreach ($texts as $item) {
+        if (!$item) continue;
+
+        $text = urlencode($item);
+        file_get_contents($api . '&text=' . $text);
+      }
     }
 
     /**
