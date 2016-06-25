@@ -65,17 +65,11 @@ class BellController extends Controller
         'qcard_id' => $request->input('qcard'),
       ]);
 
-      try {
-        // slack notification
-        $qcard = $request->input('qcard');
-        $qcardUrl = url("qcards/{$qcard}/view");
-        $text = ":bellhop_bell::point_right:{$user->Nickname}{$qcardUrl}";
-
-        $this->postToSlack([$text], $team);
-
-      } catch (Exception $e) {
-        return response($e, 200);
-      }
+      // slack notification
+      $this->postToSlack([
+        ":bellhop_bell::point_right:{$user->Nickname}",
+        $request->has('qcard') ? url('qcards/' . $request->input('qcard') . '/view') : null,
+      ], $team);
 
       return response($bell, 200);
     }
