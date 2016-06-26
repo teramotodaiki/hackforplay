@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth.old']], function()
 {
   // teams/
   Route::post('teams/{id}/bells', 'BellController@storeWithTeam');
+  Route::get('users/{id}/teams', 'TeamController@indexWithUser');
 
   Route::resource('teams', 'TeamController');
 

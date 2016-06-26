@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Team;
+use App\User;
 
 class TeamController extends Controller
 {
@@ -14,9 +15,28 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-      return response(Team::all(), 200);
+      $teams = $this->query($request->all());
+      return response($teams, 200);
+    }
+
+    public function indexWithUser(Request $request, $user)
+    {
+      $query = (object) array_merge($request->all(), [
+        'user' => User::findOrFail($user),
+      ]);
+
+      $teams = $this->query($query);
+      return response($teams, 200);
+    }
+
+    public function query($query)
+    {
+      $teams = isset($query->user) ? $query->user->teams() : Team::skip(0);
+      $teams->orderBy('updated_at', 'desc');
+
+      return $teams->paginate();
     }
 
     /**
