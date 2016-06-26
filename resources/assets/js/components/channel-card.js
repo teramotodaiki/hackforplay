@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { Col, Panel, Button } from 'react-bootstrap';
+import { Link } from 'react-router';
 
 export default ({ ID, Thumbnail, user, description }) => {
 
@@ -25,7 +25,9 @@ export default ({ ID, Thumbnail, user, description }) => {
           Owner: <a href={`/m?id=${user.ID}`}>{user.Nickname}</a>
         </p>
         <p style={fixedHeight(2)} >{description}</p>
-        <Button bsStyle="primary" href={`/channels/${ID}/watch`}>watch</Button>
+        <Link to={`/channels/${ID}/watch`}>
+          <Button bsStyle="primary">watch</Button>
+        </Link>
       </Panel>
     </Col>
   );
