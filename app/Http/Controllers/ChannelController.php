@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Channel;
 use App\Project;
+use App\Team;
 use Carbon\Carbon;
 
 class ChannelController extends Controller
@@ -46,13 +47,27 @@ class ChannelController extends Controller
       $project = Project::where('Token', $request->input('project_token'))
         ->firstOrFail();
 
+      $user = $request->user();
+      $team = $request->has('team') ? Team::where(
+        ctype_digit((string)$request->input('team')) ? 'id' : 'name',
+        $request->input('team')
+      )->firstOrFail() : null;
+
+      if ($user && $team && !$user->isConnected($team)) {
+        return response([
+          'message' => 'not_in_team',
+        ], 403);
+      }
+
       $channel = Channel::create([
         'ProjectID'     => $project->ID,
         'ProjectToken'  => $request->input('project_token'),
-        'UserID'        => $request->user()->ID,
+        'UserID'        => $user ? $user->ID : null,
         'DisplayName'   => $request->input('display_name'),
         'Registered'    => Carbon::now(),
         'Updated'       => Carbon::now(),
+        'TeamID'        => $team ? $team->ID : null,
+        'description'   => $request->input('description'),
       ]);
       $channel->script = $channel->project->scripts()->orderBy('ID', 'DESC')->first();
 
