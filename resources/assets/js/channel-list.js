@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
 
+import ChannelCard from './components/channel-card';
 import { fetchChannels } from './actions/';
 
 class ChannelList extends React.Component {
@@ -48,13 +49,7 @@ class ChannelList extends React.Component {
       );
     })
     .map((channel) => {
-      return (
-        <div key={channel.ID}>
-          <img src={channel.Thumbnail}></img>
-          <p>{channel.user.Nickname}</p>
-          <p>{channel.description}</p>
-        </div>
-      );
+      return <ChannelCard key={channel.ID} {...channel}></ChannelCard>;
     });
 
     const next = nextPage ? (
