@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 
 import ChannelCard from './components/channel-card';
 import { fetchChannels } from './actions/';
@@ -53,7 +54,7 @@ class ChannelList extends React.Component {
     });
 
     const next = nextPage ? (
-      <button onClick={() => this.fetchNextPage()}></button>
+      <Button bsStyle="info" onClick={() => this.fetchNextPage()}>more</Button>
     ) : null;
 
     return (<div>
