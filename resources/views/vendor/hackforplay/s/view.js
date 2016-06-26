@@ -1338,7 +1338,9 @@ $(function(){
 		var result;
 		try {
 			result = JSON.parse(data);
-			result.forEach(function (channel) {
+			result.filter(function (channel) {
+				return channel.Name;
+			}).forEach(function (channel) {
 				$('<li>').append(
 					$('<a>').data('name', channel.Name).text(channel.DisplayName+' | '+channel.Team)
 				).appendTo('.h4p_cast-channel .dropdown-menu');
@@ -1356,6 +1358,7 @@ $(function(){
 					url: '/channels',
 					data: {
 						project_token: sessionStorage.getItem('project-token'),
+						team: 'hackit',
 					},
 				}).done(function (channel) {
 
