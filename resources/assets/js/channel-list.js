@@ -22,7 +22,12 @@ class ChannelList extends React.Component {
 
   fetchNextPage() {
     const { dispatch } = this.props;
-    const { nextPage } = this.state;
+    const { nextPage, isLoading } = this.state;
+
+    if (isLoading) return
+    else if (nextPage) {
+      this.setState({ isLoading: true });
+    }
 
     return nextPage ? dispatch(
       fetchChannels({ page: nextPage })
@@ -30,6 +35,7 @@ class ChannelList extends React.Component {
       body: { current_page, last_page }
     }) => {
       this.setState({ nextPage: current_page < last_page ? current_page + 1 : null });
+      this.setState({ isLoading: false });
     }) :
     Promise.resolve();
 
@@ -38,7 +44,7 @@ class ChannelList extends React.Component {
   render() {
 
     const { channels } = this.props;
-    const { nextPage } = this.state;
+    const { nextPage, isLoading } = this.state;
 
     const sorted = Object.keys(channels)
     .map((key) => channels[key])
@@ -54,7 +60,13 @@ class ChannelList extends React.Component {
     });
 
     const next = nextPage ? (
-      <Button bsStyle="info" onClick={() => this.fetchNextPage()}>more</Button>
+      <Button
+        bsStyle="info"
+        onClick={() => this.fetchNextPage()}
+        disabled={isLoading}
+        >
+        more
+      </Button>
     ) : null;
 
     return (<div>
