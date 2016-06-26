@@ -25,11 +25,12 @@ export const fetchChannel = ({ id, chats }) => {
   }
 };
 
-export const fetchChannels = () => {
+export const fetchChannels = (query) => {
   return (dispatch) => {
 
     return request
       .get('/channels')
+      .query(query)
       .then((result) => {
         result.body.data.forEach((channel) => {
           dispatch({ type: ADD_CHANNEL, channel });
