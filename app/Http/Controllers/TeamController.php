@@ -23,7 +23,7 @@ class TeamController extends Controller
     public function query($query)
     {
       $teams = Team::orderBy('updated_at', 'desc');
-      return $teams->get();
+      return $teams->paginate();
     }
 
     /**
