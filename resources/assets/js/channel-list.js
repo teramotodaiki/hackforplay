@@ -9,7 +9,23 @@ class ChannelList extends React.Component {
 
     const { dispatch } = this.props;
 
-    dispatch(fetchChannels());
+    this.nextPage = 1;
+    this.fetchNextPage();
+
+  }
+
+  fetchNextPage() {
+    const { dispatch } = this.props;
+
+    return this.nextPage ? dispatch(
+      fetchChannels({ page: this.nextPage })
+    ).then(({
+      body: { current_page, last_page }
+    }) => {
+      console.log(current_page, last_page, current_page < last_page ? current_page + 1 : null);
+      this.nextPage = current_page < last_page ? current_page + 1 : null;
+    }) :
+    Promise.resolve();
 
   }
 
@@ -36,9 +52,14 @@ class ChannelList extends React.Component {
       );
     });
 
+    const next = this.nextPage ? (
+      <button onClick={() => this.fetchNextPage()}></button>
+    ) : null;
+
     return (<div>
       {sorted}
-      </div>);
+      {next}
+    </div>);
   }
 }
 
