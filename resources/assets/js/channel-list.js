@@ -13,6 +13,7 @@ class ChannelList extends React.Component {
 
     this.state = {
       nextPage: 1,
+      isLoading: false,
     };
 
     this.fetchNextPage();
@@ -28,7 +29,6 @@ class ChannelList extends React.Component {
     ).then(({
       body: { current_page, last_page }
     }) => {
-      console.log(current_page, last_page, current_page < last_page ? current_page + 1 : null);
       this.setState({ nextPage: current_page < last_page ? current_page + 1 : null });
     }) :
     Promise.resolve();
