@@ -20,8 +20,12 @@ class ChannelController extends Controller
      */
     public function index(Request $request)
     {
-      $user = $request->user();
+      return response($this->query($request), 200);
+    }
 
+    public function query(Request $request)
+    {
+      $user = $request->user();
       $channels = Channel::orderBy('updated_at', 'desc')->with('user');
       if ($user) {
         $connected_teams = [];
@@ -50,7 +54,7 @@ class ChannelController extends Controller
         $channel->user;
       }
 
-      return response($channels->paginate(12), 200);
+      return $channels->paginate(12);
     }
 
     /**
