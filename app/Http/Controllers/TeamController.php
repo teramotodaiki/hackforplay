@@ -14,9 +14,16 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-      return response(Team::all(), 200);
+      $teams = $this->query((object)$request->all());
+      return response($teams, 200);
+    }
+
+    public function query($query)
+    {
+      $teams = Team::orderBy('updated_at', 'desc');
+      return $teams->get();
     }
 
     /**
