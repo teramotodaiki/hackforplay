@@ -9,15 +9,21 @@ class ChannelList extends Component {
   constructor(props) {
     super(props);
 
-    const { dispatch } = this.props;
+    const { dispatch, channels } = this.props;
 
     this.state = {
       nextPage: 1,
       isLoading: false,
     };
 
-    this.fetchNextPage();
+  }
 
+  componentDidMount() {
+    const { channels } = this.props;
+
+    if (Object.keys(channels).length < 15) {
+      this.fetchNextPage();
+    }
   }
 
   fetchNextPage() {
