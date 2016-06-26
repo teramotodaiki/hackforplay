@@ -73,7 +73,7 @@ class ChannelController extends Controller
         $channel->user;
       }
 
-      return $channels->paginate(12);
+      return $channels->paginate();
     }
 
     /**
