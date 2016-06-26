@@ -31,6 +31,16 @@ class TeamController extends Controller
       return response($teams, 200);
     }
 
+    public function indexWithAuthUser(Request $request)
+    {
+      $query = (object) array_merge($request->all(), [
+        'user' => $request->user()
+      ]);
+
+      $teams = $this->query($query);
+      return response($teams, 200);
+    }
+
     public function query($query)
     {
       $teams = isset($query->user) ? $query->user->teams() : Team::skip(0);
