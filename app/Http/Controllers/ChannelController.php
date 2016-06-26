@@ -20,12 +20,16 @@ class ChannelController extends Controller
      */
     public function index(Request $request)
     {
-      return response($this->query($request), 200);
+      $query = (object) array_merge($request->all(), [
+        'user' => $request->user(),
+      ]);
+      $channels = $this->query($query);
+      return response($channels, 200);
     }
 
-    public function query(Request $request)
+    public function query($query)
     {
-      $user = $request->user();
+      $user = $query->user;
       $channels = Channel::orderBy('updated_at', 'desc')->with('user');
       if ($user) {
         $connected_teams = [];
@@ -39,15 +43,15 @@ class ChannelController extends Controller
         $channels = $channels->whereNull('TeamID');
       }
 
-      if ($request->has('is_private')) {
-        $channels = $channels->where('is_private', $request->input('is_private'));
+      if (isset($query->is_private)) {
+        $channels = $channels->where('is_private', $query->is_private);
       }
-      if ($request->has('is_closed')) {
-        $channels = $channels->where('is_closed', $request->input('is_closed'));
+      if (isset($query->is_closed)) {
+        $channels = $channels->where('is_closed', $query->is_closed);
       }
 
-      if ($request->has('since')) {
-        $channels = $channels->where('updated_at', '>=', $request->input('since'));
+      if (isset($query->since)) {
+        $channels = $channels->where('updated_at', '>=', $query->since);
       }
 
       foreach ($channels as $channel) {
