@@ -8,18 +8,72 @@ use App\Http\Requests;
 use App\Channel;
 use App\Project;
 use App\Team;
+use App\User;
 use Carbon\Carbon;
 
 class ChannelController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get all channels user can watch
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $query = (object) array_merge($request->all(), [
+        'user' => $request->user(),
+      ]);
+      $channels = $this->query($query);
+      return response($channels, 200);
+    }
+
+    public function indexWithProject(Request $request, $project)
+    {
+      $project = Project::where(
+        ctype_digit((string)$project) ? 'id' : 'token',
+        $project
+      )->firstOrFail();
+
+      $query = (object) array_merge($request->all(), [
+        'user'    => $request->user(),
+        'project' => $project,
+      ]);
+      $channels = $this->query($query);
+      return response($channels, 200);
+    }
+
+    public function query($query)
+    {
+      $user = $query->user;
+      $channels = Channel::orderBy('updated_at', 'desc')->with('user');
+      if ($user) {
+        $connected_teams = [];
+        foreach ($user->teams as $team) {
+          if ($team->pivot->Enabled) {
+            array_push($connected_teams, $team->ID);
+          }
+        }
+        $channels = $channels->whereIn('TeamID', $connected_teams);
+      } else {
+        $channels = $channels->whereNull('TeamID');
+      }
+
+      if (isset($query->is_private)) {
+        $channels = $channels->where('is_private', $query->is_private);
+      }
+      if (isset($query->is_closed)) {
+        $channels = $channels->where('is_closed', $query->is_closed);
+      }
+
+      if (isset($query->since)) {
+        $channels = $channels->where('updated_at', '>=', $query->since);
+      }
+
+      foreach ($channels as $channel) {
+        $channel->user;
+      }
+
+      return $channels->paginate(12);
     }
 
     /**

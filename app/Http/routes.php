@@ -42,6 +42,7 @@ Route::group(['middleware' => ['auth.old']], function()
 
   Route::resource('channels', 'ChannelController');
   Route::resource('channels.chats', 'ChatController');
+  Route::get('projects/{id}/channels', 'ChannelController@indexWithProject');
 
   // bells/
   Route::resource('bells', 'BellController');
