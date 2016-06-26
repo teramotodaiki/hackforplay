@@ -10,6 +10,7 @@ import Tutorials from "./tutorials";
 import Register from "./register";
 import Channel from "./channel";
 import Qcard from './qcard';
+import ChannelList from './channel-list';
 
 const store = createStore(
   combineReducers(reducers),
@@ -38,6 +39,7 @@ render((
         <Route path="register" component={Register}></Route>
         <Route path="channels">
           <Route path=":id/watch" component={Channel}></Route>
+          <Route path="list" component={ChannelList}></Route>
         </Route>
         <Route path="qcards">
           <Route path=":id/edit" component={Qcard}></Route>
