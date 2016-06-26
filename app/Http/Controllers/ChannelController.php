@@ -27,6 +27,21 @@ class ChannelController extends Controller
       return response($channels, 200);
     }
 
+    public function indexWithProject(Request $request, $project)
+    {
+      $project = Project::where(
+        ctype_digit((string)$project) ? 'id' : 'token',
+        $project
+      )->firstOrFail();
+
+      $query = (object) array_merge($request->all(), [
+        'user'    => $request->user(),
+        'project' => $project,
+      ]);
+      $channels = $this->query($query);
+      return response($channels, 200);
+    }
+
     public function query($query)
     {
       $user = $query->user;
