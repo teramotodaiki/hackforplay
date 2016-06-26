@@ -20,7 +20,11 @@ class ChannelList extends React.Component {
     const sorted = Object.keys(channels)
     .map((key) => channels[key])
     .sort((a, b) => {
-      return a.updated_at > b.updated_at ? 1 : -1;
+      return (
+        a.updated_at == null ? 1 :
+        b.updated_at == null ? -1 :
+        a.updated_at < b.updated_at ? 1 : -1
+      );
     })
     .map((channel) => {
       return (
