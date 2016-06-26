@@ -13,6 +13,11 @@ use Carbon\Carbon;
 
 class ChannelController extends Controller
 {
+    public function __construct()
+    {
+      $this->middleware('create', ['only' => ['auth']]);
+    }
+
     /**
      * Get all channels user can watch
      *
@@ -81,9 +86,9 @@ class ChannelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+      return view('defaultApp', ['user' => $request->user()]);
     }
 
     /**
