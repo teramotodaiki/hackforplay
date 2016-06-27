@@ -1,5 +1,7 @@
 import React from "react";
 import { Element, Link } from "react-scroll";
+import { Col, Panel } from 'react-bootstrap';
+
 
 export const Section = (props) => {
 
@@ -31,6 +33,33 @@ export const Section = (props) => {
 
 };
 
+export const CardSection = (props) => {
+
+  const header = (
+    <h1 style={{ textAlign: 'center' }}>{props.header}</h1>
+  );
+  const footer = props.descriptions ? (
+    <ul>
+      {props.descriptions.filter(i => i).map(i => <li key={i}>{i}</li>)}
+    </ul>
+  ) : null;
+  const spacer = <div style={{ height: '1.5rem' }} />;
+
+  return (
+    <Section name={props.name} style={{ textAlign: 'left' }}>
+      <div />
+      <Col xs={11} sm={9} md={8} lg={7}>
+        <Panel header={header} footer={footer}>
+          {spacer}
+          {props.children}
+          {spacer}
+        </Panel>
+      </Col>
+      <Arrow to={props.next} onClick={props.onMoveNext} />
+    </Section>
+  );
+};
+
 export const Scroller = (props) => {
 
   return (
@@ -39,4 +68,18 @@ export const Scroller = (props) => {
     </Link>
   );
 
+};
+
+export const Arrow = (props) => {
+  const faClass = props.faClass || 'fa fa-arrow-down fa-2x';
+  const addDefault = Object.assign({
+    smooth: true
+  }, props);
+  return (
+    <Link {...addDefault}>
+      <span className="btn btn-lg">
+        <span className={faClass}></span>
+      </span>
+    </Link>
+  )
 };
