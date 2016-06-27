@@ -43,8 +43,11 @@ const statics = {
       'b',
       'c',
     ],
-    next: 'Private',
+    next: 'Result',
   },
+  result: {
+    name: 'Result'
+  }
 };
 
 class ChannelCreate extends Component {
@@ -59,6 +62,7 @@ class ChannelCreate extends Component {
         <Team {...statics.team} />
         <Description {...statics.description} />
         <Private {...statics.private} />
+        <Result {...statics.result} />
       </div>
     );
   }
@@ -122,6 +126,16 @@ const Private = (props) => {
         Checkbox
       </Checkbox>
     </CardSection>
+  );
+
+};
+
+const Result = (props) => {
+
+  return (
+    <Section {...props}>
+      Result
+    </Section>
   );
 
 };
