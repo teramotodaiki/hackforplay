@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { FormGroup, FormControl, Checkbox, HelpBlock } from 'react-bootstrap';
 
@@ -55,7 +55,7 @@ const statics = {
 };
 
 class ChannelCreate extends Component {
-  constructor(props) {
+  constructor(props, { router }) {
     super(props);
 
     const { location: { query } } = props;
@@ -72,6 +72,7 @@ class ChannelCreate extends Component {
     };
 
     this.updateChannel = this.updateChannel.bind(this);
+    this.redirect = (...args) => router.push.apply(router, args);
   }
 
   componentDidMount() {
@@ -106,6 +107,9 @@ class ChannelCreate extends Component {
   }
 }
 
+ChannelCreate.contextTypes = {
+  router: PropTypes.object.isRequired
+};
 ChannelCreate.propTypes = {
 };
 
