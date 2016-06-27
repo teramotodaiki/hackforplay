@@ -53,6 +53,16 @@ const statics = {
 class ChannelCreate extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      myTeams: [],
+      channel: {
+        team: null,
+        description: '',
+        is_private: false,
+      },
+      isLoading: false,
+    };
   }
 
   render() {
