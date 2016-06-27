@@ -58,12 +58,15 @@ class ChannelCreate extends Component {
   constructor(props) {
     super(props);
 
+    const { location: { query } } = props;
+
     this.state = {
       myTeams: [],
       channel: {
         team: statics.team.nameIfNoTeam,
         description: '',
         is_private: false,
+        project_token: query.project_token,
       },
       isLoading: false,
     };
