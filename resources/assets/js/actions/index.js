@@ -160,3 +160,15 @@ export const fetchQcard = (filter) => {
 
   };
 };
+
+
+export const fetchMyTeams = () => {
+  return (dispatch) => {
+
+    return request
+      .get('/users/auth/teams')
+      .then((result) => result)
+      .catch((err) => alert(err.message));
+
+  };
+};
