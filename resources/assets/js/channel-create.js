@@ -78,6 +78,7 @@ class ChannelCreate extends Component {
     .then((result) => {
       if (result.body.data.length > 0) {
         this.setState({ myTeams: result.body.data });
+        this.updateChannel({ team: result.body.data[0].Name });
       }
     });
   }
