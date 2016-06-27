@@ -36,7 +36,7 @@ export const Section = (props) => {
 export const CardSection = (props) => {
 
   const header = (
-    <h1 style={{ textAlign: 'center' }}>{props.header}</h1>
+    <h1 style={{ textAlign: 'center' }}>{props.header || props.name}</h1>
   );
   const footer = props.descriptions ? (
     <ul>
