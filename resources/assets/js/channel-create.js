@@ -23,6 +23,8 @@ const statics = {
       'b',
       'c',
     ],
+    nameIfNoTeam: '',
+    displayNameIfNoTeam: 'Only Me',
     next: 'Description',
   },
   description: {
@@ -108,9 +110,8 @@ const Team = (props) => {
   return (
     <CardSection {...props}>
       <FormGroup>
-        <FormControl componentClass="select" placeholder="select">
-          <option value="select">select</option>
-          <option value="other">...</option>
+        <FormControl componentClass="select" placeholder={props.nameIfNoTeam}>
+          {options}
         </FormControl>
       </FormGroup>
     </CardSection>
@@ -122,8 +123,12 @@ const Description = (props) => {
 
   return (
     <CardSection {...props}>
-      <FormGroup controlId="formControlsTextarea">
-        <FormControl componentClass="textarea" placeholder="textarea" />
+      <FormGroup>
+        <FormControl
+          componentClass="textarea"
+          placeholder="textarea"
+          value={props.channel}
+          />
       </FormGroup>
     </CardSection>
   );
