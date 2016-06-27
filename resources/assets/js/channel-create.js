@@ -50,8 +50,15 @@ const statics = {
     next: 'Result',
   },
   result: {
-    name: 'Result'
-  }
+    name: 'Result',
+    components: {
+      // column key => component.name
+      team: 'Team',
+      description: 'Description',
+      is_private: 'Private',
+      project_token: 'Result',
+    },
+  },
 };
 
 class ChannelCreate extends Component {
@@ -69,6 +76,7 @@ class ChannelCreate extends Component {
         project_token: query.project_token,
       },
       isLoading: false,
+      errors: null,
     };
 
     this.updateChannel = this.updateChannel.bind(this);
@@ -99,10 +107,11 @@ class ChannelCreate extends Component {
 
     dispatch(postChannel(channel))
     .then((result) => this.redirect(`/channels/${result.body.ID}/watch`))
+    .catch((err) => this.setState({ errors: err.response.body }));
   }
 
   render() {
-    const { myTeams, channel, isLoading } = this.state;
+    const { myTeams, channel, isLoading, errors } = this.state;
 
     return (
       <div>
@@ -110,7 +119,7 @@ class ChannelCreate extends Component {
         <Team {...statics.team} myTeams={myTeams} channel={channel} update={this.updateChannel} />
         <Description {...statics.description} channel={channel} update={this.updateChannel} />
         <Private {...statics.private} channel={channel} update={this.updateChannel} create={this.createChannel} />
-        <Result {...statics.result} channel={channel} />
+        <Result {...statics.result} channel={channel} errors={errors} />
       </div>
     );
   }
@@ -210,19 +219,22 @@ const Private = (props) => {
 
 const Result = (props) => {
 
+  const error = props.errors ? (
+
+    Object.keys(props.errors).map((key) => {
+      return (
+        <div key={key} className="text-danger" style={{ fontSize: '3rem' }}>
+          <span>{props.errors[key]}</span>
+          <Arrow to={props.components[key]} faClass="fa fa-arrow-up" />
+        </div>
+      );
+    })
+
+  ) : 'Result';
+
   return (
     <Section {...props}>
-      Result
-    </Section>
-  );
-
-};
-
-const ErrorMessage = (props) => {
-
-  return (
-    <Section name="ErrorMessage">
-      Errors
+      {error}
     </Section>
   );
 
