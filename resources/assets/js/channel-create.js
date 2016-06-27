@@ -158,11 +158,16 @@ const Description = (props) => {
 };
 
 const Private = (props) => {
-  const { channel: { is_private } } = props;
+  const { channel: { is_private }, update } = props;
 
   return (
     <CardSection {...props}>
-      <Checkbox checked={is_private} style={{ textAlign: 'center' }}>
+      <Checkbox
+        checked={is_private}
+        style={{ textAlign: 'center' }}
+        onChange={(e) => update({ is_private: e.target.checked })}
+        value={is_private}
+        >
         {props.label}
       </Checkbox>
     </CardSection>
