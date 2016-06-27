@@ -54,10 +54,10 @@ class ChannelCreate extends Component {
   render() {
     return (
       <div>
-        <Landing />
-        <Team />
-        <Description />
-        <Private />
+        <Landing {...statics.landing} />
+        <Team {...statics.team} />
+        <Description {...statics.description} />
+        <Private {...statics.private} />
       </div>
     );
   }
@@ -69,8 +69,10 @@ ChannelCreate.propTypes = {
 const Landing = (props) => {
 
   return (
-    <CardSection name="Landing" next="Team">
-      Landing
+    <CardSection {...props}>
+      <div style={{ textAlign: 'center' }}>
+        <h3>{props.label}</h3>
+      </div>
     </CardSection>
   );
 
@@ -79,7 +81,7 @@ const Landing = (props) => {
 const Team = (props) => {
 
   return (
-    <CardSection name="Team" next="Description">
+    <CardSection {...props}>
       Team
     </CardSection>
   );
@@ -89,7 +91,7 @@ const Team = (props) => {
 const Description = (props) => {
 
   return (
-    <CardSection name="Description" next="Private">
+    <CardSection {...props}>
       Description
     </CardSection>
   );
@@ -99,7 +101,7 @@ const Description = (props) => {
 const Private = (props) => {
 
   return (
-    <CardSection name="Private" next="Private">
+    <CardSection {...props}>
       Private
     </CardSection>
   );
