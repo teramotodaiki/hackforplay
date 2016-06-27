@@ -66,6 +66,8 @@ class ChannelCreate extends Component {
       },
       isLoading: false,
     };
+
+    this.updateChannel = this.updateChannel.bind(this);
   }
 
   updateChannel(inputs) {
@@ -79,9 +81,9 @@ class ChannelCreate extends Component {
     return (
       <div>
         <Landing {...statics.landing} />
-        <Team {...statics.team} myTeams={myTeams} channel={channel} />
-        <Description {...statics.description} channel={channel} />
-        <Private {...statics.private} channel={channel} />
+        <Team {...statics.team} myTeams={myTeams} channel={channel} update={this.updateChannel} />
+        <Description {...statics.description} channel={channel} update={this.updateChannel} />
+        <Private {...statics.private} channel={channel} update={this.updateChannel} />
         <Result {...statics.result} channel={channel} />
       </div>
     );
