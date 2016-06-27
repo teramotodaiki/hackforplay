@@ -6,7 +6,7 @@ import request from "./promised-xhr.js";
 import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, ControlLabel } from "react-bootstrap";
 
 import Merger from "./merger";
-import { Section } from "./section";
+import { Section } from "./components/section";
 
 const contains = (text, range) => { // Contains check.
   const len = text.length;

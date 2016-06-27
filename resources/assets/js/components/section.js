@@ -2,7 +2,7 @@ import React from "react";
 import { Element, Link } from "react-scroll";
 import classNames from "classNames";
 
-import Merger from "./merger";
+import Merger from "../merger";
 
 const Section = React.createClass({
   mixins: [Merger],
