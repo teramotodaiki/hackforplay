@@ -68,6 +68,11 @@ class ChannelCreate extends Component {
     };
   }
 
+  updateChannel(inputs) {
+    const channel = Object.assign({}, this.state.channel, inputs);
+    this.setState({ channel });
+  }
+
   render() {
     const { myTeams, channel, isLoading } = this.state;
 
