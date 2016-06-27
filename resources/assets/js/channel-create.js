@@ -68,10 +68,18 @@ ChannelCreate.propTypes = {
 
 const Landing = (props) => {
 
+  const contents = props.contents.map((item) => (
+    <p key={item}>
+      <span className="fa fa-check-circle-o text-success" />
+      <span> {item}</span>
+    </p>
+  ));
+
   return (
     <CardSection {...props}>
       <div style={{ textAlign: 'center' }}>
         <h3>{props.label}</h3>
+        {contents}
       </div>
     </CardSection>
   );
