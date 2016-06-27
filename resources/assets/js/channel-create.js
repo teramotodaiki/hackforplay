@@ -106,6 +106,14 @@ const Landing = (props) => {
 };
 
 const Team = (props) => {
+  const { myTeams, channel: { team } } = props;
+
+  const options = [{
+    Name: props.nameIfNoTeam,
+    DisplayName: props.displayNameIfNoTeam,
+  }].concat(myTeams).map((item) => (
+    <option key={item.Name} value={item.Name}>{item.DisplayName}</option>
+  ));
 
   return (
     <CardSection {...props}>
