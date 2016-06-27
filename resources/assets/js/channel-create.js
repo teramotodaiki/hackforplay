@@ -35,6 +35,7 @@ const statics = {
       'b',
       'c',
     ],
+    placeholder: 'e.g.) @@@@@@@@@@@@@@@',
     next: 'Private',
   },
   private: {
@@ -128,14 +129,15 @@ const Team = (props) => {
 };
 
 const Description = (props) => {
+  const { channel: { description } } = props;
 
   return (
     <CardSection {...props}>
       <FormGroup>
         <FormControl
           componentClass="textarea"
-          placeholder="textarea"
-          value={props.channel}
+          placeholder={props.placeholder}
+          value={description}
           />
       </FormGroup>
     </CardSection>
