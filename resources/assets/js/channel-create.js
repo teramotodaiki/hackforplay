@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { FormGroup, FormControl, Checkbox, HelpBlock } from 'react-bootstrap';
 
 import { Section, CardSection, Arrow } from './components/section';
+import { fetchMyTeams } from './actions/';
 
 const statics = {
   landing: {
@@ -68,6 +69,17 @@ class ChannelCreate extends Component {
     };
 
     this.updateChannel = this.updateChannel.bind(this);
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+
+    dispatch(fetchMyTeams())
+    .then((result) => {
+      if (result.body.data.length > 0) {
+        this.setState({ myTeams: result.body.data });
+      }
+    });
   }
 
   updateChannel(inputs) {
