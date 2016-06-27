@@ -2,18 +2,15 @@ import React from "react";
 import { Element, Link } from "react-scroll";
 import classNames from "classNames";
 
-import Merger from "../merger";
-
 const Section = React.createClass({
-  mixins: [Merger],
   render () {
 
-    const style = this.m({
+    const style = Object.assign({
       height: '100vh',
       textAlign: 'center',
     }, this.props.style);
 
-    const rowStyle = this.m({
+    const rowStyle = Object.assign({
       display: 'flex',
       flexFlow: 'column nowrap',
       justifyContent: 'space-around',
@@ -37,7 +34,6 @@ const Section = React.createClass({
 });
 
 const Scroller = React.createClass({
-  mixins: [Merger],
   render() {
     return (
       <Link activeClass="active" to={this.props.to} spy={true} smooth={true} offset={1} duration={this.props.duration || 500}>
