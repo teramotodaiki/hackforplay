@@ -143,16 +143,18 @@ const Team = (props) => {
 
 const Description = (props) => {
   const { channel: { description }, update } = props;
+  const status = description ? 'success' : 'warning';
 
   return (
     <CardSection {...props}>
-      <FormGroup>
+      <FormGroup bsSize="large" validationState={status}>
         <FormControl
           componentClass="textarea"
           placeholder={props.placeholder}
           onChange={(e) => update({ description: e.target.value })}
           value={description}
           />
+        <HelpBlock>{props.label}</HelpBlock>
       </FormGroup>
     </CardSection>
   );
