@@ -60,7 +60,7 @@ class ChannelCreate extends Component {
     this.state = {
       myTeams: [],
       channel: {
-        team: null,
+        team: statics.team.nameIfNoTeam,
         description: '',
         is_private: false,
       },
