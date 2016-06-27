@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormGroup, FormControl } from 'react-bootstrap';
+import { FormGroup, FormControl, Checkbox } from 'react-bootstrap';
 
 import { Section, CardSection, Arrow } from './components/section';
 
@@ -118,7 +118,9 @@ const Private = (props) => {
 
   return (
     <CardSection {...props}>
-      Private
+      <Checkbox checked style={{ textAlign: 'center' }}>
+        Checkbox
+      </Checkbox>
     </CardSection>
   );
 
