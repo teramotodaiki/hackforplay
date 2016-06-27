@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { FormGroup, FormControl } from 'react-bootstrap';
 
 import { Section, CardSection, Arrow } from './components/section';
 
@@ -90,7 +91,12 @@ const Team = (props) => {
 
   return (
     <CardSection {...props}>
-      Team
+      <FormGroup>
+        <FormControl componentClass="select" placeholder="select">
+          <option value="select">select</option>
+          <option value="other">...</option>
+        </FormControl>
+      </FormGroup>
     </CardSection>
   );
 
