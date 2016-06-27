@@ -19,6 +19,7 @@
     "react-scroll": "^1.0.15",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
-    "superagent": "^2.0.0"
+    "superagent": "^2.0.0",
+    "superagent-promise-plugin": "^3.2.0"
   }
 }
