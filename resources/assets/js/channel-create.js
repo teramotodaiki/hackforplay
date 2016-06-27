@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormGroup, FormControl, Checkbox } from 'react-bootstrap';
+import { FormGroup, FormControl, Checkbox, HelpBlock } from 'react-bootstrap';
 
 import { Section, CardSection, Arrow } from './components/section';
 
@@ -115,6 +115,7 @@ const Landing = (props) => {
 
 const Team = (props) => {
   const { myTeams, channel: { team }, update } = props;
+  const status = team !== props.nameIfNoTeam ? 'success' : 'warning';
 
   const options = [{
     Name: props.nameIfNoTeam,
@@ -125,7 +126,7 @@ const Team = (props) => {
 
   return (
     <CardSection {...props}>
-      <FormGroup>
+      <FormGroup bsSize="large" validationState={status}>
         <FormControl
           componentClass="select"
           onChange={(e) => update({ team: e.target.value })}
@@ -133,6 +134,7 @@ const Team = (props) => {
           >
           {options}
         </FormControl>
+        <HelpBlock>{props.label}</HelpBlock>
       </FormGroup>
     </CardSection>
   );
