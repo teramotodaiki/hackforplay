@@ -146,11 +146,12 @@ const Description = (props) => {
 };
 
 const Private = (props) => {
+  const { channel: { is_private } } = props;
 
   return (
     <CardSection {...props}>
-      <Checkbox checked style={{ textAlign: 'center' }}>
-        Checkbox
+      <Checkbox checked={is_private} style={{ textAlign: 'center' }}>
+        {props.label}
       </Checkbox>
     </CardSection>
   );
