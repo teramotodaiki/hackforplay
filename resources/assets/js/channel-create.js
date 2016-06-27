@@ -66,13 +66,15 @@ class ChannelCreate extends Component {
   }
 
   render() {
+    const { myTeams, channel, isLoading } = this.state;
+
     return (
       <div>
         <Landing {...statics.landing} />
-        <Team {...statics.team} />
-        <Description {...statics.description} />
-        <Private {...statics.private} />
-        <Result {...statics.result} />
+        <Team {...statics.team} myTeams={myTeams} channel={channel} />
+        <Description {...statics.description} channel={channel} />
+        <Private {...statics.private} channel={channel} />
+        <Result {...statics.result} channel={channel} />
       </div>
     );
   }
