@@ -114,7 +114,7 @@ const Landing = (props) => {
 };
 
 const Team = (props) => {
-  const { myTeams, channel: { team } } = props;
+  const { myTeams, channel: { team }, update } = props;
 
   const options = [{
     Name: props.nameIfNoTeam,
@@ -126,7 +126,11 @@ const Team = (props) => {
   return (
     <CardSection {...props}>
       <FormGroup>
-        <FormControl componentClass="select" placeholder={props.nameIfNoTeam}>
+        <FormControl
+          componentClass="select"
+          onChange={(e) => update({ team: e.target.value })}
+          value={team}
+          >
           {options}
         </FormControl>
       </FormGroup>
