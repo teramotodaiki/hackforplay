@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FormGroup, FormControl, Checkbox, HelpBlock } from 'react-bootstrap';
 
 import { Section, CardSection, Arrow } from './components/section';
-import { fetchMyTeams } from './actions/';
+import { fetchMyTeams, postChannel } from './actions/';
 
 const statics = {
   landing: {
@@ -72,6 +72,7 @@ class ChannelCreate extends Component {
     };
 
     this.updateChannel = this.updateChannel.bind(this);
+    this.createChannel = this.createChannel.bind(this);
     this.redirect = (...args) => router.push.apply(router, args);
   }
 
@@ -92,6 +93,14 @@ class ChannelCreate extends Component {
     this.setState({ channel });
   }
 
+  createChannel() {
+    const { dispatch } = this.props;
+    const { channel } = this.state;
+
+    dispatch(postChannel(channel))
+    .then((result) => this.redirect(`/channels/${result.body.ID}/watch`))
+  }
+
   render() {
     const { myTeams, channel, isLoading } = this.state;
 
@@ -100,7 +109,7 @@ class ChannelCreate extends Component {
         <Landing {...statics.landing} />
         <Team {...statics.team} myTeams={myTeams} channel={channel} update={this.updateChannel} />
         <Description {...statics.description} channel={channel} update={this.updateChannel} />
-        <Private {...statics.private} channel={channel} update={this.updateChannel} />
+        <Private {...statics.private} channel={channel} update={this.updateChannel} create={this.createChannel} />
         <Result {...statics.result} channel={channel} />
       </div>
     );
@@ -182,10 +191,10 @@ const Description = (props) => {
 };
 
 const Private = (props) => {
-  const { channel: { is_private }, update } = props;
+  const { channel: { is_private }, update, create } = props;
 
   return (
-    <CardSection {...props}>
+    <CardSection {...props} onMoveNext={() => create()}>
       <Checkbox
         checked={is_private}
         style={{ textAlign: 'center' }}
