@@ -106,7 +106,9 @@ const Description = (props) => {
 
   return (
     <CardSection {...props}>
-      Description
+      <FormGroup controlId="formControlsTextarea">
+        <FormControl componentClass="textarea" placeholder="textarea" />
+      </FormGroup>
     </CardSection>
   );
 
