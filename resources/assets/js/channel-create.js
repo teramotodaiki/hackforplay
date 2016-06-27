@@ -140,7 +140,7 @@ const Team = (props) => {
 };
 
 const Description = (props) => {
-  const { channel: { description } } = props;
+  const { channel: { description }, update } = props;
 
   return (
     <CardSection {...props}>
@@ -148,6 +148,7 @@ const Description = (props) => {
         <FormControl
           componentClass="textarea"
           placeholder={props.placeholder}
+          onChange={(e) => update({ description: e.target.value })}
           value={description}
           />
       </FormGroup>
