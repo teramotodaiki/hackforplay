@@ -6,7 +6,7 @@ import request from "./promised-xhr.js";
 import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, ControlLabel } from "react-bootstrap";
 
 import Merger from "./merger";
-import { Section } from "./section";
+import { Section, CardSection, Arrow } from "./components/section";
 
 const contains = (text, range) => { // Contains check.
   const len = text.length;
@@ -449,44 +449,3 @@ const Error = (props) => {
     </div>
   );
 }
-
-const CardSection = (props) => {
-
-  const header = (
-    <h1 style={{ textAlign: 'center' }}>{props.header}</h1>
-  );
-  const footer = props.descriptions ? (
-    <ul>
-      {props.descriptions.filter(i => i).map(i => <li key={i}>{i}</li>)}
-    </ul>
-  ) : null;
-  const spacer = <div style={{ height: '1.5rem' }} />;
-
-  return (
-    <Section name={props.name} style={{ textAlign: 'left' }}>
-      <div />
-      <Col xs={11} sm={9} md={8} lg={7}>
-        <Panel header={header} footer={footer}>
-          {spacer}
-          {props.children}
-          {spacer}
-        </Panel>
-      </Col>
-      <Arrow to={props.next} onClick={props.onMoveNext} />
-    </Section>
-  );
-};
-
-const Arrow = (props) => {
-  const faClass = props.faClass || 'fa fa-arrow-down fa-2x';
-  const addDefault = Object.assign({
-    smooth: true
-  }, props);
-  return (
-    <ScrollLink {...addDefault}>
-      <span className="btn btn-lg">
-        <span className={faClass}></span>
-      </span>
-    </ScrollLink>
-  )
-};

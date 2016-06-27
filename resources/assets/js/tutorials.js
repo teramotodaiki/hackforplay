@@ -5,7 +5,7 @@ import classNames from "classNames";
 import { Panel } from "react-bootstrap";
 
 import Merger from "./merger";
-import { Section, Scroller } from "./section";
+import { Section, Scroller } from "./components/section";
 import IframeEmbed from './iframe-embed';
 
 const statics = {
