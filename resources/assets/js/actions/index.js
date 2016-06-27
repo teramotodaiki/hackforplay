@@ -48,6 +48,7 @@ export const postChannel = (channel) => {
 
     return request
       .post('/channels')
+      .accept('json')
       .send(channel)
       .then((result) => {
         dispatch({ type: ADD_CHANNEL, channel: result.body });
