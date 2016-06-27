@@ -3,6 +3,49 @@ import { connect } from 'react-redux';
 
 import { Section, CardSection, Arrow } from './components/section';
 
+const statics = {
+  landing: {
+    name: 'Landing',
+    label: "landing-label",
+    contents: [
+      'a',
+      'b',
+      'c',
+    ],
+    next: 'Team',
+  },
+  team: {
+    name: 'Team',
+    label: "team-label",
+    descriptions: [
+      'a',
+      'b',
+      'c',
+    ],
+    next: 'Description',
+  },
+  description: {
+    name: 'Description',
+    label: "description-label",
+    descriptions: [
+      'a',
+      'b',
+      'c',
+    ],
+    next: 'Private',
+  },
+  private: {
+    name: 'Private',
+    label: "private-label",
+    descriptions: [
+      'a',
+      'b',
+      'c',
+    ],
+    next: 'Private',
+  },
+};
+
 class ChannelCreate extends Component {
   constructor(props) {
     super(props);
