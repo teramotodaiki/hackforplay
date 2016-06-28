@@ -414,31 +414,6 @@ $(function(){
 		$('.container .gif-loop-animation').attr('src', images[images_index]);
 	}, 4000);
 
-
-	// チャンネル
-	$.get('../cast/channels.php', function (data) {
-		try {
-			JSON.parse(data).forEach(function (item) {
-				$('<a>').attr({
-					href: '/cast/?name='+item.Name,
-					target: 'cast'
-				}).append(
-					$('<div>').addClass('cast-thumbnail fit').css({
-						backgroundImage: 'url('+item.Thumbnail+')'
-					})
-				).append(
-					$('<div>').addClass('cast-description').append(
-						$('<h4>').text(item.DisplayName)
-					).append(
-						$('<h5>').text(item.Nickname + '@' + item.Team)
-					)
-				).appendTo('.h4p_topic-cast');
-			});
-		} catch (e) {
-			console.error(e);
-		}
-	})
-
 	function rateToLabelColor (rate, isZero) {
 		return isZero ? 'label-default' :
 		rate < 0.15 ? 'label-hard' :
