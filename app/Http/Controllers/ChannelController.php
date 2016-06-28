@@ -66,8 +66,8 @@ class ChannelController extends Controller
       if (isset($query->is_private)) {
         $channels = $channels->where('is_private', $query->is_private);
       }
-      if (isset($query->is_closed)) {
-        $channels = $channels->where('is_closed', $query->is_closed);
+      if (isset($query->is_archived)) {
+        $channels = $channels->where('is_archived', $query->is_archived);
       }
 
       if (isset($query->since)) {
