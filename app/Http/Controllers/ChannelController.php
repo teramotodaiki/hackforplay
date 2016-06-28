@@ -122,6 +122,8 @@ class ChannelController extends Controller
         ], 403);
       }
 
+      $headScript = $project->scripts()->orderBy('ID', 'DESC')->first();
+
       $channel = Channel::create([
         'ProjectID'     => $project->ID,
         'ProjectToken'  => $request->input('project_token'),
@@ -131,8 +133,9 @@ class ChannelController extends Controller
         'Updated'       => Carbon::now(),
         'TeamID'        => $team ? $team->ID : null,
         'description'   => $request->input('description'),
+        'Thumbnail'     => $headScript ? $headScript->Thumbnail : null,
       ]);
-      $channel->script = $channel->project->scripts()->orderBy('ID', 'DESC')->first();
+      $channel->script = $headScript;
 
       return response($channel, 200);
     }
