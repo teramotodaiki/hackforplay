@@ -6,6 +6,11 @@ if (isset($session_userid)) {
 	$stmt->bindValue(":userid", $session_userid, PDO::PARAM_INT);
 	$stmt->execute();
 	$user_info	= $stmt->fetch(PDO::FETCH_ASSOC);
+
+	$stmt = $dbh->prepare('SELECT * FROM "UserTeamMap" WHERE "UserID"=:userid AND "Enabled"=1');
+	$stmt->bindValue(':userid', $session_userid, PDO::PARAM_INT);
+	$stmt->execute();
+	$is_connected_some_teams = count($stmt->fetchAll(PDO::FETCH_ASSOC)) > 0;
 }
 
 // topPage or inGame
@@ -253,9 +258,11 @@ $(function(){
 					</a>
 				</li>
 				<?php endif; ?>
+				<?php if ($is_connected_some_teams) : ?>
 				<li>
-					<a href="/dashboard/" title="ダッシュボード">ダッシュボード</a>
+					<a href="/channels/list" title="チャンネル">チャンネル</a>
 				</li>
+				<?php endif; ?>
 				<li>
 					<a href="/fbpage/" title="おしらせ">おしらせ</a>
 				</li>
@@ -340,6 +347,9 @@ $(function(){
 						</li>
 						<li>
 							<a href="/comments" title="Comments">もらったコメント</a>
+						</li>
+						<li>
+							<a href="/dashboard/" title="ダッシュボード">ダッシュボード</a>
 						</li>
 						<li role="separator" class="divider"></li>
 						<li>

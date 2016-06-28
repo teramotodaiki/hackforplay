@@ -63,11 +63,15 @@ class ChannelController extends Controller
         $channels = $channels->whereNull('TeamID');
       }
 
+      if (isset($query->project)) {
+        $channels->where('ProjectID', $query->project->ID);
+      }
+
       if (isset($query->is_private)) {
         $channels = $channels->where('is_private', $query->is_private);
       }
-      if (isset($query->is_closed)) {
-        $channels = $channels->where('is_closed', $query->is_closed);
+      if (isset($query->is_archived)) {
+        $channels = $channels->where('is_archived', $query->is_archived);
       }
 
       if (isset($query->since)) {
@@ -118,6 +122,8 @@ class ChannelController extends Controller
         ], 403);
       }
 
+      $headScript = $project->scripts()->orderBy('ID', 'DESC')->first();
+
       $channel = Channel::create([
         'ProjectID'     => $project->ID,
         'ProjectToken'  => $request->input('project_token'),
@@ -127,8 +133,9 @@ class ChannelController extends Controller
         'Updated'       => Carbon::now(),
         'TeamID'        => $team ? $team->ID : null,
         'description'   => $request->input('description'),
+        'Thumbnail'     => $headScript ? $headScript->Thumbnail : null,
       ]);
-      $channel->script = $channel->project->scripts()->orderBy('ID', 'DESC')->first();
+      $channel->script = $headScript;
 
       return response($channel, 200);
     }
