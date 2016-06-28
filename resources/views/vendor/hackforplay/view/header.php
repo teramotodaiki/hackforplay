@@ -264,9 +264,6 @@ $(function(){
 				</li>
 				<?php endif; ?>
 				<li>
-					<a href="/dashboard/" title="ダッシュボード">ダッシュボード</a>
-				</li>
-				<li>
 					<a href="/fbpage/" title="おしらせ">おしらせ</a>
 				</li>
 			</ul>
@@ -350,6 +347,9 @@ $(function(){
 						</li>
 						<li>
 							<a href="/comments" title="Comments">もらったコメント</a>
+						</li>
+						<li>
+							<a href="/dashboard/" title="ダッシュボード">ダッシュボード</a>
 						</li>
 						<li role="separator" class="divider"></li>
 						<li>
