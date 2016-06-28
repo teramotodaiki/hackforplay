@@ -67,6 +67,12 @@ class ChannelCreate extends Component {
 
     const { location: { query } } = props;
 
+    if (!query.project_token &&
+      confirm('Missing project_token so you cannot make a channel. Do you want to close this window?'))
+    {
+      close();
+    }
+
     this.state = {
       myTeams: [],
       channel: {
