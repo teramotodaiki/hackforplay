@@ -30,7 +30,7 @@ class AddChannelTableColumn extends Migration
     {
       Schema::table('channel', function (Blueprint $table)
       {
-        $table->dropColumn(['is_private', 'is_closed', 'created_at', 'updated_at', 'description']);
+        $table->dropColumn(['is_private', 'is_archived', 'created_at', 'updated_at', 'description']);
       });
     }
 }
