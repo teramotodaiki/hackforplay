@@ -15,7 +15,7 @@ class AddChannelTableColumn extends Migration
       Schema::table('channel', function (Blueprint $table)
       {
         $table->boolean('is_private')->default(FALSE);
-        $table->boolean('is_closed')->default(FALSE);
+        $table->boolean('is_archived')->default(FALSE);
         $table->timestamps();
         $table->string('description', 100)->nullable();
       });
