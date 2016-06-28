@@ -13,7 +13,6 @@
 
 @section('css', elixir('css/app.css'))
 @section('js',  elixir('js/app.js'))
-@section('bootstrap', '/js/bootstrap.js')
 
 @section('id', 'app')
 
