@@ -37,7 +37,7 @@ class BellController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $team_id)
+    public function storeWithTeam(Request $request, $team_id)
     {
       $team = Team::where(
         ctype_digit((string)$team_id) ? 'id' : 'name',
@@ -65,21 +65,26 @@ class BellController extends Controller
         'qcard_id' => $request->input('qcard'),
       ]);
 
-      try {
-        // slack notification
-        $qcard = $request->input('qcard');
-        $qcardUrl = url("qcards/{$qcard}/view");
-        $text = ":bellhop_bell::point_right:{$user->Nickname}{$qcardUrl}";
-        $text = urlencode($text);
-        $url = "https://slack.com/api/chat.postMessage?token={$team->slack_api_token}&channel={$team->slack_channel_name}&text=$text&as_user=true";
-
-        file_get_contents($url);
-
-      } catch (Exception $e) {
-        return response($e, 200);
-      }
+      // slack notification
+      $this->postToSlack([
+        ":bellhop_bell::point_right:{$user->Nickname}",
+        $channel ? "channel " . url("channels/{$channel->ID}/watch") : null,
+        $request->has('qcard') ? url('qcards/' . $request->input('qcard') . '/view') : null,
+      ], $team);
 
       return response($bell, 200);
+    }
+
+    public function postToSlack($texts, $team)
+    {
+      $api = "https://slack.com/api/chat.postMessage?token={$team->slack_api_token}&channel={$team->slack_channel_name}&as_user=true";
+
+      foreach ($texts as $item) {
+        if (!$item) continue;
+
+        $text = urlencode($item);
+        file_get_contents($api . '&text=' . $text);
+      }
     }
 
     /**

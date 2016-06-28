@@ -733,7 +733,9 @@ $(function(){
 
 			});
 
-			$(".h4p_save_button").on("click", __saveTask);
+			$(".h4p_save_button").on("click", function () {
+				__saveTask();
+			});
 
 			function __saveTask (callback) {
 
@@ -1303,76 +1305,28 @@ $(function(){
 	// Cast
 	$('.h4p_cast-channel .dropdown-menu').on('click', 'a', function () {
 		var target = $(this);
-		var channelName = target.data('name');
-		var castWindow = window.open('about:blank', 'cast');
-		$.ajax({
-			type: 'POST',
-			url: '../cast/start.php',
-			data: {
-				name: channelName,
-				token: sessionStorage.getItem('project-token')
-			}
-		}).done(function (data) {
-			switch (data) {
-				case 'success':
-					castWindow.location.href = '/cast?name='+channelName+'&t='+new Date().getTime();
-					break;
-				case 'no-commit':
-					$('.h4p_save_button').trigger('click');
-					setTimeout(function () {
-						target.trigger('click');
-					}, 1000);
-					break;
-			}
-		}).fail(function () {
-			castWindow.close();
-		}).always(function () {
-			castWindow = null;
-		});
+		var channelId = target.data('id');
+		var castWindow = window.open('/channels/' + channelId + '/watch', 'channel-' + channelId);
 	});
 
 	// List of channels
-	$.get('../cast/channels.php', {
-		filter: true
-	}, function (data) {
-		var result;
-		try {
-			result = JSON.parse(data);
-			result.forEach(function (channel) {
-				$('<li>').append(
-					$('<a>').data('name', channel.Name).text(channel.DisplayName+' | '+channel.Team)
-				).appendTo('.h4p_cast-channel .dropdown-menu');
-			});
-		} catch (e) {
-			console.error(e);
-		}
+	$.get('/projects/'+ sessionStorage.getItem('project-token') +'/channels', {
+		is_archived: false
+	}, function (result) {
+
+		result.data.forEach(function (channel) {
+			var desc = channel.description;
+			desc = !desc || desc.length < 10 ? desc : desc.substr(0, 9) + '…';
+			$('<li>').append(
+				$('<a>').data('id', channel.ID).text(desc)
+			).appendTo('.h4p_cast-channel .dropdown-menu');
+		});
 
 		$('<li>').append(
 			$('<a>').text('Create new channel').on('click', function () {
 
-				var castWindow = window.open('about:blank', 'cast');
-				$.ajax({
-					type: 'POST',
-					url: '/channels',
-					data: {
-						project_token: sessionStorage.getItem('project-token'),
-					},
-				}).done(function (channel) {
-
-					var uri = '/channels/'+channel.ID;
-					castWindow.location.href = uri+'/watch';
-
-					[
-						'チャンネルができたよ✨\n他の人も呼んでみよう❗️→'+location.origin+uri+'/watch'
-					]
-					.forEach(function (message) {
-						$.post(uri+'/chats', { message: message });
-					});
-
-				}).fail(function (data) {
-					console.error(data);
-					castWindow.close();
-				});
+				$('.h4p_save_button').trigger('click');
+				window.open('/channels/create?project_token=' + sessionStorage.getItem('project-token'), 'create-channel');
 				return false;
 
 			})

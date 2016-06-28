@@ -126,7 +126,7 @@ class Channel extends Component {
           style={{'padding': '0', height: '100%', border: '1px solid #eceeef' }}
           >
           <Timeline
-            chats={channel ? channel.chats : []}
+            chats={channel && channel.chats ? channel.chats : []}
             style={timelineStyle}
             />
           <ActionBar

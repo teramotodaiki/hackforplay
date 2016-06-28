@@ -1,5 +1,6 @@
-import request from 'superagent';
 import equal from 'deep-equal';
+import superagentPromisePlugin from 'superagent-promise-plugin';
+const request = superagentPromisePlugin.patch(require('superagent'));
 
 const API = {
   github: 'https://api.github.com'
@@ -23,6 +24,38 @@ export const fetchChannel = ({ id, chats }) => {
       .catch((err) => alert(err));
 
   }
+};
+
+export const fetchChannels = (query) => {
+  return (dispatch) => {
+
+    return request
+      .get('/channels')
+      .query(query)
+      .then((result) => {
+        result.body.data.forEach((channel) => {
+          dispatch({ type: ADD_CHANNEL, channel });
+        });
+        return result;
+      })
+      .catch((err) => alert(err.message));
+
+  };
+};
+
+export const postChannel = (channel) => {
+  return (dispatch) => {
+
+    return request
+      .post('/channels')
+      .accept('json')
+      .send(channel)
+      .then((result) => {
+        dispatch({ type: ADD_CHANNEL, channel: result.body });
+        return result;
+      });
+
+  };
 };
 
 export const ADD_CHAT = 'ADD_CHAT';
@@ -138,6 +171,18 @@ export const fetchQcard = (filter) => {
     return request
       .get(`/qcards`)
       .query(filter)
+      .then((result) => result)
+      .catch((err) => alert(err.message));
+
+  };
+};
+
+
+export const fetchMyTeams = () => {
+  return (dispatch) => {
+
+    return request
+      .get('/users/auth/teams')
       .then((result) => result)
       .catch((err) => alert(err.message));
 
