@@ -194,7 +194,7 @@ const Team = (props) => {
 
 const Description = (props) => {
   const { channel: { description }, update } = props;
-  const status = contains(description, props.range) ? 'success' : 'danger';
+  const status = contains(description, props.range) ? 'success' : 'error';
 
   return (
     <CardSection {...props}>
@@ -205,7 +205,7 @@ const Description = (props) => {
           onChange={(e) => update({ description: e.target.value })}
           value={description}
           />
-        <HelpBlock>{props.label}</HelpBlock>
+        <HelpBlock>{description.length + props.label}</HelpBlock>
       </FormGroup>
     </CardSection>
   );
