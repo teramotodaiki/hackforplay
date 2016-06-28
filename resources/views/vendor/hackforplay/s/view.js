@@ -733,7 +733,9 @@ $(function(){
 
 			});
 
-			$(".h4p_save_button").on("click", __saveTask);
+			$(".h4p_save_button").on("click", function () {
+				__saveTask();
+			});
 
 			function __saveTask (callback) {
 
