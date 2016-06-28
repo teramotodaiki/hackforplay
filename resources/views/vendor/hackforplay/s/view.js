@@ -1323,6 +1323,7 @@ $(function(){
 		$('<li>').append(
 			$('<a>').text('Create new channel').on('click', function () {
 
+				$('.h4p_save_button').trigger('click');
 				window.open('/channels/create?project_token=' + sessionStorage.getItem('project-token'), 'create-channel');
 				return false;
 
