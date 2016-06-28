@@ -5,6 +5,11 @@ import { FormGroup, FormControl, Checkbox, HelpBlock } from 'react-bootstrap';
 import { Section, CardSection, Arrow } from './components/section';
 import { fetchMyTeams, postChannel } from './actions/';
 
+const contains = (text, range) => { // Contains check.
+  const len = text.length;
+  return range[0] <= len && len <= range[1];
+}
+
 const statics = {
   landing: {
     name: 'Landing',
@@ -37,6 +42,7 @@ const statics = {
       'c',
     ],
     placeholder: 'e.g.) @@@@@@@@@@@@@@@',
+    range: [1, 100],
     next: 'Private',
   },
   private: {
@@ -188,7 +194,7 @@ const Team = (props) => {
 
 const Description = (props) => {
   const { channel: { description }, update } = props;
-  const status = description ? 'success' : 'warning';
+  const status = contains(description, props.range) ? 'success' : 'danger';
 
   return (
     <CardSection {...props}>
