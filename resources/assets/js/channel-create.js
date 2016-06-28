@@ -200,6 +200,7 @@ const Description = (props) => {
           placeholder={props.placeholder}
           onChange={(e) => update({ description: e.target.value })}
           value={description}
+          rows={5}
           />
         <HelpBlock>{description.length + props.label}</HelpBlock>
       </FormGroup>
