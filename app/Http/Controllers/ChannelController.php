@@ -63,6 +63,10 @@ class ChannelController extends Controller
         $channels = $channels->whereNull('TeamID');
       }
 
+      if (isset($query->project)) {
+        $channels->where('ProjectID', $query->project->ID);
+      }
+
       if (isset($query->is_private)) {
         $channels = $channels->where('is_private', $query->is_private);
       }
