@@ -111,9 +111,10 @@ class ChannelCreate extends Component {
     const { dispatch } = this.props;
     const { channel } = this.state;
 
+    this.setState({ isLoading: true });
     dispatch(postChannel(channel))
     .then((result) => this.redirect(`/channels/${result.body.ID}/watch`))
-    .catch((err) => this.setState({ errors: err.response.body }));
+    .catch((err) => this.setState({ errors: err.response.body, isLoading: true }));
   }
 
   render() {
