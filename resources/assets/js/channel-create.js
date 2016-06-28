@@ -126,7 +126,7 @@ class ChannelCreate extends Component {
         <Team {...statics.team} myTeams={myTeams} channel={channel} update={this.updateChannel} />
         <Description {...statics.description} channel={channel} update={this.updateChannel} />
         <Private {...statics.private} channel={channel} update={this.updateChannel} create={this.createChannel} />
-        <Result {...statics.result} channel={channel} errors={errors} />
+        <Result {...statics.result} channel={channel} errors={errors} isLoading={isLoading} />
       </div>
     );
   }
@@ -237,7 +237,11 @@ const Result = (props) => {
       );
     })
 
-  ) : 'Result';
+  ) : props.isLoading ? (
+    <div>
+      <span className="fa fa-spinner fa-pulse fa-10x fa-fw"></span>
+    </div>
+  ) : null;
 
   return (
     <Section {...props}>
