@@ -1,5 +1,6 @@
-import request from 'superagent';
 import equal from 'deep-equal';
+import superagentPromisePlugin from 'superagent-promise-plugin';
+const request = superagentPromisePlugin.patch(require('superagent'));
 
 const API = {
   github: 'https://api.github.com'
@@ -47,11 +48,12 @@ export const postChannel = (channel) => {
 
     return request
       .post('/channels')
+      .accept('json')
+      .send(channel)
       .then((result) => {
         dispatch({ type: ADD_CHANNEL, channel: result.body });
         return result;
-      })
-      .catch((err) => alert(err.message));
+      });
 
   };
 };
