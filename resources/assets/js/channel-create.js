@@ -36,6 +36,7 @@ const statics = {
     label: "/100 characters",
     descriptions: [
       'What will it to do?',
+      'Simple is best',
     ],
     placeholder: 'e.g. What do you think how to put bombs by a slime?',
     range: [1, 100],
