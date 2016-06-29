@@ -4,6 +4,11 @@ import { connect } from 'react-redux';
 class BellCreate extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      team: null,
+      isLoading: true,
+    };
   }
 
   render() {
