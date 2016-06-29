@@ -6,7 +6,7 @@ import { Section } from './components/section';
 import { fetchChannel, fetchTeam, postBell } from './actions/';
 
 class BellCreate extends React.Component {
-  constructor(props) {
+  constructor(props, { router }) {
     super(props);
 
     this.state = {
@@ -17,6 +17,8 @@ class BellCreate extends React.Component {
     if (!props.location.query.channel) {
       alert('Missing Channel');
     }
+
+    this.goBack = (...args) => router.goBack.apply(router, args);
   }
 
   componentDidMount() {
@@ -36,7 +38,12 @@ class BellCreate extends React.Component {
     const { dispatch, channels, location: { query } } = this.props;
     const { ID, TeamID } = channels[query.channel];
 
-    dispatch(postBell(TeamID, ID));
+    this.setState({ isLoading: true });
+    dispatch(postBell(TeamID, ID))
+    .then((result) => {
+      this.setState({ isLoading: false });
+      this.goBack();
+    });
   }
 
   render() {
