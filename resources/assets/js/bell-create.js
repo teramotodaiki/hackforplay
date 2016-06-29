@@ -45,6 +45,13 @@ class BellCreate extends React.Component {
       </Button>
     );
 
+    const notice = team ? (
+      <div>
+        <h3>{team.DisplayName}</h3>
+        <p className="text-muted">{team.bell_notice}</p>
+      </div>
+    ) : null;
+
     return (
       <Section name="bell">
         <div></div>
@@ -52,7 +59,7 @@ class BellCreate extends React.Component {
           {loading}
           {hand}
         </div>
-        <div></div>
+        {notice}
       </Section>
     );
   }
