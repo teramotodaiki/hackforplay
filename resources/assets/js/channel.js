@@ -111,15 +111,20 @@ class Channel extends Component {
       backgroundColor: '#f7fafb',
     };
 
+    const menu = channel ? (
+      <ChannelMenu
+        channel={channel}
+        reload={this.reload}
+        createGist={this.createGist}
+        raiseHand={this.raiseHand}
+        />
+    ) : null;
+
     return (
       <div style={{height: window.innerHeight }}>
         <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
           {iframe}
-          <ChannelMenu
-            reload={this.reload}
-            createGist={this.createGist}
-            raiseHand={this.raiseHand}
-            />
+          {menu}
         </Col>
         <Col
           lg={3} md={4} sm={5} xs={11}

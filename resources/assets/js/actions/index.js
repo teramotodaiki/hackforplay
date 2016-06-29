@@ -20,7 +20,10 @@ export const fetchChannel = ({ id, chats }) => {
     return request
       .get('/channels/' + id)
       .query({ chats: chats })
-      .then((result) => dispatch({ type: ADD_CHANNEL, channel: result.body }))
+      .then((result) => {
+        dispatch({ type: ADD_CHANNEL, channel: result.body });
+        return result;
+      })
       .catch((err) => alert(err));
 
   }
@@ -91,12 +94,12 @@ export const createGist = (files) => {
   };
 };
 
-export const postBell = (teamId, channelId) => {
+export const postBell = (team, channel) => {
   return (dispatch) => {
 
     return request
-      .post(`/teams/${teamId}/bells`)
-      .send({ channelId: channelId })
+      .post(`/teams/${team}/bells`)
+      .send({ channel })
       .then((result) => result)
       .catch((err) => alert(arr));
 
@@ -185,6 +188,16 @@ export const fetchMyTeams = () => {
       .get('/users/auth/teams')
       .then((result) => result)
       .catch((err) => alert(err.message));
+
+  };
+};
+
+export const fetchTeam = (id) => {
+  return (dispatch) => {
+
+    return request
+      .get(`/teams/${id}`)
+      .then((result) => result);
 
   };
 };

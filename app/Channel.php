@@ -23,6 +23,11 @@ class Channel extends Model
     return $this->belongsTo('App\User', 'UserID');
   }
 
+  public function team()
+  {
+    return $this->belongsTo('App\Team', 'TeamID');
+  }
+
   public function chats()
   {
     return $this->hasMany('App\Chat');
