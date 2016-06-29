@@ -72,6 +72,13 @@ class BellController extends Controller
         $request->has('qcard') ? url('qcards/' . $request->input('qcard') . '/view') : null,
       ], $team);
 
+      if ($channel) {
+        $chat = $channel->chats()->create([
+          'message' => '♪♪♪ Bell rung! ♪♪♪',
+        ]);
+        $request->pusher->trigger("channel-{$channel->ID}", 'new_message', $chat);
+      }
+
       return response($bell, 200);
     }
 
