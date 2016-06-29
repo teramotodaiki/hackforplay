@@ -26,9 +26,18 @@ class BellController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+      $this->validate($request, [
+        'channel' => 'numeric|required',
+      ]);
 
+      $channel = Channel::findOrFail($request->input('channel'));
+      if (!$channel->team) {
+        return back();
+      }
+
+      return view('defaultApp', ['user' => $request->user()]);
     }
 
     /**
