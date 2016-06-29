@@ -20,7 +20,10 @@ export const fetchChannel = ({ id, chats }) => {
     return request
       .get('/channels/' + id)
       .query({ chats: chats })
-      .then((result) => dispatch({ type: ADD_CHANNEL, channel: result.body }))
+      .then((result) => {
+        dispatch({ type: ADD_CHANNEL, channel: result.body });
+        return result;
+      })
       .catch((err) => alert(err));
 
   }
@@ -186,5 +189,15 @@ export const fetchMyTeams = () => {
       .then((result) => result)
       .catch((err) => alert(err.message));
 
+  };
+};
+
+export const fetchTeam = (id) => {
+  return (dispatch) => {
+
+    return request
+      .get(`/teams/${id}`)
+      .then((result) => result);
+    
   };
 };
