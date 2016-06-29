@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
 import { Section } from './components/section';
-import { fetchChannel, fetchTeam } from './actions/';
+import { fetchChannel, fetchTeam, postBell } from './actions/';
 
 class BellCreate extends React.Component {
   constructor(props) {
@@ -32,6 +32,13 @@ class BellCreate extends React.Component {
     .then((result) => this.setState({ team: result.body, isLoading: false }));
   }
 
+  raiseHand() {
+    const { dispatch, channels, location: { query } } = this.props;
+    const { ID, TeamID } = channels[query.channel];
+
+    dispatch(postBell(TeamID, ID));
+  }
+
   render() {
     const { team, isLoading } = this.state;
 
@@ -40,7 +47,7 @@ class BellCreate extends React.Component {
     ) : null;
 
     const hand = isLoading ? null : (
-      <Button bsStyle="link" bsSize="large">
+      <Button bsStyle="link" bsSize="large" onClick={() => this.raiseHand()}>
         <span className="fa fa-hand-paper-o fa-10x"></span>
       </Button>
     );
