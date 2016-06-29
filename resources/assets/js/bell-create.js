@@ -39,9 +39,16 @@ class BellCreate extends React.Component {
       <span className="fa fa-spinner fa-pulse fa-10x fa-fw"></span>
     ) : null;
 
+    const hand = isLoading ? null : (
+      <Button bsStyle="link" bsSize="large">
+        <span className="fa fa-hand-paper-o fa-10x"></span>
+      </Button>
+    );
+
     return (
       <Section name="bell">
         {loading}
+        {hand}
       </Section>
     );
   }
