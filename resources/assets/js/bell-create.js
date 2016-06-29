@@ -13,7 +13,7 @@ class BellCreate extends React.Component {
       team: null,
       isLoading: true,
     };
-    
+
     if (!props.location.query.channel) {
       alert('Missing Channel');
     }
@@ -47,8 +47,12 @@ class BellCreate extends React.Component {
 
     return (
       <Section name="bell">
-        {loading}
-        {hand}
+        <div></div>
+        <div>
+          {loading}
+          {hand}
+        </div>
+        <div></div>
       </Section>
     );
   }
