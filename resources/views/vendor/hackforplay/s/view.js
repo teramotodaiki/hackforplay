@@ -1019,6 +1019,39 @@ $(function(){
 					});
 				}
 			})();
+
+			// Cast
+			$('.h4p_cast-channel .dropdown-menu').on('click', 'a', function () {
+				var target = $(this);
+				var channelId = target.data('id');
+				var castWindow = window.open('/channels/' + channelId + '/watch', 'channel-' + channelId);
+			});
+
+			// List of channels
+			$.get('/projects/'+ sessionStorage.getItem('project-token') +'/channels', {
+				is_archived: false
+			}, function (result) {
+
+				result.data.forEach(function (channel) {
+					var desc = channel.description;
+					desc = !desc || desc.length < 10 ? desc : desc.substr(0, 9) + '…';
+					$('<li>').append(
+						$('<a>').data('id', channel.ID).text(desc)
+					).appendTo('.h4p_cast-channel .dropdown-menu');
+				});
+
+				$('<li>').append(
+					$('<a>').text('Create new channel').on('click', function () {
+
+						$('.h4p_save_button').trigger('click');
+						window.open('/channels/create?project_token=' + sessionStorage.getItem('project-token'), 'create-channel');
+						return false;
+
+					})
+				).appendTo('.h4p_cast-channel .dropdown-menu');
+
+			});
+
 		};
 
 		function makeProject (successed, failed) {
@@ -1301,39 +1334,6 @@ $(function(){
 	function getParam(key){
 		return sessionStorage.getItem('stage_param_'+key) || '';
 	}
-
-	// Cast
-	$('.h4p_cast-channel .dropdown-menu').on('click', 'a', function () {
-		var target = $(this);
-		var channelId = target.data('id');
-		var castWindow = window.open('/channels/' + channelId + '/watch', 'channel-' + channelId);
-	});
-
-	// List of channels
-	$.get('/projects/'+ sessionStorage.getItem('project-token') +'/channels', {
-		is_archived: false
-	}, function (result) {
-
-		result.data.forEach(function (channel) {
-			var desc = channel.description;
-			desc = !desc || desc.length < 10 ? desc : desc.substr(0, 9) + '…';
-			$('<li>').append(
-				$('<a>').data('id', channel.ID).text(desc)
-			).appendTo('.h4p_cast-channel .dropdown-menu');
-		});
-
-		$('<li>').append(
-			$('<a>').text('Create new channel').on('click', function () {
-
-				$('.h4p_save_button').trigger('click');
-				window.open('/channels/create?project_token=' + sessionStorage.getItem('project-token'), 'create-channel');
-				return false;
-
-			})
-		).appendTo('.h4p_cast-channel .dropdown-menu');
-
-	});
-
 
 });
 if (!Array.prototype.findIndex) {

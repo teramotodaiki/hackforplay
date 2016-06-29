@@ -40,7 +40,6 @@ class Channel extends Component {
 
     this.reload = this.reload.bind(this);
     this.createGist = this.createGist.bind(this);
-    this.raiseHand = this.raiseHand.bind(this);
   }
 
   postChat (message) {
@@ -69,25 +68,10 @@ class Channel extends Component {
       this.postChat('Created new gist!→' + body.html_url);
     })
     .catch(() => gistWindow.close());
-
   }
 
-  raiseHand () {
-    const { dispatch, params: { id } } = this.props;
-
-    const tab = window.open('', 'qcard');
-    dispatch(fetchQcard({
-      channel: id,
-      is_active: 1
-    }))
-    .then(({ body }) => {
-      if (body.length === 0) {
-        tab.location.href = `${location.origin}/channels/${id}/qcards/create`;
-      } else {
-        const qcard = body[body.length - 1].id;
-        tab.location.href = `${location.origin}/qcards/${qcard}/edit`;
-      }
-    });
+  componentDidMount() {
+    window.addEventListener('resize', () => this.forceUpdate());
   }
 
   render () {
@@ -116,7 +100,6 @@ class Channel extends Component {
         channel={channel}
         reload={this.reload}
         createGist={this.createGist}
-        raiseHand={this.raiseHand}
         />
     ) : null;
 
