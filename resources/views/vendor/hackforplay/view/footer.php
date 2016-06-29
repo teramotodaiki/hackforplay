@@ -5,6 +5,8 @@
 				<ul class="list-inline">
 					<li class="pull-left"><a class="h4p_footer" href="http://hackforplay-company.weebly.com" title="company" target='_blank'>
 						運営会社</a></li>
+					<li class="pull-left"><a class="h4p_footer" href="http://hackforplay-company.weebly.com/hackforplay12387123902030965311.html" title="What is this" target='_blank'>
+						ハックフォープレイとは？</a></li>
 					<li class="pull-left"><a class="h4p_footer" href="http://hackforplay-company.weebly.com/125271254012463124711251912483125032038138972.html" title="Contact">
 						お問い合わせ</a></li>
 					<li class="pull-left">
