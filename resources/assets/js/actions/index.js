@@ -188,3 +188,13 @@ export const fetchMyTeams = () => {
 
   };
 };
+
+export const fetchTeam = (id) => {
+  return (dispatch) => {
+
+    return request
+      .get(`/teams/${id}`)
+      .then((result) => result);
+    
+  };
+};
