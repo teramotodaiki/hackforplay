@@ -8,21 +8,12 @@ use App\Http\Requests;
 use App\Channel;
 use App\Chat;
 use Carbon\Carbon;
-use Pusher;
 
 class ChatController extends Controller
 {
     function __construct()
     {
-      // pusher
-      $this->pusher = new Pusher(
-        env('PUSHER_KEY'),
-        env('PUSHER_SECRET'),
-        env('PUSHER_APP_ID'),
-        [
-          'encrypted' => false
-        ]
-      );
+      $this->middleware(['pusher']);
     }
 
     /**
@@ -68,7 +59,7 @@ class ChatController extends Controller
       ]);
 
       // Push message
-      $this->pusher->trigger('channel-' . $channelId, 'new_message', $chat);
+      $request->pusher->trigger('channel-' . $channelId, 'new_message', $chat);
 
       // update channel
       $channel->Updated = Carbon::now();
