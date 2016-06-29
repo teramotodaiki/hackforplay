@@ -60,7 +60,7 @@ class BellCreate extends React.Component {
     );
 
     const notice = team ? (
-      <div>
+      <div style={{ maxWidth: '28rem' }}>
         <h3>{team.DisplayName}</h3>
         <p className="text-muted">{team.bell_notice}</p>
       </div>
@@ -68,6 +68,7 @@ class BellCreate extends React.Component {
 
     return (
       <Section name="bell">
+        <div></div>
         <div></div>
         <div>
           {loading}
