@@ -78,7 +78,12 @@ class TeamController extends Controller
      */
     public function show($id)
     {
-        //
+      $team = Team::where(
+        ctype_digit((string)$id) ? 'id' : 'name',
+        $id
+      )->firstOrFail();
+      
+      return response($team, 200);
     }
 
     /**
