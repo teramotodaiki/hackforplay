@@ -94,12 +94,12 @@ export const createGist = (files) => {
   };
 };
 
-export const postBell = (teamId, channelId) => {
+export const postBell = (team, channel) => {
   return (dispatch) => {
 
     return request
-      .post(`/teams/${teamId}/bells`)
-      .send({ channelId: channelId })
+      .post(`/teams/${team}/bells`)
+      .send({ channel })
       .then((result) => result)
       .catch((err) => alert(arr));
 
@@ -198,6 +198,6 @@ export const fetchTeam = (id) => {
     return request
       .get(`/teams/${id}`)
       .then((result) => result);
-    
+
   };
 };
