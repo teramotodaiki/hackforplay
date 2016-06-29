@@ -12,6 +12,7 @@ import Channel from "./channel";
 import Qcard from './qcard';
 import ChannelList from './channel-list';
 import ChannelCreate from './channel-create';
+import BellCreate from './bell-create';
 
 const store = createStore(
   combineReducers(reducers),
@@ -45,6 +46,9 @@ render((
         </Route>
         <Route path="qcards">
           <Route path=":id/edit" component={Qcard}></Route>
+        </Route>
+        <Route path="bells">
+          <Route path="create" component={BellCreate}></Route>
         </Route>
       </Route>
     </Router>
