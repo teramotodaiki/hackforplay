@@ -53,5 +53,6 @@ class Kernel extends HttpKernel
         'auth.private' => \App\Http\Middleware\AuthenticateWithPrivateAuth::class,
         'auth.old' => \App\Http\Middleware\Old\OnceAuthMiddleware::class,
         'old' => \App\Http\Middleware\Old\OldMiddleware::class,
+        'pusher' => \App\Http\Middleware\PusherMiddleware::class,
     ];
 }
