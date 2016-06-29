@@ -113,6 +113,7 @@ class Channel extends Component {
 
     const menu = channel ? (
       <ChannelMenu
+        channel={channel}
         reload={this.reload}
         createGist={this.createGist}
         raiseHand={this.raiseHand}
