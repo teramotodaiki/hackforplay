@@ -48,7 +48,7 @@ class BellController extends Controller
       if (!$user->isConnected($team)) {
         return response([
           'error' => 'not_in_team'
-        ], 403);
+        ], 401);
       }
 
       $channel = $request->input('channel') ? (
