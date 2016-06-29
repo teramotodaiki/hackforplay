@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 
+import { Section } from './components/section';
 import { fetchChannel, fetchTeam } from './actions/';
 
 class BellCreate extends React.Component {
@@ -31,7 +33,17 @@ class BellCreate extends React.Component {
   }
 
   render() {
-    return (<div>MyComponent</div>);
+    const { team, isLoading } = this.state;
+
+    const loading = isLoading ? (
+      <span className="fa fa-spinner fa-pulse fa-10x fa-fw"></span>
+    ) : null;
+
+    return (
+      <Section name="bell">
+        {loading}
+      </Section>
+    );
   }
 }
 
