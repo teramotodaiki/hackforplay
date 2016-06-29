@@ -48,7 +48,7 @@ class BellController extends Controller
       if (!$user->isConnected($team)) {
         return response([
           'error' => 'not_in_team'
-        ], 403);
+        ], 401);
       }
 
       $channel = $request->input('channel') ? (
@@ -71,6 +71,13 @@ class BellController extends Controller
         $channel ? "channel " . url("channels/{$channel->ID}/watch") : null,
         $request->has('qcard') ? url('qcards/' . $request->input('qcard') . '/view') : null,
       ], $team);
+
+      if ($channel) {
+        $chat = $channel->chats()->create([
+          'message' => '♪♪♪ Bell rung! ♪♪♪',
+        ]);
+        $request->pusher->trigger("channel-{$channel->ID}", 'new_message', $chat);
+      }
 
       return response($bell, 200);
     }
