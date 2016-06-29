@@ -39,7 +39,7 @@
       get: function () {
         if (!this.image) return null;
         if (!this._originalColor &&
-						typeof this.image.width === 'number' // Is load completely?
+						'number' === typeof this.image.width  // Is load completely?
 					) {
           var i = this.image.context ? this.image : this.image.clone();
           var res = i.context.getImageData(this._frameLeft, this._frameTop, this.width, this.height);
