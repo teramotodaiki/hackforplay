@@ -70,6 +70,10 @@ class Channel extends Component {
     .catch(() => gistWindow.close());
   }
 
+  componentDidMount() {
+    window.addEventListener('resize', () => this.forceUpdate());
+  }
+
   render () {
 
     const id = +this.props.params.id;
