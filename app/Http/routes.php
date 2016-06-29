@@ -30,10 +30,15 @@ Route::group(['middleware' => 'auth.private'], function()
   Route::resource('products', 'ProductController');
 });
 
+Route::group(['middleware' => ['auth.old', 'auth']], function()
+{
+  Route::post('teams/{id}/bells', 'BellController@storeWithTeam')
+  ->middleware(['pusher']);
+});
+
 Route::group(['middleware' => ['auth.old']], function()
 {
   // teams/
-  Route::post('teams/{id}/bells', 'BellController@storeWithTeam');
   Route::get('users/auth/teams', 'TeamController@indexWithAuthUser')
   ->middleware(['auth']);
   Route::get('users/{id}/teams', 'TeamController@indexWithUser');
