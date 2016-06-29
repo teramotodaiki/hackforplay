@@ -15,7 +15,8 @@ class ChannelController extends Controller
 {
     public function __construct()
     {
-      $this->middleware('create', ['only' => ['auth']]);
+      $this->middleware('auth', ['only' => ['create', 'store']]);
+      $this->middleware('pusher', ['only' => ['store']]);
     }
 
     /**
@@ -136,6 +137,11 @@ class ChannelController extends Controller
         'Thumbnail'     => $headScript ? $headScript->Thumbnail : null,
       ]);
       $channel->script = $headScript;
+
+      $chat = $channel->chats()->create([
+        'message' => '=== Channel is created! ===',
+      ]);
+      $request->pusher->trigger("channel-{$channel->ID}", 'new_message', $chat);
 
       return response($channel, 200);
     }

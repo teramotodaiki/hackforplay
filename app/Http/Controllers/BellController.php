@@ -83,7 +83,7 @@ class BellController extends Controller
 
       if ($channel) {
         $chat = $channel->chats()->create([
-          'message' => '♪♪♪ Bell rung! ♪♪♪',
+          'message' => '♪♪♪ Bell rings! ♪♪♪',
         ]);
         $request->pusher->trigger("channel-{$channel->ID}", 'new_message', $chat);
       }
