@@ -9,6 +9,10 @@ class BellCreate extends React.Component {
       team: null,
       isLoading: true,
     };
+    
+    if (!props.location.query.channel) {
+      alert('Missing Channel');
+    }
   }
 
   render() {
