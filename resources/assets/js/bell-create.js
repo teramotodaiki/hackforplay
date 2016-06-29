@@ -1,20 +1,24 @@
 import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 
-import { fetchChannel, fetchTeam } from './actions/';
+import { Section } from './components/section';
+import { fetchChannel, fetchTeam, postBell } from './actions/';
 
 class BellCreate extends React.Component {
-  constructor(props) {
+  constructor(props, { router }) {
     super(props);
 
     this.state = {
       team: null,
       isLoading: true,
     };
-    
+
     if (!props.location.query.channel) {
       alert('Missing Channel');
     }
+
+    this.goBack = (...args) => router.goBack.apply(router, args);
   }
 
   componentDidMount() {
@@ -30,8 +34,49 @@ class BellCreate extends React.Component {
     .then((result) => this.setState({ team: result.body, isLoading: false }));
   }
 
+  raiseHand() {
+    const { dispatch, channels, location: { query } } = this.props;
+    const { ID, TeamID } = channels[query.channel];
+
+    this.setState({ isLoading: true });
+    dispatch(postBell(TeamID, ID))
+    .then((result) => {
+      this.setState({ isLoading: false });
+      this.goBack();
+    });
+  }
+
   render() {
-    return (<div>MyComponent</div>);
+    const { team, isLoading } = this.state;
+
+    const loading = isLoading ? (
+      <span className="fa fa-spinner fa-pulse fa-10x fa-fw"></span>
+    ) : null;
+
+    const hand = isLoading ? null : (
+      <Button bsStyle="link" bsSize="large" onClick={() => this.raiseHand()}>
+        <span className="fa fa-hand-paper-o fa-10x"></span>
+      </Button>
+    );
+
+    const notice = team ? (
+      <div style={{ maxWidth: '28rem' }}>
+        <h3>{team.DisplayName}</h3>
+        <p className="text-muted">{team.bell_notice}</p>
+      </div>
+    ) : null;
+
+    return (
+      <Section name="bell">
+        <div></div>
+        <div></div>
+        <div>
+          {loading}
+          {hand}
+        </div>
+        {notice}
+      </Section>
+    );
   }
 }
 
