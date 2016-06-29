@@ -20,7 +20,10 @@ export const fetchChannel = ({ id, chats }) => {
     return request
       .get('/channels/' + id)
       .query({ chats: chats })
-      .then((result) => dispatch({ type: ADD_CHANNEL, channel: result.body }))
+      .then((result) => {
+        dispatch({ type: ADD_CHANNEL, channel: result.body });
+        return result;
+      })
       .catch((err) => alert(err));
 
   }
