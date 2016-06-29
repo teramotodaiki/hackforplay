@@ -57,12 +57,14 @@ class ChatController extends Controller
     public function store($channelId, Request $request)
     {
       $channel = Channel::findOrFail($channelId);
+      $user = $request->user();
 
       // Store message
       $chat = $channel
       ->chats()
       ->create([
         'message' => $request->input('message'),
+        'user_id' => $user ? $user->ID : null,
       ]);
 
       // Push message
