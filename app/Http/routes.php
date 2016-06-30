@@ -86,6 +86,7 @@ Route::group(['middleware' => 'etag', 'prefix' => 'mods'], function()
 
 // /static
 Route::get('static/{path}', 'StaticController@index')
+->where('path', '.*')
 ->middleware('etag');
 
 Route::any('{api}', [ 'uses' => 'Old\OldController@index' ])
