@@ -22,7 +22,7 @@ class StaticController extends Controller
     $ext = pathinfo($path, PATHINFO_EXTENSION);
 
     if (empty($ext)) {
-      return response('nopath', 404);
+      return response('', 404);
     }
     if (!file_exists($filepath)) {
       return response('', 404);
@@ -46,6 +46,10 @@ class StaticController extends Controller
       'mp3' => 'audio/mpeg',
       'wav' => 'audio/wav',
     ][$ext];
+
+    if (empty($type)) {
+      return response('', 404);
+    }
 
     $content = file_get_contents($filepath);
 
