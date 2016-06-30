@@ -50,6 +50,7 @@ class StaticController extends Controller
     $content = file_get_contents($filepath);
 
     return response($content, 200)
-            ->header('Content-Type', $type);
+            ->header('Content-Type', $type)
+            ->header('Cache-Control', 'max-age=31536000');
   }
 }
