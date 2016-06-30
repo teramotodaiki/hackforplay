@@ -717,6 +717,7 @@ $(function(){
 							notypeof: true,
 							boss: true,
 							supernew: true,
+							"-W032": false,
 						}));
 					if (JSHINT.data().errors) {
 						var e = JSHINT.data().errors[0];
