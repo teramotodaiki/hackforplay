@@ -19,10 +19,10 @@ class StaticController extends Controller
   public function index($path)
   {
     $filepath =  "{$this->root}{$path}";
-    $pathinfo = pathinfo($path);
+    $ext = pathinfo($path, PATHINFO_EXTENSION);
 
-    if (empty($pathinfo['extension'])) {
-      return response('', 404);
+    if (empty($ext)) {
+      return response('nopath', 404);
     }
     if (!file_exists($filepath)) {
       return response('', 404);
@@ -45,11 +45,12 @@ class StaticController extends Controller
       // audio/video
       'mp3' => 'audio/mpeg',
       'wav' => 'audio/wav',
-    ][$pathinfo['extension']];
+    ][$ext];
 
     $content = file_get_contents($filepath);
 
     return response($content, 200)
-            ->header('Content-Type', $type);
+            ->header('Content-Type', $type)
+            ->header('Cache-Control', 'max-age=31536000');
   }
 }
