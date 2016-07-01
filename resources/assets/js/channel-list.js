@@ -36,7 +36,7 @@ class ChannelList extends Component {
     }
 
     return nextPage ? dispatch(
-      fetchChannels({ page: nextPage })
+      fetchChannels({ page: nextPage, is_private: false })
     ).then(({
       body: { current_page, last_page }
     }) => {
@@ -54,6 +54,7 @@ class ChannelList extends Component {
 
     const sorted = Object.keys(channels)
     .map((key) => channels[key])
+    .filter((channel) => !channel.is_private)
     .sort((a, b) => {
       return (
         a.updated_at == null ? 1 :
