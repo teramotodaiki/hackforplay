@@ -136,6 +136,11 @@ class ChannelController extends Controller
         'description'   => $request->input('description'),
         'Thumbnail'     => $headScript ? $headScript->Thumbnail : null,
       ]);
+      if ($request->has('is_private')) {
+        $channel->is_private = $request->input('is_private');
+      }
+      $channel->save();
+
       $channel->script = $headScript;
 
       $chat = $channel->chats()->create([
