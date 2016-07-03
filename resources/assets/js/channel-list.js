@@ -54,7 +54,7 @@ class ChannelList extends Component {
 
     const sorted = Object.keys(channels)
     .map((key) => channels[key])
-    .filter((channel) => !channel.is_private)
+    .filter((channel) => !+channel.is_private)
     .sort((a, b) => {
       return (
         a.updated_at == null ? 1 :
