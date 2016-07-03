@@ -35,11 +35,13 @@ class ChannelList extends Component {
       this.setState({ isLoading: true });
     }
 
+    console.log('nextPage', nextPage);
     return nextPage ? dispatch(
       fetchChannels({ page: nextPage, is_private: false })
     ).then(({
       body: { current_page, last_page }
     }) => {
+      console.log('current page', current_page);
       this.setState({ nextPage: current_page < last_page ? current_page + 1 : null });
       this.setState({ isLoading: false });
     }) :
@@ -51,6 +53,7 @@ class ChannelList extends Component {
 
     const { channels } = this.props;
     const { nextPage, isLoading } = this.state;
+    console.log('channels', channels);
 
     const sorted = Object.keys(channels)
     .map((key) => channels[key])
@@ -65,6 +68,8 @@ class ChannelList extends Component {
     .map((channel) => {
       return <ChannelCard key={channel.ID} {...channel}></ChannelCard>;
     });
+
+    console.log('sorted', sorted);
 
     const next = nextPage ? (
       <Button
