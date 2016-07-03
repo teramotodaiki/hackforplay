@@ -53,8 +53,14 @@ class ChannelList extends Component {
     const { nextPage, isLoading } = this.state;
 
     const sorted = Object.keys(channels)
+    .filter((item) => !console.log(1, item))
     .map((key) => channels[key])
-    .filter((channel) => !channel.is_private)
+    .filter((item) => !console.log(2, item))
+    .filter((channel) => {
+      console.log(channel.is_private);
+      return !channel.is_private;
+    })
+    .filter((item) => !console.log(3, item))
     .sort((a, b) => {
       return (
         a.updated_at == null ? 1 :
@@ -62,9 +68,11 @@ class ChannelList extends Component {
         a.updated_at < b.updated_at ? 1 : -1
       );
     })
+    .filter((item) => !console.log(4, item))
     .map((channel) => {
       return <ChannelCard key={channel.ID} {...channel}></ChannelCard>;
-    });
+    })
+    .filter((item) => !console.log(5, item));
 
     const next = nextPage ? (
       <Button
