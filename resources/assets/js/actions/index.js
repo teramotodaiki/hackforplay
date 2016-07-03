@@ -32,7 +32,6 @@ export const fetchChannel = ({ id, chats }) => {
 export const fetchChannels = (query) => {
   return (dispatch) => {
 
-    console.log('query', query);
     return request
       .get('/channels')
       .query(query)
