@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Modal } from 'react-bootstrap';
-
+import { Modal, Button } from 'react-bootstrap';
 
 export default class Confirm extends Component {
   constructor(props) {
@@ -51,23 +50,18 @@ export default class Confirm extends Component {
           {this.props.children}
         </Modal.Body>
         <Modal.Footer>
-          <button
-            role='abort'
-            type='button'
-            className='btn btn-default m-x-1'
+          <Button
+            bsStyle="default"
             onClick={this.abort}
-          >
+            >
             {this.props.abortLabel || 'Cancel'}
-          </button>
-          <button
-            role='confirm'
-            type='button'
-            className='btn btn-primary m-x-1'
-            ref='confirm'
+          </Button>
+          <Button
+            bsStyle="primary"
             onClick={this.confirm}
-          >
+            >
             {this.props.confirmLabel || 'OK'}
-          </button>
+          </Button>
         </Modal.Footer>
       </Modal>
     );
