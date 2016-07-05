@@ -423,7 +423,7 @@ $(function(){
 					options.useGlobalScope = true;
 					options.globalScope = globalScope;
 					var result = CodeMirror.hint.javascript(cm, options);
-					result.list.sort(function (a, b) {
+					(result.list || []).sort(function (a, b) {
 						return a.toUpperCase() > b.toUpperCase() ? 1 : -1;
 					});
 					return result;
