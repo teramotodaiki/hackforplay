@@ -1,21 +1,22 @@
-import React from "react";
+import React, { Component } from "react";
 import { Modal } from 'react-bootstrap';
 
 
-import Merger from "./merger";
+export default class Confirm extends Component {
+  constructor(props) {
+    super(props);
 
-const Confirm = React.createClass({
-  mixins: [Merger],
-  getDefaultProps() {
-    return {
-      confirmLabel: 'OK',
-      abortLabel: 'Cancel'
+    this.state = {
+      showModal: false,
+      resolve: null,
+      reject: null,
     };
-  },
 
-  getInitialState() {
-    return { showModal: false };
-  },
+    this.show = this.show.bind(this);
+    this.cleanup = this.cleanup.bind(this);
+    this.confirm = this.confirm.bind(this);
+    this.abort = this.abort.bind(this);
+  }
 
   show() {
     this.setState({ showModal: true });
@@ -23,25 +24,25 @@ const Confirm = React.createClass({
       this.resolve = resolve;
       this.reject = reject;
     });
-  },
+  }
 
   cleanup() {
     this.setState({ showModal: false });
-  },
+  }
 
   confirm() {
     this.resolve();
     this.cleanup();
-  },
+  }
 
   abort() {
     this.reject();
     this.cleanup();
-  },
+  }
 
-  render: function() {
+  render() {
     return (
-      <Modal ref="modal" show={this.state.showModal}>
+      <Modal show={this.state.showModal}>
         <Modal.Header>
           <Modal.Title>{this.props.title}</Modal.Title>
         </Modal.Header>
@@ -56,7 +57,7 @@ const Confirm = React.createClass({
             className='btn btn-default m-x-1'
             onClick={this.abort}
           >
-            {this.props.abortLabel}
+            {this.props.abortLabel || 'Cancel'}
           </button>
           <button
             role='confirm'
@@ -65,13 +66,13 @@ const Confirm = React.createClass({
             ref='confirm'
             onClick={this.confirm}
           >
-            {this.props.confirmLabel}
+            {this.props.confirmLabel || 'OK'}
           </button>
         </Modal.Footer>
       </Modal>
     );
   }
-});
+}
 
-
-export default Confirm ;
+Confirm.propTypes = {
+};
