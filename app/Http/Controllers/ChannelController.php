@@ -10,6 +10,7 @@ use App\Project;
 use App\Team;
 use App\User;
 use Carbon\Carbon;
+use App\Http\Middleware\SnakeCaseMiddleware;
 
 class ChannelController extends Controller
 {
@@ -203,7 +204,8 @@ class ChannelController extends Controller
         ], 200);
       }
 
-      $channel->update($request->all());
+      $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
+      $channel->update($camel);
       return response($channel, 200);
     }
 
