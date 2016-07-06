@@ -6,7 +6,7 @@ use Closure;
 
 class SnakeCaseMiddleware
 {
-    protected $camelToSnake = [
+    protected static $camelToSnake = [
       'ID' => 'id',
       'TeamID' => 'team_id',
       'Name' => 'name',
@@ -61,9 +61,10 @@ class SnakeCaseMiddleware
 
       if($response->headers->get('content-type') == 'application/json')
       {
-        $collection = $response->getOriginalContent()->toArray();
+        $original = $response->getOriginalContent();
+        $collection = is_array($original) ? $original : $original->toArray();
 
-        $collection = $this->camelToSnakeRecursive($collection);
+        $collection = self::camelToSnakeRecursive($collection);
 
         $response->setContent($collection);
       }
@@ -71,22 +72,27 @@ class SnakeCaseMiddleware
       return $response;
     }
 
-    public function camelToSnakeRecursive(Array $array)
+    public static function camelToSnakeRecursive(Array $array)
     {
-      return $this->appendRecursive($array, $this->camelToSnake);
+      return self::appendRecursive($array, self::$camelToSnake);
     }
 
-    protected function appendRecursive(Array $array, $pattern)
+    public static function snakeToCamelRecursive(Array $array)
+    {
+      return self::appendRecursive($array, array_flip(self::$camelToSnake));
+    }
+
+    protected static function appendRecursive(Array $array, $pattern)
     {
       $copied = [];
 
       // Just add. (NOT remove camelcase keys)
       foreach ($array as $key => $value) {
         if (is_array($value)) {
-          $copied[$key] = $this->appendRecursive($value, $pattern);
+          $copied[$key] = self::appendRecursive($value, $pattern);
         }
         elseif (is_object($value)) {
-          $copied[$key] = $this->appendRecursive($value->toArray(), $pattern);
+          $copied[$key] = self::appendRecursive($value->toArray(), $pattern);
         }
         elseif (array_key_exists($key, $pattern)) {
           $appendKey = $pattern[$key];
