@@ -71,7 +71,7 @@ class SnakeCaseMiddleware
       return $response;
     }
 
-    protected function camelToSnakeRecursive($array)
+    public function camelToSnakeRecursive($array)
     {
       $copied = [];
 
