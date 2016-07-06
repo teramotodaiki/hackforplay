@@ -91,6 +91,13 @@ class Channel extends Component {
       border: '1px solid #eceeef',
       backgroundColor: '#f7fafb',
     };
+    const actionBarStyle = {
+      height: 48,
+      backgroundColor: 'white',
+    };
+    const timelineStyle = {
+      height: window.innerHeight - actionBarStyle.height,
+    };
 
     const iframe = channel ? (
       <IframeEmbed
@@ -100,12 +107,6 @@ class Channel extends Component {
         visibleFocus
         />
     ) : null;
-
-    const actionBarHeight = 48;
-
-    const timelineStyle = {
-      height: window.innerHeight - actionBarHeight,
-    };
 
     const menu = channel ? (
       <ChannelMenu
@@ -128,7 +129,7 @@ class Channel extends Component {
             />
           <ActionBar
             postChat={this.postChat.bind(this)}
-            style={{ height: actionBarHeight }}
+            style={actionBarStyle}
             />
         </Col>
       </div>
