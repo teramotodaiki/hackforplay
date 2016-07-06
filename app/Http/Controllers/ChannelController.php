@@ -145,7 +145,7 @@ class ChannelController extends Controller
       $channel->script = $headScript;
 
       $chat = $channel->chats()->create([
-        'message' => '=== Channel is created! ===',
+        'message' => "=== Channel is created! ===\n" . url("channels/{$channel->ID}/watch"),
       ]);
       $request->pusher->trigger("channel-{$channel->ID}", 'new_message', $chat);
 
