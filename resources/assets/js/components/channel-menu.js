@@ -14,7 +14,7 @@ export default class ChannelMenu extends Component {
 
   render() {
 
-    const { style, reload, createGist, raiseHand, channel, isOwner } = this.props;
+    const { style, reload, createGist, raiseHand, archive, channel, isOwner } = this.props;
 
     return (<div style={Object.assign({}, this.style, style)}>
       <Button bsStyle="link" bsSize="large" onClick={reload}>
@@ -30,7 +30,7 @@ export default class ChannelMenu extends Component {
       </Button>
       {
         isOwner && !channel.is_archived ? (
-          <Button bsStyle="link" bsSize="large">
+          <Button bsStyle="link" bsSize="large" onClick={archive}>
             <span className="fa fa-archive fa-3x"></span>
           </Button>
         ) : null

@@ -10,7 +10,7 @@ import IframeEmbed from './iframe-embed';
 import Timeline from './components/timeline';
 import ActionBar from './components/action-bar';
 import ChannelMenu from './components/channel-menu';
-import { addChat, postChat, fetchChannel, createGist, fetchQcard } from './actions/';
+import { addChat, postChat, fetchChannel, createGist, fetchQcard, updateChannel } from './actions/';
 
 class Channel extends Component {
 
@@ -42,6 +42,7 @@ class Channel extends Component {
 
     this.reload = this.reload.bind(this);
     this.createGist = this.createGist.bind(this);
+    this.archive = this.archive.bind(this);
   }
 
   postChat (message) {
@@ -70,6 +71,15 @@ class Channel extends Component {
       this.postChat('Created new gist!→' + body.html_url);
     })
     .catch(() => gistWindow.close());
+  }
+
+  archive() {
+    const { dispatch, params, channels } = this.props;
+    const channel = channels[params.id];
+
+    dispatch(updateChannel(
+      Object.assign({}, channel, { is_archived: true })
+    ));
   }
 
   componentDidMount() {
@@ -115,6 +125,7 @@ class Channel extends Component {
         channel={channel}
         reload={this.reload}
         createGist={this.createGist}
+        archive={this.archive}
         style={{ backgroundColor: 'white' }}
         isOwner={+this.loginUserId === +channel.UserID}
         />
