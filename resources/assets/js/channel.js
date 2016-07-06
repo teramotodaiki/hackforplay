@@ -113,6 +113,7 @@ class Channel extends Component {
         channel={channel}
         reload={this.reload}
         createGist={this.createGist}
+        style={{ backgroundColor: 'white' }}
         />
     ) : null;
 
