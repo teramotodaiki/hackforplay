@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class SnakeCaseMiddleware
+class SnakeCaseResponseMiddleware
 {
-
     protected $camelToSnake = [
       'ID' => 'id',
       'TeamID' => 'team_id',
