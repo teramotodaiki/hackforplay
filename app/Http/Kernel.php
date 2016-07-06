@@ -15,6 +15,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \App\Http\Middleware\SnakeCaseMiddleware::class,
     ];
 
     /**
@@ -54,6 +55,5 @@ class Kernel extends HttpKernel
         'auth.old' => \App\Http\Middleware\Old\OnceAuthMiddleware::class,
         'old' => \App\Http\Middleware\Old\OldMiddleware::class,
         'pusher' => \App\Http\Middleware\PusherMiddleware::class,
-        'snakecase' => \App\Http\Middleware\SnakeCaseMiddleware::class,
     ];
 }
