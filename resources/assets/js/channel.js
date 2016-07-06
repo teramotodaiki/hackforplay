@@ -38,6 +38,8 @@ class Channel extends Component {
       dispatch(addChat(id, data));
     });
 
+    this.loginUserId = document.querySelector('meta[name="login-user-id"]').getAttribute('content');
+
     this.reload = this.reload.bind(this);
     this.createGist = this.createGist.bind(this);
   }
@@ -114,6 +116,7 @@ class Channel extends Component {
         reload={this.reload}
         createGist={this.createGist}
         style={{ backgroundColor: 'white' }}
+        isOwner={+this.loginUserId === +channel.UserID}
         />
     ) : null;
 
