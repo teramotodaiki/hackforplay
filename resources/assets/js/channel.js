@@ -81,6 +81,7 @@ class Channel extends Component {
 
     const style = {
       height: window.innerHeight,
+      backgroundColor: channel && channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
     };
 
     const iframe = channel ? (
