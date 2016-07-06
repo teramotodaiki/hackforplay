@@ -77,9 +77,12 @@ class Channel extends Component {
     const { dispatch, params, channels } = this.props;
     const channel = channels[params.id];
 
-    dispatch(updateChannel(
-      Object.assign({}, channel, { is_archived: true })
-    ));
+    if (confirm('Are you sure to archive this channel? (このチャンネルを「そうこ」に入れてもよろしいですか？)')) {
+      dispatch(updateChannel(
+        Object.assign({}, channel, { is_archived: true })
+      ))
+      .then((result) => alert('Archived successfully. (「そうこ」に入りました)'));
+    }
   }
 
   componentDidMount() {
