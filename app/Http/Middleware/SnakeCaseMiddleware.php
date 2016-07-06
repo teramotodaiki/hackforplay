@@ -15,6 +15,15 @@ class SnakeCaseMiddleware
       'ProjectID' => 'project_id',
       'UserID' => 'user_id',
       'Thumbnail' => 'thumbnail',
+
+      'RootID' => 'root_id',
+      'ParentID' => 'parent_id',
+      'SourceStageID' => 'source_stage_id',
+      'PublishedStageID' => 'published_stage_id',
+      'ReservedID' => 'reserved_id',
+      'Token' => 'token',
+      'State' => 'state',
+      'Written' => 'is_written',
     ];
 
     /**
