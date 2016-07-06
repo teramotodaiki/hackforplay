@@ -31,7 +31,7 @@ switch ($type) {
 		$id = $project['SourceStageID'];
 		break;
 	default:
-		die("Invalid type $type");
+		die("Invalid type " . htmlspecialchars($type));
 		break;
 }
 
