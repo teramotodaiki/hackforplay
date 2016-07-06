@@ -79,6 +79,10 @@ class Channel extends Component {
     const id = +this.props.params.id;
     const channel = this.props.channels[id];
 
+    const style = {
+      height: window.innerHeight,
+    };
+
     const iframe = channel ? (
       <IframeEmbed
         ref={(embed) => this.iframe = embed ? embed.iframe : null}
@@ -104,7 +108,7 @@ class Channel extends Component {
     ) : null;
 
     return (
-      <div style={{height: window.innerHeight }}>
+      <div style={style}>
         <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
           {iframe}
           {menu}
