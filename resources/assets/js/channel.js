@@ -85,6 +85,12 @@ class Channel extends Component {
     };
 
     const leftStyle = { 'padding': '0' };
+    const rightStyle = {
+      padding: '0',
+      height: '100%',
+      border: '1px solid #eceeef',
+      backgroundColor: '#f7fafb',
+    };
 
     const iframe = channel ? (
       <IframeEmbed
@@ -99,7 +105,6 @@ class Channel extends Component {
 
     const timelineStyle = {
       height: window.innerHeight - actionBarHeight,
-      backgroundColor: '#f7fafb',
     };
 
     const menu = channel ? (
@@ -111,16 +116,12 @@ class Channel extends Component {
     ) : null;
 
     return (
-        <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
       <div style={containerStyle}>
         <Col lg={9} md={8} sm={7} xs={12} style={leftStyle}>
           {iframe}
           {menu}
         </Col>
-        <Col
-          lg={3} md={4} sm={5} xs={11}
-          style={{'padding': '0', height: '100%', border: '1px solid #eceeef' }}
-          >
+        <Col lg={3} md={4} sm={5} xs={11} style={rightStyle}>
           <Timeline
             chats={channel && channel.chats ? channel.chats : []}
             style={timelineStyle}
