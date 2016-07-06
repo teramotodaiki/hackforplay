@@ -26,7 +26,7 @@ class ChannelController extends Controller
      */
     public function index(Request $request)
     {
-      $query = (object) array_merge($request->all(), [
+      $query = array_merge($request->all(), [
         'user' => $request->user(),
       ]);
       $channels = $this->query($query);
@@ -40,7 +40,7 @@ class ChannelController extends Controller
         $project
       )->firstOrFail();
 
-      $query = (object) array_merge($request->all(), [
+      $query = array_merge($request->all(), [
         'user'    => $request->user(),
         'project' => $project,
       ]);
@@ -50,6 +50,11 @@ class ChannelController extends Controller
 
     public function query($query)
     {
+      $query = (object) array_merge([
+        'is_private' => false,
+        'is_archived' => false,
+      ], $query);
+
       $user = $query->user;
       $channels = Channel::orderBy('updated_at', 'desc')->with('user');
       if ($user) {
@@ -68,12 +73,8 @@ class ChannelController extends Controller
         $channels->where('ProjectID', $query->project->ID);
       }
 
-      if (isset($query->is_private)) {
-        $channels = $channels->where('is_private', $query->is_private);
-      }
-      if (isset($query->is_archived)) {
-        $channels = $channels->where('is_archived', $query->is_archived);
-      }
+      $channels = $channels->where('is_private', $query->is_private);
+      $channels = $channels->where('is_archived', $query->is_archived);
 
       if (isset($query->since)) {
         $channels = $channels->where('updated_at', '>=', $query->since);
