@@ -84,6 +84,8 @@ class Channel extends Component {
       backgroundColor: channel && channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
     };
 
+    const leftStyle = { 'padding': '0' };
+
     const iframe = channel ? (
       <IframeEmbed
         ref={(embed) => this.iframe = embed ? embed.iframe : null}
@@ -111,6 +113,7 @@ class Channel extends Component {
     return (
         <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
       <div style={containerStyle}>
+        <Col lg={9} md={8} sm={7} xs={12} style={leftStyle}>
           {iframe}
           {menu}
         </Col>
