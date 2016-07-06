@@ -24,6 +24,19 @@ class SnakeCaseMiddleware
       'Token' => 'token',
       'State' => 'state',
       'Written' => 'is_written',
+
+      'Mode' => 'mode',
+      'ScriptID' => 'script_id',
+      'Title' => 'title',
+      'SourceID' => 'source_id',
+      'Playcount' => 'playcount',
+      'NoRestage' => 'no_restage',
+      'RejectNotice' => 'reject_notice',
+      'Published' => 'published_at',
+      'Explain' => 'explain',
+      'ImplicitMod' => 'implicit_mod',
+      'MajorVersion' => 'major_version',
+      'MinorVersion' => 'minor_version',
     ];
 
     /**
