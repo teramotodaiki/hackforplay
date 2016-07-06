@@ -79,7 +79,7 @@ class Channel extends Component {
     const id = +this.props.params.id;
     const channel = this.props.channels[id];
 
-    const style = {
+    const containerStyle = {
       height: window.innerHeight,
       backgroundColor: channel && channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
     };
@@ -109,8 +109,8 @@ class Channel extends Component {
     ) : null;
 
     return (
-      <div style={style}>
         <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
+      <div style={containerStyle}>
           {iframe}
           {menu}
         </Col>
