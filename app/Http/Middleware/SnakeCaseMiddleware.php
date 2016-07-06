@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class SnakeCaseResponseMiddleware
+class SnakeCaseMiddleware
 {
     protected $camelToSnake = [
       'ID' => 'id',
@@ -94,4 +94,5 @@ class SnakeCaseResponseMiddleware
 
       return $copied;
     }
+
 }
