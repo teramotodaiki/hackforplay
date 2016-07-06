@@ -37,6 +37,10 @@ class SnakeCaseMiddleware
       'ImplicitMod' => 'implicit_mod',
       'MajorVersion' => 'major_version',
       'MinorVersion' => 'minor_version',
+
+      'LineNum' => 'line_num',
+      'RawCode' => 'raw_code',
+      'Processed' => 'is_processed',
     ];
 
     /**
