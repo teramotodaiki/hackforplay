@@ -15,7 +15,7 @@ class ChannelController extends Controller
 {
     public function __construct()
     {
-      $this->middleware('auth', ['only' => ['create', 'store']]);
+      $this->middleware('auth', ['only' => ['create', 'store', 'update']]);
       $this->middleware('pusher', ['only' => ['store']]);
     }
 
@@ -26,7 +26,7 @@ class ChannelController extends Controller
      */
     public function index(Request $request)
     {
-      $query = (object) array_merge($request->all(), [
+      $query = array_merge($request->all(), [
         'user' => $request->user(),
       ]);
       $channels = $this->query($query);
@@ -40,7 +40,7 @@ class ChannelController extends Controller
         $project
       )->firstOrFail();
 
-      $query = (object) array_merge($request->all(), [
+      $query = array_merge($request->all(), [
         'user'    => $request->user(),
         'project' => $project,
       ]);
@@ -50,6 +50,11 @@ class ChannelController extends Controller
 
     public function query($query)
     {
+      $query = (object) array_merge([
+        'is_private' => false,
+        'is_archived' => false,
+      ], $query);
+
       $user = $query->user;
       $channels = Channel::orderBy('updated_at', 'desc')->with('user');
       if ($user) {
@@ -68,12 +73,8 @@ class ChannelController extends Controller
         $channels->where('ProjectID', $query->project->ID);
       }
 
-      if (isset($query->is_private)) {
-        $channels = $channels->where('is_private', $query->is_private);
-      }
-      if (isset($query->is_archived)) {
-        $channels = $channels->where('is_archived', $query->is_archived);
-      }
+      $channels = $channels->where('is_private', $query->is_private);
+      $channels = $channels->where('is_archived', $query->is_archived);
 
       if (isset($query->since)) {
         $channels = $channels->where('updated_at', '>=', $query->since);
@@ -126,16 +127,16 @@ class ChannelController extends Controller
       $headScript = $project->scripts()->orderBy('ID', 'DESC')->first();
 
       $channel = Channel::create([
-        'ProjectID'     => $project->ID,
-        'ProjectToken'  => $request->input('project_token'),
-        'UserID'        => $user ? $user->ID : null,
         'DisplayName'   => $request->input('display_name'),
-        'Registered'    => Carbon::now(),
-        'Updated'       => Carbon::now(),
-        'TeamID'        => $team ? $team->ID : null,
         'description'   => $request->input('description'),
         'Thumbnail'     => $headScript ? $headScript->Thumbnail : null,
       ]);
+
+      $channel->ProjectID = $project->ID;
+      $channel->ProjectToken = $request->input('project_token');
+      $channel->UserID = $user ? $user->ID : null;
+      $channel->TeamID = $team ? $team->ID : null;
+
       if ($request->has('is_private')) {
         $channel->is_private = $request->input('is_private');
       }
@@ -144,7 +145,7 @@ class ChannelController extends Controller
       $channel->script = $headScript;
 
       $chat = $channel->chats()->create([
-        'message' => '=== Channel is created! ===',
+        'message' => "=== Channel is created! ===\n" . url("channels/{$channel->ID}/watch"),
       ]);
       $request->pusher->trigger("channel-{$channel->ID}", 'new_message', $chat);
 
@@ -187,7 +188,23 @@ class ChannelController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $channel = Channel::findOrFail($id);
+      $user = $request->user();
+
+      if ($channel->UserID !== $user->ID) {
+        return response([
+          'message' => 'cant_update_channel',
+        ], 200);
+      }
+
+      if ($request->has('is_archived') && $request->input('is_archived') == false) {
+        return response([
+          'message' => 'never_revert_archive',
+        ], 200);
+      }
+
+      $channel->update($request->all());
+      return response($channel, 200);
     }
 
     /**

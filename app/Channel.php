@@ -10,7 +10,12 @@ class Channel extends Model
    * http://readouble.com/laravel/5/1/ja/eloquent.html
    */
   protected $table = 'Channel';
-  protected $guarded = ['id', 'created_at', 'updated_at']; // idはcreateに含まない
+  protected $fillable = [
+    'DisplayName',
+    'description',
+    'Thumbnail',
+    'is_archived',
+  ];
   protected $primaryKey = 'ID';
 
   public function project()

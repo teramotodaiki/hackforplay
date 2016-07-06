@@ -48,6 +48,12 @@ class ChatController extends Controller
     public function store($channelId, Request $request)
     {
       $channel = Channel::findOrFail($channelId);
+      if ($channel->is_archived) {
+        return response([
+          'message' => 'channel_is_archived',
+        ], 200);
+      }
+
       $user = $request->user();
 
       // Store message

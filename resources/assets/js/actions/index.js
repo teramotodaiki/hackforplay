@@ -46,6 +46,21 @@ export const fetchChannels = (query) => {
   };
 };
 
+export const updateChannel = (channel) => {
+  return (dispatch) => {
+
+    return request
+      .put(`/channels/${channel.ID}`)
+      .accept('json')
+      .send(channel)
+      .then((result) => {
+        dispatch({ type: ADD_CHANNEL, channel: result.body });
+        return result;
+      });
+
+  };
+};
+
 export const postChannel = (channel) => {
   return (dispatch) => {
 
