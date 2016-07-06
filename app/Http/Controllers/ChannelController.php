@@ -15,7 +15,7 @@ class ChannelController extends Controller
 {
     public function __construct()
     {
-      $this->middleware('auth', ['only' => ['create', 'store']]);
+      $this->middleware('auth', ['only' => ['create', 'store', 'update']]);
       $this->middleware('pusher', ['only' => ['store']]);
     }
 
@@ -188,7 +188,23 @@ class ChannelController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $channel = Channel::findOrFail($id);
+      $user = $request->user();
+      
+      if ($channel->UserID !== $user->ID) {
+        return response([
+          'message' => 'cant_update_channel',
+        ], 200);
+      }
+
+      if ($request->has('is_archived') && $request->input('is_archived') == false) {
+        return response([
+          'message' => 'never_revert_archive',
+        ], 200);
+      }
+
+      $channel->update($request->all());
+      return response($channel, 200);
     }
 
     /**
