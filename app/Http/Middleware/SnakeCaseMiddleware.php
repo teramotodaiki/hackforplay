@@ -71,21 +71,26 @@ class SnakeCaseMiddleware
       return $response;
     }
 
-    public function camelToSnakeRecursive($array)
+    public function camelToSnakeRecursive(Array $array)
+    {
+      return $this->appendRecursive($array, $this->camelToSnake);
+    }
+
+    protected function appendRecursive(Array $array, $pattern)
     {
       $copied = [];
 
       // Just add. (NOT remove camelcase keys)
       foreach ($array as $key => $value) {
         if (is_array($value)) {
-          $copied[$key] = $this->camelToSnakeRecursive($value);
+          $copied[$key] = $this->appendRecursive($value, $pattern);
         }
         elseif (is_object($value)) {
-          $copied[$key] = $this->camelToSnakeRecursive($value->toArray());
+          $copied[$key] = $this->appendRecursive($value->toArray(), $pattern);
         }
-        elseif (array_key_exists($key, $this->camelToSnake)) {
-          $snakecase = $this->camelToSnake[$key];
-          $copied[$snakecase] = $copied[$key] = $array[$key]; // copy and append
+        elseif (array_key_exists($key, $pattern)) {
+          $appendKey = $pattern[$key];
+          $copied[$appendKey] = $copied[$key] = $array[$key]; // copy and append
         }
         else {
           $copied[$key] = $array[$key]; // just copy
