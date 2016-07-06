@@ -17,6 +17,7 @@ class ChannelController extends Controller
     {
       $this->middleware('auth', ['only' => ['create', 'store', 'update']]);
       $this->middleware('pusher', ['only' => ['store']]);
+      $this->middleware('snakecase');
     }
 
     /**

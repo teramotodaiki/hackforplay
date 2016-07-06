@@ -8,6 +8,13 @@ class SnakeCaseMiddleware
 {
 
     protected $camelToSnake = [
+      'ID' => 'id',
+      'TeamID' => 'team_id',
+      'Name' => 'name',
+      'DisplayName' => 'display_name',
+      'ProjectID' => 'project_id',
+      'UserID' => 'user_id',
+      'Thumbnail' => 'thumbnail',
     ];
 
     /**
