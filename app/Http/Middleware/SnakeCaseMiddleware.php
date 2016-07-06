@@ -41,6 +41,12 @@ class SnakeCaseMiddleware
       'LineNum' => 'line_num',
       'RawCode' => 'raw_code',
       'Processed' => 'is_processed',
+
+      'Gender' => 'gender',
+      'Nickname' => 'nickname',
+      'AcceptLanguage' => 'accept_language',
+      'ProfileImageURL' => 'profile_image_url',
+      'IsSupported' => 'is_supported',
     ];
 
     /**
