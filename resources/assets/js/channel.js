@@ -131,6 +131,7 @@ class Channel extends Component {
           <ActionBar
             postChat={this.postChat.bind(this)}
             style={actionBarStyle}
+            disabled={!!(channel && channel.is_archived)}
             />
         </Col>
       </div>

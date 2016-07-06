@@ -33,7 +33,7 @@ export default class ActionBar extends Component {
   }
 
   render() {
-    const { style } = this.props;
+    const { style, disabled } = this.props;
     const colStyle = {
       margin: 0,
       boxSizing: 'border-box',
@@ -56,10 +56,16 @@ export default class ActionBar extends Component {
           value={this.state.inputValue}
           onChange={(e) => this.setState({ inputValue: e.target.value })}
           onKeyPress={this.postChatByKey}
-          style={inputStyle}></textarea>
+          style={inputStyle}
+          disabled={disabled}
+          ></textarea>
       </Col>
       <Col xs={2} style={colStyle}>
-       <Button bsStyle="link" onClick={this.postChatAndClear}>
+       <Button
+        bsStyle="link"
+        onClick={this.postChatAndClear}
+        disabled={disabled}
+        >
          <span className="fa fa-paper-plane-o"></span>
        </Button>
       </Col>
