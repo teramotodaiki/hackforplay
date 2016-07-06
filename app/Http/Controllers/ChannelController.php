@@ -127,16 +127,16 @@ class ChannelController extends Controller
       $headScript = $project->scripts()->orderBy('ID', 'DESC')->first();
 
       $channel = Channel::create([
-        'ProjectID'     => $project->ID,
-        'ProjectToken'  => $request->input('project_token'),
-        'UserID'        => $user ? $user->ID : null,
         'DisplayName'   => $request->input('display_name'),
-        'Registered'    => Carbon::now(),
-        'Updated'       => Carbon::now(),
-        'TeamID'        => $team ? $team->ID : null,
         'description'   => $request->input('description'),
         'Thumbnail'     => $headScript ? $headScript->Thumbnail : null,
       ]);
+
+      $channel->ProjectID = $project->ID;
+      $channel->ProjectToken = $request->input('project_token');
+      $channel->UserID = $user ? $user->ID : null;
+      $channel->TeamID = $team ? $team->ID : null;
+
       if ($request->has('is_private')) {
         $channel->is_private = $request->input('is_private');
       }
@@ -190,7 +190,7 @@ class ChannelController extends Controller
     {
       $channel = Channel::findOrFail($id);
       $user = $request->user();
-      
+
       if ($channel->UserID !== $user->ID) {
         return response([
           'message' => 'cant_update_channel',
