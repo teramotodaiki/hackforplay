@@ -10,7 +10,7 @@ import IframeEmbed from './iframe-embed';
 import Timeline from './components/timeline';
 import ActionBar from './components/action-bar';
 import ChannelMenu from './components/channel-menu';
-import { addChat, postChat, fetchChannel, createGist, fetchQcard } from './actions/';
+import { addChat, postChat, fetchChannel, createGist, fetchQcard, updateChannel } from './actions/';
 
 class Channel extends Component {
 
@@ -38,8 +38,11 @@ class Channel extends Component {
       dispatch(addChat(id, data));
     });
 
+    this.loginUserId = document.querySelector('meta[name="login-user-id"]').getAttribute('content');
+
     this.reload = this.reload.bind(this);
     this.createGist = this.createGist.bind(this);
+    this.archive = this.archive.bind(this);
   }
 
   postChat (message) {
@@ -70,6 +73,18 @@ class Channel extends Component {
     .catch(() => gistWindow.close());
   }
 
+  archive() {
+    const { dispatch, params, channels } = this.props;
+    const channel = channels[params.id];
+
+    if (confirm('Are you sure to archive this channel? (このチャンネルを「そうこ」に入れてもよろしいですか？)')) {
+      dispatch(updateChannel(
+        Object.assign({}, channel, { is_archived: true })
+      ))
+      .then((result) => alert('Archived successfully. (「そうこ」に入りました)'));
+    }
+  }
+
   componentDidMount() {
     window.addEventListener('resize', () => this.forceUpdate());
   }
@@ -78,6 +93,26 @@ class Channel extends Component {
 
     const id = +this.props.params.id;
     const channel = this.props.channels[id];
+
+    const containerStyle = {
+      height: window.innerHeight,
+      backgroundColor: channel && channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
+    };
+
+    const leftStyle = { 'padding': '0' };
+    const rightStyle = {
+      padding: '0',
+      height: '100%',
+      border: '1px solid #eceeef',
+      backgroundColor: '#f7fafb',
+    };
+    const actionBarStyle = {
+      height: 48,
+      backgroundColor: 'white',
+    };
+    const timelineStyle = {
+      height: window.innerHeight - actionBarStyle.height,
+    };
 
     const iframe = channel ? (
       <IframeEmbed
@@ -88,38 +123,32 @@ class Channel extends Component {
         />
     ) : null;
 
-    const actionBarHeight = 48;
-
-    const timelineStyle = {
-      height: window.innerHeight - actionBarHeight,
-      backgroundColor: '#f7fafb',
-    };
-
     const menu = channel ? (
       <ChannelMenu
         channel={channel}
         reload={this.reload}
         createGist={this.createGist}
+        archive={this.archive}
+        style={{ backgroundColor: 'white' }}
+        isOwner={+this.loginUserId === +channel.UserID}
         />
     ) : null;
 
     return (
-      <div style={{height: window.innerHeight }}>
-        <Col lg={9} md={8} sm={7} xs={12} style={{'padding': '0'}}>
+      <div style={containerStyle}>
+        <Col lg={9} md={8} sm={7} xs={12} style={leftStyle}>
           {iframe}
           {menu}
         </Col>
-        <Col
-          lg={3} md={4} sm={5} xs={11}
-          style={{'padding': '0', height: '100%', border: '1px solid #eceeef' }}
-          >
+        <Col lg={3} md={4} sm={5} xs={11} style={rightStyle}>
           <Timeline
             chats={channel && channel.chats ? channel.chats : []}
             style={timelineStyle}
             />
           <ActionBar
             postChat={this.postChat.bind(this)}
-            style={{ height: actionBarHeight }}
+            style={actionBarStyle}
+            disabled={!!(channel && channel.is_archived)}
             />
         </Col>
       </div>
