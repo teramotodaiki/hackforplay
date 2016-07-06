@@ -29,7 +29,7 @@ export default class ChannelMenu extends Component {
         </Link>
       </Button>
       {
-        isOwner && !channel.is_archived ? (
+        isOwner && !+channel.is_archived ? (
           <Button bsStyle="link" bsSize="large" onClick={archive}>
             <span className="fa fa-archive fa-3x"></span>
           </Button>

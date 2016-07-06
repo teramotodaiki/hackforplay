@@ -96,7 +96,7 @@ class Channel extends Component {
 
     const containerStyle = {
       height: window.innerHeight,
-      backgroundColor: channel && channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
+      backgroundColor: channel && +channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
     };
 
     const leftStyle = { 'padding': '0' };
@@ -148,7 +148,7 @@ class Channel extends Component {
           <ActionBar
             postChat={this.postChat.bind(this)}
             style={actionBarStyle}
-            disabled={!!(channel && channel.is_archived)}
+            disabled={!!(channel && +channel.is_archived)}
             />
         </Col>
       </div>
