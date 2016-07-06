@@ -25,16 +25,35 @@ class SnakeCaseMiddleware
       {
         $collection = $response->getOriginalContent()->toArray();
 
-        // Just add. (NOT remove camelcase keys)
-        foreach ($this->camelToSnake as $camelKey => $snakeKey) {
-          if (array_key_exists($camelKey, $collection)) {
-            $collection[$snakeKey] = $collection[$camelKey];
-          }
-        }
+        $collection = $this->camelToSnakeRecursive($collection);
 
         $response->setContent($collection);
       }
 
       return $response;
+    }
+
+    protected function camelToSnakeRecursive($array)
+    {
+      $copied = [];
+
+      // Just add. (NOT remove camelcase keys)
+      foreach ($array as $key => $value) {
+        if (is_array($value)) {
+          $copied[$key] = $this->camelToSnakeRecursive($value);
+        }
+        elseif (is_object($value)) {
+          $copied[$key] = $this->camelToSnakeRecursive($value->toArray());
+        }
+        elseif (array_key_exists($key, $this->camelToSnake)) {
+          $snakecase = $this->camelToSnake[$key];
+          $copied[$snakecase] = $copied[$key] = $array[$key]; // copy and append
+        }
+        else {
+          $copied[$key] = $array[$key]; // just copy
+        }
+      }
+
+      return $copied;
     }
 }
