@@ -21,9 +21,7 @@ class Channel extends Component {
     const { dispatch, channels } = this.props;
     const id = +this.props.params.id;
 
-    if (!channels[id]) {
-      dispatch(fetchChannel({ id, chats: true }));
-    }
+    dispatch(fetchChannel({ id, chats: true }));
 
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = false;
