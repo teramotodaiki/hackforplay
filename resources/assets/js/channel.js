@@ -10,6 +10,7 @@ import IframeEmbed from './iframe-embed';
 import Timeline from './components/timeline';
 import ActionBar from './components/action-bar';
 import ChannelMenu from './components/channel-menu';
+import { Section } from './components/section';
 import { addChat, postChat, fetchChannel, createGist, fetchQcard, updateChannel } from './actions/';
 
 class Channel extends Component {
@@ -21,9 +22,7 @@ class Channel extends Component {
     const { dispatch, channels } = this.props;
     const id = +this.props.params.id;
 
-    if (!channels[id]) {
-      dispatch(fetchChannel({ id, chats: true }));
-    }
+    dispatch(fetchChannel({ id, chats: true }));
 
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = false;
@@ -94,9 +93,17 @@ class Channel extends Component {
     const id = +this.props.params.id;
     const channel = this.props.channels[id];
 
+    if (!channel) {
+      return (
+        <Section name="loading">
+          <span className="fa fa-spinner fa-pulse fa-10x fa-fw"></span>
+        </Section>
+      );
+    }
+
     const containerStyle = {
       height: window.innerHeight,
-      backgroundColor: channel && +channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
+      backgroundColor: +channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
     };
 
     const leftStyle = { 'padding': '0' };
@@ -114,41 +121,33 @@ class Channel extends Component {
       height: window.innerHeight - actionBarStyle.height,
     };
 
-    const iframe = channel ? (
-      <IframeEmbed
-        ref={(embed) => this.iframe = embed ? embed.iframe : null}
-        type="project"
-        token={channel.ProjectToken}
-        visibleFocus
-        />
-    ) : null;
-
-    const menu = channel ? (
-      <ChannelMenu
-        channel={channel}
-        reload={this.reload}
-        createGist={this.createGist}
-        archive={this.archive}
-        style={{ backgroundColor: 'white' }}
-        isOwner={+this.loginUserId === +channel.UserID}
-        />
-    ) : null;
-
     return (
       <div style={containerStyle}>
         <Col lg={9} md={8} sm={7} xs={12} style={leftStyle}>
-          {iframe}
-          {menu}
+          <IframeEmbed
+            ref={(embed) => this.iframe = embed ? embed.iframe : null}
+            type="project"
+            token={channel.ProjectToken}
+            visibleFocus
+            />
+          <ChannelMenu
+            channel={channel}
+            reload={this.reload}
+            createGist={this.createGist}
+            archive={this.archive}
+            style={{ backgroundColor: 'white' }}
+            isOwner={+this.loginUserId === +channel.UserID}
+            />
         </Col>
         <Col lg={3} md={4} sm={5} xs={11} style={rightStyle}>
           <Timeline
-            chats={channel && channel.chats ? channel.chats : []}
+            chats={channel.chats || []}
             style={timelineStyle}
             />
           <ActionBar
             postChat={this.postChat.bind(this)}
             style={actionBarStyle}
-            disabled={!!(channel && +channel.is_archived)}
+            disabled={!!+channel.is_archived}
             />
         </Col>
       </div>
