@@ -10,6 +10,7 @@ import IframeEmbed from './iframe-embed';
 import Timeline from './components/timeline';
 import ActionBar from './components/action-bar';
 import ChannelMenu from './components/channel-menu';
+import { Section } from './components/section';
 import { addChat, postChat, fetchChannel, createGist, fetchQcard, updateChannel } from './actions/';
 
 class Channel extends Component {
@@ -91,6 +92,14 @@ class Channel extends Component {
 
     const id = +this.props.params.id;
     const channel = this.props.channels[id];
+
+    if (!channel) {
+      return (
+        <Section name="loading">
+          <span className="fa fa-spinner fa-pulse fa-10x fa-fw"></span>
+        </Section>
+      );
+    }
 
     const containerStyle = {
       height: window.innerHeight,
