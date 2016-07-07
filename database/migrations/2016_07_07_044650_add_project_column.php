@@ -19,6 +19,7 @@ class AddProjectColumn extends Migration
           $table->string('description', 400)->nullable();
           $table->string('gist_id', 20)->nullable();
           $table->string('thumbnail', 100)->nullable();
+          $table->boolean('is_active')->default(true);
           $table->timestamps();
         });
       }
@@ -39,6 +40,7 @@ class AddProjectColumn extends Migration
             'description',
             'gist_id',
             'thumbnail',
+            'is_active',
             'created_at',
             'updated_at',
           ]);
