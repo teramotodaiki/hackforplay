@@ -103,7 +103,7 @@ class Channel extends Component {
 
     const containerStyle = {
       height: window.innerHeight,
-      backgroundColor: channel && +channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
+      backgroundColor: +channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
     };
 
     const leftStyle = { 'padding': '0' };
@@ -121,41 +121,33 @@ class Channel extends Component {
       height: window.innerHeight - actionBarStyle.height,
     };
 
-    const iframe = channel ? (
-      <IframeEmbed
-        ref={(embed) => this.iframe = embed ? embed.iframe : null}
-        type="project"
-        token={channel.ProjectToken}
-        visibleFocus
-        />
-    ) : null;
-
-    const menu = channel ? (
-      <ChannelMenu
-        channel={channel}
-        reload={this.reload}
-        createGist={this.createGist}
-        archive={this.archive}
-        style={{ backgroundColor: 'white' }}
-        isOwner={+this.loginUserId === +channel.UserID}
-        />
-    ) : null;
-
     return (
       <div style={containerStyle}>
         <Col lg={9} md={8} sm={7} xs={12} style={leftStyle}>
-          {iframe}
-          {menu}
+          <IframeEmbed
+            ref={(embed) => this.iframe = embed ? embed.iframe : null}
+            type="project"
+            token={channel.ProjectToken}
+            visibleFocus
+            />
+          <ChannelMenu
+            channel={channel}
+            reload={this.reload}
+            createGist={this.createGist}
+            archive={this.archive}
+            style={{ backgroundColor: 'white' }}
+            isOwner={+this.loginUserId === +channel.UserID}
+            />
         </Col>
         <Col lg={3} md={4} sm={5} xs={11} style={rightStyle}>
           <Timeline
-            chats={channel && channel.chats ? channel.chats : []}
+            chats={channel.chats || []}
             style={timelineStyle}
             />
           <ActionBar
             postChat={this.postChat.bind(this)}
             style={actionBarStyle}
-            disabled={!!(channel && +channel.is_archived)}
+            disabled={!!+channel.is_archived}
             />
         </Col>
       </div>
