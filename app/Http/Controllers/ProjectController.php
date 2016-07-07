@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Project;
+use App\Stage;
+use App\Http\Middleware\SnakeCaseMiddleware;
+use Carbon\Carbon;
 
 class ProjectController extends Controller
 {
@@ -36,7 +40,43 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $this->validate($request, [
+        'source_stage' => 'required|numeric'
+      ]);
+
+      $source = Stage::findOrFail($request->input('source_stage'));
+      if ($source->NoRestage) {
+        return response([
+          'message' => 'not_allowed'
+        ], 200);
+      }
+
+      $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
+      $project = Project::create($camel);
+
+      // relation
+      $project->UserID = $request->user()->ID;
+      $project->RootID = $source->project ? $source->project->RootID : $project->ID;
+      $project->ParentID = $source->project ? $source->project->ID : null;
+      $project->SourceStageID = $source->ID;
+      $project->Registered = Carbon::now()->toDateTimeString();
+      $project->State = 'enabled';
+      $project->Token = str_random(32);
+
+      // reserved stage
+      $reserved = $project->stages()->create([
+        "UserID" => $request->user()->ID,
+        "Mode" => 'replay',
+        "ProjectID" => $project->ID,
+        "State" => 'reserved',
+        "SourceID" => $source->ID,
+        "ImplicitMod" => $source->ImplicitMod,
+      ]);
+
+      $project->ReservedID = $reserved->ID;
+      $project->save();
+
+      return response($project, 200);
     }
 
     /**
