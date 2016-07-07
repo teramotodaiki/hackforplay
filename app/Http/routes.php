@@ -84,6 +84,14 @@ Route::group(['middleware' => 'etag', 'prefix' => 'mods'], function()
   ->where('ext', '\.(js)');
 });
 
+
+// JSON API
+Route::group(['prefix' => 'api', 'middleware' => ['auth.old', 'auth']], function()
+{
+  Route::resource('projects', 'ProjectController');
+});
+
+
 // /static
 Route::get('static/{path}', 'StaticController@index')
 ->where('path', '.*')

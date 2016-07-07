@@ -19,4 +19,9 @@ class Stage extends Model
     return $this->belongsTo('App\Script', 'ScriptID');
   }
 
+  public function project()
+  {
+    return $this->belongsTo('App\Project', 'ProjectID');
+  }
+
 }

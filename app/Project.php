@@ -10,8 +10,7 @@ class Project extends Model
    * http://readouble.com/laravel/5/1/ja/eloquent.html
    */
   protected $table = 'Project';
-  public $timestamps = false; // モデルのタイムスタンプを更新しない
-  protected $guarded = array('id'); // idはcreateに含まない
+  protected $fillable = ['title', 'description', 'thumbnail', 'is_active', 'State'];
   protected $primaryKey = 'ID';
 
   public function scripts()

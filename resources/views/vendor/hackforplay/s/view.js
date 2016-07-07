@@ -1058,35 +1058,22 @@ $(function(){
 		function makeProject (successed, failed) {
 			// 残っているトークンを破棄
 			sessionStorage.removeItem('project-token');
-			var timezone = new Date().getTimezoneString();
-			$.post('../project/makefromstage.php', {
-				'stageid': getParam('id'),
-				'timezone': timezone,
-				'attendance-token': sessionStorage.getItem('attendance-token')
-			}, function(data, textStatus, xhr) {
-				switch(data){
-					case 'no-session':
-						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
-						if (failed !== undefined) {
-							failed();
-						}
-						break;
-					case 'invalid-stageid':
-						showAlert('alert-danger', 'このステージは改造できません');
-						break;
-					case 'database-error':
-						showAlert('alert-danger', 'エラーにより改造できませんでした');
-						break;
-					case 'unauthorized-restage':
-						showAlert('alert-danger', 'このステージは改造できません');
-						break;
-					default:
-						sessionStorage.setItem('project-token', data);
-						if(successed !== undefined){
-							successed();
-						}
-						break;
+			$.ajax({
+				type: 'POST',
+				url: '/api/projects',
+				data: { source_stage: getParam('id') },
+				dataType: 'json',
+			}).done(function (result) {
+				if (result.token) {
+					sessionStorage.setItem('project-token', result.token);
+					(successed || function () {})();
+				} else if (result.message) {
+					showAlert('alert-danger', result.message);
+				} else {
+					console.error(result);
 				}
+			}).fail(function (xhr) {
+				console.error(xhr);
 			});
 		}
 		function updateTask (callback, resolveObject) {
