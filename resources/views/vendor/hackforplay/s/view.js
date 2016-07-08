@@ -1091,49 +1091,39 @@ $(function(){
 				return;
 			}
 
-			// Update data
-			$.post('../commit/', {
-				token : sessionStorage.getItem('project-token'),
-				code : jsEditor.getValue('') || sessionStorage.getItem('restaging_code'),
-				timezone : new Date().getTimezoneString(),
-				thumb : resolveObject.thumb,
-				publish : false,
-				'attendance-token' : sessionStorage.getItem('attendance-token')
-			}, function(data, textStatus, xhr) {
-				switch(data){
-					case 'no-session':
-						$('#signinModal').modal('show').find('.modal-title').text('ステージを改造するには、ログインしてください');
-						break;
-					case 'invalid-token':
-						// project-tokenがない、またはサーバー側と照合できないとき
-						showAlert('alert-danger', 'プロジェクトが保存されていません。新規に作成を行いますので、しばらくお待ちください…');
-						$('.h4p_save_button button').button('loading');
-						var tmpCallback = callback; // callbackの発動を遅らせる
-						callback = undefined; // callbackの発動を遅らせる
-						makeProject(function() {
-							updateTask(function() {
-								showAlert('alert-success', 'プロジェクトが作成されました！');
-								if (tmpCallback !== undefined) {
-									tmpCallback();
-								}
-							});
+			$.ajax({
+				type: 'PUT',
+				url: '/api/projects/' + sessionStorage.getItem('project-token'),
+				data: {
+					script: {
+						raw_code: jsEditor.getValue('') || sessionStorage.getItem('restaging_code'),
+					}
+				},
+			})
+			.done(function (result) {
+				if (result.message) {
+					alert(result.message);
+				} else {
+					(callback || function () {})();
+				}
+			})
+			.fail(function (xhr) {
+				if (xhr.status === 404) {
+					// project-tokenがない、またはサーバー側と照合できないとき
+					showAlert('alert-danger', 'プロジェクトが保存されていません。新規に作成を行いますので、しばらくお待ちください…');
+					$('.h4p_save_button button').button('loading');
+					var tmpCallback = callback; // callbackの発動を遅らせる
+					callback = undefined; // callbackの発動を遅らせる
+					makeProject(function() {
+						updateTask(function() {
+							showAlert('alert-success', 'プロジェクトが作成されました！');
+							if (tmpCallback !== undefined) {
+								tmpCallback();
+							}
 						});
-						break;
-					case 'already-published':
-						showAlert('alert-danger', 'すでに投稿されたステージです');
-						break;
-					case 'data-is-null':
-						showAlert('alert-danger', '更新するデータが破損していたため、更新されませんでした');
-						break;
-					case 'database-error':
-						showAlert('alert-danger', 'データベースエラーにより、更新されませんでした');
-						break;
-					case 'no-update':
-					case 'success':
-						if (callback) {
-							callback();
-						}
-						break;
+					});
+				} else {
+					console.error(xhr);
 				}
 			});
 		}
