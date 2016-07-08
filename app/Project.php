@@ -23,6 +23,11 @@ class Project extends Model
     return $this->hasMany('App\Stage', 'ProjectID');
   }
 
+  public function channel()
+  {
+    return $belongsTo('App\Channel', 'ProjectID');
+  }
+
   public function isOwner($user)
   {
     return $this->UserID === $user->ID;
