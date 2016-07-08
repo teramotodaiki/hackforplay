@@ -17,9 +17,28 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $projects =
+      Project::where([
+        'UserID' => $request->user()->ID,
+        'Written' => true,
+        'State' => 'enabled',
+        'is_active' => true,
+      ])
+      ->orderBy('Registered', 'desc')
+      // ->orderBy('updated_at', 'desc')
+      ->paginate();
+
+      // NOTE: OLD DATA
+      foreach ($projects as $item) {
+        // thumbnail
+        if (!$item->thumbnail) {
+          $item->thumbnail = $item->scripts()->orderBy('id', 'desc')->first()->Thumbnail;
+        }
+      }
+
+      return response($projects, 200);
     }
 
     /**
@@ -62,6 +81,11 @@ class ProjectController extends Controller
       $project->Registered = Carbon::now()->toDateTimeString();
       $project->State = 'enabled';
       $project->Token = str_random(32);
+
+      // TODO: Set it themself
+      $project->title = 'P-' . Carbon::now()->format('y.m.d.H.i.s');
+      $project->description = 'Re: ' . $source->Title;
+      $project->thumbnail = $source->Thumbnail;
 
       // reserved stage
       $reserved = $project->stages()->create([
@@ -110,7 +134,40 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $project = Project::where(
+        ctype_digit((string) $id) ? 'id' : 'token',
+        $id
+      )->firstOrFail();
+
+      $user = $request->user();
+      if (!$project->isOwner($user)) {
+        return response([
+          'message' => 'cant_update_project',
+        ], 200);
+      }
+
+      $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
+      $camel['Written'] = $project->Written || $request->has('script');
+      $project->update($camel);
+
+      $current = $project->scripts()->orderBy('id', 'desc')->first();
+
+      if (  $request->has('script') &&
+            (!$current || $current->RawCode !== $camel['script']['raw_code'])
+      ) {
+        $current = $project->scripts()->create($camel['script']);
+        $current->LineNum = substr_count($current->RawCode, "\n") + 1;
+        $current->Registered = Carbon::now()->toDateTimeString();
+        $current->save();
+      }
+
+      $project->current_script = $current;
+
+      if ($project->channel) {
+        $project->channel->touch();
+      }
+
+      return response($project, 200);
     }
 
     /**

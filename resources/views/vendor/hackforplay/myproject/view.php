@@ -46,12 +46,22 @@
 						</div>
 					</div>
 					<div class="col-xs-12">
+						<!-- Pager -->
+						<nav class="text-center">
+						  <ul class="pagination"></ul>
+						</nav>
+					</div>
+					<div class="col-xs-12">
 						<div class="row h4p_projectlist"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- Pager -->
+	<nav class="text-center">
+	  <ul class="pagination"></ul>
+	</nav>
 	<?php include_once '../intercom.php'; ?>
 </body>
 </html>

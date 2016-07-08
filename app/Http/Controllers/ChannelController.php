@@ -130,13 +130,15 @@ class ChannelController extends Controller
       $channel = Channel::create([
         'DisplayName'   => $request->input('display_name'),
         'description'   => $request->input('description'),
-        'Thumbnail'     => $headScript ? $headScript->Thumbnail : null,
       ]);
 
       $channel->ProjectID = $project->ID;
       $channel->ProjectToken = $request->input('project_token');
       $channel->UserID = $user ? $user->ID : null;
       $channel->TeamID = $team ? $team->ID : null;
+
+      if ($project->thumbnail) $channel->Thumbnail = $project->thumbnail;
+      elseif ($headScript->Thumbnail) $channel->Thumbnail = $headScript->Thumbnail;
 
       if ($request->has('is_private')) {
         $channel->is_private = $request->input('is_private');
