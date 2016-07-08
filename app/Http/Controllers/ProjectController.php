@@ -27,8 +27,17 @@ class ProjectController extends Controller
         'is_active' => true,
       ])
       ->orderBy('updated_at', 'desc');
+      ->paginate();
 
-      return response($projects->paginate(), 200);
+      // NOTE: OLD DATA
+      foreach ($projects as $item) {
+        // thumbnail
+        if (!$item->thumbnail) {
+          $item->thumbnail = $item->scripts()->orderBy('id', 'desc')->first()->Thumbnail;
+        }
+      }
+
+      return response($projects, 200);
     }
 
     /**
