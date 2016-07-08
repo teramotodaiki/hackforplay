@@ -147,7 +147,7 @@ class ProjectController extends Controller
       }
 
       $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
-      $camel['Written'] = $request->has('script');
+      $camel['Written'] = $project->Written || $request->has('script');
       $project->update($camel);
 
       $current = $project->scripts()->orderBy('id', 'desc')->first();
