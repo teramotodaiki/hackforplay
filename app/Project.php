@@ -25,7 +25,7 @@ class Project extends Model
 
   public function channel()
   {
-    return $belongsTo('App\Channel', 'ProjectID');
+    return $this->belongsTo('App\Channel', 'ProjectID');
   }
 
   public function isOwner($user)
