@@ -63,6 +63,11 @@ class ProjectController extends Controller
       $project->State = 'enabled';
       $project->Token = str_random(32);
 
+      // TODO: Set it themself
+      $project->title = 'P-' . Carbon::now()->format('y.m.d.H.i.s');
+      $project->description = 'Re: ' . $source->Title;
+      $project->thumbnail = $source->Thumbnail;
+
       // reserved stage
       $reserved = $project->stages()->create([
         "UserID" => $request->user()->ID,
