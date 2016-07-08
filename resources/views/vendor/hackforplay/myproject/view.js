@@ -24,9 +24,11 @@ $(function(){
 			$('<div>').addClass('caption').append(
 				$('<button>').addClass('btn btn-lg btn-block btn-default h4p_open-project').text('開く').attr('data-loading-text', 'データの取得中…')
 			).append(
-				$('<p>').append($('<span>').addClass('registered').html('作成日時：<b></b>'))
+				$('<h4>').addClass('title')
 			).append(
-				$('<p>').append($('<span>').addClass('source').html('改造元：<b></b>'))
+				$('<p>').addClass('description')
+			).append(
+				$('<p>').append($('<span>').addClass('registered').html('作成日時：<b></b>'))
 			).append(
 				$('<button>').addClass('btn btn-link btn-block h4p_delete-project').text('このプロジェクトを削除').attr('data-loading-text', 'お待ちください…')
 			)
@@ -109,32 +111,28 @@ $(function(){
 	});
 
 	// プロジェクト一覧取得
-	$.post('../stage/fetchmyproject.php',{
-		'length': 15,
-		'attendance-token': sessionStorage.getItem('attendance-token')
-	}, function(data, textStatus, xhr) {
-		switch(data){
-			case 'no-session':
-				$('#signinModal').modal('show');
-				break;
-			case 'parse-error':
-				bsAlert('alert-danger', 'データの取得に失敗しました').append('#h4p_projectlist');
-				break;
-			default:
-				var result = jQuery.parseJSON(data);
-				var $list = $('.h4p_projectlist');
-				result.values.forEach(function(project){
-					var item = $projectItem.clone(true);
-					item.find('.thumbnail img').attr('src', project.thumbnail || 'img/noimage.png');
-					var title = project.source_title;
-					item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
-					item.find('.registered b').text(convertLocaleTimeString(project.registered));
-					item.find('.caption button').attr('project-token', project.token);
+	$.ajax({
+		type: 'GET',
+		url: '/api/projects',
+	})
+	.done(function (result) {
+		var $list = $('.h4p_projectlist');
+		result.data.forEach(function(project){
+			var item = $projectItem.clone(true);
+			item.find('.thumbnail img').attr('src', project.thumbnail || 'img/noimage.png');
+			item.find('.title').text(project.title || '-');
+			item.find('.description').text(project.description || '-');
 
-					item.appendTo($list);
-				});
-				break;
-		}
+			// NOTE: depricated
+			var title = project.title;
+			item.find('.registered b').text(convertLocaleTimeString(project.Registered));
+			item.find('.caption button').attr('project-token', project.token);
+
+			item.appendTo($list);
+		});
+	})
+	.fail(function (xhr) {
+		console.error(xhr);
 	});
 
 	// _level のアラート _text を生成し、jQueryオブジェクトを返す
