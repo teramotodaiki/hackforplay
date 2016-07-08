@@ -110,7 +110,29 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $project = Project::where(
+        ctype_digit((string) $id) ? 'id' : 'token',
+        $id
+      )->firstOrFail();
+
+      $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
+      $camel['Written'] = $request->has('script');
+      $project->update($camel);
+
+      $current = $project->scripts()->orderBy('id', 'desc')->first();
+
+      if (  $request->has('script') &&
+            $current->RawCode !== $camel['script']['raw_code'])
+      {
+        $current = $project->scripts()->create($camel['script']);
+        $current->LineNum = substr_count($current->RawCode, "\n") + 1;
+        $current->Registered = Carbon::now()->toDateTimeString();
+        $current->save();
+      }
+
+      $project->current_script = $current;
+
+      return response($project, 200);
     }
 
     /**
