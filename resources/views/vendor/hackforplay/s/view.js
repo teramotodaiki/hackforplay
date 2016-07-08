@@ -1093,7 +1093,7 @@ $(function(){
 
 			$.ajax({
 				type: 'POST',
-				url: '/api/projects/' + sessionStorage.getItem('project-token') + '?_method=PUT',
+				url: '/api/projects/' + sessionStorage.getItem('project-token'),
 				data: {
 					_method: 'PUT',
 					script: {
