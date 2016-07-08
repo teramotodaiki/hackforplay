@@ -97,15 +97,8 @@ $(function(){
 			if (data === 'failed'){
 				panel.prepend(bsAlert('alert-danger', '削除に失敗しました'));
 			}else{
-				var project = jQuery.parseJSON(data);
-				var item = $projectItem.clone(true);
-				item.find('.thumbnail img').attr('src', project.thumbnail || 'img/noimage.png');
-				var title = project.source_title;
-				item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
-				item.find('.registered b').text(project.registered);
-				item.find('.caption button').attr('project-token', project.token);
-				panel.parent().after(item);
-				panel.parent().remove();
+				panel.prepend(bsAlert('alert-success', '元に戻しました.このページをリロードしてください'));
+				panel.find('.h4p_fix-project').remove();
 			}
 		});
 	});
