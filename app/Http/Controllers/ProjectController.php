@@ -17,9 +17,28 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $projects =
+      Project::where([
+        'UserID' => $request->user()->ID,
+        'Written' => true,
+        'State' => 'enabled',
+        'is_active' => true,
+      ])
+      ->orderBy('Registered', 'desc')
+      // ->orderBy('updated_at', 'desc')
+      ->paginate();
+
+      // NOTE: OLD DATA
+      foreach ($projects as $item) {
+        // thumbnail
+        if (!$item->thumbnail) {
+          $item->thumbnail = $item->scripts()->orderBy('id', 'desc')->first()->Thumbnail;
+        }
+      }
+
+      return response($projects, 200);
     }
 
     /**
@@ -128,7 +147,7 @@ class ProjectController extends Controller
       }
 
       $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
-      $camel['Written'] = $request->has('script');
+      $camel['Written'] = $project->Written || $request->has('script');
       $project->update($camel);
 
       $current = $project->scripts()->orderBy('id', 'desc')->first();

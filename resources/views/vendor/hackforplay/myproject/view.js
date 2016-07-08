@@ -24,14 +24,57 @@ $(function(){
 			$('<div>').addClass('caption').append(
 				$('<button>').addClass('btn btn-lg btn-block btn-default h4p_open-project').text('開く').attr('data-loading-text', 'データの取得中…')
 			).append(
-				$('<p>').append($('<span>').addClass('registered').html('作成日時：<b></b>'))
+				$('<div>').addClass('h4p_title-updater').append(
+					$('<span>').css('font-size', '120%').addClass('title')
+				).append(
+					$('<input>').addClass('input hidden')
+				).append(
+					$('<button>').addClass('btn btn-link').append(
+						$('<span>').addClass('glyphicon glyphicon-edit')
+					)
+				)
 			).append(
-				$('<p>').append($('<span>').addClass('source').html('改造元：<b></b>'))
+				$('<p>').addClass('description text-muted')
+			).append(
+				$('<p>').append($('<span>').addClass('registered').html('作成日時：<b></b>'))
 			).append(
 				$('<button>').addClass('btn btn-link btn-block h4p_delete-project').text('このプロジェクトを削除').attr('data-loading-text', 'お待ちください…')
 			)
 		)
 	);
+	$projectItem.on('click', '.h4p_title-updater button', function (event) {
+
+		var $title = $(this).parent().find('.title');
+		var $input = $(this).parent().find('.input');
+
+		if ($(this).hasClass('active')) {
+
+			var token = $(this).attr('project-token');
+
+			$.ajax({
+				type: 'PUT',
+				url: '/api/projects/' + token,
+				data: {
+					title: $input.val(),
+				}
+			})
+			.fail(function (xhr) {
+				alert('Request failed. 保存に失敗しました');
+				console.error(xhr);
+			});
+
+			$title.text($input.val());
+
+		} else {
+
+			$input.val($title.text());
+
+		}
+		$title.toggleClass('hidden');
+		$input.toggleClass('hidden');
+		$(this).toggleClass('active');
+	});
+
 	var $projectItem_fixButton = $('<button>').text('元に戻す').addClass('btn btn-link btn-block h4p_fix-project');
 
 	$projectItem.find('.h4p_open-project').on('click', function(event) {
@@ -95,46 +138,68 @@ $(function(){
 			if (data === 'failed'){
 				panel.prepend(bsAlert('alert-danger', '削除に失敗しました'));
 			}else{
-				var project = jQuery.parseJSON(data);
-				var item = $projectItem.clone(true);
-				item.find('.thumbnail img').attr('src', project.thumbnail || 'img/noimage.png');
-				var title = project.source_title;
-				item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
-				item.find('.registered b').text(project.registered);
-				item.find('.caption button').attr('project-token', project.token);
-				panel.parent().after(item);
-				panel.parent().remove();
+				panel.prepend(bsAlert('alert-success', '元に戻しました.このページをリロードしてください'));
+				panel.find('.h4p_fix-project').remove();
 			}
 		});
 	});
 
 	// プロジェクト一覧取得
-	$.post('../stage/fetchmyproject.php',{
-		'length': 15,
-		'attendance-token': sessionStorage.getItem('attendance-token')
-	}, function(data, textStatus, xhr) {
-		switch(data){
-			case 'no-session':
-				$('#signinModal').modal('show');
-				break;
-			case 'parse-error':
-				bsAlert('alert-danger', 'データの取得に失敗しました').append('#h4p_projectlist');
-				break;
-			default:
-				var result = jQuery.parseJSON(data);
-				var $list = $('.h4p_projectlist');
-				result.values.forEach(function(project){
-					var item = $projectItem.clone(true);
-					item.find('.thumbnail img').attr('src', project.thumbnail || 'img/noimage.png');
-					var title = project.source_title;
-					item.find('.source b').text(title.length > 38 ? (title.substr(0, 37) + '…') : title);
-					item.find('.registered b').text(convertLocaleTimeString(project.registered));
-					item.find('.caption button').attr('project-token', project.token);
-
-					item.appendTo($list);
-				});
-				break;
+	$.ajax({
+		type: 'GET',
+		url: '/api/projects',
+		data: {
+			page: urlParam('page')
 		}
+	})
+	.done(function (result) {
+
+		// pager
+		$('.pagination').append(
+			$('<li>').addClass('page-item ' + (result.prev_page_url ? '' : ' disabled')).append(
+				$('<a>').addClass('page-link').attr({
+					href: '?page=' + (result.current_page - 1),
+					'aria-label': 'Previous'
+				}).append(
+					$('<span>').attr('aria-hidden', 'true').text('<<')
+				)
+			)
+		);
+		for (var page = 1; page <= result.last_page; page++) {
+			$('.pagination').append(
+				$('<li>').addClass('page-item' + (page === result.current_page ? ' active' : '')).append(
+					$('<a>').addClass('page-link').attr('href', '?page=' + page).text(page)
+				)
+			)
+		}
+		$('.pagination').append(
+			$('<li>').addClass('page-item' + (result.next_page_url ? '' : ' disabled')).append(
+				$('<a>').addClass('page-link').attr({
+					href: '?page=' + (result.current_page + 1),
+					'aria-label': 'Next'
+				}).append(
+					$('<span>').attr('aria-hidden', 'true').text('>>')
+				)
+			)
+		);
+
+		var $list = $('.h4p_projectlist');
+		result.data.forEach(function(project){
+			var item = $projectItem.clone(true);
+			item.find('.thumbnail img').attr('src', project.thumbnail || 'img/noimage.png');
+			item.find('.title').text(project.title || '-');
+			item.find('.description').text(project.description || '-');
+
+			// NOTE: depricated
+			var title = project.title;
+			item.find('.registered b').text(convertLocaleTimeString(project.Registered));
+			item.find('button').attr('project-token', project.token);
+
+			item.appendTo($list);
+		});
+	})
+	.fail(function (xhr) {
+		console.error(xhr);
 	});
 
 	// _level のアラート _text を生成し、jQueryオブジェクトを返す
@@ -160,5 +225,15 @@ $(function(){
 		var timestamp = new Date(datetimeoffset).getTime();
 		var date = new Date(timestamp - 60 * 1000 * new Date().getTimezoneOffset());
 		return date.toLocaleString();
+	}
+
+	function urlParam(name) {
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return results[1] || 0;
+    }
 	}
 });
