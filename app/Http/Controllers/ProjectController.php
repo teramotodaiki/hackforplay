@@ -63,6 +63,11 @@ class ProjectController extends Controller
       $project->State = 'enabled';
       $project->Token = str_random(32);
 
+      // TODO: Set it themself
+      $project->title = 'P-' . Carbon::now()->format('y.m.d.H.i.s');
+      $project->description = 'Re: ' . $source->Title;
+      $project->thumbnail = $source->Thumbnail;
+
       // reserved stage
       $reserved = $project->stages()->create([
         "UserID" => $request->user()->ID,
@@ -129,8 +134,8 @@ class ProjectController extends Controller
       $current = $project->scripts()->orderBy('id', 'desc')->first();
 
       if (  $request->has('script') &&
-            $current->RawCode !== $camel['script']['raw_code'])
-      {
+            (!$current || $current->RawCode !== $camel['script']['raw_code'])
+      ) {
         $current = $project->scripts()->create($camel['script']);
         $current->LineNum = substr_count($current->RawCode, "\n") + 1;
         $current->Registered = Carbon::now()->toDateTimeString();
