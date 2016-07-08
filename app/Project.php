@@ -30,6 +30,6 @@ class Project extends Model
 
   public function isOwner($user)
   {
-    return $this->UserID === $user->ID;
+    return +$this->UserID === +$user->ID;
   }
 }
