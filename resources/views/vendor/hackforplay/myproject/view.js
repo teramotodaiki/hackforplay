@@ -114,8 +114,41 @@ $(function(){
 	$.ajax({
 		type: 'GET',
 		url: '/api/projects',
+		data: {
+			page: urlParam('page')
+		}
 	})
 	.done(function (result) {
+
+		// pager
+		$('.pagination').append(
+			$('<li>').addClass('page-item ' + (result.prev_page_url ? '' : ' disabled')).append(
+				$('<a>').addClass('page-link').attr({
+					href: '?page=' + (result.current_page - 1),
+					'aria-label': 'Previous'
+				}).append(
+					$('<span>').attr('aria-hidden', 'true').text('<<')
+				)
+			)
+		);
+		for (var page = 1; page <= result.last_page; page++) {
+			$('.pagination').append(
+				$('<li>').addClass('page-item' + (page === result.current_page ? ' active' : '')).append(
+					$('<a>').addClass('page-link').attr('href', '?page=' + page).text(page)
+				)
+			)
+		}
+		$('.pagination').append(
+			$('<li>').addClass('page-item' + (result.next_page_url ? '' : ' disabled')).append(
+				$('<a>').addClass('page-link').attr({
+					href: '?page=' + (result.current_page + 1),
+					'aria-label': 'Next'
+				}).append(
+					$('<span>').attr('aria-hidden', 'true').text('>>')
+				)
+			)
+		);
+
 		var $list = $('.h4p_projectlist');
 		result.data.forEach(function(project){
 			var item = $projectItem.clone(true);
@@ -158,5 +191,15 @@ $(function(){
 		var timestamp = new Date(datetimeoffset).getTime();
 		var date = new Date(timestamp - 60 * 1000 * new Date().getTimezoneOffset());
 		return date.toLocaleString();
+	}
+
+	function urlParam(name) {
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return results[1] || 0;
+    }
 	}
 });
