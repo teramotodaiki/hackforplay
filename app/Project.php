@@ -22,4 +22,9 @@ class Project extends Model
   {
     return $this->hasMany('App\Stage', 'ProjectID');
   }
+
+  public function isOwner($user)
+  {
+    return $this->UserID === $user->ID;
+  }
 }
