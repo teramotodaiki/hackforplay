@@ -115,6 +115,13 @@ class ProjectController extends Controller
         $id
       )->firstOrFail();
 
+      $user = $request->user();
+      if (!$project->isOwner($user)) {
+        return response([
+          'message' => 'cant_update_project',
+        ], 200);
+      }
+
       $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
       $camel['Written'] = $request->has('script');
       $project->update($camel);
