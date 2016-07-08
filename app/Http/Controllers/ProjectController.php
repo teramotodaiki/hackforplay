@@ -26,7 +26,8 @@ class ProjectController extends Controller
         'State' => 'enabled',
         'is_active' => true,
       ])
-      ->orderBy('updated_at', 'desc');
+      ->orderBy('Registered', 'desc')
+      // ->orderBy('updated_at', 'desc')
       ->paginate();
 
       // NOTE: OLD DATA
