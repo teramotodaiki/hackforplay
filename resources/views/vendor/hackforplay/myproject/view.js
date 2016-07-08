@@ -53,7 +53,7 @@ $(function(){
 
 			$.ajax({
 				type: 'POST',
-				url: '/api/projects/' + token + '?_method=PUT',
+				url: '/api/projects/' + token,
 				data: {
 					_method: 'PUT',
 					title: $input.val(),
