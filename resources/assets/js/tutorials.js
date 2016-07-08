@@ -58,9 +58,9 @@ const Tutorials = React.createClass({
           colorName: statics.colors.main, linkTo: 'Level-3' },
         { id: 3, title: 'Dead End', youtube: 'no7ch0jTHRc',
           colorName: statics.colors.main, linkTo: 'Level-4' },
-        { id: 4, title: 'Sapphire the Sealed One', youtube: 'qpjTVkrOvHg',
+        { id: 4, title: 'Sapphire the Sealed One', youtube: '8lU6vmn-C_c',
           colorName: statics.colors.sub, linkTo: 'Level-5' },
-        { id: 5, title: 'The Monster Spider', youtube: 'HzDbGgmi0bA',
+        { id: 5, title: 'The Monster Spider', youtube: '3pfSkOBRvDI',
           colorName: statics.colors.sub, linkTo: 'Level-6' },
         { id: 6, title: 'The Guardian', youtube: '4L0qPyUaH0A',
           colorName: statics.colors.sub, linkTo: 'Dialog' }
