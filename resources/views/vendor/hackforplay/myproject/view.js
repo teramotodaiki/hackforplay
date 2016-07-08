@@ -24,9 +24,13 @@ $(function(){
 			$('<div>').addClass('caption').append(
 				$('<button>').addClass('btn btn-lg btn-block btn-default h4p_open-project').text('開く').attr('data-loading-text', 'データの取得中…')
 			).append(
-				$('<h4>').addClass('title')
+				$('<div>').addClass('h4p_title-updater').append(
+					$('<span>').css('font-size', '120%').addClass('title')
+				).append(
+					$('<a>').addClass('btn btn-link').append($('<span>').addClass('glyphicon glyphicon-edit'))
+				)
 			).append(
-				$('<p>').addClass('description')
+				$('<p>').addClass('description text-muted')
 			).append(
 				$('<p>').append($('<span>').addClass('registered').html('作成日時：<b></b>'))
 			).append(
