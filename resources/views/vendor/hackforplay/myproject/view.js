@@ -52,9 +52,10 @@ $(function(){
 			var token = $(this).attr('project-token');
 
 			$.ajax({
-				type: 'PUT',
-				url: '/api/projects/' + token,
+				type: 'POST',
+				url: '/api/projects/' + token + '?_method=PUT',
 				data: {
+					_method: 'PUT',
 					title: $input.val(),
 				}
 			})

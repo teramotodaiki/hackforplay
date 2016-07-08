@@ -1092,9 +1092,10 @@ $(function(){
 			}
 
 			$.ajax({
-				type: 'PUT',
-				url: '/api/projects/' + sessionStorage.getItem('project-token'),
+				type: 'POST',
+				url: '/api/projects/' + sessionStorage.getItem('project-token') + '?_method=PUT',
 				data: {
+					_method: 'PUT',
 					script: {
 						raw_code: jsEditor.getValue('') || sessionStorage.getItem('restaging_code'),
 					}
