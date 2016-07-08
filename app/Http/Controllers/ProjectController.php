@@ -139,6 +139,10 @@ class ProjectController extends Controller
 
       $project->current_script = $current;
 
+      if ($project->channel) {
+        $project->channel->touch();
+      }
+
       return response($project, 200);
     }
 
