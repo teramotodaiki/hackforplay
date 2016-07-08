@@ -27,7 +27,9 @@ $(function(){
 				$('<div>').addClass('h4p_title-updater').append(
 					$('<span>').css('font-size', '120%').addClass('title')
 				).append(
-					$('<a>').addClass('btn btn-link').append($('<span>').addClass('glyphicon glyphicon-edit'))
+					$('<button>').addClass('btn btn-link').append(
+						$('<span>').addClass('glyphicon glyphicon-edit')
+					)
 				)
 			).append(
 				$('<p>').addClass('description text-muted')
@@ -156,7 +158,7 @@ $(function(){
 			// NOTE: depricated
 			var title = project.title;
 			item.find('.registered b').text(convertLocaleTimeString(project.Registered));
-			item.find('.caption button').attr('project-token', project.token);
+			item.find('button').attr('project-token', project.token);
 
 			item.appendTo($list);
 		});
