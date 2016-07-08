@@ -27,6 +27,8 @@ $(function(){
 				$('<div>').addClass('h4p_title-updater').append(
 					$('<span>').css('font-size', '120%').addClass('title')
 				).append(
+					$('<input>').addClass('input hidden')
+				).append(
 					$('<button>').addClass('btn btn-link').append(
 						$('<span>').addClass('glyphicon glyphicon-edit')
 					)
@@ -40,6 +42,39 @@ $(function(){
 			)
 		)
 	);
+	$projectItem.on('click', '.h4p_title-updater button', function (event) {
+
+		var $title = $(this).parent().find('.title');
+		var $input = $(this).parent().find('.input');
+
+		if ($(this).hasClass('active')) {
+
+			var token = $(this).attr('project-token');
+
+			$.ajax({
+				type: 'PUT',
+				url: '/api/projects/' + token,
+				data: {
+					title: $input.val(),
+				}
+			})
+			.fail(function (xhr) {
+				alert('Request failed. 保存に失敗しました');
+				console.error(xhr);
+			});
+
+			$title.text($input.val());
+
+		} else {
+
+			$input.val($title.text());
+
+		}
+		$title.toggleClass('hidden');
+		$input.toggleClass('hidden');
+		$(this).toggleClass('active');
+	});
+
 	var $projectItem_fixButton = $('<button>').text('元に戻す').addClass('btn btn-link btn-block h4p_fix-project');
 
 	$projectItem.find('.h4p_open-project').on('click', function(event) {
