@@ -17,9 +17,18 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $projects =
+      Project::where([
+        'UserID' => $request->user()->ID,
+        'Written' => true,
+        'State' => 'enabled',
+        'is_active' => true,
+      ])
+      ->orderBy('updated_at', 'desc');
+
+      return response($projects->paginate(), 200);
     }
 
     /**
