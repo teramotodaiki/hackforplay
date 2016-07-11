@@ -16,7 +16,10 @@ class StageController extends Controller
      */
     public function index()
     {
-      $stages = Stage::orderBy('Published', 'desc')->with('user');
+      $stages =
+      Stage::orderBy('Published', 'desc')
+      ->with('user')
+      ->where('State', 'published');
       foreach ($stages as $item) {
         $item->user;
       }
