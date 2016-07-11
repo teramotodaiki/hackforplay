@@ -11,6 +11,19 @@ use DB;
 
 class TmpPatchController extends Controller
 {
+  public function clearable()
+  {
+    $s_ids = DB::table('PlayLog')
+    ->whereNotNull('Cleared')
+    ->distinct()
+    ->lists('StageID');
+
+    Stage::whereIn('ID', $s_ids)
+    ->update(['is_clearable' => 1]);
+
+    return response($s_ids, 200);
+  }
+
   public function implicitMod()
   {
     // Src => mod
