@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Stage;
 
 class StageController extends Controller
 {
@@ -15,7 +16,12 @@ class StageController extends Controller
      */
     public function index()
     {
-        //
+      $stages = Stage::orderBy('Published', 'desc')->with('user');
+      foreach ($stages as $item) {
+        $item->user;
+      }
+
+      return response($stages->paginate(), 200);
     }
 
     /**
