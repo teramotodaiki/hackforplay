@@ -24,4 +24,9 @@ class Stage extends Model
     return $this->belongsTo('App\Project', 'ProjectID');
   }
 
+  public function user()
+  {
+    return $this->belongsTo('App\User', 'UserID');
+  }
+
 }
