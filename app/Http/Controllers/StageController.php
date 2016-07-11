@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Stage;
+use App\Http\Middleware\SnakeCaseMiddleware;
 
 class StageController extends Controller
 {
@@ -14,17 +15,35 @@ class StageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
+    {
+      $this->validate($request, [
+        'is_clearable' => 'boolean'
+      ]);
+
+      $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
+      $query = array_merge([
+        // default values
+        'is_clearable' => true,
+      ], $camel);
+      $stages = $this->query($query);
+
+      return response($stages, 200);
+    }
+
+    public function query($query)
     {
       $stages =
       Stage::orderBy('Published', 'desc')
       ->with('user')
-      ->where('State', 'published');
+      ->where('State', 'published')
+      ->where('is_clearable', $query['is_clearable']);
+
       foreach ($stages as $item) {
         $item->user;
       }
 
-      return response($stages->paginate(), 200);
+      return $stages->paginate();
     }
 
     /**
