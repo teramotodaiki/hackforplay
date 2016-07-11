@@ -49,6 +49,89 @@ $(function(){
 		$(this).parent().find('.h4p_item-transform').removeClass('transform-on');
 	});
 
+	// 一覧取得（New API）
+	$.ajax({
+		type: 'GET',
+		url: '/api/stages',
+		data: {
+			// is_clearable: 1,
+			page: urlParam('page'),
+		}
+	})
+	.done(function (result) {
+		var $list = $('.h4p_stagelist.list-stage');
+
+		// pager
+		$('.pagination').append(
+			$('<li>').addClass('page-item ' + (result.prev_page_url ? '' : ' disabled')).append(
+				$('<a>').addClass('page-link').attr({
+					href: '?page=' + (result.current_page - 1),
+					'aria-label': 'Previous'
+				}).append(
+					$('<span>').attr('aria-hidden', 'true').text('<<')
+				)
+			)
+		);
+		for (var page = 1; page <= result.last_page; page++) {
+			$('.pagination').append(
+				$('<li>').addClass('page-item' + (page === result.current_page ? ' active' : '')).append(
+					$('<a>').addClass('page-link').attr('href', '?page=' + page).text(page)
+				)
+			)
+		}
+		$('.pagination').append(
+			$('<li>').addClass('page-item' + (result.next_page_url ? '' : ' disabled')).append(
+				$('<a>').addClass('page-link').attr({
+					href: '?page=' + (result.current_page + 1),
+					'aria-label': 'Next'
+				}).append(
+					$('<span>').attr('aria-hidden', 'true').text('>>')
+				)
+			)
+		);
+
+		result.data.forEach(function(stage){
+			var item = $item.clone(true);
+			item.find('.h4p_item-thumbnail').on('click', function() {
+				window.open('/s?id=' + stage.id, '_blank');
+			});
+			if (stage.thumbnail) {
+				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
+			}
+			item.find('.title a').attr({
+				href: '/s?id=' + stage.id,
+				title: stage.title
+			}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
+			if (stage.author_id !== null) {
+				item.find('.author a').attr({
+					href: '/m?id=' + stage.author_id,
+					title: stage.author_name
+				}).text(stage.author_name);
+			}else{
+				item.find('.author').text('いにしえのプログラマー');
+			}
+			item.find('.playcount b').prepend(stage.playcount);
+			if (stage.source_mode === 'replay') {
+				item.find('.source a').attr({
+					href: '/s?id=' + stage.source_id,
+					title: stage.source_title
+				}).text(stage.source_title);
+			}else{
+				item.find('.source').text('オリジナルステージ');
+			}
+			var rate = stage.clearcount / stage.playcount;
+			item.find('.clearrate').text(
+				'クリア率 ' + (rate * 100 >> 0) + '%'
+			).addClass(rateToLabelColor(rate, stage.playcount == 0));
+
+			item.appendTo($list);
+		});
+		alignmentOnResize();
+	})
+	.fail(function (xhr) {
+		console.error(xhr);
+	});
+
 
 	// 空のステージ一覧
 	$.post('../stage/fetchbyid.php',{
@@ -338,6 +421,16 @@ $(function(){
 		rate < 0.15 ? 'label-hard' :
 		rate < 0.3 ? 'label-normal' :
 		'label-easy';
+	}
+
+	function urlParam(name) {
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return results[1] || 0;
+    }
 	}
 
 });

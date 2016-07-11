@@ -62,6 +62,12 @@
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<div class="h4p_topic-comment overflow-hidden hidden-xs">
 	</div>
+
+	<!-- Pager -->
+	<nav class="text-center">
+	  <ul class="pagination"></ul>
+	</nav>
+	
 	<div class="container-fluid h4p_stagecontainer">
 		<div class="row">
 			<div class="col-xs-12 h4p_bar-top"></div>
@@ -75,6 +81,12 @@
 			<div class="col-xs-12 h4p_bar-bottom"></div>
 		</div>
 	</div>
+
+	<!-- Pager -->
+	<nav class="text-center">
+	  <ul class="pagination"></ul>
+	</nav>
+
 	<div class="container-fluid h4p_stagecontainer">
 		<div class="row">
 			<div class="col-xs-12 h4p_bar-top"></div>
