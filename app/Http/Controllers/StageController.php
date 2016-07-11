@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Stage;
 use App\Http\Middleware\SnakeCaseMiddleware;
+use DB;
 
 class StageController extends Controller
 {
@@ -38,11 +39,18 @@ class StageController extends Controller
         $stages->where('is_clearable', $query['is_clearable']);
       }
 
+      $stages = $stages->paginate();
+
       foreach ($stages as $item) {
         $item->user;
+        $item->clearcount =
+        DB::table('PlayLog')
+        ->where('StageID', $item->ID)
+        ->whereNotNull('Cleared')
+        ->count();
       }
 
-      return $stages->paginate();
+      return $stages;
     }
 
     /**
