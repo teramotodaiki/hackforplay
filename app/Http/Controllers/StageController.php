@@ -22,11 +22,7 @@ class StageController extends Controller
       ]);
 
       $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
-      $query = array_merge([
-        // default values
-        'is_clearable' => true,
-      ], $camel);
-      $stages = $this->query($query);
+      $stages = $this->query($camel);
 
       return response($stages, 200);
     }
@@ -36,8 +32,11 @@ class StageController extends Controller
       $stages =
       Stage::orderBy('Published', 'desc')
       ->with('user')
-      ->where('State', 'published')
-      ->where('is_clearable', $query['is_clearable']);
+      ->where('State', 'published');
+
+      if (isset($query['is_clearable'])) {
+        $stages->where('is_clearable', $query['is_clearable']);
+      }
 
       foreach ($stages as $item) {
         $item->user;
