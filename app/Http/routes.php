@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('patch_0711', 'TmpPatchController@clearable');
+
 // React (frontend) App
 Route::get('tutorials', 'DefaultAppController@index');
 Route::get('register', 'DefaultAppController@index');
@@ -85,10 +87,16 @@ Route::group(['middleware' => 'etag', 'prefix' => 'mods'], function()
 });
 
 
-// JSON API
+// JSON API (With Auth)
 Route::group(['prefix' => 'api', 'middleware' => ['auth.old', 'auth']], function()
 {
   Route::resource('projects', 'ProjectController');
+});
+
+// JSON API
+Route::group(['prefix' => 'api'], function()
+{
+  Route::resource('stages', 'StageController');
 });
 
 
