@@ -49,73 +49,7 @@ $(function(){
 		$(this).parent().find('.h4p_item-transform').removeClass('transform-on');
 	});
 
-	// 一覧取得（１つ多く取得して、次のページがあるかどうか調べる）
-	var view_param_length = 18;
-	$.post('../stage/fetchrecentpublished.php', {
-		'start': sessionStorage.getItem('view_param_start'),
-		'length': view_param_length + 1,
-		'filter': sessionStorage.getItem('view_param_filter'),
-		'attendance-token': sessionStorage.getItem('attendance-token')
-	}, function(data, textStatus, xhr) {
-		if (data === 'parse-error') {
-		}else{
-			var result = jQuery.parseJSON(data);
-			var $list = $('.h4p_stagelist.list-stage');
-			var view_param_start = parseInt(sessionStorage.getItem('view_param_start'), 10);
-			if (result.values.length > view_param_length) {
-				// 次のページが存在する
-				var next = view_param_start + view_param_length;
-				$('a.go_page_next').attr('href', location.pathname + '?start=' + next + '&filter=' + sessionStorage.getItem('view_param_filter') + '#page_anchor');
-				delete result.values[view_param_length];
-			}else{
-				$('a.go_page_next').remove();
-			}
-			if (view_param_start > 0) {
-				// 前のページが存在する
-				var previous = Math.max(view_param_start - view_param_length, 0);
-				$('a.go_page_previous').attr('href', location.pathname + '?start=' + previous + '&filter=' + sessionStorage.getItem('view_param_filter') + '#page_anchor');
-			}else{
-				$('a.go_page_previous').remove();
-			}
-			result.values.forEach(function(stage){
-				var item = $item.clone(true);
-				item.find('.h4p_item-thumbnail').on('click', function() {
-					window.open('/s?id=' + stage.id, '_blank');
-				});
-				if (stage.thumbnail) {
-					item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
-				}
-				item.find('.title a').attr({
-					href: '/s?id=' + stage.id,
-					title: stage.title
-				}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
-				if (stage.author_id !== null) {
-					item.find('.author a').attr({
-						href: '/m?id=' + stage.author_id,
-						title: stage.author_name
-					}).text(stage.author_name);
-				}else{
-					item.find('.author').text('いにしえのプログラマー');
-				}
-				item.find('.playcount b').prepend(stage.LogCount.All || stage.playcount);
-				if (stage.source_mode === 'replay') {
-					item.find('.source a').attr({
-						href: '/s?id=' + stage.source_id,
-						title: stage.source_title
-					}).text(stage.source_title);
-				}else{
-					item.find('.source').text('オリジナルステージ');
-				}
-				var rate = stage.LogCount.Cleared / stage.LogCount.All;
-				item.find('.clearrate').text(
-					'クリア率 ' + (rate * 100 >> 0) + '%'
-				).addClass(rateToLabelColor(rate, stage.LogCount.All == 0));
 
-				item.appendTo($list);
-			});
-			alignmentOnResize();
-		}
-	});
 	// 空のステージ一覧
 	$.post('../stage/fetchbyid.php',{
 		'id': '1,1755',
@@ -147,21 +81,6 @@ $(function(){
 			alignmentOnResize();
 		}
 	});
-
-	// ページナンバーを選択するビュー
-	var $pageLink = $('<a>').addClass('btn btn-lg btn-default');
-	var view_param_num = parseInt(sessionStorage.getItem('view_param_num'), 10);
-	var pageNum = view_param_num / view_param_length + 1 >> 0;
-	for (var i = 0; i < pageNum; i++) {
-		var pageLink = $pageLink.clone(true);
-		var n = i * view_param_length;
-		pageLink.attr('href', location.pathname + '?start=' + n + '&filter=' + sessionStorage.getItem('view_param_filter') + '#page_anchor').text(i).appendTo('.page-numbers');
-
-		var here = parseInt(sessionStorage.getItem('view_param_start'), 10) / view_param_length >> 0;
-		if (i === here) {
-			pageLink.attr('disabled', true);
-		}
-	}
 
 
 	// あまりを詰めるためのアイテム
