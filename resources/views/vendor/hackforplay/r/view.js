@@ -72,7 +72,9 @@ $(function(){
 				)
 			)
 		);
-		for (var page = 1; page <= result.last_page; page++) {
+		for (var page = Math.max(1, result.current_page - 4);
+		 			page <= Math.min(result.last_page, result.current_page + 4);
+					page++) {
 			$('.pagination').append(
 				$('<li>').addClass('page-item' + (page === result.current_page ? ' active' : '')).append(
 					$('<a>').addClass('page-link').attr('href', '?page=' + page).text(page)
