@@ -102,11 +102,11 @@ $(function(){
 				href: '/s?id=' + stage.id,
 				title: stage.title
 			}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
-			if (stage.author_id !== null) {
+			if (stage.user) {
 				item.find('.author a').attr({
-					href: '/m?id=' + stage.author_id,
-					title: stage.author_name
-				}).text(stage.author_name);
+					href: '/m?id=' + stage.user.id,
+					title: stage.user.nickname
+				}).text(stage.user.nickname);
 			}else{
 				item.find('.author').text('いにしえのプログラマー');
 			}
