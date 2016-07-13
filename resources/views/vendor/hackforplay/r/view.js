@@ -425,14 +425,21 @@ $(function(){
 		'label-easy';
 	}
 
-	function urlParam(name) {
+	function urlParam(name, _default) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results==null){
-       return null;
+       return _default || null;
     }
     else{
        return results[1] || 0;
     }
+	}
+
+	function getCurrentParams () {
+		return {
+			page: +urlParam('page', 1),
+			show_zero: +urlParam('show_zero', 0),
+		};
 	}
 
 });
