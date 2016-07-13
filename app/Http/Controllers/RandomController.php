@@ -27,7 +27,7 @@ class RandomController extends Controller
     $keys = array_intersect($keys, $this->queries); // validation
     $values = array_map($this->call, $keys);
 
-    return response()->json(array_combine($keys, $values), 200);
+    return response(array_combine($keys, $values), 200);
   }
 
   public function login_id()

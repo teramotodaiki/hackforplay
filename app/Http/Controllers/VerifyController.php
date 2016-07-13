@@ -21,7 +21,7 @@ class VerifyController extends Controller
     ]);
 
     // 入力されたパラメータがチェックをパスした場合のみ、ステータスコード200を返す
-    return response()->json([], 200);
+    return response([], 200);
   }
 
 }
