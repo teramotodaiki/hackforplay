@@ -66,6 +66,9 @@
 	<!-- Pager -->
 	<nav class="text-center">
 	  <ul class="pagination"></ul>
+		<div class="">
+			<a class="btn btn-default h4p_filter-clearable">クリア率0%を表示</a>
+		</div>
 	</nav>
 	
 	<div class="container-fluid h4p_stagecontainer">
