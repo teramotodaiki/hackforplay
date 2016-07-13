@@ -7,6 +7,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import ChannelCard from './components/channel-card';
 import { fetchChannels } from './actions/';
+import Header from './components/header';
 
 class ChannelList extends Component {
   constructor(props) {
