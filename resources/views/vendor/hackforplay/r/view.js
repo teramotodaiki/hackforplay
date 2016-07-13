@@ -49,13 +49,20 @@ $(function(){
 		$(this).parent().find('.h4p_item-transform').removeClass('transform-on');
 	});
 
+	// フィルタ
+	var params = getCurrentParams();
+
+	$('.h4p_filter-clearable')
+	.addClass(params.show_zero ? 'active' : '')
+	.attr('href', getUrl({ show_zero: +!params.show_zero }));
+
 	// 一覧取得（New API）
 	$.ajax({
 		type: 'GET',
 		url: '/api/stages',
 		data: {
-			// is_clearable: 1,
-			page: urlParam('page'),
+			is_clearable: params.show_zero ? null : 1,
+			page: params.page,
 		}
 	})
 	.done(function (result) {
@@ -65,24 +72,26 @@ $(function(){
 		$('.pagination').append(
 			$('<li>').addClass('page-item ' + (result.prev_page_url ? '' : ' disabled')).append(
 				$('<a>').addClass('page-link').attr({
-					href: '?page=' + (result.current_page - 1),
+					href: getUrl({ page: result.current_page - 1 }),
 					'aria-label': 'Previous'
 				}).append(
 					$('<span>').attr('aria-hidden', 'true').text('<<')
 				)
 			)
 		);
-		for (var page = 1; page <= result.last_page; page++) {
+		for (var page = Math.max(1, result.current_page - 4);
+		 			page <= Math.min(result.last_page, result.current_page + 4);
+					page++) {
 			$('.pagination').append(
 				$('<li>').addClass('page-item' + (page === result.current_page ? ' active' : '')).append(
-					$('<a>').addClass('page-link').attr('href', '?page=' + page).text(page)
+					$('<a>').addClass('page-link').attr('href', getUrl({ page: page })).text(page)
 				)
 			)
 		}
 		$('.pagination').append(
 			$('<li>').addClass('page-item' + (result.next_page_url ? '' : ' disabled')).append(
 				$('<a>').addClass('page-link').attr({
-					href: '?page=' + (result.current_page + 1),
+					href: getUrl({ page: result.current_page + 1 }),
 					'aria-label': 'Next'
 				}).append(
 					$('<span>').attr('aria-hidden', 'true').text('>>')
@@ -102,11 +111,11 @@ $(function(){
 				href: '/s?id=' + stage.id,
 				title: stage.title
 			}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
-			if (stage.author_id !== null) {
+			if (stage.user) {
 				item.find('.author a').attr({
-					href: '/m?id=' + stage.author_id,
-					title: stage.author_name
-				}).text(stage.author_name);
+					href: '/m?id=' + stage.user.id,
+					title: stage.user.nickname
+				}).text(stage.user.nickname);
 			}else{
 				item.find('.author').text('いにしえのプログラマー');
 			}
@@ -423,14 +432,33 @@ $(function(){
 		'label-easy';
 	}
 
-	function urlParam(name) {
+	function urlParam(name, _default) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results==null){
-       return null;
+       return _default || null;
     }
     else{
        return results[1] || 0;
     }
+	}
+
+	function getCurrentParams () {
+		return {
+			page: +urlParam('page', 1),
+			show_zero: +urlParam('show_zero', 0),
+		};
+	}
+
+	function getUrl (params) {
+		var merged = $.extend(getCurrentParams(), params);
+
+		var query = Object.keys(merged).filter(function (key) {
+			return merged[key] !== null;
+		}).map(function (key) {
+			return key + '=' + merged[key];
+		}).join('&');
+
+		return location.pathname + '?' + query;
 	}
 
 });
