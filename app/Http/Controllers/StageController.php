@@ -18,10 +18,6 @@ class StageController extends Controller
      */
     public function index(Request $request)
     {
-      $this->validate($request, [
-        'is_clearable' => 'boolean'
-      ]);
-
       $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
       $stages = $this->query($camel);
 
@@ -35,7 +31,7 @@ class StageController extends Controller
       ->with('user')
       ->where('State', 'published');
 
-      if (isset($query['is_clearable'])) {
+      if (isset($query['is_clearable']) && !empty($query['is_clearable'])) {
         $stages->where('is_clearable', $query['is_clearable']);
       }
 
