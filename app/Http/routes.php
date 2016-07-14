@@ -47,7 +47,7 @@ Route::group(['middleware' => ['auth.old']], function()
 
   // channels/
   Route::get('channels/{id}/watch', 'DefaultAppController@index');
-  Route::get('channels/list', 'DefaultAppController@index');
+  Route::get('channels/list', 'DefaultAppController@index')->middleware('auth');
 
   Route::resource('channels', 'ChannelController');
   Route::resource('channels.chats', 'ChatController');
