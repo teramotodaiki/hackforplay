@@ -68,7 +68,7 @@
 					<div class="input-group input-group-lg">
 			      <input type="text" class="form-control" placeholder="例）MOD">
 			      <span class="input-group-btn">
-			        <button class="btn btn-default" type="button">
+			        <button class="btn btn-default" type="submit">
 								<span class="glyphicon glyphicon-search"></span>
 							</button>
 			      </span>
