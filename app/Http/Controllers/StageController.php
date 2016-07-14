@@ -18,6 +18,10 @@ class StageController extends Controller
      */
     public function index(Request $request)
     {
+      $this->validate($request, [
+        'q' => 'max:1000',
+      ]);
+
       $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
       $stages = $this->query($camel);
 
@@ -33,6 +37,12 @@ class StageController extends Controller
 
       if (isset($query['is_clearable']) && !empty($query['is_clearable'])) {
         $stages->where('is_clearable', $query['is_clearable']);
+      }
+
+      if (isset($query['q'])) {
+        foreach (mb_split("\s", urldecode($query['q'])) as $token) {
+          $stages->where('title', 'like', "%$token%");
+        }
       }
 
       $stages = $stages->paginate();
