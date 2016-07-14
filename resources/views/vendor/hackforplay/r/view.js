@@ -78,7 +78,7 @@ $(function(){
 					href: getUrl({ page: result.current_page - 1 }),
 					'aria-label': 'Previous'
 				}).append(
-					$('<span>').attr('aria-hidden', 'true').text('<<')
+					$('<span>').attr('aria-hidden', 'true').addClass('glyphicon glyphicon-chevron-left')
 				)
 			)
 		);
@@ -97,7 +97,7 @@ $(function(){
 					href: getUrl({ page: result.current_page + 1 }),
 					'aria-label': 'Next'
 				}).append(
-					$('<span>').attr('aria-hidden', 'true').text('>>')
+					$('<span>').attr('aria-hidden', 'true').addClass('glyphicon glyphicon-chevron-right')
 				)
 			)
 		);
