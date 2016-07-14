@@ -288,7 +288,7 @@ $(function(){
 					</ul>
 				</li>
 				<li>
-					<a href="/fbpage/" title="おしらせ">おしらせ</a>
+					<a href="/news/" title="おしらせ">おしらせ</a>
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">

@@ -14,6 +14,7 @@ import Qcard from './qcard';
 import ChannelList from './channel-list';
 import ChannelCreate from './channel-create';
 import BellCreate from './bell-create';
+import News from './news';
 
 
 // Needed for onTouchTap
@@ -56,6 +57,7 @@ render((
         <Route path="bells">
           <Route path="create" component={BellCreate}></Route>
         </Route>
+        <Route path="news" component={News}></Route>
       </Route>
     </Router>
   </Provider>
