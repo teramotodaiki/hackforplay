@@ -4,6 +4,7 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import * as reducers from './reducers/';
 import Tutorials from "./tutorials";
@@ -13,6 +14,11 @@ import Qcard from './qcard';
 import ChannelList from './channel-list';
 import ChannelCreate from './channel-create';
 import BellCreate from './bell-create';
+
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
 
 const store = createStore(
   combineReducers(reducers),

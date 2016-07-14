@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import baseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import ChannelCard from './components/channel-card';
 import { fetchChannels } from './actions/';
+import Header from './components/header';
 
 class ChannelList extends Component {
   constructor(props) {
@@ -24,6 +28,10 @@ class ChannelList extends Component {
     if (Object.keys(channels).length < 15) {
       this.fetchNextPage();
     }
+  }
+
+  getChildContext() {
+    return { muiTheme: getMuiTheme(baseTheme) };
   }
 
   fetchNextPage() {
@@ -76,14 +84,23 @@ class ChannelList extends Component {
       </Button>
     ) : null;
 
-    return (<div>
-      {sorted}
-      {next}
-    </div>);
+    return (
+      <MuiThemeProvider>
+        <div>
+          <Header title="Channels" />
+          {sorted}
+          {next}
+        </div>
+      </MuiThemeProvider>
+    );
   }
 }
 
 ChannelList.propTypes = {
+};
+
+ChannelList.childContextTypes = {
+  muiTheme: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
