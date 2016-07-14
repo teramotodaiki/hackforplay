@@ -108,7 +108,9 @@ class Header extends Component {
             )
           }>
         </AppBar>
-        <div style={{ height: this.context.muiTheme.appBar.height }}></div>
+        {affix ? (
+          <div style={{ height: this.context.muiTheme.appBar.height }}></div>
+        ) : null}
         <Drawer
           docked={true}
           width={200}
