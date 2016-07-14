@@ -60,6 +60,25 @@
 	})();
 	</script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<div class="container">
+		<div class="panel panel-default">
+			<div class="panel-body text-center">
+				<h3><ruby><rb>検索機能</rb><rt>けんさくきのう</rt></ruby>をためす</h3>
+				<form class="h4p_search-stage" method="get">
+					<div class="input-group input-group-lg">
+			      <input type="text" class="form-control" placeholder="例）てのんの MOD">
+			      <span class="input-group-btn">
+			        <button class="btn btn-default" type="button">
+								<span class="glyphicon glyphicon-search"></span>
+							</button>
+			      </span>
+			    </div>
+				</form>
+				<span class="text-muted">作った人のニックネームや、ステージのタイトルで検索できるよ</span>
+			</div>
+		</div>
+	</div>
+
 	<div class="h4p_topic-comment overflow-hidden hidden-xs">
 	</div>
 
@@ -70,7 +89,7 @@
 			<a class="btn btn-default h4p_filter-clearable">クリア率0%を表示</a>
 		</div>
 	</nav>
-	
+
 	<div class="container-fluid h4p_stagecontainer">
 		<div class="row">
 			<div class="col-xs-12 h4p_bar-top"></div>
