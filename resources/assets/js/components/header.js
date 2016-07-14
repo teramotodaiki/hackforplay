@@ -48,6 +48,7 @@ class Header extends Component {
     return (
       <div>
         <AppBar
+          style={style}
           title={this.props.title}
           iconElementRight={user_id ? (
             <IconMenu
