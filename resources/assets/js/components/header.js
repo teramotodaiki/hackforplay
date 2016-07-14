@@ -113,7 +113,6 @@ class Header extends Component {
         ) : null}
         <Drawer
           docked={true}
-          width={200}
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}>
           <AppBar onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })} />
