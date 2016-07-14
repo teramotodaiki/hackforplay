@@ -20,8 +20,9 @@ export default class News extends Component {
   render() {
     const style = {
       height: 600,
-      width: 520,
-      margin: 20,
+      width: 500,
+      margin: 40,
+      textAlign: 'center',
       display: 'inline-block',
     };
 
@@ -38,6 +39,24 @@ export default class News extends Component {
               height={style.height}>
               #hackforplay のツイート
             </a>
+          </Paper>
+          <Paper style={style} zDepth={1}>
+            <div
+              className="fb-page"
+              data-href="https://www.facebook.com/hackforplay/"
+              data-tabs="timeline"
+              data-width={style.width}
+              data-height={style.height}
+              data-small-header="true"
+              data-adapt-container-width="true"
+              data-hide-cover="false"
+              data-show-facepile="true">
+              <div className="fb-xfbml-parse-ignore">
+                <blockquote cite="https://www.facebook.com/hackforplay/">
+                  <a href="https://www.facebook.com/hackforplay/">HackforPlay</a>
+                </blockquote>
+              </div>
+            </div>
           </Paper>
         </div>
       </MuiThemeProvider>
