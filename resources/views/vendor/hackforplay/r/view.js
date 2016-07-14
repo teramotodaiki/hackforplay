@@ -56,6 +56,8 @@ $(function(){
 	.addClass(params.show_zero ? 'active' : '')
 	.attr('href', getUrl({ show_zero: +!params.show_zero }));
 
+	$('.h4p_search-stage input').val(params.q);
+
 	// 一覧取得（New API）
 	$.ajax({
 		type: 'GET',
@@ -63,6 +65,7 @@ $(function(){
 		data: {
 			is_clearable: params.show_zero ? null : 1,
 			page: params.page,
+			q: params.q,
 		}
 	})
 	.done(function (result) {
@@ -75,7 +78,7 @@ $(function(){
 					href: getUrl({ page: result.current_page - 1 }),
 					'aria-label': 'Previous'
 				}).append(
-					$('<span>').attr('aria-hidden', 'true').text('<<')
+					$('<span>').attr('aria-hidden', 'true').addClass('glyphicon glyphicon-chevron-left')
 				)
 			)
 		);
@@ -94,7 +97,7 @@ $(function(){
 					href: getUrl({ page: result.current_page + 1 }),
 					'aria-label': 'Next'
 				}).append(
-					$('<span>').attr('aria-hidden', 'true').text('>>')
+					$('<span>').attr('aria-hidden', 'true').addClass('glyphicon glyphicon-chevron-right')
 				)
 			)
 		);
@@ -432,6 +435,13 @@ $(function(){
 		'label-easy';
 	}
 
+	$('form.h4p_search-stage').on('submit', function (event) {
+		event.preventDefault();
+
+		var q = $(this).find('input').val();
+		location.href = getUrl({ q: q });
+	});
+
 	function urlParam(name, _default) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results==null){
@@ -446,6 +456,7 @@ $(function(){
 		return {
 			page: +urlParam('page', 1),
 			show_zero: +urlParam('show_zero', 0),
+			q: decodeURIComponent(urlParam('q') || ''),
 		};
 	}
 
@@ -453,7 +464,7 @@ $(function(){
 		var merged = $.extend(getCurrentParams(), params);
 
 		var query = Object.keys(merged).filter(function (key) {
-			return merged[key] !== null;
+			return merged[key] !== null && merged[key] !== '';
 		}).map(function (key) {
 			return key + '=' + merged[key];
 		}).join('&');
