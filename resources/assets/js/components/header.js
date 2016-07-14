@@ -117,10 +117,12 @@ class Header extends Component {
           docked={true}
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}>
-          <AppBar onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })} />
-          {statics.dockMenu.filter((item) => {
-            return !item.needAuth || user_id;
-          }).map((item) => (
+          <AppBar
+            title={this.props.title}
+            onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })} />
+            {statics.dockMenu.filter((item) => {
+              return !item.needAuth || user_id;
+            }).map((item) => (
             <MenuItem
               key={item.text}
               primaryText={item.text}
