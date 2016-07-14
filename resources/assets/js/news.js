@@ -17,6 +17,15 @@ export default class News extends Component {
     return { muiTheme: getMuiTheme(baseTheme) };
   }
 
+  componentDidMount() {
+    if (window.twttr) {
+      twttr.widgets.load();
+    }
+    if (window.FB) {
+      FB.XFBML.parse();
+    }
+  }
+
   render() {
     const theme = getMuiTheme(baseTheme);
     const mergin = 20;
