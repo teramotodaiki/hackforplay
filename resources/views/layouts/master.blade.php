@@ -13,6 +13,7 @@
   </head>
   <body>
     @yield('ga')
+    @yield('twitter')
     <div id="@yield('id')"></div>
     <script src="@yield('js')"></script>
   </body>
