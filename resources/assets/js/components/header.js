@@ -70,9 +70,11 @@ class Header extends Component {
     const meta = document.querySelector('meta[name="login-user-id"]');
     const user_id = meta ? meta.getAttribute('content') : null;
 
-    const style = Object.assign({
-      position: 'fixed',
-    }, this.props.style);
+    const affix = this.props.affix === undefined || this.props.affix;
+
+    const style = Object.assign(
+      affix ? { position: 'fixed' } : {},
+      this.props.style);
 
     return (
       <div>
