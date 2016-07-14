@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
+
 import { AppBar, IconMenu, MenuItem, Divider, IconButton, FontIcon, FlatButton, Drawer } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import { Link } from 'react-router';
 
 const statics = {
   dockMenu: [
@@ -16,12 +18,12 @@ const statics = {
     },
     {
       text: 'Channels',
-      href: '/channels/list',
+      to: '/channels/list',
       needAuth: true,
     },
     {
       text: 'News',
-      href: '/fbpage',
+      to: '/news',
       needAuth: false,
     },
   ],
@@ -113,7 +115,6 @@ class Header extends Component {
         ) : null}
         <Drawer
           docked={true}
-          width={200}
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}>
           <AppBar onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })} />
@@ -123,7 +124,16 @@ class Header extends Component {
             <MenuItem
               key={item.text}
               primaryText={item.text}
-              onTouchTap={() => window.location.href = item.href} />
+              containerElement={item.to ? (
+                <Link to={item.to} />
+              ) : (
+                <div></div>
+              )}
+              onTouchTap={() => {
+                if (item.href) {
+                  location.href = item.href;
+                }
+              }}/>
           ))}
         </Drawer>
       </div>
