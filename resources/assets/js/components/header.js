@@ -1,8 +1,26 @@
 import React, { Component, PropTypes } from 'react';
-import { AppBar, IconMenu, MenuItem, Divider, IconButton, FontIcon, FlatButton } from 'material-ui';
+import { AppBar, IconMenu, MenuItem, Divider, IconButton, FontIcon, FlatButton, Drawer } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 const statics = {
+  dockMenu: [
+    {
+      text: 'Our Games',
+      href: '/r',
+    },
+    {
+      text: 'Projects',
+      href: '/myproject',
+    },
+    {
+      text: 'Channels',
+      href: '/channels/list',
+    },
+    {
+      text: 'News',
+      href: '/fbpage',
+    },
+  ],
   userMenu: [
     [
       {
@@ -36,6 +54,13 @@ const statics = {
 };
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: !!props.openImmediately,
+    };
+  }
 
   render() {
     const meta = document.querySelector('meta[name="login-user-id"]');
@@ -50,6 +75,7 @@ class Header extends Component {
         <AppBar
           style={style}
           title={this.props.title}
+          onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })}
           iconElementRight={user_id ? (
             <IconMenu
               iconButtonElement={
@@ -77,6 +103,19 @@ class Header extends Component {
           }>
         </AppBar>
         <div style={{ height: this.context.muiTheme.appBar.height }}></div>
+        <Drawer
+          docked={true}
+          width={200}
+          open={this.state.open}
+          onRequestChange={(open) => this.setState({open})}>
+          <AppBar onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })} />
+          {statics.dockMenu.map((item) => (
+            <MenuItem
+              key={item.text}
+              primaryText={item.text}
+              onTouchTap={() => window.location.href = item.href} />
+          ))}
+        </Drawer>
       </div>
     );
   }
