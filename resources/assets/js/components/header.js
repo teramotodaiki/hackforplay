@@ -7,18 +7,22 @@ const statics = {
     {
       text: 'Our Games',
       href: '/r',
+      needAuth: false,
     },
     {
       text: 'Projects',
       href: '/myproject',
+      needAuth: true,
     },
     {
       text: 'Channels',
       href: '/channels/list',
+      needAuth: true,
     },
     {
       text: 'News',
       href: '/fbpage',
+      needAuth: false,
     },
   ],
   userMenu: [
@@ -109,7 +113,9 @@ class Header extends Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}>
           <AppBar onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })} />
-          {statics.dockMenu.map((item) => (
+          {statics.dockMenu.filter((item) => {
+            return !item.needAuth || user_id;
+          }).map((item) => (
             <MenuItem
               key={item.text}
               primaryText={item.text}
