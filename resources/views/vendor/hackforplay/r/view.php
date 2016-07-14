@@ -66,7 +66,7 @@
 				<h3><ruby><rb>検索機能</rb><rt>けんさくきのう</rt></ruby>をためす</h3>
 				<form class="h4p_search-stage" method="get">
 					<div class="input-group input-group-lg">
-			      <input type="text" class="form-control" placeholder="例）MOD">
+			      <input type="text" class="form-control" placeholder="タイトルをここに入力">
 			      <span class="input-group-btn">
 			        <button class="btn btn-default" type="submit">
 								<span class="glyphicon glyphicon-search"></span>
