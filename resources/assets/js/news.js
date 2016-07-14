@@ -18,11 +18,27 @@ export default class News extends Component {
   }
 
   render() {
+    const style = {
+      height: 600,
+      width: 520,
+      margin: 20,
+      display: 'inline-block',
+    };
 
     return (
       <MuiThemeProvider>
         <div>
           <Header title="News" />
+          <Paper style={style} zDepth={1}>
+            <a
+              className="twitter-timeline"
+              href="https://twitter.com/hashtag/hackforplay"
+              data-widget-id="753485868157906944"
+              width={style.width}
+              height={style.height}>
+              #hackforplay のツイート
+            </a>
+          </Paper>
         </div>
       </MuiThemeProvider>
     );
