@@ -44,9 +44,10 @@ export const CardSection = (props) => {
     </ul>
   ) : null;
   const spacer = <div style={{ height: '1.5rem' }} />;
+  const style = Object.assign({ textAlign: 'left' }, props.style);
 
   return (
-    <Section name={props.name} style={{ textAlign: 'left' }}>
+    <Section name={props.name} style={style}>
       <div />
       <Col xs={11} sm={9} md={8} lg={7}>
         <Panel header={header} footer={footer}>
