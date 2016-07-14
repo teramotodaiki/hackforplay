@@ -87,7 +87,7 @@ class ChannelList extends Component {
     return (
       <MuiThemeProvider>
         <div>
-          <Header />
+          <Header title="Channels" />
           {sorted}
           {next}
         </div>
