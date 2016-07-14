@@ -59,7 +59,8 @@ class SnakeCaseMiddleware
     {
       $response = $next($request);
 
-      if($response->headers->get('content-type') == 'application/json')
+      if($response->headers->get('content-type') == 'application/json' &&
+        method_exists($response, 'getOriginalContent'))
       {
         $original = $response->getOriginalContent();
         $collection = is_array($original) ? $original : $original->toArray();
