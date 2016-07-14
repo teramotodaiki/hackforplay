@@ -40,7 +40,7 @@ class StageController extends Controller
       }
 
       if (isset($query['q'])) {
-        foreach (explode(' ', urldecode($query['q'])) as $token) {
+        foreach (mb_split("\s", urldecode($query['q'])) as $token) {
           $stages->where('title', 'like', "%$token%");
         }
       }
