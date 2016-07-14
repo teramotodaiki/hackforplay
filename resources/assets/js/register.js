@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link as ScrollLink, scroller } from "react-scroll";
 import Confirm from "./confirm";
 import classNames from "classNames";
 import request from "./promised-xhr.js";
 import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, ControlLabel } from "react-bootstrap";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import baseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import Merger from "./merger";
 import { Section, CardSection, Arrow } from "./components/section";
+import Header from './components/header';
 
 const contains = (text, range) => { // Contains check.
   const len = text.length;
@@ -112,6 +116,10 @@ export default class Register extends React.Component {
     .then((value) => this.update({ login_id: value.body.login_id, used: false }));
   }
 
+  getChildContext() {
+    return { muiTheme: getMuiTheme(baseTheme) };
+  }
+
   update(value) {
     this.setState((previous) => {
       return {
@@ -150,61 +158,77 @@ export default class Register extends React.Component {
     const user = this.state.user;
     const resultClass = classNames({ 'hidden': !this.state.showResult });
     return (
-      <div>
-        <Confirm ref="confirm" {...statics.confirm}>
-          <Form onSubmit={(e) => e.preventDefault()}>
-            <FormGroup>
-              <ControlLabel>Login ID</ControlLabel>
-              <FormControl readOnly value={user.login_id} />
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>Password</ControlLabel>
-              <InputGroup>
-                <PasswordEye hide={user.hide} update={user.update} />
-                <FormControl readOnly value={user.password} type={user.hide ? 'password' : 'text'} />
-              </InputGroup>
-            </FormGroup>
-          </Form>
-        </Confirm>
-        <Landing {...statics.landing} {...user} update={this.update} />
-        <Gender {...statics.gender } {...user} update={this.update} />
-        <Nickname {...statics.nickname } {...user} update={this.update} />
-        <Login
-          user={user}
-          update={this.update}
-          verify={this.verify}
-          post={this.post}
-          confirm={this.confirm}
-          showResult={this.showResult}
-           />
-        <Result
-          className={resultClass}
-          {...statics.result }
-          {...user}
-          response={this.state.response}
-          />
-      </div>
+      <MuiThemeProvider>
+        <div>
+          <Header title="Creator's License" affix={false} />
+          <Confirm ref="confirm" {...statics.confirm}>
+            <Form onSubmit={(e) => e.preventDefault()}>
+              <FormGroup>
+                <ControlLabel>Login ID</ControlLabel>
+                <FormControl readOnly value={user.login_id} />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Password</ControlLabel>
+                <InputGroup>
+                  <PasswordEye hide={user.hide} update={user.update} />
+                  <FormControl readOnly value={user.password} type={user.hide ? 'password' : 'text'} />
+                </InputGroup>
+              </FormGroup>
+            </Form>
+          </Confirm>
+          <Landing {...statics.landing} {...user} update={this.update} />
+          <Gender {...statics.gender } {...user} update={this.update} />
+          <Nickname {...statics.nickname } {...user} update={this.update} />
+          <Login
+            user={user}
+            update={this.update}
+            verify={this.verify}
+            post={this.post}
+            confirm={this.confirm}
+            showResult={this.showResult}
+             />
+          <Result
+            className={resultClass}
+            {...statics.result }
+            {...user}
+            response={this.state.response}
+            />
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
 
-const Landing = (props) => {
+Register.childContextTypes = {
+  muiTheme: PropTypes.object.isRequired,
+};
 
-  const list = props.descriptions.map((item) => (
-    <p key={item}>
-      <span className="fa fa-check-circle-o text-success" />
-      <span> {item}</span>
-    </p>
-  ));
+class Landing extends React.Component {
+  render() {
+    const props = this.props;
+    const list = props.descriptions.map((item) => (
+      <p key={item}>
+        <span className="fa fa-check-circle-o text-success" />
+        <span> {item}</span>
+      </p>
+    ));
 
-  return (
-    <CardSection name="Landing" header={props.header} next="Gender">
-      <div style={{ textAlign: 'center' }}>
-        <h3>{props.label}</h3>
-        {list}
-      </div>
-    </CardSection>
-  );
+    return (
+      <CardSection
+        name="Landing"
+        header={props.header}
+        next="Gender"
+        style={{ marginTop: -this.context.muiTheme.appBar.height }}>
+        <div style={{ textAlign: 'center' }}>
+          <h3>{props.label}</h3>
+          {list}
+        </div>
+      </CardSection>
+    );
+  }
+};
+Landing.contextTypes = {
+  muiTheme: PropTypes.object.isRequired,
 };
 
 const Gender = (props) => {
