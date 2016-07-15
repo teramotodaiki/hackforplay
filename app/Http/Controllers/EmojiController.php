@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Stage;
+use App\User;
 use Carbon\Carbon;
 
 class EmojiController extends Controller
@@ -21,9 +22,29 @@ class EmojiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, $stage)
     {
-        //
+      $this->validate($request, [
+        'user' => 'numeric',
+        'summary' => 'boolean',
+      ]);
+
+      $emojis = Stage::findOrFail($stage)->emojis();
+
+      if ($request->has('user')) {
+        $user = User::findOrFail($request->input('user'));
+        $emojis->where('user_id', $user->ID);
+      }
+
+      if ($request->input('summary')) {
+        $summary = [];
+        foreach ($emojis->lists('shortcode') as $sc) {
+          $summary[$sc] = (isset($summary[$sc]) ? $summary[$sc] : 0) + 1;
+        }
+        return response($summary, 200);
+      }
+
+      return response($emojis->paginate(), 200);
     }
 
     /**
