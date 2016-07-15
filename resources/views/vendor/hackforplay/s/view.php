@@ -386,74 +386,116 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 					</button>
 				</div>
 			</div>
+
 			<div class="col-xs-12 h4p_info">
 				<div class="row">
-					<div class="col-xs-12 col-sm-6 h4p_info-datail">
-						<p>
-							<h3 class="h4p_info-title">
-								<?php echo htmlspecialchars($title); ?>
-								<span class="h4p_info-version label label-info"><?php echo $version; ?></span>
-							</h3>
-						</p>
-						<p><span>プレイ回数：<b><?php echo $count."回"; ?></b></span></p>
-						<?php if ($author_id === NULL) : ?>
-						<p><span><b>公式ステージ</b></span></p>
-						<?php else: ?>
-						<p><span>作成者：<b><a href="../m?id=<?php echo $author_id; ?>" target="_blank"><?php echo htmlspecialchars($author); ?></a></b></span></p>
-						<p><span>改造元：<b><a href="../s?id=<?php echo $source_id; ?>" target="_blank"><?php echo htmlspecialchars($source_title); ?></a></b></span></p>
+					<!-- Title, Owner -->
+					<div class="col-xs-12 h4p_info_datail">
+						<h3 class="h4p_info-title">
+							<?php echo htmlspecialchars($title); ?>
+							<?php if ($author_id === NULL) : ?>
+							<span class="badge">official (公式)</span>
+							<?php else: ?>
+							<a href="../m?id=<?php echo $author_id; ?>" target="_blank">
+								<span class="badge" style="background-color: #337ab7">
+									<span class="glyphicon glyphicon-user"></span>
+									<?php echo htmlspecialchars($author); ?>
+								</span>
+							</a>
+							<?php endif; ?>
+						</h3>
+					</div>
+					<!-- Version, Playcount, SourceTitle -->
+					<div class="col-xs-12">
+						<span class="badge" style="background-color: #5bc0de">
+							ver.
+							<span class="h4p_info-version"><?php echo $version; ?></span>
+						</span>
+						<span class="badge" style="background-color: #f0ad4e">
+							<span class="glyphicon glyphicon-signal"></span>
+							<?php echo $count; ?>
+						</span>
+						<?php if ($author_id !== NULL) : ?>
+						<a href="../s?id=<?php echo $source_id; ?>" target="_blank">
+							<span class="badge" style="background-color: #362f3c">
+								<span class="glyphicon glyphicon-wrench"></span>
+									<?php echo htmlspecialchars($source_title); ?>
+							</span>
+						</a>
 						<?php endif; ?>
 					</div>
-					<div class="col-xs-6 col-sm-3 visible-option-restage padding-top-sm">
-						<button type="button" class="btn btn-restage btn-lg btn-block begin_restaging visible-option-session" title="改造する">
-							<span class="glyphicon glyphicon-wrench"></span>
-							改造する
-						</button>
-					</div>
-					<div class="col-xs-6 col-sm-3 padding-top-sm">
-						<button class="btn btn-retry btn-lg btn-block" role="button" href="#" title="もういちど">
-							<span class="glyphicon glyphicon-repeat"></span>
-							もういちど
-						</button>
-					</div>
+					<!-- Explain -->
 					<?php if ($explain !== NULL && $explain !== '') : ?>
-					<div class="col-xs-10 h4p_info-explain">
+					<div class="col-xs-12 h4p_info-explain">
 						<p class="overflow-auto"><?php echo htmlspecialchars($explain); ?></p>
 					</div>
 					<?php endif; ?>
-					<?php if ($cast_enabled) : ?>
-					<div class="col-xs-2 h4p_cast-channel dropup">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="glyphicon glyphicon-eject"></span>
-						</button>
-						<ul class="dropdown-menu"></ul>
+				</div>
+			</div>
+
+			<div class="col-xs-12 h4p_info">
+				<div class="row">
+					<!-- require code -->
+					<div class="col-xs-12 col-sm-6">
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon1">MOD</span>
+							<input
+								class="h4p_info-require form-control"
+								type="text"
+								value="<?php echo $require; ?>"
+								rows="1"
+								onClick="this.select();"
+								/>
+						</div>
 					</div>
-					<?php endif; ?>
-					<div class="col-xs-12">
-						<!-- require code -->
-						<span>MOD</span>
-						<input
-							class="h4p_info-require"
-							type="text"
-							value="<?php echo $require; ?>"
-							rows="1"
-							onClick="this.select();"
-							readonly
-							/>
+					<div class="col-xs-12 col-sm-6">
+						<ul class="list-inline">
+							<!-- ReStage -->
+							<li class="visible-option-restage">
+								<button type="button" class="btn btn-restage btn-lg btn-block begin_restaging visible-option-session" title="改造する">
+									<span class="glyphicon glyphicon-wrench"></span>
+									改造する
+								</button>
+							</li>
+							<!-- Retry -->
+							<li>
+								<button class="btn btn-retry btn-lg btn-block" role="button" href="#" title="もういちど">
+									<span class="glyphicon glyphicon-repeat"></span>
+									もういちど
+								</button>
+							</li>
+						</ul>
 					</div>
-					<div class="col-xs-12 h4p_share-buttons">
+					<!-- Share -->
+					<div class="col-xs-12 col-sm-6 h4p_share-buttons">
 						<ul class="list-inline">
 							<li><a class="twitter-share-button" data-count="none">Tweet</a></li>
 							<li><div class="fb-share-button" data-layout="button"></div></li>
 							<li><div class="h4p-link-button"><span class="glyphicon glyphicon-paperclip"></span>URL</div></li>
 						</ul>
 					</div>
+					<!-- Action -->
+					<div class="col-xs-12 col-sm-6">
+						<?php if ($cast_enabled) : ?>
+						<div class="h4p_cast-channel dropup">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-eject"></span>
+								チャンネル
+							</button>
+							<ul class="dropdown-menu"></ul>
+						</div>
+						<?php endif; ?>
+					</div>
+					<!-- Brand -->
 					<div class="col-xs-12 hidden brand-soundcloud">
 						<a href="http://soundcloud.com"><img src="../img/powered_by_soundcloud.png" height="64" width="64" alt=""></a>
 					</div>
 				</div>
 			</div>
+
 		</div>
 	</div>
+
 	<div class="container container-tab hidden">
 		<div class="row">
 			<div class="col-xs-12 no-padding">
