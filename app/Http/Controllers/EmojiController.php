@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Stage;
 use App\User;
+use App\Emoji;
 use Carbon\Carbon;
 
 class EmojiController extends Controller
@@ -93,8 +94,17 @@ class EmojiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $stage, $id)
     {
-        //
+      $emoji = Emoji::findOrFail($id);
+
+      if ($emoji->user_id !== $request->user()->ID) {
+        return response([
+          'message' => 'cant_delete_emoji',
+        ], 200);
+      }
+
+      $emoji->delete();
+      return response([], 200);
     }
 }
