@@ -34,7 +34,25 @@ class EmojiController extends Controller
      */
     public function store(Request $request, $stage)
     {
-      
+      $this->validate($request, [
+        'shortcode' => 'required|max:50'
+      ]);
+
+      $stage = Stage::findOrFail($stage);
+
+      if ($stage->emojis->count() >= $this->maxEmojiNum) {
+        return response([
+          'message' => 'emoji_is_full',
+        ], 200);
+      }
+
+      return response(
+        $stage->emojis()->create([
+          'user_id' => $request->user()->ID,
+          'shortcode' => $request->input('shortcode'),
+          'created_at' => Carbon::now()->toDateTimeString(),
+        ]
+      ), 200);
     }
 
     /**
