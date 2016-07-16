@@ -29,4 +29,9 @@ class Stage extends Model
     return $this->belongsTo('App\User', 'UserID');
   }
 
+  public function emojis()
+  {
+    return $this->hasMany('App\Emoji');
+  }
+
 }

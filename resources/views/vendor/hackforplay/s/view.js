@@ -449,6 +449,135 @@ $(function(){
 		}
 	});
 
+	function getEmojiImg(item) {
+		return $(emojione.shortnameToImage(`:${item.shortname}:`)).attr({
+			'data-shortname': item.shortname,
+			'data-emoji_id': item.id,
+		});
+	}
+
+	// emojis
+	function fetchEmojis() {
+		$.ajax({
+			type: 'GET',
+			url: `/api/stages/${getParam('id')}/emojis`,
+			data: {
+				summary: 1
+			}
+		})
+		.done(function (result) {
+			$('.h4p_info-emoji').children().remove();
+			Object.keys(result).forEach(function (key) {
+				$('.h4p_info-emoji').append(
+					$('<span>').addClass('label label-emojispace').append(
+						getEmojiImg({ shortname: key })
+					).append(' ' + result[key])
+				);
+			});
+		});
+	}
+	fetchEmojis();
+
+	// myemojis
+	var user_id = +$('.h4p_info-myEmoji').data('userid');
+	if (user_id > 0) {
+		$.ajax({
+			type: 'GET',
+			url: `/api/stages/${getParam('id')}/emojis`,
+			data: {
+				user: user_id,
+			},
+		})
+		.done(function (result) {
+			result.data.forEach(function (item) {
+				$('.h4p_info-myEmoji').append(getEmojiImg(item));
+			});
+		});
+
+		// Emoji input
+		$('.h4p_info-inputEmoji [data-toggle="popover"]').popover({
+			content: function () {
+				var $container = $('<div class="row">').css({
+					'max-height': 220,
+					'overflow-y': 'scroll',
+				}).append(
+					$('<div>').addClass('col-xs-12 text-center').append(
+						'powerd by '
+					).append(
+						$('<a>').attr({
+							href: '://emojione.com/demo/',
+							target: '_blank',
+						}).text('emojione')
+					).append($('<hr>').css('margin', '0.6rem -15px 1.2rem -15px'))
+				);
+
+				[
+					{ shortname: 'smile' },
+					{ shortname: 'fearful' },
+					{ shortname: 'heart' },
+					{ shortname: 'beginner' },
+					{ shortname: 'clap' },
+					{ shortname: 'cool' },
+					{ shortname: 'bug' },
+					{ shortname: 'eyes' },
+					{ shortname: 'sushi' },
+				]
+				.map(function (item) {
+					return (
+						$('<div>').addClass('col-xs-4 text-center').append(
+							getEmojiImg(item)
+							.on('click', postNewEmojiHandler)
+						).append(
+							$('<p>').append(`:${item.shortname}:`)
+						)
+					);
+				})
+				.forEach(function (elem) {
+					$container.append(elem);
+				});
+				return $container;
+			},
+			html: true
+		});
+
+		function postNewEmojiHandler() {
+			var shortname = $(this).data('shortname');
+			$.ajax({
+				type: 'POST',
+				url: `/api/stages/${getParam('id')}/emojis`,
+				data: {
+					shortname: shortname,
+				}
+			})
+			.done(function (result) {
+				if (result.message) {
+					alert(result.message + ' // えもじが いっぱいです');
+				} else {
+					$('.h4p_info-myEmoji').append(getEmojiImg(result));
+					fetchEmojis();
+				}
+			});
+		}
+
+		// Emoji delete
+		$('.h4p_info-deleteEmoji').on('click', function () {
+			var last = $('.h4p_info-myEmoji img:last-child');
+			if (!last || !last.data('emoji_id')) return;
+
+			$.ajax({
+				type: 'POST',
+				url: `/api/stages/${getParam('id')}/emojis/${last.data('emoji_id')}`,
+				data: {
+					_method: 'DELETE',
+				}
+			})
+			.done(function () { fetchEmojis(); });
+
+			last.remove();
+
+		});
+	}
+
 	(function(){
 		var beginRestaging = function(isExtendMode){
 
