@@ -429,7 +429,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 					<!-- emoji summary -->
 					<div class="col-xs-12 h4p_info-emoji"></div>
 					<!-- emoji input -->
-					<div class="col-xs-12 h4p_info-inputEmoji text-right option-session-OK">
+					<div class="col-xs-12 h4p_info-inputEmoji text-right visible-option-session">
 						<h4>
 							<span
 								class="h4p_info-myEmoji label label-emojispace"
