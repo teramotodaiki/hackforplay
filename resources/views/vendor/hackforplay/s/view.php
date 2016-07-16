@@ -439,7 +439,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 							</button>
 							<span data-container="body" data-toggle="popover" data-placement="bottom"
 								style="cursor: pointer">
-								<img class="emojione" src="//emojione.com/wp-content/uploads/assets/png/1f600.png?v=2.2.5" alt="😀" />
+								<img class="emojione" src="//cdn.jsdelivr.net/emojione/assets/png/1f600.png?v=2.2.5" alt="😀" />
 							</span>
 						</h4>
 					</div>
