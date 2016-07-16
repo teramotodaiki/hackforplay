@@ -465,6 +465,27 @@ $(function(){
 		});
 	});
 
+	// myemojis
+	var user_id = +$('.h4p_info-myEmoji').data('userid');
+	if (user_id > 0) {
+		$.ajax({
+			type: 'GET',
+			url: `/api/stages/${getParam('id')}/emojis`,
+			data: {
+				user: user_id,
+			},
+		})
+		.done(function (result) {
+			result.data.forEach(function (item) {
+				$('.h4p_info-myEmoji').append(
+					$('<img>').attr({
+						alt: item.shortcode,
+					})
+				);
+			});
+		});
+	}
+
 	(function(){
 		var beginRestaging = function(isExtendMode){
 

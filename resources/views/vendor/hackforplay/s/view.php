@@ -426,6 +426,14 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 					</div>
 					<!-- emoji summary -->
 					<div class="col-xs-12 h4p_info-emoji"></div>
+					<!-- emoji input -->
+					<div class="col-xs-12 h4p_info-inputEmoji text-right option-session-OK">
+						<h4>
+							<span
+								class="h4p_info-myEmoji label label-default disabled"
+								data-userid="<?php echo $session_userid; ?>"></span>
+						</h4>
+					</div>
 					<!-- Explain -->
 					<?php if ($explain !== NULL && $explain !== '') : ?>
 					<div class="col-xs-12 h4p_info-explain">
