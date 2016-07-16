@@ -469,7 +469,7 @@ $(function(){
 			$('.h4p_info-emoji').children().remove();
 			Object.keys(result).forEach(function (key) {
 				$('.h4p_info-emoji').append(
-					$('<span>').addClass('badge').append(
+					$('<span>').addClass('label label-emojispace').append(
 						getEmojiImg({ shortcode: key })
 					).append(' ' + result[key])
 				);

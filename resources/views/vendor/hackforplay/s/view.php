@@ -432,7 +432,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 					<div class="col-xs-12 h4p_info-inputEmoji text-right option-session-OK">
 						<h4>
 							<span
-								class="h4p_info-myEmoji label label-default disabled"
+								class="h4p_info-myEmoji label label-emojispace"
 								data-userid="<?php echo $session_userid; ?>"></span>
 							<button type="button" class="btn btn-link h4p_info-deleteEmoji">
 								<span class="glyphicon glyphicon-remove-circle"></span>
