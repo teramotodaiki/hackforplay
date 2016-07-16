@@ -20,7 +20,7 @@ class CreateEmojiTable extends Migration
           $table->foreign('stage_id')->references('id')->on('stage');
           $table->bigInteger('user_id')->unsigned();
           $table->foreign('user_id')->references('id')->on('user');
-          $table->string('shortcode', 50);
+          $table->string('shortname', 50);
           $table->timestamp('created_at');
         });
       }

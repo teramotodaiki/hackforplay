@@ -39,7 +39,7 @@ class EmojiController extends Controller
 
       if ($request->input('summary')) {
         $summary = [];
-        foreach ($emojis->lists('shortcode') as $sc) {
+        foreach ($emojis->lists('shortname') as $sc) {
           $summary[$sc] = (isset($summary[$sc]) ? $summary[$sc] : 0) + 1;
         }
         return response($summary, 200);
@@ -57,7 +57,7 @@ class EmojiController extends Controller
     public function store(Request $request, $stage)
     {
       $this->validate($request, [
-        'shortcode' => 'required|max:50'
+        'shortname' => 'required|max:50'
       ]);
 
       $stage = Stage::findOrFail($stage);
@@ -71,7 +71,7 @@ class EmojiController extends Controller
       return response(
         $stage->emojis()->create([
           'user_id' => $request->user()->ID,
-          'shortcode' => $request->input('shortcode'),
+          'shortname' => $request->input('shortname'),
           'created_at' => Carbon::now()->toDateTimeString(),
         ]
       ), 200);

@@ -450,8 +450,8 @@ $(function(){
 	});
 
 	function getEmojiImg(item) {
-		return $(emojione.shortnameToImage(`:${item.shortcode}:`)).attr({
-			'data-shortcode': item.shortcode,
+		return $(emojione.shortnameToImage(`:${item.shortname}:`)).attr({
+			'data-shortname': item.shortname,
 			'data-emoji_id': item.id,
 		});
 	}
@@ -470,7 +470,7 @@ $(function(){
 			Object.keys(result).forEach(function (key) {
 				$('.h4p_info-emoji').append(
 					$('<span>').addClass('label label-emojispace').append(
-						getEmojiImg({ shortcode: key })
+						getEmojiImg({ shortname: key })
 					).append(' ' + result[key])
 				);
 			});
@@ -512,15 +512,15 @@ $(function(){
 				);
 
 				[
-					{ shortcode: 'smile' },
-					{ shortcode: 'fearful' },
-					{ shortcode: 'heart' },
-					{ shortcode: 'beginner' },
-					{ shortcode: 'clap' },
-					{ shortcode: 'cool' },
-					{ shortcode: 'bug' },
-					{ shortcode: 'eyes' },
-					{ shortcode: 'sushi' },
+					{ shortname: 'smile' },
+					{ shortname: 'fearful' },
+					{ shortname: 'heart' },
+					{ shortname: 'beginner' },
+					{ shortname: 'clap' },
+					{ shortname: 'cool' },
+					{ shortname: 'bug' },
+					{ shortname: 'eyes' },
+					{ shortname: 'sushi' },
 				]
 				.map(function (item) {
 					return (
@@ -528,7 +528,7 @@ $(function(){
 							getEmojiImg(item)
 							.on('click', postNewEmojiHandler)
 						).append(
-							$('<p>').append(`:${item.shortcode}:`)
+							$('<p>').append(`:${item.shortname}:`)
 						)
 					);
 				})
@@ -541,12 +541,12 @@ $(function(){
 		});
 
 		function postNewEmojiHandler() {
-			var shortcode = $(this).data('shortcode');
+			var shortname = $(this).data('shortname');
 			$.ajax({
 				type: 'POST',
 				url: `/api/stages/${getParam('id')}/emojis`,
 				data: {
-					shortcode: shortcode,
+					shortname: shortname,
 				}
 			})
 			.done(function (result) {
