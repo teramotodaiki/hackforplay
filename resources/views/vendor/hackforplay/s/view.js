@@ -527,11 +527,26 @@ $(function(){
 					shortcode: shortcode,
 				}
 			})
+			.done(function (result) {
+				$('.h4p_info-myEmoji').append(getEmojiImg(result));
+				fetchEmojis();
+			});
+		}
+
+		// Emoji delete
+		$('.h4p_info-deleteEmoji').on('click', function () {
+			var last = $('.h4p_info-myEmoji img:last-child');
+			if (!last || !last.data('emoji_id')) return;
+
+			$.ajax({
+				type: 'DELETE',
+				url: `/api/stages/${getParam('id')}/emojis/${last.data('emoji_id')}`,
+			})
 			.done(function () { fetchEmojis(); });
 
-			// add sync
-			$('.h4p_info-myEmoji').append(getEmojiImg(shortcode));
-		}
+			last.remove();
+
+		});
 	}
 
 	(function(){
