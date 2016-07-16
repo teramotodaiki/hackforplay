@@ -449,6 +449,12 @@ $(function(){
 		}
 	});
 
+	function getEmojiImg(shortcode) {
+		return $('<img>').attr({
+			alt: shortcode,
+		});
+	}
+
 	// emojis
 	function fetchEmojis() {
 		$.ajax({
@@ -481,11 +487,7 @@ $(function(){
 		})
 		.done(function (result) {
 			result.data.forEach(function (item) {
-				$('.h4p_info-myEmoji').append(
-					$('<img>').attr({
-						alt: item.shortcode,
-					})
-				);
+				$('.h4p_info-myEmoji').append(getEmojiImg(item.shortcode));
 			});
 		});
 
@@ -493,35 +495,19 @@ $(function(){
 		$('.h4p_info-inputEmoji [data-toggle="popover"]').popover({
 			content: function () {
 				var $container = $('<div>');
-				var $wrapper = $('<div>').append(
-					$('<img>').on('click',  function () {
-
-						var shortcode = $(this).attr('alt');
-						$.ajax({
-							type: 'POST',
-							url: `/api/stages/${getParam('id')}/emojis`,
-							data: {
-								shortcode: shortcode,
-							}
-						})
-						.done(function () { fetchEmojis(); });
-
-						// add sync
-						$('.h4p_info-myEmoji').append(
-							$('<img>').attr({
-								alt: shortcode,
-							})
-						);
-
-					})
-				);
 
 				[
 					{ shortcode: 'smile' },
 				]
 				.map(function (item) {
-					return $wrapper.clone(true, true)
-						.find('img').attr({ alt: item.shortcode });
+					return (
+						$('<div>').addClass('text-center').append(
+							getEmojiImg(item.shortcode)
+							.on('click', postNewEmojiHandler)
+						).append(
+							$('<p>').append(`:${item.shortcode}:`)
+						)
+					);
 				})
 				.forEach(function (elem) {
 					$container.append(elem);
@@ -530,6 +516,21 @@ $(function(){
 			},
 			html: true
 		});
+
+		function postNewEmojiHandler() {
+			var shortcode = $(this).attr('alt');
+			$.ajax({
+				type: 'POST',
+				url: `/api/stages/${getParam('id')}/emojis`,
+				data: {
+					shortcode: shortcode,
+				}
+			})
+			.done(function () { fetchEmojis(); });
+
+			// add sync
+			$('.h4p_info-myEmoji').append(getEmojiImg(shortcode));
+		}
 	}
 
 	(function(){
