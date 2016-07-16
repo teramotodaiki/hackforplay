@@ -98,7 +98,7 @@ class EmojiController extends Controller
     {
       $emoji = Emoji::findOrFail($id);
 
-      if ($emoji->user_id !== $request->user()->ID) {
+      if (+$emoji->user_id !== +$request->user()->ID) {
         return response([
           'message' => 'cant_delete_emoji',
         ], 200);
