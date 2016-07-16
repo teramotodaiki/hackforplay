@@ -424,6 +424,8 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 						</a>
 						<?php endif; ?>
 					</div>
+					<!-- emoji summary -->
+					<div class="col-xs-12 h4p_info-emoji"></div>
 					<!-- Explain -->
 					<?php if ($explain !== NULL && $explain !== '') : ?>
 					<div class="col-xs-12 h4p_info-explain">

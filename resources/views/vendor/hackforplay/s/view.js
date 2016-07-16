@@ -449,6 +449,22 @@ $(function(){
 		}
 	});
 
+	// emojis
+	$.ajax({
+		type: 'GET',
+		url: `/api/stages/${getParam('id')}/emojis`,
+		data: {
+			summary: 1
+		}
+	})
+	.done(function (result) {
+		Object.keys(result).forEach(function (key) {
+			$('.h4p_info-emoji').append(
+				$('<span>').addClass('badge').text(key + ' ' + result[key])
+			);
+		});
+	});
+
 	(function(){
 		var beginRestaging = function(isExtendMode){
 
