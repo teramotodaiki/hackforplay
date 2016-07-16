@@ -450,20 +450,24 @@ $(function(){
 	});
 
 	// emojis
-	$.ajax({
-		type: 'GET',
-		url: `/api/stages/${getParam('id')}/emojis`,
-		data: {
-			summary: 1
-		}
-	})
-	.done(function (result) {
-		Object.keys(result).forEach(function (key) {
-			$('.h4p_info-emoji').append(
-				$('<span>').addClass('badge').text(key + ' ' + result[key])
-			);
+	function fetchEmojis() {
+		$.ajax({
+			type: 'GET',
+			url: `/api/stages/${getParam('id')}/emojis`,
+			data: {
+				summary: 1
+			}
+		})
+		.done(function (result) {
+			$('.h4p_info-emoji').children().remove();
+			Object.keys(result).forEach(function (key) {
+				$('.h4p_info-emoji').append(
+					$('<span>').addClass('badge').text(key + ' ' + result[key])
+				);
+			});
 		});
-	});
+	}
+	fetchEmojis();
 
 	// myemojis
 	var user_id = +$('.h4p_info-myEmoji').data('userid');
@@ -483,6 +487,48 @@ $(function(){
 					})
 				);
 			});
+		});
+
+		// Emoji input
+		$('.h4p_info-inputEmoji [data-toggle="popover"]').popover({
+			content: function () {
+				var $container = $('<div>');
+				var $wrapper = $('<div>').append(
+					$('<img>').on('click',  function () {
+
+						var shortcode = $(this).attr('alt');
+						$.ajax({
+							type: 'POST',
+							url: `/api/stages/${getParam('id')}/emojis`,
+							data: {
+								shortcode: shortcode,
+							}
+						})
+						.done(function () { fetchEmojis(); });
+
+						// add sync
+						$('.h4p_info-myEmoji').append(
+							$('<img>').attr({
+								alt: shortcode,
+							})
+						);
+
+					})
+				);
+
+				[
+					{ shortcode: 'smile' },
+				]
+				.map(function (item) {
+					return $wrapper.clone(true, true)
+						.find('img').attr({ alt: item.shortcode });
+				})
+				.forEach(function (elem) {
+					$container.append(elem);
+				});
+				return $container;
+			},
+			html: true
 		});
 	}
 
