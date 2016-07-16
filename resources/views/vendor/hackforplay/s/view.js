@@ -497,7 +497,19 @@ $(function(){
 		// Emoji input
 		$('.h4p_info-inputEmoji [data-toggle="popover"]').popover({
 			content: function () {
-				var $container = $('<div>');
+				var $container = $('<div class="row">').css({
+					'max-height': 220,
+					'overflow-y': 'scroll',
+				}).append(
+					$('<div>').addClass('col-xs-12 text-center').append(
+						'powerd by '
+					).append(
+						$('<a>').attr({
+							href: '://emojione.com/demo/',
+							target: '_blank',
+						}).text('emojione')
+					).append($('<hr>').css('margin', '0.6rem -15px 1.2rem -15px'))
+				);
 
 				[
 					{ shortcode: 'smile' },
