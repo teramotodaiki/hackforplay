@@ -449,9 +449,10 @@ $(function(){
 		}
 	});
 
-	function getEmojiImg(shortcode) {
+	function getEmojiImg(item) {
 		return $('<img>').attr({
-			alt: shortcode,
+			alt: item.shortcode,
+			'data-emoji_id': item.id,
 		});
 	}
 
@@ -487,7 +488,7 @@ $(function(){
 		})
 		.done(function (result) {
 			result.data.forEach(function (item) {
-				$('.h4p_info-myEmoji').append(getEmojiImg(item.shortcode));
+				$('.h4p_info-myEmoji').append(getEmojiImg(item));
 			});
 		});
 
@@ -502,7 +503,7 @@ $(function(){
 				.map(function (item) {
 					return (
 						$('<div>').addClass('text-center').append(
-							getEmojiImg(item.shortcode)
+							getEmojiImg(item)
 							.on('click', postNewEmojiHandler)
 						).append(
 							$('<p>').append(`:${item.shortcode}:`)
