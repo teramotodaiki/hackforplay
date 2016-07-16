@@ -450,8 +450,8 @@ $(function(){
 	});
 
 	function getEmojiImg(item) {
-		return $('<img>').attr({
-			alt: item.shortcode,
+		return $(emojione.shortnameToImage(`:${item.shortcode}:`)).attr({
+			'data-shortcode': item.shortcode,
 			'data-emoji_id': item.id,
 		});
 	}
@@ -469,7 +469,9 @@ $(function(){
 			$('.h4p_info-emoji').children().remove();
 			Object.keys(result).forEach(function (key) {
 				$('.h4p_info-emoji').append(
-					$('<span>').addClass('badge').text(key + ' ' + result[key])
+					$('<span>').addClass('badge').append(
+						getEmojiImg({ shortcode: key })
+					).append(' ' + result[key])
 				);
 			});
 		});
@@ -519,7 +521,7 @@ $(function(){
 		});
 
 		function postNewEmojiHandler() {
-			var shortcode = $(this).attr('alt');
+			var shortcode = $(this).data('shortcode');
 			$.ajax({
 				type: 'POST',
 				url: `/api/stages/${getParam('id')}/emojis`,
@@ -528,8 +530,12 @@ $(function(){
 				}
 			})
 			.done(function (result) {
-				$('.h4p_info-myEmoji').append(getEmojiImg(result));
-				fetchEmojis();
+				if (result.message) {
+					alert(result.message + ' // えもじが いっぱいです');
+				} else {
+					$('.h4p_info-myEmoji').append(getEmojiImg(result));
+					fetchEmojis();
+				}
 			});
 		}
 

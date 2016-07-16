@@ -81,12 +81,14 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 	<script src="editor/addon/hint/javascript-hint.js" charset="utf-8"></script>
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript"></script>
 	<script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
+	<script src="//cdn.jsdelivr.net/emojione/2.2.5/lib/js/emojione.min.js"></script>
 	<link rel="stylesheet" href="editor/lib/codemirror.css">
 	<link rel="stylesheet" href="editor/addon/dialog/dialog.css">
 	<link rel="stylesheet" href="editor/addon/scroll/simplescrollbars.css">
 	<link rel="stylesheet" href="editor/addon/fold/foldgutter.css">
 	<link rel="stylesheet" href="editor/addon/lint/lint.css">
 	<link rel="stylesheet" href="editor/addon/hint/show-hint.css">
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/emojione/2.2.5/assets/css/emojione.min.css"/>
 	<link rel="stylesheet" href="../css/cmcolor.css">
 	<style type="text/css" media="screen">
 		.CodeMirror {
@@ -435,9 +437,10 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 							<button type="button" class="btn btn-link h4p_info-deleteEmoji">
 								<span class="glyphicon glyphicon-remove-circle"></span>
 							</button>
-							<button class="btn btn-default" data-container="body" data-toggle="popover" data-placement="bottom">
-								<span>😃</span>
-							</button>
+							<span data-container="body" data-toggle="popover" data-placement="bottom"
+								style="cursor: pointer">
+								<img class="emojione" src="//emojione.com/wp-content/uploads/assets/png/1f600.png?v=2.2.5" alt="😀" />
+							</span>
 						</h4>
 					</div>
 					<!-- Explain -->
