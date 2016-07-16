@@ -501,10 +501,18 @@ $(function(){
 
 				[
 					{ shortcode: 'smile' },
+					{ shortcode: 'fearful' },
+					{ shortcode: 'heart' },
+					{ shortcode: 'beginner' },
+					{ shortcode: 'clap' },
+					{ shortcode: 'cool' },
+					{ shortcode: 'bug' },
+					{ shortcode: 'eyes' },
+					{ shortcode: 'sushi' },
 				]
 				.map(function (item) {
 					return (
-						$('<div>').addClass('text-center').append(
+						$('<div>').addClass('col-xs-4 text-center').append(
 							getEmojiImg(item)
 							.on('click', postNewEmojiHandler)
 						).append(
