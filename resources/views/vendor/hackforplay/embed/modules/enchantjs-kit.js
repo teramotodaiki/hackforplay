@@ -73,10 +73,13 @@ window.addEventListener('resize', function () {
 });
 
 // クリック時に再度フォーカス
+Hack.focusOnClick = true;
 window.addEventListener('click', function () {
-  window.document.activeElement.blur(); // Blur an enchantBook
-	window.parent.focus(); // Blur an input in parent window
-	window.focus(); // focus game
+	if (Hack.focusOnClick) {
+	  window.document.activeElement.blur(); // Blur an enchantBook
+		window.parent.focus(); // Blur an input in parent window
+		window.focus(); // focus game
+	}
 });
 
 // 'capture' メッセージを受けてcanvasの画像を返す
