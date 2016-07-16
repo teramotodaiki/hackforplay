@@ -565,8 +565,11 @@ $(function(){
 			if (!last || !last.data('emoji_id')) return;
 
 			$.ajax({
-				type: 'DELETE',
+				type: 'POST',
 				url: `/api/stages/${getParam('id')}/emojis/${last.data('emoji_id')}`,
+				data: {
+					_method: 'DELETE',
+				}
 			})
 			.done(function () { fetchEmojis(); });
 
