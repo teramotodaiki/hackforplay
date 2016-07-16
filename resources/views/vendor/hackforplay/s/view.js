@@ -511,6 +511,7 @@ $(function(){
 					).append($('<hr>').css('margin', '0.6rem -15px 1.2rem -15px'))
 				);
 
+				var randomStart = Math.random() * (Object.keys(emojione.emojioneList).length - 2);
 				[
 					{ shortname: 'smile' },
 					{ shortname: 'fearful' },
@@ -522,13 +523,22 @@ $(function(){
 					{ shortname: 'eyes' },
 					{ shortname: 'sushi' },
 				]
-				.map(function (item) {
+				.concat(
+					Object.keys(emojione.emojioneList).slice(randomStart, randomStart + 3)
+					.map(function (emoji) {
+						return { shortname: emoji.slice(1, emoji.length - 1) };
+					})
+				).map(function (item) {
 					return (
 						$('<div>').addClass('col-xs-4 text-center').append(
 							getEmojiImg(item)
 							.on('click', postNewEmojiHandler)
 						).append(
-							$('<p>').append(`:${item.shortname}:`)
+							$('<p>').append(`:${item.shortname}:`).css({
+								'word-wrap': 'break-word',
+								'margin-left': -15,
+								'margin-right': -15,
+							})
 						)
 					);
 				})
