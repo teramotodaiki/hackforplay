@@ -36,7 +36,7 @@ $(function(){
 					$('<span>').addClass('clearrate label label-sm').text('0%')
 				)
 			).append(
-				$('<p>').append($('<span>').addClass('source').html('改造元：<b><a></a></b>'))
+				$('<p>').append($('<span>').addClass('emoji').css('font-size', '90%'))
 			)
 		)
 	);
@@ -123,18 +123,29 @@ $(function(){
 				item.find('.author').text('いにしえのプログラマー');
 			}
 			item.find('.playcount b').prepend(stage.playcount);
-			if (stage.source_mode === 'replay') {
-				item.find('.source a').attr({
-					href: '/s?id=' + stage.source_id,
-					title: stage.source_title
-				}).text(stage.source_title);
-			}else{
-				item.find('.source').text('オリジナルステージ');
-			}
 			var rate = stage.clearcount / stage.playcount;
 			item.find('.clearrate').text(
 				'クリア率 ' + (rate * 100 >> 0) + '%'
 			).addClass(rateToLabelColor(rate, stage.playcount == 0));
+
+			// emoji summary
+			$.ajax({
+				type: 'GET',
+				url: `/api/stages/${stage.id}/emojis`,
+				data: {
+					summary: 1,
+				},
+			})
+			.done(function (result) {
+				item.find('.emoji').children().remove();
+				Object.keys(result).forEach(function (key) {
+					item.find('.emoji').append(
+						$('<span>').css('margin-right', '.7rem').append(
+							$(emojione.shortnameToImage(`:${key}:`))
+						).append(' ' + result[key])
+					);
+				});
+			});
 
 			item.appendTo($list);
 		});
@@ -169,7 +180,6 @@ $(function(){
 				}).text(stage.title);
 				item.find('.author').remove();
 				item.find('.playcount b').prepend(stage.playcount);
-				item.find('.source').text('公式ステージ');
 
 				item.appendTo($list);
 			});

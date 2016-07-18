@@ -14,6 +14,7 @@
 	<meta property="og:url" content="http://hackforplay.xyz"/>
 	<meta property="og:type" content="game"/>
 	<meta property="og:site_name" content="あそべるプログラミング HackforPlay"/>
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/emojione/2.2.5/assets/css/emojione.min.css"/>
 	<style media="screen">
 	.flex-container {
 		display: flex;
@@ -59,6 +60,7 @@
 		sessionStorage.setItem('view_param_filter', filter);
 	})();
 	</script>
+	<script src="//cdn.jsdelivr.net/emojione/2.2.5/lib/js/emojione.min.js"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="panel panel-default">
