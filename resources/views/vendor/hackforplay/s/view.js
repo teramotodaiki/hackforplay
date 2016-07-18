@@ -607,6 +607,7 @@ $(function(){
 			result.data.forEach(function (emoji) {
 				fetchUser(emoji.user_id);
 			});
+			renderEmojiAll();
 		});
 	}
 	fetchEmojiAll();
@@ -621,8 +622,39 @@ $(function(){
 		})
 		.done(function (result) {
 			userAll[user_id] = result;
+			renderEmojiAll();
 		});
 	}
+
+	function renderEmojiAll() {
+		var emojisEachUser = {};
+		emojiAll.forEach(function (emoji) {
+			emojisEachUser[emoji.user_id] =
+				(emojisEachUser[emoji.user_id] || []).concat(emoji.shortname);
+		});
+		$('.h4p_info-emojiAll').children().remove();
+		$('.h4p_info-emojiAll').append(
+			$('<hr>')
+		);
+		Object.keys(emojisEachUser).map(function (user_id) {
+			var $emojis = $('<span>').addClass('label label-emojispace');
+			var emojis = emojisEachUser[user_id].forEach(function (shortname) {
+				$emojis.append(getEmojiImg({ shortname: shortname }));
+			});
+			return (
+				$('<div>').append(
+					$emojis
+				).append(
+					$('<a>').attr('href', `/m/?id=${user_id}`).addClass('btn btn-link').append(
+						$('<span>').text(userAll[user_id].nickname)
+					)
+				)
+			);
+		}).forEach(function ($row) {
+			$('.h4p_info-emojiAll').append($row);
+		});
+	}
+
 
 	(function(){
 		var beginRestaging = function(isExtendMode){
