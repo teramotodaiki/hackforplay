@@ -457,7 +457,7 @@ $(function(){
 	}
 
 	// emojis
-	function fetchEmojis() {
+	function fetchEmojiSammary() {
 		$.ajax({
 			type: 'GET',
 			url: `/api/stages/${getParam('id')}/emojis`,
@@ -476,7 +476,7 @@ $(function(){
 			});
 		});
 	}
-	fetchEmojis();
+	fetchEmojiSammary();
 
 	// myemojis
 	var user_id = +$('.h4p_info-myEmoji').data('userid');
@@ -564,7 +564,7 @@ $(function(){
 					alert(result.message + ' // えもじが いっぱいです');
 				} else {
 					$('.h4p_info-myEmoji').append(getEmojiImg(result));
-					fetchEmojis();
+					fetchEmojiSammary();
 				}
 			});
 		}
@@ -581,7 +581,7 @@ $(function(){
 					_method: 'DELETE',
 				}
 			})
-			.done(function () { fetchEmojis(); });
+			.done(function () { fetchEmojiSammary(); });
 
 			last.remove();
 
