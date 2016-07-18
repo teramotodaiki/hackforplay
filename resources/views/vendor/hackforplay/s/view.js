@@ -474,6 +474,13 @@ $(function(){
 					).append(' ' + result[key])
 				);
 			});
+			$('.h4p_info-emoji').append(
+				$('<button>').addClass('btn btn-link').attr({
+					'data-toggle': "collapse", 'data-target': ".h4p_info-emojiAll"
+				}).append(
+					$('<span>').addClass('glyphicon glyphicon-triangle-bottom')
+				)
+			);
 		});
 	}
 	fetchEmojiSammary();
