@@ -428,6 +428,8 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 					</div>
 					<!-- emoji summary -->
 					<div class="col-xs-12 h4p_info-emoji"></div>
+					<!-- emoji all -->
+					<div class="col-xs-12 h4p_info-emojiAll collapse" style="max-height: 100px"></div>
 					<!-- emoji input -->
 					<div class="col-xs-12 h4p_info-inputEmoji text-right visible-option-session">
 						<h4>
