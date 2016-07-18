@@ -588,6 +588,42 @@ $(function(){
 		});
 	}
 
+	// emoji all
+	var emojiAll = [];
+	function fetchEmojiAll(page) {
+		page = page || 1;
+		$.ajax({
+			type: 'GET',
+			url: `/api/stages/${getParam('id')}/emojis`,
+			data: {
+				page: page,
+			}
+		})
+		.done(function (result) {
+			emojiAll = emojiAll.concat(result.data);
+			if (result.current_page < result.last_page) {
+				fetchEmojiAll(page + 1);
+			}
+			result.data.forEach(function (emoji) {
+				fetchUser(emoji.user_id);
+			});
+		});
+	}
+	fetchEmojiAll();
+
+	var userAll = {};
+	function fetchUser(user_id) {
+		if (userAll[user_id]) return;
+		userAll[user_id] = { nickname: '' };
+		$.ajax({
+			type: 'GET',
+			url: `/users/${user_id}`,
+		})
+		.done(function (result) {
+			userAll[user_id] = result;
+		});
+	}
+
 	(function(){
 		var beginRestaging = function(isExtendMode){
 
