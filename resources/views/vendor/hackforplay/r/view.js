@@ -36,7 +36,7 @@ $(function(){
 					$('<span>').addClass('clearrate label label-sm').text('0%')
 				)
 			).append(
-				$('<p>').append($('<span>').addClass('source').html('改造元：<b><a></a></b>'))
+				$('<p>').append()
 			)
 		)
 	);
@@ -123,14 +123,6 @@ $(function(){
 				item.find('.author').text('いにしえのプログラマー');
 			}
 			item.find('.playcount b').prepend(stage.playcount);
-			if (stage.source_mode === 'replay') {
-				item.find('.source a').attr({
-					href: '/s?id=' + stage.source_id,
-					title: stage.source_title
-				}).text(stage.source_title);
-			}else{
-				item.find('.source').text('オリジナルステージ');
-			}
 			var rate = stage.clearcount / stage.playcount;
 			item.find('.clearrate').text(
 				'クリア率 ' + (rate * 100 >> 0) + '%'
@@ -169,7 +161,6 @@ $(function(){
 				}).text(stage.title);
 				item.find('.author').remove();
 				item.find('.playcount b').prepend(stage.playcount);
-				item.find('.source').text('公式ステージ');
 
 				item.appendTo($list);
 			});
