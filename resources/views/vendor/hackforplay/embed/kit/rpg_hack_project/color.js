@@ -42,7 +42,7 @@
 						'number' === typeof this.image.width  // Is load completely?
 					) {
           var i = this.image.context ? this.image : this.image.clone();
-          var res = i.context.getImageData(this._frameLeft, this._frameTop, this.width, this.height);
+          var res = i.context.getImageData(0, 0, i.width, i.height);
           this._originalColor = getRepresentativeColor(res.data);
         }
         return this._originalColor;

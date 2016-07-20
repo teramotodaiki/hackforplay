@@ -542,6 +542,9 @@
 		this.directionType = 'quadruple';
 		this.forward = [0, 1];
 	};
+	Hack.assets.darkKnight = function () {
+		this.image = game.assets['enchantjs/x1.5/chara7.png'];
+	};
 	var __Player = enchant.Class(RPGObject, {
 		initialize: function () {
 			RPGObject.call(this);
