@@ -208,19 +208,29 @@
 	// １枚ずつ切り分けたsurface
 	MapObject.surfaces = {};
 	Object.keys(MapObject.dictionary).forEach(function (name) {
-		MapObject.surfaces[name] = new Surface(32, 32);
+		Object.defineProperty(MapObject.surfaces, name, {
+			enumerable: true, configurable: true,
+			get: function () { return tryFetchMapImage(name); },
+			set: function (value) {
+				Object.defineProperty(MapObject.surfaces, name, {
+					value: value
+				});
+			}
+		});
 	});
 
-	game.on('load', function () {
-		var src = game.assets['enchantjs/x2/dotmat.gif'];
-		var length = 20, w = 32, h = 32;
-		Object.keys(MapObject.dictionary).forEach(function (name) {
+	function tryFetchMapImage (name) {
+		if (game.assets['enchantjs/x2/dotmat.gif']) {
+			var length = 20, w = 32, h = 32;
 			var frame = MapObject.dictionary[name],
 			x = (frame % length) * w,
 			y = ((frame / length) >> 0) * h;
-			MapObject.surfaces[name].draw(src, x, y, w, h, 0, 0, w, h);
-		});
-	});
+			var s = new Surface(w, h);
+			s.draw(game.assets['enchantjs/x2/dotmat.gif'], x, y, w, h, 0, 0, w, h);
+			return MapObject.surfaces[name] = s;
+		}
+		return undefined;
+	}
 
 	Object.keys(MapObject.dictionary).forEach(function (name) {
 		Hack.assets[name] = function () {
