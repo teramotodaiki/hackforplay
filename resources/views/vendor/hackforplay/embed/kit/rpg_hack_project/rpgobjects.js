@@ -137,9 +137,16 @@
 					this.behavior = BehaviorTypes.Dead;
 				}
 			});
-			// 初期化
-			this.direction = 0;
+
+			// direction
 			this.forward = { x: 0, y: 0 };
+			this.directionType = null;
+			Object.defineProperty(this, 'direction', {
+				configurable: true, enumerable: true,
+				get: this.getDirection, set: this.setDirection
+			});
+
+			// 初期化
 			this.velocityX = this.velocityY = this.accelerationX = this.accelerationY = 0;
 			this.mass = 1;
 			this.damageTime = 0;
@@ -444,29 +451,30 @@
 			node._rotation = angle;
 
 			return this;
-		}
-
-	});
-
-  var __HumanBase = enchant.Class(RPGObject, {
-		initialize: function (width, height, offsetX, offsetY) {
-			RPGObject.call(this, width, height, offsetX, offsetY);
-			var direction = 0;
-			Object.defineProperty(this, 'direction', {
-				configurable: true, enumerable: true,
-				get: function () { return direction; },
-				set: function (value) {
-					direction = value;
-					this.frame = [this.direction * 9 + (this.frame % 9)];
-				}
-			});
-			Object.defineProperty(this, 'forward', {
-				configurable: true, enumerable: true,
-				get: function () { return Hack.Dir2Vec(direction); },
-				set: function (value) { this.direction = Hack.Vec2Dir(value); }
-			});
-			this.hp = 3;
-			this.atk = 1;
+		},
+		mod: function (func) {
+			func.call(this);
+		},
+		getDirection: function () {
+			switch (this.directionType) {
+				case 'double':
+					return this.forward.x;
+				case 'quadruple':
+					return Hack.Vec2Dir(this.forward);
+			}
+		},
+		setDirection: function (value) {
+			switch (this.directionType) {
+				case 'double':
+					var normalized = Math.sign(value) || -1;
+					this.scaleX = -normalized * Math.abs(this.scaleX);
+					this.forward.x = normalized;
+					return;
+				case 'quadruple':
+					this.frame = [value * 9 + (this.frame % 9)];
+					this.forward = Hack.Dir2Vec(value);
+					break;
+			}
 		},
 		setFrameD9: function (behavior, frame) {
 			var array = typeof frame === 'function' ? frame() : frame;
@@ -483,6 +491,17 @@
 			var c = typeof count === 'number' ? count % 4 + 4 : 1;
 			var i = [3, 2, 0, 1][this.direction] + c; // direction to turn index
 			this.direction = [2, 3, 1, 0][i%4]; // turn index to direction
+		}
+
+	});
+
+  var __HumanBase = enchant.Class(RPGObject, {
+		initialize: function (width, height, offsetX, offsetY) {
+			RPGObject.call(this, width, height, offsetX, offsetY);
+			this.hp = 3;
+			this.atk = 1;
+			this.forward = { x: 0, y: 1 };
+			this.directionType = 'quadruple';
 		}
   });
 
@@ -543,18 +562,9 @@
 	var __EnemyBase = enchant.Class(RPGObject, {
 		initialize: function (width, height, offsetX, offsetY) {
 			RPGObject.call(this, width, height, offsetX, offsetY);
-			var direction = -1; // -1: Left, 1: Right
-			Object.defineProperty(this, 'direction', {
-				configurable: true, enumerable: true,
-				get: function () { return direction; },
-				set: function (value) { this.scaleX = value === 0 ? this.scaleX :
-					-(direction = Math.sign(value)) * Math.abs(this.scaleX); }
-			});
-			Object.defineProperty(this, 'forward', {
-				configurable: true, enumerable: true,
-				get: function () { return { x: direction, y: 0 }; },
-				set: function (value) { this.direction = value.x; }
-			});
+
+			this.forward = { x: -1, y: 0 };
+			this.directionType = 'double';
 			this.hp = 3;
 			this.atk = 1;
 		},
