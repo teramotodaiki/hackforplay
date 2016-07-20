@@ -75,6 +75,7 @@
   Object.defineProperty(window, 'Effect',			{ get: function () { return __Effect; }			});
 
   var game = enchant.Core.instance;
+	Hack.assets = Hack.assets || {};
 
 	// [注意] BehaviorTypesは排他的なプロパティになりました
 	var __BehaviorTypes = {
@@ -544,19 +545,28 @@
 		}
   });
 
-	var __Player = enchant.Class(HumanBase, {
+	Hack.assets.knight = function () {
+		this.image = game.assets['enchantjs/x1.5/chara5.png'];
+		this.width = 48; this.height = 48; this.offset = { x: -8, y: -12 };
+		this.setFrameD9(BehaviorTypes.Idle, [1]);
+		this.setFrameD9(BehaviorTypes.Walk, [0, 0, 0, 1, 1, 1, 2, 2, 2, 1, null]);
+		this.setFrameD9(BehaviorTypes.Attack, [6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, null]);
+		this.setFrameD9(BehaviorTypes.Damaged, [2, -1, -1, -1, 2, 2, 2, -1, -1, -1]);
+		this.setFrameD9(BehaviorTypes.Dead, [1, null]);
+		this.directionType = 'quadruple';
+		this.forward = [0, 1];
+	};
+	var __Player = enchant.Class(RPGObject, {
 		initialize: function () {
-			HumanBase.call(this, 48, 48, -8, -12);
-			this.image = game.assets['enchantjs/x1.5/chara5.png'];
+			RPGObject.call(this);
+			this.mod(Hack.assets.knight);
+
 			this.enteredStack = [];
 			this.on('enterframe', this.stayCheck);
 			this.on('walkend', this.enterCheck);
-			this.setFrameD9(BehaviorTypes.Idle, [1]);
-			this.setFrameD9(BehaviorTypes.Walk, [0, 0, 0, 1, 1, 1, 2, 2, 2, 1, null]);
-			this.setFrameD9(BehaviorTypes.Attack, [6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, null]);
-			this.setFrameD9(BehaviorTypes.Damaged, [2, -1, -1, -1, 2, 2, 2, -1, -1, -1]);
-			this.setFrameD9(BehaviorTypes.Dead, [1, null]);
 			this._layer = RPGMap.Layer.Player;
+
+			this.hp = 3; this.atk = 1;
 		},
 		onenterframe: function () {
 			if (!Hack.isPlaying) return;
@@ -609,115 +619,176 @@
 		}
 	});
 
-	var __BlueSlime = enchant.Class(EnemyBase, {
+	Hack.assets.slime = function () {
+		this.image = game.assets['enchantjs/monster4.gif'];
+		this.width = 48; this.height = 48; this.offset = { x: -8, y: -10 };
+		this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
+		this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 3, 3, 3, 3]);
+		this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 6, 4, 4, 4, 4, 5, 5, 5, 5, 4, 4, 4, 4, null]);
+		this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
+		this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, 7, null]);
+		this.directionType = 'double';
+		this.forward = [-1, 0];
+	};
+	var __BlueSlime = enchant.Class(RPGObject, {
     initialize: function(){
-			EnemyBase.call(this, 48, 48, -8, -10);
-			this.image = game.assets['enchantjs/monster4.gif'];
-			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 6, 4, 4, 4, 4, 5, 5, 5, 5, 4, 4, 4, 4, null]);
-			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
-			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, 7, null]);
+			RPGObject.call(this);
+			this.mod(Hack.assets.slime);
+			this.hp = 3; this.atk = 1;
     }
   });
 
-	var __Insect = enchant.Class(EnemyBase, {
+	Hack.assets.insect = function () {
+		this.image = game.assets['enchantjs/monster1.gif'];
+		this.width = 48; this.height = 48; this.offset = { x: -8, y: -16 };
+		this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
+		this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 3, 3, 3, 3]);
+		this.setFrame(BehaviorTypes.Attack, [7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, null]);
+		this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
+		this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, 7, null]);
+		this.directionType = 'double';
+		this.forward = [-1, 0];
+	};
+	var __Insect = enchant.Class(RPGObject, {
     initialize: function(){
-			EnemyBase.call(this, 48, 48, -8, -16);
-			this.image = game.assets['enchantjs/monster1.gif'];
-			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, null]);
-			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
-			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, 7, null]);
+			RPGObject.call(this);
+			this.mod(Hack.assets.insect);
+			this.hp = 3; this.atk = 1;
     }
   });
 
-	var __Spider = enchant.Class(EnemyBase, {
+	Hack.assets.spider = function () {
+		this.image = game.assets['enchantjs/monster2.gif'];
+		this.width = 64; this.height = 64; this.offset = { x: -16, y: -24 };
+		this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
+		this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 3, 3, 3, 3]);
+		this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 7, 7, 7, 7, 7, 5, 5, 5, 5, 4, 4, 4, 4, null]);
+		this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
+		this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, 7, null]);
+		this.directionType = 'double';
+		this.forward = [-1, 0];
+	};
+	var __Spider = enchant.Class(RPGObject, {
     initialize: function(){
-			EnemyBase.call(this, 64, 64, -16, -24);
-			this.image = game.assets['enchantjs/monster2.gif'];
-			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [6, 6, 6, 7, 7, 7, 7, 7, 5, 5, 5, 5, 4, 4, 4, 4, null]);
-			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
-			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, 7, null]);
+			RPGObject.call(this);
+			this.mod(Hack.assets.spider);
+			this.hp = 3; this.atk = 1;
     }
   });
 
-	var __Bat = enchant.Class(EnemyBase, {
+	Hack.assets.bat = function () {
+		this.image = game.assets['enchantjs/monster3.gif'];
+		this.width = 48; this.height = 48; this.offset = { x: -8, y: -18 };
+		this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
+		this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 4, 4, 4, 4, 4, 3, 3, 3, 3]);
+		this.setFrame(BehaviorTypes.Attack, [9, 9, 9, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 4, 4, 4, 4, null]);
+		this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
+		this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, 7, null]);
+		this.shadow.visible = true;
+		this.directionType = 'double';
+		this.forward = [-1, 0];
+	};
+	var __Bat = enchant.Class(RPGObject, {
     initialize: function(){
-			EnemyBase.call(this, 48, 48, -8, -18);
-			this.image = game.assets['enchantjs/monster3.gif'];
-			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 4, 4, 4, 4, 4, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [9, 9, 9, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 4, 4, 4, 4, null]);
-			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
-			this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, 7, null]);
-			this.shadow.visible = true;
+			RPGObject.call(this);
+			this.mod(Hack.assets.bat);
+			this.hp = 3; this.atk = 1;
     }
   });
 
-	var __Dragon = enchant.Class(EnemyBase, {
+	Hack.assets.dragon = function () {
+		this.image = game.assets['enchantjs/bigmonster1.gif'];
+		this.width = 80; this.height = 80; this.offset = { x: -24, y: -42 };
+		this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]);
+		this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3]);
+		this.setFrame(BehaviorTypes.Attack, [8, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, null]);
+		this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5]);
+		this.setFrame(BehaviorTypes.Dead, [2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, null]);
+		this.directionType = 'double';
+		this.forward = [-1, 0];
+	};
+	var __Dragon = enchant.Class(RPGObject, {
     initialize: function(){
-			EnemyBase.call(this, 80, 80, -24, -42);
-			this.image = game.assets['enchantjs/bigmonster1.gif'];
-			this.setFrame(BehaviorTypes.Idle, [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [8, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, null]);
-			this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5]);
-			this.setFrame(BehaviorTypes.Dead, [2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, null]);
+			RPGObject.call(this);
+			this.mod(Hack.assets.dragon);
+			this.hp = 3; this.atk = 1;
     }
   });
 
-	var __Minotaur = enchant.Class(EnemyBase, {
+	Hack.assets.minotaur = function () {
+		this.image = game.assets['enchantjs/bigmonster2.gif'];
+		this.width = 80; this.height = 80; this.offset = { x: -40, y: -48 };
+		this.setFrame(BehaviorTypes.Idle, [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]);
+		this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3]);
+		this.setFrame(BehaviorTypes.Attack, [3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,null]);
+		this.setFrame(BehaviorTypes.Damaged, [7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6]);
+		this.setFrame(BehaviorTypes.Dead, [2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, null]);
+	};
+	var __Minotaur = enchant.Class(RPGObject, {
 	  initialize: function(){
-			EnemyBase.call(this, 80, 80, -40, -48);
-			this.image = game.assets['enchantjs/bigmonster2.gif'];
-			this.setFrame(BehaviorTypes.Idle, [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]);
-			this.setFrame(BehaviorTypes.Walk, [2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3]);
-			this.setFrame(BehaviorTypes.Attack, [3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,null]);
-			this.setFrame(BehaviorTypes.Damaged, [7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6]);
-			this.setFrame(BehaviorTypes.Dead, [2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, null]);
+			RPGObject.call(this);
+			this.mod(Hack.assets.minotaur);
+			this.hp = 3; this.atk = 1;
     }
   });
 
-	var __Boy = enchant.Class(HumanBase, {
-        initialize: function(){
-			HumanBase.call(this, 48, 48, -8, -18);
-			this.image = game.assets['enchantjs/x1.5/chara0.png'];
-			var _0 = 0, _1 = _0 + 1, _2 = _0 + 2;
-			this.setFrameD9(BehaviorTypes.Idle, [_1]);
-			this.setFrameD9(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
-			this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
-			this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
-			this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
-        }
-    });
-
-	var __Girl = enchant.Class(HumanBase, {
-	  initialize: function(){
-			HumanBase.call(this, 48, 48, -8, -18);
-			this.image = game.assets['enchantjs/x1.5/chara0.png'];
-			var _0 = 6, _1 = _0 + 1, _2 = _0 + 2;
-			this.setFrameD9(BehaviorTypes.Idle, [_1]);
-			this.setFrameD9(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
-			this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
-			this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
-			this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
-    }
-  });
-
-	var __Woman = enchant.Class(HumanBase, {
+	Hack.assets.boy = function () {
+		this.image = game.assets['enchantjs/x1.5/chara0.png'];
+		this.width = 48; this.height = 48; this.offset = { x: -8, y: -18 };
+		var _0 = 0, _1 = _0 + 1, _2 = _0 + 2;
+		this.setFrameD9(BehaviorTypes.Idle, [_1]);
+		this.setFrameD9(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
+		this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
+		this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
+		this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
+		this.directionType = 'quadruple';
+		this.forward = [0, 1];
+	};
+	var __Boy = enchant.Class(RPGObject, {
     initialize: function(){
-			HumanBase.call(this, 48, 48, -8, -18);
-			this.image = game.assets['enchantjs/x1.5/chara0.png'];
-			var _0 = 3, _1 = _0 + 1, _2 = _0 + 2;
-			this.setFrameD9(BehaviorTypes.Idle, [_1]);
-			this.setFrameD9(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
-			this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
-			this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
-			this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
+			RPGObject.call(this);
+			this.mod(Hack.assets.boy);
+			this.hp = 3; this.atk = 1;
+    }
+	});
+
+	Hack.assets.girl = function () {
+		this.image = game.assets['enchantjs/x1.5/chara0.png'];
+		this.width = 48; this.height = 48; this.offset = { x: -8, y: -18 };
+		var _0 = 0, _1 = _0 + 1, _2 = _0 + 2;
+		this.setFrameD9(BehaviorTypes.Idle, [_1]);
+		this.setFrameD9(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
+		this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
+		this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
+		this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
+		this.directionType = 'quadruple';
+		this.forward = [0, 1];
+	};
+	var __Girl = enchant.Class(RPGObject, {
+	  initialize: function(){
+			RPGObject.call(this);
+			this.mod(Hack.assets.girl);
+			this.hp = 3; this.atk = 1;
+    }
+  });
+
+	Hack.assets.woman = function () {
+		this.image = game.assets['enchantjs/x1.5/chara0.png'];
+		this.width = 48; this.height = 48; this.offset = { x: -8, y: -18 };
+		var _0 = 3, _1 = _0 + 1, _2 = _0 + 2;
+		this.setFrameD9(BehaviorTypes.Idle, [_1]);
+		this.setFrameD9(BehaviorTypes.Walk, [_0, _0, _0, _0, _1, _1, _1, _1, _2, _2, _2, _2, _1, _1, _1, null]);
+		this.setFrameD9(BehaviorTypes.Attack, [_0, _0, _2, _2, _1, _1, _1, _1, null]);
+		this.setFrameD9(BehaviorTypes.Damaged, [_2, -1, -1, -1, _2, _2, _2, -1, -1, -1]);
+		this.setFrameD9(BehaviorTypes.Dead, [_1, null]);
+		this.directionType = 'quadruple';
+		this.forward = [0, 1];
+	};
+	var __Woman = enchant.Class(RPGObject, {
+    initialize: function(){
+			RPGObject.call(this);
+			this.mod(Hack.assets.woman);
+			this.hp = 3; this.atk = 1;
     }
 	});
 
