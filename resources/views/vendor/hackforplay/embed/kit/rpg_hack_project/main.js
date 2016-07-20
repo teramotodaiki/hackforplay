@@ -22,7 +22,7 @@
 })(function () {
 
 	var game = enchant.Core.instance;
-	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x2/dotmat.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png', 'enchantjs/icon0.png', 'enchantjs/x2/effect0.png', 'hackforplay/madosyo_small.png', 'enchantjs/shadow.gif');
+	game.preload('enchantjs/monster1.gif', 'enchantjs/monster2.gif', 'enchantjs/monster3.gif', 'enchantjs/monster4.gif', 'enchantjs/bigmonster1.gif', 'enchantjs/bigmonster2.gif', 'enchantjs/x2/map1.gif', 'enchantjs/x2/dotmat.gif', 'enchantjs/x1.5/chara0.png', 'enchantjs/x1.5/chara5.png', 'hackforplay/enchantbook.png', 'enchantjs/icon0.png', 'enchantjs/x2/effect0.png', 'hackforplay/madosyo_small.png', 'enchantjs/shadow.gif', 'enchantjs/x1.5/chara7.png');
 	game.keybind(' '.charCodeAt(0), 'a');
 
 	Hack.onload = Hack.onload || function () {
@@ -204,6 +204,42 @@
 		grassland: 322,	waterside: 205,
 		flatGray: 135, squareGray: 93,
 	};
+
+	// １枚ずつ切り分けたsurface
+	MapObject.surfaces = {};
+	Object.keys(MapObject.dictionary).forEach(function (name) {
+		Object.defineProperty(MapObject.surfaces, name, {
+			enumerable: true, configurable: true,
+			get: function () { return tryFetchMapImage(name); },
+			set: function (value) {
+				Object.defineProperty(MapObject.surfaces, name, {
+					value: value
+				});
+			}
+		});
+	});
+
+	function tryFetchMapImage (name) {
+		if (game.assets['enchantjs/x2/dotmat.gif']) {
+			var length = 20, w = 32, h = 32;
+			var frame = MapObject.dictionary[name],
+			x = (frame % length) * w,
+			y = ((frame / length) >> 0) * h;
+			var s = new Surface(w, h);
+			s.draw(game.assets['enchantjs/x2/dotmat.gif'], x, y, w, h, 0, 0, w, h);
+			return MapObject.surfaces[name] = s;
+		}
+		return undefined;
+	}
+
+	Object.keys(MapObject.dictionary).forEach(function (name) {
+		Hack.assets[name] = function () {
+			this.image = MapObject.surfaces[name];
+			this.width = 32; this.height = 32; this.offset = { x: 0, y: 0 };
+			this.directionType = 'single';
+			this.forward = [0, -1];
+		};
+	});
 
 	/*
 	* RPGMap
