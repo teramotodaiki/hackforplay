@@ -833,6 +833,13 @@
     }
   });
 
+	Hack.assets.enchantBookItem = function () {
+		this.image = game.assets['hackforplay/madosyo_small.png'];
+		this.width = 32; this.height = 32; this.offset = { x: 0, y: 0 };
+		this.directionType = 'single';
+		this.forward = [0, -1];
+	};
+
 	var __Effect = enchant.Class(RPGObject, {
 		initialize: function (velocityX, velocityY, lifetime, randomize) {
 			RPGObject.call(this, 32, 32, 0, 0);

@@ -805,8 +805,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// アイテムになった魔道書
-			var item = new RPGObject(32, 32, 0, 0);
-			item.image = game.assets['hackforplay/madosyo_small.png'];
+			var item = new RPGObject();
+			item.mod(Hack.assets.enchantBookItem);
 			item.locate(__cnt15, __cnt10);
 			item.onplayerenter = function	() {
 				this.destroy();
