@@ -516,9 +516,19 @@
 			});
 		},
 		turn: function (count) {
-			var c = typeof count === 'number' ? count % 4 + 4 : 1;
-			var i = [3, 2, 0, 1][this.direction] + c; // direction to turn index
-			this.direction = [2, 3, 1, 0][i%4]; // turn index to direction
+			var c, i;
+			switch (this.directionType) {
+				case 'double':
+					c = typeof count === 'number' ? Math.ceil( Math.abs(count / 2) ) : 1;
+					i = { '-1': 1, '1': 0 }[this.direction] + c; // direction to turn index
+					this.direction = [1, -1, -1, 1][i%2]; // turn index to direction
+					break;
+				case 'quadruple':
+					c = typeof count === 'number' ? count % 4 + 4 : 1;
+					i = [3, 2, 0, 1][this.direction] + c; // direction to turn index
+					this.direction = [2, 3, 1, 0][i%4]; // turn index to direction
+					break;
+			}
 		}
 
 	});
@@ -596,11 +606,6 @@
 			this.forward = [-1, 0];
 			this.hp = 3;
 			this.atk = 1;
-		},
-		turn: function (count) {
-			var c = typeof count === 'number' ? Math.ceil( Math.abs(count / 2) ) : 1;
-			var i = { '-1': 1, '1': 0 }[this.direction] + c; // direction to turn index
-			this.direction = [1, -1, -1, 1][i%2]; // turn index to direction
 		}
 	});
 
