@@ -279,7 +279,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// 女の人
-			var item = new Woman();
+			var item = new RPGObject();
+			item.mod(Hack.assets.woman);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.oncollided = function () {
 				Hack.log('こんにちは。ここは 1F です');
@@ -297,7 +298,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// おとこのこ
-			var item = new Boy();
+			var item = new RPGObject();
+			item.mod(Hack.assets.boy);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onbecomeidle = function () {
 				this.walk();
@@ -319,7 +321,10 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// スライム
-			var enemy = new BlueSlime();
+			var enemy = new RPGObject();
+			enemy.mod(Hack.assets.slime);
+			enemy.hp = 3;
+			enemy.atk = 1;
 			enemy.locate(__cnt15, __cnt10, 'map1');
 			enemy.onbecomeidle = function () {
 				this.attack();
@@ -340,7 +345,10 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// インセクト
-			var enemy = new Insect();
+			var enemy = new RPGObject();
+			enemy.mod(Hack.assets.insect);
+			enemy.hp = 2;
+			enemy.atk = 1;
 			enemy.locate(__cnt15, __cnt10, 'map1');
 			enemy.onbecomeidle = function () {
 				this.turn();
@@ -363,6 +371,9 @@
 		code: function () {
 			// コウモリ
 			var enemy = new Bat();
+			enemy.hp = 3;
+			enemy.atk = 1;
+			enemy.mod(Hack.assets.bat);
 			enemy.locate(__cnt15, __cnt10, 'map1');
 			enemy.onbecomeidle = function () {
 				var target = Hack.player;
@@ -563,8 +574,10 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ドラゴン
-			var enemy = new Dragon();
+			var enemy = new RPGObject();
+			enemy.mod(Hack.assets.dragon);
 			enemy.hp = 10;
+			enemy.atk = 1;
 			enemy.locate(__cnt15, __cnt10, 'map1');
 			enemy.scale(2, 2);
 			enemy.setFrame('Idle', [10]);
@@ -711,7 +724,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// おはなやさん
-			var chara = new Girl();
+			var chara = new RPGObject();
+			chara.mod(Hack.assets.girl);
 			chara.locate(__cnt15, __cnt10, 'map1');
 			chara.oncollided = function () {
 				if (Hack.score < 100) {
