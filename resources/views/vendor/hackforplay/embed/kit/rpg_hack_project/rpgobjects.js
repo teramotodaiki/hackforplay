@@ -139,11 +139,15 @@
 			});
 
 			// direction
-			this.forward = { x: 0, y: 0 };
+			this._forward = { x: 0, y: 0 };
 			this.directionType = null;
 			Object.defineProperty(this, 'direction', {
 				configurable: true, enumerable: true,
 				get: this.getDirection, set: this.setDirection
+			});
+			Object.defineProperty(this, 'forward', {
+				configurable: true, enumerable: true,
+				get: this.getForward, set: this.setForward
 			});
 
 			// 初期化
@@ -455,6 +459,33 @@
 		mod: function (func) {
 			func.call(this);
 		},
+		getForward: function () {
+			return { x: this._forward.x, y: this._forward.y };
+		},
+		setForward: function (value) {
+			var vec =
+				value instanceof Array ? { x: value[0], y: value[1] } :
+				'x' in value && 'y' in value ? { x: value.x, y: value.y } :
+				this._forward;
+			var norm = Math.sqrt(vec.x * vec.x + vec.y * vec.y);
+			if (norm > 0) {
+				this._forward = { x: vec.x / norm, y: vec.y / norm };
+			}
+			switch (this.directionType) {
+				case 'single':
+					var rad = Math.atan2(this._forward.y, this._forward.x);
+					var enchantRot = rad / Math.PI * 180 + 90; // 基準は上,時計回りの度数法
+					this.rotation = (enchantRot + 360) % 360;
+					break;
+				case 'double':
+					this.scaleX = -Math.sign(this._forward.x) * Math.abs(this.scaleX);
+					break;
+				case 'quadruple':
+					var dir = Hack.Vec2Dir(this._forward);
+					this.frame = [dir * 9 + (this.frame % 9)];
+					break;
+			}
+		},
 		getDirection: function () {
 			switch (this.directionType) {
 				case 'double':
@@ -466,12 +497,9 @@
 		setDirection: function (value) {
 			switch (this.directionType) {
 				case 'double':
-					var normalized = Math.sign(value) || -1;
-					this.scaleX = -normalized * Math.abs(this.scaleX);
-					this.forward.x = normalized;
+					this.forward = [Math.sign(value) || -1, 0];
 					return;
 				case 'quadruple':
-					this.frame = [value * 9 + (this.frame % 9)];
 					this.forward = Hack.Dir2Vec(value);
 					break;
 			}
@@ -500,8 +528,9 @@
 			RPGObject.call(this, width, height, offsetX, offsetY);
 			this.hp = 3;
 			this.atk = 1;
-			this.forward = { x: 0, y: 1 };
+
 			this.directionType = 'quadruple';
+			this.forward = [0, 1];
 		}
   });
 
@@ -531,7 +560,7 @@
 				var ver = hor ? 0 : game.input.down - game.input.up;
 				if (hor || ver) {
 					// Turn
-					this.forward = { x: hor, y: ver };
+					this.forward = [hor, ver];
 					this.walk(1);
 				}
 			}
@@ -563,8 +592,8 @@
 		initialize: function (width, height, offsetX, offsetY) {
 			RPGObject.call(this, width, height, offsetX, offsetY);
 
-			this.forward = { x: -1, y: 0 };
 			this.directionType = 'double';
+			this.forward = [-1, 0];
 			this.hp = 3;
 			this.atk = 1;
 		},
@@ -696,19 +725,8 @@
 			} else {
 				this.name = value;
 			}
-			var _forward;
-			Object.defineProperty(this, 'forward', {
-				configurable: true, enumerable: true,
-				get: function () { return _forward; },
-				set: function (vec) {
-					var abs = Math.sqrt(vec.x * vec.x + vec.y * vec.y);
-					_forward = { x: vec.x / abs, y: vec.y / abs };
-					var rad = Math.atan2(_forward.y, _forward.x);
-					var enchantRot = rad / Math.PI * 180 + 90; // 基準は上,時計回りの度数法
-					this.rotation = (enchantRot + 360) % 360;
-				}
-			});
-			this.forward = { x: 0, y: -1 };
+			this.directionType = 'single';
+			this.forward = [0, -1];
 		},
 		name: {
 			get: function () {
