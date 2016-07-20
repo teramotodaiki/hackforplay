@@ -205,6 +205,32 @@
 		flatGray: 135, squareGray: 93,
 	};
 
+	// １枚ずつ切り分けたsurface
+	MapObject.surfaces = {};
+	Object.keys(MapObject.dictionary).forEach(function (name) {
+		MapObject.surfaces[name] = new Surface(32, 32);
+	});
+
+	game.on('load', function () {
+		var src = game.assets['enchantjs/x2/dotmat.gif'];
+		var length = 20, w = 32, h = 32;
+		Object.keys(MapObject.dictionary).forEach(function (name) {
+			var frame = MapObject.dictionary[name],
+			x = (frame % length) * w,
+			y = ((frame / length) >> 0) * h;
+			MapObject.surfaces[name].draw(src, x, y, w, h, 0, 0, w, h);
+		});
+	});
+
+	Object.keys(MapObject.dictionary).forEach(function (name) {
+		Hack.assets[name] = function () {
+			this.image = MapObject.surfaces[name];
+			this.width = 32; this.height = 32; this.offset = { x: 0, y: 0 };
+			this.directionType = 'single';
+			this.forward = [0, -1];
+		};
+	});
+
 	/*
 	* RPGMap
 	* レイヤー化された切り替え可能なマップ
