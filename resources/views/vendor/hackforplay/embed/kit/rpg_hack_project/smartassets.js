@@ -76,7 +76,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// かいだん
-			var item = new MapObject('downStair');
+			var item = new RPGObject();
+			item.mod(Hack.assets.downStair);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.layer = RPGMap.Layer.Under;
 			item.onplayerenter = function () {
@@ -95,7 +96,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ワープ
-			var item = new MapObject('warp');
+			var item = new RPGObject();
+			item.mod(Hack.assets.warp);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.layer = RPGMap.Layer.Under;
 			item.onplayerenter = function () {
@@ -114,7 +116,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ゴール
-			var item = new MapObject('castle');
+			var item = new RPGObject();
+			item.mod(Hack.assets.castle);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				// ゲームクリア
@@ -135,7 +138,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// はな
-			var item = new MapObject('flower');
+			var item = new RPGObject();
+			item.mod(Hack.assets.flower);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.layer = RPGMap.Layer.Under;
 			item.collisionFlag = false;
@@ -155,7 +159,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// き
-			var item = new MapObject('tree');
+			var item = new RPGObject();
+			item.mod(Hack.assets.tree);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.hp = 1;
 		}
@@ -171,7 +176,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// いわ
-			var item = new MapObject('rock');
+			var item = new RPGObject();
+			item.mod(Hack.assets.rock);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				// ばくえん
@@ -197,7 +203,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// いわかべ
-			var item = new MapObject('clayWall');
+			var item = new RPGObject();
+			item.mod(Hack.assets.clayWall);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.opacity = 0.5;
 		}
@@ -213,7 +220,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// いしかべ
-			var item = new MapObject('stoneWall');
+			var item = new RPGObject();
+			item.mod(Hack.assets.stoneWall);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				Hack.log('どうだ　おれさまは　かたいだろう！');
@@ -231,11 +239,12 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// たからばこ
-			var item = new MapObject('box');
+			var item = new RPGObject();
+			item.mod(Hack.assets.box);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				delete item.onattacked;
-				this.name = 'openedBox';
+				item.mod(Hack.assets.openedBox);
 				// 出てくるもの　→
 			};
 		}
@@ -251,13 +260,15 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ツボ
-			var item = new MapObject('pot');
+			var item = new RPGObject();
+			item.mod(Hack.assets.pot);
 			item.locate(__cnt15, __cnt10, 'map1');
 			var effect;
 			item.onattacked = function () {
 				// ランダムなアイテムをだす
 				var name = random(['diamond', 'sapphire', 'ruby']);
-				effect = new MapObject(name);
+				effect = new RPGObject();
+				effect.mod(Hack.assets[name]);
 				effect.locate(this.mapX, this.mapY);
 				effect.onplayerenter = function () {
 					this.velocity(0, -8);
@@ -400,16 +411,17 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// トゲのワナ
-			var item = new MapObject('trap');
+			var item = new RPGObject();
+			item.mod(Hack.assets.trap);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.layer = RPGMap.Layer.Under;
 			item.onplayerenter = function () {
-				this.name = 'usedTrap';
+				item.mod(Hack.assets.usedTrap);
 				Hack.player.hp -= 1;
 				Hack.player.damageTime = 30;
 			};
 			item.onplayerexit = function () {
-				this.name = 'trap';
+				item.mod(Hack.assets.trap);
 			};
 		}
 	}, {
@@ -424,7 +436,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ハート
-			var item = new MapObject('heart');
+			var item = new RPGObject();
+			item.mod(Hack.assets.heart);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				Hack.player.hp += 1;
@@ -443,7 +456,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ドクロ
-			var item = new MapObject('skull');
+			var item = new RPGObject();
+			item.mod(Hack.assets.skull);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				Hack.player.hp = 0;
@@ -464,7 +478,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// コイン
-			var effect = new MapObject('coin');
+			var effect = new RPGObject();
+			effect.mod(Hack.assets.coin);
 			effect.locate(__cnt15, __cnt10, 'map1');
 			effect.velocity(1, 0);
 			effect.force(0, 0.5);
@@ -485,7 +500,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// スター（むてき）
-			var item = new MapObject('star');
+			var item = new RPGObject();
+			item.mod(Hack.assets.star);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				var onattacked = Hack.player.onattacked;
@@ -509,7 +525,8 @@
 		variables: ['item'],
 		code: function () {
 			// かぎ
-			var item = new MapObject('key');
+			var item = new RPGObject();
+			item.mod(Hack.assets.key);
 			item.locate(random(0, 15), random(0, 10), 'map1');
 			item.onplayerenter = function () {
 				Hack.log('カチャリ という おと が きこえた');
@@ -528,7 +545,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// かいだん
-			var item = new MapObject('upStair');
+			var item = new RPGObject();
+			item.mod(Hack.assets.upStair);
 			item.locate(__cnt15, __cnt10, 'map2');
 			item.layer = RPGMap.Layer.Under;
 			item.onplayerenter = function () {
@@ -547,7 +565,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ボム
-			var item = new MapObject('bomb');
+			var item = new RPGObject();
+			item.mod(Hack.assets.bomb);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.time = 3.0;
 			item.setTimeout(function () {
@@ -631,7 +650,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ダイヤモンド
-			var item = new MapObject('diamond');
+			var item = new RPGObject();
+			item.mod(Hack.assets.diamond);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onplayerenter = function () {
 				this.destroy();
@@ -664,12 +684,13 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// まほうじん
-			var item = new MapObject('magic');
+			var item = new RPGObject();
+			item.mod(Hack.assets.magic);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.layer = RPGMap.Layer.Under;
 			item.onplayerenter = function () {
 				if (Hack.score >= 7) {
-					this.frame = MapObject.dictionary.usedMagic;
+					this.mod(Hack.assets.usedMagic);
 				}
 			};
 		}
@@ -700,13 +721,14 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// かたいたからばこ
-			var item = new MapObject('box');
+			var item = new RPGObject();
+			item.mod(Hack.assets.box);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.onattacked = function () {
 				if (Hack.score < 5) {
 					Hack.log('たからばこは びくともしない ');
 				} else {
-					this.frame = MapObject.dictionary.openedBox;
+					this.mod(Hack.assets.openedBox);
 					Hack.log('ガチャ！たからばこが あいた！');
 					// 出てくるもの　→
 				}
@@ -734,7 +756,8 @@
 					Hack.log('おはなは100エンです。はい、どうぞ');
 					Hack.score -= 100;
 					// おはな
-					var item = new MapObject('flower');
+					var item = new RPGObject();
+					item.mod(Hack.assets.flower);
 					item.locate(this.mapX, this.mapY + 1, 'map1');
 					item.layer = RPGMap.Layer.Under;
 					item.onplayerenter = function () {
@@ -805,7 +828,8 @@
 		counters: ['__cnt15', '__cnt10'],
 		code: function () {
 			// ルーレット
-			var item = new MapObject('ruby');
+			var item = new RPGObject();
+			item.mod(Hack.assets.ruby);
 			item.locate(__cnt15, __cnt10, 'map1');
 			item.flag = true;
 			item.onattacked = function () {
@@ -813,6 +837,7 @@
 					// ルーレット開始！
 					this.stop = this.setInterval(function () {
 						this.name = random(['ruby','skull','poo']);
+						this.mod(Hack.assets[this.name]);
 					}, 4);
 					this.flag = false;
 				} else {
