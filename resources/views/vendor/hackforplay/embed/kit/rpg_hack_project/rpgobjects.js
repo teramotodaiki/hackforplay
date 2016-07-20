@@ -161,18 +161,6 @@
 			this.getFrameOfBehavior = {}; // BehaviorTypesをキーとしたgetterのオブジェクト
 			this.behavior = BehaviorTypes.Idle; // call this.onbecomeidle
 			this._layer = RPGMap.Layer.Middle;
-			// shadow
-			this.shadow = new Sprite(32, 32);
-			this.shadow.ref = this;
-			this.shadow.layer = RPGMap.Layer.Shadow;
-			this.shadow.visible = false;
-			this.shadow.image = game.assets['enchantjs/shadow.gif'];
-			this.shadow.offset = { x: (this.width-this.shadow.width)/2, y: this.height-this.shadow.height };
-			this.shadow.scale(this.width/64, this.height/64);
-			this.on('added', function () {
-				this.parentNode.addChild(this.shadow);
-				this.map.layerChangeFlag = true;
-			});
 
 			Hack.defaultParentNode.addChild(this);
 		},
@@ -197,10 +185,6 @@
 				// 次のフレームで１度だけbecomeイベントが発火します。
 				this.isBehaviorChanged = false;
 				this.dispatchEvent(new Event('become' + this.behavior));
-			}
-			if (this.shadow.visible) {
-				var o = this.shadow.offset;
-				this.shadow.moveTo(this.x + o.x, this.y + o.y);
 			}
 		},
 		locate: function (fromLeft, fromTop, mapName) {
@@ -684,14 +668,33 @@
 		this.setFrame(BehaviorTypes.Attack, [9, 9, 9, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 4, 4, 4, 4, null]);
 		this.setFrame(BehaviorTypes.Damaged, [4, 4, 4, 4, 5, 5, 5, 5]);
 		this.setFrame(BehaviorTypes.Dead, [5, 5, 5, 5, 7, 7, 7, null]);
-		this.shadow.visible = true;
 		this.directionType = 'double';
 		this.forward = [-1, 0];
+	};
+	Hack.assets.shadowMod = function () {
+		// shadow
+		this.shadow = this.shadow || new Sprite(32, 32);
+		this.shadow.ref = this;
+		this.shadow.layer = RPGMap.Layer.Shadow;
+		this.shadow.image = game.assets['enchantjs/shadow.gif'];
+		this.shadow.offset = { x: (this.width-this.shadow.width)/2, y: this.height-this.shadow.height };
+		this.shadow.scale(this.width/64, this.height/64);
+		this.parentNode.addChild(this.shadow);
+		this.map.layerChangeFlag = true;
+		this.on('added', function () {
+			this.parentNode.addChild(this.shadow);
+			this.map.layerChangeFlag = true;
+		});
+		this.shadow.on('enterframe', function () {
+			var o = this.offset;
+			this.moveTo(this.ref.x + o.x, this.ref.y + o.y);
+		});
 	};
 	var __Bat = enchant.Class(RPGObject, {
     initialize: function(){
 			RPGObject.call(this);
 			this.mod(Hack.assets.bat);
+			this.mod(Hack.assets.shadowMod);
 			this.hp = 3; this.atk = 1;
     }
   });
