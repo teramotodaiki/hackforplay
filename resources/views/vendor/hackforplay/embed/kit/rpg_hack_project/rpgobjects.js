@@ -463,7 +463,9 @@
 					this.rotation = (enchantRot + 360) % 360;
 					break;
 				case 'double':
-					this.scaleX = -Math.sign(this._forward.x) * Math.abs(this.scaleX);
+					if (this._forward.x !== 0) {
+						this.scaleX = -Math.sign(this._forward.x) * Math.abs(this.scaleX);
+					}
 					break;
 				case 'quadruple':
 					var dir = Hack.Vec2Dir(this._forward);
