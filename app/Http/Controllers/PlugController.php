@@ -123,7 +123,7 @@ class PlugController extends Controller
           return response([ 'message' => 'stage_not_yours' ], 200);
         }
 
-        if ($stage->ID != $plug->stage_id) {
+        if ($plug->stage_id != $request->input('stage')) {
           $plug->stage_id = $request->input('stage');
           $plug->is_used = 0;
         }
