@@ -28,6 +28,11 @@ class User extends Authenticatable
     ->withPivot('Enabled');
   }
 
+  public function authors()
+  {
+    return $this->hasMany('App\Author');
+  }
+
   public function isConnected($team)
   {
     $connection = $this->teams
