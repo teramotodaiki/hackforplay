@@ -543,6 +543,7 @@
 		this.forward = [0, 1];
 	};
 	Hack.assets.darkKnight = function () {
+		this.mod(Hack.assets.knight);
 		this.image = game.assets['enchantjs/x1.5/chara7.png'];
 	};
 	var __Player = enchant.Class(RPGObject, {
