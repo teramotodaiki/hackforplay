@@ -33,6 +33,11 @@ class User extends Authenticatable
     return $this->hasMany('App\Author');
   }
 
+  public function plugs()
+  {
+    return $this->hasManyThrough('App\Plug', 'App\Author');
+  }
+
   public function isConnected($team)
   {
     $connection = $this->teams
