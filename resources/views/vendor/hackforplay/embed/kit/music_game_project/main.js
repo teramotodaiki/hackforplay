@@ -5,7 +5,7 @@
 
       require('enchantjs/enchant');
       require('hackforplay/hack');
-      require('soundcloud/sdk-3.0.0');
+      require('https://connect.soundcloud.com/sdk/sdk-3.0.0.js');
       mod();
 
     });
