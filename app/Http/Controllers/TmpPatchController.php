@@ -14,6 +14,22 @@ use DB;
 class TmpPatchController extends Controller
 {
 
+  public function p5jsModPlug()
+  {
+    // compatibility
+    $this->makeModPlug(
+      'processing',
+      '/resources/statics/p5.js-0.5.1/',
+      [
+        // label => source path
+        'p5-0.5.1' => 'p5.js',
+      ]
+    );
+
+    return response([], 200);
+
+  }
+
   public function enchantjsModPlug2() {
 
     $this->makeModPlug(
