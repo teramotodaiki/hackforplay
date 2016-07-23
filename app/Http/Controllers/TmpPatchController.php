@@ -34,7 +34,6 @@ class TmpPatchController extends Controller
     // make author
     $author = Author::where('name', 'hackforplay')->first();
     if ($author === null) {
-      return response($author, 200);
       $author = Author::create([ 'name' => 'hackforplay' ]);
     }
 
