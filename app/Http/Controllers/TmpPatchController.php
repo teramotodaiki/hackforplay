@@ -40,9 +40,9 @@ class TmpPatchController extends Controller
     ];
 
     // make author
-    $author = Author::where('name', 'enchant.js')->first();
+    $author = Author::where('name', 'enchant.js-0.8.3')->first();
     if ($author === null) {
-      $author = Author::create([ 'name' => 'enchant.js' ]);
+      $author = Author::create([ 'name' => 'enchant.js-0.8.3' ]);
     }
 
     // make
