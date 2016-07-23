@@ -13,6 +13,52 @@ use DB;
 
 class TmpPatchController extends Controller
 {
+  public function enchantjsModPlug() {
+    $prefix = '/resources/statics/enchant.js-builds-0.8.3/build/';
+    $mods = [
+      // label => source path
+      'enchant' => 'enchant.js',
+      'avatar.enchant' => 'plugins/avatar.enchant.js',
+      'box2d.enchant' => 'plugins/box2d.enchant.js',
+      'collada.gl.enchant' => 'plugins/collada.gl.enchant.js',
+      'extendMap.enchant' => 'plugins/extendMap.enchant.js',
+      'gl.enchant' => 'plugins/gl.enchant.js',
+      'memory.enchant' => 'plugins/memory.enchant.js',
+      'mixing.enchant' => 'plugins/mixing.enchant.js',
+      'mmd.gl.enchant' => 'plugins/mmd.gl.enchant.js',
+      'nineleap.enchant' => 'plugins/nineleap.enchant.js',
+      'physics.gl.enchant' => 'plugins/physics.gl.enchant.js',
+      'primitive.gl.enchant' => 'plugins/primitive.gl.enchant.js',
+      'socket.enchant' => 'plugins/socket.enchant.js',
+      'telepathy.enchant' => 'plugins/telepathy.enchant.js',
+      'tl.enchant' => 'plugins/tl.enchant.js',
+      'twitter.enchant' => 'plugins/twitter.enchant.js',
+      'ui.enchant' => 'plugins/ui.enchant.js',
+      'util.enchant' => 'plugins/util.enchant.js',
+      'widget.enchant' => 'plugins/widget.enchant.js',
+      'wiiu.enchant' => 'plugins/wiiu.enchant.js',
+    ];
+
+    // make author
+    $author = Author::where('name', 'enchant.js')->first();
+    if ($author === null) {
+      $author = Author::create([ 'name' => 'enchant.js' ]);
+    }
+
+    // make
+    foreach ($mods as $key => $value) {
+      $already = $author->plugs->where('label', $key)->first();
+      if ($already !== null) $already->delete();
+
+      $author->plugs()->create([
+        'stage_id' => $this->makeScriptStage(base_path($prefix . $value))->ID,
+        'label' => $key,
+      ]);
+    }
+
+    return response($author->plugs->all(), 200);
+  }
+
   public function hackforplayModPlug() {
     $prefix = '/resources/statics/hackforplay-old/';
     $mods = [
