@@ -364,7 +364,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 				<iframe id="item-embed-iframe" src="<?php echo $embed; ?>" frameborder="0" class="fit"></iframe>
 			</div>
 			<div class="col-xs-12 h4p_publish" style="display:none">
-				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中...">
+				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中..." data-backdrop="false">
 					<ruby>完成<rt>かんせい</rt></ruby>
 					<span class="glyphicon glyphicon-send"></span>
 				</button>
