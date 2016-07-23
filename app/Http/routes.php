@@ -11,6 +11,11 @@
 |
 */
 
+Route::get('patch/hackforplay', 'TmpPatchController@hackforplayModPlug');
+Route::get('patch/enchantjs', 'TmpPatchController@enchantjsModPlug');
+Route::get('patch/enchantjs2', 'TmpPatchController@enchantjsModPlug2');
+Route::get('patch/p5js', 'TmpPatchController@p5jsModPlug');
+
 // React (frontend) App
 Route::get('tutorials', 'DefaultAppController@index');
 Route::get('register', 'DefaultAppController@index');
@@ -90,6 +95,8 @@ Route::group(['middleware' => 'etag', 'prefix' => 'mods'], function()
 Route::group(['prefix' => 'api', 'middleware' => ['auth.old', 'auth']], function()
 {
   Route::resource('projects', 'ProjectController');
+  Route::resource('authors', 'AuthorController');
+  Route::resource('plugs', 'PlugController');
 });
 
 // JSON API
@@ -97,6 +104,14 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth.old']], function()
 {
   Route::resource('stages', 'StageController');
   Route::resource('stages.emojis', 'EmojiController');
+
+  // 互換性維持のための ~project MOD
+  Route::get('mods/~project/{name}/{version}{ext?}', [ 'uses' => 'ModController@showByProject' ])
+  ->where('name', '\w+')
+  ->where('ext', '\.(js)');
+
+  Route::get('mods/{author}/{label}', 'ModController@showByPlug');
+
 });
 
 
