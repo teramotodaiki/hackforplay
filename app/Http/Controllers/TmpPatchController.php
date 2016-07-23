@@ -39,26 +39,27 @@ class TmpPatchController extends Controller
 
     // make
     foreach ($mods as $key => $value) {
-      $code = file_get_contents(base_path($prefix . $value));
       $already = $author->plugs->where('label', $key)->first();
-      if ($already !== null) {
-        $already->delete();
-      }
-      $script = Script::create([ 'RawCode' => $code ]);
-      $stage = Stage::create([
-        'ScriptID' => $script->id,
-        'Title' => $key,
-        'State' => 'private',
-        'NoRestage' => 1,
-      ]);
+      if ($already !== null) $already->delete();
 
       $author->plugs()->create([
-        'stage_id' => $stage->ID,
-        'label' => $key
+        'stage_id' => $this->makeScriptStage(base_path($prefix . $value))->ID,
+        'label' => $key,
       ]);
     }
 
     return response($author->plugs->all(), 200);
+  }
+
+  protected function makeScriptStage($basepath)
+  {
+    return Stage::create([
+      'ScriptID' => Script::create([
+          'RawCode' => file_get_contents($basepath)
+        ])->id,
+      'State' => 'private',
+      'NoRestage' => 1,
+    ]);
   }
 
   public function clearable()
