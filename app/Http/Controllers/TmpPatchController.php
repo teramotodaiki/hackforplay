@@ -26,6 +26,20 @@ class TmpPatchController extends Controller
       ]
     );
 
+    // latest, versioning and addons
+    $this->makeModPlug(
+      'p5-0.5.2',
+      '/resources/statics/p5.js-0.5.2/',
+      [
+        // label => source path
+        'p5' => 'p5.js',
+        'p5.dom' => 'addons/p5.dom.js',
+        'p5.dom.min' => 'addons/p5.dom.min.js',
+        'p5.sound' => 'addons/p5.sound.js',
+        'p5.sound.min' => 'addons/p5.sound.min.js',
+      ]
+    );
+
     return response([], 200);
 
   }
