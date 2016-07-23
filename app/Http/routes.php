@@ -102,6 +102,12 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth.old']], function()
 {
   Route::resource('stages', 'StageController');
   Route::resource('stages.emojis', 'EmojiController');
+
+  // 互換性維持のための ~project MOD
+  Route::get('mods/~project/{name}/{version}{ext?}', [ 'uses' => 'ModController@showByProject' ])
+  ->where('name', '\w+')
+  ->where('ext', '\.(js)');
+
 });
 
 
