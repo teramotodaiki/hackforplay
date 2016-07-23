@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('patch/hackforplay', 'TmpPatchController@hackforplayModPlug');
+
 // React (frontend) App
 Route::get('tutorials', 'DefaultAppController@index');
 Route::get('register', 'DefaultAppController@index');
