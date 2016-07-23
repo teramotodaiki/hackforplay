@@ -13,6 +13,22 @@ use DB;
 
 class TmpPatchController extends Controller
 {
+
+  public function enchantjsModPlug2() {
+
+    $this->makeModPlug(
+      'enchantjs',
+      '/resources/statics/enchant.js-builds-0.8.3/build/',
+      [
+        // label => source path
+        'enchant' => 'enchant.js',
+        'ui.enchant' => 'plugins/ui.enchant.js',
+      ]
+    );
+
+    return response([], 200);
+  }
+
   public function enchantjsModPlug() {
 
     $this->makeModPlug(

@@ -13,6 +13,7 @@
 
 Route::get('patch/hackforplay', 'TmpPatchController@hackforplayModPlug');
 Route::get('patch/enchantjs', 'TmpPatchController@enchantjsModPlug');
+Route::get('patch/enchantjs2', 'TmpPatchController@enchantjsModPlug2');
 
 // React (frontend) App
 Route::get('tutorials', 'DefaultAppController@index');
