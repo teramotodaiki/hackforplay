@@ -11,11 +11,6 @@
 |
 */
 
-Route::get('patch/hackforplay', 'TmpPatchController@hackforplayModPlug');
-Route::get('patch/enchantjs', 'TmpPatchController@enchantjsModPlug');
-Route::get('patch/enchantjs2', 'TmpPatchController@enchantjsModPlug2');
-Route::get('patch/p5js', 'TmpPatchController@p5jsModPlug');
-
 // React (frontend) App
 Route::get('tutorials', 'DefaultAppController@index');
 Route::get('register', 'DefaultAppController@index');
