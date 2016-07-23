@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Project;
 use App\Script;
 use App\Mod;
+use App\Author;
+use App\Plug;
 
 class ModController extends Controller
 {
@@ -41,6 +43,31 @@ class ModController extends Controller
     {
         //
     }
+
+    public function showByPlug($author, $label)
+    {
+      $plug = Plug::where([
+        'author_id' => Author::where('name', $author)->firstOrFail()->id,
+        'label' => $label,
+      ])->firstOrFail();
+
+      if (!$plug->is_used)
+        $plug->update([ 'is_used' => 1 ]);
+
+      // ImplicitMod
+      $require = $plug->stage->ImplicitMod ?
+      "require('{$plug->stage->ImplicitMod}');" :
+      "";
+
+      $result = implode("\n", [
+        "define(function (require, exports, module) { $require",
+        $plug->stage->script->RawCode,
+        '});'
+      ]);
+
+      return response($result, 200);
+    }
+
 
     function versioningConditions($version)
     {
