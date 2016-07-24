@@ -3,6 +3,9 @@ import React, { Component, PropTypes } from 'react';
 import { AppBar, IconMenu, MenuItem, Divider, IconButton, FontIcon, FlatButton, Drawer } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
+
+import { getAuthUser } from '../actions/';
 
 const statics = {
   dockMenu: [
@@ -65,12 +68,19 @@ class Header extends Component {
 
     this.state = {
       open: !!props.openImmediately,
+      user: null,
     };
   }
 
+  componentDidMount() {
+    const { dispatch } = this.props;
+
+    dispatch(getAuthUser())
+    .then((user) => this.setState({ user }));
+  }
+
   render() {
-    const meta = document.querySelector('meta[name="login-user-id"]');
-    const user_id = meta ? meta.getAttribute('content') : null;
+    const { user } = this.state;
 
     const affix = this.props.affix === undefined || this.props.affix;
 
@@ -84,7 +94,7 @@ class Header extends Component {
           style={style}
           title={this.props.title}
           onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })}
-          iconElementRight={user_id ? (
+          iconElementRight={user ? (
             <IconMenu
               iconButtonElement={
                 <IconButton>
@@ -121,7 +131,7 @@ class Header extends Component {
             title={this.props.title}
             onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })} />
             {statics.dockMenu.filter((item) => {
-              return !item.needAuth || user_id;
+              return !item.needAuth || user;
             }).map((item) => (
             <MenuItem
               key={item.text}
@@ -147,4 +157,8 @@ Header.contextTypes = {
   muiTheme: PropTypes.object.isRequired,
 };
 
-export default Header;
+const mapStateToProps = (state) => {
+  return Object.assign({}, state);
+};
+
+export default connect(mapStateToProps)(Header);
