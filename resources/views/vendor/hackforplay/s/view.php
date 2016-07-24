@@ -74,7 +74,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/fold/foldgutter.js" type="text/javascript"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/fold/brace-fold.js" type="text/javascript"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/comment/comment.js" type="text/javascript"></script>
-	<script src="lib/jshint.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jshint/2.9.2/jshint.min.js" type="text/javascript"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/lint/lint.js" type="text/javascript"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/lint/javascript-lint.js" type="text/javascript"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/hint/show-hint.js" charset="utf-8"></script>
