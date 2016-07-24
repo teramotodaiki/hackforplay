@@ -116,7 +116,7 @@ class StageController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $stage = Stage::findOrFail($id);
+      $stage = Stage::with('project')->findOrFail($id);
       if ($request->user()->ID != $stage->UserID) {
         return response([ 'message' => 'cant_update_stage' ], 200);
       }
