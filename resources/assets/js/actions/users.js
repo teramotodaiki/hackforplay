@@ -16,6 +16,21 @@ export const fetchUser = (id) => {
         dispatch({ type: ADD_USER, user: result.body });
         return result;
       });
-      
+
+  };
+};
+
+export const getAuthUser = () => {
+  return (dispatch, getState) => {
+
+    const meta = document.querySelector('meta[name="login-user-id"]');
+    const user_id = meta ? meta.getAttribute('content') : null;
+    if (!user_id) return Promise.reject();
+
+    return getState().users[user_id] ?
+      Promise.resolve(getState().users[user_id]) :
+      dispatch(fetchUser(user_id))
+      .then((result) => result.body);
+
   };
 };
