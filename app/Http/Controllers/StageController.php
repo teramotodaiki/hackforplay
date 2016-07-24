@@ -92,7 +92,8 @@ class StageController extends Controller
      */
     public function show($id)
     {
-        //
+      $stage = Stage::with('project')->findOrFail($id);
+      return response($stage, 200);
     }
 
     /**
