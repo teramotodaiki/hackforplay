@@ -7,6 +7,17 @@ const API = {
 };
 
 
+export const ADD_PROJECT = 'ADD_PROJECT';
+export const addProject = (project) => {
+  return { type: ADD_PROJECT, project };
+};
+
+export const ADD_STAGE = 'ADD_STAGE';
+export const addStage = (stage) => {
+  return { type: ADD_STAGE, stage };
+};
+
+
 export const ADD_CHANNEL = 'ADD_CHANNEL';
 
 export const addChannel = (channel) => {
