@@ -36,7 +36,7 @@ class StageController extends Controller
     {
       $stages =
       Stage::orderBy('Published', 'desc')
-      ->with('user')
+      ->with('user', 'project')
       ->where('State', 'published');
 
       if (isset($query['is_clearable']) && !empty($query['is_clearable'])) {
