@@ -49,7 +49,7 @@ export const projects = (state = {}, action) => {
 const composedStages = ({ project = {}, array = [], stage = {} }) => {
   return Object.assign({},
    'stages' in project ? project.stages : {},
-   getKeyValueObject.apply(null, array),
+   array ? getKeyValueObject.apply(null, array) : {},
    'id' in stage ? { [stage.id]: stage } : {}
   );
 }
