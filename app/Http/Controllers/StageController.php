@@ -36,7 +36,7 @@ class StageController extends Controller
     {
       $stages =
       Stage::orderBy('Published', 'desc')
-      ->with('user')
+      ->with('user', 'project')
       ->where('State', 'published');
 
       if (isset($query['is_clearable']) && !empty($query['is_clearable'])) {
@@ -92,7 +92,8 @@ class StageController extends Controller
      */
     public function show($id)
     {
-        //
+      $stage = Stage::with('project')->findOrFail($id);
+      return response($stage, 200);
     }
 
     /**
@@ -115,7 +116,7 @@ class StageController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $stage = Stage::findOrFail($id);
+      $stage = Stage::with('project')->findOrFail($id);
       if ($request->user()->ID != $stage->UserID) {
         return response([ 'message' => 'cant_update_stage' ], 200);
       }

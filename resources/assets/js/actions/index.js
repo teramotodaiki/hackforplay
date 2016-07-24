@@ -1,10 +1,11 @@
 import equal from 'deep-equal';
-import superagentPromisePlugin from 'superagent-promise-plugin';
-const request = superagentPromisePlugin.patch(require('superagent'));
+import request from './request';
 
 const API = {
   github: 'https://api.github.com'
 };
+
+export * from './projects';
 
 
 export const ADD_CHANNEL = 'ADD_CHANNEL';
