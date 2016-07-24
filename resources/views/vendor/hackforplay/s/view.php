@@ -59,35 +59,35 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 	<title><?php echo $title; ?> - HackforPlay</title>
 	<?php require_once '../library.php' ?>
 	<!-- HackforPlay RePlay -->
-	<script src="editor/lib/codemirror.js" type="text/javascript"></script>
-	<script src="editor/mode/javascript/javascript.js" type="text/javascript"></script>
-	<script src="editor/addon/edit/matchbrackets.js" type="text/javascript"></script>
-	<script src="editor/addon/edit/closebrackets.js" type="text/javascript"></script>
-	<script src="editor/addon/dialog/dialog.js" type="text/javascript"></script>
-	<script src="editor/addon/search/searchcursor.js" type="text/javascript"></script>
-	<script src="editor/addon/search/search.js" type="text/javascript"></script>
-	<script src="editor/keymap/sublime.js" type="text/javascript"></script>
-	<script src="editor/keymap/emacs.js" type="text/javascript"></script>
-	<script src="editor/keymap/vim.js" type="text/javascript"></script>
-	<script src="editor/addon/scroll/simplescrollbars.js" type="text/javascript"></script>
-	<script src="editor/addon/fold/foldcode.js" type="text/javascript"></script>
-	<script src="editor/addon/fold/foldgutter.js" type="text/javascript"></script>
-	<script src="editor/addon/fold/brace-fold.js" type="text/javascript"></script>
-	<script src="editor/addon/comment/comment.js" type="text/javascript"></script>
-	<script src="lib/jshint.js" type="text/javascript"></script>
-	<script src="editor/addon/lint/lint.js" type="text/javascript"></script>
-	<script src="editor/addon/lint/javascript-lint.js" type="text/javascript"></script>
-	<script src="editor/addon/hint/show-hint.js" charset="utf-8"></script>
-	<script src="editor/addon/hint/javascript-hint.js" charset="utf-8"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/mode/javascript/javascript.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/edit/matchbrackets.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/edit/closebrackets.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/dialog/dialog.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/search/searchcursor.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/search/search.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/keymap/sublime.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/keymap/emacs.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/keymap/vim.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/scroll/simplescrollbars.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/fold/foldcode.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/fold/foldgutter.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/fold/brace-fold.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/comment/comment.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jshint/2.9.2/jshint.min.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/lint/lint.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/lint/javascript-lint.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/hint/show-hint.js" charset="utf-8"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/hint/javascript-hint.js" charset="utf-8"></script>
 	<script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js" type="text/javascript"></script>
 	<script src="https://www.youtube.com/iframe_api" type="text/javascript"></script>
 	<script src="//cdn.jsdelivr.net/emojione/2.2.5/lib/js/emojione.min.js"></script>
-	<link rel="stylesheet" href="editor/lib/codemirror.css">
-	<link rel="stylesheet" href="editor/addon/dialog/dialog.css">
-	<link rel="stylesheet" href="editor/addon/scroll/simplescrollbars.css">
-	<link rel="stylesheet" href="editor/addon/fold/foldgutter.css">
-	<link rel="stylesheet" href="editor/addon/lint/lint.css">
-	<link rel="stylesheet" href="editor/addon/hint/show-hint.css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/dialog/dialog.css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/scroll/simplescrollbars.css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/fold/foldgutter.css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/lint/lint.css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/hint/show-hint.css">
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/emojione/2.2.5/assets/css/emojione.min.css"/>
 	<link rel="stylesheet" href="../css/cmcolor.css">
 	<style type="text/css" media="screen">
@@ -227,11 +227,6 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 									<?php endforeach; ?>
 								</div>
 								<?php endif; ?>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" name="minor-update">前のバージョンと互換性があるMODとして投稿する場合はチェックしてください
-									</label>
-								</div>
 				    </div>
 				    <div class="modal-footer">
 		        		<p class="alert alert-warning">
@@ -364,7 +359,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 				<iframe id="item-embed-iframe" src="<?php echo $embed; ?>" frameborder="0" class="fit"></iframe>
 			</div>
 			<div class="col-xs-12 h4p_publish" style="display:none">
-				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中...">
+				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中..." data-backdrop="false">
 					<ruby>完成<rt>かんせい</rt></ruby>
 					<span class="glyphicon glyphicon-send"></span>
 				</button>

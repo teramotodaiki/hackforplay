@@ -1357,7 +1357,7 @@ $(function(){
 				publish: true,
 				stage_info: JSON.stringify(stage_info),
 				team_id: $('#inputModal input[name="input-team"]:checked').val() || null,
-				minor_update: $('#inputModal input[name="minor-update"]').prop('checked'),
+				// minor_update: $('#inputModal input[name="minor-update"]').prop('checked'),
 				'attendance-token': sessionStorage.getItem('attendance-token')
 			} , function(data, textStatus, xhr) {
 				$('.h4p_publish button').button('reset');
