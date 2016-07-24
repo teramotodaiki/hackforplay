@@ -30,6 +30,19 @@ export const fetchProject = (id) => {
   }
 };
 
+export const fetchStage = (id) => {
+  return (dispatch) => {
+
+    return request
+      .get('/api/stages/' + id)
+      .then((result) => {
+        dispatch({ type: ADD_STAGE, stage: result.body });
+        return result;
+      });
+
+  }
+};
+
 
 export const ADD_CHANNEL = 'ADD_CHANNEL';
 
