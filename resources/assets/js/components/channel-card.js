@@ -17,12 +17,15 @@ export default ({ ID, Thumbnail, user, description }) => {
     };
   };
 
+  const mypage = user && 'id' in user ? `/m?id=${user.ID}` : '';
+  const nickname = user && 'nickname' in user ? user.Nickname : '';
+
   return (
     <Col xs={6} sm={4} md={3}>
       <Panel>
         <div style={thumbnailStyle}></div>
         <p style={fixedHeight(1)}>
-          Owner: <a href={`/m?id=${user.ID}`}>{user.Nickname}</a>
+          Owner: <a href={mypage}>{nickname}</a>
         </p>
         <p style={fixedHeight(2)} >{description}</p>
         <Link to={`/channels/${ID}/watch`}>
