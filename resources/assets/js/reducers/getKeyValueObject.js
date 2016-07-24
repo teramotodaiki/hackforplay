@@ -7,9 +7,12 @@
 
 export default (...args) => {
   const key = 'id';
-  return Object.assign.apply(null, args.filter((item) => {
+
+  const keyValues = args.filter((item) => {
     return typeof item === 'object' && key in item;
   }).map((item) => {
     return { [item[key]]: item };
-  }));
+  });
+
+  return Object.assign.apply(null, [{}].concat(keyValues));
 };
