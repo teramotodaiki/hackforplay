@@ -6,8 +6,21 @@
 	<title>editor</title>
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.css">
 	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/scroll/simplescrollbars.css">
-	<link rel="stylesheet" href="../../css/cmcolor.css">
-	<style type="text/css" media="screen">
+	<style media="screen">
+	.CodeMirror { font-family: Consolas, 'Courier New', Courier, Monaco, monospace; }
+	.cm-s-default .cm-keyword { color: #ce3f5c; }
+	.cm-s-default .cm-number { color: #856fff; }
+	.cm-s-default .cm-property { color: #4da4e3; }
+	.cm-s-default .cm-operator {color: #f66; }
+	.cm-s-default .cm-def { color: #ff9313; }
+	.cm-s-default .cm-variable-2 { color: #ff9313; }
+	.cm-s-default .cm-comment { color: #063; }
+	.cm-s-default .cm-string { color: #be5404; }
+	.cm-s-default .cm-string-2 { color: #280; }
+	/* Prevent an image due to render on Safari */
+	.CodeMirror-scroll pre {
+		-webkit-user-drag: element;
+	}
 	.CodeMirror { background-color: rgba(0,0,0,0); top: 48px; left: 20px; font-size: 16px; }
 	.CodeMirror-gutters { background-color: rgba(0,0,0,0); border: none; }
 	body{ margin: 0; width: 480px; height: 320px; }
@@ -18,13 +31,13 @@
 	.focused .CodeMirror-simplescroll-horizontal,
 	.focused .CodeMirror-simplescroll-vertical { opacity: 1; }
 	</style>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.js" type="text/javascript"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/mode/javascript/javascript.js" type="text/javascript"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/edit/closebrackets.js" type="text/javascript"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/scroll/simplescrollbars.js" type="text/javascript"></script>
-	<script src="/s/editor/editor.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
+	<script async src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.js" type="text/javascript"></script>
+	<script async src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/mode/javascript/javascript.js" type="text/javascript"></script>
+	<script async src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/edit/closebrackets.js" type="text/javascript"></script>
+	<script async src="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/addon/scroll/simplescrollbars.js" type="text/javascript"></script>
+	<script async src="./editor.js" charset="utf-8"></script>
 	<textarea id="editor_js" row="30" cols="50"></textarea>
 	<input class="phantom" type="image" src="/s/editor/img/button_z_run.png" onclick="run();" style="left: 13px; top: 13px;">
 	<input type="image" src="/s/editor/img/button_x.png" onclick="cls();" style="left:456px; top: 6px; width: 16px; height: 16px;">
