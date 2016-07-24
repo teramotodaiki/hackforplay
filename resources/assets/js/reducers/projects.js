@@ -8,6 +8,8 @@
  *  {stage}
 */
 
+import { ADD_PROJECT, ADD_STAGE } from '../actions/';
+
 // NOTE: DON'T access [stage.project], because it will not update
 export const projects = (state = {}, action) => {
   switch (action.type) {
