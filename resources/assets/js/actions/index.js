@@ -7,6 +7,8 @@ const API = {
 
 export * from './projects';
 
+export * from './users';
+
 
 export const ADD_CHANNEL = 'ADD_CHANNEL';
 
