@@ -9,6 +9,8 @@
 */
 
 import { ADD_PROJECT, ADD_STAGE } from '../actions/';
+import getKeyValueObject from './getKeyValueObject';
+
 
 // NOTE: DON'T access [stage.project], because it will not update
 export const projects = (state = {}, action) => {
