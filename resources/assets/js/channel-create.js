@@ -1,13 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { FormGroup, FormControl, Checkbox, HelpBlock } from 'react-bootstrap';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import baseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import { Section, CardSection, Arrow } from './components/section';
 import { fetchMyTeams, postChannel } from './actions/';
-import Header from './components/header';
 
 const contains = (text, range) => { // Contains check.
   const len = text.length;
@@ -97,10 +93,6 @@ class ChannelCreate extends Component {
     this.redirect = (...args) => router.push.apply(router, args);
   }
 
-  getChildContext() {
-    return { muiTheme: getMuiTheme(baseTheme) };
-  }
-
   componentDidMount() {
     const { dispatch } = this.props;
 
@@ -132,25 +124,19 @@ class ChannelCreate extends Component {
     const { myTeams, channel, isLoading, errors } = this.state;
 
     return (
-      <MuiThemeProvider>
-        <div>
-          <Header title="Create New Channel" affix={false} />
-          <Landing {...statics.landing} />
-          <Team {...statics.team} myTeams={myTeams} channel={channel} update={this.updateChannel} />
-          <Description {...statics.description} channel={channel} update={this.updateChannel} />
-          <Private {...statics.private} channel={channel} update={this.updateChannel} create={this.createChannel} />
-          <Result {...statics.result} channel={channel} errors={errors} isLoading={isLoading} />
-        </div>
-      </MuiThemeProvider>
+      <div>
+        <Landing {...statics.landing} />
+        <Team {...statics.team} myTeams={myTeams} channel={channel} update={this.updateChannel} />
+        <Description {...statics.description} channel={channel} update={this.updateChannel} />
+        <Private {...statics.private} channel={channel} update={this.updateChannel} create={this.createChannel} />
+        <Result {...statics.result} channel={channel} errors={errors} isLoading={isLoading} />
+      </div>
     );
   }
 }
 
 ChannelCreate.contextTypes = {
   router: PropTypes.object.isRequired
-};
-ChannelCreate.childContextTypes = {
-  muiTheme: PropTypes.object.isRequired,
 };
 ChannelCreate.propTypes = {
 };
