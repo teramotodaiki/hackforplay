@@ -61,8 +61,9 @@ class EmojiController extends Controller
       ]);
 
       $stage = Stage::findOrFail($stage);
+      $thrown = $stage->emojis->where('user_id', $request->user()->ID);
 
-      if ($stage->emojis->count() >= $this->maxEmojiNum) {
+      if ($thrown->count() >= $this->maxEmojiNum) {
         return response([
           'message' => 'emoji_is_full',
         ], 200);

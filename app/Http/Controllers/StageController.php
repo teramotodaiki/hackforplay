@@ -11,6 +11,10 @@ use DB;
 
 class StageController extends Controller
 {
+    public function __construct()
+    {
+      $this->middleware('auth', ['only' => ['update']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -32,7 +36,7 @@ class StageController extends Controller
     {
       $stages =
       Stage::orderBy('Published', 'desc')
-      ->with('user')
+      ->with('user', 'project')
       ->where('State', 'published');
 
       if (isset($query['is_clearable']) && !empty($query['is_clearable'])) {
@@ -88,7 +92,8 @@ class StageController extends Controller
      */
     public function show($id)
     {
-        //
+      $stage = Stage::with('project')->findOrFail($id);
+      return response($stage, 200);
     }
 
     /**
@@ -111,7 +116,27 @@ class StageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $stage = Stage::with('project')->findOrFail($id);
+      if ($request->user()->ID != $stage->UserID) {
+        return response([ 'message' => 'cant_update_stage' ], 200);
+      }
+
+      $transitions = [
+      	'published'  => ['private'],
+      	'private'    => ['published'],
+      	'judging'    => ['pending', 'rejected'],
+      	'pending'    => ['judging']
+      ];
+
+      if ($request->has('state') &&
+          !in_array($request->input('state'), $transitions[$stage->State])) {
+        return response([ 'message' => 'state_not_allowed' ], 200);
+      }
+
+      $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
+      $stage->update($camel);
+
+      return response($stage, 200);
     }
 
     /**

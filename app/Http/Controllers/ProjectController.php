@@ -109,9 +109,16 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+      $project = Project::findOrFail($id);
+
+      $user = $request->user();
+      if (!$project->isOwner($user)) {
+        return response([ 'message' => 'cant_show_project' ], 200);
+      }
+
+      return response($project, 200);
     }
 
     /**
