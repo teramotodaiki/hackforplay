@@ -2,8 +2,8 @@ import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
-import { Section } from './components/section';
-import { fetchChannel, fetchTeam, postBell } from './actions/';
+import { Section } from '../components/section';
+import { fetchChannel, fetchTeam, postBell } from '../actions/';
 
 class BellCreate extends React.Component {
   constructor(props, { router }) {

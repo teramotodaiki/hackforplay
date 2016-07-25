@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react';
 import { Link as ScrollLink, scroller } from "react-scroll";
-import Confirm from "./confirm";
+import Confirm from "../confirm";
 import classNames from "classNames";
-import request from "./promised-xhr.js";
+import request from "../promised-xhr.js";
 import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, ControlLabel } from "react-bootstrap";
 
-import Merger from "./merger";
-import { Section, CardSection, Arrow } from "./components/section";
+import Merger from "../merger";
+import { Section, CardSection, Arrow } from "../components/section";
 
 const contains = (text, range) => { // Contains check.
   const len = text.length;

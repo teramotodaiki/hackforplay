@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
-import ChannelCard from './components/channel-card';
-import { fetchChannels } from './actions/';
+import ChannelCard from '../components/channel-card';
+import { fetchChannels } from '../actions/';
 
 class ChannelList extends Component {
   constructor(props) {

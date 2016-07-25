@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { FormGroup, FormControl, Checkbox, HelpBlock } from 'react-bootstrap';
 
-import { Section, CardSection, Arrow } from './components/section';
-import { fetchMyTeams, postChannel } from './actions/';
+import { Section, CardSection, Arrow } from '../components/section';
+import { fetchMyTeams, postChannel } from '../actions/';
 
 const contains = (text, range) => { // Contains check.
   const len = text.length;

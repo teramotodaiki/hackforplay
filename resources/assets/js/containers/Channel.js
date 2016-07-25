@@ -6,12 +6,12 @@ import { Row, Col } from "react-bootstrap";
 import { Form, InputGroup, FormControl, Button } from "react-bootstrap";
 import Pusher from 'pusher-js';
 
-import IframeEmbed from './iframe-embed';
-import Timeline from './components/timeline';
-import ActionBar from './components/action-bar';
-import ChannelMenu from './components/channel-menu';
-import { Section } from './components/section';
-import { addChat, postChat, fetchChannel, createGist, fetchQcard, updateChannel } from './actions/';
+import IframeEmbed from '../iframe-embed';
+import Timeline from '../components/timeline';
+import ActionBar from '../components/action-bar';
+import ChannelMenu from '../components/channel-menu';
+import { Section } from '../components/section';
+import { addChat, postChat, fetchChannel, createGist, fetchQcard, updateChannel } from '../actions/';
 
 class Channel extends Component {
 
