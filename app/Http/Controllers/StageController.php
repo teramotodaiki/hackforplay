@@ -122,9 +122,11 @@ class StageController extends Controller
       }
 
       $transitions = [
-      	'published'  => ['private'],
-      	'private'    => ['published'],
-      	'judging'    => ['pending'],
+        'published' => ['private'],
+        'private'   => ['published'],
+        'judging'   => ['pending'],
+        'pending'   => ['judging'],
+        'rejected'  => [],
       ];
 
       if ($request->has('state') &&
