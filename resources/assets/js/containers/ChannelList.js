@@ -1,13 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import baseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import ChannelCard from './components/channel-card';
-import { fetchChannels } from './actions/';
-import Header from './components/header';
+import ChannelCard from '../components/channel-card';
+import { fetchChannels } from '../actions/';
 
 class ChannelList extends Component {
   constructor(props) {
@@ -28,10 +24,6 @@ class ChannelList extends Component {
     if (Object.keys(channels).length < 15) {
       this.fetchNextPage();
     }
-  }
-
-  getChildContext() {
-    return { muiTheme: getMuiTheme(baseTheme) };
   }
 
   fetchNextPage() {
@@ -57,7 +49,7 @@ class ChannelList extends Component {
 
   render() {
 
-    const { channels } = this.props;
+    const { channels, containerStyle } = this.props;
     const { nextPage, isLoading } = this.state;
 
     const sorted = Object.keys(channels)
@@ -85,13 +77,10 @@ class ChannelList extends Component {
     ) : null;
 
     return (
-      <MuiThemeProvider>
-        <div>
-          <Header title="Channels" />
-          {sorted}
-          {next}
-        </div>
-      </MuiThemeProvider>
+      <div style={this.props.containerStyle}>
+        {sorted}
+        {next}
+      </div>
     );
   }
 }
@@ -99,7 +88,7 @@ class ChannelList extends Component {
 ChannelList.propTypes = {
 };
 
-ChannelList.childContextTypes = {
+ChannelList.contextTypes = {
   muiTheme: PropTypes.object.isRequired,
 };
 

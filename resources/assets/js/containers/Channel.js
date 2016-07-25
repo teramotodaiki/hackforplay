@@ -5,17 +5,13 @@ import { connect } from 'react-redux';
 import { Row, Col } from "react-bootstrap";
 import { Form, InputGroup, FormControl, Button } from "react-bootstrap";
 import Pusher from 'pusher-js';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import baseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import IframeEmbed from './iframe-embed';
-import Timeline from './components/timeline';
-import ActionBar from './components/action-bar';
-import ChannelMenu from './components/channel-menu';
-import { Section } from './components/section';
-import { addChat, postChat, fetchChannel, createGist, fetchQcard, updateChannel } from './actions/';
-import Header from './components/header';
+import IframeEmbed from '../iframe-embed';
+import Timeline from '../components/timeline';
+import ActionBar from '../components/action-bar';
+import ChannelMenu from '../components/channel-menu';
+import { Section } from '../components/section';
+import { addChat, postChat, fetchChannel, createGist, fetchQcard, updateChannel } from '../actions/';
 
 class Channel extends Component {
 
@@ -46,10 +42,6 @@ class Channel extends Component {
     this.reload = this.reload.bind(this);
     this.createGist = this.createGist.bind(this);
     this.archive = this.archive.bind(this);
-  }
-
-  getChildContext() {
-    return { muiTheme: getMuiTheme(baseTheme) };
   }
 
   postChat (message) {
@@ -103,16 +95,16 @@ class Channel extends Component {
 
     if (!channel) {
       return (
-        <Section name="loading">
+        <Section name="loading" style={this.props.containerStyle}>
           <span className="fa fa-spinner fa-pulse fa-10x fa-fw"></span>
         </Section>
       );
     }
 
-    const containerStyle = {
-      height: window.innerHeight,
+    const containerStyle = Object.assign({}, this.props.containerStyle, {
       backgroundColor: +channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
-    };
+      marginTop: 0,
+    });
 
     const leftStyle = { 'padding': '0' };
     const rightStyle = {
@@ -125,50 +117,47 @@ class Channel extends Component {
       backgroundColor: 'white',
     };
     const timelineStyle = {
-      height: window.innerHeight - getMuiTheme(baseTheme).appBar.height - 2,
+      height: window.innerHeight - this.context.muiTheme.appBar.height - 2,
     };
 
     return (
-      <MuiThemeProvider>
-        <div style={containerStyle}>
-          <Header title="Channel" />
-          <Col lg={9} md={8} sm={7} xs={12} style={leftStyle}>
-            <IframeEmbed
-              ref={(embed) => this.iframe = embed ? embed.iframe : null}
-              type="project"
-              token={channel.ProjectToken}
-              visibleFocus
-              />
-            <ChannelMenu
-              channel={channel}
-              reload={this.reload}
-              createGist={this.createGist}
-              archive={this.archive}
-              style={{ backgroundColor: 'white' }}
-              isOwner={+this.loginUserId === +channel.UserID}
-              />
-          </Col>
-          <Col lg={3} md={4} sm={5} xs={11} style={rightStyle}>
-            <Timeline
-              chats={channel.chats || []}
-              style={timelineStyle}
-              />
-            <ActionBar
-              postChat={this.postChat.bind(this)}
-              style={actionBarStyle}
-              disabled={!!+channel.is_archived}
-              />
-          </Col>
-        </div>
-      </MuiThemeProvider>
+      <div style={containerStyle}>
+        <Col lg={9} md={8} sm={7} xs={12} style={leftStyle}>
+          <IframeEmbed
+            ref={(embed) => this.iframe = embed ? embed.iframe : null}
+            type="project"
+            token={channel.ProjectToken}
+            visibleFocus
+            />
+          <ChannelMenu
+            channel={channel}
+            reload={this.reload}
+            createGist={this.createGist}
+            archive={this.archive}
+            style={{ backgroundColor: 'white' }}
+            isOwner={+this.loginUserId === +channel.UserID}
+            />
+        </Col>
+        <Col lg={3} md={4} sm={5} xs={11} style={rightStyle}>
+          <Timeline
+            chats={channel.chats || []}
+            style={timelineStyle}
+            />
+          <ActionBar
+            postChat={this.postChat.bind(this)}
+            style={actionBarStyle}
+            disabled={!!+channel.is_archived}
+            />
+        </Col>
+      </div>
     );
   }
 
 }
 
-Channel.childContextTypes = {
-  muiTheme: PropTypes.object.isRequired,
-};
+Channel.contextTypes = {
+  muiTheme: PropTypes.object.isRequired
+}
 
 const mapStateToProps = (state) => {
   return Object.assign({}, state);

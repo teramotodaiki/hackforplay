@@ -2,8 +2,8 @@ import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
-import { Section } from './components/section';
-import { fetchChannel, fetchTeam, postBell } from './actions/';
+import { Section } from '../components/section';
+import { fetchChannel, fetchTeam, postBell } from '../actions/';
 
 class BellCreate extends React.Component {
   constructor(props, { router }) {
@@ -67,7 +67,7 @@ class BellCreate extends React.Component {
     ) : null;
 
     return (
-      <Section name="bell">
+      <Section name="bell" style={this.props.containerStyle}>
         <div></div>
         <div></div>
         <div>
@@ -81,7 +81,8 @@ class BellCreate extends React.Component {
 }
 
 BellCreate.contextTypes = {
-  router: PropTypes.object.isRequired
+  router: PropTypes.object.isRequired,
+  muiTheme: PropTypes.object.isRequired,
 };
 BellCreate.propTypes = {
 };
