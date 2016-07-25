@@ -25,8 +25,7 @@ export default class Main extends Component {
 
   getChildContext() {
     return {
-      muiTheme: muiTheme,
-      containerStyle: this.state.containerStyle
+      muiTheme: muiTheme
     };
   }
 
@@ -47,7 +46,9 @@ export default class Main extends Component {
         <div>
           <Header onToggleDrawer={this.onToggleDrawer} />
           <div style={Object.assign({}, this.state.containerStyle)}>
-            {this.props.children}
+            {this.props.children && React.cloneElement(this.props.children, {
+              containerStyle: this.state.containerStyle
+            })}
           </div>
         </div>
       </MuiThemeProvider>
@@ -60,7 +61,6 @@ Main.propTypes = {
 
 Main.childContextTypes = {
   muiTheme: PropTypes.object.isRequired,
-  containerStyle: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
