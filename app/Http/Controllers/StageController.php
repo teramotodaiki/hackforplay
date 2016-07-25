@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Stage;
 use App\Http\Middleware\SnakeCaseMiddleware;
 use DB;
+use Carbon\Carbon;
 
 class StageController extends Controller
 {
@@ -136,6 +137,44 @@ class StageController extends Controller
 
       $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
       $stage->update($camel);
+
+      return response($stage, 200);
+    }
+
+    /**
+     * Update stage.state by team administrator
+    */
+    public function judge(Request $request, $id)
+    {
+      $this->validate($request, [
+        'state' => 'required|in:published,rejected'
+      ]);
+
+      $stage = Stage::with('project')->findOrFail($id);
+      if ($stage->team === null || !$request->user()->isConnected($stage->team)) {
+        return response([ 'message' => 'team_not_connected' ], 200);
+      }
+
+      $transitions = [
+        'published' => ['rejected'],
+        'private'   => ['rejected'],
+        'judging'   => ['published', 'rejected'],
+        'pending'   => [],
+        'rejected'  => [],
+      ];
+
+      if (!in_array($request->input('state'), $transitions[$stage->State])) {
+        return response([ 'message' => 'state_not_allowed' ], 200);
+      }
+
+      $stage->State = $request->input('state');
+      if ($request->has('reject_notice')) {
+        $stage->RejectNotice = $request->input('reject_notice');
+      }
+      if ($stage->State === 'published') {
+        $stage->Published = Carbon::now()->toDateTimeString();
+      }
+      $stage->save();
 
       return response($stage, 200);
     }
