@@ -34,8 +34,8 @@ export default class Main extends Component {
     const drawerWidth = _isDrawerOpened ? muiTheme.drawer.width : 0;
 
     const containerStyle = {
-      width: window.innerWidth - drawerWidth,
-      marginLeft: drawerWidth,
+      width: window.innerWidth,
+      marginTop: 15,
     };
 
     return (
