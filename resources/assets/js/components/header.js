@@ -62,6 +62,8 @@ const statics = {
   ]
 };
 
+var _lastOpenedState = null;
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -77,6 +79,13 @@ class Header extends Component {
 
     dispatch(getAuthUser())
     .then((user) => this.setState({ user }));
+  }
+
+  componentDidUpdate() {
+    if (_lastOpenedState !== this.state.open && this.props.onToggleDrawer) {
+      this.props.onToggleDrawer(this.state.open);
+    }
+    _lastOpenedState = this.state.open;
   }
 
   render() {
@@ -151,6 +160,10 @@ class Header extends Component {
       </div>
     );
   }
+}
+
+Header.propTypes = {
+  onToggleDrawer: PropTypes.function,
 }
 
 Header.contextTypes = {
