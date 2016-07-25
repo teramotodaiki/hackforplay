@@ -16,6 +16,8 @@ import ChannelCreate from './channel-create';
 import BellCreate from './bell-create';
 import News from './news';
 
+import Main from './Main';
+
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -43,8 +45,8 @@ render((
 
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/" component={App}>
-        <Route path="tutorials" component={Tutorials}></Route>
+      <Route path="tutorials" component={Tutorials}></Route>
+      <Route path="/" component={Main}>
         <Route path="register" component={Register}></Route>
         <Route path="channels">
           <Route path=":id/watch" component={Channel}></Route>
