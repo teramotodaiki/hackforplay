@@ -67,7 +67,9 @@ class BellCreate extends React.Component {
     ) : null;
 
     return (
-      <Section name="bell">
+      <Section name="bell" style={{
+        height: window.innerHeight - this.context.muiTheme.appBar.height
+      }}>
         <div></div>
         <div></div>
         <div>
@@ -81,7 +83,8 @@ class BellCreate extends React.Component {
 }
 
 BellCreate.contextTypes = {
-  router: PropTypes.object.isRequired
+  router: PropTypes.object.isRequired,
+  muiTheme: PropTypes.object.isRequired,
 };
 BellCreate.propTypes = {
 };
