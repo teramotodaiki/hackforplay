@@ -14,17 +14,18 @@ $(function () {
   $('.query-publish').on('click', function () {
     var id = $(this).data('id');
     var self = $(this);
-    $.post('../stages/', {
-      id: id,
-      query: 'state',
-      state: 'published'
-    }, function (data) {
-      switch (data) {
-        case 'success':
-          self.off('click').parents('.flex-container-bar').fadeOut('slow');
-          break;
-        default:
-          console.error(data);
+    $.ajax({
+      type: 'GET',
+      url: `/api/stages/${id}/judge`,
+      data: {
+        state: 'published',
+      }
+    })
+    .done(function (result) {
+      if (result.message) {
+        alert(result.message);
+      } else {
+        self.off('click').parents('.flex-container-bar').fadeOut('slow');
       }
     });
     return false;
@@ -49,22 +50,21 @@ $(function () {
       var bar = $button.parents('.flex-container-bar');
       var id = $button.data('id');
       var notice = $(this).find('textarea[name="notice"]').val();
-      $.post('../stages/', {
-        id: id,
-        query: 'state',
-        state: 'rejected',
-        notice: notice,
-        reasons: reasons_json,
-      } , function(data, textStatus, xhr) {
-        switch (data) {
-          case 'success':
-            bar.fadeOut('slow');
-            break;
-          default:
-            console.error(data);
+      $.ajax({
+        type: 'GET',
+        url: `/api/stages/${id}/judge`,
+        data: {
+          state: 'rejected',
+          reject_notice: notice,
+        },
+      })
+      .done(function (result) {
+        if (result.message) {
+          alert(result.message);
+        } else {
+          bar.fadeOut('slow');
         }
       });
-
       $('#rejectModal').modal('hide');
     });
   })();
