@@ -45,7 +45,7 @@ export default class Main extends Component {
     return (
       <MuiThemeProvider>
         <div>
-          <Header title="Main" onToggleDrawer={this.onToggleDrawer} />
+          <Header onToggleDrawer={this.onToggleDrawer} />
           <div style={Object.assign({}, this.state.containerStyle)}>
             {this.props.children}
           </div>

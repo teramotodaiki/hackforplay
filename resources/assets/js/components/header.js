@@ -101,7 +101,6 @@ class Header extends Component {
       <div>
         <AppBar
           style={style}
-          title={this.props.title}
           onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })}
           iconElementRight={user ? (
             <IconMenu
