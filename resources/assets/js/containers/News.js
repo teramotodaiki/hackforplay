@@ -25,7 +25,7 @@ export default class News extends Component {
     };
 
     return (
-      <div>
+      <div style={this.props.containerStyle}>
         <Paper style={style} zDepth={1}>
           <a
             className="twitter-timeline"

@@ -95,7 +95,7 @@ class Channel extends Component {
 
     if (!channel) {
       return (
-        <Section name="loading">
+        <Section name="loading" style={this.props.containerStyle}>
           <span className="fa fa-spinner fa-pulse fa-10x fa-fw"></span>
         </Section>
       );

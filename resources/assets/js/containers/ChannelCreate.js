@@ -153,7 +153,7 @@ class Landing extends Component {
     ));
 
     return (
-      <CardSection {...props} style={{ marginTop: -this.context.muiTheme.appBar.height }}>
+      <CardSection {...props} style={this.props.containerStyle}>
         <div style={{ textAlign: 'center' }}>
           <h3>{props.label}</h3>
           {contents}

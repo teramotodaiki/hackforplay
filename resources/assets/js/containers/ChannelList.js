@@ -77,7 +77,7 @@ class ChannelList extends Component {
     ) : null;
 
     return (
-      <div>
+      <div style={this.props.containerStyle}>
         {sorted}
         {next}
       </div>

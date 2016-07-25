@@ -35,14 +35,15 @@ export default class Main extends Component {
 
     const containerStyle = {
       width: window.innerWidth,
-      marginTop: 15,
+      paddingTop: 15,
+      minHeight: window.innerHeight - muiTheme.appBar.height,
     };
 
     return (
       <MuiThemeProvider>
         <div>
           <Header onToggleDrawer={this.onToggleDrawer} />
-          <div style={Object.assign({}, containerStyle)}>
+          <div>
             {this.props.children && React.cloneElement(this.props.children, {
               containerStyle
             })}

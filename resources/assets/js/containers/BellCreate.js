@@ -67,9 +67,7 @@ class BellCreate extends React.Component {
     ) : null;
 
     return (
-      <Section name="bell" style={{
-        height: window.innerHeight - this.context.muiTheme.appBar.height
-      }}>
+      <Section name="bell" style={this.props.containerStyle}>
         <div></div>
         <div></div>
         <div>

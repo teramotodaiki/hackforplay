@@ -150,7 +150,7 @@ export default class Register extends React.Component {
     const user = this.state.user;
     const resultClass = classNames({ 'hidden': !this.state.showResult });
     return (
-      <div>
+      <div style={this.props.containerStyle}>
         <Confirm ref="confirm" {...statics.confirm}>
           <Form onSubmit={(e) => e.preventDefault()}>
             <FormGroup>
