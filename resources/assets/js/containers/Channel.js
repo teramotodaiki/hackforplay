@@ -101,10 +101,10 @@ class Channel extends Component {
       );
     }
 
-    const containerStyle = {
-      height: window.innerHeight,
+    const containerStyle = Object.assign({}, this.props.containerStyle, {
       backgroundColor: +channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
-    };
+      marginTop: 0,
+    });
 
     const leftStyle = { 'padding': '0' };
     const rightStyle = {

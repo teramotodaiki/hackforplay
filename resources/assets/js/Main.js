@@ -35,7 +35,7 @@ export default class Main extends Component {
 
     const containerStyle = {
       width: window.innerWidth,
-      paddingTop: 15,
+      marginTop: 15,
       minHeight: window.innerHeight - muiTheme.appBar.height,
     };
 
