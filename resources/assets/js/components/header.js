@@ -162,7 +162,7 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  onToggleDrawer: PropTypes.function,
+  onToggleDrawer: PropTypes.func,
 }
 
 Header.contextTypes = {
