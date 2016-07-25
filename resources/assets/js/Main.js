@@ -26,7 +26,7 @@ export default class Main extends Component {
 
   onToggleDrawer(isOpened) {
     _isDrawerOpened = isOpened;
-    this.forceUpdate();
+    setTimeout(() => this.forceUpdate(), 80);
   }
 
   componentDidMount() {
@@ -38,7 +38,8 @@ export default class Main extends Component {
     const drawerWidth = _isDrawerOpened ? muiTheme.drawer.width : 0;
 
     const containerStyle = {
-      width: window.innerWidth,
+      width: window.innerWidth - drawerWidth,
+      marginLeft: drawerWidth,
       marginTop: 15,
       minHeight: window.innerHeight - muiTheme.appBar.height,
     };
