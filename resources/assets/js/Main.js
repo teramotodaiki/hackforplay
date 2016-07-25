@@ -9,16 +9,11 @@ import Header from './components/header';
 
 const muiTheme = getMuiTheme(baseTheme);
 
+var _isDrawerOpened = false;
+
 export default class Main extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      containerStyle: {
-        width: window.innerWidth,
-        marginLeft: 0,
-      }
-    };
 
     this.onToggleDrawer = this.onToggleDrawer.bind(this);
   }
@@ -30,24 +25,26 @@ export default class Main extends Component {
   }
 
   onToggleDrawer(isOpened) {
-    const drawerWidth = isOpened ? muiTheme.drawer.width : 0;
-    this.setState({
-      containerStyle: Object.assign(this.state.containerStyle, {
-        width: window.innerWidth - drawerWidth,
-        marginLeft: drawerWidth,
-      })
-    });
+    _isDrawerOpened = isOpened;
+    this.forceUpdate();
   }
 
   render() {
+
+    const drawerWidth = _isDrawerOpened ? muiTheme.drawer.width : 0;
+
+    const containerStyle = {
+      width: window.innerWidth - drawerWidth,
+      marginLeft: drawerWidth,
+    };
 
     return (
       <MuiThemeProvider>
         <div>
           <Header onToggleDrawer={this.onToggleDrawer} />
-          <div style={Object.assign({}, this.state.containerStyle)}>
+          <div style={Object.assign({}, containerStyle)}>
             {this.props.children && React.cloneElement(this.props.children, {
-              containerStyle: this.state.containerStyle
+              containerStyle
             })}
           </div>
         </div>
