@@ -132,6 +132,7 @@ class Header extends Component {
           <div style={{ height: this.context.muiTheme.appBar.height }}></div>
         ) : null}
         <Drawer
+          zDepth={0}
           docked={true}
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}>
