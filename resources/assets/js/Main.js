@@ -29,6 +29,10 @@ export default class Main extends Component {
     this.forceUpdate();
   }
 
+  componentDidMount() {
+    window.addEventListener('resize', () => this.forceUpdate());
+  }
+
   render() {
 
     const drawerWidth = _isDrawerOpened ? muiTheme.drawer.width : 0;
