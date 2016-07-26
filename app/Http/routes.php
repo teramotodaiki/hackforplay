@@ -92,6 +92,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth.old', 'auth']], function
   Route::resource('projects', 'ProjectController');
   Route::resource('authors', 'AuthorController');
   Route::resource('plugs', 'PlugController');
+
+  Route::any('stages/{id}/judge', 'StageController@judge');
 });
 
 // JSON API
@@ -107,7 +109,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth.old']], function()
   ->where('name', '\w+')
   ->where('ext', '\.(js)');
 
-  Route::get('mods/{author}/{label}', 'ModController@showByPlug');
+  Route::get('mods/{author}/{label}.js', 'ModController@showByPlug')
+  ->middleware('etag');
 
 });
 

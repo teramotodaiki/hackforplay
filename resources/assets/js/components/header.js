@@ -62,6 +62,8 @@ const statics = {
   ]
 };
 
+var _lastOpenedState = null;
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -79,6 +81,13 @@ class Header extends Component {
     .then((user) => this.setState({ user }));
   }
 
+  componentDidUpdate() {
+    if (_lastOpenedState !== this.state.open && this.props.onToggleDrawer) {
+      this.props.onToggleDrawer(this.state.open);
+    }
+    _lastOpenedState = this.state.open;
+  }
+
   render() {
     const { user } = this.state;
 
@@ -92,7 +101,6 @@ class Header extends Component {
       <div>
         <AppBar
           style={style}
-          title={this.props.title}
           onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })}
           iconElementRight={user ? (
             <IconMenu
@@ -124,6 +132,7 @@ class Header extends Component {
           <div style={{ height: this.context.muiTheme.appBar.height }}></div>
         ) : null}
         <Drawer
+          zDepth={0}
           docked={true}
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}>
@@ -151,6 +160,10 @@ class Header extends Component {
       </div>
     );
   }
+}
+
+Header.propTypes = {
+  onToggleDrawer: PropTypes.func,
 }
 
 Header.contextTypes = {

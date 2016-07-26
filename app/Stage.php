@@ -11,7 +11,7 @@ class Stage extends Model
    */
   protected $table = 'Stage';
   public $timestamps = false; // モデルのタイムスタンプを更新しない
-  protected $fillable = ['Title','State','Thumbnail','NoRestage','Explain','is_mod'];
+  protected $fillable = ['Title','State','Thumbnail','NoRestage','Explain','is_mod','ImplicitMod'];
   protected $primaryKey = 'ID';
 
   public function script()
@@ -27,6 +27,11 @@ class Stage extends Model
   public function user()
   {
     return $this->belongsTo('App\User', 'UserID');
+  }
+
+  public function team()
+  {
+    return $this->belongsTo('App\Team', 'TeamID');
   }
 
   public function emojis()

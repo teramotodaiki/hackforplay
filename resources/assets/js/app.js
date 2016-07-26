@@ -7,14 +7,18 @@ import thunkMiddleware from 'redux-thunk';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import * as reducers from './reducers/';
+
 import Tutorials from "./tutorials";
-import Register from "./register";
-import Channel from "./channel";
-import Qcard from './qcard';
-import ChannelList from './channel-list';
-import ChannelCreate from './channel-create';
-import BellCreate from './bell-create';
-import News from './news';
+// import Qcard from './qcard';
+
+import Register from "./containers/Register";
+import Channel from "./containers/Channel";
+import ChannelList from './containers/ChannelList';
+import ChannelCreate from './containers/ChannelCreate';
+import BellCreate from './containers/BellCreate';
+import News from './containers/News';
+
+import Main from './Main';
 
 
 // Needed for onTouchTap
@@ -43,17 +47,17 @@ render((
 
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/" component={App}>
-        <Route path="tutorials" component={Tutorials}></Route>
+      <Route path="tutorials" component={Tutorials}></Route>
+      <Route path="/" component={Main}>
         <Route path="register" component={Register}></Route>
         <Route path="channels">
           <Route path=":id/watch" component={Channel}></Route>
           <Route path="list" component={ChannelList}></Route>
           <Route path="create" component={ChannelCreate}></Route>
         </Route>
-        <Route path="qcards">
+        {/*<Route path="qcards">
           <Route path=":id/edit" component={Qcard}></Route>
-        </Route>
+        </Route>*/}
         <Route path="bells">
           <Route path="create" component={BellCreate}></Route>
         </Route>
