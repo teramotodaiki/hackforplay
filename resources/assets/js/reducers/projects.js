@@ -19,12 +19,7 @@ export const projects = (state = {}, action) => {
     case ADD_PROJECT:
 
       return Object.assign({}, state, {
-        [project.id]: Object.assign({}, action.project, {
-          stages: composedStages({
-            project: state[action.project.id],
-            array: action.project.stages
-          })
-        })
+        [project.id]: assignRecursive({}, action.project)
       });
 
     case ADD_STAGE:
@@ -33,12 +28,7 @@ export const projects = (state = {}, action) => {
       const project = state[projectId] || { id: projectId };
 
       return Object.assign({}, state, {
-        [project.id]: Object.assign({}, project, {
-          stages: composedStages({
-            project: project,
-            stage: action.stage
-          })
-        })
+        [project.id]: assignRecursive(project, null, action.stage)
       });
 
     default:
@@ -46,10 +36,10 @@ export const projects = (state = {}, action) => {
   }
 };
 
-const composedStages = ({ project = {}, array = [], stage = {} }) => {
-  return Object.assign({},
-   'stages' in project ? project.stages : {},
-   array ? getKeyValueObject.apply(null, array) : {},
-   'id' in stage ? { [stage.id]: stage } : {}
-  );
-}
+const assignRecursive = (source, project, stage) => {
+  return Object.assign({}, source, project, {
+    stages: Object.assign({}, source.stages, stage && {
+      [stage.id]: stage,
+    })
+  });
+};
