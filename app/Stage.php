@@ -11,7 +11,7 @@ class Stage extends Model
    */
   protected $table = 'Stage';
   public $timestamps = false; // モデルのタイムスタンプを更新しない
-  protected $fillable = ['Title','State','Thumbnail','NoRestage','Explain','is_mod'];
+  protected $fillable = ['Title','State','Thumbnail','NoRestage','Explain','is_mod','ImplicitMod'];
   protected $primaryKey = 'ID';
 
   public function script()

@@ -89,13 +89,13 @@ class ProjectController extends Controller
 
       // reserved stage
       $reserved = $project->stages()->create([
-        "UserID" => $request->user()->ID,
-        "Mode" => 'replay',
-        "ProjectID" => $project->ID,
-        "State" => 'reserved',
-        "SourceID" => $source->ID,
         "ImplicitMod" => $source->ImplicitMod,
       ]);
+      $reserved->UserID = $request->user()->ID;
+      $reserved->ProjectID = $project->ID;
+      $reserved->State = 'reserved';
+      $reserved->SourceID = $source->ID;
+      $reserved->save();
 
       $project->ReservedID = $reserved->ID;
       $project->save();
