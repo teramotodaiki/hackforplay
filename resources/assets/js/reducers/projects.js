@@ -18,7 +18,7 @@ export const projects = (state = {}, action) => {
     case ADD_PROJECT:
 
       return Object.assign({}, state, {
-        [project.id]: assignRecursive({}, action.project)
+        [action.project.id]: assignRecursive({}, action.project)
       });
 
     case ADD_STAGE:
