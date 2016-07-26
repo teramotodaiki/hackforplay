@@ -29,7 +29,7 @@ export const projects = (state = {}, action) => {
 
     case ADD_STAGE:
 
-      const projectId = action.stage.project.id;
+      const projectId = action.stage.project_id;
       const project = state[projectId] || { id: projectId };
 
       return Object.assign({}, state, {
