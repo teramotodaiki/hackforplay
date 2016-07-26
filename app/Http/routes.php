@@ -109,7 +109,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth.old']], function()
   ->where('name', '\w+')
   ->where('ext', '\.(js)');
 
-  Route::get('mods/{author}/{label}', 'ModController@showByPlug');
+  Route::get('mods/{author}/{label}.js', 'ModController@showByPlug')
+  ->middleware('etag');
 
 });
 
