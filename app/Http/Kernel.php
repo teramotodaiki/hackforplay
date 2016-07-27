@@ -17,6 +17,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \App\Http\Middleware\SnakeCaseMiddleware::class,
         \App\Http\Middleware\ForceHttpsMiddleware::class,
+        \App\Http\Middleware\RecordTimeMiddleware::class,
     ];
 
     /**
