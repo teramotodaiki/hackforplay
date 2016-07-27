@@ -112,19 +112,6 @@
 	  <ul class="pagination"></ul>
 	</nav>
 
-	<div class="container-fluid h4p_stagecontainer">
-		<div class="row">
-			<div class="col-xs-12 h4p_bar-top"></div>
-			<div class="col-xs-12 h4p_bar-bar">
-				<div class="container">
-					<div class="h4p_bar-left"></div>
-					<div class="row h4p_stagelist list-empty"></div>
-					<div class="h4p_bar-right"></div>
-				</div>
-			</div>
-			<div class="col-xs-12 h4p_bar-bottom"></div>
-		</div>
-	</div>
 	<?php require_once '../view/footer.php' ?>
 	<?php include_once '../intercom.php'; ?>
 </body>

@@ -156,38 +156,6 @@ $(function(){
 	});
 
 
-	// 空のステージ一覧
-	$.post('../stage/fetchbyid.php',{
-		'id': '1,1755',
-		'attendance-token': sessionStorage.getItem('attendance-token')
-	} , function(data, textStatus, xhr) {
-		if (data === 'parse-error') {
-		}else{
-			var result = jQuery.parseJSON(data);
-			var $list = $('.h4p_stagelist.list-empty');
-			result.values.forEach(function(stage){
-				var item = $item.clone(true);
-				item.find('.h4p_item-thumbnail').on('click', function() {
-					location.href = '/s?id=' + stage.id;
-				});
-				if (stage.thumbnail) {
-					item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
-				}
-				if(stage.title.length > 38) stage.title = stage.title.substr(0, 37) + '…';
-				item.find('.title a').attr({
-					href: '/s?id=' + stage.id,
-					title: stage.title
-				}).text(stage.title);
-				item.find('.author').remove();
-				item.find('.playcount b').prepend(stage.playcount);
-
-				item.appendTo($list);
-			});
-			alignmentOnResize();
-		}
-	});
-
-
 	// あまりを詰めるためのアイテム
 	var $blank = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item h4p_item-blank').append();
 
@@ -363,7 +331,7 @@ $(function(){
 
 	}
 	// <=== append
-	
+
 
 	function moveCommentList (direction) {
 
