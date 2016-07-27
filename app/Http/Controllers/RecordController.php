@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Record;
+use DB;
 
 class RecordController extends Controller
 {
@@ -19,5 +20,11 @@ class RecordController extends Controller
       $size = $request->has('size') ? $request->input('size') : 15;
       $records = Record::orderBy('time', 'desc');
       return response($records->simplePaginate($size), 200);
+    }
+
+    public function clear()
+    {
+      DB::table('records')->delete();
+      return response([], 200);
     }
 }
