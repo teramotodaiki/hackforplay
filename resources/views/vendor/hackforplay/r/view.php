@@ -81,8 +81,9 @@
 		</div>
 	</div>
 
-	<div class="h4p_topic-comment overflow-hidden hidden-xs">
-	</div>
+	<?php if (isset($session_userid)): ?>
+	<div class="h4p_topic-comment overflow-hidden hidden-xs"></div>
+	<?php endif; ?>
 
 	<!-- Pager -->
 	<nav class="text-center">

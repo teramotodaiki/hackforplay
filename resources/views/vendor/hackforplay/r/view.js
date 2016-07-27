@@ -309,6 +309,10 @@ $(function(){
 		}
 	});
 
+	// append ===>
+	if ($('.h4p_topic-comment').get(0)) {
+
+
 	$.post('../stage/fetchrecentcomments.php', {
 		'start' : 0,
 		'length' : 10,
@@ -356,6 +360,10 @@ $(function(){
 				}, $('.h4p_topic-comment'));
 		}
 	});
+
+	}
+	// <=== append
+	
 
 	function moveCommentList (direction) {
 
