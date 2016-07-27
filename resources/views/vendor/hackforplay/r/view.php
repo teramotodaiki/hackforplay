@@ -48,18 +48,6 @@
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
-	<script type="text/javascript" charset="utf-8">
-	(function(){
-		var start = '<?php echo $fetch_start_id; ?>';
-		start = isNaN(parseInt(start)) ? '0' : start;
-		sessionStorage.setItem('view_param_start', start);
-		var num = '<?php echo $stage_num; ?>';
-		num = isNaN(parseInt(num)) ? '0' : num;
-		sessionStorage.setItem('view_param_num', num);
-		var filter = '<?php echo $filter; ?>';
-		sessionStorage.setItem('view_param_filter', filter);
-	})();
-	</script>
 	<script src="//cdn.jsdelivr.net/emojione/2.2.5/lib/js/emojione.min.js"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
