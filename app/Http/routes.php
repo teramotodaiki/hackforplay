@@ -94,6 +94,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth.old', 'auth']], function
   Route::resource('plugs', 'PlugController');
 
   Route::any('stages/{id}/judge', 'StageController@judge');
+
+  Route::resource('records', 'RecordController');
 });
 
 // JSON API
