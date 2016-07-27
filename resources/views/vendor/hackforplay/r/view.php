@@ -48,18 +48,6 @@
 	<?php require_once '../sendattendance.php'; ?>
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
-	<script type="text/javascript" charset="utf-8">
-	(function(){
-		var start = '<?php echo $fetch_start_id; ?>';
-		start = isNaN(parseInt(start)) ? '0' : start;
-		sessionStorage.setItem('view_param_start', start);
-		var num = '<?php echo $stage_num; ?>';
-		num = isNaN(parseInt(num)) ? '0' : num;
-		sessionStorage.setItem('view_param_num', num);
-		var filter = '<?php echo $filter; ?>';
-		sessionStorage.setItem('view_param_filter', filter);
-	})();
-	</script>
 	<script src="//cdn.jsdelivr.net/emojione/2.2.5/lib/js/emojione.min.js"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
@@ -112,19 +100,6 @@
 	  <ul class="pagination"></ul>
 	</nav>
 
-	<div class="container-fluid h4p_stagecontainer">
-		<div class="row">
-			<div class="col-xs-12 h4p_bar-top"></div>
-			<div class="col-xs-12 h4p_bar-bar">
-				<div class="container">
-					<div class="h4p_bar-left"></div>
-					<div class="row h4p_stagelist list-empty"></div>
-					<div class="h4p_bar-right"></div>
-				</div>
-			</div>
-			<div class="col-xs-12 h4p_bar-bottom"></div>
-		</div>
-	</div>
 	<?php require_once '../view/footer.php' ?>
 	<?php include_once '../intercom.php'; ?>
 </body>
