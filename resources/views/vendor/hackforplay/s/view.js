@@ -1,6 +1,13 @@
 var onYouTubeIframeAPIReady = null;
 $(function(){
 
+	// Backspaceキーを無効化
+	document.addEventListener('keydown', function (event) {
+		if (event.keyCode === 8) {
+			return false;
+		}
+	});
+
 	// ゲームフレームを横幅基本で3:2にする
 	$(".h4p_game,.h4p_credit").height($(".h4p_game").width()/1.5);
 	// ゲームクリアの処理
