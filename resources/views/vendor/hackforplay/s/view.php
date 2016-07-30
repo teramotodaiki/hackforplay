@@ -38,9 +38,6 @@ $stage['MajorVersion'] . '.' . $stage['MinorVersion'] :
 '*'
 );
 
-// AMD test mode
-// $mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
-$mod = true;
 $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 ?>
 <!DOCTYPE html>
@@ -177,7 +174,6 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 <?php if(isset($code)): ?>
 		s('replay_code', "<?php echo $code; ?>");
 <?php endif; ?>
-		s('amd-test', "<?php echo $mod ? '1' : ''; ?>");
 	})();
 	</script>
 	<script type="text/javascript">

@@ -674,19 +674,12 @@ $(function(){
 		var beginRestaging = function(isExtendMode){
 
 			$('.container.container-game').addClass('restaging');
-			if (getParam('amd-test')) {
-				var token = sessionStorage.getItem('project-token');
-				var version = '*';
-				var reqCode = ["require('~project/", token, '/', version, "');"].join('');
-				console.log('AMD mode using', reqCode);
-				document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + token;
-
-				$('.h4p_info-require').val(reqCode);
-				$('.h4p_info-version').text(version);
-
-			} else {
-				document.getElementById('item-embed-iframe').src = '/embed/?type=local&key=restaging_code&id=' + getParam('id');
-			}
+			var token = sessionStorage.getItem('project-token');
+			var version = '*';
+			var reqCode = ["require('~project/", token, '/', version, "');"].join('');
+			document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + token;
+			$('.h4p_info-require').val(reqCode);
+			$('.h4p_info-version').text(version);
 
 			// ロギングを開始
 			(function() {
@@ -939,6 +932,7 @@ $(function(){
 							boss: true,
 							supernew: true,
 							"-W032": false,
+							esversion: 6,
 						}));
 					if (JSHINT.data().errors) {
 						var e = JSHINT.data().errors[0];
