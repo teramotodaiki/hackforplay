@@ -32,8 +32,7 @@ $(function(){
 	}
 
 	// initialize
-	if ((getParam('mode') === 'replay' || getParam('mode') === 'quest') &&
-			!getParam('directly_restaging')) {
+	if (getParam('mode') !== 'restaging' && !getParam('directly_restaging')) {
 		loadStage();
 	}
 	// reload
