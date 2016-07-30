@@ -14,7 +14,7 @@ $origin_id = NULL;
 $mode 	= filter_input(INPUT_GET, "mode");
 $norestage = $stage['NoRestage'];
 if(!isset($mode)){
-	$mode 	= $stage['Mode'];
+	$mode 	= $stage['Mode'] || 'replay';
 }
 $code = $project['Data'];
 $code = preg_replace("/\\\\/", "\\\\\\\\", $code);
