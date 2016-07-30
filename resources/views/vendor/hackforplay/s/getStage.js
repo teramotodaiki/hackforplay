@@ -21,6 +21,11 @@
 
   };
 
+  // Cache
+  window.setStage = function (stage) {
+    state.set(stage);
+  };
+
   function State () {
     var key = 'cached-stages';
     var prefix = 'id_';
