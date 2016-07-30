@@ -109,6 +109,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth.old', 'auth']], function
 Route::group(['prefix' => 'api', 'middleware' => ['auth.old']], function()
 {
   Route::resource('stages', 'StageController');
+  Route::get('users/{id}/stages', 'StageController@indexByUser');
   Route::resource('stages.emojis', 'EmojiController');
 
   Route::resource('users', 'UserController');
