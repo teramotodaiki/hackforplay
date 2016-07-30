@@ -1,6 +1,40 @@
 var onYouTubeIframeAPIReady = null;
 $(function(){
 
+	// iframe 初期ロード
+	(function () {
+		var game = document.getElementById('item-embed-iframe');
+
+		var loading = (function () {
+			var deferred = new $.Deferred();
+			game.onload = deferred.resolve.bind(deferred);
+			game.onerror = deferred.reject.bind(deferred);
+			game.src = "/embed?type=code";
+			return deferred;
+		})();
+
+		if ((getParam('mode') === 'replay' || getParam('mode') === 'quest') && 
+				!getParam('directly_restaging')) {
+			var fetching = $.ajax({
+				type: 'GET',
+				url: `/api/stages/${getParam('id')}`,
+			});
+			$.when(loading, fetching)
+			.done(function (loaded, fetched) {
+				var stage = fetched[0];
+				game.contentWindow.postMessage({
+					query: 'require',
+					dependencies: [stage.implicit_mod],
+					code: stage.script.raw_code,
+				}, '/');
+			})
+			.fail(function () {
+				alert('Error! look at your console.');
+				console.error(arguments);
+			});
+		}
+	})();
+
 	// Backspaceキーを無効化
 	document.addEventListener('keydown', function (event) {
 		if (event.keyCode === 8) {
