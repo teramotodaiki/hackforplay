@@ -1,8 +1,8 @@
 var onYouTubeIframeAPIReady = null;
 $(function(){
 
-	// iframe 初期ロード
-	(function () {
+	// iframe ロード
+	function loadStage(code) {
 		var game = document.getElementById('item-embed-iframe');
 
 		var loading = (function () {
@@ -13,27 +13,32 @@ $(function(){
 			return deferred;
 		})();
 
-		if ((getParam('mode') === 'replay' || getParam('mode') === 'quest') &&
-				!getParam('directly_restaging')) {
-			var fetching = $.ajax({
-				type: 'GET',
-				url: `/api/stages/${getParam('id')}`,
-			});
-			$.when(loading, fetching)
-			.done(function (loaded, fetched) {
-				var stage = fetched[0];
-				game.contentWindow.postMessage({
-					query: 'require',
-					dependencies: [stage.implicit_mod],
-					code: stage.script.raw_code,
-				}, '/');
-			})
-			.fail(function () {
-				alert('Error! look at your console.');
-				console.error(arguments);
-			});
-		}
-	})();
+		var fetching = getStage(getParam('id'));
+
+		return $.when(loading, fetching)
+		.done(function (loaded, fetched) {
+			var stage = fetched instanceof Array ? fetched[0] : fetched;
+			game.contentWindow.postMessage({
+				query: 'require',
+				dependencies: [stage.implicit_mod],
+				code: code || stage.script.raw_code,
+			}, '/');
+			return loaded;
+		})
+		.fail(function () {
+			alert('Error! look at your console.');
+			console.error(arguments);
+		});
+	}
+
+	// initialize
+	if (getParam('mode') !== 'restaging' && !getParam('directly_restaging')) {
+		loadStage();
+	}
+	// reload
+	$('.h4p_info .btn-retry').on('click', function() {
+		loadStage();
+	});
 
 	// Backspaceキーを無効化
 	document.addEventListener('keydown', function (event) {
@@ -1425,14 +1430,6 @@ $(function(){
 			alert_on_unload = false; // 警告を出さない
 			sessionStorage.setItem('restaging_code', code);
 		}
-	});
-
-	// ゲームフレームのリロード
-	$('.h4p_info .btn-retry').on('click', function() {
-		document.getElementById('item-embed-iframe').contentWindow.postMessage({
-			query: 'eval',
-			value: 'window.location.reload();'
-		}, '/');
 	});
 
 	function getParam(key){

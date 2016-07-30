@@ -50,6 +50,7 @@
 	<?php require_once '../view/header.php'; ?>
 	<script src="//cdn.jsdelivr.net/emojione/2.2.5/lib/js/emojione.min.js"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../s/getStage.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
 		<div class="panel panel-default">
 			<div class="panel-body text-center">
