@@ -16,6 +16,12 @@ Route::get('tutorials', 'DefaultAppController@index');
 Route::get('register', 'DefaultAppController@index');
 Route::get('news', 'DefaultAppController@index');
 
+Route::group(['middleware' => ['auth.old', 'auth']], function()
+{
+  Route::get('stages', 'DefaultAppController@index');
+});
+
+
 Route::get('verify', 'VerifyController@index');
 Route::get('random', 'RandomController@index');
 
