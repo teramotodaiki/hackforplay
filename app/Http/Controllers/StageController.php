@@ -51,7 +51,7 @@ class StageController extends Controller
     {
       $stages =
       Stage::orderBy('Published', 'desc')
-      ->with('user', 'project')
+      ->with('user', 'project', 'script')
       ->where('State', 'published');
 
       if (isset($query['user'])) {
@@ -111,7 +111,7 @@ class StageController extends Controller
      */
     public function show($id)
     {
-      $stage = Stage::with('project')->findOrFail($id);
+      $stage = Stage::with(['project', 'script'])->findOrFail($id);
       return response($stage, 200);
     }
 
