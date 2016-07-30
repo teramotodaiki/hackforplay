@@ -6,7 +6,7 @@ $(function(){
 
 	// background-image
 	var bgImageList = [
-		['.l-1', 'img/'+mainSize+'/topback.jpg'],
+		['.l-1', 'img/'+mainSize+'/topback.png'],
 		['.l-1 .h4p_landing-header', 'img/'+mainSize+'/logoh4p.png']
 	];
 	var loadAndFadein = function(index){
