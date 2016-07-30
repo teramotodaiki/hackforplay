@@ -1,7 +1,7 @@
 var onYouTubeIframeAPIReady = null;
 $(function(){
 
-	// iframe 初期ロード
+	// iframe ロード
 	function loadStage(code) {
 		var game = document.getElementById('item-embed-iframe');
 
@@ -31,10 +31,15 @@ $(function(){
 		});
 	}
 
+	// initialize
 	if ((getParam('mode') === 'replay' || getParam('mode') === 'quest') &&
 			!getParam('directly_restaging')) {
 		loadStage();
 	}
+	// reload
+	$('.h4p_info .btn-retry').on('click', function() {
+		loadStage();
+	});
 
 	// Backspaceキーを無効化
 	document.addEventListener('keydown', function (event) {
@@ -1426,14 +1431,6 @@ $(function(){
 			alert_on_unload = false; // 警告を出さない
 			sessionStorage.setItem('restaging_code', code);
 		}
-	});
-
-	// ゲームフレームのリロード
-	$('.h4p_info .btn-retry').on('click', function() {
-		document.getElementById('item-embed-iframe').contentWindow.postMessage({
-			query: 'eval',
-			value: 'window.location.reload();'
-		}, '/');
 	});
 
 	function getParam(key){
