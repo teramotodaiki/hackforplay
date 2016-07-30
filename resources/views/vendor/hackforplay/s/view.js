@@ -1,6 +1,40 @@
 var onYouTubeIframeAPIReady = null;
 $(function(){
 
+	// iframe 初期ロード
+	(function () {
+		var game = document.getElementById('item-embed-iframe');
+
+		var loading = (function () {
+			var deferred = new $.Deferred();
+			game.onload = deferred.resolve.bind(deferred);
+			game.onerror = deferred.reject.bind(deferred);
+			game.src = "/embed?type=code";
+			return deferred;
+		})();
+
+		if ((getParam('mode') === 'replay' || getParam('mode') === 'quest') && 
+				!getParam('directly_restaging')) {
+			var fetching = $.ajax({
+				type: 'GET',
+				url: `/api/stages/${getParam('id')}`,
+			});
+			$.when(loading, fetching)
+			.done(function (loaded, fetched) {
+				var stage = fetched[0];
+				game.contentWindow.postMessage({
+					query: 'require',
+					dependencies: [stage.implicit_mod],
+					code: stage.script.raw_code,
+				}, '/');
+			})
+			.fail(function () {
+				alert('Error! look at your console.');
+				console.error(arguments);
+			});
+		}
+	})();
+
 	// Backspaceキーを無効化
 	document.addEventListener('keydown', function (event) {
 		if (event.keyCode === 8) {
@@ -674,143 +708,12 @@ $(function(){
 		var beginRestaging = function(isExtendMode){
 
 			$('.container.container-game').addClass('restaging');
-			if (getParam('amd-test')) {
-				var token = sessionStorage.getItem('project-token');
-				var version = '*';
-				var reqCode = ["require('~project/", token, '/', version, "');"].join('');
-				console.log('AMD mode using', reqCode);
-				document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + token;
-
-				$('.h4p_info-require').val(reqCode);
-				$('.h4p_info-version').text(version);
-
-			} else {
-				document.getElementById('item-embed-iframe').src = '/embed/?type=local&key=restaging_code&id=' + getParam('id');
-			}
-
-			// ロギングを開始
-			(function() {
-				// 前のトークンを削除
-				sessionStorage.removeItem('restaginglog-token');
-
-				// ロギングをサーバーで開始
-				beginLog();
-
-				var log = {}; // 初期化
-				var updateInterval = 10 * 1000; // [ms]
-
-				// ロギング
-				$('.h4p_restaging_button').on('click', function() {
-					log.ExecuteCount = log.ExecuteCount || 0;
-					log.ExecuteCount ++;
-				});
-				$('.h4p_save_button').on('click', function() {
-					log.SaveCount = log.SaveCount || 0;
-					log.SaveCount ++;
-				});
-				$('#inputModal').on('click', '#publish-button', function() {
-					log.PublishCount = log.PublishCount || 0;
-					log.PublishCount ++;
-					updateLog();
-				});
-				jsEditor.on('beforeChange', function(cm, change) {
-					switch (change.origin) {
-					case '+input':
-						change.text.forEach(function(input){
-							Array.prototype.forEach.call(input, function(key) {
-								if (key.match(/[0-9]/g)) {
-									log.InputNumberCount = log.InputNumberCount || 0;
-									log.InputNumberCount ++;
-								} else if (key.match(/[a-zA-Z]/g)){
-									log.InputAlphabetCount = log.InputAlphabetCount || 0;
-									log.InputAlphabetCount ++;
-								} else {
-									log.InputOtherCount = log.InputOtherCount || 0;
-									log.InputOtherCount ++;
-								}
-							});
-						});
-						break;
-					case 'paste':
-						log.PasteCount = log.PasteCount || 0;
-						log.PasteCount ++;
-						break;
-					case '+delete':
-					case 'cut':
-						log.DeleteCount = log.DeleteCount || 0;
-						log.DeleteCount ++;
-						break;
-					}
-				});
-
-				// 定期送信
-				var lastJsonString = JSON.stringify(log);
-				var currentInterval = updateInterval;
-				(function task () {
-					var current = JSON.stringify(log);
-					if (lastJsonString !== current) {
-						updateLog(function() {
-							lastJsonString = current;
-							currentInterval = updateInterval;
-						}, function() {
-							currentInterval *= 2; // 失敗時の対処
-						});
-					}
-					setTimeout(task, currentInterval);
-				})();
-
-				function beginLog (successed, failed) {
-					// ロギングの開始をサーバーに伝え、トークンを取得する
-					$.post('../analytics/beginrestaginglog.php', {
-						'stage_id': getParam('id'),
-						'mode': getParam('mode'),
-						'level': getParam('level'),
-						'report': getParam('reporting_restaged')
-					}, function(data, textStatus, xhr) {
-						switch (data) {
-							case 'error':
-								if (failed) failed();
-								break;
-							default:
-								sessionStorage.setItem('restaginglog-token', data);
-								if (successed) successed();
-								break;
-						}
-					});
-				}
-				function updateLog (successed, failed) {
-					// ログをアップデートする
-					$.post('../analytics/updaterestaginglog.php', {
-						'token': sessionStorage.getItem('restaginglog-token'),
-						'log': JSON.stringify(log)
-					}, function(data, textStatus, xhr) {
-						switch (data) {
-							case 'parse-error':
-								break;
-							case 'invalid-token':
-								// もういちどbeginLogをこころみる
-								beginLog(function() {
-									setTimeout(function() {
-										updateLog();
-									}, 1000);
-								}, function() {
-									if (failed) failed();
-								});
-								break;
-							case 'error':
-								if (failed) failed();
-								break;
-							case 'success':
-								if (successed) successed();
-								break;
-							default:
-								if (failed) failed();
-								break;
-						}
-					});
-				}
-
-			})();
+			var token = sessionStorage.getItem('project-token');
+			var version = '*';
+			var reqCode = ["require('~project/", token, '/', version, "');"].join('');
+			document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + token;
+			$('.h4p_info-require').val(reqCode);
+			$('.h4p_info-version').text(version);
 
 			(function() {
 
@@ -939,6 +842,7 @@ $(function(){
 							boss: true,
 							supernew: true,
 							"-W032": false,
+							esversion: 6,
 						}));
 					if (JSHINT.data().errors) {
 						var e = JSHINT.data().errors[0];

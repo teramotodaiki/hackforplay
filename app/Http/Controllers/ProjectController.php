@@ -38,6 +38,12 @@ class ProjectController extends Controller
         }
       }
 
+      foreach ($projects as $item) {
+        // head, implicit_mod
+        $item->head = $item->scripts()->first();
+        $item->reserved = $item->stages()->first();
+      }
+
       return response($projects, 200);
     }
 
@@ -111,12 +117,19 @@ class ProjectController extends Controller
      */
     public function show(Request $request, $id)
     {
-      $project = Project::findOrFail($id);
+      $project = Project::where(
+        ctype_digit((string) $id) ? 'id' : 'token',
+        $id
+      )->firstOrFail();
 
       $user = $request->user();
       if (!$project->isOwner($user)) {
         return response([ 'message' => 'cant_show_project' ], 200);
       }
+
+      // head, implicit_mod
+      $project->head = $project->scripts()->first();
+      $project->reserved = $project->stages()->first();
 
       return response($project, 200);
     }
