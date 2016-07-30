@@ -103,6 +103,7 @@ $(function(){
 		);
 
 		result.data.forEach(function(stage){
+			setStage(stage);
 			var item = $item.clone(true);
 			item.find('.h4p_item-thumbnail').on('click', function() {
 				window.open('/s?id=' + stage.id, '_blank');
