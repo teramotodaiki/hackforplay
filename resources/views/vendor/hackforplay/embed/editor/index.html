@@ -40,8 +40,7 @@
 	<textarea id="editor_js" row="30" cols="50"></textarea>
 	<input class="phantom" type="image" src="/s/editor/img/button_z_run.png" onclick="run();" style="left: 13px; top: 13px;">
 	<input type="image" src="/s/editor/img/button_x.png" onclick="cls();" style="left:456px; top: 6px; width: 16px; height: 16px;">
-	<input id="undo" class="phantom" type="image" src="/s/editor/img/ui_undo_disabled.png" onclick="undo();" style="left:396px; top:22px; width: 16px; height: 16px;">
-	<input id="redo" class="phantom" type="image" src="/s/editor/img/ui_redo_disabled.png" onclick="redo();" style="left:426px; top:22px; width: 16px; height: 16px;">
+	<input id="undo" class="phantom" type="image" src="img/button_back.png" onclick="undo();" style="left:356px; top:20px; width: 96px; height: 32px;">
 	<div class="phantom cover"></div>
 	<script type="text/javascript">
 	// Editor
@@ -165,8 +164,8 @@
 	}
 
 	function renderUI () {
-		document.getElementById('undo').setAttribute('src', 'img/ui_undo_' + (jsEditor.doc.historySize().undo > 1 ? 'enabled.png':'disabled.png'));
-		document.getElementById('redo').setAttribute('src', 'img/ui_redo_' + (jsEditor.doc.historySize().redo > 0 ? 'enabled.png':'disabled.png'));
+		document.getElementById('undo').style.opacity =
+			jsEditor.doc.historySize().undo > 1 ? 1 : 0.5;
 	}
 	</script>
 </body>
