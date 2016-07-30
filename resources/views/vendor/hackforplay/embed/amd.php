@@ -30,10 +30,15 @@ switch ($type) {
 		$project = $stmt->fetch(PDO::FETCH_ASSOC) or die('Failed to open project');
 		$id = $project['SourceStageID'];
 		break;
+	case 'code':
+		break;
 	default:
 		die("Invalid type " . htmlspecialchars($type));
 		break;
 }
+
+
+if (isset($id)) {
 
 // Get source element URL
 $stmt	= $dbh->prepare('SELECT "Src","ScriptID","State","UserID","ProjectID","MajorVersion","MinorVersion" FROM "Stage" WHERE "ID"=:id');
@@ -47,6 +52,9 @@ if ($stage['State'] === 'rejected') {
 } elseif ($stage['State'] === 'private' && $stage['UserID'] != $session_userid) {
 	die('This stage is private');
 }
+
+}
+
 
 // Get project token
 switch ($type) {
@@ -85,7 +93,7 @@ switch ($type) {
 }
 
 $deps = empty($token) ?
-[] :
+null :
 ["~project/$token/$version"];
 
 ?>
@@ -144,7 +152,6 @@ $deps = empty($token) ?
 		})();
 	</script>
 	<script type="text/javascript">
-
 	require.config({
 		baseUrl : '../mods/',
 		shim: {
@@ -162,11 +169,40 @@ $deps = empty($token) ?
 												'&sourceURL='+encodeURIComponent(e.sourceURL || '?'));
 		}
 	};
+
+	<?php if (isset($deps)) : ?>
+
 	require(<?php echo json_encode($deps, JSON_UNESCAPED_SLASHES); ?>,
 		function () {
 			Hack.start();
 		}
 	);
+
+	<?php else : ?>
+
+	window.addEventListener('message', function (event) {
+		if (event.data.query === 'require') {
+
+			(function (callback) {
+				// dependencies
+				require(event.data.dependencies || [], callback);
+
+			})(function () {
+				// main
+				var script = new Blob([
+				`define(function (require, exports, module) {
+					${event.data.code}
+				});`]);
+
+				require([window.URL.createObjectURL(script)], function () {
+					Hack.start();
+				});
+			});
+		}
+	});
+
+	<?php endif; ?>
+
 	</script>
 </head>
 <body>

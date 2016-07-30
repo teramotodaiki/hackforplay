@@ -25,7 +25,6 @@ $directly_restaging	= filter_input(INPUT_GET, 'directly_restaging', FILTER_VALID
 // Questモードの場合、$nextは次のLevel.IDをあらわす
 // 1以上ならつづきをあらわす。0以下なら最後のステージであることをあらわす
 $next = $mode === 'quest' && $level_next ? $level_next['ID'] : 0;
-$embed = '/embed/?type=stage&id=' . $id;
 
 // Version
 $version =
@@ -38,9 +37,6 @@ $stage['MajorVersion'] . '.' . $stage['MinorVersion'] :
 '*'
 );
 
-// AMD test mode
-// $mod = filter_input(INPUT_GET, 'mod', FILTER_VALIDATE_BOOLEAN);
-$mod = true;
 $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 ?>
 <!DOCTYPE html>
@@ -177,7 +173,6 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 <?php if(isset($code)): ?>
 		s('replay_code', "<?php echo $code; ?>");
 <?php endif; ?>
-		s('amd-test', "<?php echo $mod ? '1' : ''; ?>");
 	})();
 	</script>
 	<script type="text/javascript">
@@ -356,7 +351,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 						<h2 class="credit-timeline credit-timeline-1">by <span class="Author"></span></h2>
 					</div>
 				</div>
-				<iframe id="item-embed-iframe" src="<?php echo $embed; ?>" frameborder="0" class="fit"></iframe>
+				<iframe id="item-embed-iframe" src="" frameborder="0" class="fit"></iframe>
 			</div>
 			<div class="col-xs-12 h4p_publish" style="display:none">
 				<button type="button" class="btn btn-block btn-lg btn-success" data-toggle="modal" data-target="#inputModal" data-loading-text="送信中..." data-backdrop="false">
