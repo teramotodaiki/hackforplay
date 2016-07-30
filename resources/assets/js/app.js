@@ -17,6 +17,7 @@ import ChannelList from './containers/ChannelList';
 import ChannelCreate from './containers/ChannelCreate';
 import BellCreate from './containers/BellCreate';
 import News from './containers/News';
+import Stages from './containers/Stages';
 
 import Main from './Main';
 
@@ -62,6 +63,7 @@ render((
           <Route path="create" component={BellCreate}></Route>
         </Route>
         <Route path="news" component={News}></Route>
+        <Route path="stages" component={Stages}></Route>
       </Route>
     </Router>
   </Provider>
