@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Stage;
+use App\User;
 use App\Http\Middleware\SnakeCaseMiddleware;
 use DB;
 use Carbon\Carbon;
@@ -33,12 +34,29 @@ class StageController extends Controller
       return response($stages, 200);
     }
 
+    public function indexByUser(Request $request, $id)
+    {
+      $this->validate($request, [
+        'q' => 'max:1000',
+      ]);
+
+      $camel = SnakeCaseMiddleware::snakeToCamelRecursive($request->all());
+      $camel['user'] = User::findOrFail($id)->ID;
+      $stages = $this->query($camel);
+
+      return response($stages, 200);
+    }
+
     public function query($query)
     {
       $stages =
       Stage::orderBy('Published', 'desc')
       ->with('user', 'project')
       ->where('State', 'published');
+
+      if (isset($query['user'])) {
+        $stages->where('UserID', $query['user']);
+      }
 
       if (isset($query['is_clearable']) && !empty($query['is_clearable'])) {
         $stages->where('is_clearable', $query['is_clearable']);
