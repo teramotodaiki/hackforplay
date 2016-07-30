@@ -2,7 +2,7 @@ var onYouTubeIframeAPIReady = null;
 $(function(){
 
 	// iframe 初期ロード
-	(function () {
+	function loadStage(code) {
 		var game = document.getElementById('item-embed-iframe');
 
 		var loading = (function () {
@@ -13,25 +13,28 @@ $(function(){
 			return deferred;
 		})();
 
-		if ((getParam('mode') === 'replay' || getParam('mode') === 'quest') &&
-				!getParam('directly_restaging')) {
-			var fetching = getStage(getParam('id'));
+		var fetching = getStage(getParam('id'));
 
-			$.when(loading, fetching)
-			.done(function (loaded, fetched) {
-				var stage = fetched instanceof Array ? fetched[0] : fetched;
-				game.contentWindow.postMessage({
-					query: 'require',
-					dependencies: [stage.implicit_mod],
-					code: stage.script.raw_code,
-				}, '/');
-			})
-			.fail(function () {
-				alert('Error! look at your console.');
-				console.error(arguments);
-			});
-		}
-	})();
+		return $.when(loading, fetching)
+		.done(function (loaded, fetched) {
+			var stage = fetched instanceof Array ? fetched[0] : fetched;
+			game.contentWindow.postMessage({
+				query: 'require',
+				dependencies: [stage.implicit_mod],
+				code: code || stage.script.raw_code,
+			}, '/');
+			return loaded;
+		})
+		.fail(function () {
+			alert('Error! look at your console.');
+			console.error(arguments);
+		});
+	}
+
+	if ((getParam('mode') === 'replay' || getParam('mode') === 'quest') &&
+			!getParam('directly_restaging')) {
+		loadStage();
+	}
 
 	// Backspaceキーを無効化
 	document.addEventListener('keydown', function (event) {
