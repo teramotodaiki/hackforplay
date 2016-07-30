@@ -13,7 +13,8 @@ $(function(){
 			return deferred;
 		})();
 
-		if ((getParam('mode') === 'replay' || getParam('mode') === 'quest') && 
+		console.log(getParam('mode'));
+		if ((getParam('mode') === 'replay' || getParam('mode') === 'quest') &&
 				!getParam('directly_restaging')) {
 			var fetching = $.ajax({
 				type: 'GET',
@@ -21,6 +22,7 @@ $(function(){
 			});
 			$.when(loading, fetching)
 			.done(function (loaded, fetched) {
+				console.log(loaded, fetched);
 				var stage = fetched[0];
 				game.contentWindow.postMessage({
 					query: 'require',

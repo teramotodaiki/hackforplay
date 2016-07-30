@@ -182,10 +182,15 @@ null :
 
 	window.addEventListener('message', function (event) {
 		if (event.data.query === 'require') {
+			console.log(event.data);
 
 			(function (callback) {
 				// dependencies
-				require(event.data.dependencies || [], callback);
+				console.log(event.data.dependencies || []);
+				require(event.data.dependencies || [], function () {
+					console.log('dependency resolved!');
+					callback();
+				});
 
 			})(function () {
 				// main
@@ -194,8 +199,10 @@ null :
 					${event.data.code}
 				});`]);
 
+				console.log(window.URL.createObjectURL(script));
 				require([window.URL.createObjectURL(script)], function () {
 					Hack.start();
+					console.log('started!!');
 				});
 			});
 		}
