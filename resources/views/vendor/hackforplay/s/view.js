@@ -15,13 +15,11 @@ $(function(){
 
 		if ((getParam('mode') === 'replay' || getParam('mode') === 'quest') &&
 				!getParam('directly_restaging')) {
-			var fetching = $.ajax({
-				type: 'GET',
-				url: `/api/stages/${getParam('id')}`,
-			});
+			var fetching = getStage(getParam('id'));
+
 			$.when(loading, fetching)
 			.done(function (loaded, fetched) {
-				var stage = fetched[0];
+				var stage = fetched instanceof Array ? fetched[0] : fetched;
 				game.contentWindow.postMessage({
 					query: 'require',
 					dependencies: [stage.implicit_mod],
