@@ -125,8 +125,9 @@ class Channel extends Component {
         <Col lg={9} md={8} sm={7} xs={12} style={leftStyle}>
           <IframeEmbed
             ref={(embed) => this.iframe = embed ? embed.iframe : null}
-            type="project"
-            token={channel.ProjectToken}
+            type="code"
+            code={channel.head.raw_code}
+            implicit_mod={channel.reserved.implicit_mod}
             visibleFocus
             />
           <ChannelMenu
