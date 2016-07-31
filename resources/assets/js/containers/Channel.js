@@ -6,7 +6,7 @@ import { Row, Col } from "react-bootstrap";
 import { Form, InputGroup, FormControl, Button } from "react-bootstrap";
 import Pusher from 'pusher-js';
 
-import IframeEmbed from '../iframe-embed';
+import IframeEmbed from '../components/IframeEmbed';
 import Timeline from '../components/timeline';
 import ActionBar from '../components/action-bar';
 import ChannelMenu from '../components/channel-menu';

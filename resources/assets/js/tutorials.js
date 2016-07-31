@@ -6,7 +6,7 @@ import { Panel } from "react-bootstrap";
 
 import Merger from "./merger";
 import { Section, Scroller } from "./components/section";
-import IframeEmbed from './iframe-embed';
+import IframeEmbed from './components/IframeEmbed';
 
 const statics = {
   title: 'The Beginning',
