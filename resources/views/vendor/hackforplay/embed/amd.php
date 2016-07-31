@@ -15,9 +15,12 @@ $session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
 session_commit();
 
 $type	= filter_input(INPUT_GET, 'type') or die('Missing param type. Add "&type=(ses|sta|pro)" to url');
+$report = filter_input(INPUT_GET, 'report', FILTER_VALIDATE_BOOLEAN);
 
 // Get (source) stage ID
 switch ($type) {
+	case 'code':
+		if (!$report) break;
 	case 'local':
 	case 'stage':
 		$id	= filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) or die('Missing param id. Add "&id={STAGE ID}" to url');
@@ -29,8 +32,6 @@ switch ($type) {
 		$stmt->execute();
 		$project = $stmt->fetch(PDO::FETCH_ASSOC) or die('Failed to open project');
 		$id = $project['SourceStageID'];
-		break;
-	case 'code':
 		break;
 	default:
 		die("Invalid type " . htmlspecialchars($type));
@@ -77,6 +78,8 @@ switch ($type) {
 // Register play log
 $referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : NULL;
 switch ($type) {
+	case 'code':
+		if (!$report) break;
 	case 'stage':
 		// Tokenを生成
 		$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)

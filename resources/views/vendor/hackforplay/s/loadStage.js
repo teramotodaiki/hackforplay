@@ -3,12 +3,13 @@ function loadStage(code) {
   sessionStorage.removeItem('stage_param_smart_asset');
 
   var game = document.getElementById('item-embed-iframe');
+  var reportParam = '&report=true&id=' + getParam('id');
 
   var loading = (function () {
     var deferred = new $.Deferred();
     game.onload = deferred.resolve.bind(deferred);
     game.onerror = deferred.reject.bind(deferred);
-    game.src = "/embed?type=code";
+    game.src = "/embed?type=code" + (getParam('mode') === 'replay' ? reportParam : '');
     return deferred;
   })();
 
