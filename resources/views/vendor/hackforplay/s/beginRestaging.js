@@ -13,6 +13,7 @@
       })
       .done(function (result) {
         loadStage(result.head.raw_code);
+        listChannels();
       })
       .fail(function () {
         alert('Load failed. プログラムが てにはいらなかった')
@@ -21,6 +22,7 @@
       var loading = $('.h4p_restaging_button button').button('loading');
       makeProject(function () {
         loading.button('reset');
+        listChannels();
       });
     }
 
@@ -465,31 +467,6 @@
 			var castWindow = window.open('/channels/' + channelId + '/watch', 'channel-' + channelId);
 		});
 
-		// List of channels
-		$.get('/projects/'+ sessionStorage.getItem('project-token') +'/channels', {
-			is_archived: false
-		}, function (result) {
-
-			result.data.forEach(function (channel) {
-				var desc = channel.description;
-				desc = !desc || desc.length < 10 ? desc : desc.substr(0, 9) + '…';
-				$('<li>').append(
-					$('<a>').data('id', channel.ID).text(desc)
-				).appendTo('.h4p_cast-channel .dropdown-menu');
-			});
-
-			$('<li>').append(
-				$('<a>').text('Create new channel').on('click', function () {
-
-					$('.h4p_save_button').trigger('click');
-					window.open('/channels/create?project_token=' + sessionStorage.getItem('project-token'), 'create-channel');
-					return false;
-
-				})
-			).appendTo('.h4p_cast-channel .dropdown-menu');
-
-		});
-
 	};
 
 	window.makeProject = function (successed, failed) {
@@ -615,4 +592,31 @@
 			}
 		});
 	}
+
+  function listChannels() {
+    // List of channels
+		$.get('/projects/'+ sessionStorage.getItem('project-token') +'/channels', {
+			is_archived: false
+		}, function (result) {
+
+			result.data.forEach(function (channel) {
+				var desc = channel.description;
+				desc = !desc || desc.length < 10 ? desc : desc.substr(0, 9) + '…';
+				$('<li>').append(
+					$('<a>').data('id', channel.ID).text(desc)
+				).appendTo('.h4p_cast-channel .dropdown-menu');
+			});
+
+			$('<li>').append(
+				$('<a>').text('Create new channel').on('click', function () {
+
+					$('.h4p_save_button').trigger('click');
+					window.open('/channels/create?project_token=' + sessionStorage.getItem('project-token'), 'create-channel');
+					return false;
+
+				})
+			).appendTo('.h4p_cast-channel .dropdown-menu');
+
+		});
+  }
 })();
