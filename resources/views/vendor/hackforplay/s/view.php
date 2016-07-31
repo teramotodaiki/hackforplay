@@ -143,9 +143,13 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 	</script>
 	<script type="text/javascript" charset="utf-8">
 	(function(){
+		var prefix = 'stage_param_';
 		var s = function(key, value){
-			sessionStorage.setItem('stage_param_'+key, value);
+			sessionStorage.setItem(prefix+key, value);
 		};
+		window.getParam = function (key) {
+			return sessionStorage.getItem(prefix+key) || '';
+		}
 		s('id', "<?php echo $id; ?>");
 		s('next', "<?php echo $next; ?>" || '0');
 		s('mode', "<?php echo $mode; ?>");

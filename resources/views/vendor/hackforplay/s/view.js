@@ -826,11 +826,6 @@ $(function(){
 			sessionStorage.setItem('restaging_code', code);
 		}
 	});
-
-	function getParam(key){
-		return sessionStorage.getItem('stage_param_'+key) || '';
-	}
-
 });
 if (!Array.prototype.findIndex) {
   Array.prototype.findIndex = function(predicate) {
