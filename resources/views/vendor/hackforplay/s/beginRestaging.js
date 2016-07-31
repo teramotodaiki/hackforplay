@@ -127,20 +127,11 @@
 		$(".visible-option-restage").css('visibility', 'hidden');
 		$(".h4p_restaging_button").on('click', function() {
 
-			__saveTask.call(this, function () {
-
-				// 投稿可能状態に
-				$(".h4p_publish").show();
-				$("#author_alert").hide();
-
-				document.getElementById('item-embed-iframe').contentWindow.location.reload(true);
-
-			});
-
 			// jsHintで syntax error を見つける
+      var code = jsEditor.getValue('');
 			if ('JSHINT' in window) {
 				JSHINT(
-					jsEditor.getValue(''),
+					code,
 					$.extend(jsEditor.state.lint.options, {
 						shadow: true,
 						expr: true,
@@ -166,40 +157,41 @@
 				}
 			}
 
-		});
-
-		$(".h4p_save_button").on("click", function () {
-			__saveTask();
-		});
-
-		function __saveTask (callback) {
-
-			callback = callback || function () {};
-
 			// Save
 			var loading = $(this).find('button');
-
 			loading.find('.glyphicon').toggleClass('glyphicon-save glyphicon-saved');
+      loading.button('loading');
+
+      var updating = new $.Deferred;
+
 			if(sessionStorage.getItem('project-token') === null){
 				// プロジェクトが作られていないので、作成
-				loading.button('loading');
 				makeProject(function() {
 					updateTask(function() {
-						loading.button('reset');
-						callback();
+            updating.resolve();
 					});
 				}, function() {
-					loading.button('reset');
+          updating.reject();
 				});
 			}else{
-				loading.button('loading');
 				updateTask(function() {
-					loading.button('reset');
-					callback();
+          updating.resolve();
 				});
 			}
 
-		}
+      $.when(updating, loadStage(code))
+      .done(function () {
+        loading.button('reset');
+        // 投稿可能状態に
+        $(".h4p_publish").show();
+				$("#author_alert").hide();
+      })
+      .fail(function () {
+        loading.button('reset');
+        alert('Request failed. ほぞんに しっぱいした');
+      });
+
+		});
 
 		// ビューの設定
 		$(".h4p_while-restaging").show(); // UI
