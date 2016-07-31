@@ -2,10 +2,25 @@
 	window.beginRestaging = function(){
 
 		$('.container.container-game').addClass('restaging');
-		var token = sessionStorage.getItem('project-token');
 		var version = '*';
 		var reqCode = ["require('~project/", token, '/', version, "');"].join('');
-    document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + token;
+
+    var token = sessionStorage.getItem('project-token');
+    if (token) {
+      $.ajax({
+        type: 'GET',
+        url: `/api/projects/${token}`
+      })
+      .done(function (result) {
+        loadStage(result.head.raw_code);
+      })
+      .fail(function () {
+        alert('Load failed. プログラムが てにはいらなかった')
+      });
+    } else {
+      loadStage();
+    }
+
 		$('.h4p_info-require').val(reqCode);
 		$('.h4p_info-version').text(version);
 
@@ -596,9 +611,5 @@
 					break;
 			}
 		});
-	}
-
-  function getParam(key){
-		return sessionStorage.getItem('stage_param_'+key) || '';
 	}
 })();
