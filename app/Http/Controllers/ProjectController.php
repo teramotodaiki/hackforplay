@@ -181,7 +181,7 @@ class ProjectController extends Controller
         $current->save();
       }
 
-      $project->current_script = $current;
+      $project->head = $current;
 
       if ($project->channel) {
         $project->channel->touch();
