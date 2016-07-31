@@ -508,7 +508,7 @@
 			data: {
 				_method: 'PUT',
 				script: {
-					raw_code: jsEditor.getValue('') || sessionStorage.getItem('restaging_code'),
+					raw_code: jsEditor.getValue(''),
 				}
 			},
 		})
