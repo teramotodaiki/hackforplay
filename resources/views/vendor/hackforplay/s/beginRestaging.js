@@ -5,6 +5,7 @@
 		var token = sessionStorage.getItem('project-token');
 		var version = '*';
 		var reqCode = ["require('~project/", token, '/', version, "');"].join('');
+    document.getElementById('item-embed-iframe').src = '/embed/?mod=true&type=project&token=' + token;
 		$('.h4p_info-require').val(reqCode);
 		$('.h4p_info-version').text(version);
 
