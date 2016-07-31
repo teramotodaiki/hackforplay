@@ -773,8 +773,7 @@ $(function(){
 
 	// Twitter OAuthログイン
 	$('.login-with-twitter').on('mousedown', function(event) {
-			alert_on_unload = false; // 警告を出さない
-		}
+		alert_on_unload = false; // 警告を出さない
 	});
 });
 if (!Array.prototype.findIndex) {
