@@ -106,7 +106,7 @@ $(function(){
 			setStage(stage);
 			var item = $item.clone(true);
 			item.find('.h4p_item-thumbnail').on('click', function() {
-				window.open('/s?id=' + stage.id, '_blank');
+				location.href = '/s?id=' + stage.id;
 			});
 			if (stage.thumbnail) {
 				item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
@@ -269,7 +269,7 @@ $(function(){
 				moveCommentList('right');
 				break;
 			case 0:
-				open('/s?id=' + $(this).data('stageid'), '_blank');
+				location.href = '/s?id=' + $(this).data('stageid');
 				break;
 			case 1:
 			case -length + 1:
