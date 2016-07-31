@@ -79,30 +79,10 @@ $(function(){
 	var $projectItem_fixButton = $('<button>').text('元に戻す').addClass('btn btn-link btn-block h4p_fix-project');
 
 	$projectItem.find('.h4p_open-project').on('click', function(event) {
-		var loading = $(this).button('loading');
-		var token = $(this).attr('project-token');
-		$.post('../stage/fetchprojectbytoken.php', {
-			'token': token,
-			'attendance-token': sessionStorage.getItem('attendance-token')
-		} , function(data, textStatus, xhr) {
-			loading.button('reset');
-			switch(data){
-				case 'no-session':
-					$('#signinModal').modal('show');
-					break;
-				case 'missing-project':
-					break;
-				case 'parse-error':
-					break;
-				default:
-					var value = jQuery.parseJSON(data);
-					sessionStorage.setItem('project-token', token);
-					sessionStorage.setItem('restaging_code', value.data);
-					location.href = '/s?id=' + value.source_id + '&mode=restaging';
-					break;
-			}
-		});
+		sessionStorage.setItem('project-token', $(this).attr('project-token'));
+		location.href = '/s?id=' + $(this).attr('source_id') + '&mode=restaging';
 	});
+
 	$projectItem.find('.h4p_delete-project').on('click', function() {
 		var loading = $(this).button('loading');
 		var token = $(this).attr('project-token');
@@ -194,7 +174,10 @@ $(function(){
 			// NOTE: depricated
 			var title = project.title;
 			item.find('.registered b').text(convertLocaleTimeString(project.Registered));
-			item.find('button').attr('project-token', project.token);
+			item.find('button').attr({
+				'project-token': project.token,
+				'source_id': project.source_stage_id,
+			});
 
 			item.appendTo($list);
 		});

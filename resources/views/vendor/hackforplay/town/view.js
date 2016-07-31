@@ -96,7 +96,6 @@ $(function () {
 				default:
 					var value = $.parseJSON(data);
 					sessionStorage.setItem('project-token', args[0]);
-					sessionStorage.setItem('restaging_code', value.data);
 					location.href = '/s?mode=restaging&id=' + args[1];
 					break;
 				}

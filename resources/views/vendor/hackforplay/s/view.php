@@ -13,8 +13,8 @@ $src	= $stage['Src'];
 $origin_id = NULL;
 $mode 	= filter_input(INPUT_GET, "mode");
 $norestage = $stage['NoRestage'];
-if(!isset($mode)){
-	$mode 	= 'replay';
+if(empty($mode)){
+	$mode	= 'replay';
 }
 $code = $project['Data'];
 $code = preg_replace("/\\\\/", "\\\\\\\\", $code);
@@ -143,9 +143,13 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 	</script>
 	<script type="text/javascript" charset="utf-8">
 	(function(){
+		var prefix = 'stage_param_';
 		var s = function(key, value){
-			sessionStorage.setItem('stage_param_'+key, value);
+			sessionStorage.setItem(prefix+key, value);
 		};
+		window.getParam = function (key) {
+			return sessionStorage.getItem(prefix+key) || '';
+		}
 		s('id', "<?php echo $id; ?>");
 		s('next', "<?php echo $next; ?>" || '0');
 		s('mode', "<?php echo $mode; ?>");
@@ -179,9 +183,11 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 	document.body.classList.add('<?php echo $norestage ? 'option-restage-NG' : 'option-restage-OK'; ?>');
 	document.body.classList.add('<?php echo $session_userid ? 'option-session-OK' : 'option-session-NG'; ?>');
 	</script>
+	<script src="loadStage.js" type="text/javascript" charset="utf-8"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<script src="openExternal.js" type="text/javascript" charset="utf-8"></script>
 	<script src="getStage.js" type="text/javascript" charset="utf-8"></script>
+	<script src="beginRestaging.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/activity/post.js" type="text/javascript"></script>
 	<!-- Modal -->
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
