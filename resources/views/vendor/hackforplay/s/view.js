@@ -3,7 +3,7 @@ var jsEditor = null;
 $(function(){
 
 	// initialize
-	if (getParam('mode') !== 'restaging' && !getParam('directly_restaging')) {
+	if (getParam('mode') !== 'restaging') {
 		loadStage();
 	}
 	// reload
@@ -770,9 +770,8 @@ $(function(){
 		case 'replay':
 		case 'quest':
 			// 直後にbeginRestaging
-			makeProject(function () {
-				updateTask(beginRestaging);
-			});
+			sessionStorage.removeItem('project-token');
+			beginRestaging();
 			break;
 		}
 	}
