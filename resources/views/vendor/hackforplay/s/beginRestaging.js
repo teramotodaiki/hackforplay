@@ -17,8 +17,6 @@
       .fail(function () {
         alert('Load failed. プログラムが てにはいらなかった')
       });
-    } else {
-      loadStage();
     }
 
 		$('.h4p_info-require').val(reqCode);
