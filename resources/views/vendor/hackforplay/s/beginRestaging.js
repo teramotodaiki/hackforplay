@@ -254,9 +254,17 @@
 		// Smart Assets
 		(function () {
 			var smartAsset = null, __counters = {};
-			window.addEventListener('message', function (event) {
-				if (event.data === 'game_loaded') {
+
+      render();
+      window.addEventListener('message', function (event) {
+        if (event.data === 'game_loaded') {
+          render();
+        }
+      });
+
+			function render () {
 					var str = sessionStorage.getItem('stage_param_smart_asset');
+          if (!str) return;
 					smartAsset = $.parseJSON(str); // Update Smart Assets
 					smartAsset.apps.forEach(function (asset, index) {
 						// elementのdata-cacheと比較. eleがない:追加, eleと同じ:無視, eleと違う: 挿入後、eleを削除
@@ -301,8 +309,8 @@
 						return index >= smartAsset.apps.length;
 					}).remove();
 					$('.container-assets').css('height', $('.container-assets').outerHeight());
-				}
-			});
+			}
+
 			$('.container-assets').on('click', '.smart-asset-entity', function() {
 				$(this).toggleClass('toggle-clicked');
 				var index = $(this).data('index') >> 0;

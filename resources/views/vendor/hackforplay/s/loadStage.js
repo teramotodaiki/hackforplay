@@ -1,5 +1,7 @@
 // iframe ロード
 function loadStage(code) {
+  sessionStorage.removeItem('stage_param_smart_asset');
+
   var game = document.getElementById('item-embed-iframe');
 
   var loading = (function () {
