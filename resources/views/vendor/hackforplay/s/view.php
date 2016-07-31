@@ -182,6 +182,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<script src="openExternal.js" type="text/javascript" charset="utf-8"></script>
 	<script src="getStage.js" type="text/javascript" charset="utf-8"></script>
+	<script src="beginRestaging.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/activity/post.js" type="text/javascript"></script>
 	<!-- Modal -->
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
