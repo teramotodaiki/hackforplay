@@ -1,6 +1,6 @@
 (function(){
-	window.beginRestaging = function(isExtendMode){
-    
+	window.beginRestaging = function(){
+
 		$('.container.container-game').addClass('restaging');
 		var token = sessionStorage.getItem('project-token');
 		var version = '*';
