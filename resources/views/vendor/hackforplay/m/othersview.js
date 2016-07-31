@@ -103,7 +103,7 @@ $(function(){
 			result.values.forEach(function(stage){
 				var item = $item.clone(true);
 				item.find('.h4p_item-thumbnail').on('click', function() {
-					window.open('/s?id=' + stage.id, '_blank');
+					location.href = '/s?id=' + stage.id;
 				});
 				if (stage.thumbnail) {
 					item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
@@ -111,7 +111,6 @@ $(function(){
 				item.find('.title a').attr({
 					href: '/s?id=' + stage.id,
 					title: stage.title,
-					target: '_blank'
 				}).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
 				item.find('.author').remove();
 				item.find('.playcount b').prepend(stage.playcount);
@@ -119,7 +118,6 @@ $(function(){
 					item.find('.source a').attr({
 						href: '/s?id=' + stage.source_id,
 						title: stage.source_title,
-						target: '_blank'
 					}).text(stage.source_title);
 				}else{
 					item.find('.source').text('オリジナルステージ');
