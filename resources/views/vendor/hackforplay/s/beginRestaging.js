@@ -469,7 +469,7 @@
 
 	};
 
-	window.makeProject = function (successed, failed) {
+	function makeProject (successed, failed) {
 		// 残っているトークンを破棄
 		sessionStorage.removeItem('project-token');
 		$.ajax({
@@ -490,7 +490,7 @@
 			console.error(xhr);
 		});
 	}
-	window.updateTask = function (callback, resolveObject) {
+	function updateTask (callback, resolveObject) {
 		if (resolveObject === undefined) {
 			capture().done(function (dataUrl) {
 				updateTask(callback, {
@@ -542,7 +542,7 @@
 			}
 		});
 	}
-	window.publishTask = function (callback) {
+	function publishTask (callback) {
 		var stage_info = {
 			title: $("#inputModal .stage-name").val(),
 			explain: $('#inputModal .stage-explain').val(),
