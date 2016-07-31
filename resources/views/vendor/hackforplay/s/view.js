@@ -695,15 +695,9 @@ $(function(){
 			sessionStorage.setItem('restaging_code', getParam('replay_code'));
 			$(".begin_restaging").on('click', function() {
 
-				// AMD need project has a script
-				makeProject(function () {
-					updateTask(function () {
+				makeProject();
+				beginRestaging();
 
-						// Begin restaging
-						beginRestaging();
-
-					});
-				});
 			});
 			break;
 		case "quest":
