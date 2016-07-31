@@ -18,8 +18,8 @@ $header_pattern = "topPage";
 if(preg_match("/^.*\/s/", $_SERVER["PHP_SELF"])){
 	$header_pattern = "inGame";
 	$mode 	= filter_input(INPUT_GET, "mode");
-	if(!isset($mode)){
-		$mode	= $stage['Mode'];
+	if(empty($mode)){
+		$mode	= 'replay';
 	}
 }else if(preg_match("/^.*\/policies/", $_SERVER["PHP_SELF"])){
 	$header_pattern = "policies";

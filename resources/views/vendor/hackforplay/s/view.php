@@ -13,8 +13,8 @@ $src	= $stage['Src'];
 $origin_id = NULL;
 $mode 	= filter_input(INPUT_GET, "mode");
 $norestage = $stage['NoRestage'];
-if(!isset($mode)){
-	$mode 	= 'replay';
+if(empty($mode)){
+	$mode	= 'replay';
 }
 $code = $project['Data'];
 $code = preg_replace("/\\\\/", "\\\\\\\\", $code);
