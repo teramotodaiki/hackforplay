@@ -1,4 +1,5 @@
 (function(){
+	var _updateTaskLastSentCode = '';
 	window.beginRestaging = function(){
 
 		$('.container.container-game').addClass('restaging');
@@ -14,6 +15,7 @@
         listChannels();
         showModInput();
         jsEditor.setValue(result.head.raw_code);
+				_updateTaskLastSentCode = jsEditor.getValue('');
       })
       .fail(function () {
         alert('Load failed. プログラムが てにはいらなかった')
@@ -488,6 +490,8 @@
 		});
 	}
 	function updateTask (callback, resolveObject) {
+		callback = callback || function () {};
+
 		if (resolveObject === undefined) {
 			capture().done(function (dataUrl) {
 				updateTask(callback, {
@@ -502,13 +506,19 @@
 			return;
 		}
 
+		var code = jsEditor.getValue('');
+		if (code === _updateTaskLastSentCode) {
+			callback();
+			return;
+		}
+
 		$.ajax({
 			type: 'POST',
 			url: '/api/projects/' + sessionStorage.getItem('project-token'),
 			data: {
 				_method: 'PUT',
 				script: {
-					raw_code: jsEditor.getValue(''),
+					raw_code: code,
 				}
 			},
 		})
@@ -516,7 +526,8 @@
 			if (result.message) {
 				alert(result.message);
 			} else {
-				(callback || function () {})();
+				callback();
+				_updateTaskLastSentCode = code;
 			}
 		})
 		.fail(function (xhr) {
