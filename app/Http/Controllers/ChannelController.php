@@ -31,6 +31,12 @@ class ChannelController extends Controller
         'user' => $request->user(),
       ]);
       $channels = $this->query($query);
+
+      foreach ($channels as $item) {
+        $item->head = $item->project->scripts()->orderBy('ID', 'DESC')->first();
+        $item->reserved = $item->project->stages()->orderBy('ID', 'DESC')->first();
+      }
+      
       return response($channels, 200);
     }
 
@@ -167,7 +173,10 @@ class ChannelController extends Controller
       if ($request->input('chats')) {
         $channel->chats;
       }
-      $channel->script = $channel->project->scripts()->orderBy('ID', 'DESC')->first();
+
+      $channel->head = $channel->project->scripts()->orderBy('ID', 'DESC')->first();
+      $channel->reserved = $channel->project->stages()->orderBy('ID', 'DESC')->first();
+
       return response($channel, 200);
     }
 
