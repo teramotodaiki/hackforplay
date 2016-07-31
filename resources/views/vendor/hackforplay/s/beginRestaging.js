@@ -17,6 +17,11 @@
       .fail(function () {
         alert('Load failed. プログラムが てにはいらなかった')
       });
+    } else {
+      var loading = $('.h4p_restaging_button button').button('loading');
+      makeProject(function () {
+        loading.button('reset');
+      });
     }
 
 		$('.h4p_info-require').val(reqCode);

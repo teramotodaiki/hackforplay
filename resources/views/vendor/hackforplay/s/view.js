@@ -695,7 +695,7 @@ $(function(){
 			sessionStorage.setItem('restaging_code', getParam('replay_code'));
 			$(".begin_restaging").on('click', function() {
 
-				makeProject();
+				sessionStorage.removeItem('project-token');
 				beginRestaging();
 
 			});
@@ -703,8 +703,10 @@ $(function(){
 		case "quest":
 			sessionStorage.setItem('restaging_code', getParam('replay_code'));
 			$(".begin_restaging").on('click', function() {
+
+				sessionStorage.removeItem('project-token');
 				beginRestaging();
-				makeProject();
+
 			});
 			if (!getParam('directly_restaging')) {
 				// Show credit
