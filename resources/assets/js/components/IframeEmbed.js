@@ -10,6 +10,7 @@ class IframeEmbed extends React.Component {
   }
 
   componentDidMount () {
+    const { type, code, implicit_mod, autoFocus } = this.props;
 
     // focus binding
     const e = this.iframe.contentWindow.addEventListener;
@@ -23,10 +24,20 @@ class IframeEmbed extends React.Component {
     e('blur', () => this.forceUpdate());
 
     // autoFocus
-    if (this.props.autoFocus) {
+    if (autoFocus) {
       this.iframe.focus();
     }
 
+    // code
+    if (type === 'code') {
+      this.iframe.onload = function () {
+        this.contentWindow.postMessage({
+          query: 'require',
+          dependencies: implicit_mod && [implicit_mod],
+          code: code,
+        }, '/');
+      };
+    }
   }
 
   render () {

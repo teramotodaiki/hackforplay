@@ -40,8 +40,8 @@ class ProjectController extends Controller
 
       foreach ($projects as $item) {
         // head, implicit_mod
-        $item->head = $item->scripts()->first();
-        $item->reserved = $item->stages()->first();
+        $item->head = $item->scripts()->orderBy('id', 'desc')->first();
+        $item->reserved = $item->stages()->orderBy('id', 'desc')->first();
       }
 
       return response($projects, 200);
@@ -128,8 +128,8 @@ class ProjectController extends Controller
       }
 
       // head, implicit_mod
-      $project->head = $project->scripts()->first();
-      $project->reserved = $project->stages()->first();
+      $project->head = $project->scripts()->orderBy('id', 'desc')->first();
+      $project->reserved = $project->stages()->orderBy('id', 'desc')->first();
 
       return response($project, 200);
     }
@@ -181,7 +181,7 @@ class ProjectController extends Controller
         $current->save();
       }
 
-      $project->current_script = $current;
+      $project->head = $current;
 
       if ($project->channel) {
         $project->channel->touch();
