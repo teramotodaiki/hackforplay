@@ -31,10 +31,6 @@ $(function(){
 					location.href = '/getaccount/';
 				}
 				break;
-			case "replace_code":
-				var code = sessionStorage.getItem('restaging_code');
-				jsEditor.setValue(code);
-				break;
 			case "begin_restaging":
 				if ( !$('.container.container-game').hasClass('restaging') ) {
 					// ゲーム側からリステージングを開始する
@@ -692,7 +688,6 @@ $(function(){
 		case "official":
 		case "replay":
 			// replay mode (load javascript-code and run it)
-			sessionStorage.setItem('restaging_code', getParam('replay_code'));
 			$(".begin_restaging").on('click', function() {
 
 				sessionStorage.removeItem('project-token');
@@ -701,7 +696,6 @@ $(function(){
 			});
 			break;
 		case "quest":
-			sessionStorage.setItem('restaging_code', getParam('replay_code'));
 			$(".begin_restaging").on('click', function() {
 
 				sessionStorage.removeItem('project-token');
@@ -779,16 +773,7 @@ $(function(){
 
 	// Twitter OAuthログイン
 	$('.login-with-twitter').on('mousedown', function(event) {
-		// clickイベントより先に呼び出されるので、色々仕込みができる
-
-		// restaging中ならrestaging_codeを保管する処理を行う
-		jsEditor.save();
-		var code = jsEditor.getTextArea().value;
-		if (code !== '') {
-
-			$(this).data('login_successed', '/s?id=' + getParam('id') + '&mode=restaging');
 			alert_on_unload = false; // 警告を出さない
-			sessionStorage.setItem('restaging_code', code);
 		}
 	});
 });

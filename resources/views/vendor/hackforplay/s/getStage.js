@@ -8,7 +8,7 @@
 
     return state.get(id) ?
     // hit
-    (new $.Deferred).resolve(state.get(id)) :
+    (new $.Deferred).resolve([state.get(id)]) :
     // miss
     $.ajax({
       type: 'GET',

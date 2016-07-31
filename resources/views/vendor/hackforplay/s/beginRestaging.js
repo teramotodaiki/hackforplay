@@ -13,6 +13,7 @@
         loadStage(result.head.raw_code);
         listChannels();
         showModInput();
+        jsEditor.setValue(result.head.raw_code);
       })
       .fail(function () {
         alert('Load failed. プログラムが てにはいらなかった')
@@ -23,6 +24,11 @@
         loading.button('reset');
         listChannels();
         showModInput();
+      });
+      getStage(getParam('id'))
+      .done(function (result) {
+        var stage = result[0];
+        jsEditor.setValue(stage.script.raw_code);
       });
     }
 
@@ -118,13 +124,7 @@
 		})();
 
 		alert_on_unload = true;
-		$(".h4p_restaging").fadeIn("fast", function() {
-			var storage_key = getParam('retry') === '1' ? 'retry_code' : 'restaging_code';
-			var code = sessionStorage.getItem(storage_key);
-			if(code !== null){
-				jsEditor.setValue(code);
-			}
-		});
+		$(".h4p_restaging").fadeIn("fast");
 		$(".h4p_info-footer").text("（リステージング中）");
 		$(".visible-option-restage").css('visibility', 'hidden');
 		$(".h4p_restaging_button").on('click', function() {
@@ -508,7 +508,7 @@
 			data: {
 				_method: 'PUT',
 				script: {
-					raw_code: jsEditor.getValue('') || sessionStorage.getItem('restaging_code'),
+					raw_code: jsEditor.getValue(''),
 				}
 			},
 		})
