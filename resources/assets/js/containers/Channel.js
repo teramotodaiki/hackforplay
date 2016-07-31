@@ -6,7 +6,7 @@ import { Row, Col } from "react-bootstrap";
 import { Form, InputGroup, FormControl, Button } from "react-bootstrap";
 import Pusher from 'pusher-js';
 
-import IframeEmbed from '../iframe-embed';
+import IframeEmbed from '../components/IframeEmbed';
 import Timeline from '../components/timeline';
 import ActionBar from '../components/action-bar';
 import ChannelMenu from '../components/channel-menu';
@@ -50,8 +50,15 @@ class Channel extends Component {
   }
 
   reload () {
-    this.iframe.contentWindow.location.reload(true);
-    this.iframe.focus();
+    const { dispatch } = this.props;
+    const id = +this.props.params.id;
+
+    dispatch(fetchChannel({ id, chats: true }))
+    .then((result) => {
+      this.iframe.contentWindow.location.reload(false);
+      this.iframe.focus();
+    });
+
   }
 
   createGist () {
@@ -125,8 +132,9 @@ class Channel extends Component {
         <Col lg={9} md={8} sm={7} xs={12} style={leftStyle}>
           <IframeEmbed
             ref={(embed) => this.iframe = embed ? embed.iframe : null}
-            type="project"
-            token={channel.ProjectToken}
+            type="code"
+            code={channel.head.raw_code}
+            implicit_mod={channel.reserved.implicit_mod}
             visibleFocus
             />
           <ChannelMenu
