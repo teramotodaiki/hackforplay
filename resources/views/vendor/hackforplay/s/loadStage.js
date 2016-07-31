@@ -16,7 +16,7 @@ function loadStage(code) {
 
   return $.when(loading, fetching)
   .done(function (loaded, fetched) {
-    var stage = fetched instanceof Array ? fetched[0] : fetched;
+    var stage = fetched[0];
     game.contentWindow.postMessage({
       query: 'require',
       dependencies: [stage.implicit_mod],
