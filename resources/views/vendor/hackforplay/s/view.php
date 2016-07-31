@@ -183,6 +183,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 	document.body.classList.add('<?php echo $norestage ? 'option-restage-NG' : 'option-restage-OK'; ?>');
 	document.body.classList.add('<?php echo $session_userid ? 'option-session-OK' : 'option-session-NG'; ?>');
 	</script>
+	<script src="loadStage.js" type="text/javascript" charset="utf-8"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<script src="openExternal.js" type="text/javascript" charset="utf-8"></script>
 	<script src="getStage.js" type="text/javascript" charset="utf-8"></script>
