@@ -709,6 +709,113 @@ $(function(){
 		});
 	}
 
+	switch(getParam('mode')){
+		case "restaging":
+			// restaging mode (load javascript-code from sessionStorage)
+			beginRestaging();
+			// 投稿可能状態に
+			$(".h4p_publish").show();
+			$("#author_alert").hide();
+
+			scrollToAnchor();
+			break;
+		case "official":
+		case "replay":
+			// replay mode (load javascript-code and run it)
+			sessionStorage.setItem('restaging_code', getParam('replay_code'));
+			$(".begin_restaging").on('click', function() {
+
+				// AMD need project has a script
+				makeProject(function () {
+					updateTask(function () {
+
+						// Begin restaging
+						beginRestaging();
+
+					});
+				});
+			});
+			break;
+		case "extend":
+			// extend mode (extends restaging-code in tutorial)
+			beginRestaging(true);
+			scrollToAnchor('.h4p_restaging');
+			break;
+		case "quest":
+			sessionStorage.setItem('restaging_code', getParam('replay_code'));
+			$(".begin_restaging").on('click', function() {
+				beginRestaging();
+				makeProject();
+			});
+			if (!getParam('directly_restaging')) {
+				// Show credit
+				$('.container-game .h4p_game iframe').css('opacity', 0);
+				$('.container-game .h4p_credit').removeClass('hidden');
+				$('.container-game .h4p_credit .Title').text(getParam('title'));
+				$('.container-game .h4p_credit .Author').text(getParam('author'));
+				$('.container-game .h4p_credit .hasnext-' + !!(getParam('next') >> 0)).removeClass('hidden');
+				$('.container-game .h4p_credit .PlayOrder').text(getParam('playorder'));
+
+				// 順番にフェードイン
+				$('.credit-timeline').hide();
+				(function task (index) {
+					var $element = $('.credit-timeline.credit-timeline-' + index);
+					if ($element === undefined) return;
+					$element.fadeIn(1000, function() {
+						task(index + 1);
+					});
+				})(0);
+
+				// ロードされた瞬間、ゲームを一時停止する
+				var paused = false, creditVisibility = true;
+				window.addEventListener('message', function(event) {
+					if (event.data === 'game_loaded' && creditVisibility) {
+						// ---- temporary implement ----
+						var next = getParam('next') > 0 ? 'Hack.__QuestGameclearNext='+getParam('next') + '; ' : '';
+						var report = getParam('reporting_requirements') ? 'Hack.__QuestGameclearNext=true; ' : '';
+						$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage({
+							query: 'eval',
+							value: 'if (Hack.__QuestGameclear) { Hack.ongameclear = Hack.__QuestGameclear; ' + next + report + ' }'
+						}, '/');
+						// ---- temporary implement ----
+						document.getElementById('item-embed-iframe').contentWindow.postMessage({
+							query: 'eval',
+							value: 'game.pause()'
+						}, '/');
+						paused = true;
+					}
+				});
+				// 2秒後、ゲームをフェードインする
+				setTimeout(function() {
+					$('.container-game .h4p_credit').addClass('hidden');
+					$('.container-game .h4p_game iframe').css('opacity', 1);
+					creditVisibility = false;
+					if (paused) {
+						document.getElementById('item-embed-iframe').contentWindow.postMessage({
+							query: 'eval',
+							value: 'game.resume()'
+						}, '/');
+					}
+				}, 4000);
+			}
+			break;
+	}
+
+	// Directly restaging
+	// 任意のステージをmode=restaging以外で読み込んだ直後にbeginRestagingするモード
+	if (getParam('directly_restaging')) {
+		switch (getParam('mode')) {
+		case 'official':
+		case 'replay':
+		case 'quest':
+			// 直後にbeginRestaging
+			makeProject(function () {
+				updateTask(beginRestaging);
+			});
+			break;
+		}
+	}
+
 
 	// Twitter OAuthログイン
 	$('.login-with-twitter').on('mousedown', function(event) {
