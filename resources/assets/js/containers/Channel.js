@@ -50,8 +50,15 @@ class Channel extends Component {
   }
 
   reload () {
-    this.iframe.contentWindow.location.reload(true);
-    this.iframe.focus();
+    const { dispatch } = this.props;
+    const id = +this.props.params.id;
+
+    dispatch(fetchChannel({ id, chats: true }))
+    .then((result) => {
+      this.iframe.contentWindow.location.reload(false);
+      this.iframe.focus();
+    });
+
   }
 
   createGist () {
