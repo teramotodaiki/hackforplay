@@ -36,7 +36,7 @@ const statics = {
   dialog: {
     header: 'Awesome!!',
     description : 'There are 500+ stages in HackforPlay! Try it out!',
-    button: 'Play more'
+    button: 'Next step'
   },
   confirm: {
     title: "Did you clear the 1st stage?",
@@ -186,7 +186,7 @@ const Dialog = React.createClass({
           <Panel>
             <h1>{this.props.header}</h1>
             <p>{this.props.description}</p>
-            <a href="r" className={this.p({ btn: 'primary lg' })}>
+            <a href="https://hackforplay.xyz/m/?id=3187" className={this.p({ btn: 'primary lg' })}>
               <span style={{ fontSize: '2.5rem' }}>{this.props.button}</span>
             </a>
             <div style={{ marginTop: '1rem' }}>
