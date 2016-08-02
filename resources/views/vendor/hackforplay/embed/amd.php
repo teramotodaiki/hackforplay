@@ -19,7 +19,6 @@ $report = filter_input(INPUT_GET, 'report', FILTER_VALIDATE_BOOLEAN);
 // Get (source) stage ID
 switch ($type) {
 	case 'code':
-		if (!$report) break;
 	case 'stage':
 		$id	= filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) or die('Missing param id. Add "&id={STAGE ID}" to url');
 		break;
@@ -37,7 +36,7 @@ switch ($type) {
 }
 
 
-if (isset($id)) {
+if ($type === 'stage') {
 
 // Get source element URL
 $stmt	= $dbh->prepare('SELECT "Src","ScriptID","State","UserID","ProjectID","MajorVersion","MinorVersion" FROM "Stage" WHERE "ID"=:id');
@@ -208,7 +207,7 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				} while (localStorage.getItem(key) !== null);
 
 				localStorage.setItem(key, JSON.stringify(event.data));
-				location.href = location.origin + location.pathname + '?type=code&key=' + key;
+				location.href = location.origin + location.pathname + '?type=code&key=' + key + "&id=<?php echo $id; ?>";
 			};
 		}
 	});
