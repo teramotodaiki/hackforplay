@@ -177,8 +177,10 @@ null :
 
 	<?php else : ?>
 
-	window.addEventListener('message', function (event) {
+	// require main code
+	window.addEventListener('message', function task (event) {
 		if (event.data.query === 'require') {
+			window.removeEventListener('message', task); // listen once
 
 			(function (callback) {
 				// dependencies
