@@ -67,6 +67,14 @@ const Tutorials = React.createClass({
       ],
     }
   },
+  componentDidMount() {
+    // Backspaceキーを無効化
+  	document.addEventListener('keydown', function (event) {
+  		if (event.keyCode === 8) {
+  			return false;
+  		}
+  	});
+  },
   confirm() {
     return this.refs.confirm.show();
   },
