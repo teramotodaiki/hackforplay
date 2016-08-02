@@ -22,14 +22,6 @@ switch ($type) {
 	case 'stage':
 		$id	= filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) or die('Missing param id. Add "&id={STAGE ID}" to url');
 		break;
-	case 'project':
-		$token	= filter_input(INPUT_GET, 'token') or die('Missing param token. Add "&token={YOUR PROJECT TOKEN}" to url');
-		$stmt	= $dbh->prepare('SELECT "ID","SourceStageID" FROM "Project" WHERE "Token"=:token');
-		$stmt->bindValue(':token', $token, PDO::PARAM_STR);
-		$stmt->execute();
-		$project = $stmt->fetch(PDO::FETCH_ASSOC) or die('Failed to open project');
-		$id = $project['SourceStageID'];
-		break;
 	default:
 		die("Invalid type " . htmlspecialchars($type));
 		break;
@@ -62,9 +54,6 @@ switch ($type) {
 		$stmt->execute();
 		$token = $stmt->fetch(PDO::FETCH_COLUMN);
 		$version = implode('.', [$stage['MajorVersion'], $stage['MinorVersion']]);
-		break;
-	case 'project':
-		$version = '*';
 		break;
 }
 
