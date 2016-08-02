@@ -2,9 +2,8 @@
 /*
 MODをAMDで管理するステージロード(新仕様)コントローラ
 Input: type , (id,key|id|token)
-type: 改造コードスクリプトの読み込み方法を表すキー文字列 (local|stage|project)
-key: type=local のとき、sessionStorageのキーを表す文字列
-id: type=stage|local のとき、ステージのIDを表す数値
+type: 改造コードスクリプトの読み込み方法を表すキー文字列 (stage|project)
+id: type=stage のとき、ステージのIDを表す数値
 token: type=project のとき、プロジェクトトークンの文字列
 */
 
@@ -21,7 +20,6 @@ $report = filter_input(INPUT_GET, 'report', FILTER_VALIDATE_BOOLEAN);
 switch ($type) {
 	case 'code':
 		if (!$report) break;
-	case 'local':
 	case 'stage':
 		$id	= filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) or die('Missing param id. Add "&id={STAGE ID}" to url');
 		break;
@@ -59,10 +57,6 @@ if ($stage['State'] === 'rejected') {
 
 // Get project token
 switch ($type) {
-	case 'local':
-		$key = filter_input(INPUT_GET, 'key') or die('Missing param key. Add "&key={SESSION STORAGE KEY}" to url');
-		$script_src = 'script/?key=' . $key;
-		break;
 	case 'stage':
 		$stmt = $dbh->prepare('SELECT "Token" FROM "Project" WHERE "ID"=:id');
 		$stmt->bindValue(':id', $stage['ProjectID'], PDO::PARAM_INT);
