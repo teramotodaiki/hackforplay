@@ -352,15 +352,15 @@ function getEditor() {
 			lay.moveTo(-game.rootScene.x, -game.rootScene.y);
 			lay.tl.fadeIn(30, enchant.Easing.LINEAR).then(function() {
 				// [RETRY]
-				// Hack.createSprite(165, 69, {
-				// 	x: 157-game.rootScene.x, y: 320-game.rootScene.y,
-				// 	image: game.assets['hackforplay/new_button_retry.png'],
-				// 	defaultParentNode: game.rootScene,
-				// 	ontouchend: function() {
-				// 		// [RETRY] がクリックされたとき
-				// 		location.reload(false);
-				// 	}
-				// }).tl.moveTo(157-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
+				Hack.createSprite(165, 69, {
+					x: 157-game.rootScene.x, y: 320-game.rootScene.y,
+					image: game.assets['hackforplay/new_button_retry.png'],
+					defaultParentNode: game.rootScene,
+					ontouchend: function() {
+						// [RETRY] がクリックされたとき
+						location.reload(false);
+					}
+				}).tl.moveTo(157-game.rootScene.x, 240-game.rootScene.y, 20, enchant.Easing.CUBIC_EASEOUT);
 			});
 		};
 
@@ -558,11 +558,11 @@ function getEditor() {
 				}, 500);
 			});
 			// ゲームを再スタートするボタン
-			// addGUIParts(game.assets['hackforplay/menu-button-retry.png'], function() {
-			// 	return true;
-			// }, function() {
-			// 	location.reload(false);
-			// });
+			addGUIParts(game.assets['hackforplay/menu-button-retry.png'], function() {
+				return true;
+			}, function() {
+				location.reload(false);
+			});
 
 			function addGUIParts (_image, _condition, _touchEvent) {
 				GUIParts.push(Hack.createSprite(32, 32, {
