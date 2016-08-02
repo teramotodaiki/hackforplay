@@ -2,9 +2,8 @@
 /*
 MODをAMDで管理するステージロード(新仕様)コントローラ
 Input: type , (id,key|id|token)
-type: 改造コードスクリプトの読み込み方法を表すキー文字列 (local|stage|project)
-key: type=local のとき、sessionStorageのキーを表す文字列
-id: type=stage|local のとき、ステージのIDを表す数値
+type: 改造コードスクリプトの読み込み方法を表すキー文字列 (stage|project)
+id: type=stage のとき、ステージのIDを表す数値
 token: type=project のとき、プロジェクトトークンの文字列
 */
 
@@ -21,7 +20,6 @@ $report = filter_input(INPUT_GET, 'report', FILTER_VALIDATE_BOOLEAN);
 switch ($type) {
 	case 'code':
 		if (!$report) break;
-	case 'local':
 	case 'stage':
 		$id	= filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) or die('Missing param id. Add "&id={STAGE ID}" to url');
 		break;
@@ -59,10 +57,6 @@ if ($stage['State'] === 'rejected') {
 
 // Get project token
 switch ($type) {
-	case 'local':
-		$key = filter_input(INPUT_GET, 'key') or die('Missing param key. Add "&key={SESSION STORAGE KEY}" to url');
-		$script_src = 'script/?key=' . $key;
-		break;
 	case 'stage':
 		$stmt = $dbh->prepare('SELECT "Token" FROM "Project" WHERE "ID"=:id');
 		$stmt->bindValue(':id', $stage['ProjectID'], PDO::PARAM_INT);
@@ -98,6 +92,8 @@ switch ($type) {
 $deps = empty($token) ?
 null :
 ["~project/$token/$version"];
+
+$key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 
 ?>
 <!DOCTYPE html>
@@ -183,8 +179,10 @@ null :
 
 	<?php else : ?>
 
-	window.addEventListener('message', function (event) {
+	// require main code
+	window.addEventListener('message', function task (event) {
 		if (event.data.query === 'require') {
+			window.removeEventListener('message', task); // listen once
 
 			(function (callback) {
 				// dependencies
@@ -201,8 +199,35 @@ null :
 					Hack.start();
 				});
 			});
+
+			location.reload = function () {
+				// local cache
+				var key;
+				do {
+					key = 'cache-' + Math.random().toString(36).substr(2);
+				} while (localStorage.getItem(key) !== null);
+
+				localStorage.setItem(key, JSON.stringify(event.data));
+				location.href = location.origin + location.pathname + '?type=code&key=' + key;
+			};
 		}
 	});
+
+	(function () {
+		// load cache
+		var key = "<?php echo $key; ?>";
+		if (key && localStorage.getItem(key)) {
+			try {
+				var message = JSON.parse(localStorage.getItem(key));
+				console.log(message);
+				window.postMessage(message, '/');
+			} catch (e) {
+
+			} finally {
+				localStorage.removeItem(key);
+			}
+		}
+	})();
 
 	<?php endif; ?>
 
