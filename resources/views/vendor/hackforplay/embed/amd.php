@@ -93,6 +93,8 @@ $deps = empty($token) ?
 null :
 ["~project/$token/$version"];
 
+$key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -197,8 +199,35 @@ null :
 					Hack.start();
 				});
 			});
+
+			location.reload = function () {
+				// local cache
+				var key;
+				do {
+					key = 'cache-' + Math.random().toString(36).substr(2);
+				} while (localStorage.getItem(key) !== null);
+
+				localStorage.setItem(key, JSON.stringify(event.data));
+				location.href = location.origin + location.pathname + '?type=code&key=' + key;
+			};
 		}
 	});
+
+	(function () {
+		// load cache
+		var key = "<?php echo $key; ?>";
+		if (key && localStorage.getItem(key)) {
+			try {
+				var message = JSON.parse(localStorage.getItem(key));
+				console.log(message);
+				window.postMessage(message, '/');
+			} catch (e) {
+
+			} finally {
+				localStorage.removeItem(key);
+			}
+		}
+	})();
 
 	<?php endif; ?>
 
