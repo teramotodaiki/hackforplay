@@ -218,7 +218,6 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 		if (key && localStorage.getItem(key)) {
 			try {
 				var message = JSON.parse(localStorage.getItem(key));
-				console.log(message);
 				window.postMessage(message, '/');
 			} catch (e) {
 
