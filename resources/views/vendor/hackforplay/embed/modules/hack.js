@@ -443,6 +443,7 @@ function getEditor() {
 		postRequest('/api/stages/' + Hack.stageInfo.id + '/plays', {
 			token: Hack.stageInfo.token,
 			is_cleared: 1,
+			referrer: window.parent && window.parent.location.href,
 		});
 	});
 
