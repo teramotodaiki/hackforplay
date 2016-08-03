@@ -439,8 +439,11 @@ function getEditor() {
 
 	// ClearedのLogging
 	Hack.on('gameclear', function () {
-		if (!Hack.stageInfo.token) return;
-		postRequest('/stage/putclearedbytoken.php', { token: Hack.stageInfo.token });
+		if (!Hack.stageInfo.token || !Hack.stageInfo.id) return;
+		postRequest('/api/stages/' + Hack.stageInfo.id + '/plays', {
+			token: Hack.stageInfo.token,
+			is_cleared: 1,
+		});
 	});
 
 	// ゲームメニュー

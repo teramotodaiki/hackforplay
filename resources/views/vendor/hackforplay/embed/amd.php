@@ -14,11 +14,10 @@ $session_userid	= isset($_SESSION['UserID']) ? $_SESSION['UserID'] : NULL;
 session_commit();
 
 $type	= filter_input(INPUT_GET, 'type') or die('Missing param type. Add "&type=(ses|sta|pro)" to url');
-$report = filter_input(INPUT_GET, 'report', FILTER_VALIDATE_BOOLEAN);
 
 // Get (source) stage ID
 switch ($type) {
-	case 'code':
+	case 'code': break;
 	case 'stage':
 		$id	= filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) or die('Missing param id. Add "&id={STAGE ID}" to url');
 		break;
@@ -60,8 +59,6 @@ switch ($type) {
 // Register play log
 $referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : NULL;
 switch ($type) {
-	case 'code':
-		if (!$report) break;
 	case 'stage':
 		// Tokenを生成
 		$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
@@ -130,12 +127,25 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				value: {}
 			});
 			Hack.stageInfo = {
-				<?php if (isset($playlog_token)) : ?>
-				token: '<?php echo $playlog_token; ?>',
-				<?php endif; ?>
 				width: 480,
 				height: 320,
 			};
+
+			<?php if (isset($id)) : ?>
+
+			Hack.stageInfo.id = +'<?php echo $id; ?>';
+			var xhttp = new XMLHttpRequest();
+			xhttp.open('POST', '/api/stages/' + Hack.stageInfo.id + '/plays', true);
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhttp.onload = function () {
+				var body = JSON.parse(xhttp.responseText);
+				console.log(body);
+				Hack.stageInfo.token = body.token;
+			};
+			xhttp.send();
+
+			<?php endif; ?>
+
 		})();
 	</script>
 	<script type="text/javascript">
@@ -196,7 +206,7 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				} while (localStorage.getItem(key) !== null);
 
 				localStorage.setItem(key, JSON.stringify(event.data));
-				location.href = location.origin + location.pathname + '?type=code&key=' + key + "&id=<?php echo $id; ?>";
+				location.href = location.origin + location.pathname + '?type=code&key=' + key;
 			};
 		}
 	});
