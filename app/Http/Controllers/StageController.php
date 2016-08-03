@@ -73,8 +73,8 @@ class StageController extends Controller
 
       foreach ($stages as $item) {
         $item->Playcount =
-        $item->playcount = $item->plays->count();
-        $item->clearcount = $item->plays->where('is_cleared', 1)->count();
+        $item->playcount = Play::where('stage_id', $item->id)->count();
+        $item->clearcount = Play::where(['stage_id' => $item->id,'is_cleared' => 1])->count();
       }
 
       return $stages;
