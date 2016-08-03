@@ -218,7 +218,7 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 		});
 
 		// load cache
-		var key = "<?php echo $key; ?>";
+		var key = params.key;
 		if (key && localStorage.getItem(key)) {
 			try {
 				var message = JSON.parse(localStorage.getItem(key));
