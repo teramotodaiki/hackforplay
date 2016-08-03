@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Stage;
 use App\User;
+use App\Play;
 use App\Http\Middleware\SnakeCaseMiddleware;
 use DB;
 use Carbon\Carbon;
@@ -206,5 +207,47 @@ class StageController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function play(Request $request, $id)
+    {
+      $this->validate($request, [
+        'is_cleared' => 'boolean',
+        'referrer' => 'url',
+      ]);
+
+      $stage = Stage::findOrFail($id);
+
+      return $request->has('token') ?
+        $this->gameOver($request, $stage) :
+        $this->gameStart($request, $stage);
+    }
+
+    function gameStart(Request $request, $stage)
+    {
+      $play = $stage->plays()->create([
+        'referrer' => $request->input('referrer'),
+        'is_cleared' => 0,
+      ]);
+      $play->token = str_random(32);
+      $play->user_id = $request->user() ? $request->user()->ID : null;
+      $play->save();
+
+      return response($play, 200);
+    }
+
+    function gameOver(Request $request, $stage)
+    {
+      $play = $stage->plays()
+      ->where('token', $request->token)->firstOrFail();
+
+      $auth = $request->user() ? $request->user()->ID : null;
+      if ($play->user_id !== $auth) {
+        return response([ 'message' => 'cant_update_play' ], 200);
+      }
+
+      $play->update($request->all());
+
+      return response($play, 200);
     }
 }

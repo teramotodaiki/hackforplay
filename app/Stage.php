@@ -39,4 +39,9 @@ class Stage extends Model
     return $this->hasMany('App\Emoji');
   }
 
+  public function plays()
+  {
+    return $this->hasMany('App\Play');
+  }
+
 }
