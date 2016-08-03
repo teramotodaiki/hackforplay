@@ -52,7 +52,7 @@ class StageController extends Controller
     {
       $stages =
       Stage::orderBy('Published', 'desc')
-      ->with('user', 'project', 'script')
+      ->with('user', 'script')
       ->where('State', 'published');
 
       if (isset($query['user'])) {
@@ -109,7 +109,7 @@ class StageController extends Controller
      */
     public function show($id)
     {
-      $stage = Stage::with(['project', 'script'])->findOrFail($id);
+      $stage = Stage::with(['script'])->findOrFail($id);
       return response($stage, 200);
     }
 
@@ -133,7 +133,7 @@ class StageController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $stage = Stage::with('project')->findOrFail($id);
+      $stage = Stage::findOrFail($id);
       if ($request->user()->ID != $stage->UserID) {
         return response([ 'message' => 'cant_update_stage' ], 200);
       }
@@ -166,7 +166,7 @@ class StageController extends Controller
         'state' => 'required|in:published,rejected'
       ]);
 
-      $stage = Stage::with('project')->findOrFail($id);
+      $stage = Stage::findOrFail($id);
       if ($stage->team === null || !$request->user()->isConnected($stage->team)) {
         return response([ 'message' => 'team_not_connected' ], 200);
       }
