@@ -241,6 +241,11 @@ class StageController extends Controller
 
       $play->update($request->all());
 
+      if ($request->input('is_cleared')) {
+        $stage->is_clearable = true;
+        $stage->save();
+      }
+
       return response($play, 200);
     }
 }
