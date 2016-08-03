@@ -11,6 +11,7 @@ use App\Author;
 use App\Script;
 use App\Play;
 use DB;
+use Carbon\Carbon;
 
 class TmpPatchController extends Controller
 {
@@ -27,8 +28,10 @@ class TmpPatchController extends Controller
         $play->stage_id = $old->StageID;
         $play->referrer = $old->Referrer;
         $play->is_cleared = $old->Cleared !== null;
-        $play->created_at = $old->Registered;
-        $play->updated_at = $old->Cleared !== null ? $old->Cleared : $old->Registered;
+        $play->created_at = Carbon::parse($old->Registered);
+        $play->updated_at = $old->Cleared !== null ?
+        Carbon::parse($old->Cleared) : $play->created_at;
+        
         $play->save();
       }
     });
