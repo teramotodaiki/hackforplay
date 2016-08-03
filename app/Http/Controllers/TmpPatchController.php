@@ -27,6 +27,7 @@ class TmpPatchController extends Controller
         $play->user_id = $old->UserID;
         $play->stage_id = $old->StageID;
         $play->referrer = $old->Referrer;
+        $play->token = $old->Token;
         $play->is_cleared = $old->Cleared !== null;
         $play->created_at = Carbon::parse($old->Registered);
         $play->updated_at = $old->Cleared !== null ?
