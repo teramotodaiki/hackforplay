@@ -11,8 +11,6 @@
 |
 */
 
-Route::get('patch', 'TmpPatchController@playLogMigration');
-
 // React (frontend) App
 Route::get('tutorials', 'DefaultAppController@index');
 Route::get('register', 'DefaultAppController@index');
