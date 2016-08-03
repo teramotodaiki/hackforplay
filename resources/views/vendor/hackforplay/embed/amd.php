@@ -113,7 +113,7 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 		margin: 3px;
 	}
 	</style>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js"></script>
 	<script type="text/javascript">
 		(function () {
 			/**
