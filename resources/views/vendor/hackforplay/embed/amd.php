@@ -97,7 +97,7 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 	</style>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js"></script>
 	<script type="text/javascript">
-		(function () {
+	(function () {
 			/**
 			 * global object
 			 * (read only)
@@ -135,9 +135,7 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				};
 				xhttp.send();
 			}
-		})();
-	</script>
-	<script type="text/javascript">
+
 	require.config({
 		baseUrl : '../mods/',
 		shim: {
@@ -233,6 +231,8 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 		}
 
 	});
+
+	})();
 	</script>
 </head>
 <body>
