@@ -166,20 +166,16 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 
 	<?php else : ?>
 
-	// require main code
-	window.addEventListener('message', function task (event) {
-		if (event.data.query === 'require') {
-			window.removeEventListener('message', task); // listen once
-
+	Hack.require = function (dependencies, code) {
 			(function (callback) {
 				// dependencies
-				require(event.data.dependencies || [], callback);
+				require(dependencies || [], callback);
 
 			})(function () {
 				// main
 				var script = new Blob([
 				`define(function (require, exports, module) {
-					${event.data.code}
+					${code}
 				});`]);
 
 				require([window.URL.createObjectURL(script)], function () {
@@ -187,6 +183,7 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				});
 			});
 
+		if (Hack.stageInfo.type === 'code') {
 			location.reload = function () {
 				// local cache
 				var key;
@@ -194,11 +191,26 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 					key = 'cache-' + Math.random().toString(36).substr(2);
 				} while (localStorage.getItem(key) !== null);
 
-				localStorage.setItem(key, JSON.stringify(event.data));
+				localStorage.setItem(key, JSON.stringify({
+					dependencies: dependencies,
+					code: code,
+				}));
 				location.href = location.origin + location.pathname + '?type=code&key=' + key;
 			};
 		}
-	});
+
+		delete Hack.require;
+	};
+
+	if (Hack.stageInfo.type === 'code') {
+		// wait for messaging
+		window.addEventListener('message', function task (event) {
+			if (event.data.query === 'require') {
+				window.removeEventListener('message', task); // listen once
+				Hack.require(event.data.dependencies, event.data.code);
+			}
+		});
+	}
 
 	(function () {
 		// load cache
