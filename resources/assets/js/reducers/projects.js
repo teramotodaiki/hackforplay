@@ -12,7 +12,6 @@ import { ADD_PROJECT, ADD_STAGE } from '../actions/';
 import getKeyValueObject from './getKeyValueObject';
 
 
-// NOTE: DON'T access [stage.project], because it will not update
 export const projects = (state = {}, action) => {
   switch (action.type) {
 
@@ -21,7 +20,7 @@ export const projects = (state = {}, action) => {
       return Object.assign({}, state, {
         [project.id]: Object.assign({}, action.project, {
           stages: composedStages({
-            project: state[action.project.id],
+            project: state[action.project_id],
             array: action.project.stages
           })
         })
@@ -29,7 +28,7 @@ export const projects = (state = {}, action) => {
 
     case ADD_STAGE:
 
-      const projectId = action.stage.project.id;
+      const projectId = action.stage.project_id;
       const project = state[projectId] || { id: projectId };
 
       return Object.assign({}, state, {
