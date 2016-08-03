@@ -152,15 +152,10 @@ if($stage === NULL){
 if (($stage['State'] === 'rejected' || $stage['State'] === 'private') && $stage['UserID'] !== $session_userid) {
 	// リジェクトor非公開設定されている場合は、本人しか遊ぶことができない
 	$stage['Explain'] = 'You cannot play this stage.';
-	$project['Data'] = '';
 } elseif ($stage['State'] === 'judging' && $stage['UserID'] !== $session_userid &&
 	($session_userid === NULL || $session_userid > 10)) {
 	// 審査中の場合は、本人しか遊ぶことができない
 	$stage['Explain'] = 'This stage is been judging. (審査中)';
-	$project['Data'] = '';
-} else {
-	// 改造コードを取得
-	$project['Data']	= $stage['RawCode'];
 }
 
 // Playcountを更新

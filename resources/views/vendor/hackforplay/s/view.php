@@ -16,10 +16,6 @@ $norestage = $stage['NoRestage'];
 if(empty($mode)){
 	$mode	= 'replay';
 }
-$code = $project['Data'];
-$code = preg_replace("/\\\\/", "\\\\\\\\", $code);
-$code = preg_replace("/\n/", "\\n", $code);
-$code = preg_replace("/\"/", "\\\"", $code);
 $retry 	= filter_input(INPUT_GET, "retry", FILTER_VALIDATE_BOOLEAN);
 $directly_restaging	= filter_input(INPUT_GET, 'directly_restaging', FILTER_VALIDATE_BOOLEAN);
 // Questモードの場合、$nextは次のLevel.IDをあらわす
@@ -173,9 +169,6 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 <?php endif; ?>
 <?php if (isset($reporting_restaged)) : ?>
 		s('reporting_restaged', "<?php echo $reporting_restaged; ?>");
-<?php endif; ?>
-<?php if(isset($code)): ?>
-		s('replay_code', "<?php echo $code; ?>");
 <?php endif; ?>
 	})();
 	</script>

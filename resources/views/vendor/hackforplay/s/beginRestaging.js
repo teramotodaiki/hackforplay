@@ -11,6 +11,7 @@
         url: `/api/projects/${token}`
       })
       .done(function (result) {
+				sessionStorage.setItem('stage_param_id', result.reserved_id);
         loadStage(result.head.raw_code);
         listChannels();
         showModInput();
@@ -479,6 +480,7 @@
 		}).done(function (result) {
 			if (result.token) {
 				sessionStorage.setItem('project-token', result.token);
+				sessionStorage.setItem('stage_param_id', result.reserved_id);
 				(successed || function () {})();
 			} else if (result.message) {
 				showAlert('alert-danger', result.message);

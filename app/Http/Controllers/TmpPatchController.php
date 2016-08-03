@@ -9,10 +9,34 @@ use App\Stage;
 use App\Project;
 use App\Author;
 use App\Script;
+use App\Play;
 use DB;
+use Carbon\Carbon;
 
 class TmpPatchController extends Controller
 {
+
+  public function playLogMigration()
+  {
+    DB::table('plays')->delete();
+
+    DB::table('PlayLog')->chunk(100, function ($play_logs)
+    {
+      foreach ($play_logs as $old) {
+        $play = new Play;
+        $play->user_id = $old->UserID;
+        $play->stage_id = $old->StageID;
+        $play->referrer = $old->Referrer;
+        $play->token = $old->Token;
+        $play->is_cleared = $old->Cleared !== null;
+        $play->created_at = Carbon::parse($old->Registered);
+        $play->updated_at = $old->Cleared !== null ?
+        Carbon::parse($old->Cleared) : $play->created_at;
+        
+        $play->save();
+      }
+    });
+  }
 
   public function p5jsModPlug()
   {
