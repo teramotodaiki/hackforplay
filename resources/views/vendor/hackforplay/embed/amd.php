@@ -210,9 +210,7 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				Hack.require(event.data.dependencies, event.data.code);
 			}
 		});
-	}
 
-	(function () {
 		// load cache
 		var key = "<?php echo $key; ?>";
 		if (key && localStorage.getItem(key)) {
@@ -225,7 +223,7 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				localStorage.removeItem(key);
 			}
 		}
-	})();
+	}
 
 	<?php endif; ?>
 
