@@ -139,7 +139,6 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			xhttp.onload = function () {
 				var body = JSON.parse(xhttp.responseText);
-				console.log(body);
 				Hack.stageInfo.token = body.token;
 			};
 			xhttp.send();
