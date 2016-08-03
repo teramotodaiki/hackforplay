@@ -127,12 +127,25 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				value: {}
 			});
 			Hack.stageInfo = {
-				<?php if (isset($playlog_token)) : ?>
-				token: '<?php echo $playlog_token; ?>',
-				<?php endif; ?>
 				width: 480,
 				height: 320,
 			};
+
+			<?php if (isset($id)) : ?>
+
+			Hack.stageInfo.id = +'<?php echo $id; ?>';
+			var xhttp = new XMLHttpRequest();
+			xhttp.open('POST', '/api/stages/' + Hack.stageInfo.id + '/plays', true);
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhttp.onload = function () {
+				var body = JSON.parse(xhttp.responseText);
+				console.log(body);
+				Hack.stageInfo.token = body.token;
+			};
+			xhttp.send();
+
+			<?php endif; ?>
+
 		})();
 	</script>
 	<script type="text/javascript">
