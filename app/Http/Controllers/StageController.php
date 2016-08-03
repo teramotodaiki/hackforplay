@@ -239,11 +239,6 @@ class StageController extends Controller
       $play = $stage->plays()
       ->where('token', $request->token)->firstOrFail();
 
-      $auth = $request->user() ? $request->user()->ID : null;
-      if ($play->user_id !== $auth) {
-        return response([ 'message' => 'cant_update_play' ], 200);
-      }
-
       $play->update($request->all());
 
       return response($play, 200);
