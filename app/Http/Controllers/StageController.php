@@ -17,6 +17,7 @@ class StageController extends Controller
     public function __construct()
     {
       $this->middleware('auth', ['only' => ['update']]);
+      $this->middleware('cors', ['only' => ['show', 'play']]);
     }
     /**
      * Display a listing of the resource.
