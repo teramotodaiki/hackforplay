@@ -9,10 +9,32 @@ use App\Stage;
 use App\Project;
 use App\Author;
 use App\Script;
+use App\Play;
 use DB;
 
 class TmpPatchController extends Controller
 {
+
+  public function playLogMigration()
+  {
+    DB::table('PlayLog')->chunk(100, function ($play_logs)
+    {
+      DB::table('plays')->insert(
+        array_map(function ($old)
+        {
+          $c = $old->Cleared !== null;
+          return [
+            'user_id' => $old->UserID,
+            'stage_id' => $old->StageID,
+            'referrer' => $old->Referrer,
+            'is_cleared' => $c,
+            'created_at' => $old->Registered,
+            'updated_at' => $c ? $old->Cleared : $old->Registered,
+          ];
+        }, $play_logs)
+      );
+    });
+  }
 
   public function p5jsModPlug()
   {
