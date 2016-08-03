@@ -17,19 +17,23 @@ class TmpPatchController extends Controller
 
   public function playLogMigration()
   {
+    DB::table('plays')->delete();
+
     DB::table('PlayLog')->chunk(100, function ($play_logs)
     {
       DB::table('plays')->insert(
         array_map(function ($old)
         {
           $c = $old->Cleared !== null;
+          $Registered = str_replace(' ', 'T', $old->Registered);
+          $Cleared = str_replace(' ', 'T', $old->Cleared);
           return [
             'user_id' => $old->UserID,
             'stage_id' => $old->StageID,
             'referrer' => $old->Referrer,
             'is_cleared' => $c,
-            'created_at' => $old->Registered,
-            'updated_at' => $c ? $old->Cleared : $old->Registered,
+            'created_at' => $Registered,
+            'updated_at' => $c ? $Cleared : $Registered,
           ];
         }, $play_logs)
       );
