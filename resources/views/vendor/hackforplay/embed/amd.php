@@ -131,20 +131,26 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				height: 320,
 			};
 
-			<?php if (isset($id)) : ?>
+			// URL `GET` parameters
+			var params = {};
+			location.search.substr(1).split('&')
+			.map(function (seg) { return seg.split('=').map(decodeURIComponent); })
+			.filter(function (parts) { return parts.length === 2 })
+			.forEach(function (parts) {
+				params[parts[0]] = parts[1];
+			});
 
-			Hack.stageInfo.id = +'<?php echo $id; ?>';
-			var xhttp = new XMLHttpRequest();
-			xhttp.open('POST', '/api/stages/' + Hack.stageInfo.id + '/plays', true);
-			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xhttp.onload = function () {
-				var body = JSON.parse(xhttp.responseText);
-				Hack.stageInfo.token = body.token;
-			};
-			xhttp.send();
-
-			<?php endif; ?>
-
+			if ('id' in params) {
+				Hack.stageInfo.id = params.id;
+				var xhttp = new XMLHttpRequest();
+				xhttp.open('POST', '/api/stages/' + params.id + '/plays', true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.onload = function () {
+					var body = JSON.parse(xhttp.responseText);
+					Hack.stageInfo.token = body.token;
+				};
+				xhttp.send();
+			}
 		})();
 	</script>
 	<script type="text/javascript">
