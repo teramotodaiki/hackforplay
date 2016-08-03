@@ -22,7 +22,7 @@ class CreatePlaysTable extends Migration
           $table->bigInteger('stage_id')->unsigned()->nullable();
           $table->foreign('stage_id')->references('id')->on('stage')->onDelete('cascade');
 
-          $table->string('referrer', 100)->nullable();
+          $table->text('referrer')->nullable();
           $table->boolean('is_cleared')->default(false);
 
           $table->string('token', 32)->unique()->nullable();
