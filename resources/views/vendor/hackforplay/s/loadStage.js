@@ -23,7 +23,7 @@
     var deferred = new $.Deferred();
     game.onload = deferred.resolve.bind(deferred);
     game.onerror = deferred.reject.bind(deferred);
-    game.src = '/embed?type=stage&report=true&id=' + getParam('id');
+    game.src = '/embed?type=stage&id=' + getParam('id');
     return deferred;
   }
 
@@ -32,7 +32,7 @@
       var deferred = new $.Deferred();
       game.onload = deferred.resolve.bind(deferred);
       game.onerror = deferred.reject.bind(deferred);
-      game.src = "/embed?type=code&id=" + getParam('id');
+      game.src = "/embed?type=code";
       return deferred;
     })();
 
