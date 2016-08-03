@@ -72,12 +72,9 @@ class StageController extends Controller
       $stages = $stages->paginate();
 
       foreach ($stages as $item) {
-        $item->user;
-        $item->clearcount =
-        DB::table('PlayLog')
-        ->where('StageID', $item->ID)
-        ->whereNotNull('Cleared')
-        ->count();
+        $item->Playcount =
+        $item->playcount = $item->plays->count();
+        $item->clearcount = $item->plays->where('is_cleared', 1)->count();
       }
 
       return $stages;
