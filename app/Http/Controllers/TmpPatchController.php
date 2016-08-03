@@ -21,22 +21,16 @@ class TmpPatchController extends Controller
 
     DB::table('PlayLog')->chunk(100, function ($play_logs)
     {
-      DB::table('plays')->insert(
-        array_map(function ($old)
-        {
-          $c = $old->Cleared !== null;
-          $Registered = str_replace(' ', 'T', $old->Registered);
-          $Cleared = str_replace(' ', 'T', $old->Cleared);
-          return [
-            'user_id' => $old->UserID,
-            'stage_id' => $old->StageID,
-            'referrer' => $old->Referrer,
-            'is_cleared' => $c,
-            'created_at' => $Registered,
-            'updated_at' => $c ? $Cleared : $Registered,
-          ];
-        }, $play_logs)
-      );
+      foreach ($play_logs as $old) {
+        $play = new Play;
+        $play->user_id = $old->UserID;
+        $play->stage_id = $old->StageID;
+        $play->referrer = $old->Referrer;
+        $play->is_cleared = $old->Cleared !== null;
+        $play->created_at = $old->Registered;
+        $play->updated_at = $old->Cleared !== null ? $old->Cleared : $old->Registered;
+        $play->save();
+      }
     });
   }
 
