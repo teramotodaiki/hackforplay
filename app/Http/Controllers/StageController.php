@@ -17,6 +17,7 @@ class StageController extends Controller
     public function __construct()
     {
       $this->middleware('auth', ['only' => ['update']]);
+      $this->middleware('cors', ['only' => ['show', 'play']]);
     }
     /**
      * Display a listing of the resource.
@@ -73,8 +74,8 @@ class StageController extends Controller
 
       foreach ($stages as $item) {
         $item->Playcount =
-        $item->playcount = Play::where('stage_id', $item->id)->count();
-        $item->clearcount = Play::where(['stage_id' => $item->id,'is_cleared' => 1])->count();
+        $item->playcount = Play::where('stage_id', $item->ID)->count();
+        $item->clearcount = Play::where(['stage_id' => $item->ID,'is_cleared' => 1])->count();
       }
 
       return $stages;

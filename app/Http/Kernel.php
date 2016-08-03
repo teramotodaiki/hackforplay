@@ -57,5 +57,6 @@ class Kernel extends HttpKernel
         'auth.old' => \App\Http\Middleware\Old\OnceAuthMiddleware::class,
         'old' => \App\Http\Middleware\Old\OldMiddleware::class,
         'pusher' => \App\Http\Middleware\PusherMiddleware::class,
+        'cors' => \App\Http\Middleware\CorsMiddleware::class,
     ];
 }
