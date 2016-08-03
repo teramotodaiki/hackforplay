@@ -156,16 +156,6 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 		}
 	};
 
-	<?php if (isset($deps)) : ?>
-
-	require(<?php echo json_encode($deps, JSON_UNESCAPED_SLASHES); ?>,
-		function () {
-			Hack.start();
-		}
-	);
-
-	<?php else : ?>
-
 	Hack.require = function (dependencies, code) {
 			(function (callback) {
 				// dependencies
@@ -194,6 +184,16 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 		}
 
 	})(function () {
+		// loadFromStage
+		// Ajax request
+		var xhttp = new XMLHttpRequest();
+		xhttp.open('GET', '/api/stages/' + Hack.stageInfo.id, true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.onload = function () {
+			var body = JSON.parse(xhttp.responseText);
+			Hack.require([body.implicit_mod], body.script.raw_code);
+		};
+		xhttp.send();
 
 	}, function () {
 		// loadFromCode
@@ -231,8 +231,6 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				localStorage.removeItem(key);
 			}
 		}
-
-	<?php endif; ?>
 
 	});
 	</script>
