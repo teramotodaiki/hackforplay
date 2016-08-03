@@ -183,31 +183,39 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				});
 			});
 
-		if (Hack.stageInfo.type === 'code') {
-			location.reload = function () {
-				// local cache
-				var key;
-				do {
-					key = 'cache-' + Math.random().toString(36).substr(2);
-				} while (localStorage.getItem(key) !== null);
-
-				localStorage.setItem(key, JSON.stringify({
-					dependencies: dependencies,
-					code: code,
-				}));
-				location.href = location.origin + location.pathname + '?type=code&key=' + key;
-			};
-		}
-
 		delete Hack.require;
 	};
 
-	if (Hack.stageInfo.type === 'code') {
+	(function (loadFromStage, loadFromCode) {
+
+		switch (Hack.stageInfo.type) {
+			case 'stage': return loadFromStage();
+			case 'code': return loadFromCode();
+		}
+
+	})(function () {
+
+	}, function () {
+		// loadFromCode
 		// wait for messaging
 		window.addEventListener('message', function task (event) {
 			if (event.data.query === 'require') {
 				window.removeEventListener('message', task); // listen once
 				Hack.require(event.data.dependencies, event.data.code);
+
+				location.reload = function () {
+					// local cache
+					var key;
+					do {
+						key = 'cache-' + Math.random().toString(36).substr(2);
+					} while (localStorage.getItem(key) !== null);
+
+					localStorage.setItem(key, JSON.stringify({
+						dependencies: event.data.dependencies,
+						code: event.data.code,
+					}));
+					location.href = location.origin + location.pathname + '?type=code&key=' + key;
+				};
 			}
 		});
 
@@ -223,10 +231,10 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				localStorage.removeItem(key);
 			}
 		}
-	}
 
 	<?php endif; ?>
 
+	});
 	</script>
 </head>
 <body>
