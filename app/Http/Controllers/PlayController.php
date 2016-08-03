@@ -9,7 +9,7 @@ use App\Stage;
 
 class PlayController extends Controller
 {
-  public function store(Request $request, $id)
+  public function storeByStage(Request $request, $id)
   {
     $this->validate($request, [
       'referrer' => 'url',
