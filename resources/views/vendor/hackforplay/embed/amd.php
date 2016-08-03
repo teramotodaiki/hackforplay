@@ -122,6 +122,8 @@ $key = htmlspecialchars(filter_input(INPUT_GET, 'key'));
 				params[parts[0]] = parts[1];
 			});
 
+			Hack.stageInfo.type = params.type || 'code';
+
 			if ('id' in params) {
 				Hack.stageInfo.id = params.id;
 				var xhttp = new XMLHttpRequest();
