@@ -35,7 +35,7 @@ class IframeEmbed extends React.Component {
           query: 'require',
           dependencies: implicit_mod && [implicit_mod],
           code: code,
-        }, '/');
+        }, '*');
       };
     }
   }
