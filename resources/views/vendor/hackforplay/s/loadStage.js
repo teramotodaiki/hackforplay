@@ -4,7 +4,7 @@
   var policty = '*';
   var embedRoot =
   location.hostname === 'hackforplay.xyz' ?
-  'http://hackforplay.blob.core.windows.net/hackforplay/index.html' :
+  'https://hackforplay.blob.core.windows.net/hackforplay/index.html' :
   location.hostname === 'hackforplay-staging.azurewebsites.net' ?
   'https://hackforplay.blob.core.windows.net/hackforplay-staging/index.html' :
   '/embed/';
