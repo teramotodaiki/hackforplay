@@ -53,7 +53,7 @@ class StageController extends Controller
     {
       $stages =
       Stage::orderBy('Published', 'desc')
-      ->with('user', 'script')
+      ->with('user')
       ->where('State', 'published');
 
       if (isset($query['user'])) {
