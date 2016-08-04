@@ -42,7 +42,7 @@ function postError (error) {
       name: error.name || 'Error',
       message: error.message || error,
     }),
-  }, parent.location.origin);
+  }, '*');
 }
 function tryCatchWrap (func) {
   return function () {

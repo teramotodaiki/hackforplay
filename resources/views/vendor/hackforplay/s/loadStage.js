@@ -1,7 +1,13 @@
 // iframe ロード
 (function () {
   var elementId = 'item-embed-iframe';
-  var policty = '/';
+  var policty = '*';
+  var embedRoot =
+  location.hostname === 'hackforplay.xyz' ?
+  'https://hackforplay.blob.core.windows.net/hackforplay/index.html' :
+  location.hostname === 'hackforplay-staging.azurewebsites.net' ?
+  'https://hackforplay.blob.core.windows.net/hackforplay-staging/index.html' :
+  '/embed/';
 
   window.loadStage = function (code) {
     var game = document.getElementById(elementId);
@@ -23,7 +29,7 @@
     var deferred = new $.Deferred();
     game.onload = deferred.resolve.bind(deferred);
     game.onerror = deferred.reject.bind(deferred);
-    game.src = '/embed?type=stage&id=' + getParam('id');
+    game.src = embedRoot + '?type=stage&id=' + getParam('id');
     return deferred;
   }
 
@@ -32,7 +38,7 @@
       var deferred = new $.Deferred();
       game.onload = deferred.resolve.bind(deferred);
       game.onerror = deferred.reject.bind(deferred);
-      game.src = "/embed?type=code";
+      game.src = embedRoot + "?type=code";
       return deferred;
     })();
 

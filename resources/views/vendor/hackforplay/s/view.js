@@ -731,12 +731,12 @@ $(function(){
 						$('.container-game .h4p_game iframe').get(0).contentWindow.postMessage({
 							query: 'eval',
 							value: 'if (Hack.__QuestGameclear) { Hack.ongameclear = Hack.__QuestGameclear; ' + next + report + ' }'
-						}, '/');
+						}, '*');
 						// ---- temporary implement ----
 						document.getElementById('item-embed-iframe').contentWindow.postMessage({
 							query: 'eval',
 							value: 'game.pause()'
-						}, '/');
+						}, '*');
 						paused = true;
 					}
 				});
@@ -749,7 +749,7 @@ $(function(){
 						document.getElementById('item-embed-iframe').contentWindow.postMessage({
 							query: 'eval',
 							value: 'game.resume()'
-						}, '/');
+						}, '*');
 					}
 				}, 4000);
 			}
