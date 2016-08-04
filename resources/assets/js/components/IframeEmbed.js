@@ -35,7 +35,7 @@ class IframeEmbed extends React.Component {
           query: 'require',
           dependencies: implicit_mod && [implicit_mod],
           code: code,
-        }, '/');
+        }, '*');
       };
     }
   }
@@ -59,7 +59,13 @@ class IframeEmbed extends React.Component {
       token ? `token=${token}`  : null,
     ];
 
-    const uri = '/embed/?' + params.filter((p) => p).join('&');
+    const uri = (
+      location.hostname === 'hackforplay.xyz' ?
+      'http://hackforplay.blob.core.windows.net/hackforplay/index.html' :
+      location.hostname === 'hackforplay-staging.azurewebsites.net' ?
+      'https://hackforplay.blob.core.windows.net/hackforplay-staging/index.html' :
+      '/embed/'
+    ) + '?' + params.filter((p) => p).join('&');
 
     return (
       <div className={classname} style={this.props.style}>

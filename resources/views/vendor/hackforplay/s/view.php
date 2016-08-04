@@ -129,7 +129,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 		scrollToAnchor();
 	}
 	function screenShot () {
-		document.getElementsByTagName('iframe')[0].contentWindow.postMessage('screenShot()', '/');
+		document.getElementsByTagName('iframe')[0].contentWindow.postMessage('screenShot()', '*');
 	}
 	function scrollToAnchor(){
 		var selector = arguments.length > 0 ? arguments[0] : '#scroll-anchor';
