@@ -9,6 +9,8 @@ export * from './projects';
 
 export * from './users';
 
+export * from './plays';
+
 
 export const ADD_CHANNEL = 'ADD_CHANNEL';
 
