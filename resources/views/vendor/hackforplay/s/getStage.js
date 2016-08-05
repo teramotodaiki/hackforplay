@@ -6,7 +6,7 @@
   // Global interface of state
   window.getStage = function (id) {
 
-    return state.get(id) ?
+    return state.get(id) && state.get(id).script ?
     // hit
     (new $.Deferred).resolve([state.get(id)]) :
     // miss
