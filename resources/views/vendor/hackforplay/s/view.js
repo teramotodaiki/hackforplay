@@ -18,6 +18,18 @@ $(function(){
 		}
 	});
 
+	// playsにsession_userを関連づける
+	if ($(document.body).hasClass('option-session-OK')) {
+		window.addEventListener('message', function (event) {
+			if (!event.data || event.data.query !== 'authThisPlay') return;
+			$.ajax({
+				type: 'POST',
+				url: '/api/stages/' + getParam('id') + '/plays',
+				data: { token: event.data.token }
+			});
+		});
+	}
+
 	// ゲームフレームを横幅基本で3:2にする
 	$(".h4p_game,.h4p_credit").height($(".h4p_game").width()/1.5);
 	// ゲームクリアの処理
