@@ -14,9 +14,12 @@ class PlayController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $plays = $request->user()->plays()
+      ->orderBy('id', 'desc');
+
+      return response($plays->simplePaginate(), 200);
     }
 
     /**

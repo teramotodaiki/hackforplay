@@ -33,6 +33,11 @@ class User extends Authenticatable
     return $this->hasMany('App\Author');
   }
 
+  public function plays()
+  {
+    return $this->hasMany('App\Play');
+  }
+
   public function plugs()
   {
     return $this->hasManyThrough('App\Plug', 'App\Author');
