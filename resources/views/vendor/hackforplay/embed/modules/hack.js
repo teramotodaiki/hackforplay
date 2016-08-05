@@ -789,8 +789,17 @@ function getEditor() {
 	};
 
 	game.addEventListener('load', function(){
-		// smartAssetをsessionStorageに格納する
-		sessionStorage.setItem('stage_param_smart_asset', JSON.stringify(Hack.smartAsset));
+
+		var assets = {
+			apps: Hack.smartAsset.apps,
+			counters: Hack.smartAsset.counters,
+		};
+		assets = JSON.parse(JSON.stringify(assets));
+
+		window.parent.postMessage({
+			query: 'smartAsset',
+			assets: assets,
+		}, '*');
 
 		if (window.parent !== window) {
 			window.parent.postMessage('game_loaded', '*'); // ロードのタイミングを伝える
