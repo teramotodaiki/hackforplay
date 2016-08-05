@@ -274,7 +274,7 @@
       });
 
 			function render () {
-					if (!smartAsset.apps) return;
+					if (!smartAsset || !smartAsset.apps) return;
 					smartAsset.apps.forEach(function (asset, index) {
 						// elementのdata-cacheと比較. eleがない:追加, eleと同じ:無視, eleと違う: 挿入後、eleを削除
 						var element = $('.container-assets .smart-asset-entity').get(index),
