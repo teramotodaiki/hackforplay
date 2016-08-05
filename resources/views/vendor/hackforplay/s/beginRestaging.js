@@ -30,7 +30,7 @@
       });
       getStage(getParam('id'))
       .done(function (result) {
-        var stage = result[0];
+        var stage = result.length ? result[0] : result;
         jsEditor.setValue(stage.script.raw_code);
       });
     }
