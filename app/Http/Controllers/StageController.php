@@ -11,6 +11,7 @@ use App\Play;
 use App\Http\Middleware\SnakeCaseMiddleware;
 use DB;
 use Carbon\Carbon;
+use SoftDeletes;
 
 class StageController extends Controller
 {
@@ -74,8 +75,8 @@ class StageController extends Controller
 
       foreach ($stages as $item) {
         $item->Playcount =
-        $item->playcount = Play::where('stage_id', $item->ID)->count();
-        $item->clearcount = Play::where(['stage_id' => $item->ID,'is_cleared' => 1])->count();
+        $item->playcount = Play::where(['stage_id' => $item->ID])->withTrashed()->count();
+        $item->clearcount = Play::where(['stage_id' => $item->ID,'is_cleared' => 1])->withTrashed()->count();
       }
 
       return $stages;
