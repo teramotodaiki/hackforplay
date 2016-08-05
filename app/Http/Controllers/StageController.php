@@ -234,6 +234,9 @@ class StageController extends Controller
       return response($play, 200);
     }
 
+    /**
+     * Modify this play
+     */
     function gameOver(Request $request, $stage)
     {
       $play = $stage->plays()
@@ -241,10 +244,15 @@ class StageController extends Controller
 
       $play->update($request->all());
 
+      if (!$play->user_id && $request->user()) {
+        $play->user_id = $request->user()->ID;
+      }
+
       if ($request->input('is_cleared')) {
         $stage->is_clearable = true;
-        $stage->save();
       }
+
+      $play->save();
 
       return response($play, 200);
     }
