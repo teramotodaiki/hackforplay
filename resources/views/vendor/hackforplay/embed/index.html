@@ -67,6 +67,10 @@
 				xhttp.onload = function () {
 					var body = JSON.parse(xhttp.responseText);
 					Hack.stageInfo.token = body.token;
+          window.parent.postMessage({
+            query: 'authThisPlay',
+            token: Hack.stageInfo.token,
+          }, '*');
 				};
 				xhttp.send();
 			}

@@ -3,10 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Play extends Model
 {
   protected $fillable = ['is_cleared', 'referrer'];
+  protected $dates = ['deleted_at'];
 
   public function stage()
   {
