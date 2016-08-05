@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Play extends Model
 {
+  use SoftDeletes;
+  
   protected $fillable = ['is_cleared', 'referrer'];
   protected $dates = ['deleted_at'];
 
