@@ -88027,7 +88027,7 @@ var fetchPlays = exports.fetchPlays = function fetchPlays() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchStageIfNeeded = exports.fetchStage = exports.addStage = exports.fetchProject = exports.addProject = exports.RESPONSE_STAGE = exports.REQUEST_STAGE = exports.ADD_STAGE = exports.RESPONSE_PROJECT = exports.REQUEST_PROJECT = exports.ADD_PROJECT = undefined;
+exports.fetchStageIfNeeded = exports.fetchStage = exports.addStage = exports.fetchProjectIfNeeded = exports.fetchProject = exports.addProject = exports.RESPONSE_STAGE = exports.REQUEST_STAGE = exports.ADD_STAGE = exports.RESPONSE_PROJECT = exports.REQUEST_PROJECT = exports.ADD_PROJECT = undefined;
 
 var _request = require('./request');
 
@@ -88065,6 +88065,15 @@ var fetchProjectById = function fetchProjectById(_ref) {
 var fetchProject = exports.fetchProject = function fetchProject(id) {
   return function (dispatch) {
     return fetchProjectById({ id: id, dispatch: dispatch, responseType: 'promise' });
+  };
+};
+
+var fetchProjectIfNeeded = exports.fetchProjectIfNeeded = function fetchProjectIfNeeded(id) {
+  return function (dispatch, getState) {
+
+    var project = getState().projects[id];
+
+    return project && project.token ? project : getState().fetchings.projects[id] || fetchProjectById({ id: id, dispatch: dispatch, responseType: 'result' });
   };
 };
 
@@ -88495,20 +88504,20 @@ exports.default = function (_ref) {
       onTouchTap: function onTouchTap() {
         return location.href = "/s?id=" + stage.id;
       } },
-    _react2.default.createElement(_playArrow2.default, null)
+    stage.thumbnail ? _react2.default.createElement('img', { src: stage.thumbnail, alt: 'Play' }) : _react2.default.createElement(_playArrow2.default, null)
   );
 
-  console.log(stage);
   var ownerActions = _react2.default.createElement(
     _materialUi.CardActions,
     { style: { paddingLeft: 16, paddingBottom: 14 } },
-    stage.source_id && project && project.token && _react2.default.createElement(
+    _react2.default.createElement(
       _materialUi.FloatingActionButton,
       {
         onTouchTap: function onTouchTap() {
           sessionStorage.setItem('project-token', project.token);
           location.href = '/s?id=' + stage.source_id + '&mode=restaging';
         },
+        disabled: !project || !project.token,
         mini: true, secondary: true },
       _react2.default.createElement(_folderOpen2.default, null)
     )
@@ -88522,18 +88531,11 @@ exports.default = function (_ref) {
       {
         title: stage.title || '...',
         subtitle: stage.explain || '',
-        avatar: playButton,
-        actAsExpander: true,
-        showExpandableButton: true
+        avatar: playButton
       },
       isOwner ? _react2.default.createElement(_assignmentInd2.default, { color: _colors.blue500 }) : null
     ),
-    isOwner && ownerActions,
-    _react2.default.createElement(
-      _materialUi.CardText,
-      { expandable: true },
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi. Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque. Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.'
-    )
+    isOwner && ownerActions
   );
 };
 
@@ -91211,7 +91213,8 @@ var Stages = function (_Component) {
         return _react2.default.createElement(_StageCard2.default, {
           key: stage.id,
           stage: stage,
-          isOwner: authUser.id === stage.user_id });
+          isOwner: authUser.id === stage.user_id,
+          project: authUser.id === stage.user_id ? dispatch((0, _actions.fetchProjectIfNeeded)(stage.project_id)) : null });
       });
 
       return _react2.default.createElement(
