@@ -20,16 +20,15 @@ export default ({ stage, isOwner, project }) => {
 
   const ownerActions = (
     <CardActions style={{ paddingLeft: 16, paddingBottom: 14 }}>
-    {stage.source_id && project && project.token && (
       <FloatingActionButton
         onTouchTap={() => {
           sessionStorage.setItem('project-token', project.token);
       		location.href = '/s?id=' + stage.source_id + '&mode=restaging';
         }}
+        disabled={!project || !project.token}
         mini={true} secondary={true}>
         <FolderOpen />
       </FloatingActionButton>
-    )}
     </CardActions>
   );
 
