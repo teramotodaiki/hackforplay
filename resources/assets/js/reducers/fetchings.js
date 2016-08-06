@@ -1,6 +1,6 @@
 
 
-import { REQUEST_STAGE } from '../actions/';
+import { REQUEST_STAGE, RESPONSE_STAGE } from '../actions/';
 
 
 export const fetchings = (state = {
@@ -15,7 +15,16 @@ export const fetchings = (state = {
         })
       });
 
-      break;
+    case RESPONSE_STAGE:
+
+      const filtered = Object.values(state.stages)
+        .filter((stage) => stage.id !== action.stage.id)
+        .map((stage) => { return { [`${stage.id}`]: stage }; })
+
+      return Object.assign({}, state, {
+        stages: Object.assign.apply(null, filtered)
+      });
+
     default:
       return state;
   }
