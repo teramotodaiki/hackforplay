@@ -3,7 +3,6 @@ import request from './request';
 
 export const ADD_PROJECT = 'ADD_PROJECT';
 export const ADD_STAGE = 'ADD_STAGE';
-
 export const REQUEST_STAGE = 'REQUEST_STAGE';
 export const RESPONSE_STAGE = 'RESPONSE_STAGE';
 
@@ -24,32 +23,43 @@ export const fetchProject = (id) => {
   }
 };
 
-
 export const addStage = (stage) => {
   return { type: ADD_STAGE, stage };
 };
 
-export const fetchStage = (id) => {
-  return (dispatch) => {
+const fetchStageById = ({ id, dispatch, responseType }) => {
 
-    dispatch({ type: REQUEST_STAGE, stage: { id } });
-    return request
+  return {
+    result: dispatch({ type: REQUEST_STAGE, stage: { id } }).stage,
+    promise: request
       .get('/api/stages/' + id)
       .then((result) => {
         dispatch({ type: ADD_STAGE, stage: result.body });
+        dispatch({ type: RESPONSE_STAGE, stage: result.body });
         return result;
-      });
+      })
+  }[responseType];
 
-  }
 };
 
-export const getStage = (id) => {
+export const fetchStage = (id) => {
+  return (dispatch) => {
+    return fetchStageById({ id, dispatch, responseType: 'promise' });
+  };
+};
+
+export const fetchStageIfNeeded = (id) => {
   return (dispatch, getState) => {
 
+    const { projects, fetchings } = getState();
+
     const stage =
-      Object.values(getState().projects)
-        .reduce((p, c) => Object.assign({}, p.stages, c.stages), {})[id] ||
-      getState().fetchings.stages[id];
+      Object.values(projects)
+        .reduce((p, c) => {
+          return Object.assign({}, p.stages, c.stages);
+        }, {})[id] ||
+      fetchings.stages[id] ||
+      fetchStageById({ id, dispatch, responseType: 'result' });
 
     return stage;
   };
