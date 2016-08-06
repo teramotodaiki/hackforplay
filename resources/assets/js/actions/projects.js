@@ -2,6 +2,8 @@ import request from './request';
 
 
 export const ADD_PROJECT = 'ADD_PROJECT';
+export const REQUEST_PROJECT = 'REQUEST_PROJECT';
+export const RESPONSE_PROJECT = 'RESPONSE_PROJECT';
 export const ADD_STAGE = 'ADD_STAGE';
 export const REQUEST_STAGE = 'REQUEST_STAGE';
 export const RESPONSE_STAGE = 'RESPONSE_STAGE';
