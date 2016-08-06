@@ -407,14 +407,6 @@ $(function(){
 
 	})();
 
-	// トピック
-	var images_index = 0;
-	var images = ['../replay/thumbs/rpg-animation.gif', '../replay/thumbs/rungame-animation.gif', '../replay/thumbs/thesurvive-animation.gif', '../replay/thumbs/puzzleaction-animation.gif'];
-	setInterval(function() {
-		images_index = (images_index + 1) % images.length;
-		$('.container .gif-loop-animation').attr('src', images[images_index]);
-	}, 4000);
-
 	function rateToLabelColor (rate, isZero) {
 		return isZero ? 'label-default' :
 		rate < 0.15 ? 'label-hard' :
