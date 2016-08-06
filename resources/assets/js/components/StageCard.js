@@ -14,7 +14,7 @@ export default ({ stage, isOwner, project }) => {
   const playButton = (
     <FloatingActionButton
       onTouchTap={() => location.href = "/s?id=" + stage.id}>
-      <PlayArrow />
+      {stage.thumbnail ? (<img src={stage.thumbnail} alt="Play" />) : (<PlayArrow />)}
     </FloatingActionButton>
   );
 
