@@ -113,7 +113,7 @@ window.renderStaegs = function (result) {
     item.find('.title a').attr({
       href: '/s?id=' + stage.id,
       title: stage.title
-    }).text(stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
+    }).text(!stage.title || stage.title.length < 25 ? stage.title : stage.title.substr(0, 23) + '…');
     if (stage.user) {
       item.find('.author a').attr({
         href: '/m?id=' + stage.user.id,
