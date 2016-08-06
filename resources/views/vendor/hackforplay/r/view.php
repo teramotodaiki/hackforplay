@@ -77,7 +77,7 @@
 
 	<!-- Pager -->
 	<nav class="text-center">
-	  <ul class="pagination"></ul>
+	  <ul class="abstruct-pagination"></ul>
 		<div class="">
 			<a class="btn btn-default h4p_filter-clearable">クリア率0%を表示</a>
 		</div>
@@ -99,7 +99,7 @@
 
 	<!-- Pager -->
 	<nav class="text-center">
-	  <ul class="pagination"></ul>
+	  <ul class="abstruct-pagination"></ul>
 	</nav>
 
 	<?php require_once '../view/footer.php' ?>

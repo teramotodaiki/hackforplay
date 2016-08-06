@@ -57,6 +57,19 @@ var $blank = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item 
 window.renderStaegs = function (result) {
   var $list = $('.h4p_stagelist.list-stage');
 
+  if (result.cache) {
+    $('.abstruct-pagination').before(
+      $('<span>').addClass('alert alert-warning').append(
+        'Because of the speed, the caches displayed. '
+      ).append(
+        '高速化のため、ブラウザにのこっているキャッシュを表示しています.'
+      ).append(
+        $('<a>').attr({ href: '?1' }).text('あたらしいデータを取得')
+      )
+    );
+  } else {
+    $('.abstruct-pagination').toggleClass('abstruct-pagination pagination');
+  }
   // pager
   $('.pagination').append(
     $('<li>').addClass('page-item ' + (result.prev_page_url ? '' : ' disabled')).append(
