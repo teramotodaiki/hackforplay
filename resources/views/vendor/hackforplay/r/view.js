@@ -9,21 +9,37 @@ $(function(){
 
 	$('.h4p_search-stage input').val(params.q);
 
-	// 一覧取得（New API）
-	$.ajax({
-		type: 'GET',
-		url: '/api/stages',
-		data: {
-			is_clearable: params.show_zero ? null : 1,
-			page: params.page,
-			q: params.q,
-		}
-	})
-	.done(renderStaegs)
-	.fail(function (xhr) {
-		console.error(xhr);
-	});
+	if (location.search === '' && localStorage.getItem('cached-stages') !== null) {
 
+		var cache = JSON.parse(localStorage.getItem('cached-stages'));
+		var data = Object.keys(cache).map(function (key) { return cache[key]; });
+	 	// キャッシュ取得
+		var result = {
+			cache: true,
+			data: data,
+		};
+		renderStaegs(result);
+		
+		$('.h4p_filter-clearable').remove();
+
+	} else {
+
+		// 一覧取得（New API）
+		$.ajax({
+			type: 'GET',
+			url: '/api/stages',
+			data: {
+				is_clearable: params.show_zero ? null : 1,
+				page: params.page,
+				q: params.q,
+			}
+		})
+		.done(renderStaegs)
+		.fail(function (xhr) {
+			console.error(xhr);
+		});
+
+	}
 
 	// サイズ調整 ロード時とリサイズ時
 	alignmentOnResize();
