@@ -21,6 +21,12 @@ import Stages from './containers/Stages';
 
 import Main from './Main';
 
+// ES7 shim
+import values from 'object.values';
+if (!Object.values) {
+  values.shim();
+}
+
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
