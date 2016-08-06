@@ -10,6 +10,8 @@ export * from './projects';
 export * from './users';
 export * from './authors';
 
+export * from './plays';
+
 
 export const ADD_CHANNEL = 'ADD_CHANNEL';
 
