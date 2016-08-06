@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
 import { ADD_CHANNEL, ADD_CHAT, PUT_QCARD_LOCAL, PUT_QCARD_ORIGIN, PUT_QCARD_BOTH } from '../actions/';
 
+export * from './fetchings';
+
 export * from './projects';
 export * from './users';
 export * from './authors';
