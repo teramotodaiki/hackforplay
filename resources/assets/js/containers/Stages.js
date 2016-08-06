@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { fetchPlays, fetchStageIfNeeded } from '../actions/';
 import StageCard from '../components/StageCard';
+import Progress from '../components/Progress';
 
 export default class Stages extends Component {
   constructor(props) {
@@ -36,13 +37,19 @@ export default class Stages extends Component {
 
     return (
       <div style={containerStyle}>
-        {stageCards}
+        {stageCards.length ? stageCards : (
+          <Progress containerStyle={containerStyle} />
+        )}
       </div>
     );
   }
 }
 
 Stages.propTypes = {
+};
+
+Stages.contextTypes = {
+  muiTheme: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
