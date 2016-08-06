@@ -12,15 +12,35 @@ export const addProject = (project) => {
   return { type: ADD_PROJECT, project };
 };
 
-export const fetchProject = (id) => {
-  return (dispatch) => {
+const fetchProjectById = ({ id, dispatch, responseType }) => {
 
-    return request
+  return {
+    result: dispatch({ type: REQUEST_PROJECT, project: { id }}),
+    promise: request
       .get('/api/projects/' + id)
       .then((result) => {
         dispatch({ type: ADD_PROJECT, project: result.body });
+        dispatch({ type: RESPONSE_PROJECT, project: result.body });
         return result;
-      });
+      })
+  }[responseType];
+
+};
+
+export const fetchProject = (id) => {
+  return (dispatch) => {
+    return fetchProjectById({ id, dispatch, responseType: 'promise' });
+  };
+};
+
+export const fetchProjectIfNeeded = (id) => {
+  return (dispatch, getState) => {
+
+    const project = getState().projects[id];
+
+    return project && project.token ? project :
+      getState().fetchings.projects[id] ||
+      fetchProjectById({ id, dispatch, responseType: 'result' });
 
   }
 };
