@@ -16,6 +16,22 @@ use Carbon\Carbon;
 class TmpPatchController extends Controller
 {
 
+  public function setClearable()
+  {
+    Stage::where('is_clearable', 0)
+    ->chunk(100, function ($stages)
+    {
+      foreach ($stages as $stage) {
+        $stage->is_clearable =
+          Play::withTrashed()
+          ->where('is_cleared', 1)
+          ->where('stage_id', $stage->ID)
+          ->count() > 0;
+        $stage->save();
+      }
+    });
+  }
+
   public function playLogMigration()
   {
     DB::table('plays')->delete();
@@ -32,7 +48,7 @@ class TmpPatchController extends Controller
         $play->created_at = Carbon::parse($old->Registered);
         $play->updated_at = $old->Cleared !== null ?
         Carbon::parse($old->Cleared) : $play->created_at;
-        
+
         $play->save();
       }
     });

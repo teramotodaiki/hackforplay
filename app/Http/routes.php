@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('patch', 'TmpPatchController@setClearable');
+
 // React (frontend) App
 Route::get('tutorials', 'DefaultAppController@index');
 Route::get('register', 'DefaultAppController@index');
