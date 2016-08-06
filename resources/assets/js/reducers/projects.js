@@ -9,35 +9,22 @@
 */
 
 import { ADD_PROJECT, ADD_STAGE } from '../actions/';
+import makeAssignRecursive from './makeAssignRecursive';
 
+const assignRecursive = makeAssignRecursive('project', 'stage');
 
 export const projects = (state = {}, action) => {
   switch (action.type) {
 
     case ADD_PROJECT:
 
-      return Object.assign({}, state, {
-        [action.project.id]: assignRecursive({}, action.project)
-      });
+      return assignRecursive(state, action.project, null)
 
     case ADD_STAGE:
 
-      const projectId = action.stage.project_id;
-      const project = state[projectId] || { id: projectId };
-
-      return Object.assign({}, state, {
-        [project.id]: assignRecursive(project, null, action.stage)
-      });
+      return assignRecursive(state, null, action.stage)
 
     default:
       return state;
   }
-};
-
-const assignRecursive = (source, project, stage) => {
-  return Object.assign({}, source, project, {
-    stages: Object.assign({}, source.stages, stage && {
-      [stage.id]: stage,
-    })
-  });
 };
