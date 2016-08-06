@@ -251,6 +251,7 @@ class StageController extends Controller
 
       if ($request->input('is_cleared')) {
         $stage->is_clearable = true;
+        $stage->save();
       }
 
       $play->save();
