@@ -49,6 +49,7 @@
 	<?php require_once '../view/authmodal.php'; ?>
 	<?php require_once '../view/header.php'; ?>
 	<script src="//cdn.jsdelivr.net/emojione/2.2.5/lib/js/emojione.min.js"></script>
+	<script src="render.js" charset="utf-8"></script>
 	<script src="view.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../s/getStage.js" type="text/javascript" charset="utf-8"></script>
 	<div class="container">
