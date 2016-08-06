@@ -38,18 +38,10 @@ export default ({ stage, isOwner, project }) => {
         title={stage.title || '...'}
         subtitle={stage.explain || ''}
         avatar={playButton}
-        actAsExpander={true}
-        showExpandableButton={true}
       >
         {isOwner ? <AssignmentInd color={blue500} /> : null}
       </CardHeader>
       {isOwner && ownerActions}
-      <CardText expandable={true}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-        Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-        Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-      </CardText>
     </Card>
   );
 };
