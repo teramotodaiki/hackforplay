@@ -3,8 +3,9 @@ import { Card, CardHeader, CardActions, CardText, FlatButton, Avatar, FontIcon, 
 import {blue500} from 'material-ui/styles/colors';
 import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
 import PlayArrow from 'material-ui/svg-icons/av/play-arrow';
+import FolderOpen from 'material-ui/svg-icons/file/folder-open';
 
-export default ({ stage, isOwner }) => {
+export default ({ stage, isOwner, project }) => {
 
   const cardStyle = {
     minWidth: 480,
@@ -15,6 +16,21 @@ export default ({ stage, isOwner }) => {
       onTouchTap={() => location.href = "/s?id=" + stage.id}>
       <PlayArrow />
     </FloatingActionButton>
+  );
+
+  const ownerActions = (
+    <CardActions style={{ paddingLeft: 16, paddingBottom: 14 }}>
+    {stage.source_id && project && project.token && (
+      <FloatingActionButton
+        onTouchTap={() => {
+          sessionStorage.setItem('project-token', project.token);
+      		location.href = '/s?id=' + stage.source_id + '&mode=restaging';
+        }}
+        mini={true} secondary={true}>
+        <FolderOpen />
+      </FloatingActionButton>
+    )}
+    </CardActions>
   );
 
   return (
@@ -28,9 +44,7 @@ export default ({ stage, isOwner }) => {
       >
         {isOwner ? <AssignmentInd color={blue500} /> : null}
       </CardHeader>
-      <CardActions>
-        <FlatButton label="Action2" />
-      </CardActions>
+      {isOwner && ownerActions}
       <CardText expandable={true}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
