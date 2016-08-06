@@ -2,6 +2,13 @@
 
 import { REQUEST_STAGE, RESPONSE_STAGE } from '../actions/';
 
+const removeItem = (obj, key) => {
+  const filtered = Object.keys(obj)
+    .filter((_key) => _key !== key)
+    .map((key) => { return { [key]: obj[key] }; });
+
+  return Object.assign(null, filtered);
+};
 
 export const fetchings = (state = {
   stages: {}
@@ -17,12 +24,8 @@ export const fetchings = (state = {
 
     case RESPONSE_STAGE:
 
-      const filtered = Object.values(state.stages)
-        .filter((stage) => stage.id !== action.stage.id)
-        .map((stage) => { return { [`${stage.id}`]: stage }; })
-
       return Object.assign({}, state, {
-        stages: Object.assign.apply(null, filtered)
+        stages: removeItem(state.stages, action.stages.id)
       });
 
     default:
