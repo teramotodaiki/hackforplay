@@ -20,7 +20,7 @@ export default class Stages extends Component {
 
   render() {
 
-    const { dispatch, plays } = this.props;
+    const { dispatch, plays, authUser } = this.props;
 
     const containerStyle = Object.assign({}, this.props.containerStyle, {
       paddingLeft: 60,
@@ -33,7 +33,12 @@ export default class Stages extends Component {
       .map((id) => plays[id].stage_id)
       .filter((stage_id, i, self) => self.indexOf(stage_id) === i)
       .map((stage_id) => dispatch(fetchStageIfNeeded(stage_id)))
-      .map((stage) => (<StageCard key={stage.id} stage={stage} />));
+      .map((stage) => (
+        <StageCard
+          key={stage.id}
+          stage={stage}
+          isOwner={authUser.id === stage.user_id} />
+      ));
 
     return (
       <div style={containerStyle}>

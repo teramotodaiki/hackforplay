@@ -1,7 +1,9 @@
 import React from 'react';
-import { Card, CardHeader, CardActions, CardText, FlatButton } from 'material-ui';
+import { Card, CardHeader, CardActions, CardText, FlatButton, Avatar, FontIcon } from 'material-ui';
+import {blue500} from 'material-ui/styles/colors';
+import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
 
-export default ({ stage }) => {
+export default ({ stage, isOwner }) => {
 
   const cardStyle = {
     minWidth: 480,
@@ -12,6 +14,7 @@ export default ({ stage }) => {
       <CardHeader
         title={stage.title || '...'}
         subtitle={stage.explain || ''}
+        avatar={isOwner ? <AssignmentInd color={blue500} /> : null}
         actAsExpander={true}
         showExpandableButton={true}
       />
