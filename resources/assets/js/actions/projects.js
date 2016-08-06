@@ -41,3 +41,15 @@ export const fetchStage = (id) => {
 
   }
 };
+
+export const getStage = (id) => {
+  return (dispatch, getState) => {
+
+    const stage =
+      Object.values(getState().projects)
+        .reduce((p, c) => Object.assign({}, p.stages, c.stages), {})[id] ||
+      getState().fetchings.stages[id];
+
+    return stage;
+  };
+};
