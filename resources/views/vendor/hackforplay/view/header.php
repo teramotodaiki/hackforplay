@@ -232,7 +232,7 @@ $(function(){
 				</li>
 				<li>
 					<a href="../register" class="btn btn-link" title="Register">
-						<small>新規登録</small>
+						<small>つくりたい</small>
 					</a>
 				</li>
 			</ul>
