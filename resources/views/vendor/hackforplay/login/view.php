@@ -20,6 +20,20 @@
 		$('.panel-login a#button-loginwithtwitter').attr('href',
 			'/loginwithtwitter.php?authed=' + encodeURIComponent(authed) +
 			'&login_successed=' + encodeURIComponent(login_successed));
+
+		// 全角を半角にする
+		var preventInput = '';
+		var intervalId = setInterval(function () {
+			var text = $('.container input#navbarLoginEmail').val();
+			if (preventInput !== text) {
+				if (text.match(/[０-９]/g)) {
+					clearInterval(intervalId);
+					alert('注意！『全角』になっているよ。キーボード[全角/半角]ボタンできりかえよう');
+				}
+				preventInput = text;
+			}
+		}, 100);
+
 	});
 	</script>
 	<div class="container">
