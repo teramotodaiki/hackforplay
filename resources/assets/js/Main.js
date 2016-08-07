@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import baseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
+import { getAuthUser } from './actions/';
 import Header from './components/header';
 
 const muiTheme = getMuiTheme(baseTheme);
@@ -14,6 +15,13 @@ var _isDrawerOpened = false;
 export default class Main extends Component {
   constructor(props) {
     super(props);
+
+    const meta = document.querySelector('meta[name="login-user-id"]');
+    const userId = meta ? meta.getAttribute('content') : null;
+
+    this.state = {
+      authUser: { id: userId },
+    };
 
     this.onToggleDrawer = this.onToggleDrawer.bind(this);
   }
@@ -30,7 +38,12 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
+    const { dispatch } = this.props;
+
     window.addEventListener('resize', () => this.forceUpdate());
+
+    dispatch(getAuthUser())
+    .then((user) => this.setState({ authUser: user }));
   }
 
   render() {
@@ -50,7 +63,8 @@ export default class Main extends Component {
           <Header onToggleDrawer={this.onToggleDrawer} />
           <div>
             {this.props.children && React.cloneElement(this.props.children, {
-              containerStyle
+              containerStyle,
+              authUser: this.state.authUser,
             })}
           </div>
         </div>
