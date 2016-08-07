@@ -102,6 +102,19 @@
 	  <ul class="abstruct-pagination"></ul>
 	</nav>
 
+	<!-- Invitation -->
+	<?php if (!isset($session_userid)): ?>
+	<div class="container" style="margin-top: 2rem">
+		<div class="col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+			<div class="panel">
+				<div class="panel-body">
+					<div class="signin-invitation text-center"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php endif; ?>
+
 	<?php require_once '../view/footer.php' ?>
 	<?php include_once '../intercom.php'; ?>
 </body>

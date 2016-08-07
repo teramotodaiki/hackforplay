@@ -49,6 +49,30 @@ $(function(){
 		resized_timeout_id = setTimeout(alignmentOnResize, 100);
 	});
 
+	// Signin invitation
+	$('.signin-invitation').append(
+		$('<h5>').append(
+			'Want to make own game?'
+		).append(
+			$('<span>').addClass('text-muted').text(' // オリジナルステージつくっちゃう？')
+		)
+	).append(
+		$('<img>').attr('src', 'https://embed.hackforplay.xyz/hackforplay/img/restaging_image.png').css({
+			width: '100%',
+			height: '100%',
+		})
+	).append(
+		$('<a>').attr('href', '/register')
+		.addClass('btn btn-link btn-lg btn-block')
+		.text('まずはクリエイターズライセンスをゲットしよう！')
+	).append(
+		$('<p>').addClass('text-muted').append(
+			$('<span>').addClass('glyphicon glyphicon-pencil')
+		).append(
+			'ペンとメモを よういしてください'
+		)
+	);
+
 	// コメント
 	var $com =
 	$('<div>').css('cursor', 'pointer').append(

@@ -232,7 +232,7 @@ $(function(){
 				</li>
 				<li>
 					<a href="../register" class="btn btn-link" title="Register">
-						<small>新規登録</small>
+						<small>つくりたい</small>
 					</a>
 				</li>
 			</ul>
@@ -265,27 +265,8 @@ $(function(){
 					<a href="/channels/list" title="チャンネル">チャンネル</a>
 				</li>
 				<?php endif; ?>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						つくる<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a href="/s/?directly_restaging=true&id=1365" title="RPG">RPG</a>
-						</li>
-						<li>
-							<a href="/s/?directly_restaging=true&id=306" title="Action Puzzle">アクションパズル</a>
-						</li>
-						<li>
-							<a href="/s/?directly_restaging=true&id=308" title="Comet">コメット</a>
-						</li>
-						<li>
-							<a href="/s/?directly_restaging=true&id=305" title="Run">ランゲーム</a>
-						</li>
-						<li>
-							<a href="/s/?directly_restaging=true&id=307" title="Survival">サバイバル</a>
-						</li>
-					</ul>
+				<li>
+					<a href="/s/?directly_restaging=true&id=1365" title="Make RPG">ステージをつくる</a>
 				</li>
 				<li>
 					<a href="/news/" title="おしらせ">おしらせ</a>
