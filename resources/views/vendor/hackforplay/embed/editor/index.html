@@ -128,6 +128,10 @@
 					else document.getElementById('editor_js').value = code;
 				}
 				break;
+			case 'clearHistory':
+				if (jsEditor) {
+					jsEditor.clearHistory();
+				}
 			default:
 				break;
 		}

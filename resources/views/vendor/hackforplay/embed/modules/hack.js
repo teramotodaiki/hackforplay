@@ -260,6 +260,13 @@ function getEditor() {
 		this.dispatchEvent(new Event('editcancel'));
 	};
 
+	Hack.clearHistory = function () {
+		if (!this.enchantBook) return;
+		this.enchantBook._element.contentWindow.postMessage({
+			query: 'clearHistory'
+		}, '/');
+	};
+
 	Hack.createLabel = function(text, prop) {
 		return (function () {
 			this.text = text;
