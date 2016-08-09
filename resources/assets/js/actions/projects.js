@@ -33,16 +33,22 @@ export const fetchProject = (id) => {
   };
 };
 
+const findProject = (id, getState) => {
+  const { projects, fetchings } = getState();
+  return projects[id] && projects[id].token ? projects[id] : fetchings.projects[id];
+};
+
 export const fetchProjectIfNeeded = (id) => {
   return (dispatch, getState) => {
-
-    const project = getState().projects[id];
-
-    return project && project.token ? project :
-      getState().fetchings.projects[id] ||
+    return findProject(id, getState) ||
       fetchProjectById({ id, dispatch, responseType: 'result' });
-
   }
+};
+
+export const getProjectFromLocal = (id) => {
+  return (dispatch, getState) => {
+    return findProject(id, getState) || { id };
+  };
 };
 
 export const addStage = (stage) => {
@@ -70,19 +76,24 @@ export const fetchStage = (id) => {
   };
 };
 
+const findStage = (id, getState) => {
+  const { projects, fetchings } = getState();
+  const stages = Object.assign.apply(null, [{}].concat(
+    Object.values(projects).map((project) => project.stages)
+  ));
+
+  return stages[id] || fetchings.stages[id] || null;
+};
+
 export const fetchStageIfNeeded = (id) => {
   return (dispatch, getState) => {
-
-    const { projects, fetchings } = getState();
-
-    const stage =
-      Object.values(projects)
-        .reduce((p, c) => {
-          return Object.assign({}, p.stages, c.stages);
-        }, {})[id] ||
-      fetchings.stages[id] ||
+    return findStage(id, getState) ||
       fetchStageById({ id, dispatch, responseType: 'result' });
+  };
+};
 
-    return stage;
+export const getStageFromLocal = (id) => {
+  return (dispatch, getState) => {
+    return findStage(id, getState) || { id };
   };
 };
