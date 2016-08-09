@@ -994,7 +994,7 @@
 				if (intersects.indexOf(item) < 0) {
 					dispatchTriggerEvent('exit', self, item);
 					dispatchTriggerEvent('exit', item, self);
-				} else if (tick === frame　&& !item.collisionFlag && !self.collisionFlag) {
+				} else if (tick === frame && !item.collisionFlag && !self.collisionFlag) {
 					dispatchTriggerEvent('stay', self, item);
 					dispatchTriggerEvent('stay', item, self);
 				}
