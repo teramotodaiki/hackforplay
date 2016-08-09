@@ -431,7 +431,8 @@
 			var angle = 0;
 
 			// 対象が MapObject かつベクトルの長さが 0.0 より大きいなら
-			if (node instanceof MapObject && !(vector.x === 0 && vector.y === 0)) {
+			if ((node instanceof MapObject || node.directionType === 'single') &&
+				!(vector.x === 0 && vector.y === 0)) {
 				angle = 90 - Math.atan2(-vector.y, vector.x) * 180 / Math.PI;
 			}
 
