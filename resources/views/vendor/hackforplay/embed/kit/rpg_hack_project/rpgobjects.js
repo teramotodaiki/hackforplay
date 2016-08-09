@@ -899,6 +899,31 @@
 		};
 	};
 
+	Hack.skills.flamethrower = function (asset) {
+		return function () {
+			this.onenterframe = function () {
+				if (game.frame % 3 > 0) return;
+				var flame = new RPGObject();
+				flame.mod(asset || Hack.assets.explosion);
+				flame.collisionFlag = false;
+
+				var fx = this.forward.x, fy = this.forward.y;
+				this.shoot(flame, this.forward, 6);
+				flame.moveBy(fx * random(64, 96), fy * random(64, 96));
+				flame.velocityX += random(-0.99, 1);
+				flame.velocityY += random(-0.99, 1);
+				flame.scale(random(0.99, 1.5));
+				flame.force(-fx * random(0, 0.199), -fy * random(0, 0.199));
+				flame.destroy(20);
+				flame.ontriggerenter = function (event) {
+					Hack.Attack.call(this, event.mapX, event.mapY, 1);
+				};
+			};
+		};
+	};
+
+
+
 	game.on('enterframe', function() {
 		var frame = game.collisionFrames || 10;
 		var physicsPhantom = RPGObject.collection.filter(function (item) {
