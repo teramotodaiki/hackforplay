@@ -927,18 +927,6 @@
 		};
 	};
 
-	Hack.skills.invisible = function (time) {
-		return function () {
-			var onattacked = this.onattacked;
-			this.setTimeout(function () {
-				this.onattacked = onattacked;
-				this.opacity = 1;
-			}, time * game.fps >> 0);
-			this.onattacked = null;
-			this.opacity = 0.5;
-		};
-	};
-
 	Hack.skills.selfdestruct = function (time) {
 		return function () {
 			this.setTimeout(function () {
