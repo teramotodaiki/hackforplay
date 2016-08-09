@@ -937,9 +937,7 @@
 				flame.collisionFlag = false;
 				var self = this;
 				flame.ontriggerenter = function (event) {
-					if (event.hit !== self) {
-						Hack.Attack.call(this, event.mapX, event.mapY, self.atk);
-					}
+					Hack.Attack.call(this, event.mapX, event.mapY, self.atk);
 				};
 				flame.destroy(20);
 				this.destroy();
