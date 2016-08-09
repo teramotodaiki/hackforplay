@@ -959,6 +959,22 @@
 		};
 	};
 
+	Hack.skills.pistol = function (asset) {
+		return function () {
+			var bullet = new RPGObject();
+			var self = this;
+
+			bullet.mod(asset || Hack.assets.beam);
+			this.shoot(bullet, this.forward, 5);
+
+			bullet.ontriggerenter = function (event) {
+				if (event.target !== this) {
+					Hack.Attack.call(this, event.mapX, event.mapY, self.atk);
+				}
+			};
+		};
+	};
+
 
 
 	game.on('enterframe', function() {
