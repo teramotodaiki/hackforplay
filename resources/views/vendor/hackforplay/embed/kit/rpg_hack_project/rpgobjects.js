@@ -914,8 +914,11 @@
 				flame.scale(random(0.99, 1.5));
 				flame.force(-fx * random(0, 0.199), -fy * random(0, 0.199));
 				flame.destroy(20);
+				var self = this;
 				flame.ontriggerenter = function (event) {
-					Hack.Attack.call(this, event.mapX, event.mapY, 1);
+					if (event.target !== this) {
+						Hack.Attack.call(this, event.mapX, event.mapY, self.atk);
+					}
 				};
 
 				flame.mod(asset || Hack.assets.explosion);
@@ -943,8 +946,11 @@
 				flame.mod(Hack.assets.explosion);
 				flame.scale(2);
 				flame.collisionFlag = false;
+				var self = this;
 				flame.ontriggerenter = function (event) {
-					Hack.Attack.call(this, event.mapX, event.mapY, 99);
+					if (event.target !== this) {
+						Hack.Attack.call(this, event.mapX, event.mapY, self.atk);
+					}
 				};
 				flame.destroy(20);
 				this.shoot(flame, [0, -1], 1);
