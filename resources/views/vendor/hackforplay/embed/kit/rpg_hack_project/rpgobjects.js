@@ -90,8 +90,8 @@
 
 	var __RPGObject = enchant.Class(enchant.Sprite, {
 		initialize: function (width, height, offsetX, offsetY) {
-			Sprite.call(this, width, height);
-			this.offset = { x: offsetX, y: offsetY };
+			Sprite.call(this, width || 0, height || 0);
+			this.offset = { x: offsetX || 0, y: offsetY || 0 };
 			this.moveTo(game.width, game.height);
 			Object.defineProperty(this, 'mapX', {
 				configurable: true, enumerable: true,
