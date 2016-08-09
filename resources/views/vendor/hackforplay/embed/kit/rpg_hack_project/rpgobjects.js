@@ -899,7 +899,7 @@
 		};
 	};
 
-	Hack.skills.flamethrower = function (asset) {
+	Hack.skills.storm = function (asset) {
 		return function () {
 			this.onenterframe = function () {
 				if (game.frame % 3 > 0) return;
