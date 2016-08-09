@@ -17,6 +17,13 @@ export default class Stages extends Component {
   componentDidMount() {
     const { dispatch, authUser } = this.props;
 
+    const fetchTask = (result) => {
+      const stage = result.body;
+      if (authUser.id === stage.user_id) {
+        dispatch(fetchProject(stage.project_id));
+      }
+    };
+
     (Object.keys(this.props.plays).length ? Promise.resolve() : dispatch(fetchPlays()))
     .then(() => {
       Object.values(this.props.plays)
@@ -24,14 +31,7 @@ export default class Stages extends Component {
       .map((play) => play.stage_id)
       .filter((stage_id, i, self) => self.indexOf(stage_id) === i)
       .map((stage_id) => dispatch(fetchStage(stage_id)))
-      .forEach((promise) => {
-        promise.then((result) => {
-          const stage = result.body;
-          if (authUser.id === stage.user_id) {
-            dispatch(fetchProject(stage.project_id));
-          }
-        });
-      });
+      .forEach((promise) => promise.then(fetchTask));
     });
   }
 
