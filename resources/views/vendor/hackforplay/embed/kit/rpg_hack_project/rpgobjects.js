@@ -905,6 +905,7 @@
 			this.onenterframe = function () {
 				if (game.frame % 3 > 0) return;
 				var flame = new RPGObject();
+				this.shoot(flame, this.forward, 6);
 				flame.collisionFlag = false;
 
 				var fx = this.forward.x, fy = this.forward.y;
@@ -916,13 +917,12 @@
 				flame.destroy(20);
 				var self = this;
 				flame.ontriggerenter = function (event) {
-					if (event.target !== this) {
+					if (event.hit !== self) {
 						Hack.Attack.call(this, event.mapX, event.mapY, self.atk);
 					}
 				};
 
 				flame.mod(asset || Hack.assets.explosion);
-				this.shoot(flame, this.forward, 6);
 			};
 		};
 	};
@@ -944,16 +944,16 @@
 			this.setTimeout(function () {
 				var flame = new RPGObject();
 				flame.mod(Hack.assets.explosion);
+				this.shoot(flame, [0, -1], 1);
 				flame.scale(2);
 				flame.collisionFlag = false;
 				var self = this;
 				flame.ontriggerenter = function (event) {
-					if (event.target !== this) {
+					if (event.hit !== self) {
 						Hack.Attack.call(this, event.mapX, event.mapY, self.atk);
 					}
 				};
 				flame.destroy(20);
-				this.shoot(flame, [0, -1], 1);
 				this.destroy();
 			}, time * game.fps >> 0);
 		};
@@ -962,16 +962,16 @@
 	Hack.skills.pistol = function (asset) {
 		return function () {
 			var bullet = new RPGObject();
-			var self = this;
-
-			bullet.mod(asset || Hack.assets.beam);
 			this.shoot(bullet, this.forward, 5);
 
+			var self = this;
 			bullet.ontriggerenter = function (event) {
-				if (event.target !== this) {
+				if (event.target !== self) {
 					Hack.Attack.call(this, event.mapX, event.mapY, self.atk);
 				}
 			};
+
+			bullet.mod(asset || Hack.assets.beam);
 		};
 	};
 
