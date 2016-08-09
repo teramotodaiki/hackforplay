@@ -904,11 +904,9 @@
 			this.onenterframe = function () {
 				if (game.frame % 3 > 0) return;
 				var flame = new RPGObject();
-				flame.mod(asset || Hack.assets.explosion);
 				flame.collisionFlag = false;
 
 				var fx = this.forward.x, fy = this.forward.y;
-				this.shoot(flame, this.forward, 6);
 				flame.moveBy(fx * random(64, 96), fy * random(64, 96));
 				flame.velocityX += random(-0.99, 1);
 				flame.velocityY += random(-0.99, 1);
@@ -918,6 +916,9 @@
 				flame.ontriggerenter = function (event) {
 					Hack.Attack.call(this, event.mapX, event.mapY, 1);
 				};
+
+				flame.mod(asset || Hack.assets.explosion);
+				this.shoot(flame, this.forward, 6);
 			};
 		};
 	};
