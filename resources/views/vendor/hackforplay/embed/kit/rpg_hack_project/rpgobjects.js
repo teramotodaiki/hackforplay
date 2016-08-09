@@ -876,6 +876,21 @@
 		}
 	});
 
+	// Hack.skills
+	Hack.skills.stalker = function (target) {
+		return function () {
+			var _target = target || Hack.player;
+			if (_target && _target instanceof RPGObject) {
+				var moveX = 32 * Math.sign(_target.mapX - this.mapX);
+				var moveY = 32 * Math.sign(_target.mapY - this.mapY);
+				this.forward = [moveX, moveY];
+				this.tl.become('walk').moveBy(moveX, moveY, 30).then(function () {
+					Hack.Attack.call(this, this.mapX, this.mapY, this.atk);
+				}).become('attack', 20).become('idle');
+			}
+		};
+	};
+
 	game.on('enterframe', function() {
 		var frame = game.collisionFrames || 10;
 		var physicsPhantom = RPGObject.collection.filter(function (item) {
