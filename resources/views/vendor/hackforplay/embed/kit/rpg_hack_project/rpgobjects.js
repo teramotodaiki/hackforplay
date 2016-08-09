@@ -842,6 +842,14 @@
 		this.forward = [0, -1];
 	};
 
+	Hack.assets.explosion = function () {
+		this.image = game.assets['enchantjs/x2/effect0.png'];
+		this.width = this.height = 32; this.offset = { x: 0, y: 0 };
+		this.directionType = 'single';
+		this.forward = [0, -1];
+		this.frame = [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4];
+	};
+
 	var __Effect = enchant.Class(RPGObject, {
 		initialize: function (velocityX, velocityY, lifetime, randomize) {
 			RPGObject.call(this, 32, 32, 0, 0);
