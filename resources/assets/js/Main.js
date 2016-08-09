@@ -20,7 +20,7 @@ export default class Main extends Component {
     const userId = meta ? meta.getAttribute('content') : null;
 
     this.state = {
-      authUser: { id: userId },
+      authUser: { id: +userId },
     };
 
     this.onToggleDrawer = this.onToggleDrawer.bind(this);

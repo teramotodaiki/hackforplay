@@ -7,7 +7,7 @@ const removeItem = (obj, key) => {
     .filter((_key) => _key !== key)
     .map((key) => { return { [key]: obj[key] }; });
 
-  return Object.assign(null, filtered);
+  return Object.assign({}, filtered);
 };
 
 export const fetchings = (state = {
@@ -40,7 +40,7 @@ export const fetchings = (state = {
     case RESPONSE_STAGE:
 
       return Object.assign({}, state, {
-        stages: removeItem(state.stages, action.stages.id)
+        stages: removeItem(state.stages, action.stage.id)
       });
 
     default:
