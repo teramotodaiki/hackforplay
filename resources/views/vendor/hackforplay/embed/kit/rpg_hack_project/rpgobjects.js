@@ -934,6 +934,23 @@
 		};
 	};
 
+	Hack.skills.selfdestruct = function (time) {
+		return function () {
+			this.setTimeout(function () {
+				var flame = new RPGObject();
+				flame.mod(Hack.assets.explosion);
+				flame.scale(2);
+				flame.collisionFlag = false;
+				flame.ontriggerenter = function (event) {
+					Hack.Attack.call(this, event.mapX, event.mapY, 99);
+				};
+				flame.destroy(20);
+				this.shoot(flame, [0, -1], 1);
+				this.destroy();
+			}, time * game.fps >> 0);
+		};
+	};
+
 
 
 	game.on('enterframe', function() {
