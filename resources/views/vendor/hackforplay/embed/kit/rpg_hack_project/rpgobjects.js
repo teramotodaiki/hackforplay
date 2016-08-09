@@ -76,6 +76,7 @@
 
   var game = enchant.Core.instance;
 	Hack.assets = Hack.assets || {};
+	Hack.skills = Hack.skills || {};
 
 	// [注意] BehaviorTypesは排他的なプロパティになりました
 	var __BehaviorTypes = {
