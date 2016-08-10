@@ -37,9 +37,9 @@ export default class Stages extends Component {
 
   render() {
 
-    const { dispatch, plays, authUser } = this.props;
+    const { dispatch, plays, authUser, containerStyle } = this.props;
 
-    const containerStyle = Object.assign({}, this.props.containerStyle, {
+    const style = Object.assign({}, containerStyle, {
       paddingLeft: 60,
       paddingRight: 60,
     });
@@ -59,7 +59,7 @@ export default class Stages extends Component {
       ));
 
     return (
-      <div style={containerStyle}>
+      <div style={style}>
         {stageCards.length ? stageCards : (
           <Progress containerStyle={containerStyle} />
         )}
