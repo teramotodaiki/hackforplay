@@ -2,13 +2,10 @@ import React, { Component, PropTypes } from 'react';
 
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import baseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
+import muiTheme from './hackforplayMuiTheme';
 import { getAuthUser } from './actions/';
 import Header from './components/header';
-
-const muiTheme = getMuiTheme(baseTheme);
 
 var _isDrawerOpened = false;
 
@@ -58,7 +55,7 @@ export default class Main extends Component {
     };
 
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={muiTheme}>
         <div>
           <Header onToggleDrawer={this.onToggleDrawer} />
           <div>

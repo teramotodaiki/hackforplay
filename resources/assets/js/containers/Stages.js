@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 import {
   fetchPlays,
   fetchStage, getStageFromLocal,
-  fetchProject, getProjectFromLocal } from '../actions/';
+  fetchProject, getProjectFromLocal,
+  fetchUser, getUserFromLocal,
+} from '../actions/';
 import StageCard from '../components/StageCard';
 import Progress from '../components/Progress';
 
@@ -19,6 +21,7 @@ export default class Stages extends Component {
 
     const fetchTask = (result) => {
       const stage = result.body;
+      dispatch(fetchUser(stage.user_id));
       if (authUser.id === stage.user_id) {
         dispatch(fetchProject(stage.project_id));
       }
@@ -37,12 +40,17 @@ export default class Stages extends Component {
 
   render() {
 
-    const { dispatch, plays, authUser } = this.props;
+    const { dispatch, plays, authUser, containerStyle } = this.props;
 
-    const containerStyle = Object.assign({}, this.props.containerStyle, {
+    const style = Object.assign({}, containerStyle, {
       paddingLeft: 60,
       paddingRight: 60,
+      paddingBottom: 60,
     });
+
+    const cardStyle = {
+      width: style.width - style.paddingLeft - style.paddingRight
+    };
 
     const stageCards = Object.keys(plays)
       .sort((a, b) => b - a)
@@ -54,12 +62,14 @@ export default class Stages extends Component {
         <StageCard
           key={stage.id}
           stage={stage}
-          isOwner={authUser.id === stage.user_id}
-          project={authUser.id === stage.user_id && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null} />
+          style={cardStyle}
+          isOwner={authUser.id == stage.user_id}
+          project={authUser.id == stage.user_id && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null}
+          user={stage.user_id && dispatch(getUserFromLocal(stage.user_id))} />
       ));
 
     return (
-      <div style={containerStyle}>
+      <div style={style}>
         {stageCards.length ? stageCards : (
           <Progress containerStyle={containerStyle} />
         )}
