@@ -2,7 +2,10 @@ import React, { Component, PropTypes } from 'react';
 
 import { connect } from 'react-redux';
 
-import { fetchPlays, fetchStageIfNeeded, fetchProjectIfNeeded } from '../actions/';
+import {
+  fetchPlays,
+  fetchStage, getStageFromLocal,
+  fetchProject, getProjectFromLocal } from '../actions/';
 import StageCard from '../components/StageCard';
 import Progress from '../components/Progress';
 
@@ -12,10 +15,24 @@ export default class Stages extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, plays } = this.props;
-    if (!Object.keys(plays).length) {
-      dispatch(fetchPlays());
-    }
+    const { dispatch, authUser } = this.props;
+
+    const fetchTask = (result) => {
+      const stage = result.body;
+      if (authUser.id === stage.user_id) {
+        dispatch(fetchProject(stage.project_id));
+      }
+    };
+
+    (Object.keys(this.props.plays).length ? Promise.resolve() : dispatch(fetchPlays()))
+    .then(() => {
+      Object.values(this.props.plays)
+      .filter((play) => play.deleted_at === null)
+      .map((play) => play.stage_id)
+      .filter((stage_id, i, self) => self.indexOf(stage_id) === i)
+      .map((stage_id) => dispatch(fetchStage(stage_id)))
+      .forEach((promise) => promise.then(fetchTask));
+    });
   }
 
   render() {
@@ -32,16 +49,14 @@ export default class Stages extends Component {
       .filter((id) => plays[id].deleted_at === null)
       .map((id) => plays[id].stage_id)
       .filter((stage_id, i, self) => self.indexOf(stage_id) === i)
-      .map((stage_id) => dispatch(fetchStageIfNeeded(stage_id)))
-      .map((stage) => {
-        return (
-          <StageCard
-            key={stage.id}
-            stage={stage}
-            isOwner={authUser.id === stage.user_id}
-            project={authUser.id === stage.user_id ? dispatch(fetchProjectIfNeeded(stage.project_id)) : null} />
-        );
-      });
+      .map((stage_id) => dispatch(getStageFromLocal(stage_id)))
+      .map((stage) => (
+        <StageCard
+          key={stage.id}
+          stage={stage}
+          isOwner={authUser.id === stage.user_id}
+          project={authUser.id === stage.user_id && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null} />
+      ));
 
     return (
       <div style={containerStyle}>
