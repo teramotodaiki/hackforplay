@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import {
   fetchPlays,
-  fetchStage, getStageFromLocal,
+  fetchStage, getStageFromLocal, updateStage,
   fetchProject, getProjectFromLocal,
   fetchUser, getUserFromLocal,
 } from '../actions/';
@@ -65,7 +65,8 @@ export default class Stages extends Component {
           style={cardStyle}
           isOwner={authUser.id == stage.user_id}
           project={authUser.id == stage.user_id && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null}
-          user={stage.user_id && dispatch(getUserFromLocal(stage.user_id))} />
+          user={stage.user_id && dispatch(getUserFromLocal(stage.user_id))}
+          handleStageUpdate={(change) => dispatch(updateStage(stage.id, change))} />
       ));
 
     return (

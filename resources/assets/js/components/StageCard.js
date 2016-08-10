@@ -15,7 +15,7 @@ export default class StageCard extends Component {
   }
 
   render() {
-    const { stage, isOwner, project, user, style } = this.props;
+    const { stage, isOwner, project, user, style, handleStageUpdate } = this.props;
 
     const cardStyle = Object.assign({
       width: 480,
@@ -53,6 +53,7 @@ export default class StageCard extends Component {
             label="MOD"
             defaultToggled={!!+stage.is_mod}
             disabled={stage.is_mod === undefined}
+            onToggle={(event, value) => handleStageUpdate({ is_mod: value })}
             />
         </div>
       </CardActions>
