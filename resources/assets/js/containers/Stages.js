@@ -37,12 +37,17 @@ export default class Stages extends Component {
 
   render() {
 
-    const { dispatch, plays, authUser } = this.props;
+    const { dispatch, plays, authUser, containerStyle } = this.props;
 
-    const containerStyle = Object.assign({}, this.props.containerStyle, {
+    const style = Object.assign({}, containerStyle, {
       paddingLeft: 60,
       paddingRight: 60,
+      paddingBottom: 60,
     });
+
+    const cardStyle = {
+      width: style.width - style.paddingLeft - style.paddingRight
+    };
 
     const stageCards = Object.keys(plays)
       .sort((a, b) => b - a)
@@ -54,12 +59,13 @@ export default class Stages extends Component {
         <StageCard
           key={stage.id}
           stage={stage}
-          isOwner={authUser.id === stage.user_id}
-          project={authUser.id === stage.user_id && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null} />
+          style={cardStyle}
+          isOwner={authUser.id == stage.user_id}
+          project={authUser.id == stage.user_id && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null} />
       ));
 
     return (
-      <div style={containerStyle}>
+      <div style={style}>
         {stageCards.length ? stageCards : (
           <Progress containerStyle={containerStyle} />
         )}
