@@ -17,6 +17,7 @@ export default class UserChip extends Component {
       <Chip
         style={{ display: 'inline-block' }}
         labelStyle={{ verticalAlign: 'bottom' }}
+        onTouchTap={() => location.href = '/m?id=' + user.id}
         >
         {isOwner ? (
           <Avatar icon={<AssignmentInd />} backgroundColor={palette.accent3Color} />
