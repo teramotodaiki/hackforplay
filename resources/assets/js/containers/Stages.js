@@ -20,9 +20,7 @@ export default class Stages extends Component {
     const fetchTask = (result) => {
       const stage = result.body;
       if (authUser.id === stage.user_id) {
-        dispatch(fetchProject(stage.project_id))
-        .then((result) => console.log(result))
-        .catch((err) => console.error(err));
+        dispatch(fetchProject(stage.project_id));
       }
     };
 
@@ -46,7 +44,6 @@ export default class Stages extends Component {
       paddingRight: 60,
     });
 
-    console.log('state', this.props.projects);
     const stageCards = Object.keys(plays)
       .sort((a, b) => b - a)
       .filter((id) => plays[id].deleted_at === null)
