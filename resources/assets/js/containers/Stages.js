@@ -44,6 +44,10 @@ export default class Stages extends Component {
       paddingRight: 60,
     });
 
+    const cardStyle = {
+      width: style.width - style.paddingLeft - style.paddingRight
+    };
+
     const stageCards = Object.keys(plays)
       .sort((a, b) => b - a)
       .filter((id) => plays[id].deleted_at === null)

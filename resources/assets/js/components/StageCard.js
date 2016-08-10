@@ -5,10 +5,17 @@ import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
 import PlayArrow from 'material-ui/svg-icons/av/play-arrow';
 import FolderOpen from 'material-ui/svg-icons/file/folder-open';
 
-export default ({ stage, isOwner, project }) => {
+export default ({ stage, isOwner, project, style }) => {
 
-  const cardStyle = {
+  const cardStyle = Object.assign({
+    width: 480,
     minWidth: 480,
+  }, style);
+
+  const wrapStyle = {
+    overflowX: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: cardStyle.width / 2 >> 0,
   };
 
   const playButton = (
@@ -38,6 +45,8 @@ export default ({ stage, isOwner, project }) => {
         title={stage.title || '...'}
         subtitle={stage.explain || ''}
         avatar={playButton}
+        titleStyle={wrapStyle}
+        subtitleStyle={wrapStyle}
       >
         {isOwner ? <AssignmentInd color={blue500} /> : null}
       </CardHeader>
