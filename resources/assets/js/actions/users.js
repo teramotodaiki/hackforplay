@@ -2,6 +2,8 @@ import request from './request';
 
 
 export const ADD_USER = 'ADD_USER';
+export const REQUEST_USER = 'REQUEST_USER';
+export const RESPONSE_USER = 'RESPONSE_USER';
 
 export const addUser = (user) => {
   return { type: ADD_USER, user };

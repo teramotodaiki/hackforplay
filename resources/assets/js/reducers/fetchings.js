@@ -1,6 +1,10 @@
 
 
-import { REQUEST_STAGE, RESPONSE_STAGE, REQUEST_PROJECT, RESPONSE_PROJECT } from '../actions/';
+import {
+  REQUEST_STAGE, RESPONSE_STAGE,
+  REQUEST_PROJECT, RESPONSE_PROJECT,
+  REQUEST_USER, RESPONSE_USER,
+} from '../actions/';
 
 const removeItem = (obj, key) => {
   const filtered = Object.keys(obj)
