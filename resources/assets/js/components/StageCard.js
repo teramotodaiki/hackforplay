@@ -1,8 +1,12 @@
 import React, { PropTypes, Component } from 'react';
-import { Card, CardHeader, CardActions, CardText, FlatButton, Avatar, FontIcon, FloatingActionButton } from 'material-ui';
-import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
+import {
+  Card, CardHeader, CardActions, CardText,
+  FlatButton, Avatar, FontIcon, FloatingActionButton,
+} from 'material-ui';
 import PlayArrow from 'material-ui/svg-icons/av/play-arrow';
 import FolderOpen from 'material-ui/svg-icons/file/folder-open';
+
+import UserChip from './UserChip';
 
 export default class StageCard extends Component {
   constructor(props) {
@@ -53,7 +57,7 @@ export default class StageCard extends Component {
           titleStyle={wrapStyle}
           subtitleStyle={wrapStyle}
         >
-          {isOwner ? <AssignmentInd color={this.context.muiTheme.palette.primary2Color} /> : null}
+          {user && (<UserChip user={user} isOwner={isOwner} />)}
         </CardHeader>
         {isOwner && ownerActions}
       </Card>
