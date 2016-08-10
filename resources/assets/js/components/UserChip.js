@@ -20,7 +20,7 @@ export default class UserChip extends Component {
         onTouchTap={() => location.href = '/m?id=' + user.id}
         >
         {isOwner ? (
-          <Avatar icon={<AssignmentInd />} backgroundColor={palette.accent3Color} />
+          <Avatar icon={<AssignmentInd />} />
         ) : (
           <Avatar icon={<Face />} />
         )}
