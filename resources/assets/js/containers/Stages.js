@@ -54,8 +54,9 @@ export default class Stages extends Component {
         <StageCard
           key={stage.id}
           stage={stage}
-          isOwner={authUser.id === stage.user_id}
-          project={authUser.id === stage.user_id && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null} />
+          style={cardStyle}
+          isOwner={authUser.id == stage.user_id}
+          project={authUser.id == stage.user_id && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null} />
       ));
 
     return (
