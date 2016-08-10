@@ -1,6 +1,10 @@
 
 
-import { REQUEST_STAGE, RESPONSE_STAGE, REQUEST_PROJECT, RESPONSE_PROJECT } from '../actions/';
+import {
+  REQUEST_STAGE, RESPONSE_STAGE,
+  REQUEST_PROJECT, RESPONSE_PROJECT,
+  REQUEST_USER, RESPONSE_USER,
+} from '../actions/';
 
 const removeItem = (obj, key) => {
   const filtered = Object.keys(obj)
@@ -13,6 +17,7 @@ const removeItem = (obj, key) => {
 export const fetchings = (state = {
   stages: {},
   projects: {},
+  users: {},
 }, action) => {
   switch (action.type) {
     case REQUEST_PROJECT:
@@ -42,6 +47,21 @@ export const fetchings = (state = {
       return Object.assign({}, state, {
         stages: removeItem(state.stages, action.stage.id)
       });
+
+    case REQUEST_USER:
+
+      return Object.assign({}, state, {
+        users: Object.assign({}, state.users, {
+          [action.user.id]: Object.assign({ isFetching: true }, action.user)
+        })
+      });
+
+    case RESPONSE_USER:
+
+      return Object.assign({}, state, {
+        users: removeItem(state.users, action.user.id)
+      });
+
 
     default:
       return state;

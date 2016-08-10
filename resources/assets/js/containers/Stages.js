@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 import {
   fetchPlays,
   fetchStage, getStageFromLocal,
-  fetchProject, getProjectFromLocal } from '../actions/';
+  fetchProject, getProjectFromLocal,
+  fetchUser, getUserFromLocal,
+} from '../actions/';
 import StageCard from '../components/StageCard';
 import Progress from '../components/Progress';
 
@@ -19,6 +21,7 @@ export default class Stages extends Component {
 
     const fetchTask = (result) => {
       const stage = result.body;
+      dispatch(fetchUser(stage.user_id));
       if (authUser.id === stage.user_id) {
         dispatch(fetchProject(stage.project_id));
       }
@@ -61,7 +64,8 @@ export default class Stages extends Component {
           stage={stage}
           style={cardStyle}
           isOwner={authUser.id == stage.user_id}
-          project={authUser.id == stage.user_id && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null} />
+          project={authUser.id == stage.user_id && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null}
+          user={stage.user_id && dispatch(getUserFromLocal(stage.user_id))} />
       ));
 
     return (
