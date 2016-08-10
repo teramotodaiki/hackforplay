@@ -10,7 +10,7 @@ export default class StageCard extends Component {
   }
 
   render() {
-    const { stage, isOwner, project, style } = this.props;
+    const { stage, isOwner, project, user, style } = this.props;
 
     const cardStyle = Object.assign({
       width: 480,
@@ -65,6 +65,7 @@ StageCard.propTypes = {
   stage: PropTypes.object.isRequired,
   isOwner: PropTypes.bool,
   project: PropTypes.object,
+  user: PropTypes.object,
   style: PropTypes.object,
 };
 
