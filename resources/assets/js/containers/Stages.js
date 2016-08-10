@@ -42,6 +42,7 @@ export default class Stages extends Component {
     const style = Object.assign({}, containerStyle, {
       paddingLeft: 60,
       paddingRight: 60,
+      paddingBottom: 60,
     });
 
     const cardStyle = {
