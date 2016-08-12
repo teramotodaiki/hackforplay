@@ -5,6 +5,7 @@ export const ADD_PROJECT = 'ADD_PROJECT';
 export const REQUEST_PROJECT = 'REQUEST_PROJECT';
 export const RESPONSE_PROJECT = 'RESPONSE_PROJECT';
 export const ADD_STAGE = 'ADD_STAGE';
+export const UPDATE_STAGE = 'UPDATE_STAGE';
 export const REQUEST_STAGE = 'REQUEST_STAGE';
 export const RESPONSE_STAGE = 'RESPONSE_STAGE';
 
@@ -95,5 +96,17 @@ export const fetchStageIfNeeded = (id) => {
 export const getStageFromLocal = (id) => {
   return (dispatch, getState) => {
     return findStage(id, getState) || { id };
+  };
+};
+
+export const updateStage = (id, change) => {
+  return (dispatch, getState) => {
+    request.post('/api/stages/' + id)
+      .send({ _method: 'PUT' })
+      .send(change)
+      .then((result) => {
+        dispatch({ type: ADD_STAGE, stage: result.body });
+        return result;
+      });
   };
 };
