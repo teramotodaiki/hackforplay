@@ -22,7 +22,7 @@ export default class Stages extends Component {
     const fetchTask = (result) => {
       const stage = result.body;
       dispatch(fetchUser(stage.user_id));
-      if (authUser.id === stage.user_id) {
+      if (authUser.id == stage.user_id) {
         dispatch(fetchProject(stage.project_id));
       }
     };
