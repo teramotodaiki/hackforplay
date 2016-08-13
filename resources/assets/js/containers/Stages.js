@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import {
   Tabs, Tab,
   Checkbox,
+  Drawer, AppBar, IconButton,
 } from 'material-ui';
 import Extension from 'material-ui/svg-icons/action/extension';
 import VideogameAsset from 'material-ui/svg-icons/hardware/videogame-asset';
 import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
+import Power from 'material-ui/svg-icons/notification/power';
 
 import {
   fetchPlays,
@@ -96,10 +98,12 @@ export default class Stages extends Component {
 
   render() {
     const { dispatch, authUser, containerStyle } = this.props;
+    const { showMod } = this.state;
+    const { drawer } = this.context.muiTheme;
 
     const style = Object.assign({}, containerStyle, {
       paddingLeft: 60,
-      paddingRight: 60,
+      paddingRight: 60 + (showMod ? drawer.width : 0),
       paddingBottom: 60,
     });
 
@@ -122,20 +126,18 @@ export default class Stages extends Component {
         {menu}
         <Tabs
           onChange={(value) => typeof value === 'boolean' && this.setState({ showMod: value })}
-          value={this.state.showMod}
+          value={showMod}
         >
           <Tab
             icon={<VideogameAsset />}
             label="PRODUCT"
             value={false}
-            >
-          </Tab>
+          />
           <Tab
             icon={<Extension />}
             label="MOD"
             value={true}
-            >
-          </Tab>
+          />
         </Tabs>
         {
           this.getStageCardList({ style: cardStyle }) ||
@@ -147,6 +149,19 @@ export default class Stages extends Component {
               handleLoad={() => dispatch(fetchPlays({ page: this.state.page }))}
               onLoaded={(result) => this.loadResolved(result)}
             />
+          )
+        }
+        {
+          showMod && (
+            <Drawer
+              open={true}
+              openSecondary={true}
+            >
+              <AppBar
+                title="Plug"
+                iconElementLeft={<IconButton><Power /></IconButton>}
+              />
+            </Drawer>
           )
         }
       </div>
