@@ -17,6 +17,7 @@ import {
 } from '../actions/';
 import StageCard from '../components/StageCard';
 import Progress from '../components/Progress';
+import LoadMore from '../components/LoadMore';
 
 export default class Stages extends Component {
   constructor(props) {
@@ -25,29 +26,38 @@ export default class Stages extends Component {
     this.state = {
       onlyMe: false,
       showMod: false,
+      page: 1,
+      noMore: false,
     };
   }
 
-  componentDidMount() {
+  loadResolved(result) {
     const { dispatch, authUser } = this.props;
+
+    if (result.body.next_page_url) {
+      this.setState({ page: result.body.current_page + 1 });
+    } else {
+      this.setState({ noMore: true });
+    }
 
     const fetchTask = (result) => {
       const stage = result.body;
-      dispatch(fetchUserIfNeeded(stage.user_id));
+      if (stage.user_id) {
+        dispatch(fetchUserIfNeeded(stage.user_id));
+      }
       if (authUser.id == stage.user_id) {
         dispatch(fetchProjectIfNeeded(stage.project_id));
       }
     };
 
-    (Object.keys(this.props.plays).length ? Promise.resolve() : dispatch(fetchPlays()))
-    .then(() => {
-      Object.values(this.props.plays)
-      .filter((play) => play.deleted_at === null)
+    const fetchStages = result.body.data
+      .filter((play) => play.deleted_at === null && play.stage_id)
       .map((play) => play.stage_id)
       .filter((stage_id, i, self) => self.indexOf(stage_id) === i)
-      .map((stage_id) => dispatch(fetchStage(stage_id)))
-      .forEach((promise) => promise.then(fetchTask));
-    });
+      .map((stage_id) => dispatch(fetchStageIfNeeded(stage_id)))
+      .map((promise) => promise.then(fetchTask));
+
+    return Promise.all(fetchStages);
   }
 
   getStageCardList({ style }) {
@@ -58,7 +68,7 @@ export default class Stages extends Component {
 
     const cards = keyArrayOfPlays
       .sort((a, b) => b - a)
-      .filter((id) => plays[id].deleted_at === null)
+      .filter((id) => plays[id].deleted_at === null && plays[id].stage_id)
       .map((id) => plays[id].stage_id)
       .filter((stage_id, i, self) => self.indexOf(stage_id) === i)
       .map((stage_id) => dispatch(getStageFromLocal(stage_id)))
@@ -128,6 +138,14 @@ export default class Stages extends Component {
         {
           this.getStageCardList({ style: cardStyle }) ||
           (<Progress containerStyle={containerStyle} />)
+        }
+        {
+          !this.state.noMore && (
+            <LoadMore
+              handleLoad={() => dispatch(fetchPlays({ page: this.state.page }))}
+              onLoaded={(result) => this.loadResolved(result)}
+            />
+          )
         }
       </div>
     );
