@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 
 import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui';
+import Extension from 'material-ui/svg-icons/action/extension';
+import VideogameAsset from 'material-ui/svg-icons/hardware/videogame-asset';
 
 import {
   fetchPlays,
@@ -80,13 +82,19 @@ export default class Stages extends Component {
     return (
       <div style={style}>
         <Tabs>
-          <Tab label="PRODUCT">
+          <Tab
+            icon={<VideogameAsset />}
+            label="PRODUCT"
+            >
             {
               this.getStageCardList({ is_mod: false, style: cardStyle }) ||
               (<Progress containerStyle={containerStyle} />)
             }
           </Tab>
-          <Tab label="MOD">
+          <Tab
+            icon={<Extension />}
+            label="MOD"
+            >
             {
               this.getStageCardList({ is_mod: true, style: cardStyle }) ||
               (<Progress containerStyle={containerStyle} />)
