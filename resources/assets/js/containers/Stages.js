@@ -42,6 +42,7 @@ export default class Stages extends Component {
 
     const fetchTask = (result) => {
       const stage = result.body;
+      if (stage.state !== 'published') return;
       if (stage.user_id) {
         dispatch(fetchUserIfNeeded(stage.user_id));
       }
@@ -74,6 +75,7 @@ export default class Stages extends Component {
       .map((stage_id) => dispatch(getStageFromLocal(stage_id)))
       .filter((stage) => !!+stage.is_mod === this.state.showMod)
       .filter((stage) => !this.state.onlyMe || authUser.id == stage.user_id)
+      .filter((stage) => stage.state === 'published')
       .map((stage) => (
         <StageCard
           key={stage.id}
