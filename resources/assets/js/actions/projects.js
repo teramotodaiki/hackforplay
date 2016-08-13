@@ -41,8 +41,9 @@ const findProject = (id, getState) => {
 
 export const fetchProjectIfNeeded = (id) => {
   return (dispatch, getState) => {
-    return findProject(id, getState) ||
-      fetchProjectById({ id, dispatch, responseType: 'result' });
+    const project = findProject(id, getState);
+    return project ? Promise.resolve({ body: project }) :
+      fetchProjectById({ id, dispatch, responseType: 'promise' });
   }
 };
 
@@ -88,8 +89,10 @@ const findStage = (id, getState) => {
 
 export const fetchStageIfNeeded = (id) => {
   return (dispatch, getState) => {
-    return findStage(id, getState) ||
-      fetchStageById({ id, dispatch, responseType: 'result' });
+    const stage = findStage(id, getState);
+    return stage ?
+      Promise.resolve({ body: stage }) :
+      fetchStageById({ id, dispatch, responseType: 'promise' });
   };
 };
 
