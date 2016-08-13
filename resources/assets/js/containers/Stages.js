@@ -24,9 +24,7 @@ export default class Stages extends Component {
     super(props);
 
     this.state = {
-      filter: {
-        onlyMe: false,
-      }
+      onlyMe: false,
     };
   }
 
