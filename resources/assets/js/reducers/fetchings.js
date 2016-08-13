@@ -8,10 +8,10 @@ import {
 
 const removeItem = (obj, key) => {
   const filtered = Object.keys(obj)
-    .filter((_key) => _key !== key)
+    .filter((_key) => _key != key)
     .map((key) => { return { [key]: obj[key] }; });
 
-  return Object.assign({}, filtered);
+  return Object.assign.apply(null, [{}].concat(filtered));
 };
 
 export const fetchings = (state = {
@@ -31,7 +31,7 @@ export const fetchings = (state = {
     case RESPONSE_PROJECT:
 
       return Object.assign({}, state, {
-        stages: removeItem(state.projects, action.project.id)
+        projects: removeItem(state.projects, action.project.id)
       });
 
     case REQUEST_STAGE:
