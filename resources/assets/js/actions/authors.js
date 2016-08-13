@@ -15,7 +15,6 @@ export const fetchAuthor = (id) => {
     return request
       .get('/api/authors/' + id)
       .then((result) => {
-        console.log(result);
         dispatch({ type: ADD_AUTHOR, author: result.body });
         return result;
       });
@@ -39,4 +38,17 @@ export const fetchPlug = (id) => {
       });
 
   }
+};
+
+export const fetchPlugs = ({ page } = { page: 1 }) => {
+  return (dispatch) => {
+
+    return request
+      .get('/api/plugs')
+      .then((result) => {
+        result.body.data.forEach((item) => dispatch({ type: ADD_PLUG, plug: item }));
+        return result;
+      });
+
+  };
 };
