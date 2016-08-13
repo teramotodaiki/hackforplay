@@ -31,7 +31,7 @@ export const fetchings = (state = {
     case RESPONSE_PROJECT:
 
       return Object.assign({}, state, {
-        stages: removeItem(state.projects, action.project.id)
+        projects: removeItem(state.projects, action.project.id)
       });
 
     case REQUEST_STAGE:
