@@ -45,8 +45,9 @@ export default class Stages extends Component {
     const { dispatch, plays, authUser } = this.props;
     const keyArrayOfPlays = Object.keys(plays);
 
-    return !keyArrayOfPlays.length ? null :
-      keyArrayOfPlays
+    if (!keyArrayOfPlays.length) return null; // Loading...
+
+    const cards = keyArrayOfPlays
       .sort((a, b) => b - a)
       .filter((id) => plays[id].deleted_at === null)
       .map((id) => plays[id].stage_id)
@@ -64,6 +65,11 @@ export default class Stages extends Component {
           handleStageUpdate={(change) => dispatch(updateStage(stage.id, change))}
           />
       ));
+
+    return cards.length ? cards : (
+      <h1>Anything yet.</h1>
+    );
+
   }
 
   render() {
