@@ -21,6 +21,7 @@ import {
 import StageCard from '../components/StageCard';
 import Progress from '../components/Progress';
 import LoadMore from '../components/LoadMore';
+import PlugMenuItem from '../components/PlugMenuItem';
 
 export default class Stages extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ export default class Stages extends Component {
       showMod: false,
       page: 1,
       noMore: false,
+      selectedPlugId: null,
     };
   }
 
@@ -104,14 +106,17 @@ export default class Stages extends Component {
 
   getPlugsList() {
     const { authors } = this.props;
+    const { palette } = this.context.muiTheme;
+    
     const list = Array.prototype.concat.apply([],
       Object.values(authors).map((item) => Object.values(item.plugs))
     ).map((plug) => (
-      <MenuItem
+      <PlugMenuItem
         key={plug.id}
-      >
-        {plug.full_label}
-      </MenuItem>
+        plug={plug}
+        handleTouchTap={(plug) => this.setState({ selectedPlugId: plug.id })}
+        style={plug.id === this.state.selectedPlugId ? { color: palette.primary1Color } : null}
+      />
     ));
 
     return list.length ? list : (
