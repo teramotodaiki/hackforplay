@@ -8,7 +8,6 @@ import {
 import Extension from 'material-ui/svg-icons/action/extension';
 import VideogameAsset from 'material-ui/svg-icons/hardware/videogame-asset';
 import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
-import PermIdentity from 'material-ui/svg-icons/action/perm-identity';
 
 import {
   fetchPlays,
@@ -101,7 +100,7 @@ export default class Stages extends Component {
         checked={this.state.onlyMe}
         onCheck={(e, value) => this.setState({ onlyMe: value })}
         checkedIcon={<AssignmentInd />}
-        uncheckedIcon={<PermIdentity />}
+        uncheckedIcon={<AssignmentInd />}
         label={"Only Me"}
       />
     );
