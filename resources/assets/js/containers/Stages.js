@@ -1,9 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 
 import { connect } from 'react-redux';
-import { Tabs, Tab } from 'material-ui';
+import {
+  Tabs, Tab,
+  Checkbox,
+} from 'material-ui';
 import Extension from 'material-ui/svg-icons/action/extension';
 import VideogameAsset from 'material-ui/svg-icons/hardware/videogame-asset';
+import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
+import PermIdentity from 'material-ui/svg-icons/action/perm-identity';
 
 import {
   fetchPlays,
@@ -17,6 +22,12 @@ import Progress from '../components/Progress';
 export default class Stages extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      filter: {
+        onlyMe: false,
+      }
+    };
   }
 
   componentDidMount() {
@@ -54,6 +65,7 @@ export default class Stages extends Component {
       .filter((stage_id, i, self) => self.indexOf(stage_id) === i)
       .map((stage_id) => dispatch(getStageFromLocal(stage_id)))
       .filter((stage) => !!+stage.is_mod === is_mod)
+      .filter((stage) => !this.state.onlyMe || authUser.id == stage.user_id)
       .map((stage) => (
         <StageCard
           key={stage.id}
@@ -85,8 +97,18 @@ export default class Stages extends Component {
       width: style.width - style.paddingLeft - style.paddingRight
     };
 
+    const menu = (
+      <Checkbox
+        checked={this.state.onlyMe}
+        onCheck={(e, value) => this.setState({ onlyMe: value })}
+        checkedIcon={<AssignmentInd />}
+        uncheckedIcon={<PermIdentity />}
+      />
+    );
+
     return (
       <div style={style}>
+        {menu}
         <Tabs>
           <Tab
             icon={<VideogameAsset />}
