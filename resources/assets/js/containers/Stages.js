@@ -25,6 +25,7 @@ export default class Stages extends Component {
 
     this.state = {
       onlyMe: false,
+      showMod: false,
     };
   }
 
@@ -50,7 +51,7 @@ export default class Stages extends Component {
     });
   }
 
-  getStageCardList({ is_mod, style }) {
+  getStageCardList({ style }) {
     const { dispatch, plays, authUser } = this.props;
     const keyArrayOfPlays = Object.keys(plays);
 
@@ -62,7 +63,7 @@ export default class Stages extends Component {
       .map((id) => plays[id].stage_id)
       .filter((stage_id, i, self) => self.indexOf(stage_id) === i)
       .map((stage_id) => dispatch(getStageFromLocal(stage_id)))
-      .filter((stage) => !!+stage.is_mod === is_mod)
+      .filter((stage) => !!+stage.is_mod === this.state.showMod)
       .filter((stage) => !this.state.onlyMe || authUser.id == stage.user_id)
       .map((stage) => (
         <StageCard
@@ -107,26 +108,27 @@ export default class Stages extends Component {
     return (
       <div style={style}>
         {menu}
-        <Tabs>
+        <Tabs
+          onChange={(value) => typeof value === 'boolean' && this.setState({ showMod: value })}
+          value={this.state.showMod}
+        >
           <Tab
             icon={<VideogameAsset />}
             label="PRODUCT"
+            value={false}
             >
-            {
-              this.getStageCardList({ is_mod: false, style: cardStyle }) ||
-              (<Progress containerStyle={containerStyle} />)
-            }
           </Tab>
           <Tab
             icon={<Extension />}
             label="MOD"
+            value={true}
             >
-            {
-              this.getStageCardList({ is_mod: true, style: cardStyle }) ||
-              (<Progress containerStyle={containerStyle} />)
-            }
           </Tab>
         </Tabs>
+        {
+          this.getStageCardList({ style: cardStyle }) ||
+          (<Progress containerStyle={containerStyle} />)
+        }
       </div>
     );
   }
