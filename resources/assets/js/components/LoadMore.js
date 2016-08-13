@@ -33,7 +33,7 @@ export default class LoadMore extends Component {
         onLoaded(result)
         .then(() => {
           this.setState({ isFetching: false });
-          this.loadIfAppeared();
+          // this.loadIfAppeared();
         })
       });
 
