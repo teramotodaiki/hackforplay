@@ -52,7 +52,8 @@ const findUser = (id, getState) => {
 
 export const fetchUserIfNeeded = (id) => {
   return (dispatch, getState) => {
-    return findUser(id, getState) ||
+    const user = findUser(id, getState);
+    return user ? Promise.resolve({ body: user }) :
       fetchUserById({ id, dispatch, responseType: 'result' });
   }
 };
