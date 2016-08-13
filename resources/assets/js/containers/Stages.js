@@ -1,9 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 
 import { connect } from 'react-redux';
-import { Tabs, Tab } from 'material-ui';
+import {
+  Tabs, Tab,
+  Checkbox,
+} from 'material-ui';
 import Extension from 'material-ui/svg-icons/action/extension';
 import VideogameAsset from 'material-ui/svg-icons/hardware/videogame-asset';
+import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
 
 import {
   fetchPlays,
@@ -17,6 +21,11 @@ import Progress from '../components/Progress';
 export default class Stages extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      onlyMe: false,
+      showMod: false,
+    };
   }
 
   componentDidMount() {
@@ -41,7 +50,7 @@ export default class Stages extends Component {
     });
   }
 
-  getStageCardList({ is_mod, style }) {
+  getStageCardList({ style }) {
     const { dispatch, plays, authUser } = this.props;
     const keyArrayOfPlays = Object.keys(plays);
 
@@ -53,7 +62,8 @@ export default class Stages extends Component {
       .map((id) => plays[id].stage_id)
       .filter((stage_id, i, self) => self.indexOf(stage_id) === i)
       .map((stage_id) => dispatch(getStageFromLocal(stage_id)))
-      .filter((stage) => !!+stage.is_mod === is_mod)
+      .filter((stage) => !!+stage.is_mod === this.state.showMod)
+      .filter((stage) => !this.state.onlyMe || authUser.id == stage.user_id)
       .map((stage) => (
         <StageCard
           key={stage.id}
@@ -85,28 +95,40 @@ export default class Stages extends Component {
       width: style.width - style.paddingLeft - style.paddingRight
     };
 
+    const menu = (
+      <Checkbox
+        checked={this.state.onlyMe}
+        onCheck={(e, value) => this.setState({ onlyMe: value })}
+        checkedIcon={<AssignmentInd />}
+        uncheckedIcon={<AssignmentInd />}
+        label={"Only Me"}
+      />
+    );
+
     return (
       <div style={style}>
-        <Tabs>
+        {menu}
+        <Tabs
+          onChange={(value) => typeof value === 'boolean' && this.setState({ showMod: value })}
+          value={this.state.showMod}
+        >
           <Tab
             icon={<VideogameAsset />}
             label="PRODUCT"
+            value={false}
             >
-            {
-              this.getStageCardList({ is_mod: false, style: cardStyle }) ||
-              (<Progress containerStyle={containerStyle} />)
-            }
           </Tab>
           <Tab
             icon={<Extension />}
             label="MOD"
+            value={true}
             >
-            {
-              this.getStageCardList({ is_mod: true, style: cardStyle }) ||
-              (<Progress containerStyle={containerStyle} />)
-            }
           </Tab>
         </Tabs>
+        {
+          this.getStageCardList({ style: cardStyle }) ||
+          (<Progress containerStyle={containerStyle} />)
+        }
       </div>
     );
   }
