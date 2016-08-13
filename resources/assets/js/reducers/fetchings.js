@@ -8,10 +8,10 @@ import {
 
 const removeItem = (obj, key) => {
   const filtered = Object.keys(obj)
-    .filter((_key) => _key !== key)
+    .filter((_key) => _key != key)
     .map((key) => { return { [key]: obj[key] }; });
 
-  return Object.assign({}, filtered);
+  return Object.assign.apply(null, [{}].concat(filtered));
 };
 
 export const fetchings = (state = {
