@@ -11,9 +11,9 @@ import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
 
 import {
   fetchPlays,
-  fetchStage, getStageFromLocal, updateStage,
-  fetchProject, getProjectFromLocal,
-  fetchUser, getUserFromLocal,
+  fetchStageIfNeeded, getStageFromLocal, updateStage,
+  fetchProjectIfNeeded, getProjectFromLocal,
+  fetchUserIfNeeded, getUserFromLocal,
 } from '../actions/';
 import StageCard from '../components/StageCard';
 import Progress from '../components/Progress';
@@ -33,9 +33,9 @@ export default class Stages extends Component {
 
     const fetchTask = (result) => {
       const stage = result.body;
-      dispatch(fetchUser(stage.user_id));
+      dispatch(fetchUserIfNeeded(stage.user_id));
       if (authUser.id == stage.user_id) {
-        dispatch(fetchProject(stage.project_id));
+        dispatch(fetchProjectIfNeeded(stage.project_id));
       }
     };
 
