@@ -102,6 +102,7 @@ export default class Stages extends Component {
         onCheck={(e, value) => this.setState({ onlyMe: value })}
         checkedIcon={<AssignmentInd />}
         uncheckedIcon={<PermIdentity />}
+        label={"Only Me"}
       />
     );
 
