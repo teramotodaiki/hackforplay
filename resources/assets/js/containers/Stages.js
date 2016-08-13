@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   Tabs, Tab,
   Checkbox,
-  Drawer, AppBar, IconButton,
+  Drawer, AppBar, IconButton, MenuItem,
 } from 'material-ui';
 import Extension from 'material-ui/svg-icons/action/extension';
 import VideogameAsset from 'material-ui/svg-icons/hardware/videogame-asset';
@@ -16,6 +16,7 @@ import {
   fetchStageIfNeeded, getStageFromLocal, updateStage,
   fetchProjectIfNeeded, getProjectFromLocal,
   fetchUserIfNeeded, getUserFromLocal,
+  fetchPlugs,
 } from '../actions/';
 import StageCard from '../components/StageCard';
 import Progress from '../components/Progress';
@@ -31,6 +32,11 @@ export default class Stages extends Component {
       page: 1,
       noMore: false,
     };
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(fetchPlugs());
   }
 
   loadResolved(result) {
@@ -94,6 +100,23 @@ export default class Stages extends Component {
       <h1>Anything yet.</h1>
     );
 
+  }
+
+  getPlugsList() {
+    const { authors } = this.props;
+    const list = Array.prototype.concat.apply([],
+      Object.values(authors).map((item) => Object.values(item.plugs))
+    ).map((plug) => (
+      <MenuItem
+        key={plug.id}
+      >
+        {plug.full_label}
+      </MenuItem>
+    ));
+
+    return list.length ? list : (
+      <span>Loading...</span>
+    );
   }
 
   render() {
@@ -161,6 +184,7 @@ export default class Stages extends Component {
                 title="Plug"
                 iconElementLeft={<IconButton><Power /></IconButton>}
               />
+              {this.getPlugsList()}
             </Drawer>
           )
         }
