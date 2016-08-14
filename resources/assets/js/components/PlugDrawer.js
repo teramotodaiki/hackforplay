@@ -1,6 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 
-import { Drawer, AppBar, IconButton, FloatingActionButton } from 'material-ui';
+import {
+  Drawer, AppBar, IconButton,
+  FloatingActionButton, Popover, Menu, MenuItem,
+} from 'material-ui';
 import Power from 'material-ui/svg-icons/notification/power';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
@@ -9,11 +12,29 @@ import PlugMenuItem from './PlugMenuItem';
 export default class PlugDrawer extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      open: false,
+    };
+
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);
+  }
+
+  handleOpen(event) {
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+    });
+  }
+
+  handleRequestClose () {
+    this.setState({ open: false });
   }
 
   render() {
 
-    const { plugs, selectedPlugId, handlePlugSelect } = this.props;
+    const { plugs, authors, selectedPlugId, handlePlugSelect } = this.props;
     const { palette } = this.context.muiTheme;
 
     return (
@@ -42,9 +63,21 @@ export default class PlugDrawer extends Component {
         <FloatingActionButton
           mini={true}
           style={{ marginLeft: 10, marginTop: 10 }}
+          onTouchTap={this.handleOpen}
         >
           <ContentAdd />
         </FloatingActionButton>
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          onRequestClose={this.handleRequestClose}
+        >
+          <Menu>
+            {authors.map((author) => (
+              <MenuItem key={author.id} primaryText={author.name} />
+            ))}
+          </Menu>
+        </Popover>
       </Drawer>
     );
   }
@@ -52,6 +85,7 @@ export default class PlugDrawer extends Component {
 
 PlugDrawer.propTypes = {
   plugs: PropTypes.array.isRequired,
+  authors: PropTypes.array.isRequired,
   selectedPlugId: PropTypes.number,
   handlePlugSelect: PropTypes.func.isRequired,
 };
