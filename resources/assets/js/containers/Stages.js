@@ -15,7 +15,7 @@ import {
   fetchStageIfNeeded, getStageFromLocal, updateStage,
   fetchProjectIfNeeded, getProjectFromLocal,
   fetchUserIfNeeded, getUserFromLocal,
-  fetchPlugs, getPlugs, updatePlug,
+  fetchPlugs, getPlugs, updatePlug, postPlug,
   fetchAuthors, getAuthors,
 } from '../actions/';
 import StageCard from '../components/StageCard';
@@ -86,12 +86,28 @@ export default class Stages extends Component {
       dispatch(updatePlug(selectedPlug.id, { stage: stage.id }));
       this.setState({ selectedPlug: null });
     } else {
+      // New plug
+      const fullLabel = selectedPlug.author.name + '/' + selectedPlug.label;
+      if (confirm(`NOTICE: It is NOT editable that label of plug, OK? // ラベルは きめたら へんこうできません. よいですか？ [MOD: require('${fullLabel}')]`)) {
+        dispatch(postPlug({
+          label: selectedPlug.label,
+          author: selectedPlug.author.id,
+          stage: stage.id,
+        }));
+        this.setState({ selectedPlug: null });
       }
     }
   }
 
   handlePlugSelect(plug) {
-    this.setState({ selectedPlug: plug });
+    const { selectedPlug } = this.state;
+    if (selectedPlug && typeof selectedPlug.id === 'object' &&
+      (!plug || selectedPlug.id !== plug.id)) {
+      const fullLabel = selectedPlug.author.name + '/' + selectedPlug.label;
+      alert('Oops, before CONNECT ' + fullLabel);
+    } else {
+      this.setState({ selectedPlug: plug });
+    }
   }
 
   getStageCardList({ style }) {

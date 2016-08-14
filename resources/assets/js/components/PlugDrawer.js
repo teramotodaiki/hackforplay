@@ -55,6 +55,7 @@ export default class PlugDrawer extends Component {
     const { palette } = this.context.muiTheme;
     const selectedPlugId = selectedPlug && selectedPlug.id;
     const hasDraft = selectedPlug && typeof selectedPlug.id === 'object';
+    const primaryText = { color: palette.primary1Color };
 
     return (
       <Drawer
@@ -75,8 +76,8 @@ export default class PlugDrawer extends Component {
           <PlugMenuItem
             key={plug.id}
             plug={plug}
-            handleTouchTap={hasDraft ? null : handlePlugSelect}
-            style={plug.id === selectedPlugId ? { color: palette.primary1Color } : null}
+            handleTouchTap={handlePlugSelect}
+            style={plug.id === selectedPlugId ? primaryText : null}
           />
         ))}
         {hasDraft ? (
@@ -87,6 +88,7 @@ export default class PlugDrawer extends Component {
               floatingLabelText={selectedPlug.author.name + '/'}
               value={selectedPlug.label}
               onChange={(e, input) => this.updateDraft(input)}
+              inputStyle={primaryText}
             />
           </MenuItem>
         ) : null}
