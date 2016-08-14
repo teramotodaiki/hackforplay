@@ -22,6 +22,25 @@ export const fetchAuthor = (id) => {
   }
 };
 
+export const fetchAuthors = () => {
+  return (dispatch) => {
+    return request
+      .get('/api/authors')
+      .then((result) => {
+        result.body.forEach((item) => {
+          dispatch({ type: ADD_AUTHOR, author: item });
+        });
+        return result;
+      });
+  }
+};
+
+export const getAuthors = () => {
+  return (dispatch, getState) => {
+    return Object.values(getState().authors);
+  };
+};
+
 
 export const addPlug = (plug) => {
   return { type: ADD_PLUG, plug };
