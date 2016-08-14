@@ -23,6 +23,7 @@ import ModStageCard from '../components/ModStageCard';
 import Progress from '../components/Progress';
 import LoadMore from '../components/LoadMore';
 import PlugDrawer from '../components/PlugDrawer';
+import AuthorDrawer from '../components/AuthorDrawer';
 
 export default class Stages extends Component {
   constructor(props) {
@@ -161,6 +162,7 @@ export default class Stages extends Component {
     const { dispatch, authUser, containerStyle } = this.props;
     const { showMod } = this.state;
     const { drawer } = this.context.muiTheme;
+    const authors = dispatch(getAuthors());
 
     const style = Object.assign({}, containerStyle, {
       paddingLeft: 60,
@@ -212,13 +214,21 @@ export default class Stages extends Component {
             />
           )
         }
-        {showMod ?
-          <PlugDrawer
-            plugs={dispatch(getPlugs())}
-            authors={dispatch(getAuthors())}
-            selectedPlug={this.state.selectedPlug}
-            handlePlugSelect={this.handlePlugSelect}
-          /> : null}
+        {showMod ? (
+          !authors.length && !authors.isLoading ? (
+            <AuthorDrawer />
+          ) :
+          !authors.length && authors.isLoading ? (
+            null
+          ) : (
+            <PlugDrawer
+              plugs={dispatch(getPlugs())}
+              authors={authors}
+              selectedPlug={this.state.selectedPlug}
+              handlePlugSelect={this.handlePlugSelect}
+            />
+          )
+        ) : null}
       </div>
     );
   }
