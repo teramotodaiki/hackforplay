@@ -16,6 +16,7 @@ import {
   fetchProjectIfNeeded, getProjectFromLocal,
   fetchUserIfNeeded, getUserFromLocal,
   fetchPlugs, getPlugs, updatePlug,
+  fetchAuthors, getAuthors,
 } from '../actions/';
 import StageCard from '../components/StageCard';
 import ModStageCard from '../components/ModStageCard';
@@ -42,6 +43,7 @@ export default class Stages extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchPlugs());
+    dispatch(fetchAuthors());
   }
 
   loadResolved(result) {
@@ -192,6 +194,7 @@ export default class Stages extends Component {
         {showMod ?
           <PlugDrawer
             plugs={dispatch(getPlugs())}
+            authors={dispatch(getAuthors())}
             selectedPlugId={this.state.selectedPlugId}
             handlePlugSelect={this.handlePlugSelect}
           /> : null}
