@@ -108,6 +108,19 @@ window.addEventListener('message', function (event) {
   }
 });
 
+// enchant.jsプラグインに合わせるため、パスを補完する
+enchant.Core._loadFuncs['jpg'] =
+enchant.Core._loadFuncs['jpeg'] =
+enchant.Core._loadFuncs['gif'] =
+enchant.Core._loadFuncs['png'] =
+enchant.Core._loadFuncs['bmp'] =
+function(src, ext, callback, onerror) {
+	if (src.indexOf('/') === -1) {
+		src = 'enchantjs/' + src;
+	}
+	return enchant.Surface.load(src, callback, onerror);
+};
+
 // TODO: enchant.jsで利用するメンバのヒントを親ウィンドウに投げる
 
 });
