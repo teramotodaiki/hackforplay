@@ -35,9 +35,8 @@ export default class StageCard extends Component {
       </FloatingActionButton>
     );
 
-    const marginRight = { marginRight: 30 };
     const ownerActions = (
-      <CardActions style={{ paddingLeft: 16, paddingBottom: 14, display: 'flex', alignItems: 'center' }}>
+      <CardActions style={{ paddingLeft: 16, paddingBottom: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <FloatingActionButton
           onTouchTap={() => {
             sessionStorage.setItem('project-token', project.token);
@@ -45,10 +44,10 @@ export default class StageCard extends Component {
           }}
           disabled={!project || !project.token}
           mini={true} secondary={true}
-          style={marginRight}>
+        >
           <FolderOpen />
         </FloatingActionButton>
-        <div style={Object.assign({ flexBasis: 50, marginTop: 'auto' }, marginRight)}>
+        <div style={{ flexBasis: 100, marginTop: 'auto' }}>
           <Toggle
             label="MOD"
             defaultToggled={!!+stage.is_mod}
