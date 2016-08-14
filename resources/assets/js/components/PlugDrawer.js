@@ -15,13 +15,11 @@ export default class PlugDrawer extends Component {
 
     this.state = {
       open: false,
-      draft: null,
     };
 
     this.handleOpen = this.handleOpen.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
     this.handleCreateDraft = this.handleCreateDraft.bind(this);
-    this.handleUpdateDraft = this.handleUpdateDraft.bind(this);
   }
 
   handleOpen(event) {
@@ -36,29 +34,27 @@ export default class PlugDrawer extends Component {
   }
 
   handleCreateDraft(event, menuItem) {
-    this.setState({
-      open: false,
-      draft: {
-        prefix: menuItem.props.primaryText + '/',
-        label: '',
-      },
+    this.setState({ open: false });
+    this.props.handlePlugSelect({
+      id: {},
+      label: '',
+      isDraft: true,
+      author: menuItem.props.value
     });
   }
 
-  handleUpdateDraft(event, input) {
-    this.setState({
-      draft: Object.assign({}, this.state.draft, {
-        label: input,
-      })
-    });
+  updateDraft(input) {
+    const { selectedPlug } = this.props;
+    const plug = Object.assign({}, selectedPlug, { id: {}, label: input });
+    this.props.handlePlugSelect(plug);
   }
 
   render() {
 
     const { plugs, authors, selectedPlug, handlePlugSelect } = this.props;
     const { palette } = this.context.muiTheme;
-    const { draft } = this.state;
     const selectedPlugId = selectedPlug && selectedPlug.id;
+    const hasDraft = selectedPlug && typeof selectedPlug.id === 'object';
 
     return (
       <Drawer
@@ -69,7 +65,7 @@ export default class PlugDrawer extends Component {
           title="Plug"
           iconElementLeft={
             <IconButton
-              onTouchTap={() => handlePlugSelect({ id: null })}
+              onTouchTap={() => handlePlugSelect(null)}
             >
               <Power />
             </IconButton>
@@ -79,29 +75,29 @@ export default class PlugDrawer extends Component {
           <PlugMenuItem
             key={plug.id}
             plug={plug}
-            handleTouchTap={handlePlugSelect}
+            handleTouchTap={hasDraft ? null : handlePlugSelect}
             style={plug.id === selectedPlugId ? { color: palette.primary1Color } : null}
           />
         ))}
-        {draft ? (
+        {hasDraft ? (
           <MenuItem>
             <TextField
               name="draft"
               fullWidth={true}
-              onChange={this.handleUpdateDraft}
-              floatingLabelText={draft.prefix}
-              value={draft.label}
+              floatingLabelText={selectedPlug.author.name + '/'}
+              value={selectedPlug.label}
+              onChange={(e, input) => this.updateDraft(input)}
             />
           </MenuItem>
-        ) : (
-          <FloatingActionButton
-            mini={true}
-            style={{ marginLeft: 10, marginTop: 10 }}
-            onTouchTap={this.handleOpen}
-          >
-            <ContentAdd />
-          </FloatingActionButton>
-        )}
+        ) : null}
+        <FloatingActionButton
+          mini={true}
+          style={{ marginLeft: 10, marginTop: 10 }}
+          onTouchTap={this.handleOpen}
+          disabled={hasDraft}
+        >
+          <ContentAdd />
+        </FloatingActionButton>
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
@@ -109,7 +105,11 @@ export default class PlugDrawer extends Component {
         >
           <Menu onItemTouchTap={this.handleCreateDraft}>
             {authors.map((author) => (
-              <MenuItem key={author.id} primaryText={author.name} />
+              <MenuItem
+                key={author.id}
+                primaryText={author.name}
+                value={author}
+              />
             ))}
           </Menu>
         </Popover>
