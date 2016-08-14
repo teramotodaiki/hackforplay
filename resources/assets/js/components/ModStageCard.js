@@ -32,6 +32,7 @@ export default class ModStageCard extends Component {
                 key={plug.id}
                 value={`require('${plug.full_label}')`}
                 onTouchTap={({target}) => target.select(0, target.value.length - 1)}
+                fullWidth={true}
               />
             ))}
           </CardText>
