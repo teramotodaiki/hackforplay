@@ -51,6 +51,17 @@ export const getAuthors = () => {
   };
 };
 
+export const postAuthor = (author) => {
+  return (dispatch) => {
+    return request
+      .post('/api/authors')
+      .send(author)
+      .then((result) => {
+        dispatch({ type: ADD_AUTHOR, author: result.body });
+        return result;
+      });
+  };
+};
 
 export const addPlug = (plug) => {
   return { type: ADD_PLUG, plug };
