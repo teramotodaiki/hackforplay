@@ -16,7 +16,8 @@ export default (parentName, childName) => {
 
     if (parent) {
       // 子を持つ親を追加. 古いnodeは抹消し、子nodeだけを引き継いだ新たなnodeを作成する.
-      const _children = `${childName}s` in state[parent.id] ? state[parent.id][`${childName}s`] : {};
+      const current = state[parent.id];
+      const _children = current && `${childName}s` in current ? current[`${childName}s`] : {};
       return Object.assign({}, state, {
         [parent.id]: Object.assign({}, parent, { [`${childName}s`]: _children })
       });
@@ -24,6 +25,6 @@ export default (parentName, childName) => {
 
     return state;
   };
-  
+
   return assignRecursive;
 };
