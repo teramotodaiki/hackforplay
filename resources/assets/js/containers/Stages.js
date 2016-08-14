@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {
   Tabs, Tab,
   Checkbox,
+  Drawer, AppBar, IconButton, MenuItem,
 } from 'material-ui';
 import Extension from 'material-ui/svg-icons/action/extension';
 import VideogameAsset from 'material-ui/svg-icons/hardware/videogame-asset';
@@ -14,10 +15,15 @@ import {
   fetchStageIfNeeded, getStageFromLocal, updateStage,
   fetchProjectIfNeeded, getProjectFromLocal,
   fetchUserIfNeeded, getUserFromLocal,
+  fetchPlugs, getPlugs, updatePlug, postPlug,
+  fetchAuthors, getAuthors, postAuthor,
 } from '../actions/';
 import StageCard from '../components/StageCard';
+import ModStageCard from '../components/ModStageCard';
 import Progress from '../components/Progress';
 import LoadMore from '../components/LoadMore';
+import PlugDrawer from '../components/PlugDrawer';
+import AuthorDrawer from '../components/AuthorDrawer';
 
 export default class Stages extends Component {
   constructor(props) {
@@ -28,7 +34,18 @@ export default class Stages extends Component {
       showMod: false,
       page: 1,
       noMore: false,
+      selectedPlug: null,
     };
+
+    this.handleConnect = this.handleConnect.bind(this);
+    this.handlePlugSelect = this.handlePlugSelect.bind(this);
+    this.handlePostAuthor = this.handlePostAuthor.bind(this);
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(fetchPlugs());
+    dispatch(fetchAuthors());
   }
 
   loadResolved(result) {
@@ -42,6 +59,7 @@ export default class Stages extends Component {
 
     const fetchTask = (result) => {
       const stage = result.body;
+      if (stage.state !== 'published') return;
       if (stage.user_id) {
         dispatch(fetchUserIfNeeded(stage.user_id));
       }
@@ -60,11 +78,53 @@ export default class Stages extends Component {
     return Promise.all(fetchStages);
   }
 
+  handleConnect(stage) {
+    const { dispatch } = this.props;
+    const { selectedPlug } = this.state;
+    if (!selectedPlug) return;
+
+    if (typeof selectedPlug.id === 'number') {
+      // Exist plug
+      dispatch(updatePlug(selectedPlug.id, { stage: stage.id }));
+      this.setState({ selectedPlug: null });
+    } else {
+      // New plug
+      const fullLabel = selectedPlug.author.name + '/' + selectedPlug.label;
+      if (confirm(`NOTICE: It is NOT editable that label of plug, OK? // ラベルは きめたら へんこうできません. よいですか？ [MOD: require('${fullLabel}')]`)) {
+        dispatch(postPlug({
+          label: selectedPlug.label,
+          author: selectedPlug.author.id,
+          stage: stage.id,
+        }));
+        this.setState({ selectedPlug: null });
+      }
+    }
+  }
+
+  handlePlugSelect(plug) {
+    const { selectedPlug } = this.state;
+    if (selectedPlug && typeof selectedPlug.id === 'object' &&
+      (!plug || selectedPlug.id !== plug.id)) {
+      const fullLabel = selectedPlug.author.name + '/' + selectedPlug.label;
+      alert('Oops, before CONNECT ' + fullLabel);
+    } else {
+      this.setState({ selectedPlug: plug });
+    }
+  }
+
+  handlePostAuthor(author) {
+    const { dispatch } = this.props;
+    return dispatch(postAuthor(author));
+  }
+
   getStageCardList({ style }) {
     const { dispatch, plays, authUser } = this.props;
+    const { selectedPlug } = this.state;
     const keyArrayOfPlays = Object.keys(plays);
 
     if (!keyArrayOfPlays.length) return null; // Loading...
+
+    const plugs = dispatch(getPlugs());
 
     const cards = keyArrayOfPlays
       .sort((a, b) => b - a)
@@ -74,16 +134,28 @@ export default class Stages extends Component {
       .map((stage_id) => dispatch(getStageFromLocal(stage_id)))
       .filter((stage) => !!+stage.is_mod === this.state.showMod)
       .filter((stage) => !this.state.onlyMe || authUser.id == stage.user_id)
-      .map((stage) => (
-        <StageCard
-          key={stage.id}
-          stage={stage}
-          style={style}
-          isOwner={authUser.id == stage.user_id}
-          project={authUser.id == stage.user_id && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null}
-          user={stage.user_id && dispatch(getUserFromLocal(stage.user_id))}
-          handleStageUpdate={(change) => dispatch(updateStage(stage.id, change))}
-          />
+      .filter((stage) => stage.state === 'published')
+      .map((stage) => {
+        const isOwner = authUser.id == stage.user_id;
+        return {
+          key: stage.id,
+          isMod: stage.is_mod,
+          style: style,
+          stage: stage,
+          isOwner: isOwner,
+          project: isOwner && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null,
+          user: stage.user_id ? dispatch(getUserFromLocal(stage.user_id)) : null,
+          handleStageUpdate: (change) => dispatch(updateStage(stage.id, change)),
+        };
+      })
+      .map((params) => (
+        params.isMod ?
+          <ModStageCard {...params}
+            selectedPlug={selectedPlug}
+            plugs={plugs.filter((plug) => plug.stage_id == params.stage.id)}
+            handleConnect={this.handleConnect}
+          /> :
+          <StageCard {...params} />
       ));
 
     return cards.length ? cards : (
@@ -94,10 +166,13 @@ export default class Stages extends Component {
 
   render() {
     const { dispatch, authUser, containerStyle } = this.props;
+    const { showMod } = this.state;
+    const { drawer } = this.context.muiTheme;
+    const authors = dispatch(getAuthors());
 
     const style = Object.assign({}, containerStyle, {
       paddingLeft: 60,
-      paddingRight: 60,
+      paddingRight: 60 + (showMod ? drawer.width : 0),
       paddingBottom: 60,
     });
 
@@ -120,20 +195,18 @@ export default class Stages extends Component {
         {menu}
         <Tabs
           onChange={(value) => typeof value === 'boolean' && this.setState({ showMod: value })}
-          value={this.state.showMod}
+          value={showMod}
         >
           <Tab
             icon={<VideogameAsset />}
             label="PRODUCT"
             value={false}
-            >
-          </Tab>
+          />
           <Tab
             icon={<Extension />}
             label="MOD"
             value={true}
-            >
-          </Tab>
+          />
         </Tabs>
         {
           this.getStageCardList({ style: cardStyle }) ||
@@ -147,6 +220,23 @@ export default class Stages extends Component {
             />
           )
         }
+        {showMod ? (
+          !authors.length && !authors.isLoading ? (
+            <AuthorDrawer
+              handlePostAuthor={this.handlePostAuthor}
+            />
+          ) :
+          !authors.length && authors.isLoading ? (
+            null
+          ) : (
+            <PlugDrawer
+              plugs={dispatch(getPlugs())}
+              authors={authors}
+              selectedPlug={this.state.selectedPlug}
+              handlePlugSelect={this.handlePlugSelect}
+            />
+          )
+        ) : null}
       </div>
     );
   }
