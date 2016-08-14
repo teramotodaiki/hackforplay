@@ -29,9 +29,14 @@ Object.defineProperties(enchant.Sprite.prototype, {
       if (!this._originalColor &&
 					'number' === typeof this.image.width  // Is load completely?
 				) {
-        var i = this.image.context ? this.image : this.image.clone();
-        var res = i.context.getImageData(0, 0, i.width, i.height);
-        this._originalColor = getRepresentativeColor(res.data);
+					// limited 432*192 size
+					if (this.image.width * this.image.height <= 82944) {
+						var i = this.image.context ? this.image : this.image.clone();
+	          var res = i.context.getImageData(0, 0, i.width, i.height);
+	          this._originalColor = getRepresentativeColor(res.data);
+					} else {
+						this._originalColor = null;
+					}
       }
       return this._originalColor;
     },

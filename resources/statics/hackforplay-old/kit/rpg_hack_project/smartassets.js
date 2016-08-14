@@ -168,17 +168,8 @@ Hack.smartAsset.append({
 		var item = new RPGObject();
 		item.mod(Hack.assets.rock);
 		item.locate(__cnt15, __cnt10, 'map1');
-		item.onattacked = function () {
-			// ばくえん
-			var effect = new Effect(0, -1, 40);
-			effect.locate(this.mapX, this.mapY);
-			effect.collisionFlag = false;
-			effect.scale(2, 2);
-			effect.ontriggerenter = function (event) {
-				Hack.Attack.call(this, event.mapX, event.mapY, 99);
-			};
-			this.destroy();
-		};
+		item.atk = 99;
+		item.onattacked = Hack.skills.selfdestruct(0);
 	}
 }, {
 	id: 11,
@@ -375,18 +366,10 @@ Hack.smartAsset.append({
 		enemy.atk = 1;
 		enemy.mod(Hack.assets.bat);
 		enemy.locate(__cnt15, __cnt10, 'map1');
-		enemy.onbecomeidle = function () {
-			var target = Hack.player;
-			var moveX = 32 * Math.sign(target.mapX - this.mapX);
-			var moveY = 32 * Math.sign(target.mapY - this.mapY);
-			this.direction = moveX;
-			this.tl.become('walk').moveBy(moveX, moveY, 30).then(function () {
-				Hack.Attack.call(this, this.mapX, this.mapY, this.atk);
-			}).become('attack', 20).become('idle');
-		};
 		enemy.onbecomedead = function () {
 			Hack.score += 1;
 		};
+		enemy.onbecomeidle = Hack.skills.stalker();
 	}
 }, {
 	id: 20,
@@ -493,13 +476,7 @@ Hack.smartAsset.append({
 		item.mod(Hack.assets.star);
 		item.locate(__cnt15, __cnt10, 'map1');
 		item.onplayerenter = function () {
-			var onattacked = Hack.player.onattacked;
-			Hack.player.setTimeout(function () {
-				Hack.player.onattacked = onattacked;
-				Hack.player.opacity = 1;
-			}, 100);
-			Hack.player.onattacked = null;
-			Hack.player.opacity = 0.5;
+			Hack.player.damageTime = 100;
 			this.destroy();
 		};
 	}
@@ -557,18 +534,8 @@ Hack.smartAsset.append({
 		var item = new RPGObject();
 		item.mod(Hack.assets.bomb);
 		item.locate(__cnt15, __cnt10, 'map1');
-		item.time = 3.0;
-		item.setTimeout(function () {
-			// ばくえん
-			var effect = new Effect(0, -1, 40);
-			effect.locate(this.mapX, this.mapY);
-			effect.collisionFlag = false;
-			effect.scale(2, 2);
-			effect.ontriggerenter = function (event) {
-				Hack.Attack.call(this, event.mapX, event.mapY, 99);
-			};
-			this.destroy();
-		}, item.time * game.fps);
+		item.atk = 99;
+		item.onbecomeidle = Hack.skills.selfdestruct(3.0);
 	}
 }, {
 	id: 27,
@@ -592,16 +559,7 @@ Hack.smartAsset.append({
 		enemy.onbecomedead = function () {
 			Hack.gameclear();
 		};
-		enemy.setInterval(function () {
-			// ばくえん
-			var effect = new Effect(-5, 5, 40, true);
-			effect.collisionFlag = false;
-			effect.locate(this.mapX - 2, this.mapY - 1);
-			effect.force(0.1, -0.1);
-			effect.ontriggerenter = function (event) {
-				Hack.Attack.call(this, event.mapX, event.mapY, 1);
-			};
-		}, 1);
+		enemy.onbecomeidle = Hack.skills.storm();
 	}
 }, {
 	id: 28,

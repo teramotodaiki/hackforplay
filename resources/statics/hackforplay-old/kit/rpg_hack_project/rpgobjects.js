@@ -64,6 +64,7 @@ Object.defineProperty(window, 'Effect',			{ get: function () { return __Effect; 
 
 var game = enchant.Core.instance;
 Hack.assets = Hack.assets || {};
+Hack.skills = Hack.skills || {};
 
 // [注意] BehaviorTypesは排他的なプロパティになりました
 var __BehaviorTypes = {
@@ -77,8 +78,8 @@ var __BehaviorTypes = {
 
 var __RPGObject = enchant.Class(enchant.Sprite, {
 	initialize: function (width, height, offsetX, offsetY) {
-		Sprite.call(this, width, height);
-		this.offset = { x: offsetX, y: offsetY };
+		Sprite.call(this, width || 0, height || 0);
+		this.offset = { x: offsetX || 0, y: offsetY || 0 };
 		this.moveTo(game.width, game.height);
 		Object.defineProperty(this, 'mapX', {
 			configurable: true, enumerable: true,
@@ -418,7 +419,8 @@ var __RPGObject = enchant.Class(enchant.Sprite, {
 		var angle = 0;
 
 		// 対象が MapObject かつベクトルの長さが 0.0 より大きいなら
-		if (node instanceof MapObject && !(vector.x === 0 && vector.y === 0)) {
+		if ((node instanceof MapObject || node.directionType === 'single') &&
+			!(vector.x === 0 && vector.y === 0)) {
 			angle = 90 - Math.atan2(-vector.y, vector.x) * 180 / Math.PI;
 		}
 
@@ -829,6 +831,14 @@ Hack.assets.enchantBookItem = function () {
 	this.forward = [0, -1];
 };
 
+Hack.assets.explosion = function () {
+	this.image = game.assets['enchantjs/x2/effect0.png'];
+	this.width = this.height = 32; this.offset = { x: 0, y: 0 };
+	this.directionType = 'single';
+	this.forward = [0, -1];
+	this.frame = [0,0,0,0,0,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4];
+};
+
 var __Effect = enchant.Class(RPGObject, {
 	initialize: function (velocityX, velocityY, lifetime, randomize) {
 		RPGObject.call(this, 32, 32, 0, 0);
@@ -863,6 +873,84 @@ var __Effect = enchant.Class(RPGObject, {
 	}
 });
 
+// Hack.skills
+Hack.skills.stalker = function (target) {
+	return function () {
+		var _target = target || Hack.player;
+		if (_target && _target instanceof RPGObject) {
+			var moveX = 32 * Math.sign(_target.mapX - this.mapX);
+			var moveY = 32 * Math.sign(_target.mapY - this.mapY);
+			this.forward = [moveX, moveY];
+			this.tl.become('walk').moveBy(moveX, moveY, 30).then(function () {
+				Hack.Attack.call(this, this.mapX, this.mapY, this.atk);
+			}).become('attack', 20).become('idle');
+		}
+	};
+};
+
+Hack.skills.storm = function (asset) {
+	return function () {
+		this.onenterframe = function () {
+			if (game.frame % 3 > 0) return;
+			var flame = new RPGObject();
+			this.shoot(flame, this.forward, 6);
+			flame.collisionFlag = false;
+
+			var fx = this.forward.x, fy = this.forward.y;
+			flame.moveBy(fx * random(64, 96), fy * random(64, 96));
+			flame.velocityX += random(-0.99, 1);
+			flame.velocityY += random(-0.99, 1);
+			flame.scale(random(0.99, 1.5));
+			flame.force(-fx * random(0, 0.199), -fy * random(0, 0.199));
+			flame.destroy(20);
+			var self = this;
+			flame.ontriggerenter = function (event) {
+				if (event.hit !== self) {
+					Hack.Attack.call(this, event.mapX, event.mapY, self.atk);
+				}
+			};
+
+			flame.mod(asset || Hack.assets.explosion);
+		};
+	};
+};
+
+Hack.skills.selfdestruct = function (time) {
+	return function () {
+		this.setTimeout(function () {
+			var flame = new RPGObject();
+			flame.mod(Hack.assets.explosion);
+			this.shoot(flame, [0, -1], 1);
+			flame.scale(2);
+			flame.collisionFlag = false;
+			var self = this;
+			flame.ontriggerenter = function (event) {
+				Hack.Attack.call(this, event.mapX, event.mapY, self.atk);
+			};
+			flame.destroy(20);
+			this.destroy();
+		}, time * game.fps >> 0);
+	};
+};
+
+Hack.skills.pistol = function (asset) {
+	return function () {
+		var bullet = new RPGObject();
+		this.shoot(bullet, this.forward, 5);
+
+		var self = this;
+		bullet.ontriggerenter = function (event) {
+			if (event.target !== self) {
+				Hack.Attack.call(this, event.mapX, event.mapY, self.atk);
+			}
+		};
+
+		bullet.mod(asset || Hack.assets.beam);
+	};
+};
+
+
+
 game.on('enterframe', function() {
 	var frame = game.collisionFrames || 10;
 	var physicsPhantom = RPGObject.collection.filter(function (item) {
@@ -894,7 +982,7 @@ function __physicsUpdateOnFrame (tick, frame, physics) {
 			if (intersects.indexOf(item) < 0) {
 				dispatchTriggerEvent('exit', self, item);
 				dispatchTriggerEvent('exit', item, self);
-			} else if (tick === frame　&& !item.collisionFlag && !self.collisionFlag) {
+			} else if (tick === frame && !item.collisionFlag && !self.collisionFlag) {
 				dispatchTriggerEvent('stay', self, item);
 				dispatchTriggerEvent('stay', item, self);
 			}

@@ -221,7 +221,7 @@ Hack.enchantBook = (function(){
 	this.visible = false;
 	this._element = window.document.createElement('iframe');
 	this._element.id = 'editor';
-	this._element.src = 'editor';
+	this._element.src = 'editor/index.html';
 	this._element.setAttribute('width', '480');
 	this._element.setAttribute('height', '320');
 	this._element.type = 'iframe';
@@ -245,6 +245,13 @@ Hack.closeEditor = function(){
 		this.visible = false;
 	});
 	this.dispatchEvent(new Event('editcancel'));
+};
+
+Hack.clearHistory = function () {
+	if (!this.enchantBook) return;
+		this.enchantBook._element.contentWindow.postMessage({
+		query: 'clearHistory'
+	}, '/');
 };
 
 Hack.createLabel = function(text, prop) {
@@ -426,8 +433,11 @@ Hack.overlay = function() {
 
 // ClearedのLogging
 Hack.on('gameclear', function () {
-	if (!Hack.stageInfo.token) return;
-	postRequest('/stage/putclearedbytoken.php', { token: Hack.stageInfo.token });
+	if (!Hack.stageInfo.token || !Hack.stageInfo.id) return;
+	postRequest('/api/stages/' + Hack.stageInfo.id + '/plays', {
+		token: Hack.stageInfo.token,
+		is_cleared: 1,
+	});
 });
 
 // ゲームメニュー
@@ -618,7 +628,7 @@ Hack.openExternal = function (url) {
 		window.parent.postMessage({
 			query: 'openExternal',
 			url: url
-		}, '/');
+		}, '*');
 	}
 };
 
@@ -646,12 +656,12 @@ Hack.openExternal = function (url) {
 			Hack.log('Hack.openSoundCloud can be called only once in the playing');
 		} else if (typeof id === 'string') {
 			// Success calling
-			window.parent.postMessage('use_soundcloud', '/');
+			window.parent.postMessage('use_soundcloud', '*');
 			openSoundCloud('resolve/?url=' + id, successed, failed);
 			openSoundCloud = null;
 		} else if (typeof id === 'number') {
 			// Success calling
-			window.parent.postMessage('use_soundcloud', '/');
+			window.parent.postMessage('use_soundcloud', '*');
 			openSoundCloud('tracks/' + id, successed, failed);
 			openSoundCloud = null;
 		}
@@ -772,8 +782,17 @@ Hack.define = function (obj, prop, condition, predicate) {
 };
 
 game.addEventListener('load', function(){
-	// smartAssetをsessionStorageに格納する
-	sessionStorage.setItem('stage_param_smart_asset', JSON.stringify(Hack.smartAsset));
+
+	var assets = {
+		apps: Hack.smartAsset.apps,
+		counters: Hack.smartAsset.counters,
+	};
+	assets = JSON.parse(JSON.stringify(assets));
+
+	window.parent.postMessage({
+		query: 'smartAsset',
+		assets: assets,
+	}, '*');
 
 	if (window.parent !== window) {
 		window.parent.postMessage('game_loaded', '*'); // ロードのタイミングを伝える
@@ -795,7 +814,7 @@ function postAPILog (service, id) {
 
 function postRequest (path, params, success, error) {
 	var xhttp = new XMLHttpRequest();
-	xhttp.open('POST', path, true);
+	xhttp.open('POST', Hack.API_ROOT.substr(0, Hack.API_ROOT.length - 5) + path, true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	var serialized = Object.keys(params).map(function(key) {
 		return key + '=' + params[key];
@@ -850,7 +869,7 @@ Hack._exportJavascriptHint = function () {
 	});
 	window.parent.postMessage({
 		query: 'javascriptHint', globalScope: globalScope
-	}, '/');
+	}, '*');
 };
 
 if (!Array.prototype.fill) {
