@@ -11,12 +11,14 @@ export default class ModStageCard extends Component {
   }
 
   render() {
-    const cardActions = this.props.selectedPlugId && (
+    const { selectedPlugId, plugs } = this.props;
+    const cardActions = selectedPlugId && (
       <FlatButton
         label="CONNECT"
         primary={true}
         labelPosition="before"
         icon={<Power />}
+        disabled={!!plugs.find((item) => item.id == selectedPlugId)}
       />
     );
     return (<StageCard {...this.props} cardActions={cardActions} />);
