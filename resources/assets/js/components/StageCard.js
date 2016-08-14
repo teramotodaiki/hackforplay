@@ -56,6 +56,7 @@ export default class StageCard extends Component {
             onToggle={(event, value) => handleStageUpdate({ is_mod: value })}
             />
         </div>
+        {this.props.cardActions}
       </CardActions>
     );
 

@@ -103,6 +103,7 @@ export default class Stages extends Component {
       .map((params) => (
         params.isMod ?
           <ModStageCard {...params}
+            selectedPlugId={this.state.selectedPlugId}
           /> :
           <StageCard {...params} />
       ));
