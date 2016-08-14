@@ -4,6 +4,10 @@ import request from './request';
 export const ADD_AUTHOR = 'ADD_AUTHOR';
 export const ADD_PLUG = 'ADD_PLUG';
 
+// tmp
+const loadingState = {
+  author: false
+};
 
 export const addAuthor = (author) => {
   return { type: ADD_AUTHOR, author };
@@ -24,12 +28,14 @@ export const fetchAuthor = (id) => {
 
 export const fetchAuthors = () => {
   return (dispatch) => {
+    loadingState.author = true; // temp
     return request
       .get('/api/authors')
       .then((result) => {
         result.body.forEach((item) => {
           dispatch({ type: ADD_AUTHOR, author: item });
         });
+        loadingState.author = false; // tmp
         return result;
       });
   }
@@ -37,7 +43,11 @@ export const fetchAuthors = () => {
 
 export const getAuthors = () => {
   return (dispatch, getState) => {
-    return Object.values(getState().authors);
+    const authors = Object.values(getState().authors);
+    if (loadingState.author) {
+      authors.isLoading = true;
+    }
+    return authors;
   };
 };
 
