@@ -16,7 +16,7 @@ import {
   fetchStageIfNeeded, getStageFromLocal, updateStage,
   fetchProjectIfNeeded, getProjectFromLocal,
   fetchUserIfNeeded, getUserFromLocal,
-  fetchPlugs,
+  fetchPlugs, getPlugs,
 } from '../actions/';
 import StageCard from '../components/StageCard';
 import ModStageCard from '../components/ModStageCard';
@@ -78,6 +78,8 @@ export default class Stages extends Component {
 
     if (!keyArrayOfPlays.length) return null; // Loading...
 
+    const plugs = dispatch(getPlugs());
+
     const cards = keyArrayOfPlays
       .sort((a, b) => b - a)
       .filter((id) => plays[id].deleted_at === null && plays[id].stage_id)
@@ -104,6 +106,7 @@ export default class Stages extends Component {
         params.isMod ?
           <ModStageCard {...params}
             selectedPlugId={this.state.selectedPlugId}
+            plugs={plugs.filter((plug) => plug.stage_id == params.stage.id)}
           /> :
           <StageCard {...params} />
       ));
@@ -115,12 +118,11 @@ export default class Stages extends Component {
   }
 
   getPlugsList() {
-    const { authors } = this.props;
+    const { dispatch } = this.props;
     const { palette } = this.context.muiTheme;
 
-    const list = Array.prototype.concat.apply([],
-      Object.values(authors).map((item) => Object.values(item.plugs))
-    ).map((plug) => (
+    const list = dispatch(getPlugs())
+    .map((plug) => (
       <PlugMenuItem
         key={plug.id}
         plug={plug}

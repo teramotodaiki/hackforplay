@@ -52,3 +52,11 @@ export const fetchPlugs = ({ page } = { page: 1 }) => {
 
   };
 };
+
+export const getPlugs = () => {
+  return (dispatch, getState) => {
+    return Array.prototype.concat.apply([],
+      Object.values(getState().authors).map((author) => Object.values(author.plugs))
+    );
+  };
+};
