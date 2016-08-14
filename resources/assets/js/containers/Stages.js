@@ -19,6 +19,7 @@ import {
   fetchPlugs,
 } from '../actions/';
 import StageCard from '../components/StageCard';
+import ModStageCard from '../components/ModStageCard';
 import Progress from '../components/Progress';
 import LoadMore from '../components/LoadMore';
 import PlugMenuItem from '../components/PlugMenuItem';
@@ -86,16 +87,21 @@ export default class Stages extends Component {
       .filter((stage) => !!+stage.is_mod === this.state.showMod)
       .filter((stage) => !this.state.onlyMe || authUser.id == stage.user_id)
       .filter((stage) => stage.state === 'published')
-      .map((stage) => (
-        <StageCard
-          key={stage.id}
-          stage={stage}
-          style={style}
-          isOwner={authUser.id == stage.user_id}
-          project={authUser.id == stage.user_id && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null}
-          user={stage.user_id && dispatch(getUserFromLocal(stage.user_id))}
-          handleStageUpdate={(change) => dispatch(updateStage(stage.id, change))}
-          />
+      .map((stage) => {
+        const isOwner = authUser.id == stage.user_id;
+        return {
+          key: stage.id,
+          isMod: stage.is_mod,
+          style: style,
+          stage: stage,
+          isOwner: isOwner,
+          project: isOwner && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null,
+          user: stage.user_id ? dispatch(getUserFromLocal(stage.user_id)) : null,
+          handleStageUpdate: (change) => dispatch(updateStage(params.stage.id, change)),
+        };
+      })
+      .map((params) => (
+        params.isMod ? <StageCard {...params} /> : <ModStageCard {...params} />
       ));
 
     return cards.length ? cards : (
@@ -107,7 +113,7 @@ export default class Stages extends Component {
   getPlugsList() {
     const { authors } = this.props;
     const { palette } = this.context.muiTheme;
-    
+
     const list = Array.prototype.concat.apply([],
       Object.values(authors).map((item) => Object.values(item.plugs))
     ).map((plug) => (
