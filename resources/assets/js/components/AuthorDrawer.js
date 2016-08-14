@@ -56,7 +56,7 @@ export default class AuthorDrawer extends React.Component {
         {name ? (
           <Paper style={{ margin: 10, padding: 10, width: drawer.width - 20 }}>
             <div>example:</div>
-            <div style={{ fontSize: 'small' }}>If MOD's name is <b>{exampleLabel}</b>,</div>
+            <div style={{ fontSize: 'small' }}>{"If MOD\'s name is "}<b>{exampleLabel}</b>,</div>
             <TextField
               name="example"
               value={`require('${name}/${exampleLabel}');`}
