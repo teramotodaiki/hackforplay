@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('patch', 'TmpPatchController@setClearable');
+Route::get('patch', 'TmpPatchController@migrateOldHackforPlayMods');
 
 // React (frontend) App
 Route::get('tutorials', 'DefaultAppController@index');

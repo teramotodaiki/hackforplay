@@ -15,6 +15,38 @@ use Carbon\Carbon;
 
 class TmpPatchController extends Controller
 {
+  public function migrateOldHackforPlayMods()
+  {
+    $this->makeModPlug(
+      'enchantjs',
+      '/resources/statics/hackforplay-old/',
+      [
+        // label => source path
+        'enchant' => 'modules/enchant.js',
+        'ui.enchant' => 'modules/ui.enchant.js',
+      ]
+    );
+
+    $this->makeModPlug(
+      'hackforplay',
+      '/resources/statics/hackforplay-old/',
+      [
+        // label => source file path
+        'hack'                => 'modules/hack.js',
+        'rpg-kit-main'        => 'kit/rpg_hack_project/main.js',
+        'rpg-kit-camera'      => 'kit/rpg_hack_project/camera.js',
+        'rpg-kit-color'       => 'kit/rpg_hack_project/color.js',
+        'rpg-kit-rpgobjects'  => 'kit/rpg_hack_project/rpgobjects.js',
+        'rpg-kit-smartassets' => 'kit/rpg_hack_project/smartassets.js',
+        'ap-kit-main'         => 'kit/ap_project/main.js',
+        'commet-kit-main'     => 'kit/music_game_project/main.js',
+        'survive-kit-main'    => 'kit/Tsuka_Project/main.js',
+        'run-kit-main'        => 'lib/run.js',
+        'typing-kit-main'     => 'lib/typing.js',
+        'enchantjs-kit'       => 'modules/enchantjs-kit.js',
+      ]
+    );
+  }
 
   public function setClearable()
   {
@@ -179,13 +211,15 @@ class TmpPatchController extends Controller
 
   protected function makeScriptStage($basepath)
   {
-    return Stage::create([
-      'ScriptID' => Script::create([
-          'RawCode' => file_get_contents($basepath)
-        ])->id,
+    $stage = Stage::create([
       'State' => 'private',
       'NoRestage' => 1,
     ]);
+    $stage->ScriptID = Script::create([
+      'RawCode' => file_get_contents($basepath)
+    ])->ID;
+    $stage->save();
+    return $stage;
   }
 
   public function clearable()
