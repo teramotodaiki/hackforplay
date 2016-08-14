@@ -35,9 +35,8 @@ export default class StageCard extends Component {
       </FloatingActionButton>
     );
 
-    const marginRight = { marginRight: 30 };
     const ownerActions = (
-      <CardActions style={{ paddingLeft: 16, paddingBottom: 14, display: 'flex', alignItems: 'center' }}>
+      <CardActions style={{ paddingLeft: 16, paddingBottom: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <FloatingActionButton
           onTouchTap={() => {
             sessionStorage.setItem('project-token', project.token);
@@ -45,10 +44,10 @@ export default class StageCard extends Component {
           }}
           disabled={!project || !project.token}
           mini={true} secondary={true}
-          style={marginRight}>
+        >
           <FolderOpen />
         </FloatingActionButton>
-        <div style={Object.assign({ flexBasis: 50, marginTop: 'auto' }, marginRight)}>
+        <div style={{ flexBasis: 100, marginTop: 'auto' }}>
           <Toggle
             label="MOD"
             defaultToggled={!!+stage.is_mod}
@@ -56,8 +55,11 @@ export default class StageCard extends Component {
             onToggle={(event, value) => handleStageUpdate({ is_mod: value })}
             />
         </div>
+        {this.props.cardActions}
       </CardActions>
     );
+
+    const expandable = !!this.props.cardText;
 
     return (
       <Card style={cardStyle}>
@@ -67,10 +69,13 @@ export default class StageCard extends Component {
           avatar={playButton}
           titleStyle={wrapStyle}
           subtitleStyle={wrapStyle}
+          actAsExpander={expandable}
+          showExpandableButton={expandable}
         >
           {user && (<UserChip user={user} isOwner={isOwner} />)}
         </CardHeader>
         {isOwner && ownerActions}
+        {this.props.cardText}
       </Card>
     );
   }
