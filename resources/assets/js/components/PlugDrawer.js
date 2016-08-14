@@ -55,9 +55,10 @@ export default class PlugDrawer extends Component {
 
   render() {
 
-    const { plugs, authors, selectedPlugId, handlePlugSelect } = this.props;
+    const { plugs, authors, selectedPlug, handlePlugSelect } = this.props;
     const { palette } = this.context.muiTheme;
     const { draft } = this.state;
+    const selectedPlugId = selectedPlug && selectedPlug.id;
 
     return (
       <Drawer
@@ -120,7 +121,7 @@ export default class PlugDrawer extends Component {
 PlugDrawer.propTypes = {
   plugs: PropTypes.array.isRequired,
   authors: PropTypes.array.isRequired,
-  selectedPlugId: PropTypes.number,
+  selectedPlug: PropTypes.object,
   handlePlugSelect: PropTypes.func.isRequired,
 };
 

@@ -33,7 +33,7 @@ export default class Stages extends Component {
       showMod: false,
       page: 1,
       noMore: false,
-      selectedPlugId: null,
+      selectedPlug: null,
     };
 
     this.handleConnect = this.handleConnect.bind(this);
@@ -78,20 +78,25 @@ export default class Stages extends Component {
 
   handleConnect(stage) {
     const { dispatch } = this.props;
-    const { selectedPlugId } = this.state;
-    if (!selectedPlugId) return;
+    const { selectedPlug } = this.state;
+    if (!selectedPlug) return;
 
-    dispatch(updatePlug(selectedPlugId, { stage: stage.id }));
-    this.setState({ selectedPlugId: null });
+    if (typeof selectedPlug.id === 'number') {
+      // Exist plug
+      dispatch(updatePlug(selectedPlug.id, { stage: stage.id }));
+      this.setState({ selectedPlug: null });
+    } else {
+      }
+    }
   }
 
   handlePlugSelect(plug) {
-    this.setState({ selectedPlugId: plug.id });
+    this.setState({ selectedPlug: plug });
   }
 
   getStageCardList({ style }) {
     const { dispatch, plays, authUser } = this.props;
-    const { selectedPlugId } = this.state;
+    const { selectedPlug } = this.state;
     const keyArrayOfPlays = Object.keys(plays);
 
     if (!keyArrayOfPlays.length) return null; // Loading...
@@ -123,7 +128,7 @@ export default class Stages extends Component {
       .map((params) => (
         params.isMod ?
           <ModStageCard {...params}
-            selectedPlugId={selectedPlugId}
+            selectedPlug={selectedPlug}
             plugs={plugs.filter((plug) => plug.stage_id == params.stage.id)}
             handleConnect={this.handleConnect}
           /> :
@@ -195,7 +200,7 @@ export default class Stages extends Component {
           <PlugDrawer
             plugs={dispatch(getPlugs())}
             authors={dispatch(getAuthors())}
-            selectedPlugId={this.state.selectedPlugId}
+            selectedPlug={this.state.selectedPlug}
             handlePlugSelect={this.handlePlugSelect}
           /> : null}
       </div>

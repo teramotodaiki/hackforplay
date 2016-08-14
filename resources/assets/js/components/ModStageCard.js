@@ -11,17 +11,17 @@ export default class ModStageCard extends Component {
   }
 
   render() {
-    const { selectedPlugId, plugs } = this.props;
+    const { selectedPlug, plugs } = this.props;
     return (
       <StageCard
         {...this.props}
-        cardActions={selectedPlugId && (
+        cardActions={selectedPlug && (
           <FlatButton
             label="CONNECT"
             primary={true}
             labelPosition="before"
             icon={<Power />}
-            disabled={!!plugs.find((item) => item.id == selectedPlugId)}
+            disabled={!!plugs.find((item) => item.id === selectedPlug.id)}
             onTouchTap={() => this.props.handleConnect(this.props.stage)}
           />
         )}
