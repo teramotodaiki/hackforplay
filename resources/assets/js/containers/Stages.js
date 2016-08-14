@@ -101,7 +101,10 @@ export default class Stages extends Component {
         };
       })
       .map((params) => (
-        params.isMod ? <StageCard {...params} /> : <ModStageCard {...params} />
+        params.isMod ?
+          <ModStageCard {...params}
+          /> :
+          <StageCard {...params} />
       ));
 
     return cards.length ? cards : (
