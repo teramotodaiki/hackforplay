@@ -97,7 +97,7 @@ export default class Stages extends Component {
           isOwner: isOwner,
           project: isOwner && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null,
           user: stage.user_id ? dispatch(getUserFromLocal(stage.user_id)) : null,
-          handleStageUpdate: (change) => dispatch(updateStage(params.stage.id, change)),
+          handleStageUpdate: (change) => dispatch(updateStage(stage.id, change)),
         };
       })
       .map((params) => (
