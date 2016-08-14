@@ -9,20 +9,20 @@ import {
 import Extension from 'material-ui/svg-icons/action/extension';
 import VideogameAsset from 'material-ui/svg-icons/hardware/videogame-asset';
 import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
-import Power from 'material-ui/svg-icons/notification/power';
 
 import {
   fetchPlays,
   fetchStageIfNeeded, getStageFromLocal, updateStage,
   fetchProjectIfNeeded, getProjectFromLocal,
   fetchUserIfNeeded, getUserFromLocal,
-  fetchPlugs, getPlugs, updatePlug,
+  fetchPlugs, getPlugs, updatePlug, postPlug,
+  fetchAuthors, getAuthors,
 } from '../actions/';
 import StageCard from '../components/StageCard';
 import ModStageCard from '../components/ModStageCard';
 import Progress from '../components/Progress';
 import LoadMore from '../components/LoadMore';
-import PlugMenuItem from '../components/PlugMenuItem';
+import PlugDrawer from '../components/PlugDrawer';
 
 export default class Stages extends Component {
   constructor(props) {
@@ -33,15 +33,17 @@ export default class Stages extends Component {
       showMod: false,
       page: 1,
       noMore: false,
-      selectedPlugId: null,
+      selectedPlug: null,
     };
 
     this.handleConnect = this.handleConnect.bind(this);
+    this.handlePlugSelect = this.handlePlugSelect.bind(this);
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchPlugs());
+    dispatch(fetchAuthors());
   }
 
   loadResolved(result) {
@@ -76,16 +78,41 @@ export default class Stages extends Component {
 
   handleConnect(stage) {
     const { dispatch } = this.props;
-    const { selectedPlugId } = this.state;
-    if (!selectedPlugId) return;
+    const { selectedPlug } = this.state;
+    if (!selectedPlug) return;
 
-    dispatch(updatePlug(selectedPlugId, { stage: stage.id }));
-    this.setState({ selectedPlugId: null });
+    if (typeof selectedPlug.id === 'number') {
+      // Exist plug
+      dispatch(updatePlug(selectedPlug.id, { stage: stage.id }));
+      this.setState({ selectedPlug: null });
+    } else {
+      // New plug
+      const fullLabel = selectedPlug.author.name + '/' + selectedPlug.label;
+      if (confirm(`NOTICE: It is NOT editable that label of plug, OK? // ラベルは きめたら へんこうできません. よいですか？ [MOD: require('${fullLabel}')]`)) {
+        dispatch(postPlug({
+          label: selectedPlug.label,
+          author: selectedPlug.author.id,
+          stage: stage.id,
+        }));
+        this.setState({ selectedPlug: null });
+      }
+    }
+  }
+
+  handlePlugSelect(plug) {
+    const { selectedPlug } = this.state;
+    if (selectedPlug && typeof selectedPlug.id === 'object' &&
+      (!plug || selectedPlug.id !== plug.id)) {
+      const fullLabel = selectedPlug.author.name + '/' + selectedPlug.label;
+      alert('Oops, before CONNECT ' + fullLabel);
+    } else {
+      this.setState({ selectedPlug: plug });
+    }
   }
 
   getStageCardList({ style }) {
     const { dispatch, plays, authUser } = this.props;
-    const { selectedPlugId } = this.state;
+    const { selectedPlug } = this.state;
     const keyArrayOfPlays = Object.keys(plays);
 
     if (!keyArrayOfPlays.length) return null; // Loading...
@@ -117,7 +144,7 @@ export default class Stages extends Component {
       .map((params) => (
         params.isMod ?
           <ModStageCard {...params}
-            selectedPlugId={selectedPlugId}
+            selectedPlug={selectedPlug}
             plugs={plugs.filter((plug) => plug.stage_id == params.stage.id)}
             handleConnect={this.handleConnect}
           /> :
@@ -128,25 +155,6 @@ export default class Stages extends Component {
       <h1>Anything yet.</h1>
     );
 
-  }
-
-  getPlugsList() {
-    const { dispatch } = this.props;
-    const { palette } = this.context.muiTheme;
-
-    const list = dispatch(getPlugs())
-    .map((plug) => (
-      <PlugMenuItem
-        key={plug.id}
-        plug={plug}
-        handleTouchTap={(plug) => this.setState({ selectedPlugId: plug.id })}
-        style={plug.id === this.state.selectedPlugId ? { color: palette.primary1Color } : null}
-      />
-    ));
-
-    return list.length ? list : (
-      <span>Loading...</span>
-    );
   }
 
   render() {
@@ -204,26 +212,13 @@ export default class Stages extends Component {
             />
           )
         }
-        {
-          showMod && (
-            <Drawer
-              open={true}
-              openSecondary={true}
-            >
-              <AppBar
-                title="Plug"
-                iconElementLeft={(
-                  <IconButton
-                    onTouchTap={() => this.setState({ selectedPlugId: null })}
-                  >
-                    <Power />
-                  </IconButton>
-                )}
-              />
-              {this.getPlugsList()}
-            </Drawer>
-          )
-        }
+        {showMod ?
+          <PlugDrawer
+            plugs={dispatch(getPlugs())}
+            authors={dispatch(getAuthors())}
+            selectedPlug={this.state.selectedPlug}
+            handlePlugSelect={this.handlePlugSelect}
+          /> : null}
       </div>
     );
   }

@@ -22,6 +22,25 @@ export const fetchAuthor = (id) => {
   }
 };
 
+export const fetchAuthors = () => {
+  return (dispatch) => {
+    return request
+      .get('/api/authors')
+      .then((result) => {
+        result.body.forEach((item) => {
+          dispatch({ type: ADD_AUTHOR, author: item });
+        });
+        return result;
+      });
+  }
+};
+
+export const getAuthors = () => {
+  return (dispatch, getState) => {
+    return Object.values(getState().authors);
+  };
+};
+
 
 export const addPlug = (plug) => {
   return { type: ADD_PLUG, plug };
@@ -63,9 +82,22 @@ export const getPlugs = () => {
 
 export const updatePlug = (id, change) => {
   return (dispatch, getState) => {
-    request.post('/api/plugs/' + id)
+    return request
+      .post('/api/plugs/' + id)
       .send({ _method: 'PUT' })
       .send(change)
+      .then((result) => {
+        dispatch({ type: ADD_PLUG, plug: result.body });
+        return result;
+      });
+  };
+};
+
+export const postPlug = (plug) => {
+  return (dispatch) => {
+    return request
+      .post('/api/plugs')
+      .send(plug)
       .then((result) => {
         dispatch({ type: ADD_PLUG, plug: result.body });
         return result;
