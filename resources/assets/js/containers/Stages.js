@@ -212,7 +212,13 @@ export default class Stages extends Component {
             >
               <AppBar
                 title="Plug"
-                iconElementLeft={<IconButton><Power /></IconButton>}
+                iconElementLeft={(
+                  <IconButton
+                    onTouchTap={() => this.setState({ selectedPlugId: null })}
+                  >
+                    <Power />
+                  </IconButton>
+                )}
               />
               {this.getPlugsList()}
             </Drawer>
