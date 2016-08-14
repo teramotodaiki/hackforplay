@@ -22,6 +22,7 @@ export default class ModStageCard extends Component {
             labelPosition="before"
             icon={<Power />}
             disabled={!!plugs.find((item) => item.id == selectedPlugId)}
+            onTouchTap={() => this.props.handleConnect(this.props.stage)}
           />
         )}
         cardText={plugs.length ? (

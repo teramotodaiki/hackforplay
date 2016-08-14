@@ -16,7 +16,7 @@ import {
   fetchStageIfNeeded, getStageFromLocal, updateStage,
   fetchProjectIfNeeded, getProjectFromLocal,
   fetchUserIfNeeded, getUserFromLocal,
-  fetchPlugs, getPlugs,
+  fetchPlugs, getPlugs, updatePlug,
 } from '../actions/';
 import StageCard from '../components/StageCard';
 import ModStageCard from '../components/ModStageCard';
@@ -35,6 +35,8 @@ export default class Stages extends Component {
       noMore: false,
       selectedPlugId: null,
     };
+
+    this.handleConnect = this.handleConnect.bind(this);
   }
 
   componentDidMount() {
@@ -72,8 +74,18 @@ export default class Stages extends Component {
     return Promise.all(fetchStages);
   }
 
+  handleConnect(stage) {
+    const { dispatch } = this.props;
+    const { selectedPlugId } = this.state;
+    if (!selectedPlugId) return;
+
+    dispatch(updatePlug(selectedPlugId, { stage: stage.id }));
+    this.setState({ selectedPlugId: null });
+  }
+
   getStageCardList({ style }) {
     const { dispatch, plays, authUser } = this.props;
+    const { selectedPlugId } = this.state;
     const keyArrayOfPlays = Object.keys(plays);
 
     if (!keyArrayOfPlays.length) return null; // Loading...
@@ -105,8 +117,9 @@ export default class Stages extends Component {
       .map((params) => (
         params.isMod ?
           <ModStageCard {...params}
-            selectedPlugId={this.state.selectedPlugId}
+            selectedPlugId={selectedPlugId}
             plugs={plugs.filter((plug) => plug.stage_id == params.stage.id)}
+            handleConnect={this.handleConnect}
           /> :
           <StageCard {...params} />
       ));
