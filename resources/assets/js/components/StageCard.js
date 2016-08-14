@@ -60,6 +60,8 @@ export default class StageCard extends Component {
       </CardActions>
     );
 
+    const expandable = !!this.props.cardText;
+
     return (
       <Card style={cardStyle}>
         <CardHeader
@@ -68,10 +70,13 @@ export default class StageCard extends Component {
           avatar={playButton}
           titleStyle={wrapStyle}
           subtitleStyle={wrapStyle}
+          actAsExpander={expandable}
+          showExpandableButton={expandable}
         >
           {user && (<UserChip user={user} isOwner={isOwner} />)}
         </CardHeader>
         {isOwner && ownerActions}
+        {this.props.cardText}
       </Card>
     );
   }
