@@ -92,3 +92,15 @@ export const updatePlug = (id, change) => {
       });
   };
 };
+
+export const postPlug = (plug) => {
+  return (dispatch) => {
+    return request
+      .post('/api/plugs')
+      .send(plug)
+      .then((result) => {
+        dispatch({ type: ADD_PLUG, plug: result.body });
+        return result;
+      });
+  };
+};
