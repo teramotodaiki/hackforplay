@@ -82,7 +82,8 @@ export const getPlugs = () => {
 
 export const updatePlug = (id, change) => {
   return (dispatch, getState) => {
-    request.post('/api/plugs/' + id)
+    return request
+      .post('/api/plugs/' + id)
       .send({ _method: 'PUT' })
       .send(change)
       .then((result) => {
