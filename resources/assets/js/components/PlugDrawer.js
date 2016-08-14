@@ -45,7 +45,7 @@ export default class PlugDrawer extends Component {
 
   updateDraft(input) {
     const { selectedPlug } = this.props;
-    const plug = Object.assign({}, selectedPlug, { id: {}, label: input });
+    const plug = Object.assign({}, selectedPlug, { label: input });
     this.props.handlePlugSelect(plug);
   }
 
