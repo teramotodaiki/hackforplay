@@ -1,8 +1,9 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes, Component } from 'react';
 
 import {
   Drawer, AppBar, IconButton,
   FlatButton, TextField,
+  Paper,
 } from 'material-ui';
 
 import SettingsInputComponent from 'material-ui/svg-icons/action/settings-input-component';
@@ -17,6 +18,10 @@ export default class AuthorDrawer extends React.Component {
   }
 
   render() {
+    const { name } = this.state;
+    const { drawer } = this.context.muiTheme;
+    const exampleLabel = 'super-mod';
+
     return (
       <Drawer
         open={true}
@@ -36,8 +41,8 @@ export default class AuthorDrawer extends React.Component {
             floatingLabelText="Author Name"
             hintText="e.g. coolest-hacker"
             fullWidth={true}
-            value={this.state.name}
-            onChange={(event, input) => this.setState({ name: input })}
+            value={name}
+            onChange={(event, name) => this.setState({ name })}
           />
         </div>
         <div style={{ padding: 20, textAlign: 'right' }}>
@@ -46,10 +51,26 @@ export default class AuthorDrawer extends React.Component {
             primary={true}
           />
         </div>
+        {name ? (
+          <Paper style={{ margin: 10, padding: 10, width: drawer.width - 20 }}>
+            <div>example:</div>
+            <div style={{ fontSize: 'small' }}>If MOD's name is <b>{exampleLabel}</b>,</div>
+            <TextField
+              value={`require('${name}/${exampleLabel}');`}
+              multiLine={true}
+              disabled={true}
+              fullWidth={true}
+            />
+          </Paper>
+        ) : null}
       </Drawer>
     );
   }
 }
 
 AuthorDrawer.propTypes = {
+};
+
+AuthorDrawer.contextTypes = {
+  muiTheme: PropTypes.object.isRequired,
 };
