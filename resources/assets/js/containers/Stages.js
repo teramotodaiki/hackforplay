@@ -16,7 +16,7 @@ import {
   fetchProjectIfNeeded, getProjectFromLocal,
   fetchUserIfNeeded, getUserFromLocal,
   fetchPlugs, getPlugs, updatePlug, postPlug,
-  fetchAuthors, getAuthors,
+  fetchAuthors, getAuthors, postAuthor,
 } from '../actions/';
 import StageCard from '../components/StageCard';
 import ModStageCard from '../components/ModStageCard';
@@ -39,6 +39,7 @@ export default class Stages extends Component {
 
     this.handleConnect = this.handleConnect.bind(this);
     this.handlePlugSelect = this.handlePlugSelect.bind(this);
+    this.handlePostAuthor = this.handlePostAuthor.bind(this);
   }
 
   componentDidMount() {
@@ -109,6 +110,11 @@ export default class Stages extends Component {
     } else {
       this.setState({ selectedPlug: plug });
     }
+  }
+
+  handlePostAuthor(author) {
+    const { dispatch } = this.props;
+    return dispatch(postAuthor(author));
   }
 
   getStageCardList({ style }) {
@@ -216,7 +222,9 @@ export default class Stages extends Component {
         }
         {showMod ? (
           !authors.length && !authors.isLoading ? (
-            <AuthorDrawer />
+            <AuthorDrawer
+              handlePostAuthor={this.handlePostAuthor}
+            />
           ) :
           !authors.length && authors.isLoading ? (
             null

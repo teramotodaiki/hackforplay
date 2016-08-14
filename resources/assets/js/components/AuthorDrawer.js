@@ -19,6 +19,7 @@ export default class AuthorDrawer extends React.Component {
 
   render() {
     const { name } = this.state;
+    const { handlePostAuthor } = this.props;
     const { drawer } = this.context.muiTheme;
     const exampleLabel = 'super-mod';
 
@@ -49,6 +50,7 @@ export default class AuthorDrawer extends React.Component {
           <FlatButton
             label="OK"
             primary={true}
+            onTouchTap={() => handlePostAuthor({ name })}
           />
         </div>
         {name ? (
@@ -56,6 +58,7 @@ export default class AuthorDrawer extends React.Component {
             <div>example:</div>
             <div style={{ fontSize: 'small' }}>If MOD's name is <b>{exampleLabel}</b>,</div>
             <TextField
+              name="example"
               value={`require('${name}/${exampleLabel}');`}
               multiLine={true}
               disabled={true}
@@ -69,6 +72,7 @@ export default class AuthorDrawer extends React.Component {
 }
 
 AuthorDrawer.propTypes = {
+  handlePostAuthor: PropTypes.func.isRequired,
 };
 
 AuthorDrawer.contextTypes = {
