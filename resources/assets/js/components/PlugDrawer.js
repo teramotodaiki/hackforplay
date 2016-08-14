@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 
-import { Drawer, AppBar, IconButton } from 'material-ui';
+import { Drawer, AppBar, IconButton, FloatingActionButton } from 'material-ui';
 import Power from 'material-ui/svg-icons/notification/power';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import PlugMenuItem from './PlugMenuItem';
 
@@ -38,6 +39,12 @@ export default class PlugDrawer extends Component {
             style={plug.id === selectedPlugId ? { color: palette.primary1Color } : null}
           />
         ))}
+        <FloatingActionButton
+          mini={true}
+          style={{ marginLeft: 10, marginTop: 10 }}
+        >
+          <ContentAdd />
+        </FloatingActionButton>
       </Drawer>
     );
   }
