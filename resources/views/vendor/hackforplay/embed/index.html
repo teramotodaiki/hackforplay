@@ -59,10 +59,15 @@
 
 			Hack.stageInfo.type = params.type || 'code';
 
+      Object.defineProperty(Hack, 'API_ROOT', {
+        writable: false, enumerable: true,
+        value: 'http://localhost:8000/api/',
+      })
+
 			if ('id' in params) {
 				Hack.stageInfo.id = params.id;
 				var xhttp = new XMLHttpRequest();
-				xhttp.open('POST', '/api/stages/' + params.id + '/plays', true);
+				xhttp.open('POST', Hack.API_ROOT + 'stages/' + params.id + '/plays', true);
 				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				xhttp.onload = function () {
 					var body = JSON.parse(xhttp.responseText);
@@ -72,11 +77,11 @@
             token: Hack.stageInfo.token,
           }, '*');
 				};
-				xhttp.send();
+				xhttp.send('referrer=' + document.referrer);
 			}
 
 	require.config({
-		baseUrl : 'https://hackforplay.xyz/mods/',
+		baseUrl : 'http://localhost:8000/api/mods/',
 		shim: {
 			'enchantjs/ui.enchant': ['enchantjs/enchant']
 		}
@@ -124,7 +129,7 @@
 		// loadFromStage
 		// Ajax request
 		var xhttp = new XMLHttpRequest();
-		xhttp.open('GET', '/api/stages/' + Hack.stageInfo.id, true);
+		xhttp.open('GET', Hack.API_ROOT + 'stages/' + Hack.stageInfo.id, true);
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhttp.onload = function () {
 			var body = JSON.parse(xhttp.responseText);

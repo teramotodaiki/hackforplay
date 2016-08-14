@@ -1,19 +1,5 @@
-(function (mod) {
-	if (typeof define === "function" && define.amd) {
-		define(function (require, exports, module) {
-
-      // dependencies
-      require('enchantjs/enchant');
-      require('enchantjs/ui.enchant');
-      return mod();
-
-		});
-	} else {
-		window.addEventListener('load', function () {
-			mod();
-		});
-	}
-})(function () {
+require('enchantjs/enchant');
+require('enchantjs/ui.enchant');
 
 // enchant.js wrapper for HackforPlay
 // v0.0.1
@@ -108,19 +94,4 @@ window.addEventListener('message', function (event) {
   }
 });
 
-// enchant.jsプラグインに合わせるため、パスを補完する
-enchant.Core._loadFuncs['jpg'] =
-enchant.Core._loadFuncs['jpeg'] =
-enchant.Core._loadFuncs['gif'] =
-enchant.Core._loadFuncs['png'] =
-enchant.Core._loadFuncs['bmp'] =
-function(src, ext, callback, onerror) {
-	if (src.indexOf('/') === -1) {
-		src = 'enchantjs/' + src;
-	}
-	return enchant.Surface.load(src, callback, onerror);
-};
-
 // TODO: enchant.jsで利用するメンバのヒントを親ウィンドウに投げる
-
-});

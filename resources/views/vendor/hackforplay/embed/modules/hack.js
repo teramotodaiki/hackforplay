@@ -234,7 +234,7 @@ function getEditor() {
 		this.visible = false;
 		this._element = window.document.createElement('iframe');
 		this._element.id = 'editor';
-		this._element.src = 'editor';
+		this._element.src = 'editor/index.html';
 		this._element.setAttribute('width', '480');
 		this._element.setAttribute('height', '320');
 		this._element.type = 'iframe';
@@ -262,7 +262,7 @@ function getEditor() {
 
 	Hack.clearHistory = function () {
 		if (!this.enchantBook) return;
-		this.enchantBook._element.contentWindow.postMessage({
+			this.enchantBook._element.contentWindow.postMessage({
 			query: 'clearHistory'
 		}, '/');
 	};
@@ -450,7 +450,6 @@ function getEditor() {
 		postRequest('/api/stages/' + Hack.stageInfo.id + '/plays', {
 			token: Hack.stageInfo.token,
 			is_cleared: 1,
-			referrer: window.parent && window.parent.location.href,
 		});
 	});
 
@@ -642,7 +641,7 @@ function getEditor() {
 			window.parent.postMessage({
 				query: 'openExternal',
 				url: url
-			}, '/');
+			}, '*');
 		}
 	};
 
@@ -670,12 +669,12 @@ function getEditor() {
 				Hack.log('Hack.openSoundCloud can be called only once in the playing');
 			} else if (typeof id === 'string') {
 				// Success calling
-				window.parent.postMessage('use_soundcloud', '/');
+				window.parent.postMessage('use_soundcloud', '*');
 				openSoundCloud('resolve/?url=' + id, successed, failed);
 				openSoundCloud = null;
 			} else if (typeof id === 'number') {
 				// Success calling
-				window.parent.postMessage('use_soundcloud', '/');
+				window.parent.postMessage('use_soundcloud', '*');
 				openSoundCloud('tracks/' + id, successed, failed);
 				openSoundCloud = null;
 			}
@@ -828,7 +827,7 @@ function getEditor() {
 
 	function postRequest (path, params, success, error) {
 		var xhttp = new XMLHttpRequest();
-		xhttp.open('POST', path, true);
+		xhttp.open('POST', Hack.API_ROOT.substr(0, Hack.API_ROOT.length - 5) + path, true);
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		var serialized = Object.keys(params).map(function(key) {
 			return key + '=' + params[key];
@@ -883,7 +882,7 @@ function getEditor() {
 		});
 		window.parent.postMessage({
 			query: 'javascriptHint', globalScope: globalScope
-		}, '/');
+		}, '*');
 	};
 
 	if (!Array.prototype.fill) {

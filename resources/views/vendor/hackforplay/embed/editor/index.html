@@ -53,7 +53,7 @@
 		if(!jsEditor.state.focused){	// テキストエリアにフォーカスが当たっていないときのみ
 			game.postMessage({
 				query: 'eval',
-				value: 'refocus();'
+				value: 'window.focus();'
 			}, policy);
 		}
 	});
