@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link as ScrollLink, scroller } from "react-scroll";
 import Confirm from "../confirm";
 import classNames from "classNames";
-import request from "../promised-xhr.js";
+import request from '../actions/request';
 import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, ControlLabel } from "react-bootstrap";
 
 import Merger from "../merger";
@@ -104,11 +104,12 @@ export default class Register extends React.Component {
     this.verify = this.verify.bind(this);
     this.confirm = this.confirm.bind(this);
     this.showResult = this.showResult.bind(this);
+  }
 
+  componentDidMount() {
     // Default LoginId value
-    request.get('random', {
-      data: { keys: 'login_id' }
-    })
+    request.get('random')
+    .query({ keys: 'login_id' })
     .then((value) => this.update({ login_id: value.body.login_id, used: false }));
   }
 
@@ -128,16 +129,14 @@ export default class Register extends React.Component {
     this.setState({ response: null });
     const setter = (value) => this.setState({ response: value });
 
-    return request.post('users', {
-      data: this.state.user
-    })
+    return request.post('users')
+    .send(this.state.user)
     .then(setter, setter);
   }
 
   verify(id) {
-    return request.get('verify', {
-      data: { login_id: id }
-    })
+    return request.get('verify')
+    .send({ login_id: id })
     .then((value) => this.update({ used: false }))
     .catch((err) => this.update({ used: true }));
   }
