@@ -10,6 +10,8 @@ import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, Contro
 import Merger from "../merger";
 import { Section, CardSection, Arrow } from "../components/section";
 
+import { postUser } from '../actions/';
+
 const contains = (text, range) => { // Contains check.
   const len = text.length;
   return range[0] <= len && len <= range[1];
@@ -128,12 +130,13 @@ class Register extends React.Component {
   }
 
   post() {
-    this.setState({ response: null });
-    const setter = (value) => this.setState({ response: value });
+    const { dispatch } = this.props;
 
-    return request.post('users')
-    .send(this.state.user)
-    .then(setter, setter);
+    this.setState({ response: null });
+
+    return dispatch(postUser(this.state.user))
+      .then((result) => this.setState({ response: result }))
+      .catch((err) => this.setState({ response: err.response }));
   }
 
   verify(id) {
