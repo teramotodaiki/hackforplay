@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+
+import { connect } from 'react-redux';
 import { Link as ScrollLink, scroller } from "react-scroll";
 import Confirm from "../confirm";
 import classNames from "classNames";
@@ -82,7 +84,7 @@ const statics = {
 
 };
 
-export default class Register extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
     const gen = (Math.random() * 900000 + 100000 >> 0) + '';
@@ -186,6 +188,12 @@ export default class Register extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return Object.assign({}, state);
+};
+
+export default connect(mapStateToProps)(Register);
 
 class Landing extends React.Component {
   render() {
