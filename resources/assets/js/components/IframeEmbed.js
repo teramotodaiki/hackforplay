@@ -12,10 +12,8 @@ class IframeEmbed extends React.Component {
   componentDidMount () {
     const { type, code, implicit_mod, autoFocus } = this.props;
 
-    this.iframe.onload = () => {
-      console.log('onload!');
+    const loadHandler = () => {
       // focus binding
-      console.log(this.iframe.contentWindow.addEventListener, this.iframe.addEventListener);
       const e = this.iframe.contentWindow.addEventListener;
       // focus process
       e('focus', () => this.isFocused = true);
@@ -41,6 +39,8 @@ class IframeEmbed extends React.Component {
       }
     };
 
+    this.iframe.onload = loadHandler.bind(this);
+    
     // load game
     this.iframe.src = this.getSrc();
   }
