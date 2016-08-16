@@ -1,12 +1,17 @@
 import React, { PropTypes } from 'react';
+
+import { connect } from 'react-redux';
 import { Link as ScrollLink, scroller } from "react-scroll";
-import Confirm from "../confirm";
 import classNames from "classNames";
-import request from "../promised-xhr.js";
+import request from '../actions/request';
 import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, ControlLabel } from "react-bootstrap";
+
+import { Dialog, FlatButton } from 'material-ui';
 
 import Merger from "../merger";
 import { Section, CardSection, Arrow } from "../components/section";
+
+import { postUser } from '../actions/';
 
 const contains = (text, range) => { // Contains check.
   const len = text.length;
@@ -82,7 +87,7 @@ const statics = {
 
 };
 
-export default class Register extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
     const gen = (Math.random() * 900000 + 100000 >> 0) + '';
@@ -98,17 +103,19 @@ export default class Register extends React.Component {
       },
       response: undefined, // status, header, body (null is loading)
       showResult: false,
+      showDialog: false,
     }
     this.update = this.update.bind(this);
+    this.confirm = this.confirm.bind(this);
     this.post = this.post.bind(this);
     this.verify = this.verify.bind(this);
-    this.confirm = this.confirm.bind(this);
     this.showResult = this.showResult.bind(this);
+  }
 
+  componentDidMount() {
     // Default LoginId value
-    request.get('random', {
-      data: { keys: 'login_id' }
-    })
+    request.get('random')
+    .query({ keys: 'login_id' })
     .then((value) => this.update({ login_id: value.body.login_id, used: false }));
   }
 
@@ -124,34 +131,56 @@ export default class Register extends React.Component {
     this.setState({ showResult: true });
   }
 
-  post() {
-    this.setState({ response: null });
-    const setter = (value) => this.setState({ response: value });
+  confirm() {
+    this.setState({ showDialog: true });
+  }
 
-    return request.post('users', {
-      data: this.state.user
-    })
-    .then(setter, setter);
+  post() {
+    const { dispatch } = this.props;
+
+    this.setState({ showDialog: false, response: null });
+
+    scroller.scrollTo('Result', { smooth: true });
+
+    return dispatch(postUser(this.state.user))
+      .then((result) => this.setState({ response: result }))
+      .catch((err) => this.setState({ response: err.response }));
   }
 
   verify(id) {
-    return request.get('verify', {
-      data: { login_id: id }
-    })
+    return request.get('verify')
+    .send({ login_id: id })
     .then((value) => this.update({ used: false }))
     .catch((err) => this.update({ used: true }));
-  }
-
-  confirm() {
-    return this.refs.confirm.show();
   }
 
   render() {
     const user = this.state.user;
     const resultClass = classNames({ 'hidden': !this.state.showResult });
+
+    const dialogActions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={() => this.setState({ showDialog: false })}
+      />,
+      <FlatButton
+        label="OK"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.post}
+      />,
+    ];
+
     return (
       <div style={this.props.containerStyle}>
-        <Confirm ref="confirm" {...statics.confirm}>
+        <Dialog
+          title={statics.confirm.title}
+          modal={true}
+          open={this.state.showDialog}
+          actions={dialogActions}
+        >
+          <div>{statics.confirm.description}</div>
           <Form onSubmit={(e) => e.preventDefault()}>
             <FormGroup>
               <ControlLabel>Login ID</ControlLabel>
@@ -160,12 +189,12 @@ export default class Register extends React.Component {
             <FormGroup>
               <ControlLabel>Password</ControlLabel>
               <InputGroup>
-                <PasswordEye hide={user.hide} update={user.update} />
+                <PasswordEye hide={user.hide} update={this.update} />
                 <FormControl readOnly value={user.password} type={user.hide ? 'password' : 'text'} />
               </InputGroup>
             </FormGroup>
           </Form>
-        </Confirm>
+        </Dialog>
         <Landing {...statics.landing} {...user} update={this.update} />
         <Gender {...statics.gender } {...user} update={this.update} />
         <Nickname {...statics.nickname } {...user} update={this.update} />
@@ -173,7 +202,6 @@ export default class Register extends React.Component {
           user={user}
           update={this.update}
           verify={this.verify}
-          post={this.post}
           confirm={this.confirm}
           showResult={this.showResult}
            />
@@ -187,6 +215,12 @@ export default class Register extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return Object.assign({}, state);
+};
+
+export default connect(mapStateToProps)(Register);
 
 class Landing extends React.Component {
   render() {
@@ -271,17 +305,13 @@ const Nickname = (props) => {
 };
 
 const Login = (props) => {
-  const moveNext = () => {
-    scroller.scrollTo('Result', { smooth: true });
-    props.post();
-  }
   return (
     <CardSection name="Login"
       header="Login"
       next="Login"
       onMoveNext={() => {
         props.showResult();
-        props.confirm().then(moveNext);
+        props.confirm();
       }}
       descriptions={statics.login_id.descriptions.concat(statics.password.descriptions)}
       >
