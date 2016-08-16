@@ -12,41 +12,40 @@ class IframeEmbed extends React.Component {
   componentDidMount () {
     const { type, code, implicit_mod, autoFocus } = this.props;
 
-    // focus binding
-    const e = this.iframe.contentWindow.addEventListener;
-    // focus process
-    e('focus', () => this.isFocused = true);
-    e('focus', this.props.onFocus);
-    e('focus', () => this.forceUpdate());
-    // blur process
-    e('blur', () => this.isFocused = false);
-    e('blur', this.props.onBlur);
-    e('blur', () => this.forceUpdate());
+    const loadHandler = () => {
+      // focus binding
+      const e = this.iframe.contentWindow.addEventListener;
+      // focus process
+      e('focus', () => this.isFocused = true);
+      e('focus', this.props.onFocus);
+      e('focus', () => this.forceUpdate());
+      // blur process
+      e('blur', () => this.isFocused = false);
+      e('blur', this.props.onBlur);
+      e('blur', () => this.forceUpdate());
 
-    // autoFocus
-    if (autoFocus) {
-      this.iframe.focus();
-    }
+      // autoFocus
+      if (autoFocus) {
+        this.iframe.focus();
+      }
 
-    // code
-    if (type === 'code') {
-      this.iframe.onload = function () {
-        this.contentWindow.postMessage({
+      // code
+      if (type === 'code') {
+        this.iframe.contentWindow.postMessage({
           query: 'require',
           dependencies: implicit_mod && [implicit_mod],
           code: code,
         }, '*');
-      };
-    }
+      }
+    };
+
+    this.iframe.onload = loadHandler.bind(this);
+    
+    // load game
+    this.iframe.src = this.getSrc();
   }
 
-  render () {
-
-    const classname = classNames(this.props.className, {
-      'pseudo-focus': this.props.visibleFocus,
-      'pseudo-focus-on': this.isFocused && this.props.visibleFocus,
-    });
-
+  getSrc() {
     const {
       type,
       id,
@@ -59,18 +58,26 @@ class IframeEmbed extends React.Component {
       token ? `token=${token}`  : null,
     ];
 
-    const uri = (
+    return (
       location.hostname === 'hackforplay.xyz' ?
       'https://embed.hackforplay.xyz/hackforplay/index.html' :
       location.hostname === 'hackforplay-staging.azurewebsites.net' ?
       'https://hackforplay.blob.core.windows.net/hackforplay-staging/index.html' :
       '/embed/'
     ) + '?' + params.filter((p) => p).join('&');
+  }
+
+  render () {
+
+    const classname = classNames(this.props.className, {
+      'pseudo-focus': this.props.visibleFocus,
+      'pseudo-focus-on': this.isFocused && this.props.visibleFocus,
+    });
 
     return (
       <div className={classname} style={this.props.style}>
         <div className='embed-responsive embed-responsive-3by2' style={{backgroundColor: 'black'}}>
-          <iframe ref={(ref) => this.iframe = ref } src={uri}></iframe>
+          <iframe ref={(ref) => this.iframe = ref}></iframe>
         </div>
       </div>
     );
