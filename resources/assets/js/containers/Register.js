@@ -2,10 +2,11 @@ import React, { PropTypes } from 'react';
 
 import { connect } from 'react-redux';
 import { Link as ScrollLink, scroller } from "react-scroll";
-import Confirm from "../confirm";
 import classNames from "classNames";
 import request from '../actions/request';
 import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, ControlLabel } from "react-bootstrap";
+
+import { Dialog, FlatButton } from 'material-ui';
 
 import Merger from "../merger";
 import { Section, CardSection, Arrow } from "../components/section";
@@ -102,11 +103,12 @@ class Register extends React.Component {
       },
       response: undefined, // status, header, body (null is loading)
       showResult: false,
+      showDialog: false,
     }
     this.update = this.update.bind(this);
+    this.confirm = this.confirm.bind(this);
     this.post = this.post.bind(this);
     this.verify = this.verify.bind(this);
-    this.confirm = this.confirm.bind(this);
     this.showResult = this.showResult.bind(this);
   }
 
@@ -129,10 +131,16 @@ class Register extends React.Component {
     this.setState({ showResult: true });
   }
 
+  confirm() {
+    this.setState({ showDialog: true });
+  }
+
   post() {
     const { dispatch } = this.props;
 
-    this.setState({ response: null });
+    this.setState({ showDialog: false, response: null });
+
+    scroller.scrollTo('Result', { smooth: true });
 
     return dispatch(postUser(this.state.user))
       .then((result) => this.setState({ response: result }))
@@ -146,16 +154,33 @@ class Register extends React.Component {
     .catch((err) => this.update({ used: true }));
   }
 
-  confirm() {
-    return this.refs.confirm.show();
-  }
-
   render() {
     const user = this.state.user;
     const resultClass = classNames({ 'hidden': !this.state.showResult });
+
+    const dialogActions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={() => this.setState({ showDialog: false })}
+      />,
+      <FlatButton
+        label="OK"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.post}
+      />,
+    ];
+
     return (
       <div style={this.props.containerStyle}>
-        <Confirm ref="confirm" {...statics.confirm}>
+        <Dialog
+          title={statics.confirm.title}
+          modal={true}
+          open={this.state.showDialog}
+          actions={dialogActions}
+        >
+          <div>{statics.confirm.description}</div>
           <Form onSubmit={(e) => e.preventDefault()}>
             <FormGroup>
               <ControlLabel>Login ID</ControlLabel>
@@ -169,7 +194,7 @@ class Register extends React.Component {
               </InputGroup>
             </FormGroup>
           </Form>
-        </Confirm>
+        </Dialog>
         <Landing {...statics.landing} {...user} update={this.update} />
         <Gender {...statics.gender } {...user} update={this.update} />
         <Nickname {...statics.nickname } {...user} update={this.update} />
@@ -177,7 +202,6 @@ class Register extends React.Component {
           user={user}
           update={this.update}
           verify={this.verify}
-          post={this.post}
           confirm={this.confirm}
           showResult={this.showResult}
            />
@@ -281,17 +305,13 @@ const Nickname = (props) => {
 };
 
 const Login = (props) => {
-  const moveNext = () => {
-    scroller.scrollTo('Result', { smooth: true });
-    props.post();
-  }
   return (
     <CardSection name="Login"
       header="Login"
       next="Login"
       onMoveNext={() => {
         props.showResult();
-        props.confirm().then(moveNext);
+        props.confirm();
       }}
       descriptions={statics.login_id.descriptions.concat(statics.password.descriptions)}
       >
