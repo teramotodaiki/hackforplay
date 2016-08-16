@@ -5,6 +5,7 @@ request.use(superagentPromisePlugin);
 request.use((req) => {
   req.set('X-Requested-With', 'XMLHttpRequest');
   req.set('X-CSRF-TOKEN', getCsrfToken());
+  req.set('Content-Type', 'application/json');
   return req;
 })
 
