@@ -19,7 +19,7 @@ $(function(){
 			data: data,
 		};
 		renderStaegs(result);
-		
+
 		$('.h4p_filter-clearable').remove();
 
 	} else {
@@ -57,10 +57,12 @@ $(function(){
 			$('<span>').addClass('text-muted').text(' // オリジナルステージつくっちゃう？')
 		)
 	).append(
-		$('<img>').attr('src', 'https://embed.hackforplay.xyz/hackforplay/img/restaging_image.png').css({
-			width: '100%',
-			height: '100%',
-		})
+		$('<a>').attr('href', '/register').append(
+			$('<img>').attr('src', 'https://embed.hackforplay.xyz/hackforplay/img/restaging_image.png').css({
+				width: '100%',
+				height: '100%',
+			})
+		)
 	).append(
 		$('<a>').attr('href', '/register')
 		.addClass('btn btn-link btn-lg btn-block')
