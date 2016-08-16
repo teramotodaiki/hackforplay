@@ -164,7 +164,7 @@ class Register extends React.Component {
             <FormGroup>
               <ControlLabel>Password</ControlLabel>
               <InputGroup>
-                <PasswordEye hide={user.hide} update={user.update} />
+                <PasswordEye hide={user.hide} update={this.update} />
                 <FormControl readOnly value={user.password} type={user.hide ? 'password' : 'text'} />
               </InputGroup>
             </FormGroup>
