@@ -36,7 +36,7 @@ class ChannelController extends Controller
         $item->head = $item->project->scripts()->orderBy('ID', 'DESC')->first();
         $item->reserved = $item->project->stages()->orderBy('ID', 'DESC')->first();
       }
-      
+
       return response($channels, 200);
     }
 
@@ -151,6 +151,9 @@ class ChannelController extends Controller
         'message' => "=== Channel is created! ===\n" . url("channels/{$channel->ID}/watch"),
       ]);
       $request->pusher->trigger("channel-{$channel->ID}", 'new_message', $chat);
+
+      $channel->head = $headScript;
+      $channel->reserved = $channel->project->stages()->orderBy('ID', 'DESC')->first();
 
       return response($channel, 200);
     }

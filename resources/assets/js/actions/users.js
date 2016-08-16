@@ -24,6 +24,20 @@ export const getAuthUser = () => {
   };
 };
 
+export const postUser = (user) => {
+  return (dispatch) => {
+
+    return request
+      .post('/api/users')
+      .send(user)
+      .then((result) => {
+        dispatch({ type: ADD_USER, user })
+        return result;
+      });
+      
+  };
+}
+
 const fetchUserById = ({ id, dispatch, responseType }) => {
 
   return {
