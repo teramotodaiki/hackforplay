@@ -57,6 +57,17 @@ export default class PlugDrawer extends Component {
     const hasDraft = selectedPlug && typeof selectedPlug.id === 'object';
     const primaryText = { color: palette.primary1Color };
 
+    const list = Object.assign([], plugs)
+      .sort((a, b) => a.full_label > b.full_label ? 1 : -1)
+      .map((plug) => (
+        <PlugMenuItem
+          key={plug.id}
+          plug={plug}
+          handleTouchTap={handlePlugSelect}
+          style={plug.id === selectedPlugId ? primaryText : null}
+        />
+      ));
+
     return (
       <Drawer
         open={true}
@@ -72,14 +83,7 @@ export default class PlugDrawer extends Component {
             </IconButton>
           }
         />
-        {plugs.map((plug) => (
-          <PlugMenuItem
-            key={plug.id}
-            plug={plug}
-            handleTouchTap={handlePlugSelect}
-            style={plug.id === selectedPlugId ? primaryText : null}
-          />
-        ))}
+        {list}
         {hasDraft ? (
           <MenuItem>
             <TextField
