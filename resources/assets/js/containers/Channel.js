@@ -23,25 +23,8 @@ class Channel extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = { inputValue: '' };
-
-    const { dispatch, channels } = this.props;
-    const id = +this.props.params.id;
-
-    dispatch(fetchChannel({ id, chats: true }));
-
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = false;
-
-    const pusherKey = document.querySelector('meta[name="pusher-key"]').getAttribute('content');
-    const pusher = new Pusher(pusherKey, {
-      encrypted: true
-    });
-
-    const channel = pusher.subscribe('channel-' + id);
-    channel.bind('new_message', (data) => {
-      dispatch(addChat(id, data));
-    });
 
     this.reload = this.reload.bind(this);
     this.createGist = this.createGist.bind(this);
@@ -99,7 +82,22 @@ class Channel extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', () => this.forceUpdate());
+    const { dispatch, channels, params: {id} } = this.props;
+
+    dispatch(fetchChannel({ id, chats: true }));
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = false;
+
+    const pusherKey = document.querySelector('meta[name="pusher-key"]').getAttribute('content');
+    const pusher = new Pusher(pusherKey, {
+      encrypted: true
+    });
+
+    const channel = pusher.subscribe('channel-' + id);
+    channel.bind('new_message', (data) => {
+      dispatch(addChat(id, data));
+    });
   }
 
   render () {
