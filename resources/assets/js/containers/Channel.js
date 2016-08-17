@@ -15,7 +15,6 @@ import {
   addChat, postChat,
   fetchChannel, updateChannel,
   fetchQcard,
-  getAuthUser,
 } from '../actions/';
 
 const GITHUB_API = 'https://api.github.com';
