@@ -11,7 +11,9 @@ import Timeline from '../components/timeline';
 import ActionBar from '../components/action-bar';
 import ChannelMenu from '../components/channel-menu';
 import { Section } from '../components/section';
-import { addChat, postChat, fetchChannel, createGist, fetchQcard, updateChannel } from '../actions/';
+import { addChat, postChat, fetchChannel, fetchQcard, updateChannel } from '../actions/';
+
+const GITHUB_API = 'https://api.github.com';
 
 class Channel extends Component {
 
@@ -67,16 +69,19 @@ class Channel extends Component {
 
     const gistName = `channel-${params.id}.js`;
     const gistWindow = window.open('about:blank', gistName);
-    dispatch(createGist({
-      [gistName]: {
-        'content': channel.script.RawCode,
-      }
-    }))
-    .then(({ body }) => {
-      gistWindow.location.href = body.html_url;
-      this.postChat('Created new gist!→' + body.html_url);
+
+    request
+    .post(GITHUB_API + '/gists')
+    .set('Accept', 'application/vnd.github.v3+json')
+    .send({ public: true, files: {
+      [gistName]: {'content': channel.head.RawCode} }
     })
-    .catch(() => gistWindow.close());
+    .then((result) => {
+      gistWindow.location.href = result.body.html_url;
+      this.postChat('Created new gist!→' + result.body.html_url);
+    })
+    .catch((err) => console.error(err) || gistWindow.close());
+
   }
 
   archive() {
