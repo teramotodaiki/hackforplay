@@ -130,13 +130,15 @@ class Channel extends Component {
     return (
       <div style={containerStyle}>
         <Col lg={9} md={8} sm={7} xs={12} style={leftStyle}>
-          <IframeEmbed
-            ref={(embed) => this.iframe = embed ? embed.iframe : null}
-            type="code"
-            code={channel.head.raw_code}
-            implicit_mod={channel.reserved.implicit_mod}
-            visibleFocus
+          {channel.head && (
+            <IframeEmbed
+              ref={(embed) => this.iframe = embed ? embed.iframe : null}
+              type="code"
+              code={channel.head.raw_code}
+              implicit_mod={channel.reserved.implicit_mod}
+              visibleFocus
             />
+          )}
           <ChannelMenu
             channel={channel}
             reload={this.reload}
