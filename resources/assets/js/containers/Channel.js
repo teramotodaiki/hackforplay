@@ -11,7 +11,12 @@ import Timeline from '../components/timeline';
 import ActionBar from '../components/action-bar';
 import ChannelMenu from '../components/channel-menu';
 import { Section } from '../components/section';
-import { addChat, postChat, fetchChannel, fetchQcard, updateChannel } from '../actions/';
+import {
+  addChat, postChat,
+  fetchChannel, updateChannel,
+  fetchQcard,
+  getAuthUser,
+} from '../actions/';
 
 const GITHUB_API = 'https://api.github.com';
 
@@ -38,8 +43,6 @@ class Channel extends Component {
     channel.bind('new_message', (data) => {
       dispatch(addChat(id, data));
     });
-
-    this.loginUserId = document.querySelector('meta[name="login-user-id"]').getAttribute('content');
 
     this.reload = this.reload.bind(this);
     this.createGist = this.createGist.bind(this);
@@ -102,8 +105,8 @@ class Channel extends Component {
 
   render () {
 
-    const id = +this.props.params.id;
-    const channel = this.props.channels[id];
+    const { params, channels, dispatch, authUser } = this.props;
+    const channel = channels[params.id];
 
     if (!channel) {
       return (
@@ -150,7 +153,7 @@ class Channel extends Component {
             createGist={this.createGist}
             archive={this.archive}
             style={{ backgroundColor: 'white' }}
-            isOwner={+this.loginUserId === +channel.UserID}
+            isOwner={authUser.id == channel.user_id}
             />
         </Col>
         <Col lg={3} md={4} sm={5} xs={11} style={rightStyle}>
