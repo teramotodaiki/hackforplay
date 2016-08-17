@@ -104,8 +104,7 @@ export const getPlugs = () => {
 export const updatePlug = (id, change) => {
   return (dispatch, getState) => {
     return request
-      .post('/api/plugs/' + id)
-      .send({ _method: 'PUT' })
+      .put('/api/plugs/' + id)
       .send(change)
       .then((result) => {
         dispatch({ type: ADD_PLUG, plug: result.body });

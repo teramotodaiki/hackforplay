@@ -11,33 +11,20 @@ import Timeline from '../components/timeline';
 import ActionBar from '../components/action-bar';
 import ChannelMenu from '../components/channel-menu';
 import { Section } from '../components/section';
-import { addChat, postChat, fetchChannel, createGist, fetchQcard, updateChannel } from '../actions/';
+import {
+  addChat, postChat,
+  fetchChannel, updateChannel,
+  fetchQcard,
+} from '../actions/';
+
+const GITHUB_API = 'https://api.github.com';
 
 class Channel extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = { inputValue: '' };
-
-    const { dispatch, channels } = this.props;
-    const id = +this.props.params.id;
-
-    dispatch(fetchChannel({ id, chats: true }));
-
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = false;
-
-    const pusherKey = document.querySelector('meta[name="pusher-key"]').getAttribute('content');
-    const pusher = new Pusher(pusherKey, {
-      encrypted: true
-    });
-
-    const channel = pusher.subscribe('channel-' + id);
-    channel.bind('new_message', (data) => {
-      dispatch(addChat(id, data));
-    });
-
-    this.loginUserId = document.querySelector('meta[name="login-user-id"]').getAttribute('content');
 
     this.reload = this.reload.bind(this);
     this.createGist = this.createGist.bind(this);
@@ -67,16 +54,19 @@ class Channel extends Component {
 
     const gistName = `channel-${params.id}.js`;
     const gistWindow = window.open('about:blank', gistName);
-    dispatch(createGist({
-      [gistName]: {
-        'content': channel.script.RawCode,
-      }
-    }))
-    .then(({ body }) => {
-      gistWindow.location.href = body.html_url;
-      this.postChat('Created new gist!→' + body.html_url);
+
+    request
+    .post(GITHUB_API + '/gists')
+    .set('Accept', 'application/vnd.github.v3+json')
+    .send({ public: true, files: {
+      [gistName]: {'content': channel.head.RawCode} }
     })
-    .catch(() => gistWindow.close());
+    .then((result) => {
+      gistWindow.location.href = result.body.html_url;
+      this.postChat('Created new gist!→' + result.body.html_url);
+    })
+    .catch((err) => console.error(err) || gistWindow.close());
+
   }
 
   archive() {
@@ -92,13 +82,28 @@ class Channel extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', () => this.forceUpdate());
+    const { dispatch, channels, params: {id} } = this.props;
+
+    dispatch(fetchChannel({ id, chats: true }));
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = false;
+
+    const pusherKey = document.querySelector('meta[name="pusher-key"]').getAttribute('content');
+    const pusher = new Pusher(pusherKey, {
+      encrypted: true
+    });
+
+    const channel = pusher.subscribe('channel-' + id);
+    channel.bind('new_message', (data) => {
+      dispatch(addChat(id, data));
+    });
   }
 
   render () {
 
-    const id = +this.props.params.id;
-    const channel = this.props.channels[id];
+    const { params, channels, dispatch, authUser } = this.props;
+    const channel = channels[params.id];
 
     if (!channel) {
       return (
@@ -130,20 +135,22 @@ class Channel extends Component {
     return (
       <div style={containerStyle}>
         <Col lg={9} md={8} sm={7} xs={12} style={leftStyle}>
-          <IframeEmbed
-            ref={(embed) => this.iframe = embed ? embed.iframe : null}
-            type="code"
-            code={channel.head.raw_code}
-            implicit_mod={channel.reserved.implicit_mod}
-            visibleFocus
+          {channel.head && (
+            <IframeEmbed
+              ref={(embed) => this.iframe = embed ? embed.iframe : null}
+              type="code"
+              code={channel.head.raw_code}
+              implicit_mod={channel.reserved.implicit_mod}
+              visibleFocus
             />
+          )}
           <ChannelMenu
             channel={channel}
             reload={this.reload}
             createGist={this.createGist}
             archive={this.archive}
             style={{ backgroundColor: 'white' }}
-            isOwner={+this.loginUserId === +channel.UserID}
+            isOwner={authUser && (authUser.id == channel.user_id)}
             />
         </Col>
         <Col lg={3} md={4} sm={5} xs={11} style={rightStyle}>
