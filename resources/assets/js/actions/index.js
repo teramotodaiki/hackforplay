@@ -57,7 +57,6 @@ export const updateChannel = (channel) => {
 
     return request
       .put(`/channels/${channel.ID}`)
-      .accept('json')
       .send(channel)
       .then((result) => {
         dispatch({ type: ADD_CHANNEL, channel: result.body });
