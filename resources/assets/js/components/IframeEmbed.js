@@ -13,16 +13,18 @@ class IframeEmbed extends React.Component {
     const { type, code, implicit_mod, autoFocus } = this.props;
 
     const loadHandler = () => {
-      // focus binding
-      const e = this.iframe.contentWindow.addEventListener;
-      // focus process
-      e('focus', () => this.isFocused = true);
-      e('focus', this.props.onFocus);
-      e('focus', () => this.forceUpdate());
-      // blur process
-      e('blur', () => this.isFocused = false);
-      e('blur', this.props.onBlur);
-      e('blur', () => this.forceUpdate());
+      // ---- ドメイン分割に伴い、onfocusイベントがハンドルできない模様 ----
+      this.iframe.onfocus = () => {
+        this.isFocused = true;
+        this.props.onFocus && this.props.onFocus();
+        this.forceUpdate();
+      };
+      this.iframe.onblur = () => {
+        this.isFocused = false;
+        this.props.onBlur && this.props.onBlur();
+        this.forceUpdate();
+      };
+      // ---- ドメイン分割に伴い、onfocusイベントがハンドルできない模様 ----
 
       // autoFocus
       if (autoFocus) {
@@ -40,7 +42,7 @@ class IframeEmbed extends React.Component {
     };
 
     this.iframe.onload = loadHandler.bind(this);
-    
+
     // load game
     this.iframe.src = this.getSrc();
   }
@@ -75,7 +77,7 @@ class IframeEmbed extends React.Component {
     });
 
     return (
-      <div className={classname} style={this.props.style}>
+      <div /*className={classname}*/ style={this.props.style}>
         <div className='embed-responsive embed-responsive-3by2' style={{backgroundColor: 'black'}}>
           <iframe ref={(ref) => this.iframe = ref}></iframe>
         </div>
