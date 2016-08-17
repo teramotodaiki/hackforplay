@@ -5,6 +5,7 @@ import {
   Tabs, Tab,
   Checkbox,
   Drawer, AppBar, IconButton, MenuItem,
+  Dialog, FlatButton,
 } from 'material-ui';
 import Extension from 'material-ui/svg-icons/action/extension';
 import VideogameAsset from 'material-ui/svg-icons/hardware/videogame-asset';
@@ -35,6 +36,9 @@ export default class Stages extends Component {
       page: 1,
       noMore: false,
       selectedPlug: null,
+      connectDialog: {
+        open: false,
+      },
     };
 
     this.handleConnect = this.handleConnect.bind(this);
@@ -59,7 +63,6 @@ export default class Stages extends Component {
 
     const fetchTask = (result) => {
       const stage = result.body;
-      if (stage.state !== 'published') return;
       if (stage.user_id) {
         dispatch(fetchUserIfNeeded(stage.user_id));
       }
@@ -90,14 +93,23 @@ export default class Stages extends Component {
     } else {
       // New plug
       const fullLabel = selectedPlug.author.name + '/' + selectedPlug.label;
-      if (confirm(`NOTICE: It is NOT editable that label of plug, OK? // ラベルは きめたら へんこうできません. よいですか？ [MOD: require('${fullLabel}')]`)) {
-        dispatch(postPlug({
-          label: selectedPlug.label,
-          author: selectedPlug.author.id,
-          stage: stage.id,
-        }));
-        this.setState({ selectedPlug: null });
-      }
+      this.setState({
+        connectDialog: {
+          open: true,
+          text: `NOTICE: It is NOT editable that label of plug, OK? // ラベルは きめたら へんこうできません. よいですか？ [MOD: require('${fullLabel}')]`,
+          confirm: () => {
+            dispatch(postPlug({
+              label: selectedPlug.label,
+              author: selectedPlug.author.id,
+              stage: stage.id,
+            }));
+            this.setState({
+              selectedPlug: null,
+              connectDialog: { open: false },
+            });
+          },
+        },
+      });
     }
   }
 
@@ -134,7 +146,7 @@ export default class Stages extends Component {
       .map((stage_id) => dispatch(getStageFromLocal(stage_id)))
       .filter((stage) => !!+stage.is_mod === this.state.showMod)
       .filter((stage) => !this.state.onlyMe || authUser.id == stage.user_id)
-      .filter((stage) => stage.state === 'published')
+      .filter((stage) => ['published', 'private', 'judging', 'pending'].indexOf(stage.state) > -1)
       .map((stage) => {
         const isOwner = authUser.id == stage.user_id;
         return {
@@ -166,7 +178,7 @@ export default class Stages extends Component {
 
   render() {
     const { dispatch, authUser, containerStyle } = this.props;
-    const { showMod } = this.state;
+    const { showMod, connectDialog } = this.state;
     const { drawer } = this.context.muiTheme;
     const authors = dispatch(getAuthors());
 
@@ -190,8 +202,33 @@ export default class Stages extends Component {
       />
     );
 
+    const dialogActions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={() => this.setState({ connectDialog: { open: false } })}
+      />,
+      <FlatButton
+        label="OK"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={() => {
+          this.setState({ connectDialog: { open: false } });
+          this.state.connectDialog.confirm();
+        }}
+      />,
+    ];
+
     return (
       <div style={style}>
+        <Dialog
+          title={'Connect this stage?'}
+          modal={true}
+          open={connectDialog.open}
+          actions={dialogActions}
+        >
+          {connectDialog.text}
+        </Dialog>
         {menu}
         <Tabs
           onChange={(value) => typeof value === 'boolean' && this.setState({ showMod: value })}
