@@ -1,10 +1,6 @@
 import equal from 'deep-equal';
 import request from './request';
 
-const API = {
-  github: 'https://api.github.com'
-};
-
 export * from './projects';
 
 export * from './users';
@@ -94,21 +90,6 @@ export const postChat = (channelId, chat) => {
       .post('/channels/' + channelId + '/chats')
       .query(chat)
       .then((result) => {})
-      .catch((err) => alert(err));
-
-  };
-};
-
-// export const CREATE_GIST = 'CREATE_GIST';
-
-export const createGist = (files) => {
-  return (dispatch) => {
-
-    return request
-      .post(API.github + '/gists')
-      .set('Accept', 'application/vnd.github.v3+json')
-      .send({ public: true, files })
-      .then((result) => result)
       .catch((err) => alert(err));
 
   };
