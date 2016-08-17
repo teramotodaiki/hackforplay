@@ -149,7 +149,6 @@ class Channel extends Component {
             reload={this.reload}
             createGist={this.createGist}
             archive={this.archive}
-            style={{ backgroundColor: 'white' }}
             isOwner={authUser && (authUser.id == channel.user_id)}
             />
         </Col>
