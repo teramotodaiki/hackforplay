@@ -2,10 +2,11 @@ import React, { PropTypes, Component } from 'react';
 
 import {
   Drawer, AppBar, IconButton,
-  FloatingActionButton, Popover, Menu, MenuItem, TextField,
+  FloatingActionButton, Popover, Menu, MenuItem, ListItem, TextField,
 } from 'material-ui';
 import Power from 'material-ui/svg-icons/notification/power';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import SettingsInputComponent from 'material-ui/svg-icons/action/settings-input-component';
 
 import PlugMenuItem from './PlugMenuItem';
 
@@ -57,14 +58,26 @@ export default class PlugDrawer extends Component {
     const hasDraft = selectedPlug && typeof selectedPlug.id === 'object';
     const primaryText = { color: palette.primary1Color };
 
-    const list = Object.assign([], plugs)
-      .sort((a, b) => a.full_label > b.full_label ? 1 : -1)
-      .map((plug) => (
-        <PlugMenuItem
-          key={plug.id}
-          plug={plug}
-          handleTouchTap={handlePlugSelect}
-          style={plug.id === selectedPlugId ? primaryText : null}
+    const list = Object.assign([], authors)
+      .sort((a, b) => a.name > b.name ? 1 : -1)
+      .map((author) => (
+        <ListItem
+          key={author.id}
+          primaryText={author.name}
+          primaryTogglesNestedList={true}
+          initiallyOpen={true}
+          leftIcon={<SettingsInputComponent />}
+          nestedItems={plugs
+          .filter((plug) => plug.author_id === author.id)
+          .sort((a, b) => a.full_label > b.full_label ? 1 : -1)
+          .map((plug) => (
+            <PlugMenuItem
+              key={plug.id}
+              plug={plug}
+              handleTouchTap={handlePlugSelect}
+              style={plug.id === selectedPlugId ? primaryText : null}
+            />
+          ))}
         />
       ));
 
