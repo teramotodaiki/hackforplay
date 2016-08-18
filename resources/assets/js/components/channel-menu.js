@@ -3,6 +3,9 @@ import { Link } from 'react-router';
 
 import { FlatButton, FontIcon } from 'material-ui';
 import Home from 'material-ui/svg-icons/action/home';
+import Refresh from 'material-ui/svg-icons/navigation/refresh';
+import PanTool from 'material-ui/svg-icons/action/pan-tool';
+import Archive from 'material-ui/svg-icons/content/archive';
 
 export default class ChannelMenu extends Component {
   constructor(props) {
@@ -36,7 +39,7 @@ export default class ChannelMenu extends Component {
       </Link>
       <FlatButton
         label="retry"
-        icon={<FontIcon className="fa fa-refresh"></FontIcon>}
+        icon={<Refresh />}
         style={buttonStyle}
         onTouchTap={reload}
       />
@@ -49,14 +52,14 @@ export default class ChannelMenu extends Component {
       <Link to={`/bells/create?channel=${channel.ID}`}>
         <FlatButton
           label="bell"
-          icon={<FontIcon className="fa fa-hand-paper-o"></FontIcon>}
+          icon={<PanTool />}
           style={buttonStyle}
         />
       </Link>
       {isOwner ? (
         <FlatButton
           label="archive"
-          icon={<FontIcon className="fa fa-archive"></FontIcon>}
+          icon={<Archive />}
           style={buttonStyle}
           onTouchTap={archive}
           disabled={!!+channel.is_archived}
