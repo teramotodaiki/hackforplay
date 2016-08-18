@@ -52,6 +52,12 @@ class ChannelList extends Component {
     const { channels, containerStyle } = this.props;
     const { nextPage, isLoading } = this.state;
 
+    const divStyle = {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+    };
+
     const sorted = Object.keys(channels)
     .map((key) => channels[key])
     .filter((channel) => !+channel.is_private)
@@ -62,9 +68,11 @@ class ChannelList extends Component {
         a.updated_at < b.updated_at ? 1 : -1
       );
     })
-    .map((channel) => {
-      return <ChannelCard key={channel.ID} {...channel}></ChannelCard>;
-    });
+    .map((channel) => (
+      <ChannelCard
+        key={channel.ID}
+        channel={channel}
+      />));
 
     const next = nextPage ? (
       <Button
@@ -78,7 +86,9 @@ class ChannelList extends Component {
 
     return (
       <div style={this.props.containerStyle}>
-        {sorted}
+        <div style={divStyle}>
+          {sorted}
+        </div>
         {next}
       </div>
     );
