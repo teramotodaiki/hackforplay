@@ -14,9 +14,10 @@ import ChannelMenu from '../components/channel-menu';
 import { Section } from '../components/section';
 import Progress from '../components/Progress';
 import {
-  addChat, postChat,
+  addChat, postChat, getChats,
   fetchChannel, updateChannel,
   fetchQcard,
+  fetchUserIfNeeded,
 } from '../actions/';
 
 const GITHUB_API = 'https://api.github.com';
@@ -33,21 +34,32 @@ class Channel extends Component {
     this.handleArchive = this.handleArchive.bind(this);
   }
 
+  load(query) {
+    const { dispatch } = this.props;
+    const id = +this.props.params.id;
+
+    return dispatch(fetchChannel(id, query))
+      .then((result) => {
+        if (query.chats) {
+          dispatch(getChats())
+          .filter((chat) => chat.user_id)
+          .forEach((chat) => dispatch(fetchUserIfNeeded(chat.user_id)))
+        }
+        return result;
+      });
+  }
+
   postChat (message) {
     const { dispatch, params } = this.props;
     dispatch(postChat(params.id, { message }));
   }
 
   reload () {
-    const { dispatch } = this.props;
-    const id = +this.props.params.id;
-
-    dispatch(fetchChannel({ id, chats: true }))
+    this.load({ chats: false })
     .then((result) => {
       this.iframe.contentWindow.location.reload(false);
       this.iframe.focus();
     });
-
   }
 
   createGist () {
@@ -82,9 +94,9 @@ class Channel extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, channels, params: {id} } = this.props;
+    const { dispatch, params: {id} } = this.props;
 
-    dispatch(fetchChannel({ id, chats: true }));
+    this.load({ chats: true });
 
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = false;

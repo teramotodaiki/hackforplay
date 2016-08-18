@@ -6,7 +6,7 @@ import { lightBlue50 } from 'material-ui/styles/colors';
 
 import Chat from './chat';
 import ActionBar from './action-bar';
-import { getChats } from '../actions/';
+import { getChats, getUserFromLocal } from '../actions/';
 
 export default class Timeline extends Component {
   constructor(props) {
@@ -32,11 +32,6 @@ export default class Timeline extends Component {
   render() {
     const { channel, style, reverse, postChat, dispatch } = this.props;
 
-    const tl = dispatch(getChats())
-      .filter((item) => item.channel_id == channel.id)
-      .map((item) => <Chat key={item.id} {...item}></Chat>);
-    if (reverse) tl.reverse();
-
     const actionBarStyle = {
       height: 48,
     };
@@ -51,9 +46,36 @@ export default class Timeline extends Component {
       whiteSpace: 'pre-wrap',
       wordWrap: 'break-word',
       height: divStyle.height - actionBarStyle.height,
-      paddingTop: 20,
     };
 
+    const talkerStyle = {
+      marginLeft: 10,
+      marginTop: 16,
+      fontWeight: 600,
+      fontSize: '80%',
+    };
+
+    const chatStyle = {
+      marginLeft: 16,
+      marginTop: 6,
+    };
+
+    const tl = dispatch(getChats())
+      .filter((item) => item.channel_id == channel.id);
+    if (reverse) tl.reverse();
+
+    const chats = tl
+    .reduce((queue, chat) => {
+      const last_talker = queue.length && queue[queue.length - 1].user_id;
+      if (last_talker === chat.user_id) return queue.concat(chat);
+      return queue.concat({ key: 'T' + chat.id, _talker: chat.user_id }, chat);
+    }, [])
+    .map((item) => '_talker' in item ?
+      <div key={item.key} style={talkerStyle}>
+        {item._talker && dispatch(getUserFromLocal(item._talker)).nickname}
+      </div> :
+      <Chat key={item.id} chat={item} style={chatStyle} />
+    );
 
     const actionBar = (
       <ActionBar
@@ -68,7 +90,7 @@ export default class Timeline extends Component {
         ref={(ref) => this.timeline = findDOMNode(ref)}
         style={timelineStyle}
       >
-        {tl}
+        {chats}
       </div>
       {reverse ? null : actionBar}
     </div>);
