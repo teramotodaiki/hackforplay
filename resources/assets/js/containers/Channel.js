@@ -3,6 +3,9 @@ import request from 'superagent';
 
 import { connect } from 'react-redux';
 import Pusher from 'pusher-js';
+import {
+  Dialog, FlatButton
+} from 'material-ui';
 import { purple100, purple300 } from 'material-ui/styles/colors';
 
 import IframeEmbed from '../components/IframeEmbed';
@@ -23,11 +26,11 @@ class Channel extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { inputValue: '' };
+    this.state = { openArchiveDialog: false };
 
     this.reload = this.reload.bind(this);
     this.createGist = this.createGist.bind(this);
-    this.archive = this.archive.bind(this);
+    this.handleArchive = this.handleArchive.bind(this);
   }
 
   postChat (message) {
@@ -68,16 +71,18 @@ class Channel extends Component {
 
   }
 
+  handleArchive() {
+    this.setState({ openArchiveDialog: true });
+  }
+
   archive() {
     const { dispatch, params, channels } = this.props;
     const channel = channels[params.id];
 
-    if (confirm('Are you sure to archive this channel? (このチャンネルを「そうこ」に入れてもよろしいですか？)')) {
-      dispatch(updateChannel(
-        Object.assign({}, channel, { is_archived: true })
-      ))
-      .then((result) => alert('Archived successfully. (「そうこ」に入りました)'));
-    }
+    dispatch(updateChannel(
+      Object.assign({}, channel, { is_archived: true })
+    ));
+    this.setState({ openArchiveDialog: false });
   }
 
   componentDidMount() {
@@ -116,7 +121,6 @@ class Channel extends Component {
 
     const isSingle = this.props.containerStyle.width < columnWidth * 2 + marginSize.width;
 
-
     const containerStyle = Object.assign({}, this.props.containerStyle, {
       backgroundColor: +channel.is_archived ? purple300 : purple100,
       display: 'flex',
@@ -146,8 +150,29 @@ class Channel extends Component {
       height: rightStyle.height,
     };
 
+    const archiveActions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={() => this.setState({ openArchiveDialog: false })}
+      />,
+      <FlatButton
+        label="OK"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={() => this.archive()}
+      />,
+    ]
+
     return (
       <div style={containerStyle}>
+        <Dialog
+          title="Archive Channel"
+          open={this.state.openArchiveDialog}
+          actions={archiveActions}
+        >
+          Are you sure to archive this channel?
+        </Dialog>
         <div style={leftStyle}>
           {channel.head && (
             <IframeEmbed
@@ -162,7 +187,7 @@ class Channel extends Component {
             channel={channel}
             reload={this.reload}
             createGist={this.createGist}
-            archive={this.archive}
+            archive={this.handleArchive}
             isOwner={authUser && (authUser.id == channel.user_id)}
             height={menuHeight}
             style={menuStyle}
