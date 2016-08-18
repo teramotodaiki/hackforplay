@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
 import ChannelCard from '../components/channel-card';
-import { fetchChannels } from '../actions/';
+import {
+  fetchChannels,
+  fetchUserIfNeeded, getUserFromLocal,
+} from '../actions/';
 
 class ChannelList extends Component {
   constructor(props) {
@@ -38,10 +41,11 @@ class ChannelList extends Component {
     return nextPage ? dispatch(
       fetchChannels({ page: nextPage, is_private: false })
     ).then(({
-      body: { current_page, last_page }
+      body: { current_page, last_page, data }
     }) => {
       this.setState({ nextPage: current_page < last_page ? current_page + 1 : null });
       this.setState({ isLoading: false });
+      data.forEach((item) => dispatch(fetchUserIfNeeded(item.user_id)));
     }) :
     Promise.resolve();
 
@@ -49,7 +53,7 @@ class ChannelList extends Component {
 
   render() {
 
-    const { channels, containerStyle } = this.props;
+    const { dispatch, channels, containerStyle } = this.props;
     const { nextPage, isLoading } = this.state;
 
     const divStyle = {
@@ -72,6 +76,7 @@ class ChannelList extends Component {
       <ChannelCard
         key={channel.ID}
         channel={channel}
+        user={dispatch(getUserFromLocal(channel.user_id))}
       />));
 
     const next = nextPage ? (
