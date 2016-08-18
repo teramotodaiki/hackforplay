@@ -52,7 +52,7 @@ export default class ChannelMenu extends Component {
           icon={<FontIcon className="fa fa-archive"></FontIcon>}
           style={buttonStyle}
           onTouchTap={archive}
-          disabled={+channel.is_archived}
+          disabled={!!+channel.is_archived}
         />
       ) : null}
     </div>);
