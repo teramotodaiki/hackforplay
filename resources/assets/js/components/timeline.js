@@ -6,7 +6,7 @@ import { lightBlue50 } from 'material-ui/styles/colors';
 
 import Chat from './chat';
 import ActionBar from './action-bar';
-import { getChats } from '../actions/';
+import { getChats, getUserFromLocal } from '../actions/';
 
 export default class Timeline extends Component {
   constructor(props) {
@@ -44,7 +44,9 @@ export default class Timeline extends Component {
 
     }, [])
     .map((item) => '_talker' in item ?
-      <div key={item.key}>{'Talker ' + item._talker}</div> :
+      <div key={item.key}>
+        {item._talker && dispatch(getUserFromLocal(item._talker)).nickname}
+      </div> :
       <Chat key={item.id} {...item} />
     );
 
