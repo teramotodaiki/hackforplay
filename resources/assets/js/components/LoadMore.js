@@ -21,16 +21,16 @@ export default class LoadMore extends Component {
   }
 
   loadIfAppeared() {
+    const { onLoaded } = this.props;
     if (!this.progress || this.state.isFetching) return;
     const rect = this.progress.getBoundingClientRect();
     if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
 
       this.setState({ isFetching: true });
-      const onLoaded = this.props.onLoaded || Promise.resolve;
 
       this.props.handleLoad()
       .then((result) => {
-        onLoaded(result)
+        (onLoaded ? onLoaded(result) : Promise.resolve())
         .then(() => {
           this.setState({ isFetching: false });
           // this.loadIfAppeared();
