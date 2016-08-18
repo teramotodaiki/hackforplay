@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
 import { FlatButton, FontIcon } from 'material-ui';
@@ -15,6 +15,7 @@ export default class ChannelMenu extends Component {
   render() {
 
     const { height, reload, createGist, raiseHand, archive, channel, isOwner, style } = this.props;
+    const { router } = this.context;
 
     const divStyle = Object.assign({
       display: 'flex',
@@ -29,32 +30,32 @@ export default class ChannelMenu extends Component {
     };
 
     return (<div style={divStyle}>
-      <Link to="/channels/list">
-        <FlatButton
-          label="home"
-          icon={<Home />}
-          style={buttonStyle}
-        />
-      </Link>
+      <FlatButton
+        label="home"
+        icon={<Home />}
+        style={buttonStyle}
+        onTouchTap={() => router.push("/channels/list")}
+      />
       <FlatButton
         label="retry"
         icon={<Refresh />}
         style={buttonStyle}
         onTouchTap={reload}
       />
-      <FlatButton
-        label="code"
-        icon={<FontIcon className="fa fa-github"></FontIcon>}
-        style={buttonStyle}
-        onTouchTap={createGist}
-      />
-      <Link to={`/bells/create?channel=${channel.ID}`}>
+      {!isOwner ? (
         <FlatButton
-          label="bell"
-          icon={<PanTool />}
+          label="code"
+          icon={<FontIcon className="fa fa-github"></FontIcon>}
           style={buttonStyle}
+          onTouchTap={createGist}
         />
-      </Link>
+      ) : null}
+      <FlatButton
+        label="bell"
+        icon={<PanTool />}
+        style={buttonStyle}
+        onTouchTap={() => router.push(`/bells/create?channel=${channel.ID}`)}
+      />
       {isOwner ? (
         <FlatButton
           label="archive"
@@ -67,6 +68,10 @@ export default class ChannelMenu extends Component {
     </div>);
   }
 }
+
+ChannelMenu.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 ChannelMenu.propTypes = {
 };
