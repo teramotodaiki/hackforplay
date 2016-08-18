@@ -33,9 +33,20 @@ export default class Timeline extends Component {
     const { channel, style, reverse, postChat, dispatch } = this.props;
 
     const tl = dispatch(getChats())
-      .filter((item) => item.channel_id == channel.id)
-      .map((item) => <Chat key={item.id} {...item}></Chat>);
+      .filter((item) => item.channel_id == channel.id);
     if (reverse) tl.reverse();
+
+    const chats = tl
+    .reduce((queue, chat) => {
+      const last_talker = queue.length && queue[queue.length - 1].user_id;
+      if (last_talker === chat.user_id) return queue.concat(chat);
+      return queue.concat({ key: 'T' + chat.id, _talker: chat.user_id }, chat);
+
+    }, [])
+    .map((item) => '_talker' in item ?
+      <div key={item.key}>{'Talker ' + item._talker}</div> :
+      <Chat key={item.id} {...item} />
+    );
 
     const actionBarStyle = {
       height: 48,
@@ -68,7 +79,7 @@ export default class Timeline extends Component {
         ref={(ref) => this.timeline = findDOMNode(ref)}
         style={timelineStyle}
       >
-        {tl}
+        {chats}
       </div>
       {reverse ? null : actionBar}
     </div>);
