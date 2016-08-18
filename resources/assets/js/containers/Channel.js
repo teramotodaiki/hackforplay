@@ -14,9 +14,10 @@ import ChannelMenu from '../components/channel-menu';
 import { Section } from '../components/section';
 import Progress from '../components/Progress';
 import {
-  addChat, postChat,
+  addChat, postChat, getChats,
   fetchChannel, updateChannel,
   fetchQcard,
+  fetchUserIfNeeded,
 } from '../actions/';
 
 const GITHUB_API = 'https://api.github.com';
@@ -39,6 +40,11 @@ class Channel extends Component {
 
     return dispatch(fetchChannel(id, query))
       .then((result) => {
+        if (query.chats) {
+          dispatch(getChats())
+          .filter((chat) => chat.user_id)
+          .forEach((chat) => dispatch(fetchUserIfNeeded(chat.user_id)))
+        }
         return result;
       });
   }
