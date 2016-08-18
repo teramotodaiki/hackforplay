@@ -7,7 +7,6 @@ import { purple100, purple300 } from 'material-ui/styles/colors';
 
 import IframeEmbed from '../components/IframeEmbed';
 import Timeline from '../components/timeline';
-import ActionBar from '../components/action-bar';
 import ChannelMenu from '../components/channel-menu';
 import { Section } from '../components/section';
 import {
@@ -144,12 +143,8 @@ class Channel extends Component {
     const menuStyle = {
       marginTop: marginSize.height,
     };
-    const actionBarStyle = {
-      height: 48,
-      backgroundColor: 'white',
-    };
     const timelineStyle = {
-      height: rightStyle.height - actionBarStyle.height,
+      height: rightStyle.height,
     };
 
     return (
@@ -178,10 +173,8 @@ class Channel extends Component {
           <Timeline
             chats={channel.chats || []}
             style={timelineStyle}
-          />
-          <ActionBar
+            reverse={isSingle}
             postChat={this.postChat.bind(this)}
-            style={actionBarStyle}
             disabled={!!+channel.is_archived}
           />
         </div>
