@@ -12,6 +12,8 @@ import PermIdentity from 'material-ui/svg-icons/action/perm-identity';
 export default class ChannelCard extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = { on: false };
   }
 
   render() {
@@ -20,8 +22,8 @@ export default class ChannelCard extends React.Component {
 
     const style = {
       width: 320,
-      marginTop: 10,
-      marginLeft: 10,
+      marginTop: 20,
+      marginLeft: 20,
     };
 
     const mediaStyle = {
@@ -57,7 +59,7 @@ export default class ChannelCard extends React.Component {
     );
 
     return (
-      <Card style={style}>
+      <Card style={style} zDepth={this.state.on ? 3 : 1}>
         <CardHeader
           title={userButton}
         />
@@ -65,6 +67,8 @@ export default class ChannelCard extends React.Component {
           style={mediaStyle}
           overlay={overlay}
           onTouchTap={() => router.push(`/channels/${channel.id}/watch`)}
+          onMouseEnter={() => this.setState({ on: true })}
+          onMouseLeave={() => this.setState({ on: false })}
         >
           <img style={imgStyle} src={channel.thumbnail} />
         </CardMedia>
