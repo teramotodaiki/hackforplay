@@ -18,15 +18,14 @@ export default class ChannelMenu extends Component {
 
     const divStyle = Object.assign({
       display: 'flex',
-      justifyContent: 'center',
+      justifyContent: 'space-around',
       alignItems: 'center',
       backgroundColor: 'rgba(255,255,255,0.8)',
       height: height,
     }, style);
 
     const buttonStyle = {
-      marginLeft: 6,
-      marginRight: 6,
+      minWidth: 20,
     };
 
     return (<div style={divStyle}>
