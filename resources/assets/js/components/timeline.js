@@ -1,42 +1,72 @@
 import React, { Component } from 'react';
+import { findDOMNode } from 'react-dom';
+
+import { lightBlue50 } from 'material-ui/styles/colors';
 
 import Chat from './chat';
+import ActionBar from './action-bar';
 
 export default class Timeline extends Component {
   constructor(props) {
     super(props);
-
-    this.style = {
-      overflow: 'scroll',
-      fontFamily: 'monospace',
-      whiteSpace: 'pre-wrap',
-      wordWrap: 'break-word',
-    };
 
     this.state = { isAutoScroll: true };
 
   }
 
   componentDidMount() {
-    this.refs.container.addEventListener('scroll', ({ target }) => {
+    this.timeline.addEventListener('scroll', ({ target }) => {
       const scrollFromBottom = target.scrollHeight - target.scrollTop - target.clientHeight;
       this.setState({ isAutoScroll: scrollFromBottom <= 0 });
     });
   }
 
   componentDidUpdate() {
-    if (this.state.isAutoScroll) {
-      this.refs.container.scrollTop = this.refs.container.scrollHeight;
+    if (this.state.isAutoScroll && !this.props.reverse) {
+      this.timeline.scrollTop = this.timeline.scrollHeight;
     }
   }
 
   render() {
-    const { chats, style } = this.props;
+    const { chats, style, reverse, postChat, disabled } = this.props;
 
     const tl = chats.map((item) => <Chat key={item.id} {...item}></Chat>);
+    if (reverse) tl.reverse();
 
-    return (<div ref="container" style={Object.assign({}, this.style, style)}>
-      {tl}
+    const actionBarStyle = {
+      height: 48,
+    };
+
+    const divStyle = Object.assign({
+      backgroundColor: lightBlue50,
+    }, style);
+
+    const timelineStyle = {
+      overflow: 'scroll',
+      fontFamily: 'monospace',
+      whiteSpace: 'pre-wrap',
+      wordWrap: 'break-word',
+      height: divStyle.height - actionBarStyle.height,
+      paddingTop: 20,
+    };
+
+
+    const actionBar = (
+      <ActionBar
+        style={actionBarStyle}
+        postChat={postChat}
+        disabled={disabled}
+      />);
+
+    return (<div style={divStyle}>
+      {reverse ? actionBar : null}
+      <div
+        ref={(ref) => this.timeline = findDOMNode(ref)}
+        style={timelineStyle}
+      >
+        {tl}
+      </div>
+      {reverse ? null : actionBar}
     </div>);
   }
 }

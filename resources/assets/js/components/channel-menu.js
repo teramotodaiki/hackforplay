@@ -1,43 +1,77 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-import { Button } from 'react-bootstrap';
+import { FlatButton, FontIcon } from 'material-ui';
+import Home from 'material-ui/svg-icons/action/home';
+import Refresh from 'material-ui/svg-icons/navigation/refresh';
+import PanTool from 'material-ui/svg-icons/action/pan-tool';
+import Archive from 'material-ui/svg-icons/content/archive';
 
 export default class ChannelMenu extends Component {
   constructor(props) {
     super(props);
-
-    this.style = {
-      textAlign: 'center',
-    };
   }
 
   render() {
 
-    const { style, reload, createGist, raiseHand, archive, channel, isOwner } = this.props;
+    const { height, reload, createGist, raiseHand, archive, channel, isOwner, style } = this.props;
+    const { router } = this.context;
 
-    return (<div style={Object.assign({}, this.style, style)}>
-      <Button bsStyle="link" bsSize="large" onClick={reload}>
-        <span className="fa fa-refresh fa-3x"></span>
-      </Button>
-      <Button bsStyle="link" bsSize="large" onClick={createGist}>
-        <span className="fa fa-github fa-3x"></span>
-      </Button>
-      <Button bsStyle="link" bsSize="large">
-        <Link to={`/bells/create?channel=${channel.ID}`}>
-          <span className="fa fa-hand-paper-o fa-3x"></span>
-        </Link>
-      </Button>
-      {
-        isOwner && !+channel.is_archived ? (
-          <Button bsStyle="link" bsSize="large" onClick={archive}>
-            <span className="fa fa-archive fa-3x"></span>
-          </Button>
-        ) : null
-      }
+    const divStyle = Object.assign({
+      display: 'flex',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      backgroundColor: 'rgba(255,255,255,0.8)',
+      height: height,
+    }, style);
+
+    const buttonStyle = {
+      minWidth: 20,
+    };
+
+    return (<div style={divStyle}>
+      <FlatButton
+        label="home"
+        icon={<Home />}
+        style={buttonStyle}
+        onTouchTap={() => router.push("/channels/list")}
+      />
+      <FlatButton
+        label="retry"
+        icon={<Refresh />}
+        style={buttonStyle}
+        onTouchTap={reload}
+      />
+      {!isOwner ? (
+        <FlatButton
+          label="code"
+          icon={<FontIcon className="fa fa-github"></FontIcon>}
+          style={buttonStyle}
+          onTouchTap={createGist}
+        />
+      ) : null}
+      <FlatButton
+        label="bell"
+        icon={<PanTool />}
+        style={buttonStyle}
+        onTouchTap={() => router.push(`/bells/create?channel=${channel.ID}`)}
+      />
+      {isOwner ? (
+        <FlatButton
+          label="archive"
+          icon={<Archive />}
+          style={buttonStyle}
+          onTouchTap={archive}
+          disabled={!!+channel.is_archived}
+        />
+      ) : null}
     </div>);
   }
 }
+
+ChannelMenu.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 ChannelMenu.propTypes = {
 };

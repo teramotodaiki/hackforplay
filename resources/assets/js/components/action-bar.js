@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
-import { Col, Row, Button } from 'react-bootstrap';
+
+import { FlatButton, TextField } from 'material-ui';
+import Send from 'material-ui/svg-icons/content/send';
+import { white } from 'material-ui/styles/colors';
+import { fade } from 'material-ui/utils/colorManipulator';
 
 export default class ActionBar extends Component {
   constructor(props) {
     super(props);
 
     this.state = { inputValue: '' };
-
-    this.style = {
-      position: 'absolute',
-      bottom: 0,
-      width: '100%',
-      margin: 0,
-    };
 
     this.postChatAndClear = this.postChatAndClear.bind(this);
     this.postChatByKey = this.postChatByKey.bind(this);
@@ -34,42 +31,48 @@ export default class ActionBar extends Component {
 
   render() {
     const { style, disabled } = this.props;
-    const colStyle = {
-      margin: 0,
-      boxSizing: 'border-box',
-      padding: '.25rem 0 0 .25rem',
-      height: style.height,
-    };
-    const inputStyle = {
-      border: 'none',
-      outline: 'none',
-      resize: 'none',
+
+    const divStyle = Object.assign({
+      display: 'flex',
+      alignItems: 'flex-end',
       width: '100%',
-      height: style.height - 8,
-      overflowY: 'scroll',
-      paddingTop: '.5rem',
+      backgroundColor: white,
+    }, style);
+
+    const textWrapStyle = {
+      paddingLeft: 10,
+      paddingRight: 10,
+      backgroundColor: fade(divStyle.backgroundColor, 0.95),
+      flexGrow: 1,
+      zIndex: 1,
+    }
+
+    const buttonStyle = {
+      height: divStyle.height,
     };
 
-    return (<Row style={Object.assign({}, this.style, style)}>
-      <Col xs={10} style={colStyle}>
-        <textarea
+    return (<div style={divStyle}>
+      <div style={textWrapStyle}>
+        <TextField
+          name="chat"
           value={this.state.inputValue}
           onChange={(e) => this.setState({ inputValue: e.target.value })}
-          onKeyPress={this.postChatByKey}
-          style={inputStyle}
+          onKeyDown={this.postChatByKey}
           disabled={disabled}
-          ></textarea>
-      </Col>
-      <Col xs={2} style={colStyle}>
-       <Button
-        bsStyle="link"
-        onClick={this.postChatAndClear}
+          fullWidth={true}
+          multiLine={true}
+        />
+      </div>
+      <FlatButton
+        label="send"
+        onTouchTap={this.postChatAndClear}
         disabled={disabled}
-        >
-         <span className="fa fa-paper-plane-o"></span>
-       </Button>
-      </Col>
-    </Row>);
+        style={buttonStyle}
+        icon={<Send />}
+        primary={true}
+        labelPosition="before"
+      />
+    </div>);
   }
 }
 

@@ -247,7 +247,7 @@ export default class Stages extends Component {
         </Tabs>
         {
           this.getStageCardList({ style: cardStyle }) ||
-          (<Progress containerStyle={containerStyle} />)
+          (<Progress size={5} />)
         }
         {
           !this.state.noMore && (
