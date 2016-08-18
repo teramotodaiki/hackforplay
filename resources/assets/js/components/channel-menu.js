@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 
 import { FlatButton, FontIcon } from 'material-ui';
-
+import Home from 'material-ui/svg-icons/action/home';
 
 export default class ChannelMenu extends Component {
   constructor(props) {
@@ -27,6 +27,13 @@ export default class ChannelMenu extends Component {
     };
 
     return (<div style={divStyle}>
+      <Link to="/channels/list">
+        <FlatButton
+          label="home"
+          icon={<Home />}
+          style={buttonStyle}
+        />
+      </Link>
       <FlatButton
         label="retry"
         icon={<FontIcon className="fa fa-refresh"></FontIcon>}
