@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
 import ChannelCard from '../components/channel-card';
+import LoadMore from '../components/LoadMore';
 import {
   fetchChannels,
   fetchUserIfNeeded, getUserFromLocal,
@@ -16,36 +17,24 @@ class ChannelList extends Component {
 
     this.state = {
       nextPage: 1,
-      isLoading: false,
     };
 
-  }
-
-  componentDidMount() {
-    const { channels } = this.props;
-
-    if (Object.keys(channels).length < 15) {
-      this.fetchNextPage();
-    }
+    this.fetchNextPage = this.fetchNextPage.bind(this);
   }
 
   fetchNextPage() {
     const { dispatch } = this.props;
-    const { nextPage, isLoading } = this.state;
+    const { nextPage } = this.state;
 
-    if (isLoading) return
-    else if (nextPage) {
-      this.setState({ isLoading: true });
-    }
+    if (!nextPage) return;
 
-    return nextPage ? dispatch(
-      fetchChannels({ page: nextPage, is_private: false })
-    ).then(({
-      body: { current_page, last_page, data }
-    }) => {
+    return nextPage ?
+    dispatch(fetchChannels({ page: nextPage, is_private: false }))
+    .then((result) => {
+      const { body: {current_page, last_page, data} } = result;
       this.setState({ nextPage: current_page < last_page ? current_page + 1 : null });
-      this.setState({ isLoading: false });
       data.forEach((item) => dispatch(fetchUserIfNeeded(item.user_id)));
+      return result;
     }) :
     Promise.resolve();
 
@@ -54,7 +43,7 @@ class ChannelList extends Component {
   render() {
 
     const { dispatch, channels, containerStyle } = this.props;
-    const { nextPage, isLoading } = this.state;
+    const { nextPage } = this.state;
 
     const divStyle = {
       display: 'flex',
@@ -79,22 +68,12 @@ class ChannelList extends Component {
         user={dispatch(getUserFromLocal(channel.user_id))}
       />));
 
-    const next = nextPage ? (
-      <Button
-        bsStyle="info"
-        onClick={() => this.fetchNextPage()}
-        disabled={isLoading}
-        >
-        more
-      </Button>
-    ) : null;
-
     return (
       <div style={this.props.containerStyle}>
         <div style={divStyle}>
           {sorted}
         </div>
-        {next}
+        {<LoadMore handleLoad={this.fetchNextPage} />}
       </div>
     );
   }
