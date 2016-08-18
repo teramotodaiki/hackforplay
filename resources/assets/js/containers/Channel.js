@@ -9,6 +9,7 @@ import IframeEmbed from '../components/IframeEmbed';
 import Timeline from '../components/timeline';
 import ChannelMenu from '../components/channel-menu';
 import { Section } from '../components/section';
+import Progress from '../components/Progress';
 import {
   addChat, postChat,
   fetchChannel, updateChannel,
@@ -105,9 +106,7 @@ class Channel extends Component {
 
     if (!channel) {
       return (
-        <Section name="loading" style={this.props.containerStyle}>
-          <span className="fa fa-spinner fa-pulse fa-10x fa-fw"></span>
-        </Section>
+        <Progress size={5} />
       );
     }
 
