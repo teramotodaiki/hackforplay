@@ -76,12 +76,8 @@ class Channel extends Component {
   }
 
   archive() {
-    const { dispatch, params, channels } = this.props;
-    const channel = channels[params.id];
-
-    dispatch(updateChannel(
-      Object.assign({}, channel, { is_archived: true })
-    ));
+    const { dispatch, params: {id} } = this.props;
+    dispatch(updateChannel(id, { is_archived: true }));
     this.setState({ openArchiveDialog: false });
   }
 

@@ -48,12 +48,12 @@ export const fetchChannels = (query) => {
   };
 };
 
-export const updateChannel = (channel) => {
+export const updateChannel = (id, change) => {
   return (dispatch) => {
 
     return request
-      .put(`/channels/${channel.ID}`)
-      .send(channel)
+      .put('/api/channels/' + id)
+      .send(change)
       .then((result) => {
         dispatch({ type: ADD_CHANNEL, channel: result.body });
         return result;
