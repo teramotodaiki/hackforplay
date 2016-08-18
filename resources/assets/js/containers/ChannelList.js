@@ -95,7 +95,7 @@ class ChannelList extends Component {
           <LoadMore
             handleLoad={this.fetchNextPage}
             size={5}
-            first={nextPage === 1}
+            first={sorted.length < 1}
             style={loadMoreStyle}
           />
         )}
