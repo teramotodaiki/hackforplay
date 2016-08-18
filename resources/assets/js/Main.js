@@ -13,11 +13,8 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
 
-    const meta = document.querySelector('meta[name="login-user-id"]');
-    const userId = meta ? meta.getAttribute('content') : null;
-
     this.state = {
-      authUser: { id: +userId },
+      authUser: null,
     };
 
     this.onToggleDrawer = this.onToggleDrawer.bind(this);
@@ -57,7 +54,10 @@ export default class Main extends Component {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div>
-          <Header onToggleDrawer={this.onToggleDrawer} />
+          <Header
+            onToggleDrawer={this.onToggleDrawer}
+            authUser={this.state.authUser}
+          />
           <div>
             {this.props.children && React.cloneElement(this.props.children, {
               containerStyle,

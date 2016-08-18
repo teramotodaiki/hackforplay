@@ -104,8 +104,8 @@ export const getStageFromLocal = (id) => {
 
 export const updateStage = (id, change) => {
   return (dispatch, getState) => {
-    request.post('/api/stages/' + id)
-      .send({ _method: 'PUT' })
+    request
+      .put('/api/stages/' + id)
       .send(change)
       .then((result) => {
         dispatch({ type: ADD_STAGE, stage: result.body });

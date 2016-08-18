@@ -5,8 +5,6 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
-import { getAuthUser } from '../actions/';
-
 const statics = {
   dockMenu: [
     {
@@ -70,15 +68,7 @@ class Header extends Component {
 
     this.state = {
       open: !!props.openImmediately,
-      user: null,
     };
-  }
-
-  componentDidMount() {
-    const { dispatch } = this.props;
-
-    dispatch(getAuthUser())
-    .then((user) => this.setState({ user }));
   }
 
   componentDidUpdate() {
@@ -89,7 +79,7 @@ class Header extends Component {
   }
 
   render() {
-    const { user } = this.state;
+    const { authUser } = this.props;
 
     const affix = this.props.affix === undefined || this.props.affix;
 
@@ -102,7 +92,7 @@ class Header extends Component {
         <AppBar
           style={style}
           onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })}
-          iconElementRight={user ? (
+          iconElementRight={authUser ? (
             <IconMenu
               iconButtonElement={
                 <IconButton>
@@ -140,7 +130,7 @@ class Header extends Component {
             title={this.props.title}
             onLeftIconButtonTouchTap={() => this.setState({ open: !this.state.open })} />
             {statics.dockMenu.filter((item) => {
-              return !item.needAuth || user;
+              return !item.needAuth || authUser;
             }).map((item) => (
             <MenuItem
               key={item.text}

@@ -32,11 +32,6 @@ class ChannelController extends Controller
       ]);
       $channels = $this->query($query);
 
-      foreach ($channels as $item) {
-        $item->head = $item->project->scripts()->orderBy('ID', 'DESC')->first();
-        $item->reserved = $item->project->stages()->orderBy('ID', 'DESC')->first();
-      }
-
       return response($channels, 200);
     }
 
@@ -81,6 +76,9 @@ class ChannelController extends Controller
       }
 
       $channels = $channels->where('is_private', $query->is_private);
+      if ($query->is_private) {
+        $channels->where('UserID', $user->ID);
+      }
       $channels = $channels->where('is_archived', $query->is_archived);
 
       if (isset($query->since)) {
@@ -127,8 +125,6 @@ class ChannelController extends Controller
         ], 403);
       }
 
-      $headScript = $project->scripts()->orderBy('ID', 'DESC')->first();
-
       $channel = Channel::create([
         'DisplayName'   => $request->input('display_name'),
         'description'   => $request->input('description'),
@@ -140,7 +136,7 @@ class ChannelController extends Controller
       $channel->TeamID = $team ? $team->ID : null;
 
       if ($project->thumbnail) $channel->Thumbnail = $project->thumbnail;
-      elseif ($headScript->Thumbnail) $channel->Thumbnail = $headScript->Thumbnail;
+      elseif ($channel->head->Thumbnail) $channel->Thumbnail = $channel->head->Thumbnail;
 
       if ($request->has('is_private')) {
         $channel->is_private = $request->input('is_private');
@@ -151,9 +147,6 @@ class ChannelController extends Controller
         'message' => "=== Channel is created! ===\n" . url("channels/{$channel->ID}/watch"),
       ]);
       $request->pusher->trigger("channel-{$channel->ID}", 'new_message', $chat);
-
-      $channel->head = $headScript;
-      $channel->reserved = $channel->project->stages()->orderBy('ID', 'DESC')->first();
 
       return response($channel, 200);
     }
@@ -170,9 +163,6 @@ class ChannelController extends Controller
       if ($request->input('chats')) {
         $channel->chats;
       }
-
-      $channel->head = $channel->project->scripts()->orderBy('ID', 'DESC')->first();
-      $channel->reserved = $channel->project->stages()->orderBy('ID', 'DESC')->first();
 
       return response($channel, 200);
     }

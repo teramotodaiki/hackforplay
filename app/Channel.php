@@ -17,6 +17,7 @@ class Channel extends Model
     'is_archived',
   ];
   protected $primaryKey = 'ID';
+  protected $appends = ['reserved', 'head'];
 
   public function project()
   {
@@ -41,6 +42,16 @@ class Channel extends Model
   public function qcards()
   {
     return $this->hasMany('App\Qcard');
+  }
+
+  public function getReservedAttribute()
+  {
+    return $this->project->stages()->orderBy('ID', 'DESC')->first();
+  }
+
+  public function getHeadAttribute()
+  {
+    return $this->project->scripts()->orderBy('ID', 'DESC')->first();
   }
 
 }
