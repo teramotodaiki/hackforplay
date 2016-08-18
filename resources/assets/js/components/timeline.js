@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 
+import { lightBlue50 } from 'material-ui/styles/colors';
+
 import Chat from './chat';
 
 export default class Timeline extends Component {
   constructor(props) {
     super(props);
-
-    this.style = {
-      overflow: 'scroll',
-      fontFamily: 'monospace',
-      whiteSpace: 'pre-wrap',
-      wordWrap: 'break-word',
-    };
 
     this.state = { isAutoScroll: true };
 
@@ -35,7 +30,15 @@ export default class Timeline extends Component {
 
     const tl = chats.map((item) => <Chat key={item.id} {...item}></Chat>);
 
-    return (<div ref="container" style={Object.assign({}, this.style, style)}>
+    const divStyle = Object.assign({
+      overflow: 'scroll',
+      fontFamily: 'monospace',
+      whiteSpace: 'pre-wrap',
+      wordWrap: 'break-word',
+      backgroundColor: lightBlue50,
+    }, style);
+
+    return (<div ref="container" style={divStyle}>
       {tl}
     </div>);
   }

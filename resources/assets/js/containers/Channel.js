@@ -2,9 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import request from 'superagent';
 
 import { connect } from 'react-redux';
-import { Row, Col } from "react-bootstrap";
-import { Form, InputGroup, FormControl, Button } from "react-bootstrap";
 import Pusher from 'pusher-js';
+import { purple100, purple300 } from 'material-ui/styles/colors';
 
 import IframeEmbed from '../components/IframeEmbed';
 import Timeline from '../components/timeline';
@@ -121,7 +120,7 @@ class Channel extends Component {
 
 
     const containerStyle = Object.assign({}, this.props.containerStyle, {
-      backgroundColor: +channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
+      backgroundColor: +channel.is_archived ? purple300 : purple100,
       display: 'flex',
       flexDirection: isSingle ? 'column' : 'row',
       justifyContent: 'center',
@@ -151,7 +150,6 @@ class Channel extends Component {
     };
     const timelineStyle = {
       height: rightStyle.height - actionBarStyle.height,
-      backgroundColor: '#f7fafb',
     };
 
     return (
