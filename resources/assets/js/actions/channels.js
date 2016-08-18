@@ -16,15 +16,15 @@ export const addChannel = (channel) => {
   return { type: ADD_CHANNEL, channel };
 };
 
-export const fetchChannel = ({ id, chats }) => {
+export const fetchChannel = (id, query = {}) => {
   return (dispatch) => {
 
     return request
       .get('/channels/' + id)
-      .query({ chats: chats })
+      .query(query)
       .then((result) => {
         dispatch({ type: ADD_CHANNEL, channel: result.body });
-        if (chats) {
+        if (query.chats) {
           result.body.chats
             .forEach((chat) => dispatch({ type: ADD_CHAT, chat }));
         }

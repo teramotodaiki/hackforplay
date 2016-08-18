@@ -28,7 +28,7 @@ class BellCreate extends React.Component {
     Promise.resolve(fakeResult)
     .then((result) => result.body ?
       result :
-      dispatch(fetchChannel({ id: query.channel, chats: false }))
+      dispatch(fetchChannel(query.channel, { chats: false }))
     )
     .then((result) => dispatch(fetchTeam(result.body.TeamID)))
     .then((result) => this.setState({ team: result.body, isLoading: false }));
