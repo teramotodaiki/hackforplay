@@ -5,6 +5,8 @@ import {
   LinearProgress,
 } from 'material-ui';
 
+import Progress from './Progress';
+
 export default class LoadMore extends Component {
   constructor(props) {
     super(props);
@@ -47,6 +49,8 @@ export default class LoadMore extends Component {
     return (<div>
       <div ref={(e) => this.sensor = findDOMNode(e)} />
       {isFetching ? (
+        first ?
+          <Progress size={this.props.size} /> :
           <LinearProgress mode="indeterminate" />
       ) : null}
     </div>);

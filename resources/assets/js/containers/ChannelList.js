@@ -73,7 +73,13 @@ class ChannelList extends Component {
         <div style={divStyle}>
           {sorted}
         </div>
-        {<LoadMore handleLoad={this.fetchNextPage} />}
+        {nextPage && (
+          <LoadMore
+            handleLoad={this.fetchNextPage}
+            size={5}
+            first={nextPage === 1}
+          />
+        )}
       </div>
     );
   }
