@@ -113,28 +113,50 @@ class Channel extends Component {
       );
     }
 
+    const marginSize = { width: 10, height: 10 };
+    const columnWidth = Math.min(480, window.innerWidth);
+    const menuHeight = 60;
+
+    const isSingle = this.props.containerStyle.width < columnWidth * 2 + marginSize.width;
+
+
     const containerStyle = Object.assign({}, this.props.containerStyle, {
       backgroundColor: +channel.is_archived ? 'rgb(196, 149, 138)' : 'inherit',
+      display: 'flex',
+      flexDirection: isSingle ? 'column' : 'row',
+      justifyContent: 'center',
+      alignItems: isSingle ? 'center' : 'stretch',
       marginTop: 0,
+      paddingTop: this.props.containerStyle.marginTop,
     });
 
-    const leftStyle = { 'padding': '0' };
+    const leftStyle = {
+      width: columnWidth,
+    };
     const rightStyle = {
-      padding: '0',
-      border: '1px solid #eceeef',
-      backgroundColor: '#f7fafb',
+      width: columnWidth,
+      marginTop: isSingle ? marginSize.height : 0,
+      marginLeft: isSingle ? 0 : marginSize.width,
+      height: window.innerHeight -
+        this.context.muiTheme.appBar.height -
+        containerStyle.paddingTop -
+        marginSize.height,
+    };
+    const menuStyle = {
+      marginTop: marginSize.height,
     };
     const actionBarStyle = {
       height: 48,
       backgroundColor: 'white',
     };
     const timelineStyle = {
-      height: window.innerHeight - this.context.muiTheme.appBar.height - 2,
+      height: rightStyle.height - actionBarStyle.height,
+      backgroundColor: '#f7fafb',
     };
 
     return (
       <div style={containerStyle}>
-        <Col lg={9} md={8} sm={7} xs={12} style={leftStyle}>
+        <div style={leftStyle}>
           {channel.head && (
             <IframeEmbed
               ref={(embed) => this.iframe = embed ? embed.iframe : null}
@@ -150,19 +172,21 @@ class Channel extends Component {
             createGist={this.createGist}
             archive={this.archive}
             isOwner={authUser && (authUser.id == channel.user_id)}
-            />
-        </Col>
-        <Col lg={3} md={4} sm={5} xs={11} style={rightStyle}>
+            height={menuHeight}
+            style={menuStyle}
+          />
+        </div>
+        <div style={rightStyle}>
           <Timeline
             chats={channel.chats || []}
             style={timelineStyle}
-            />
+          />
           <ActionBar
             postChat={this.postChat.bind(this)}
             style={actionBarStyle}
             disabled={!!+channel.is_archived}
-            />
-        </Col>
+          />
+        </div>
       </div>
     );
   }

@@ -7,29 +7,28 @@ import { FlatButton, FontIcon } from 'material-ui';
 export default class ChannelMenu extends Component {
   constructor(props) {
     super(props);
-
-    this.style = {
-      textAlign: 'center',
-    };
   }
 
   render() {
 
-    const { reload, createGist, raiseHand, archive, channel, isOwner } = this.props;
+    const { height, reload, createGist, raiseHand, archive, channel, isOwner, style } = this.props;
 
-    const divStyle = {
+    const divStyle = Object.assign({
       display: 'flex',
       justifyContent: 'center',
+      alignItems: 'center',
       backgroundColor: 'rgba(255,255,255,0.8)',
-    };
+      height: height,
+    }, style);
 
     const buttonStyle = {
-      margin: 10,
+      marginLeft: 6,
+      marginRight: 6,
     };
 
     return (<div style={divStyle}>
       <FlatButton
-        label="refresh"
+        label="retry"
         icon={<FontIcon className="fa fa-refresh"></FontIcon>}
         style={buttonStyle}
         onTouchTap={reload}
