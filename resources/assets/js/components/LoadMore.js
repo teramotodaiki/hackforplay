@@ -5,6 +5,8 @@ import {
   LinearProgress,
 } from 'material-ui';
 
+import Progress from './Progress';
+
 export default class LoadMore extends Component {
   constructor(props) {
     super(props);
@@ -21,16 +23,16 @@ export default class LoadMore extends Component {
   }
 
   loadIfAppeared() {
-    if (!this.progress || this.state.isFetching) return;
-    const rect = this.progress.getBoundingClientRect();
+    const { onLoaded } = this.props;
+    if (!this.sensor || this.state.isFetching) return;
+    const rect = this.sensor.getBoundingClientRect();
     if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
 
       this.setState({ isFetching: true });
-      const onLoaded = this.props.onLoaded || Promise.resolve;
 
       this.props.handleLoad()
       .then((result) => {
-        onLoaded(result)
+        (onLoaded ? onLoaded(result) : Promise.resolve())
         .then(() => {
           this.setState({ isFetching: false });
           // this.loadIfAppeared();
@@ -41,17 +43,17 @@ export default class LoadMore extends Component {
   }
 
   render() {
-    const style = {
-      opacity: this.state.isFetching ? 1 : 0,
-    };
+    const { isFetching } = this.state;
+    const { first, style } = this.props;
 
-    return (
-      <LinearProgress
-        ref={(element) => this.progress = findDOMNode(element)}
-        mode="indeterminate"
-        style={style}
-      />
-    );
+    return (<div style={style}>
+      <div ref={(e) => this.sensor = findDOMNode(e)} />
+      {isFetching ? (
+        first ?
+          <Progress size={this.props.size} /> :
+          <LinearProgress mode="indeterminate" />
+      ) : null}
+    </div>);
   }
 }
 

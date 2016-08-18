@@ -76,12 +76,8 @@ class Channel extends Component {
   }
 
   archive() {
-    const { dispatch, params, channels } = this.props;
-    const channel = channels[params.id];
-
-    dispatch(updateChannel(
-      Object.assign({}, channel, { is_archived: true })
-    ));
+    const { dispatch, params: {id} } = this.props;
+    dispatch(updateChannel(id, { is_archived: true }));
     this.setState({ openArchiveDialog: false });
   }
 
@@ -162,7 +158,7 @@ class Channel extends Component {
         keyboardFocused={true}
         onTouchTap={() => this.archive()}
       />,
-    ]
+    ];
 
     return (
       <div style={containerStyle}>
@@ -195,11 +191,10 @@ class Channel extends Component {
         </div>
         <div style={rightStyle}>
           <Timeline
-            chats={channel.chats || []}
+            channel={channel}
             style={timelineStyle}
             reverse={isSingle}
             postChat={this.postChat.bind(this)}
-            disabled={!!+channel.is_archived}
           />
         </div>
       </div>

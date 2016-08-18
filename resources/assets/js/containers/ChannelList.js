@@ -3,45 +3,49 @@ import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
 import ChannelCard from '../components/channel-card';
-import { fetchChannels } from '../actions/';
+import LoadMore from '../components/LoadMore';
+import {
+  fetchChannels,
+  fetchUserIfNeeded, getUserFromLocal,
+} from '../actions/';
 
 class ChannelList extends Component {
   constructor(props) {
     super(props);
 
-    const { dispatch, channels } = this.props;
+    this.state = { nextPage: 1 };
 
-    this.state = {
-      nextPage: 1,
-      isLoading: false,
-    };
-
+    this.fetchNextPage = this.fetchNextPage.bind(this);
   }
 
   componentDidMount() {
-    const { channels } = this.props;
+    this.fetchPrivatePage(1);
+  }
 
-    if (Object.keys(channels).length < 15) {
-      this.fetchNextPage();
-    }
+  fetchPrivatePage(page) {
+    const { dispatch } = this.props;
+
+    return dispatch(fetchChannels({ page, is_private: 1 }))
+      .then((result) => {
+        if (result.body.next_page_url) {
+          this.fetchPrivatePage(page + 1);
+        }
+      });
   }
 
   fetchNextPage() {
     const { dispatch } = this.props;
-    const { nextPage, isLoading } = this.state;
+    const { nextPage } = this.state;
 
-    if (isLoading) return
-    else if (nextPage) {
-      this.setState({ isLoading: true });
-    }
+    if (!nextPage) return;
 
-    return nextPage ? dispatch(
-      fetchChannels({ page: nextPage, is_private: false })
-    ).then(({
-      body: { current_page, last_page }
-    }) => {
+    return nextPage ?
+    dispatch(fetchChannels({ page: nextPage, is_private: false }))
+    .then((result) => {
+      const { body: {current_page, last_page, data} } = result;
       this.setState({ nextPage: current_page < last_page ? current_page + 1 : null });
-      this.setState({ isLoading: false });
+      data.forEach((item) => dispatch(fetchUserIfNeeded(item.user_id)));
+      return result;
     }) :
     Promise.resolve();
 
@@ -49,12 +53,25 @@ class ChannelList extends Component {
 
   render() {
 
-    const { channels, containerStyle } = this.props;
-    const { nextPage, isLoading } = this.state;
+    const { dispatch, channels, authUser } = this.props;
+    const { nextPage } = this.state;
+
+    const containerStyle = Object.assign({}, this.props.containerStyle, {
+      paddingBottom: 10,
+    });
+
+    const divStyle = {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+    };
+
+    const loadMoreStyle = {
+      marginTop: 10,
+    };
 
     const sorted = Object.keys(channels)
     .map((key) => channels[key])
-    .filter((channel) => !+channel.is_private)
     .sort((a, b) => {
       return (
         a.updated_at == null ? 1 :
@@ -62,24 +79,26 @@ class ChannelList extends Component {
         a.updated_at < b.updated_at ? 1 : -1
       );
     })
-    .map((channel) => {
-      return <ChannelCard key={channel.ID} {...channel}></ChannelCard>;
-    });
-
-    const next = nextPage ? (
-      <Button
-        bsStyle="info"
-        onClick={() => this.fetchNextPage()}
-        disabled={isLoading}
-        >
-        more
-      </Button>
-    ) : null;
+    .map((channel) => (
+      <ChannelCard
+        key={channel.ID}
+        channel={channel}
+        user={dispatch(getUserFromLocal(channel.user_id))}
+      />));
 
     return (
-      <div style={this.props.containerStyle}>
-        {sorted}
-        {next}
+      <div style={containerStyle}>
+        <div style={divStyle}>
+          {sorted}
+        </div>
+        {nextPage && (
+          <LoadMore
+            handleLoad={this.fetchNextPage}
+            size={5}
+            first={nextPage === 1}
+            style={loadMoreStyle}
+          />
+        )}
       </div>
     );
   }

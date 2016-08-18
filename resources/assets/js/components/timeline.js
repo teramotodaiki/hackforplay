@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { findDOMNode } from 'react-dom';
 
 import { lightBlue50 } from 'material-ui/styles/colors';
 
 import Chat from './chat';
 import ActionBar from './action-bar';
+import { getChats } from '../actions/';
 
 export default class Timeline extends Component {
   constructor(props) {
@@ -28,9 +30,11 @@ export default class Timeline extends Component {
   }
 
   render() {
-    const { chats, style, reverse, postChat, disabled } = this.props;
+    const { channel, style, reverse, postChat, dispatch } = this.props;
 
-    const tl = chats.map((item) => <Chat key={item.id} {...item}></Chat>);
+    const tl = dispatch(getChats())
+      .filter((item) => item.channel_id == channel.id)
+      .map((item) => <Chat key={item.id} {...item}></Chat>);
     if (reverse) tl.reverse();
 
     const actionBarStyle = {
@@ -55,7 +59,7 @@ export default class Timeline extends Component {
       <ActionBar
         style={actionBarStyle}
         postChat={postChat}
-        disabled={disabled}
+        disabled={!!+channel.is_archived}
       />);
 
     return (<div style={divStyle}>
@@ -73,3 +77,9 @@ export default class Timeline extends Component {
 
 Timeline.propTypes = {
 };
+
+const mapStateToProps = (state) => {
+  return Object.assign({}, state);
+};
+
+export default connect(mapStateToProps)(Timeline);

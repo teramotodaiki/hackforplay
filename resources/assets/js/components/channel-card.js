@@ -1,37 +1,86 @@
-import React from 'react';
-import { Col, Panel, Button } from 'react-bootstrap';
-import { Link } from 'react-router';
+import React, { Component, PropTypes } from 'react';
 
-export default ({ ID, Thumbnail, user, description }) => {
+import {
+  Card, CardHeader, CardMedia, CardTitle,
+  FlatButton, Avatar,
+} from 'material-ui';
+import { white } from 'material-ui/styles/colors';
+import { fade } from 'material-ui/utils/colorManipulator';
+import PermIdentity from 'material-ui/svg-icons/action/perm-identity';
+import Lock from 'material-ui/svg-icons/action/lock';
 
-  const thumbnailStyle = {
-    background: `url(${Thumbnail}) center center`,
-    backgroundSize: 'cover',
-    height: '12rem',
-  };
-  const lineHeight = 1.428571429;
-  const fixedHeight = (rem) => {
-    return {
-      height: (rem * lineHeight) + 'rem',
-      overflowY: 'scroll',
+
+export default class ChannelCard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { on: false };
+  }
+
+  render() {
+    const { channel, user } = this.props;
+    const { router } = this.context;
+
+    const style = {
+      width: 320,
+      marginTop: 20,
+      marginLeft: 20,
     };
-  };
 
-  const mypage = user && 'id' in user ? `/m?id=${user.ID}` : '';
-  const nickname = user && 'nickname' in user ? user.Nickname : '';
+    const mediaStyle = {
+      cursor: 'pointer',
+    };
 
-  return (
-    <Col xs={6} sm={4} md={3}>
-      <Panel>
-        <div style={thumbnailStyle}></div>
-        <p style={fixedHeight(1)}>
-          Owner: <a href={mypage}>{nickname}</a>
-        </p>
-        <p style={fixedHeight(2)} >{description}</p>
-        <Link to={`/channels/${ID}/watch`}>
-          <Button bsStyle="primary">watch</Button>
-        </Link>
-      </Panel>
-    </Col>
-  );
+    const imgStyle = {
+      width: style.width,
+      height: style.width / 3 * 2,
+    };
+
+    const overlayStyle = {
+      overflowX: 'hidden',
+      maxHeight: imgStyle.height / 2,
+      color: fade(white, 0.8),
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingBottom: 10,
+    };
+
+    const overlay = channel.description ? (
+      <div style={overlayStyle}>
+        {channel.description}
+      </div>
+    ) : null;
+
+    const userButton = (
+      <FlatButton
+        label={user && user.nickname}
+        onTouchTap={() => location.href = '/m?id=' + user.id}
+        icon={<PermIdentity />}
+      />
+    );
+
+    return (
+      <Card style={style} zDepth={this.state.on ? 3 : 1}>
+        <CardHeader title={userButton}>
+          {channel.is_private ? <Avatar icon={<Lock />} size={30} /> : null }
+        </CardHeader>
+        <CardMedia
+          style={mediaStyle}
+          overlay={overlay}
+          onTouchTap={() => router.push(`/channels/${channel.id}/watch`)}
+          onMouseEnter={() => this.setState({ on: true })}
+          onMouseLeave={() => this.setState({ on: false })}
+        >
+          <img style={imgStyle} src={channel.thumbnail} />
+        </CardMedia>
+      </Card>
+    );
+  }
 }
+
+ChannelCard.propTypes = {
+};
+
+ChannelCard.contextTypes = {
+  router: PropTypes.object.isRequired,
+};

@@ -14,7 +14,7 @@ export const PUT_QCARD_BOTH = 'PUT_QCARD_BOTH';
 
 export const addChannel = (channel) => {
   return { type: ADD_CHANNEL, channel };
-}
+};
 
 export const fetchChannel = ({ id, chats }) => {
   return (dispatch) => {
@@ -24,6 +24,10 @@ export const fetchChannel = ({ id, chats }) => {
       .query({ chats: chats })
       .then((result) => {
         dispatch({ type: ADD_CHANNEL, channel: result.body });
+        if (chats) {
+          result.body.chats
+            .forEach((chat) => dispatch({ type: ADD_CHAT, chat }));
+        }
         return result;
       })
       .catch((err) => alert(err));
@@ -48,12 +52,12 @@ export const fetchChannels = (query) => {
   };
 };
 
-export const updateChannel = (channel) => {
+export const updateChannel = (id, change) => {
   return (dispatch) => {
 
     return request
-      .put(`/channels/${channel.ID}`)
-      .send(channel)
+      .put('/api/channels/' + id)
+      .send(change)
       .then((result) => {
         dispatch({ type: ADD_CHANNEL, channel: result.body });
         return result;
@@ -91,6 +95,14 @@ export const postChat = (channelId, chat) => {
       .then((result) => {})
       .catch((err) => alert(err));
 
+  };
+};
+
+export const getChats = () => {
+  return (dispatch, getState) => {
+    return Array.prototype.concat.apply([],
+      Object.values(getState().channels).map((channel) => Object.values(channel.chats))
+    );
   };
 };
 
