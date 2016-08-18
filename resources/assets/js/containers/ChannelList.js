@@ -18,6 +18,21 @@ class ChannelList extends Component {
     this.fetchNextPage = this.fetchNextPage.bind(this);
   }
 
+  componentDidMount() {
+    this.fetchPrivatePage(1);
+  }
+
+  fetchPrivatePage(page) {
+    const { dispatch } = this.props;
+
+    return dispatch(fetchChannels({ page, is_private: 1 }))
+      .then((result) => {
+        if (result.body.next_page_url) {
+          this.fetchPrivatePage(page + 1);
+        }
+      });
+  }
+
   fetchNextPage() {
     const { dispatch } = this.props;
     const { nextPage } = this.state;
@@ -38,7 +53,7 @@ class ChannelList extends Component {
 
   render() {
 
-    const { dispatch, channels } = this.props;
+    const { dispatch, channels, authUser } = this.props;
     const { nextPage } = this.state;
 
     const containerStyle = Object.assign({}, this.props.containerStyle, {
@@ -57,7 +72,6 @@ class ChannelList extends Component {
 
     const sorted = Object.keys(channels)
     .map((key) => channels[key])
-    .filter((channel) => !+channel.is_private)
     .sort((a, b) => {
       return (
         a.updated_at == null ? 1 :
