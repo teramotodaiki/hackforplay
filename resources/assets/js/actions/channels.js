@@ -98,6 +98,14 @@ export const postChat = (channelId, chat) => {
   };
 };
 
+export const getChats = () => {
+  return (dispatch, getState) => {
+    return Array.prototype.concat.apply([],
+      Object.values(getState().channels).map((channel) => Object.values(channel.chats))
+    );
+  };
+};
+
 export const postBell = (team, channel) => {
   return (dispatch) => {
 
