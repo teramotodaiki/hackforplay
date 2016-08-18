@@ -22,8 +22,8 @@ export default class LoadMore extends Component {
 
   loadIfAppeared() {
     const { onLoaded } = this.props;
-    if (!this.progress || this.state.isFetching) return;
-    const rect = this.progress.getBoundingClientRect();
+    if (!this.sensor || this.state.isFetching) return;
+    const rect = this.sensor.getBoundingClientRect();
     if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
 
       this.setState({ isFetching: true });
@@ -41,17 +41,15 @@ export default class LoadMore extends Component {
   }
 
   render() {
-    const style = {
-      opacity: this.state.isFetching ? 1 : 0,
-    };
+    const { isFetching } = this.state;
+    const { first } = this.props;
 
-    return (
-      <LinearProgress
-        ref={(element) => this.progress = findDOMNode(element)}
-        mode="indeterminate"
-        style={style}
-      />
-    );
+    return (<div>
+      <div ref={(e) => this.sensor = findDOMNode(e)} />
+      {isFetching ? (
+          <LinearProgress mode="indeterminate" />
+      ) : null}
+    </div>);
   }
 }
 
