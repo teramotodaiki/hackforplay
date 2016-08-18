@@ -42,8 +42,12 @@ class ChannelList extends Component {
 
   render() {
 
-    const { dispatch, channels, containerStyle } = this.props;
+    const { dispatch, channels } = this.props;
     const { nextPage } = this.state;
+
+    const containerStyle = Object.assign({}, this.props.containerStyle, {
+      paddingBottom: 10,
+    });
 
     const divStyle = {
       display: 'flex',
@@ -69,7 +73,7 @@ class ChannelList extends Component {
       />));
 
     return (
-      <div style={this.props.containerStyle}>
+      <div style={containerStyle}>
         <div style={divStyle}>
           {sorted}
         </div>
