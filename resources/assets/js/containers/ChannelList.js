@@ -55,6 +55,10 @@ class ChannelList extends Component {
       justifyContent: 'center',
     };
 
+    const loadMoreStyle = {
+      marginTop: 10,
+    };
+
     const sorted = Object.keys(channels)
     .map((key) => channels[key])
     .filter((channel) => !+channel.is_private)
@@ -82,6 +86,7 @@ class ChannelList extends Component {
             handleLoad={this.fetchNextPage}
             size={5}
             first={nextPage === 1}
+            style={loadMoreStyle}
           />
         )}
       </div>

@@ -44,9 +44,9 @@ export default class LoadMore extends Component {
 
   render() {
     const { isFetching } = this.state;
-    const { first } = this.props;
+    const { first, style } = this.props;
 
-    return (<div>
+    return (<div style={style}>
       <div ref={(e) => this.sensor = findDOMNode(e)} />
       {isFetching ? (
         first ?
