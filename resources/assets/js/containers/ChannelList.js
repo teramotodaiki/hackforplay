@@ -13,11 +13,7 @@ class ChannelList extends Component {
   constructor(props) {
     super(props);
 
-    const { dispatch, channels } = this.props;
-
-    this.state = {
-      nextPage: 1,
-    };
+    this.state = { nextPage: 1 };
 
     this.fetchNextPage = this.fetchNextPage.bind(this);
   }
