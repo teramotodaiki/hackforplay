@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
-import ChannelCard from '../components/channel-card';
+import ChannelCard from '../components/ChannelCard';
 import LoadMore from '../components/LoadMore';
 import {
   fetchChannels,

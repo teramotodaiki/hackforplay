@@ -4,8 +4,8 @@ import { findDOMNode } from 'react-dom';
 
 import { lightBlue50 } from 'material-ui/styles/colors';
 
-import Chat from './chat';
-import ActionBar from './action-bar';
+import Chat from './Chat';
+import ActionBar from './ActionBar';
 import { getChats, getUserFromLocal } from '../actions/';
 
 export default class Timeline extends Component {

@@ -9,7 +9,7 @@ import {
 import { purple100, purple300 } from 'material-ui/styles/colors';
 
 import IframeEmbed from '../components/IframeEmbed';
-import Timeline from '../components/timeline';
+import Timeline from '../components/Timeline';
 import ChannelMenu from '../components/channel-menu';
 import { Section } from '../components/section';
 import Progress from '../components/Progress';
