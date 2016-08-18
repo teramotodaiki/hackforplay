@@ -4,6 +4,8 @@ import {
   Card, CardHeader, CardMedia, CardTitle,
   FlatButton,
 } from 'material-ui';
+import { white } from 'material-ui/styles/colors';
+import { fade } from 'material-ui/utils/colorManipulator';
 import PermIdentity from 'material-ui/svg-icons/action/perm-identity';
 
 
@@ -26,6 +28,26 @@ export default class ChannelCard extends React.Component {
       cursor: 'pointer',
     };
 
+    const imgStyle = {
+      width: style.width,
+      height: style.width / 3 * 2,
+    };
+
+    const overlayStyle = {
+      overflowX: 'hidden',
+      maxHeight: imgStyle.height / 2,
+      color: fade(white, 0.8),
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingBottom: 10,
+    };
+
+    const overlay = channel.description ? (
+      <div style={overlayStyle}>
+        {channel.description}
+      </div>
+    ) : null;
+
     const userButton = (
       <FlatButton
         label={user && user.nickname}
@@ -41,10 +63,10 @@ export default class ChannelCard extends React.Component {
         />
         <CardMedia
           style={mediaStyle}
-          overlay={<CardTitle title={channel.description} />}
+          overlay={overlay}
           onTouchTap={() => router.push(`/channels/${channel.id}/watch`)}
         >
-          <img src={channel.thumbnail} />
+          <img style={imgStyle} src={channel.thumbnail} />
         </CardMedia>
       </Card>
     );
