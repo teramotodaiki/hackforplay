@@ -2,11 +2,12 @@ import React, { Component, PropTypes } from 'react';
 
 import {
   Card, CardHeader, CardMedia, CardTitle,
-  FlatButton,
+  FlatButton, Avatar,
 } from 'material-ui';
 import { white } from 'material-ui/styles/colors';
 import { fade } from 'material-ui/utils/colorManipulator';
 import PermIdentity from 'material-ui/svg-icons/action/perm-identity';
+import Lock from 'material-ui/svg-icons/action/lock';
 
 
 export default class ChannelCard extends React.Component {
@@ -60,9 +61,9 @@ export default class ChannelCard extends React.Component {
 
     return (
       <Card style={style} zDepth={this.state.on ? 3 : 1}>
-        <CardHeader
-          title={userButton}
-        />
+        <CardHeader title={userButton}>
+          {channel.is_private ? <Avatar icon={<Lock />} size={30} /> : null }
+        </CardHeader>
         <CardMedia
           style={mediaStyle}
           overlay={overlay}
