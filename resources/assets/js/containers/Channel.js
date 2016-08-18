@@ -191,11 +191,10 @@ class Channel extends Component {
         </div>
         <div style={rightStyle}>
           <Timeline
-            chats={channel.chats || []}
+            channel={channel}
             style={timelineStyle}
             reverse={isSingle}
             postChat={this.postChat.bind(this)}
-            disabled={!!+channel.is_archived}
           />
         </div>
       </div>
