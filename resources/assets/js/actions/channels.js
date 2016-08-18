@@ -14,7 +14,7 @@ export const PUT_QCARD_BOTH = 'PUT_QCARD_BOTH';
 
 export const addChannel = (channel) => {
   return { type: ADD_CHANNEL, channel };
-}
+};
 
 export const fetchChannel = ({ id, chats }) => {
   return (dispatch) => {

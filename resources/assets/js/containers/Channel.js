@@ -162,7 +162,7 @@ class Channel extends Component {
         keyboardFocused={true}
         onTouchTap={() => this.archive()}
       />,
-    ]
+    ];
 
     return (
       <div style={containerStyle}>
