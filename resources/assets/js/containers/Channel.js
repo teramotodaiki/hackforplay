@@ -46,8 +46,7 @@ class Channel extends Component {
           .forEach((chat) => dispatch(fetchUserIfNeeded(chat.user_id)))
         }
         return result;
-      })
-      .catch((err) => console.error(0, err));
+      });
   }
 
   postChat (message) {
@@ -90,9 +89,7 @@ class Channel extends Component {
 
   archive() {
     const { dispatch, params: {id} } = this.props;
-    dispatch(updateChannel(id, { is_archived: true }))
-    .then((value) => console.log(value))
-    .catch((err) => console.error(0, err));
+    dispatch(updateChannel(id, { is_archived: true }));
 
     this.setState({ openArchiveDialog: false });
   }
