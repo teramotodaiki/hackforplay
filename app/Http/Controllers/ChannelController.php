@@ -76,7 +76,7 @@ class ChannelController extends Controller
       }
 
       $channels = $channels->where('is_private', $query->is_private);
-      if ($query->is_private) {
+      if ($query->is_private && $query->is_private !== 'false') {
         $channels->where('UserID', $user->ID);
       }
       $channels = $channels->where('is_archived', $query->is_archived);
