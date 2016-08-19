@@ -90,6 +90,7 @@ class Channel extends Component {
   archive() {
     const { dispatch, params: {id} } = this.props;
     dispatch(updateChannel(id, { is_archived: true }));
+
     this.setState({ openArchiveDialog: false });
   }
 

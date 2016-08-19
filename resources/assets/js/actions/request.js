@@ -8,13 +8,13 @@ request.use((req) => {
   req.set('Content-Type', 'application/json');
   return req;
 });
-request.use((req) => {
+
+request.put = (...args) => {
   // PUT method is NOT allowed in Microsoft Azure Web Apps, so use a fake method
-  req.put = (...args) => {
-    req.post.apply(req, args);
-    return req.send({ _method: 'PUT' });
-  };
-});
+  return request
+    .post.apply(request, args)
+    .send({ _method: 'PUT' });
+};
 
 var _csrfToken = null;
 const getCsrfToken = () => {

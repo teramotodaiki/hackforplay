@@ -76,7 +76,7 @@ class ChannelController extends Controller
       }
 
       $channels = $channels->where('is_private', $query->is_private);
-      if ($query->is_private) {
+      if ($query->is_private && $query->is_private !== 'false') {
         $channels->where('UserID', $user->ID);
       }
       $channels = $channels->where('is_archived', $query->is_archived);
@@ -190,7 +190,7 @@ class ChannelController extends Controller
       $channel = Channel::findOrFail($id);
       $user = $request->user();
 
-      if ($channel->UserID !== $user->ID) {
+      if ($channel->UserID != $user->ID) {
         return response([
           'message' => 'cant_update_channel',
         ], 200);
