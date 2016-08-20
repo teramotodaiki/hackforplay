@@ -135,9 +135,6 @@ class ChannelController extends Controller
       $channel->UserID = $user ? $user->ID : null;
       $channel->TeamID = $team ? $team->ID : null;
 
-      if ($project->thumbnail) $channel->Thumbnail = $project->thumbnail;
-      elseif ($channel->head->Thumbnail) $channel->Thumbnail = $channel->head->Thumbnail;
-
       if ($request->has('is_private')) {
         $channel->is_private = $request->input('is_private');
       }

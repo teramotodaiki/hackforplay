@@ -193,7 +193,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 		    	<form>
 				    <div class="modal-body">
 			        	<div class="form-group">
-			    			<img class="stage-thumbnail" src="" alt="" width="240" height="160">
+			    			<img class="fetched-thumbnail" src="" alt="ひょうしが さつえいされて いない" width="240" height="160">
 			        	</div>
 			        	<div class="form-group">
 			        		<label class="control-label">ステージ名<small>（自由に決めてください）</small>:</label>
@@ -282,18 +282,22 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="screenshotModal" tabindex="-1" role="dialog" aria-labelledby="screenshotModalLabel" aria-hidden="true">
+	<div class="modal fade modal-lg" id="confirmThumbnailModal" tabindex="-1" role="dialog" aria-labelledby="confirmThumbnaiModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-	    			<h4>右クリックで保存してください</h4>
+					<h2>カシャッ!!</h2>
+    			<h4>このステージの ひょうしを へんこうしますか？</h4>
 				</div>
-			    <div class="modal-body">
-			    	<img class="stage-thumbnail" src="" width="480" height="320" />
-			    </div>
-	    		<div class="modal-footer">
-	        		<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-	    		</div>
+		    <div class="modal-body">
+		    	<img class="prevent-thumbnail" src="" width="240" height="160" />
+					<span class="glyphicon glyphicon-arrow-right"></span>
+		    	<img class="current-thumbnail" src="" width="240" height="160" />
+		    </div>
+    		<div class="modal-footer">
+      		<button type="button" class="btn btn-default" data-dismiss="modal">このまま</button>
+      		<button type="button" class="thumbnail-update-confirm btn btn-primary" data-dismiss="modal" data-loading-text="さつえいちゅう...">へんこうする</button>
+    		</div>
 			</div>
 		</div>
 	</div>
@@ -361,6 +365,14 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 				<div class="h4p_published-info text-center hidden">
 					<p class="text-muted">ご投稿ありがとうございました。内容を確認いたしますので、しばらくお待ち下さい。</p>
 					<a href="../" title="もどる" class="h4p_publish-return btn btn-lg btn-block">もどる</a>
+				</div>
+			</div>
+			<div class="col-xs-12 visible-restaging">
+				<div class="text-center margin-top-sm">
+					<button class="btn btn-link btn-lg" type="button" data-toggle="modal" data-target="#confirmThumbnailModal" data-backdrop="false">
+						<span class="glyphicon glyphicon-camera"></span>
+						ひょうしを さつえいする
+					</button>
 				</div>
 			</div>
 			<div class="col-xs-12 h4p_my-comment hidden">

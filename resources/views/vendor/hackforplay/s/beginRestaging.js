@@ -212,8 +212,12 @@
 
 		// 投稿時の設定
 		$('#inputModal').on('show.bs.modal', function () {
-			// サムネイルを生成
-			capture();
+			// サムネイルを取得
+			getStage(getParam('id'))
+			.then(function (result) {
+				$('#inputModal .fetched-thumbnail')
+					.attr('src', result.thumbnail);
+			});
 		});
 
 		// 投稿
@@ -474,6 +478,66 @@
 			var castWindow = window.open('/channels/' + channelId + '/watch', 'channel-' + channelId);
 		});
 
+		// capture-thumbnail-restaging
+		$('#confirmThumbnailModal').on('show.bs.modal', function () {
+			var $confirm = $(this).find('.thumbnail-update-confirm').button('loading');
+
+			capture()
+			.then(function (result) {
+				// current thumbnail
+				$('#confirmThumbnailModal .current-thumbnail').attr({
+					alt: 'さつえいに しっぱいした',
+					src: result
+				});
+				$confirm.button('reset');
+
+				return getStage(getParam('id'));
+			})
+			.then(function (result) {
+				// prevent thumbnail
+				$('#confirmThumbnailModal .prevent-thumbnail').attr({
+					alt: 'サムネイルが なかった',
+					src: result.thumbnail
+				});
+			});
+		});
+
+		$('#confirmThumbnailModal .thumbnail-update-confirm').on('click', function () {
+			var data_url = $('#confirmThumbnailModal .current-thumbnail').get(0).src;
+
+			$.ajax({
+				type: 'POST',
+				url: '/api/thumbnails',
+				data: { data_url: data_url }
+			})
+			.then(function (result) {
+				return $.ajax({
+					type: 'POST',
+					url: '/api/stages/' + getParam('id'),
+					data: {
+						_method: 'PUT',
+						thumbnail: result.url,
+					}
+				});
+			})
+			.then(function (result) {
+				setStage(result);
+
+				return $.ajax({
+					type: 'POST',
+					url: '/api/projects/' + result.project_id,
+					data: {
+						_method: 'PUT',
+						thumbnail: result.thumbnail,
+					}
+				});
+			})
+			.fail(function (err) {
+				alert('サムネイルのへんこうが うまくいかなかった');
+				console.error(err);
+			});
+		});
+
 	};
 
 	function makeProject (successed, failed) {
@@ -570,7 +634,6 @@
 			token: sessionStorage.getItem('project-token'),
 			code: jsEditor.getValue(''),
 			timezone: new Date().getTimezoneString(),
-			thumb: $('#inputModal .stage-thumbnail').attr('src'),
 			publish: true,
 			stage_info: JSON.stringify(stage_info),
 			team_id: $('#inputModal input[name="input-team"]:checked').val() || null,

@@ -96,6 +96,7 @@ class ProjectController extends Controller
       // reserved stage
       $reserved = $project->stages()->create([
         "ImplicitMod" => $source->ImplicitMod,
+        'Thumbnail' => $project->thumbnail,
       ]);
       $reserved->UserID = $request->user()->ID;
       $reserved->ProjectID = $project->ID;

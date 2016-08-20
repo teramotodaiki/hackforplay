@@ -5,7 +5,7 @@
 * ただし、Project.UserIDと一致するUserIDをもつセッションが必要
 * publish flag がTRUEの時は、stage_infoを指定する
 * team_id を指定することで、チーム名義として投稿できる
-* Input:	token , code , timezone , thumb , publish , (stage_info) , (team_id) , (minor_update) (attendance-token)
+* Input:	token , code , timezone , publish , (stage_info) , (team_id) , (minor_update) (attendance-token)
 * Output:	no-session , invalid-token , already-published , code-is-null , invalid-stage-info , database-error , success
 */
 
@@ -47,28 +47,10 @@ if($timezone === FALSE || $timezone === NULL){
 }
 $registered = gmdate("Y-m-d H:i:s") . $timezone;
 
-// サムネイルを作成
-$thumb	= filter_input(INPUT_POST, 'thumb');
-
-if ($thumb) {
-	$thumb = preg_replace('/data:[^,]+,/i', '', $thumb); //ヘッダに「data:image/png;base64,」が付いているので、それは外す
-	$thumb = base64_decode($thumb); //残りのデータはbase64エンコードされているので、デコードする
-	$image = imagecreatefromstring($thumb); //まだ文字列の状態なので、画像リソース化
-	imagesavealpha($image, TRUE); // 透明色の有効
-
-	// random name
-	$bytes 	= openssl_random_pseudo_bytes(16); // 16bytes (32chars)
-	$thumb_url	= '/s/thumbs/'.bin2hex($bytes).'.png'; // binaly to hex
-	imagepng($image, '..' . $thumb_url); // 相対パス
-}else{
-	$thumb_url = NULL;
-}
-
 // New Script
-$stmt	= $dbh->prepare('INSERT INTO "Script" ("ProjectID","LineNum","Thumbnail","RawCode","Registered") VALUES(:project_id,:line,:thumb_url,:code,:registered)');
+$stmt	= $dbh->prepare('INSERT INTO "Script" ("ProjectID","LineNum","RawCode","Registered") VALUES(:project_id,:line,:code,:registered)');
 $stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
 $stmt->bindValue(":line", substr_count($code, "\n") + 1, PDO::PARAM_INT);
-$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
 $stmt->bindValue(":code", $code, PDO::PARAM_STR);
 $stmt->bindValue(":registered", $registered, PDO::PARAM_STR);
 $result = $stmt->execute();
@@ -86,9 +68,8 @@ if (!$result) {
 }
 
 // Update channel if casting
-$stmt	= $dbh->prepare('UPDATE "Channel" SET "Updated"=:gmt,"Thumbnail"=:thumb_url WHERE "ProjectID"=:project_id');
+$stmt	= $dbh->prepare('UPDATE "Channel" SET "Updated"=:gmt WHERE "ProjectID"=:project_id');
 $stmt->bindValue(":project_id", $project['ID'], PDO::PARAM_INT);
-$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
 $stmt->bindValue(":gmt", $registered, PDO::PARAM_STR);
 $stmt->execute();
 
@@ -144,13 +125,12 @@ if ($publish) {
 	}
 
 	// Reserved -> Judging
-	$stmt	= $dbh->prepare('UPDATE "Stage" SET "TeamID"=:team_id,"ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Thumbnail"=:thumb_url,"Registered"=:gmt,"MajorVersion"=:major,"MinorVersion"=:minor WHERE "ID"=:reserved_id');
+	$stmt	= $dbh->prepare('UPDATE "Stage" SET "TeamID"=:team_id,"ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Registered"=:gmt,"MajorVersion"=:major,"MinorVersion"=:minor WHERE "ID"=:reserved_id');
 	$stmt->bindValue(":team_id", $team_id, PDO::PARAM_INT);
 	$stmt->bindValue(":scriptid", $script_id, PDO::PARAM_INT);
 	$stmt->bindValue(":input_title", $stage_info->title, PDO::PARAM_STR);
 	$stmt->bindValue(":input_explain", $stage_info->explain, PDO::PARAM_STR);
 	$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
-	$stmt->bindValue(":thumb_url", $thumb_url, PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", $registered, PDO::PARAM_STR);
 	$stmt->bindValue(':major', $version['MajorVersion'], PDO::PARAM_INT);
 	$stmt->bindValue(':minor', $version['MinorVersion'], PDO::PARAM_INT);
