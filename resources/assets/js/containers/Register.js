@@ -6,7 +6,9 @@ import classNames from "classNames";
 import request from '../actions/request';
 import { Col, Panel, Form, FormGroup, FormControl, HelpBlock, InputGroup, ControlLabel } from "react-bootstrap";
 
-import { Dialog, FlatButton } from 'material-ui';
+import { Dialog, FlatButton, RaisedButton } from 'material-ui';
+import OpenInNew from 'material-ui/svg-icons/action/open-in-new';
+import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
 
 import Merger from "../merger";
 import { Section, CardSection, Arrow } from "../components/section";
@@ -439,6 +441,9 @@ const PasswordEye = (props) => {
 };
 
 const Result = (props) => {
+  const buttonStyle = {
+    marginTop: 20,
+  };
   const result = props.response === undefined ? (
     <span />
   ) : !props.response ? (
@@ -448,7 +453,20 @@ const Result = (props) => {
   ) : (
     <div>
       <h1>License Created</h1>
-      <a href="login" className="btn btn-primary btn-lg m-y-3">Login</a>
+      <RaisedButton
+        label="Watch video"
+        primary={true}
+        fullWidth={true}
+        icon={<OpenInNew />}
+        onTouchTap={() => window.open('https://youtu.be/2BSSJeCgQGE', '_blank', 'width=680,height=600')}
+        style={buttonStyle}
+      />
+      <RaisedButton
+        label="Log in"
+        icon={<AssignmentInd />}
+        onTouchTap={() => location.href = '/login'}
+        style={buttonStyle}
+      />
     </div>
   );
   return (
