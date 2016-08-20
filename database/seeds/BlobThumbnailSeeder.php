@@ -28,16 +28,22 @@ class BlobThumbnailSeeder extends Seeder
 
           foreach ($stages as $stage) {
             $path = $old_base_path . $stage->Thumbnail;
-            if (file_exists($path) === FALSE) continue;
+            if (file_exists($path) === FALSE) {
 
-            $content = fopen($path, "r");
-            $blob_name = str_random(32) . '.png';
+              $stage->update(['Thumbnail' => null]);
 
-            //Upload blob
-            $blobRestProxy->createBlockBlob(env('BLOB_CONTAINER'), $blob_name, $content);
+            } else {
 
-            $stage->update(['Thumbnail' => $new_base_path . '/' . $blob_name]);
-            fclose($content);
+              $content = fopen($path, "r");
+              $blob_name = str_random(32) . '.png';
+
+              //Upload blob
+              $blobRestProxy->createBlockBlob(env('BLOB_CONTAINER'), $blob_name, $content);
+
+              $stage->update(['Thumbnail' => $new_base_path . '/' . $blob_name]);
+              fclose($content);
+
+            }
           }
         });
       }
