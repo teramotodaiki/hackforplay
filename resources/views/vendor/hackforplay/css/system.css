@@ -421,6 +421,14 @@ iframe {
 	transform: scale(1.08, 1.08);
 }
 
+.visible-restaging {
+	display: none;
+}
+
+.restaging .visible-restaging {
+	display: block;
+}
+
 /* コメントタグ(暫定) */
 
 .comment-tag-basic {

@@ -474,6 +474,57 @@
 			var castWindow = window.open('/channels/' + channelId + '/watch', 'channel-' + channelId);
 		});
 
+		// capture-thumbnail-restaging
+		$('#confirmThumbnailModal').on('show.bs.modal', function () {
+			var $confirm = $(this).find('.thumbnail-update-confirm').button('loading');
+
+			capture()
+			.then(function (result) {
+				// current thumbnail
+				$('#confirmThumbnailModal .current-thumbnail').attr({
+					alt: 'さつえいに しっぱいした',
+					src: result
+				});
+				$confirm.button('reset');
+
+				return getStage(getParam('id'));
+			})
+			.then(function (result) {
+				// prevent thumbnail
+				$('#confirmThumbnailModal .prevent-thumbnail').attr({
+					alt: 'サムネイルが なかった',
+					src: result.thumbnail
+				});
+			});
+		});
+
+		$('#confirmThumbnailModal .thumbnail-update-confirm').on('click', function () {
+			var data_url = $('#confirmThumbnailModal .current-thumbnail').get(0).src;
+
+			$.ajax({
+				type: 'POST',
+				url: '/api/thumbnails',
+				data: { data_url: data_url }
+			})
+			.then(function (result) {
+				return $.ajax({
+					type: 'POST',
+					url: '/api/stages/' + getParam('id'),
+					data: {
+						_method: 'PUT',
+						thumbnail: result.url,
+					}
+				});
+			})
+			.then(function (result) {
+				setStage(result.body);
+			})
+			.fail(function (err) {
+				alert('サムネイルのへんこうが うまくいかなかった');
+				console.error(err);
+			});
+		});
+
 	};
 
 	function makeProject (successed, failed) {
