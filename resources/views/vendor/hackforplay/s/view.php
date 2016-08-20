@@ -291,7 +291,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 				</div>
 		    <div class="modal-body">
 		    	<img class="prevent-thumbnail" src="" width="240" height="160" />
-					<i class="fa fa-arrow-right" aria-hidden="true"></i>
+					<span class="glyphicon glyphicon-arrow-right"></span>
 		    	<img class="current-thumbnail" src="" width="240" height="160" />
 		    </div>
     		<div class="modal-footer">
@@ -370,7 +370,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 			<div class="col-xs-12 visible-restaging">
 				<div class="text-center margin-top-sm">
 					<button class="btn btn-link btn-lg" type="button" data-toggle="modal" data-target="#confirmThumbnailModal" data-backdrop="false">
-						<i class="fa fa-camera" aria-hidden="true"></i>
+						<span class="glyphicon glyphicon-camera"></span>
 						ひょうしを さつえいする
 					</button>
 				</div>

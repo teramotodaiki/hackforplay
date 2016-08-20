@@ -517,7 +517,7 @@
 				});
 			})
 			.then(function (result) {
-				setStage(result.body);
+				setStage(result);
 			})
 			.fail(function (err) {
 				alert('サムネイルのへんこうが うまくいかなかった');
