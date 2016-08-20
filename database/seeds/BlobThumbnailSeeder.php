@@ -27,8 +27,10 @@ class BlobThumbnailSeeder extends Seeder
           $new_base_path = env('BLOB_URL') . '/' . env('BLOB_CONTAINER');
 
           foreach ($stages as $stage) {
-            $content = fopen($old_base_path . $stage->Thumbnail, "r");
-            if ($content === FALSE) continue;
+            $path = $old_base_path . $stage->Thumbnail;
+            if (file_exists($path) === FALSE) continue;
+
+            $content = fopen($path, "r");
             $blob_name = str_random(32) . '.png';
 
             //Upload blob
