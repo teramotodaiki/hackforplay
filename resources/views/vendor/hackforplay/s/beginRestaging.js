@@ -621,7 +621,6 @@
 			token: sessionStorage.getItem('project-token'),
 			code: jsEditor.getValue(''),
 			timezone: new Date().getTimezoneString(),
-			thumb: $('#inputModal .stage-thumbnail').attr('src'),
 			publish: true,
 			stage_info: JSON.stringify(stage_info),
 			team_id: $('#inputModal input[name="input-team"]:checked').val() || null,
