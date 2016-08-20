@@ -13,11 +13,10 @@ class Channel extends Model
   protected $fillable = [
     'DisplayName',
     'description',
-    'Thumbnail',
     'is_archived',
   ];
   protected $primaryKey = 'ID';
-  protected $appends = ['reserved', 'head'];
+  protected $appends = ['reserved', 'head', 'thumbnail'];
 
   public function project()
   {
@@ -52,6 +51,11 @@ class Channel extends Model
   public function getHeadAttribute()
   {
     return $this->project->scripts()->orderBy('ID', 'DESC')->first();
+  }
+
+  public function getThumbnailAttribute()
+  {
+    return $this->project->thumbnail;
   }
 
 }

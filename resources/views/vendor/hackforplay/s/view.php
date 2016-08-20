@@ -193,7 +193,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 		    	<form>
 				    <div class="modal-body">
 			        	<div class="form-group">
-			    			<img class="stage-thumbnail" src="" alt="" width="240" height="160">
+			    			<img class="fetched-thumbnail" src="" alt="ひょうしが さつえいされて いない" width="240" height="160">
 			        	</div>
 			        	<div class="form-group">
 			        		<label class="control-label">ステージ名<small>（自由に決めてください）</small>:</label>

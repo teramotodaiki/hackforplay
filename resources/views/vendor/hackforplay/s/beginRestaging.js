@@ -212,8 +212,12 @@
 
 		// 投稿時の設定
 		$('#inputModal').on('show.bs.modal', function () {
-			// サムネイルを生成
-			capture();
+			// サムネイルを取得
+			getStage(getParam('id'))
+			.then(function (result) {
+				$('#inputModal .fetched-thumbnail')
+					.attr('src', result.thumbnail);
+			});
 		});
 
 		// 投稿
@@ -518,6 +522,15 @@
 			})
 			.then(function (result) {
 				setStage(result);
+
+				return $.ajax({
+					type: 'POST',
+					url: '/api/projects/' + result.project_id,
+					data: {
+						_method: 'PUT',
+						thumbnail: result.thumbnail,
+					}
+				});
 			})
 			.fail(function (err) {
 				alert('サムネイルのへんこうが うまくいかなかった');
@@ -621,7 +634,6 @@
 			token: sessionStorage.getItem('project-token'),
 			code: jsEditor.getValue(''),
 			timezone: new Date().getTimezoneString(),
-			thumb: $('#inputModal .stage-thumbnail').attr('src'),
 			publish: true,
 			stage_info: JSON.stringify(stage_info),
 			team_id: $('#inputModal input[name="input-team"]:checked').val() || null,
