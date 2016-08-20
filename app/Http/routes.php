@@ -119,6 +119,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth.old']], function()
   Route::post('stages/{id}/plays', 'StageController@play');
 
   Route::resource('users', 'UserController');
+  Route::resource('thumbnails', 'ThumbnailController');
 
   // 互換性維持のための ~project MOD
   Route::get('mods/~project/{name}/{version}{ext?}', [ 'uses' => 'ModController@showByProject' ])
