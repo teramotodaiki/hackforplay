@@ -522,6 +522,15 @@
 			})
 			.then(function (result) {
 				setStage(result);
+
+				return $.ajax({
+					type: 'POST',
+					url: '/api/projects/' + result.project_id,
+					data: {
+						_method: 'PUT',
+						thumbnail: result.thumbnail,
+					}
+				});
 			})
 			.fail(function (err) {
 				alert('サムネイルのへんこうが うまくいかなかった');
