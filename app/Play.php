@@ -8,9 +8,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Play extends Model
 {
   use SoftDeletes;
-  
+
   protected $fillable = ['is_cleared', 'referrer'];
   protected $dates = ['deleted_at'];
+  protected $casts = [
+    'id' => 'integer',
+    'user_id' => 'integer',
+    'stage_id' => 'integer',
+    'is_cleared' => 'boolean',
+  ];
 
   public function stage()
   {
