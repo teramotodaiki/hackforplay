@@ -9,6 +9,13 @@ class Plug extends Model
   public $fillable = ['stage_id', 'label', 'is_visible', 'is_used'];
   protected $appends = ['full_label'];
   protected $hidden = ['author'];
+  protected $casts = [
+    'id' => 'integer',
+    'author_id' => 'integer',
+    'stage_id' => 'integer',
+    'is_visible' => 'boolean',
+    'is_used' => 'boolean',
+  ];
 
   public function author()
   {

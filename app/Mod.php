@@ -8,4 +8,5 @@ class Mod extends Model
 {
   protected $table = 'mod';
   protected $guarded = array('id');
+  protected $casts = ['id' => 'integer'];
 }
