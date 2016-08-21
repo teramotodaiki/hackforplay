@@ -69,7 +69,7 @@ render((
           <Route path="create" component={BellCreate}></Route>
         </Route>
         <Route path="news" component={News}></Route>
-        <Route path="stages" component={Stages}></Route>
+        <Route path="history" component={Stages}></Route>
       </Route>
     </Router>
   </Provider>
