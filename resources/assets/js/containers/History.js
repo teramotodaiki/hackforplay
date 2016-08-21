@@ -26,7 +26,7 @@ import LoadMore from '../components/LoadMore';
 import PlugDrawer from '../components/PlugDrawer';
 import AuthorDrawer from '../components/AuthorDrawer';
 
-export default class Stages extends Component {
+export default class History extends Component {
   constructor(props) {
     super(props);
 
@@ -279,10 +279,10 @@ export default class Stages extends Component {
   }
 }
 
-Stages.propTypes = {
+History.propTypes = {
 };
 
-Stages.contextTypes = {
+History.contextTypes = {
   muiTheme: PropTypes.object.isRequired,
 };
 
@@ -290,4 +290,4 @@ const mapStateToProps = (state) => {
   return Object.assign({}, state);
 };
 
-export default connect(mapStateToProps)(Stages);
+export default connect(mapStateToProps)(History);

@@ -16,6 +16,10 @@ class User extends Authenticatable
   protected $guarded = array('id'); // idはcreateに含まない
   protected $primaryKey = 'ID';
   protected $hidden = ['remember_token', 'private_token', 'private_secret'];
+  protected $casts = [
+    'ID' => 'integer',
+    'IsSupported' => 'boolean',
+  ];
 
   public function accounts()
   {

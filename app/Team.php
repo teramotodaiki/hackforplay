@@ -17,6 +17,7 @@ class Team extends Model
     'slack_api_token',
     'slack_channel_name',
   ];
+  protected $casts = ['ID' => 'integer'];
 
   public function bells()
   {

@@ -12,6 +12,18 @@ class Project extends Model
   protected $table = 'Project';
   protected $fillable = ['title', 'description', 'thumbnail', 'is_active', 'State', 'Written'];
   protected $primaryKey = 'ID';
+  protected $casts = [
+    'ID' => 'integer',
+    'UserID' => 'integer',
+    'RootID' => 'integer',
+    'ParentID' => 'integer',
+    'SourceStageID' => 'integer',
+    'PublishedStageID' => 'integer',
+    'ReservedID' => 'integer',
+    'Written' => 'boolean',
+    'gist_id' => 'integer',
+    'is_active' => 'boolean',
+  ];
 
   public function scripts()
   {

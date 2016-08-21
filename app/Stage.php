@@ -13,6 +13,18 @@ class Stage extends Model
   public $timestamps = false; // モデルのタイムスタンプを更新しない
   protected $fillable = ['Title','State','Thumbnail','NoRestage','Explain','is_mod','ImplicitMod'];
   protected $primaryKey = 'ID';
+  protected $casts = [
+    'UserID' => 'integer',
+    'TeamID' => 'integer',
+    'ScriptID' => 'integer',
+    'ProjectID' => 'integer',
+    'SourceID' => 'integer',
+    'MajorVersion' => 'integer',
+    'MinorVersion' => 'integer',
+    'is_clearable' => 'boolean',
+    'is_latest' => 'boolean',
+    'is_mod' => 'boolean',
+  ];
 
   public function script()
   {

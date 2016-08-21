@@ -13,5 +13,11 @@ class Script extends Model
   protected $primaryKey = 'ID';
   public $timestamps = false; // モデルのタイムスタンプを更新しない
   protected $fillable = ['RawCode'];
+  protected $casts = [
+    'ID' => 'integer',
+    'ProjectID' => 'integer',
+    'LineNum' => 'integer',
+    'Processed' => 'boolean',
+  ];
 
 }

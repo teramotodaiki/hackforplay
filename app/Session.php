@@ -12,4 +12,5 @@ class Session extends Model
   protected $table = 'Sessions';
   public $timestamps = false; // モデルのタイムスタンプを更新しない
   protected $guarded = array('id'); // idはcreateに含まない
+  protected $casts = ['ID' => 'integer'];
 }

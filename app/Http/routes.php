@@ -20,7 +20,7 @@ Route::get('news', 'DefaultAppController@index');
 
 Route::group(['middleware' => ['auth.old', 'auth']], function()
 {
-  Route::get('stages', 'DefaultAppController@index');
+  Route::get('history', 'DefaultAppController@index');
 });
 
 

@@ -12,5 +12,10 @@ class Account extends Model
   protected $table = 'Account';
   public $timestamps = false; // モデルのタイムスタンプを更新しない
   protected $guarded = array('id'); // idはcreateに含まない
+  protected $casts = [
+    'ID' => 'integer',
+    'UserID' => 'integer',
+    'ExternalID' => 'integer',
+  ];
 
 }

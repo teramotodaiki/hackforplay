@@ -17,6 +17,14 @@ class Channel extends Model
   ];
   protected $primaryKey = 'ID';
   protected $appends = ['reserved', 'head', 'thumbnail'];
+  protected $casts = [
+    'ID' => 'integer',
+    'TeamID' => 'integer',
+    'ProjectID' => 'integer',
+    'UserID' => 'integer',
+    'is_private' => 'boolean',
+    'is_archived' => 'boolean',
+  ];
 
   public function project()
   {
