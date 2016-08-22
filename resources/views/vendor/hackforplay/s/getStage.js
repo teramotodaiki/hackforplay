@@ -24,6 +24,7 @@
   // Cache
   window.setStage = function (stage) {
     state.set(stage);
+    if (window.render) render();
   };
 
   function State () {

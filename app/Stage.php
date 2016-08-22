@@ -25,6 +25,8 @@ class Stage extends Model
     'is_latest' => 'boolean',
     'is_mod' => 'boolean',
   ];
+  protected $appends = ['plug'];
+  protected $hidden = ['plugs'];
 
   public function script()
   {
@@ -54,6 +56,16 @@ class Stage extends Model
   public function plays()
   {
     return $this->hasMany('App\Play');
+  }
+
+  public function plugs()
+  {
+    return $this->hasMany('App\Plug');
+  }
+
+  public function getPlugAttribute()
+  {
+    return $this->plugs->first();
   }
 
 }
