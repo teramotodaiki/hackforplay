@@ -27,7 +27,14 @@ var $item = $('<div>').addClass('col-lg-4 col-md-6 col-sm-6 col-xs-12 h4p_item')
       'border-bottom-left-radius': '12px 12px',
       'border-bottom-right-radius': '4px 4px'
     }).append(
-      $('<p>').addClass('title').css('margin', '8px 0').append($('<a>'))
+      $('<p>').addClass('title').css('margin', '8px 0').append(
+        $('<span>').addClass('badge visible-mod hidden').text('MOD').css({
+          'background-color': '#E040FB',
+          color: 'white',
+        })
+      ).append(
+        $('<a>')
+      )
     ).append(
       $('<p>').append($('<span>').addClass('author').html('作成者：<b><a></a></b>'))
     ).append(
@@ -109,6 +116,9 @@ window.renderStaegs = function (result) {
     });
     if (stage.thumbnail) {
       item.find('.h4p_item-thumbnail').css('background-image', 'url(' + stage.thumbnail + ')');
+    }
+    if (stage.is_mod) {
+      item.find('.visible-mod').removeClass('hidden');
     }
     item.find('.title a').attr({
       href: '/s?id=' + stage.id,
