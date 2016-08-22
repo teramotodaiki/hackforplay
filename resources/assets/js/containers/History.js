@@ -44,6 +44,7 @@ export default class History extends Component {
     this.handleConnect = this.handleConnect.bind(this);
     this.handlePlugSelect = this.handlePlugSelect.bind(this);
     this.handlePostAuthor = this.handlePostAuthor.bind(this);
+    this.handleToggleVisiblity = this.handleToggleVisiblity.bind(this);
   }
 
   componentDidMount() {
@@ -113,6 +114,11 @@ export default class History extends Component {
     }
   }
 
+  handleToggleVisiblity(plug) {
+    const { dispatch } = this.props;
+    return dispatch(updatePlug(plug.id, { is_visible: !plug.is_visible }));
+  }
+
   handlePlugSelect(plug) {
     const { selectedPlug } = this.state;
     if (selectedPlug && typeof selectedPlug.id === 'object' &&
@@ -166,6 +172,7 @@ export default class History extends Component {
             selectedPlug={selectedPlug}
             plugs={plugs.filter((plug) => plug.stage_id == params.stage.id)}
             handleConnect={this.handleConnect}
+            handleToggleVisiblity={this.handleToggleVisiblity}
           /> :
           <StageCard {...params} />
       ));
