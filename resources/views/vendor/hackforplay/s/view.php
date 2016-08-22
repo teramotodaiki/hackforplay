@@ -293,6 +293,15 @@ $require = '';
 	<!-- contents -->
 	<div class="container container-game">
 		<div class="row">
+			<div class="col-xs-12 panel require-mod-container visible-mod hidden">
+				<div class="panel-body">
+					<p>きみのソースコードの いちばんうえに このコードをはりつけよう！</p>
+					<div class="input-group">
+						<span class="input-group-addon" id="addon-mod">MOD</span>
+						<input type="text" class="form-control" name="require-mod" placeholder="// ...loading" aria-describedby="addon-mod" readonly>
+					</div>
+				</div>
+			</div>
 			<div class="col-xs-12 h4p_restaging directly_floating_shadow">
 				<div class="row">
 					<div class="col-xs-12 h4p_restaging_menu">
