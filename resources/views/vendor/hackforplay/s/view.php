@@ -456,19 +456,6 @@ $require = '';
 
 			<div class="col-xs-12 h4p_info">
 				<div class="row">
-					<!-- require code -->
-					<div class="col-xs-12 col-sm-6">
-						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon1">MOD</span>
-							<input
-								class="h4p_info-require form-control"
-								type="text"
-								value="<?php echo $require; ?>"
-								rows="1"
-								onClick="this.select();"
-								/>
-						</div>
-					</div>
 					<div class="col-xs-12 col-sm-6">
 						<ul class="list-inline">
 							<!-- ReStage -->
