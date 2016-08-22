@@ -65,7 +65,14 @@ class Stage extends Model
 
   public function getPlugAttribute()
   {
-    return $this->plugs->first();
+    if ($this->is_mod) {
+      foreach ($this->plugs as $plug) {
+        if ($plug->is_visible) {
+          return $plug;
+        }
+      }
+    }
+    return null;
   }
 
 }
