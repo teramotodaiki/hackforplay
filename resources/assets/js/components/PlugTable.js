@@ -29,7 +29,6 @@ export default class PlugTable extends Component {
           <TableRow>
             <TableHeaderColumn>code</TableHeaderColumn>
             <TableHeaderColumn>visibility</TableHeaderColumn>
-            <TableHeaderColumn>delete</TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody
@@ -51,7 +50,6 @@ export default class PlugTable extends Component {
                 {plug.is_visible ? <Visibility color={palette.primary1Color} /> : <VisibilityOff />}
               </IconButton>
             </TableRowColumn>
-            <TableRowColumn>delete</TableRowColumn>
           </TableRow>
         ))}
         </TableBody>
