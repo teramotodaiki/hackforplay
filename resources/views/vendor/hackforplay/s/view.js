@@ -30,6 +30,16 @@ $(function(){
 		});
 	}
 
+	// Asyncにデータからviewをつくる
+	getStage(getParam('id'))
+	.then(function (result) {
+		var stage = result[0] || result;
+
+		if (stage.is_mod) {
+			$('.visible-mod.hidden').removeClass('hidden');
+		}
+	});
+
 	// ゲームフレームを横幅基本で3:2にする
 	$(".h4p_game,.h4p_credit").height($(".h4p_game").width()/1.5);
 	// ゲームクリアの処理

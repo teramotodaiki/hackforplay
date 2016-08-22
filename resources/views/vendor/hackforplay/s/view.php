@@ -385,6 +385,10 @@ $require = '';
 					<!-- Title, Owner -->
 					<div class="col-xs-12 h4p_info_datail">
 						<h3 class="h4p_info-title">
+							<span
+								class="badge visible-mod hidden"
+								style="background-color:#E040FB; font-size: 70%;"
+							>MOD</span>
 							<?php echo htmlspecialchars($title); ?>
 							<?php if ($author_id === NULL) : ?>
 							<span class="badge">official (公式)</span>
