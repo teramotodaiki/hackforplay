@@ -4,6 +4,7 @@ import { FlatButton, CardText, TextField } from 'material-ui';
 import Power from 'material-ui/svg-icons/notification/power';
 
 import StageCard from './StageCard';
+import PlugTable from './PlugTable';
 
 export default class ModStageCard extends Component {
   constructor(props) {
@@ -27,14 +28,7 @@ export default class ModStageCard extends Component {
         )}
         cardText={plugs.length ? (
           <CardText expandable={true}>
-            {plugs.map((plug) => (
-              <TextField
-                key={plug.id}
-                value={`require('${plug.full_label}')`}
-                onTouchTap={({target}) => target.select(0, target.value.length - 1)}
-                fullWidth={true}
-              />
-            ))}
+          <PlugTable plugs={plugs} />
           </CardText>
         ) : null}
       />
