@@ -6,8 +6,6 @@ function render() {
 		var stage = result[0] || result;
 
 		if (stage.is_mod) {
-			$('.visible-mod.hidden').removeClass('hidden');
-
 			(function ($input) {
 				$input
 				.val(stage.plug ? `require('${stage.plug.full_label}');` : 'プラグがありません')
@@ -17,7 +15,10 @@ function render() {
 				});
 			})($('.require-mod-container input[name="require-mod"]'));
 
-		}
+      $('.visible-mod').removeClass('hidden');
+		} else {
+      $('.visible-mod').addClass('hidden');
+    }
 	});
 
 }

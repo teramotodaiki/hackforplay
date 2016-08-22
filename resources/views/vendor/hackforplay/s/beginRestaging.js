@@ -23,6 +23,7 @@
         loadStage(result.head.raw_code);
         listChannels();
         showModInput();
+				render();
         jsEditor.setValue(result.head.raw_code);
 				_updateTaskLastSentCode = jsEditor.getValue('');
       })
@@ -35,6 +36,7 @@
         loading.button('reset');
         listChannels();
         showModInput();
+				render();
       });
       getStage(getParam('id'))
       .done(function (result) {
