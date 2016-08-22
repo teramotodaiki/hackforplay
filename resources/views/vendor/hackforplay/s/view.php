@@ -170,6 +170,7 @@ $require = '';
 	<script src="openExternal.js" type="text/javascript" charset="utf-8"></script>
 	<script src="getStage.js" type="text/javascript" charset="utf-8"></script>
 	<script src="beginRestaging.js" type="text/javascript" charset="utf-8"></script>
+	<script src="render.js" charset="utf-8"></script>
 	<script src="/activity/post.js" type="text/javascript"></script>
 	<!-- Modal -->
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
