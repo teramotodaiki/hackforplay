@@ -65,7 +65,7 @@ class Stage extends Model
 
   public function getPlugAttribute()
   {
-    return $this->plugs->first();
+    return $this->plugs()->orderBy('is_primary', 'desc')->first();
   }
 
 }

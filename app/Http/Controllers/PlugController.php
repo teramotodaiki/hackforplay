@@ -52,6 +52,7 @@ class PlugController extends Controller
         'stage' => 'required|numeric',
         'author' => 'required|numeric',
         'label' => ['required', 'regex:/^[a-zA-Z0-9\_][\w\_\-\~\*]+$/', 'between:2,20'],
+        'is_primary' => 'boolean',
       ]);
 
       $user_id = $request->user()->ID;
@@ -75,6 +76,10 @@ class PlugController extends Controller
         'stage_id' => $stage->ID,
         'label' => $request->input('label'),
       ]);
+
+      if ($request->has('is_primary')) {
+        $plug->update(['is_primary' => $request->input('is_primary')]);
+      }
 
       return response($plug, 200);
     }

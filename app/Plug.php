@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Plug extends Model
 {
-  public $fillable = ['stage_id', 'label', 'is_visible', 'is_used'];
+  public $fillable = ['stage_id', 'label', 'is_visible', 'is_used', 'is_primary'];
   protected $appends = ['full_label'];
   protected $hidden = ['author'];
   protected $casts = [
@@ -15,6 +15,7 @@ class Plug extends Model
     'stage_id' => 'integer',
     'is_visible' => 'boolean',
     'is_used' => 'boolean',
+    'is_primary' => 'boolean',
   ];
 
   public function author()
