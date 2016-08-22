@@ -22,18 +22,7 @@ $directly_restaging	= filter_input(INPUT_GET, 'directly_restaging', FILTER_VALID
 // 1以上ならつづきをあらわす。0以下なら最後のステージであることをあらわす
 $next = $mode === 'quest' && $level_next ? $level_next['ID'] : 0;
 
-// Version
-$version =
-
-$mode === 'restaging' ? '*' : // 改造中は常にLatest Versionをfetch
-(
-isset($stage['MajorVersion'], $stage['MinorVersion']) ?
-$stage['MajorVersion'] . '.' . $stage['MinorVersion'] :
-
-'*'
-);
-
-$require = isset($token) ? "require('~project/$token/$version');" : 'Error';
+$require = '';
 ?>
 <!DOCTYPE html>
 <html>
@@ -409,12 +398,8 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 							<?php endif; ?>
 						</h3>
 					</div>
-					<!-- Version, Playcount, SourceTitle -->
+					<!-- Playcount, SourceTitle -->
 					<div class="col-xs-12">
-						<span class="badge" style="background-color: #5bc0de">
-							ver.
-							<span class="h4p_info-version"><?php echo $version; ?></span>
-						</span>
 						<span class="badge" style="background-color: #f0ad4e">
 							<span class="glyphicon glyphicon-signal"></span>
 							<?php echo $count; ?>
