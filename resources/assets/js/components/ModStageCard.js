@@ -28,7 +28,10 @@ export default class ModStageCard extends Component {
         )}
         cardText={plugs.length ? (
           <CardText expandable={true}>
-          <PlugTable plugs={plugs} />
+          <PlugTable
+            plugs={plugs}
+            handleToggleVisiblity={this.props.handleToggleVisiblity}
+          />
           </CardText>
         ) : null}
       />

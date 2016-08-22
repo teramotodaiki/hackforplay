@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-
-import { TextField } from 'material-ui';
-
+import { TextField, IconButton } from 'material-ui';
+import Visibility from 'material-ui/svg-icons/action/visibility';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 
 export default class PlugTable extends Component {
   constructor(props) {
@@ -16,6 +16,7 @@ export default class PlugTable extends Component {
 
   render() {
     const { plugs } = this.props;
+    const { palette } = this.context.muiTheme;
 
     return (
       <Table
@@ -43,7 +44,13 @@ export default class PlugTable extends Component {
                 onTouchTap={this.selectAll}
               />
             </TableRowColumn>
-            <TableRowColumn>{plug.is_visible + ''}</TableRowColumn>
+            <TableRowColumn>
+              <IconButton
+                onTouchTap={() => this.props.handleToggleVisiblity(plug)}
+              >
+                {plug.is_visible ? <Visibility color={palette.primary1Color} /> : <VisibilityOff />}
+              </IconButton>
+            </TableRowColumn>
             <TableRowColumn>delete</TableRowColumn>
           </TableRow>
         ))}
@@ -54,4 +61,8 @@ export default class PlugTable extends Component {
 }
 
 PlugTable.propTypes = {
+};
+
+PlugTable.contextTypes = {
+  muiTheme: PropTypes.object.isRequired,
 };
