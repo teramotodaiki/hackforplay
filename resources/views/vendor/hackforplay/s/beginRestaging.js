@@ -22,7 +22,6 @@
 				sessionStorage.setItem('stage_param_id', result.reserved_id);
         loadStage(result.head.raw_code);
         listChannels();
-        showModInput();
 				render();
         jsEditor.setValue(result.head.raw_code);
 				_updateTaskLastSentCode = jsEditor.getValue('');
@@ -35,7 +34,6 @@
       makeProject(function () {
         loading.button('reset');
         listChannels();
-        showModInput();
 				render();
       });
       getStage(getParam('id'))
@@ -700,13 +698,5 @@
 			).appendTo('.h4p_cast-channel .dropdown-menu');
 
 		});
-  }
-
-  function showModInput() {
-    var version = '*';
-    var token = sessionStorage.getItem('project-token');
-    var reqCode = ["require('~project/", token, '/', version, "');"].join('');
-		$('.h4p_info-require').val(reqCode);
-		$('.h4p_info-version').text(version);
   }
 })();
