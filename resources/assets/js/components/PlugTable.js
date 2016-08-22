@@ -2,9 +2,16 @@ import React, { PropTypes, Component } from 'react';
 
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
+import { TextField } from 'material-ui';
+
+
 export default class PlugTable extends Component {
   constructor(props) {
     super(props);
+  }
+
+  selectAll(event) {
+    event.target.select(0, event.target.value.length - 1)
   }
 
   render() {
@@ -29,7 +36,13 @@ export default class PlugTable extends Component {
         >
         {plugs.map((plug) => (
           <TableRow key={plug.id}>
-            <TableRowColumn>{`require('${plug.full_label}');`}</TableRowColumn>
+            <TableRowColumn>
+              <TextField
+                key={plug.id}
+                value={`require('${plug.full_label}');`}
+                onTouchTap={this.selectAll}
+              />
+            </TableRowColumn>
             <TableRowColumn>{plug.is_visible + ''}</TableRowColumn>
             <TableRowColumn>delete</TableRowColumn>
           </TableRow>
