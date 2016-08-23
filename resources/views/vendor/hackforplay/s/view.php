@@ -22,18 +22,7 @@ $directly_restaging	= filter_input(INPUT_GET, 'directly_restaging', FILTER_VALID
 // 1以上ならつづきをあらわす。0以下なら最後のステージであることをあらわす
 $next = $mode === 'quest' && $level_next ? $level_next['ID'] : 0;
 
-// Version
-$version =
-
-$mode === 'restaging' ? '*' : // 改造中は常にLatest Versionをfetch
-(
-isset($stage['MajorVersion'], $stage['MinorVersion']) ?
-$stage['MajorVersion'] . '.' . $stage['MinorVersion'] :
-
-'*'
-);
-
-$require = isset($token) ? "require('~project/$token/$version');" : 'Error';
+$require = '';
 ?>
 <!DOCTYPE html>
 <html>
@@ -181,6 +170,7 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 	<script src="openExternal.js" type="text/javascript" charset="utf-8"></script>
 	<script src="getStage.js" type="text/javascript" charset="utf-8"></script>
 	<script src="beginRestaging.js" type="text/javascript" charset="utf-8"></script>
+	<script src="render.js" charset="utf-8"></script>
 	<script src="/activity/post.js" type="text/javascript"></script>
 	<!-- Modal -->
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
@@ -304,6 +294,15 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 	<!-- contents -->
 	<div class="container container-game">
 		<div class="row">
+			<div class="col-xs-12 panel require-mod-container visible-mod hidden">
+				<div class="panel-body">
+					<p>きみのソースコードの いちばんうえに このコードをはりつけよう！</p>
+					<div class="input-group">
+						<span class="input-group-addon" id="addon-mod">MOD</span>
+						<input type="text" class="form-control" name="require-mod" placeholder="// ...loading" aria-describedby="addon-mod" readonly>
+					</div>
+				</div>
+			</div>
 			<div class="col-xs-12 h4p_restaging directly_floating_shadow">
 				<div class="row">
 					<div class="col-xs-12 h4p_restaging_menu">
@@ -396,6 +395,10 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 					<!-- Title, Owner -->
 					<div class="col-xs-12 h4p_info_datail">
 						<h3 class="h4p_info-title">
+							<span
+								class="badge visible-mod hidden"
+								style="background-color:#E040FB; font-size: 70%;"
+							>MOD</span>
 							<?php echo htmlspecialchars($title); ?>
 							<?php if ($author_id === NULL) : ?>
 							<span class="badge">official (公式)</span>
@@ -409,12 +412,8 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 							<?php endif; ?>
 						</h3>
 					</div>
-					<!-- Version, Playcount, SourceTitle -->
+					<!-- Playcount, SourceTitle -->
 					<div class="col-xs-12">
-						<span class="badge" style="background-color: #5bc0de">
-							ver.
-							<span class="h4p_info-version"><?php echo $version; ?></span>
-						</span>
 						<span class="badge" style="background-color: #f0ad4e">
 							<span class="glyphicon glyphicon-signal"></span>
 							<?php echo $count; ?>
@@ -458,19 +457,6 @@ $require = isset($token) ? "require('~project/$token/$version');" : 'Error';
 
 			<div class="col-xs-12 h4p_info">
 				<div class="row">
-					<!-- require code -->
-					<div class="col-xs-12 col-sm-6">
-						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon1">MOD</span>
-							<input
-								class="h4p_info-require form-control"
-								type="text"
-								value="<?php echo $require; ?>"
-								rows="1"
-								onClick="this.select();"
-								/>
-						</div>
-					</div>
 					<div class="col-xs-12 col-sm-6">
 						<ul class="list-inline">
 							<!-- ReStage -->

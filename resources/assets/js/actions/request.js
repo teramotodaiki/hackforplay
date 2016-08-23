@@ -9,6 +9,20 @@ request.use((req) => {
   return req;
 });
 
+const fakes = {
+  put: 'PUT',
+  del: 'DELETE',
+};
+
+Object.keys(fakes)
+.forEach((method) => {
+  request[method] = (...args) => {
+    return request
+      .post.apply(request, args)
+      .send({ _method: fakes[method] });
+  };
+})
+
 request.put = (...args) => {
   // PUT method is NOT allowed in Microsoft Azure Web Apps, so use a fake method
   return request
