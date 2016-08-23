@@ -338,6 +338,9 @@ $(function(){
 					</a>
 					<ul class="dropdown-menu">
 						<li>
+							<a href="/history" title="History">今までのステージ</a>
+						</li>
+						<li>
 							<a href="/m" title="My page">マイページ</a>
 						</li>
 						<li>
