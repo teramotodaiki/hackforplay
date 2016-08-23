@@ -21,6 +21,11 @@
 
   };
 
+  window.getStageAll = function () {
+    var cache = state.getInstance();
+    return Object.keys(cache).map(function (key) { return cache[key]; });
+  };
+
   // Cache
   window.setStage = function (stage) {
     state.set(stage);
@@ -30,7 +35,7 @@
   function State () {
     var key = 'cached-stages';
     var prefix = 'id_';
-    var state = $.parseJSON(localStorage.getItem(key) || '{}');
+    var state = $.parseJSON(sessionStorage.getItem(key) || '{}');
 
     this.get = function (id) {
       return state[prefix + id];
@@ -38,7 +43,10 @@
     this.set = function (stage) {
       state[prefix + stage.id] = stage;
       var json = JSON.stringify(state);
-      localStorage.setItem(key, json);
+      sessionStorage.setItem(key, json);
     }
+    this.getInstance = function () {
+      return state;
+    };
   };
 })();

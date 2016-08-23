@@ -9,14 +9,12 @@ $(function(){
 
 	$('.h4p_search-stage input').val(params.q);
 
-	if (location.search === '' && localStorage.getItem('cached-stages') !== null) {
+	if (location.search === '' && getStageAll().length > 0) {
 
-		var cache = JSON.parse(localStorage.getItem('cached-stages'));
-		var data = Object.keys(cache).map(function (key) { return cache[key]; });
-	 	// キャッシュ取得
+		// キャッシュ取得
 		var result = {
 			cache: true,
-			data: data,
+			data: getStageAll(),
 		};
 		renderStaegs(result);
 
