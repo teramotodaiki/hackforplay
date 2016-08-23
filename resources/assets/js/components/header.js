@@ -31,6 +31,10 @@ const statics = {
   userMenu: [
     [
       {
+        text: 'History',
+        to: '/history',
+      },
+      {
         text: 'MyPage',
         href: '/m',
       },
@@ -106,7 +110,15 @@ class Header extends Component {
                   <MenuItem
                     key={item.text}
                     primaryText={item.text}
-                    onTouchTap={() => window.location.href = item.href}
+                    containerElement={item.to ?
+                      <Link to={item.to} /> :
+                      <div></div>
+                    }
+                    onTouchTap={() => {
+                      if (item.href) {
+                        location.href = item.href;
+                      }
+                    }}
                     />
                 ));
               }).reduce((p, c, i) => p.concat(<Divider key={'Divider-' + i} />, c))}
