@@ -5,8 +5,7 @@ export default (name) => {
 
   const prefix = `/api/${name}`;
 
-  return {
-    index: (action) =>
+  const index = (action) =>
     ({ page = 1 } = {}) =>
       (dispatch) =>
         request
@@ -15,9 +14,9 @@ export default (name) => {
           .then((result) => {
             result.body.data.forEach((payload) => dispatch(action(payload)));
             return result;
-          }),
+          });
 
-    show: (action) =>
+  const show = (action) =>
     ({ id }) =>
       (dispatch) => {
         dispatch(action({ id, isLoading: true }));
@@ -26,10 +25,10 @@ export default (name) => {
           .then((result) => {
             dispatch(action(result.body));
             return result;
-          })
-      },
+          });
+      };
 
-    update: (action) =>
+  const update = (action) =>
     (id, change) =>
       (dispatch) =>
         request
@@ -38,9 +37,9 @@ export default (name) => {
           .then((result) => {
             dispatch(action(result.body));
             return result;
-          }),
+          });
 
-    destroy: (action) =>
+  const destroy = (action) =>
     ({ id }) =>
       (dispatch) =>
         request
@@ -48,8 +47,23 @@ export default (name) => {
           .then((result) => {
             dispatch(action({ id }));
             return result;
-          }),
+          });
 
+  const showIfNeeded = (action, selector) =>
+    ({ id }) =>
+      (dispatch, getState) => {
+        const state = selector(getState());
+        return state.has(id) ?
+          Promise.resolve({ body: state.get(id) }) :
+          dispatch(show(action)({ id }));
+      };
+
+  return {
+    index,
+    show,
+    update,
+    destroy,
+    showIfNeeded,
   };
 
 };
