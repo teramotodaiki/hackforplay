@@ -303,6 +303,9 @@ $require = '';
 					</div>
 				</div>
 			</div>
+			<div class="col-xs-12">
+				<div class="row dependencies-mod-list"></div>
+			</div>
 			<div class="col-xs-12 h4p_restaging directly_floating_shadow">
 				<div class="row">
 					<div class="col-xs-12 h4p_restaging_menu">

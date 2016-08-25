@@ -84,7 +84,20 @@
 		baseUrl : 'http://localhost:8000/api/mods/',
 		shim: {
 			'enchantjs/ui.enchant': ['enchantjs/enchant']
-		}
+		},
+    onNodeCreated: function (node, config, moduleName, url) {
+      // Ovserve required MODs
+      handler('__requireJsNodeCreated');
+      node.addEventListener('load', function () { handler('__requireJsNodeLoaded') });
+      node.addEventListener('error', function () { handler('__requireJsNodeFailed') });
+      function handler (query) {
+        window.parent.postMessage({
+          query: query,
+          moduleName: moduleName,
+          url: url,
+        }, '*');
+      }
+    },
 	});
 	require.onError = function (e) {
 		console.error(e);
@@ -153,6 +166,7 @@
 					} while (localStorage.getItem(key) !== null);
 
 					localStorage.setItem(key, JSON.stringify({
+            query: 'require',
 						dependencies: event.data.dependencies,
 						code: event.data.code,
 					}));

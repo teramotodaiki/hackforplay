@@ -12,9 +12,11 @@ $(function(){
 	});
 
 	// Backspaceキーを無効化
-	document.addEventListener('keydown', function (event) {
-		if (event.keyCode === 8) {
-			return false;
+	$(document).on('keydown keypress', function task (event) {
+		if (event.keyCode === 8 && !(/INPUT|SELECT|TEXTAREA/i).test(event.target.tagName)) {
+			event.preventDefault();
+			alert('Backspaceキーをおすと、まえのページにもどってしまうことがあります。きをつけましょう');
+			$(document).off('keydown keypress', task);
 		}
 	});
 
@@ -789,6 +791,65 @@ $(function(){
 	$('.login-with-twitter').on('mousedown', function(event) {
 		alert_on_unload = false; // 警告を出さない
 	});
+
+
+	// Show MOD
+	(function (renderCreated, renderLoaded, renderFailed) {
+		var _mods = []; // [[node, moduleName, url], ...]
+		// Recieve message
+		window.addEventListener('message', function task (event) {
+			var methods = {
+				'__requireJsNodeCreated': renderCreated,
+				'__requireJsNodeLoaded': renderLoaded,
+				'__requireJsNodeFailed': renderFailed,
+			};
+			if (!event.data || !methods[event.data.query]) return
+
+			var i = _mods
+			.filter(function (item) { return item; })
+			.findIndex(function (item) { return item[1] === event.data.moduleName; });
+
+			var render = methods[event.data.query]
+			if (i > -1) {
+				_mods[i] = render.apply(null, _mods[i]);
+			} else {
+				var created = render.apply(null, [null, event.data.moduleName, event.data.url])
+				_mods.push(created);
+			}
+
+		});
+
+	})(function (node, moduleName, url) {
+		if (node) node.remove();
+		node = $('<a>');
+		var text = moduleName.length > 10 ?
+			moduleName.substr(0, 6) + '…' + moduleName.substr(-6) :
+			moduleName;
+		$(node)
+		.text(text)
+		.addClass('btn btn-default btn-sm col-xs-4 col-sm-3 col-md-3 col-lg-2')
+		.attr({
+			href: url,
+			disabled: 'disabled',
+			target: '_blank',
+		})
+		.appendTo('.dependencies-mod-list');
+		return [node, moduleName, url];
+
+	}, function (node, moduleName, url) {
+		$(node)
+		.toggleClass('btn-default btn-info')
+		.attr('disabled', null)
+		.append($('<span>').addClass('glyphicon glyphicon-new-window'));
+		return [node, moduleName, url];
+
+	}, function (node, moduleName, url) {
+		$(node)
+		.toggleClass('btn-default btn-danger');
+		return [node, moduleName, url];
+
+	});
+
 });
 if (!Array.prototype.findIndex) {
   Array.prototype.findIndex = function(predicate) {
