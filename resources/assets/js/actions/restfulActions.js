@@ -19,13 +19,15 @@ export default (name) => {
 
     show: (action) =>
     ({ id }) =>
-      (dispatch) =>
-        request
+      (dispatch) => {
+        dispatch(action({ id, isLoading: true }));
+        return request
           .get(prefix + '/' + id)
           .then((result) => {
             dispatch(action(result.body));
             return result;
-          }),
+          })
+      },
 
     update: (action) =>
     (id, change) =>
