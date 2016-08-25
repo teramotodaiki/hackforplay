@@ -12,9 +12,11 @@ $(function(){
 	});
 
 	// Backspaceキーを無効化
-	document.addEventListener('keydown', function (event) {
-		if (event.keyCode === 8) {
-			return false;
+	$(document).on('keydown keypress', function task (event) {
+		if (event.keyCode === 8 && !(/INPUT|SELECT|TEXTAREA/i).test(event.target.tagName)) {
+			event.preventDefault();
+			alert('Backspaceキーをおすと、まえのページにもどってしまうことがあります。きをつけましょう');
+			$(document).off('keydown keypress', task);
 		}
 	});
 

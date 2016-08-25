@@ -7,11 +7,15 @@ function render() {
 
 		if (stage.is_mod) {
 			(function ($input) {
+				var value = stage.plug ? `require('${stage.plug.full_label}');` : 'プラグがありません';
 				$input
-				.val(stage.plug ? `require('${stage.plug.full_label}');` : 'プラグがありません')
+				.val(value)
 				.attr('readonly', stage.plug === null)
 				.on('click', function (event) {
 					event.target.select(0, event.target.value.length - 1);
+				})
+				.on('change', function (event) {
+					event.target.value = value;
 				});
 			})($('.require-mod-container input[name="require-mod"]'));
 
