@@ -5,6 +5,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import createLogger from 'redux-logger';
 
 import * as reducers from './reducers/';
 
@@ -34,7 +35,7 @@ injectTapEventPlugin();
 
 const store = createStore(
   combineReducers(reducers),
-  applyMiddleware(thunkMiddleware)
+  applyMiddleware(thunkMiddleware, createLogger())
 );
 
 
