@@ -153,6 +153,7 @@
 					} while (localStorage.getItem(key) !== null);
 
 					localStorage.setItem(key, JSON.stringify({
+            query: 'require',
 						dependencies: event.data.dependencies,
 						code: event.data.code,
 					}));
