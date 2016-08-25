@@ -1,30 +1,12 @@
-/**
- * projects
- * |  \ ...
- * {project}
- *  |
- * stages
- *    | \ ...
- *  {stage}
-*/
+import { Map } from 'immutable';
+import { handleActions } from 'redux-actions';
+import { setReducer, mergeReducer, deleteReducer } from './general';
+import { setProject, mergeProject, deleteProject } from '../actions/';
 
-import { ADD_PROJECT, ADD_STAGE } from '../actions/';
-import makeAssignRecursive from './makeAssignRecursive';
+export const projects = handleActions({
 
-const assignRecursive = makeAssignRecursive('project', 'stage');
+  [setProject]: setReducer,
+  [mergeProject]: mergeReducer,
+  [deleteProject]: deleteReducer,
 
-export const projects = (state = {}, action) => {
-  switch (action.type) {
-
-    case ADD_PROJECT:
-
-      return assignRecursive(state, action.project, null)
-
-    case ADD_STAGE:
-
-      return assignRecursive(state, null, action.stage)
-
-    default:
-      return state;
-  }
-};
+}, Map());
