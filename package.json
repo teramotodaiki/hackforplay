@@ -11,6 +11,7 @@
     "classnames": "^2.2.5",
     "deep-equal": "^1.0.1",
     "font-awesome": "^4.6.1",
+    "immutable": "^3.8.1",
     "laravel-elixir": "^5.0.0",
     "material-ui": "^0.15.2",
     "object.values": "^1.0.3",
