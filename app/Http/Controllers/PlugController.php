@@ -74,6 +74,7 @@ class PlugController extends Controller
       $plug = $author->plugs()->create([
         'stage_id' => $stage->ID,
         'label' => $request->input('label'),
+        'is_visible' => true,
       ]);
 
       return response($plug, 200);
