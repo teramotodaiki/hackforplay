@@ -39,6 +39,17 @@ export default (name) => {
             return result;
           });
 
+  const store = (action) =>
+    (payload) =>
+      (dispatch) =>
+        request
+          .post(prefix)
+          .send(payload)
+          .then((result) => {
+            dispatch(action(result.body));
+            return result;
+          });
+
   const destroy = (action) =>
     ({ id }) =>
       (dispatch) =>
@@ -62,6 +73,7 @@ export default (name) => {
     index,
     show,
     update,
+    store,
     destroy,
     showIfNeeded,
   };
