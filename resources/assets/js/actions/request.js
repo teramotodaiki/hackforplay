@@ -21,14 +21,8 @@ Object.keys(fakes)
       .post.apply(request, args)
       .send({ _method: fakes[method] });
   };
-})
+});
 
-request.put = (...args) => {
-  // PUT method is NOT allowed in Microsoft Azure Web Apps, so use a fake method
-  return request
-    .post.apply(request, args)
-    .send({ _method: 'PUT' });
-};
 
 var _csrfToken = null;
 const getCsrfToken = () => {
