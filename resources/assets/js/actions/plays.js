@@ -1,21 +1,13 @@
-import request from './request';
+import { createAction } from 'redux-actions';
 
-export const ADD_PLAY = 'ADD_PLAY';
+import createREST from './restfulActions.js';
+const REST = createREST('plays');
 
-export const addPlay = (play) => {
-  return { type: ADD_PLAY, play };
-};
+export const setPlay = createAction('SET_PLAY');
+export const mergePlay = createAction('MERGE_PLAY');
+export const deletePlay = createAction('DELETE_PLAY');
 
-export const fetchPlays = ({ page = 1 } = {}) => {
-  return (dispatch) => {
-
-    return request
-      .get('/api/plays')
-      .query({ page })
-      .then((result) => {
-        result.body.data.forEach((play) => dispatch(addPlay(play)));
-        return result;
-      });
-
-  };
-};
+export const indexPlay = REST.index(setPlay);
+export const showPlay = REST.show(setPlay);
+export const updatePlay = REST.update(setPlay);
+export const destroyPlay = REST.destroy(deletePlay);
