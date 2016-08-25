@@ -23,8 +23,9 @@
 
 		// 全角を半角にする
 		var preventInput = '';
+		var $text = $('.container input#navbarLoginEmail');
 		var intervalId = setInterval(function () {
-			var text = $('.container input#navbarLoginEmail').val();
+			var text = $text.val();
 			if (preventInput !== text) {
 				if (text.match(/[０-９]/g)) {
 					clearInterval(intervalId);
