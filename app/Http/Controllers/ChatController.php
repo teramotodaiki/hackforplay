@@ -22,9 +22,20 @@ class ChatController extends Controller
      * @param int $channelId
      * @return \Illuminate\Http\Response
      */
-    public function index($channelId)
+    public function index(Request $request, $channelId)
     {
-      $chats = Channel::findOrFail($channelId)->chats();
+      $this->validate($request, [
+        'until_id' => 'integer',
+      ]);
+
+      $chats = Channel::findOrFail($channelId)
+        ->chats()
+        ->orderBy('id', 'desc');
+
+      if ($request->has('until_id')) {
+        $chats->where('id', '<=', $request->input('until_id'));
+      }
+
       return response($chats->simplePaginate(), 200);
     }
 
