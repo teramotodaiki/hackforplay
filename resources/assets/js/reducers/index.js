@@ -7,3 +7,4 @@ export * from './authors';
 export * from './plugs';
 export * from './plays';
 export * from './channels';
+export * from './chats';
