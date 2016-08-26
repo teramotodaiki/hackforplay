@@ -5,8 +5,8 @@ import { Button } from 'react-bootstrap';
 import ChannelCard from '../components/ChannelCard';
 import LoadMore from '../components/LoadMore';
 import {
-  fetchChannels,
-  fetchUserIfNeeded, getUserFromLocal,
+  indexChannel,
+  showUserIfNeeded,
 } from '../actions/';
 
 class ChannelList extends Component {
@@ -25,7 +25,7 @@ class ChannelList extends Component {
   fetchPrivatePage(page) {
     const { dispatch } = this.props;
 
-    return dispatch(fetchChannels({ page, is_private: 1 }))
+    return dispatch(indexChannel({ page, is_private: 1 }))
       .then((result) => {
         if (result.body.next_page_url) {
           this.fetchPrivatePage(page + 1);
@@ -40,11 +40,11 @@ class ChannelList extends Component {
     if (!nextPage) return;
 
     return nextPage ?
-    dispatch(fetchChannels({ page: nextPage, is_private: false }))
+    dispatch(indexChannel({ page: nextPage, is_private: false }))
     .then((result) => {
       const { body: {current_page, last_page, data} } = result;
       this.setState({ nextPage: current_page < last_page ? current_page + 1 : null });
-      data.forEach((item) => dispatch(fetchUserIfNeeded(item.user_id)));
+      data.forEach((item) => dispatch(showUserIfNeeded({ id: item.user_id })));
       return result;
     }) :
     Promise.resolve();
@@ -53,7 +53,7 @@ class ChannelList extends Component {
 
   render() {
 
-    const { dispatch, channels, authUser } = this.props;
+    const { dispatch, channels, authUser, users } = this.props;
     const { nextPage } = this.state;
 
     const containerStyle = Object.assign({}, this.props.containerStyle, {
@@ -70,21 +70,18 @@ class ChannelList extends Component {
       marginTop: 10,
     };
 
-    const sorted = Object.keys(channels)
-    .map((key) => channels[key])
-    .sort((a, b) => {
-      return (
+    const sorted = channels
+      .sort((a, b) =>
         a.updated_at == null ? 1 :
         b.updated_at == null ? -1 :
-        a.updated_at < b.updated_at ? 1 : -1
-      );
-    })
-    .map((channel) => (
-      <ChannelCard
-        key={channel.ID}
-        channel={channel}
-        user={dispatch(getUserFromLocal(channel.user_id))}
-      />));
+        a.updated_at < b.updated_at ? 1 : -1)
+      .map((channel) =>
+        <ChannelCard
+          key={channel.id}
+          channel={channel}
+          user={users.get(channel.user_id, null)}
+        />)
+      .toSetSeq();
 
     return (
       <div style={containerStyle}>
