@@ -803,7 +803,8 @@ $(function(){
 				'__requireJsNodeLoaded': renderLoaded,
 				'__requireJsNodeFailed': renderFailed,
 			};
-			if (!event.data || !methods[event.data.query]) return
+			if (!event.data || !methods[event.data.query]) return;
+			if (event.data.url.indexOf('blob:') === 0) return; // BLOB URLは表示しない
 
 			var i = _mods
 			.filter(function (item) { return item; })

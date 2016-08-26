@@ -35,7 +35,7 @@ export default class LoadMore extends Component {
         (onLoaded ? onLoaded(result) : Promise.resolve())
         .then(() => {
           this.setState({ isFetching: false });
-          // this.loadIfAppeared();
+          setTimeout(() => this.loadIfAppeared(), 1000);
         })
       });
 
