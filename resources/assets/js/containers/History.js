@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Map } from 'immutable';
 
 import { connect } from 'react-redux';
 import {
@@ -12,12 +13,12 @@ import VideogameAsset from 'material-ui/svg-icons/hardware/videogame-asset';
 import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
 
 import {
-  fetchPlays,
-  fetchStageIfNeeded, getStageFromLocal, updateStage,
-  fetchProjectIfNeeded, getProjectFromLocal,
-  fetchUserIfNeeded, getUserFromLocal,
-  fetchPlugs, getPlugs, updatePlug, postPlug,
-  fetchAuthors, getAuthors, postAuthor,
+  indexPlay,
+  showStageIfNeeded, updateStage,
+  showProjectIfNeeded,
+  showUserIfNeeded,
+  indexPlug, updatePlug, storePlug,
+  indexAuthor, storeAuthor,
 } from '../actions/';
 import StageCard from '../components/StageCard';
 import ModStageCard from '../components/ModStageCard';
@@ -39,6 +40,7 @@ export default class History extends Component {
       connectDialog: {
         open: false,
       },
+      noAuthor: false,
     };
 
     this.handleConnect = this.handleConnect.bind(this);
@@ -49,8 +51,10 @@ export default class History extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(fetchPlugs());
-    dispatch(fetchAuthors());
+    dispatch(indexPlug());
+    dispatch(indexAuthor())
+    .then((result) =>
+      this.setState({ noAuthor: this.props.authors.count === 0 }));
   }
 
   loadResolved(result) {
@@ -65,18 +69,18 @@ export default class History extends Component {
     const fetchTask = (result) => {
       const stage = result.body;
       if (stage.user_id) {
-        dispatch(fetchUserIfNeeded(stage.user_id));
+        dispatch(showUserIfNeeded({ id: stage.user_id }));
       }
       if (authUser.id == stage.user_id) {
-        dispatch(fetchProjectIfNeeded(stage.project_id));
+        dispatch(showProjectIfNeeded({ id: stage.project_id }));
       }
     };
 
     const fetchStages = result.body.data
       .filter((play) => play.deleted_at === null && play.stage_id)
       .map((play) => play.stage_id)
-      .filter((stage_id, i, self) => self.indexOf(stage_id) === i)
-      .map((stage_id) => dispatch(fetchStageIfNeeded(stage_id)))
+      .filter((stage_id, i, self) => stage_id && self.indexOf(stage_id) === i)
+      .map((stage_id) => dispatch(showStageIfNeeded({ id: stage_id })))
       .map((promise) => promise.then(fetchTask));
 
     return Promise.all(fetchStages);
@@ -99,7 +103,7 @@ export default class History extends Component {
           open: true,
           text: `NOTICE: It is NOT editable that label of plug, OK? // ラベルは きめたら へんこうできません. よいですか？ [MOD: require('${fullLabel}')]`,
           confirm: () => {
-            dispatch(postPlug({
+            dispatch(storePlug({
               label: selectedPlug.label,
               author: selectedPlug.author.id,
               stage: stage.id,
@@ -132,37 +136,37 @@ export default class History extends Component {
 
   handlePostAuthor(author) {
     const { dispatch } = this.props;
-    return dispatch(postAuthor(author));
+    return dispatch(storeAuthor(author));
   }
 
   getStageCardList({ style }) {
-    const { dispatch, plays, authUser } = this.props;
+    const { dispatch, plays, projects, stages, plugs, authUser, users } = this.props;
     const { selectedPlug } = this.state;
-    const keyArrayOfPlays = Object.keys(plays);
 
-    if (!keyArrayOfPlays.length) return null; // Loading...
+    if (plays.count() === 0) return null; // Loading...
 
-    const plugs = dispatch(getPlugs());
-
-    const cards = keyArrayOfPlays
-      .sort((a, b) => b - a)
-      .filter((id) => plays[id].deleted_at === null && plays[id].stage_id)
-      .map((id) => plays[id].stage_id)
+    const cards =
+      plays
+      .filter((play) => play.deleted_at === null && play.stage_id)
+      .sort((a, b) => b.id - a.id)
+      .map((play) => play.stage_id)
+      .toArray()
       .filter((stage_id, i, self) => self.indexOf(stage_id) === i)
-      .map((stage_id) => dispatch(getStageFromLocal(stage_id)))
-      .filter((stage) => !!+stage.is_mod === this.state.showMod)
-      .filter((stage) => !this.state.onlyMe || authUser.id == stage.user_id)
+      .map((stage_id) => stages.get(stage_id, { isLoading: true }))
+      .filter((stage) => !stage.isLoading)
+      .filter((stage) => stage.is_mod === this.state.showMod)
+      .filter((stage) => !this.state.onlyMe || authUser.id === stage.user_id)
       .filter((stage) => ['published', 'private', 'judging', 'pending'].indexOf(stage.state) > -1)
       .map((stage) => {
-        const isOwner = authUser.id == stage.user_id;
+        const isOwner = authUser.id === stage.user_id;
         return {
           key: stage.id,
           isMod: stage.is_mod,
           style: style,
           stage: stage,
           isOwner: isOwner,
-          project: isOwner && stage.project_id ? dispatch(getProjectFromLocal(stage.project_id)) : null,
-          user: stage.user_id ? dispatch(getUserFromLocal(stage.user_id)) : null,
+          project: isOwner ? projects.get(stage.project_id, null) : null,
+          user: users.get(stage.user_id, null),
           handleStageUpdate: (change) => dispatch(updateStage(stage.id, change)),
         };
       })
@@ -170,7 +174,7 @@ export default class History extends Component {
         params.isMod ?
           <ModStageCard {...params}
             selectedPlug={selectedPlug}
-            plugs={plugs.filter((plug) => plug.stage_id == params.stage.id)}
+            plugs={plugs.filter((plug) => plug.stage_id === params.stage.id).toArray()}
             handleConnect={this.handleConnect}
             handleToggleVisiblity={this.handleToggleVisiblity}
           /> :
@@ -184,10 +188,9 @@ export default class History extends Component {
   }
 
   render() {
-    const { dispatch, authUser, containerStyle } = this.props;
+    const { dispatch, authUser, containerStyle, authors, plugs } = this.props;
     const { showMod, connectDialog } = this.state;
     const { drawer } = this.context.muiTheme;
-    const authors = dispatch(getAuthors());
 
     const style = Object.assign({}, containerStyle, {
       paddingLeft: 60,
@@ -252,30 +255,25 @@ export default class History extends Component {
             value={true}
           />
         </Tabs>
-        {
-          this.getStageCardList({ style: cardStyle }) ||
-          (<Progress size={5} />)
-        }
-        {
-          !this.state.noMore && (
-            <LoadMore
-              handleLoad={() => dispatch(fetchPlays({ page: this.state.page }))}
-              onLoaded={(result) => this.loadResolved(result)}
-            />
-          )
-        }
+        {this.getStageCardList({ style: cardStyle })}
+        {<LoadMore
+          handleLoad={() => dispatch(indexPlay({ page: this.state.page }))}
+          onLoaded={(result) => this.loadResolved(result)}
+          size={5}
+          first={authors.count() === 0}
+        />}
         {showMod ? (
-          !authors.length && !authors.isLoading ? (
+          this.state.noAuthor ? (
             <AuthorDrawer
               handlePostAuthor={this.handlePostAuthor}
             />
           ) :
-          !authors.length && authors.isLoading ? (
+          authors.count() === 0 ? (
             null
           ) : (
             <PlugDrawer
-              plugs={dispatch(getPlugs())}
-              authors={authors}
+              plugs={plugs.toArray()}
+              authors={authors.toArray()}
               selectedPlug={this.state.selectedPlug}
               handlePlugSelect={this.handlePlugSelect}
             />

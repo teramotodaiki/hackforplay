@@ -1,28 +1,12 @@
-/**
- *  authors
- *    | \
- *  {author}
- *      |
- *    plugs
- *      | \ ...
- *    {plug}
-*/
+import { Map } from 'immutable';
+import { handleActions } from 'redux-actions';
+import { setReducer, mergeReducer, deleteReducer } from './general';
+import { setAuthor, mergeAuthor, deleteAuthor } from '../actions/';
 
-import { ADD_AUTHOR, ADD_PLUG } from '../actions/';
-import makeAssignRecursive from './makeAssignRecursive';
+export const authors = handleActions({
 
-const assignRecursive = makeAssignRecursive('author', 'plug');
+  [setAuthor]: setReducer,
+  [mergeAuthor]: mergeReducer,
+  [deleteAuthor]: deleteReducer,
 
-export const authors = (state = {}, action) => {
-  switch (action.type) {
-
-    case ADD_AUTHOR:
-      return assignRecursive(state, action.author, null);
-
-    case ADD_PLUG:
-      return assignRecursive(state, null, action.plug);
-
-    default:
-      return state;
-  }
-};
+}, Map());

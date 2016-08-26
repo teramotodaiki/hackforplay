@@ -1,23 +1,12 @@
-/**
- * plays
- *  |
- * {play} -> {stage}
- *
- */
+import { Map } from 'immutable';
+import { handleActions } from 'redux-actions';
+import { setReducer, mergeReducer, deleteReducer } from './general';
+import { setPlay, mergePlay, deletePlay } from '../actions/';
 
-import { ADD_PLAY } from '../actions/';
+export const plays = handleActions({
 
-export const plays = (state = {}, action) => {
+  [setPlay]: setReducer,
+  [mergePlay]: mergeReducer,
+  [deletePlay]: deleteReducer,
 
-  switch (action.type) {
-    case ADD_PLAY:
-
-      return Object.assign({}, state, {
-        [action.play.id]: action.play
-      });
-
-    default:
-      return state;
-  }
-
-};
+}, Map());

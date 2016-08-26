@@ -16,8 +16,8 @@ class AuthorController extends Controller
      */
     public function index(Request $request)
     {
-      $authors = $request->user()->authors;
-      return response($authors, 200);
+      $authors = $request->user()->authors();
+      return response($authors->paginate(), 200);
     }
 
     /**

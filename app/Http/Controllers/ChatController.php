@@ -24,8 +24,8 @@ class ChatController extends Controller
      */
     public function index($channelId)
     {
-      $chats = Channel::findOrFail($channelId)->chats;
-      return response($chats, 200);
+      $chats = Channel::findOrFail($channelId)->chats();
+      return response($chats->paginate(), 200);
     }
 
     /**
