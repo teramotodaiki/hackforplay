@@ -18,7 +18,6 @@ import {
   showChannel, showChannelIfNeeded, updateChannel,
   createGist,
   fetchQcard,
-  showUserIfNeeded,
 } from '../actions/';
 
 
@@ -79,9 +78,6 @@ class Channel extends Component {
     const { dispatch } = this.props;
 
     dispatch(showChannelIfNeeded({ id: this.id }));
-
-    dispatch(indexChat({ channel_id: this.id }));
-
 
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = false;

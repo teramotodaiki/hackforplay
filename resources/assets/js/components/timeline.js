@@ -6,6 +6,11 @@ import { lightBlue50 } from 'material-ui/styles/colors';
 
 import Chat from './Chat';
 import ActionBar from './ActionBar';
+import LoadMore from './LoadMore';
+
+import {
+  indexChat,
+} from '../actions/';
 
 export default class Timeline extends Component {
   constructor(props) {
@@ -26,6 +31,20 @@ export default class Timeline extends Component {
     if (this.state.isAutoScroll && !this.props.reverse) {
       this.timeline.scrollTop = this.timeline.scrollHeight;
     }
+  }
+
+  fetchPast() {
+    const { dispatch, chats, channel } = this.props;
+
+    // 現在のstateツリーの中で最もidが小さい [tail]
+    // tail.id - 1 を [until_id] として 最初のページをfetch
+
+    const tail = chats
+      .filter((chat) => chat.channel_id === channel.id)
+      .minBy((chat) => chat.id);
+
+    return dispatch(indexChat(channel.id, tail ? { until_id: tail.id - 1 } : null));
+
   }
 
   render() {
@@ -82,17 +101,26 @@ export default class Timeline extends Component {
         style={actionBarStyle}
         postChat={postChat}
         disabled={!!+channel.is_archived}
-      />);
+      />
+    );
+
+    const loadMore = (
+      <LoadMore
+        handleLoad={this.fetchPast.bind(this)}
+        size={3}
+        first={chats.count() === 0}
+      />
+    );
 
     return (<div style={divStyle}>
-      {reverse ? actionBar : null}
+      {reverse ? actionBar : loadMore}
       <div
         ref={(ref) => this.timeline = findDOMNode(ref)}
         style={timelineStyle}
       >
         {list}
       </div>
-      {reverse ? null : actionBar}
+      {reverse ? loadMore : actionBar}
     </div>);
   }
 }
