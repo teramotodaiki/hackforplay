@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
 import { Section } from '../components/section';
-import { fetchChannel, fetchTeam, postBell } from '../actions/';
+import { showChannelIfNeeded, fetchTeam, postBell } from '../actions/';
 
 class BellCreate extends React.Component {
   constructor(props, { router }) {
@@ -23,23 +23,19 @@ class BellCreate extends React.Component {
 
   componentDidMount() {
     const { dispatch, channels, location: { query } } = this.props;
-    const fakeResult = { body: channels[query.channel] };
+    const id = +query.channel;
 
-    Promise.resolve(fakeResult)
-    .then((result) => result.body ?
-      result :
-      dispatch(fetchChannel(query.channel, { chats: false }))
-    )
-    .then((result) => dispatch(fetchTeam(result.body.TeamID)))
+    dispatch(showChannelIfNeeded({ id }))
+    .then((result) => dispatch(fetchTeam(result.body.team_id)))
     .then((result) => this.setState({ team: result.body, isLoading: false }));
   }
 
   raiseHand() {
     const { dispatch, channels, location: { query } } = this.props;
-    const { ID, TeamID } = channels[query.channel];
+    const id = +query.channel;
 
     this.setState({ isLoading: true });
-    dispatch(postBell(TeamID, ID))
+    dispatch(postBell(this.state.team.id, id))
     .then((result) => {
       this.setState({ isLoading: false });
       this.goBack();

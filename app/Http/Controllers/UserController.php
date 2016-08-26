@@ -68,7 +68,7 @@ class UserController extends Controller
 
       $user->accounts()->save($account);
 
-      return "{}";
+      return response($user, 200);
     }
 
     /**

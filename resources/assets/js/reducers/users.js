@@ -1,21 +1,12 @@
-/**
- * users
- *  | \ ...
- * {user}
-*/
+import { Map } from 'immutable';
+import { handleActions } from 'redux-actions';
+import { setReducer, mergeReducer, deleteReducer } from './general';
+import { setUser, mergeUser, deleteUser } from '../actions/';
 
-import { ADD_USER } from '../actions/';
+export const users = handleActions({
 
-export const users = (state = {}, action) => {
-  switch (action.type) {
-    
-    case ADD_USER:
+  [setUser]: setReducer,
+  [mergeUser]: mergeReducer,
+  [deleteUser]: deleteReducer,
 
-      return Object.assign({}, state, {
-        [action.user.id]: action.user
-      });
-
-    default:
-      return state;
-  }
-};
+}, Map());

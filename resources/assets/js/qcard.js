@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { updateQcard, pullQcard, pushQcard, createBell, postChat } from './actions/';
+import { updateQcard, pullQcard, pushQcard, createBell, storeChat } from './actions/';
 
 class Qcard extends Component {
   constructor(props) {
@@ -50,7 +50,8 @@ class Qcard extends Component {
       }));
     })
     .then((result) => {
-      return dispatch(postChat(channel, {
+      return dispatch(storeChat({
+        channel_id: channel,
         message: `♪♪ ...${team}'s bell rang`
       }));
     })

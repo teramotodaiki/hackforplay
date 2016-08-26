@@ -13,7 +13,7 @@ import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
 import Merger from "../merger";
 import { Section, CardSection, Arrow } from "../components/section";
 
-import { postUser } from '../actions/';
+import { storeUser } from '../actions/';
 
 const contains = (text, range) => { // Contains check.
   const len = text.length;
@@ -144,7 +144,7 @@ class Register extends React.Component {
 
     scroller.scrollTo('Result', { smooth: true });
 
-    return dispatch(postUser(this.state.user))
+    return dispatch(storeUser(this.state.user))
       .then((result) => this.setState({ response: result }))
       .catch((err) => this.setState({ response: err.response }));
   }

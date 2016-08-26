@@ -108,6 +108,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['auth.old', 'auth']], function
   Route::get('records/clear', 'RecordController@clear');
 
   Route::resource('channels', 'ChannelController');
+  Route::resource('channels.chats', 'ChatController');
 });
 
 // JSON API

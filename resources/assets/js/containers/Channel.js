@@ -14,13 +14,12 @@ import ChannelMenu from '../components/channel-menu';
 import { Section } from '../components/section';
 import Progress from '../components/Progress';
 import {
-  addChat, postChat, getChats,
-  fetchChannel, updateChannel,
+  setChat, indexChat, storeChat,
+  showChannel, showChannelIfNeeded, updateChannel,
+  createGist,
   fetchQcard,
-  fetchUserIfNeeded,
 } from '../actions/';
 
-const GITHUB_API = 'https://api.github.com';
 
 class Channel extends Component {
 
@@ -28,53 +27,34 @@ class Channel extends Component {
     super(props);
 
     this.state = { openArchiveDialog: false };
+    this.id = +props.params.id;
 
     this.reload = this.reload.bind(this);
     this.createGist = this.createGist.bind(this);
     this.handleArchive = this.handleArchive.bind(this);
   }
 
-  load(query) {
-    const { dispatch } = this.props;
-    const id = +this.props.params.id;
-
-    return dispatch(fetchChannel(id, query))
-      .then((result) => {
-        if (query.chats) {
-          dispatch(getChats())
-          .filter((chat) => chat.user_id)
-          .forEach((chat) => dispatch(fetchUserIfNeeded(chat.user_id)))
-        }
-        return result;
-      });
-  }
-
   postChat (message) {
-    const { dispatch, params } = this.props;
-    dispatch(postChat(params.id, { message }));
+    const { dispatch } = this.props;
+    dispatch(storeChat({ channel_id: this.id, message }));
   }
 
   reload () {
-    this.load({ chats: false })
+    const { dispatch } = this.props;
+    dispatch(showChannel({ id: this.id }))
     .then((result) => {
-      this.iframe.contentWindow.location.reload(false);
+      this.iframe.reload(false);
       this.iframe.focus();
     });
   }
 
   createGist () {
     const { dispatch, params, channels } = this.props;
-    const channel = channels[params.id];
+    const channel = channels.get(this.id);
 
-    const gistName = `channel-${params.id}.js`;
-    const gistWindow = window.open('about:blank', gistName);
+    const gistWindow = window.open('about:blank', `channel-${channel.id}.js`);
 
-    request
-    .post(GITHUB_API + '/gists')
-    .set('Accept', 'application/vnd.github.v3+json')
-    .send({ public: true, files: {
-      [gistName]: {'content': channel.head.RawCode} }
-    })
+    dispatch(createGist(channel))
     .then((result) => {
       gistWindow.location.href = result.body.html_url;
       this.postChat('Created new gist!→' + result.body.html_url);
@@ -95,9 +75,9 @@ class Channel extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, params: {id} } = this.props;
+    const { dispatch } = this.props;
 
-    this.load({ chats: true });
+    dispatch(showChannelIfNeeded({ id: this.id }));
 
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = false;
@@ -107,16 +87,16 @@ class Channel extends Component {
       encrypted: true
     });
 
-    const channel = pusher.subscribe('channel-' + id);
+    const channel = pusher.subscribe('channel-' + this.id);
     channel.bind('new_message', (data) => {
-      dispatch(addChat(id, data));
+      dispatch(setChat(data));
     });
   }
 
   render () {
 
-    const { params, channels, dispatch, authUser } = this.props;
-    const channel = channels[params.id];
+    const { channels, dispatch, authUser } = this.props;
+    const channel = channels.get(this.id, null);
 
     if (!channel) {
       return (
@@ -194,10 +174,10 @@ class Channel extends Component {
           )}
           <ChannelMenu
             channel={channel}
-            reload={this.reload}
+            reload={this.reload.bind(this)}
             createGist={this.createGist}
             archive={this.handleArchive}
-            isOwner={authUser && (authUser.id == channel.user_id)}
+            isOwner={authUser && (authUser.id === channel.user_id)}
             height={menuHeight}
             style={menuStyle}
           />

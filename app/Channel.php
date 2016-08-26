@@ -17,6 +17,7 @@ class Channel extends Model
   ];
   protected $primaryKey = 'ID';
   protected $appends = ['reserved', 'head', 'thumbnail'];
+  protected $hidden = ['chats'];
   protected $casts = [
     'ID' => 'integer',
     'TeamID' => 'integer',
