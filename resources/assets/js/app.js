@@ -5,7 +5,6 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import createLogger from 'redux-logger';
 
 import * as reducers from './reducers/';
 
@@ -33,9 +32,18 @@ if (!Object.values) {
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
+const middlewares = [thunkMiddleware];
+
+if (process.env.NODE_ENV !== `production`) {
+  const createLogger = require(`redux-logger`);
+  const logger = createLogger();
+  middlewares.push(logger);
+}
+
+
 const store = createStore(
   combineReducers(reducers),
-  applyMiddleware(thunkMiddleware, createLogger())
+  applyMiddleware(...middlewares)
 );
 
 
