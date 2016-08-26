@@ -60,6 +60,7 @@ export default class Timeline extends Component {
     };
 
     let _chats = chats
+      .sort((a, b) => a.id - b.id)
       .filter((chat) => chat.channel_id === channel.id);
     _chats = reverse ? _chats.reverse() : _chats;
 
