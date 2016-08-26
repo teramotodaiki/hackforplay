@@ -9,11 +9,11 @@ export const mergeChat = createAction('MERGE_CHAT');
 export const deleteChat = createAction('DELETE_CHAT');
 
 export const indexChat =
-  ({ channel_id, page = 1 } = {}) =>
+  (channel_id, query = {}) =>
     (dispatch) =>
       request
         .get(`/api/channels/${channel_id}/chats`)
-        .query({ page })
+        .query(query)
         .then((result) => {
           result.body.data.forEach((payload) => dispatch(setChat(payload)));
           return result;
