@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FormGroup, FormControl, Checkbox, HelpBlock } from 'react-bootstrap';
 
 import { Section, CardSection, Arrow } from '../components/section';
-import { fetchMyTeams, postChannel } from '../actions/';
+import { fetchMyTeams, storeChannel } from '../actions/';
 
 const contains = (text, range) => { // Contains check.
   const len = text.length;
@@ -115,7 +115,7 @@ class ChannelCreate extends Component {
     const { channel } = this.state;
 
     this.setState({ isLoading: true });
-    dispatch(postChannel(channel))
+    dispatch(storeChannel(channel))
     .then((result) => this.redirect(`/channels/${result.body.ID}/watch`))
     .catch((err) => this.setState({ errors: err.response.body, isLoading: true }));
   }
