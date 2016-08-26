@@ -1,5 +1,3 @@
-export * from './fetchings';
-
 export * from './projects';
 export * from './stages';
 export * from './users';
