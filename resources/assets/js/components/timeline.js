@@ -25,9 +25,14 @@ export default class Timeline extends Component {
       const scrollFromBottom = target.scrollHeight - target.scrollTop - target.clientHeight;
       this.setState({ isAutoScroll: scrollFromBottom <= 0 });
     });
+    this.scrollIfNeeded();
   }
 
   componentDidUpdate() {
+    this.scrollIfNeeded();
+  }
+
+  scrollIfNeeded() {
     if (this.state.isAutoScroll && !this.props.reverse) {
       this.timeline.scrollTop = this.timeline.scrollHeight;
     }
