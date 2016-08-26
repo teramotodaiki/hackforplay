@@ -1,20 +1,26 @@
 import equal from 'deep-equal';
 import request from './request';
+import superagent from 'superagent';
+
+import { createAction } from 'redux-actions';
+
+import createREST from './restfulActions.js';
+const REST = createREST('channels');
+
+export const setChannel = createAction('SET_CHANNEL');
+export const mergeChannel = createAction('MERGE_CHANNEL');
+export const deleteChannel = createAction('DELETE_CHANNEL');
+
+export const indexChannel = REST.index(setChannel);
+export const showChannel = REST.show(setChannel);
+export const updateChannel = REST.update(setChannel);
+export const storeChannel = REST.store(setChannel);
+export const destroyChannel = REST.destroy(deleteChannel);
 
 
-export const ADD_CHANNEL = 'ADD_CHANNEL';
+export const showChannelIfNeeded =
+  REST.showIfNeeded(setChannel, (state) => state.channels);
 
-export const ADD_CHAT = 'ADD_CHAT';
-
-export const PUT_QCARD_LOCAL = 'PUT_QCARD_LOCAL';
-export const PUT_QCARD_ORIGIN = 'PUT_QCARD_ORIGIN';
-export const PUT_QCARD_BOTH = 'PUT_QCARD_BOTH';
-
-
-
-export const addChannel = (channel) => {
-  return { type: ADD_CHANNEL, channel };
-};
 
 export const fetchChannel = (id, query = {}) => {
   return (dispatch) => {
@@ -35,36 +41,6 @@ export const fetchChannel = (id, query = {}) => {
   }
 };
 
-export const fetchChannels = (query) => {
-  return (dispatch) => {
-
-    return request
-      .get('/channels')
-      .query(query)
-      .then((result) => {
-        result.body.data.forEach((channel) => {
-          dispatch({ type: ADD_CHANNEL, channel });
-        });
-        return result;
-      })
-      .catch((err) => alert(err.message));
-
-  };
-};
-
-export const updateChannel = (id, change) => {
-  return (dispatch) => {
-
-    return request
-      .put('/api/channels/' + id)
-      .send(change)
-      .then((result) => {
-        dispatch({ type: ADD_CHANNEL, channel: result.body });
-        return result;
-      });
-
-  };
-};
 
 export const postChannel = (channel) => {
   return (dispatch) => {
@@ -78,31 +54,6 @@ export const postChannel = (channel) => {
         return result;
       });
 
-  };
-};
-
-
-export const addChat = (channelId, chat) => {
-  return { type: ADD_CHAT, channelId, chat };
-};
-
-export const postChat = (channelId, chat) => {
-  return (dispatch) => {
-
-    return request
-      .post('/channels/' + channelId + '/chats')
-      .query(chat)
-      .then((result) => {})
-      .catch((err) => alert(err));
-
-  };
-};
-
-export const getChats = () => {
-  return (dispatch, getState) => {
-    return Array.prototype.concat.apply([],
-      Object.values(getState().channels).map((channel) => Object.values(channel.chats))
-    );
   };
 };
 
@@ -131,60 +82,14 @@ export const createBell = ({ team, channel, qcard }) => {
 };
 
 
-export const updateQcard = (qcard) => {
-  return (dispatch, getState) => {
+const GITHUB_API = 'https://api.github.com';
 
-    const { qcards: { local } } = getState();
-    qcard = Object.assign({}, local[qcard.id], qcard);
-    return dispatch({ type: PUT_QCARD_LOCAL, qcard });
-
-  }
-};
-
-export const pushQcard = (id) => {
-  return (dispatch, getState) => {
-
-
-    const { qcards: { local, origin } } = getState();
-
-    // Expect timestamp
-    const localNode = Object.assign({}, local[id], { updated_at: undefined });
-    const originNode = Object.assign({}, origin[id], { updated_at: undefined });
-
-    return equal(localNode, originNode) ? Promise.resolve() :
-      request.put(`/qcards/${id}`)
-      .send(localNode)
-      .then((result) => {
-        dispatch({ type: PUT_QCARD_ORIGIN, qcard: result.body });
-        return result.body;
-      })
-      .catch((err) => alert(err.message));
-
-  };
-};
-
-export const pullQcard = (id) => {
-  return (dispatch) => {
-
-    return request
-      .get(`/qcards/${id}`)
-      .then((result) => {
-        dispatch({ type: PUT_QCARD_BOTH, qcard: result.body });
-        return result.body;
-      })
-      .catch((err) => alert(err.message));
-
-  };
-};
-
-export const fetchQcard = (filter) => {
-  return (dispatch) => {
-
-    return request
-      .get(`/qcards`)
-      .query(filter)
-      .then((result) => result)
-      .catch((err) => alert(err.message));
-
-  };
-};
+export const createGist = (channel) =>
+  (dispatch) =>
+    superagent
+      .post(GITHUB_API + '/gists')
+      .set('Accept', 'application/vnd.github.v3+json')
+      .send({ public: true, files: {
+        [`channel-${channel.id}.js`]:
+          {'content': channel.head.raw_code} }
+      });
