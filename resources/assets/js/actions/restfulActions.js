@@ -6,11 +6,11 @@ export default (name) => {
   const prefix = `/api/${name}`;
 
   const index = (action) =>
-    ({ page = 1 } = {}) =>
+    (query) =>
       (dispatch) =>
         request
           .get(prefix)
-          .query({ page })
+          .query(query)
           .then((result) => {
             result.body.data.forEach((payload) => dispatch(action(payload)));
             return result;
