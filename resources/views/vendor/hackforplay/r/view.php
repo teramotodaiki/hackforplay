@@ -71,6 +71,19 @@
 		</div>
 	</div>
 
+	<div class="container-fluid panel panel-info">
+			<div class="panel-body text-center">
+				<h3>
+					<img src="https://embed.hackforplay.xyz/hackforplay/emojione/assets/png/1f451.png?v=2.2.4" alt="👑" />
+					プログラミング コンテストが かいさいされている!!
+					<img src="https://embed.hackforplay.xyz/hackforplay/emojione/assets/png/1f632.png?v=2.2.4" alt="😳" />
+				</h3>
+				<a href="http://www.lab-kadokawa.com/jjpc/" target="_blank" class="btn btn-info">くわしく みてみる</a>
+				<h5>HackforPlayで作ったゲームも、おうぼできるよ。全国の大会なので、ぜひチャレンジしてみよう！</h5>
+				<img src="https://embed.hackforplay.xyz/hackforplay/emojione/assets/png/1f4e0.png?v=2.2.4" alt="" />
+			</div>
+	</div>
+
 	<?php if (isset($session_userid)): ?>
 	<div class="h4p_topic-comment overflow-hidden hidden-xs"></div>
 	<?php endif; ?>
