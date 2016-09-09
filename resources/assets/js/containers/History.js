@@ -53,8 +53,9 @@ export default class History extends Component {
     const { dispatch } = this.props;
     dispatch(indexPlug());
     dispatch(indexAuthor())
-    .then((result) =>
-      this.setState({ noAuthor: this.props.authors.count === 0 }));
+    .then((result) => {
+      this.setState({ noAuthor: this.props.authors.count() === 0 });
+    });
   }
 
   loadResolved(result) {
