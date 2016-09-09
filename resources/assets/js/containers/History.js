@@ -53,8 +53,9 @@ export default class History extends Component {
     const { dispatch } = this.props;
     dispatch(indexPlug());
     dispatch(indexAuthor())
-    .then((result) =>
-      this.setState({ noAuthor: this.props.authors.count === 0 }));
+    .then((result) => {
+      this.setState({ noAuthor: this.props.authors.count() === 0 });
+    });
   }
 
   loadResolved(result) {
@@ -136,7 +137,8 @@ export default class History extends Component {
 
   handlePostAuthor(author) {
     const { dispatch } = this.props;
-    return dispatch(storeAuthor(author));
+    return dispatch(storeAuthor(author))
+      .then(() => this.setState({ noAuthor: this.props.authors.count() === 0 }));
   }
 
   getStageCardList({ style }) {
