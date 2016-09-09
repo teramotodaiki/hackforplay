@@ -137,7 +137,8 @@ export default class History extends Component {
 
   handlePostAuthor(author) {
     const { dispatch } = this.props;
-    return dispatch(storeAuthor(author));
+    return dispatch(storeAuthor(author))
+      .then(() => this.setState({ noAuthor: this.props.authors.count() === 0 }));
   }
 
   getStageCardList({ style }) {
