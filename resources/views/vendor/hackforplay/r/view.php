@@ -40,6 +40,11 @@
 		border-width: 0;
 		color: rgba(260, 260, 260, 1.0);
 	}
+
+	.h4p-header {
+		border-radius: 0;
+	}
+
 	</style>
 </head>
 <body>
