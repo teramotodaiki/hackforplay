@@ -13,6 +13,11 @@ use App\Plug;
 
 class ModController extends Controller
 {
+    public function __construct()
+    {
+      $this->middleware('cors', ['only' => ['showByProject', 'showByPlug', 'showByProduct']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
