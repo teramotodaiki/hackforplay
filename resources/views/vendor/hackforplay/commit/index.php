@@ -9,6 +9,9 @@
 * Output:	no-session , invalid-token , already-published , code-is-null , invalid-stage-info , database-error , success
 */
 
+
+$ENABLED_JUDGING = false;
+
 require_once '../preload.php';
 
 session_start();
@@ -125,16 +128,22 @@ if ($publish) {
 	}
 
 	// Reserved -> Judging
-	$stmt	= $dbh->prepare('UPDATE "Stage" SET "TeamID"=:team_id,"ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Registered"=:gmt,"MajorVersion"=:major,"MinorVersion"=:minor WHERE "ID"=:reserved_id');
+	$stmt	= $dbh->prepare('UPDATE "Stage" SET "TeamID"=:team_id,"ScriptID"=:scriptid,"Title"=:input_title,"Explain"=:input_explain,"State"=:judging,"Registered"=:gmt,"MajorVersion"=:major,"MinorVersion"=:minor,"Published"=:gmt2 WHERE "ID"=:reserved_id');
 	$stmt->bindValue(":team_id", $team_id, PDO::PARAM_INT);
 	$stmt->bindValue(":scriptid", $script_id, PDO::PARAM_INT);
 	$stmt->bindValue(":input_title", $stage_info->title, PDO::PARAM_STR);
 	$stmt->bindValue(":input_explain", $stage_info->explain, PDO::PARAM_STR);
-	$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
 	$stmt->bindValue(":gmt", $registered, PDO::PARAM_STR);
 	$stmt->bindValue(':major', $version['MajorVersion'], PDO::PARAM_INT);
 	$stmt->bindValue(':minor', $version['MinorVersion'], PDO::PARAM_INT);
 	$stmt->bindValue(":reserved_id", $project['ReservedID'], PDO::PARAM_INT);
+	if ($ENABLED_JUDGING) {
+		$stmt->bindValue(":judging", 'judging', PDO::PARAM_STR);
+		$stmt->bindValue(':gmt2', null, PDO::PARAM_NULL);
+	} else {
+		$stmt->bindValue(":judging", 'published', PDO::PARAM_STR);
+		$stmt->bindValue(':gmt2', $registered, PDO::PARAM_STR);
+	}
 	$result = $stmt->execute();
 	if (!$result) {
 		exit('database-error');
