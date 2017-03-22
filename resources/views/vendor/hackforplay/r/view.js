@@ -55,22 +55,16 @@ $(function(){
 			$('<span>').addClass('text-muted').text(' // オリジナルステージつくっちゃう？')
 		)
 	).append(
-		$('<a>').attr('href', '/register').append(
-			$('<img>').attr('src', 'https://embed.hackforplay.xyz/hackforplay/img/restaging_image.png').css({
+		$('<a>').attr('href', 'https://feeles.github.io/IDE/dist/make-rpg.html').append(
+			$('<img>').attr('src', 'https://embed.hackforplay.xyz/open-source/ogp/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202017-03-22%2011.08.34.png').css({
 				width: '100%',
 				height: '100%',
 			})
 		)
 	).append(
-		$('<a>').attr('href', '/register')
+		$('<a>').attr('href', 'https://feeles.github.io/IDE/dist/make-rpg.html')
 		.addClass('btn btn-link btn-lg btn-block')
-		.text('まずはクリエイターズライセンスをゲットしよう！')
-	).append(
-		$('<p>').addClass('text-muted').append(
-			$('<span>').addClass('glyphicon glyphicon-pencil')
-		).append(
-			'ペンとメモを よういしてください'
-		)
+		.text('あたらしいステージ制作ツールを使ってみよう！')
 	);
 
 	// コメント
