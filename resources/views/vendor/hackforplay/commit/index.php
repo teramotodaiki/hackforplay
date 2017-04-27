@@ -183,7 +183,7 @@ if ($publish) {
 		$stmt	= $dbh->prepare('SELECT "Nickname" FROM "User" WHERE "ID"=:user_id');
 		$stmt->bindValue(":user_id", $session_userid, PDO::PARAM_INT);
 		$stmt->execute();
-		$user = $stmt->fetch();
+		$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 		// feeles.com に URL を通知
 		$webhookParams = [
@@ -191,7 +191,7 @@ if ($publish) {
 		    'type'          => 'website',
 		    'image'         => $stage['Thumbnail'],
 		    'description'   => $stage_info->explain,
-		    'author'        => $user->Nickname,
+		    'author'        => $user['Nickname'],
 		    'url'           => "https://hackforplay.xyz/s/?id={$project['ReservedID']}",
 		    'homepage'      => "https://hackforplay.xyz/m/?id={$session_userid}",
 		    'original'      => "https://hackforplay.xyz/s/?id={$stage['SourceID']}",
