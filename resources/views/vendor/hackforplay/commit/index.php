@@ -11,6 +11,7 @@
 
 
 $ENABLED_JUDGING = false;
+define('ENABLED_FEELES_WEBHOOK', true);
 
 require_once '../preload.php';
 
@@ -149,7 +150,7 @@ if ($publish) {
 		exit('database-error');
 	}
 
-	$stmt	= $dbh->prepare('SELECT "SourceID","Src","ImplicitMod" FROM "Stage" WHERE "ID"=:reserved_id');
+	$stmt	= $dbh->prepare('SELECT "SourceID","Src","ImplicitMod","Thumbnail" FROM "Stage" WHERE "ID"=:reserved_id');
 	$stmt->bindValue(":reserved_id", $project['ReservedID'], PDO::PARAM_INT);
 	$stmt->execute();
 	$stage = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -175,6 +176,27 @@ if ($publish) {
 	$flag 	= $stmt->execute();
 	if (!$flag) {
 		exit('database-error');
+	}
+
+	if (ENABLED_FEELES_WEBHOOK) {
+		// ユーザーのニックネームを取得
+		$stmt	= $dbh->prepare('SELECT "nickname" FROM "User" WHERE "ID"=:user_id');
+		$stmt->bindValue(":user_id", $session_userid, PDO::PARAM_INT);
+		$stmt->execute();
+		$user = $stmt->fetch();
+
+		// feeles.com に URL を通知
+		$webhookParams = [
+		    'title'         => $stage_info->title,
+		    'type'          => 'website',
+		    'image'         => $stage['Thumbnail'],
+		    'description'   => $stage_info->explain,
+		    'author'        => $user->nickname,
+		    'url'           => "https://hackforplay.xyz/s/?id={$project['ReservedID']}",
+		    'homepage'      => "https://hackforplay.xyz/m/?id={$session_userid}",
+		    'original'      => "https://hackforplay.xyz/s/?id={$stage['SourceID']}",
+		];
+		file_get_contents('https://www.feeles.com/api/v1/add?' . http_build_query($webhookParams));
 	}
 
 }
