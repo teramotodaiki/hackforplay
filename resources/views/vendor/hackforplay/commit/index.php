@@ -180,7 +180,7 @@ if ($publish) {
 
 	if (ENABLED_FEELES_WEBHOOK) {
 		// ユーザーのニックネームを取得
-		$stmt	= $dbh->prepare('SELECT "nickname" FROM "User" WHERE "ID"=:user_id');
+		$stmt	= $dbh->prepare('SELECT "Nickname" FROM "User" WHERE "ID"=:user_id');
 		$stmt->bindValue(":user_id", $session_userid, PDO::PARAM_INT);
 		$stmt->execute();
 		$user = $stmt->fetch();
