@@ -191,7 +191,7 @@ if ($publish) {
 		    'type'          => 'website',
 		    'image'         => $stage['Thumbnail'],
 		    'description'   => $stage_info->explain,
-		    'author'        => $user->nickname,
+		    'author'        => $user->Nickname,
 		    'url'           => "https://hackforplay.xyz/s/?id={$project['ReservedID']}",
 		    'homepage'      => "https://hackforplay.xyz/m/?id={$session_userid}",
 		    'original'      => "https://hackforplay.xyz/s/?id={$stage['SourceID']}",
