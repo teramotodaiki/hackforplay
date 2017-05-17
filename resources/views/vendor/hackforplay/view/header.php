@@ -231,7 +231,7 @@ $(function(){
 					</a>
 				</li>
 				<li>
-					<a href="https://feeles.github.io/IDE/dist/make-rpg.html" class="btn btn-link" title="Register" target="_blank">
+					<a href="http://kits.feeles.com/make-rpg.html" class="btn btn-link" title="Register" target="_blank">
 						<small>つくりたい</small>
 					</a>
 				</li>
@@ -265,8 +265,19 @@ $(function(){
 					<a href="/channels/list" title="チャンネル">チャンネル</a>
 				</li>
 				<?php endif; ?>
-				<li>
-					<a href="/s/?directly_restaging=true&id=1365" title="Make RPG">ステージをつくる</a>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						ステージをつくる
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="http://kits.feeles.com/make-rpg.html" title="Make RPG">あたらしいキットでつくる</a>
+						</li>
+						<li>
+							<a href="/s/?directly_restaging=true&id=1365" title="Make RPG (old)">ステージをつくる</a>
+						</li>
+					</ul>
 				</li>
 				<li>
 					<a href="/news/" title="おしらせ">おしらせ</a>

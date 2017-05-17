@@ -55,14 +55,14 @@ $(function(){
 			$('<span>').addClass('text-muted').text(' // オリジナルステージつくっちゃう？')
 		)
 	).append(
-		$('<a>').attr('href', 'https://feeles.github.io/IDE/dist/make-rpg.html').append(
+		$('<a>').attr('href', 'http://kits.feeles.com/make-rpg.html').append(
 			$('<img>').attr('src', 'https://embed.hackforplay.xyz/open-source/ogp/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%202017-03-22%2011.08.34.png').css({
 				width: '100%',
 				height: '100%',
 			})
 		)
 	).append(
-		$('<a>').attr('href', 'https://feeles.github.io/IDE/dist/make-rpg.html')
+		$('<a>').attr('href', 'http://kits.feeles.com/make-rpg.html')
 		.addClass('btn btn-link btn-lg btn-block')
 		.text('あたらしいステージ制作ツールを使ってみよう！')
 	);
