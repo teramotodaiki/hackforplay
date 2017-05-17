@@ -231,7 +231,7 @@ $(function(){
 					</a>
 				</li>
 				<li>
-					<a href="https://feeles.github.io/IDE/dist/make-rpg.html" class="btn btn-link" title="Register" target="_blank">
+					<a href="http://kits.feeles.com/make-rpg.html" class="btn btn-link" title="Register" target="_blank">
 						<small>つくりたい</small>
 					</a>
 				</li>
