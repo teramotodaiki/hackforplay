@@ -564,5 +564,6 @@ $require = '';
 	</div>
 	<div class="container-open-external affix"></div>
 	<?php include_once '../intercom.php'; ?>
+	<script src="migration.js" charset="utf-8"></script>
 </body>
 </html>

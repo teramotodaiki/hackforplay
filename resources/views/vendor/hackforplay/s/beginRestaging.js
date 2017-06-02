@@ -11,6 +11,8 @@
 	window.beginRestaging = function(){
 
 		$('.container.container-game').addClass('restaging');
+    // マイグレーションバー
+    document.body.classList.add('recommend-migration');
 
     var token = sessionStorage.getItem('project-token');
     if (token) {
