@@ -64,12 +64,12 @@
         // ゲームのアセット
         code = code.replace(
           '// ( Keep this line -- ここはけさないでね ) //',
-          '/* \____ assets/ゲーム.json ____/  */'
+          '/* \\____ assets/ゲーム.json ____/  */'
         );
         // マップのアセット
         code = code.replace(
           '// < Keep this line -- ここはけさないでね > //',
-          '/* \____ assets/マップ.json ____/ */'
+          '/* \\____ assets/マップ.json ____/ */'
         );
         // コアモジュールのロード
         code =
