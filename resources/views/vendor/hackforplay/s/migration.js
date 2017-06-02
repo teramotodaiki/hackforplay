@@ -35,7 +35,7 @@
         top: 0,
         width: '100vw',
         height: '100vh',
-        zIndex: 10000
+        zIndex: 1400
       })
       .appendTo($body);
 
