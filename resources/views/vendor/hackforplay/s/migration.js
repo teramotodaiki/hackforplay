@@ -71,6 +71,16 @@
           '// < Keep this line -- ここはけさないでね > //',
           '/* \\____ assets/マップ.json ____/ */'
         );
+        // Hack.openExternal
+        code = code.replace(
+          /Hack\.openExternal\((.*)\)/g,
+          'feeles.openMedia({ playing: true, url: $1 })'
+        );
+        // require
+        code = code.replace(
+          /require\([\'\"](.*)[\'\"]\)/g,
+          "import 'https://hackforplay.xyz/api/mods/$1.js'"
+        );
         // コアモジュールのロード
         code =
           "import 'hackforplay/core';\n// import 'mod/3d/core';\n" +
