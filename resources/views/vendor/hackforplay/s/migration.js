@@ -19,7 +19,7 @@
     console.log('waste', $waste);
 
     setTimeout(function() {
-      $others.remove();
+      $waste.remove();
     }, duration);
 
     // root element
@@ -100,7 +100,7 @@
   // スタイルシート
   $('<style>')
     .text(
-      '.feeles-migrate-bar { transform: scaleX(0) } .restaging .feeles-migrate-bar { transform: scaleX(1) }'
+      '.feeles-migrate-bar { transform: scaleX(0) } .recommend-migration .feeles-migrate-bar { transform: scaleX(1) }'
     )
     .appendTo($body);
 
@@ -153,5 +153,5 @@
           bar.remove();
         })
     )
-    .appendTo($('.container-game'));
+    .appendTo($body);
 })();
