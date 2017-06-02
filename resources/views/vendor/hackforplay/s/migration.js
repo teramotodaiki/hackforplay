@@ -153,5 +153,5 @@
           bar.remove();
         })
     )
-    .appendTo($body);
+    .appendTo($('.container-game'));
 })();

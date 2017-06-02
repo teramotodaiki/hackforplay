@@ -171,7 +171,6 @@ $require = '';
 	<script src="getStage.js" type="text/javascript" charset="utf-8"></script>
 	<script src="beginRestaging.js" type="text/javascript" charset="utf-8"></script>
 	<script src="render.js" charset="utf-8"></script>
-	<script src="migration.js" charset="utf-8"></script>
 	<script src="/activity/post.js" type="text/javascript"></script>
 	<!-- Modal -->
 	<div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="inputModalLabel" aria-hidden="true">
@@ -565,5 +564,6 @@ $require = '';
 	</div>
 	<div class="container-open-external affix"></div>
 	<?php include_once '../intercom.php'; ?>
+	<script src="migration.js" charset="utf-8"></script>
 </body>
 </html>
