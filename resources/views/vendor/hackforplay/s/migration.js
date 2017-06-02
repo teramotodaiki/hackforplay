@@ -114,10 +114,12 @@
       alignItems: 'center',
       top: 0,
       width: '100%',
+      minHeight: 32,
       fontSize: 16,
       textAlign: 'center',
       color: 'white',
       backgroundColor: '#5cb85c',
+      zIndex: 10,
       transition: 'transform 400ms ease'
     })
     .append(
