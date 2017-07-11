@@ -68,7 +68,7 @@
       .then(function() {
         // make-rpg.json のロード
         // リダイレクトが発生するとCORSが失敗するようなので、Blob の API を直接叩く
-        return $.ajax('https://assets.feeles.com/public/v1026/make-rpg.json');
+        return $.ajax('https://assets.feeles.com/public/v1081/make-rpg.json');
       })
       .then(function(result) {
         // マイグレーション
