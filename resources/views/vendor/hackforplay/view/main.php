@@ -29,7 +29,7 @@
 			<div class="h4p_landing-main">
 				<div class="h4p_landing-header"></div>
 				<div class="h4p_landing-footer">
-					<a href="http://kits.feeles.com/hack-rpg.html" title="Play Now"></a>
+					<a href="http://hack-rpg.hackforplay.xyz" title="Play Now"></a>
 				</div>
 			</div>
 		</div>
