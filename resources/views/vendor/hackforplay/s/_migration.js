@@ -60,7 +60,7 @@
         var script = document.createElement('script');
         script.onload = resolve;
         script.onerror = reject;
-        script.src = 'https://kits.feeles.com/h4p.js';
+        script.src = 'https://assets.feeles.com/public/v1114/h4p.js';
         // will export window.h4p
         document.head.appendChild(script);
       }
