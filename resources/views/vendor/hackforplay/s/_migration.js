@@ -91,16 +91,23 @@
         // require
         code = code.replace(
           /require\([\'\"](.*)[\'\"]\)/g,
-          "import 'https://hackforplay.xyz/api/mods/$1.js'"
+          "require('https://hackforplay.xyz/api/mods/$1')"
         );
         // コアモジュールのロード
         code =
-          "import 'hackforplay/core';\n// import 'mod/3d/core';\n" +
+          "require('hackforplay/core');\n// require('mod/3d/core');\n" +
           code +
-          '\nexport default {\n\t_bundled: true,\n\tgameOnLoad: game.onload,\n\thackOnLoad: Hack.onload\n}\n';
+          'module.exports = {\n\t_bundled: true,\n\tgameOnLoad: game.onload,\n\thackOnLoad: Hack.onload\n};';
 
         result = result.map(function(item) {
           if (item.name === 'game.js') {
+            return Object.assign({}, item, {
+              text: code
+            });
+          }
+          if (item.name === '.babelrc') {
+            const code =
+              '{\n\t"presets": [\n\t\t"es2015", "stage-3"\n\t],\n\t"ignore": [\n\t\t"stages/*/code*.js",\n\t\t"enchantjs/enchant.js",\n\t\t"enchantjs/ui.enchant.js",\n\t"game.js"\n\t]\n}]\n';
             return Object.assign({}, item, {
               text: code
             });
