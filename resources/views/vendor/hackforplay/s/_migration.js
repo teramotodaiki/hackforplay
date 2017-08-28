@@ -88,6 +88,11 @@
           /Hack\.openExternal\((.*)\)/g,
           'feeles.openMedia({ playing: true, controls: true, url: $1 })'
         );
+        // Hack.openSoundCloud
+        code = code.replace(
+          /Hack\.openSoundCloud\((.*)\)/g,
+          'feeles.openMedia({ playing: true, controls: true, url: $1 })'
+        );
         // MOD
         code = code.replace(
           /require\([\'\"](.*)[\'\"]\)/g,
