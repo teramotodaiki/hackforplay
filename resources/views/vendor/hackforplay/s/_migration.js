@@ -60,7 +60,7 @@
         var script = document.createElement('script');
         script.onload = resolve;
         script.onerror = reject;
-        script.src = 'https://assets.feeles.com/public/v1114/h4p.js';
+        script.src = 'https://assets.feeles.com/public/v1119/h4p.js';
         // will export window.h4p
         document.head.appendChild(script);
       }
@@ -117,7 +117,7 @@
           }
           if (item.name === '.babelrc') {
             const code =
-              '{\n\t"presets": [\n\t\t"es2015", "stage-3"\n\t],\n\t"ignore": [\n\t\t"stages/*/code*.js",\n\t\t"enchantjs/enchant.js",\n\t\t"enchantjs/ui.enchant.js",\n\t"game.js"\n\t]\n}]\n';
+              '{"presets": ["es2015", "stage-3"], "ignore": ["stages/*/code*.js", "enchantjs/enchant.js", "enchantjs/ui.enchant.js", "game.js"]}]';
             return Object.assign({}, item, {
               text: code
             });
