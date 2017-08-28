@@ -88,7 +88,7 @@
           /Hack\.openExternal\((.*)\)/g,
           'feeles.openMedia({ playing: true, controls: true, url: $1 })'
         );
-        // require
+        // MOD
         code = code.replace(
           /require\([\'\"](.*)[\'\"]\)/g,
           "require('https://hackforplay.xyz/api/mods/$1')"
