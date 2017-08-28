@@ -86,7 +86,7 @@
         // Hack.openExternal
         code = code.replace(
           /Hack\.openExternal\((.*)\)/g,
-          'feeles.openMedia({ playing: true, url: $1 })'
+          'feeles.openMedia({ playing: true, controls: true, url: $1 })'
         );
         // require
         code = code.replace(
