@@ -76,12 +76,12 @@
         // ゲームのアセット
         code = code.replace(
           '// ( Keep this line -- ここはけさないでね ) //',
-          '/* \\____ assets/ゲーム.json ____/  */'
+          '/*+ モンスター アイテム せっち システム */'
         );
         // マップのアセット
         code = code.replace(
           '// < Keep this line -- ここはけさないでね > //',
-          '/* \\____ assets/マップ.json ____/ */'
+          '/*+ マップ */'
         );
         // Hack.openExternal
         code = code.replace(
