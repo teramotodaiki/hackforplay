@@ -117,7 +117,7 @@
           }
           if (item.name === '.babelrc') {
             const code =
-              '{"presets": ["es2015", "stage-3"], "ignore": ["stages/*/code*.js", "enchantjs/enchant.js", "enchantjs/ui.enchant.js", "game.js"]}]';
+              '{"presets": ["es2015", "stage-3"], "ignore": ["stages/*/code*.js", "enchantjs/enchant.js", "enchantjs/ui.enchant.js", "game.js"]}';
             return Object.assign({}, item, {
               type: 'application/json',
               text: code
