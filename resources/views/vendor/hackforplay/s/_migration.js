@@ -93,6 +93,11 @@
           /Hack\.openSoundCloud\((.*)\)/g,
           'feeles.openMedia({ playing: true, controls: true, url: $1 })'
         );
+        // window.player
+        code = code.replace(
+          'var player = Hack.player = new Player();',
+          'var player = window.player = Hack.player = new Player();'
+        );
         // MOD
         code = code.replace(
           /require\([\'\"](.*)[\'\"]\)/g,
