@@ -76,31 +76,48 @@
         // ゲームのアセット
         code = code.replace(
           '// ( Keep this line -- ここはけさないでね ) //',
-          '/* \\____ assets/ゲーム.json ____/  */'
+          '/*+ モンスター アイテム せっち システム */'
         );
         // マップのアセット
         code = code.replace(
           '// < Keep this line -- ここはけさないでね > //',
-          '/* \\____ assets/マップ.json ____/ */'
+          '/*+ マップ */'
         );
         // Hack.openExternal
         code = code.replace(
           /Hack\.openExternal\((.*)\)/g,
-          'feeles.openMedia({ playing: true, url: $1 })'
+          'feeles.openMedia({ playing: true, controls: true, url: $1 })'
         );
-        // require
+        // Hack.openSoundCloud
+        code = code.replace(
+          /Hack\.openSoundCloud\((.*)\)/g,
+          'feeles.openMedia({ playing: true, controls: true, url: $1 })'
+        );
+        // window.player
+        code = code.replace(
+          'var player = Hack.player = new Player();',
+          'var player = window.player = Hack.player = new Player();'
+        );
+        // MOD
         code = code.replace(
           /require\([\'\"](.*)[\'\"]\)/g,
-          "import 'https://hackforplay.xyz/api/mods/$1.js'"
+          "require('https://hackforplay.xyz/api/mods/$1')"
         );
         // コアモジュールのロード
         code =
-          "import 'hackforplay/core';\n// import 'mod/3d/core';\n" +
+          "require('hackforplay/core');\n// require('mod/3d/core');\n" +
           code +
-          '\nexport default {\n\t_bundled: true,\n\tgameOnLoad: game.onload,\n\thackOnLoad: Hack.onload\n}\n';
+          'module.exports = {\n\t_bundled: true,\n\tgameOnLoad: game.onload,\n\thackOnLoad: Hack.onload\n};';
 
         result = result.map(function(item) {
           if (item.name === 'game.js') {
+            return Object.assign({}, item, {
+              text: code
+            });
+          }
+          if (item.name === '.babelrc') {
+            const code =
+              '{\n\t"presets": [\n\t\t"es2015", "stage-3"\n\t],\n\t"ignore": [\n\t\t"stages/*/code*.js",\n\t\t"enchantjs/enchant.js",\n\t\t"enchantjs/ui.enchant.js",\n\t"game.js"\n\t]\n}]\n';
             return Object.assign({}, item, {
               text: code
             });
