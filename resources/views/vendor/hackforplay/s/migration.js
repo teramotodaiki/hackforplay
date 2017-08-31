@@ -67,7 +67,7 @@
     })
       .then(function() {
         // make-rpg.json のロード
-        return $.ajax('https://kits.feeles.com/make-rpg.json');
+        return $.ajax('https://make-rpg.hackforplay.xyz/make-rpg.json');
       })
       .then(function(result) {
         // マイグレーション
