@@ -231,7 +231,7 @@ $(function(){
 					</a>
 				</li>
 				<li>
-					<a href="http://kits.feeles.com/make-rpg.html" class="btn btn-link" title="Register" target="_blank">
+					<a href="https://make-rpg.hackforplay.xyz" class="btn btn-link" title="Register" target="_blank">
 						<small>つくりたい</small>
 					</a>
 				</li>
@@ -272,7 +272,7 @@ $(function(){
 					</a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="http://kits.feeles.com/make-rpg.html" title="Make RPG">あたらしいキットでつくる</a>
+							<a href="https://make-rpg.hackforplay.xyz" title="Make RPG">あたらしいキットでつくる</a>
 						</li>
 						<li>
 							<a href="/s/?directly_restaging=true&id=1365" title="Make RPG (old)">ステージをつくる</a>
