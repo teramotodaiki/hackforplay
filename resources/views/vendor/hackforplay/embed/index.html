@@ -61,7 +61,7 @@
 
       Object.defineProperty(Hack, 'API_ROOT', {
         writable: false, enumerable: true,
-        value: 'http://localhost:8000/api/',
+        value: '/api/',
       })
 
 			if ('id' in params) {
@@ -81,7 +81,7 @@
 			}
 
 	require.config({
-		baseUrl : 'http://localhost:8000/api/mods/',
+		baseUrl : '/api/mods/',
 		shim: {
 			'enchantjs/ui.enchant': ['enchantjs/enchant']
 		},
